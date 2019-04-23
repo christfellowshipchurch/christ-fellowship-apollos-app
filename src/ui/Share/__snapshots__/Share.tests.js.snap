@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the Share component should render 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  onLayout={[Function]}
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <RNSVGSvgView
+        align="xMidYMid"
+        bbHeight={32}
+        bbWidth={32}
+        height={32}
+        meetOrSlice={0}
+        minX={0}
+        minY={0}
+        style={
+          Array [
+            Object {
+              "backgroundColor": "transparent",
+              "borderWidth": 0,
+            },
+            undefined,
+            null,
+            Object {
+              "flex": 0,
+              "height": 32,
+              "width": 32,
+            },
+          ]
+        }
+        vbHeight={24}
+        vbWidth={24}
+        width={32}
+      >
+        <RNSVGGroup
+          fill={
+            Array [
+              0,
+              4278190080,
+            ]
+          }
+          fillOpacity={1}
+          fillRule={1}
+          font={Object {}}
+          matrix={
+            Array [
+              1,
+              0,
+              0,
+              1,
+              0,
+              0,
+            ]
+          }
+          opacity={1}
+          originX={0}
+          originY={0}
+          propList={
+            Array [
+              "fill",
+              "fillOpacity",
+              "fillRule",
+              "stroke",
+              "strokeWidth",
+              "strokeOpacity",
+              "strokeDasharray",
+              "strokeDashoffset",
+              "strokeLinecap",
+              "strokeLinejoin",
+              "strokeMiterlimit",
+            ]
+          }
+          rotation={0}
+          scaleX={1}
+          scaleY={1}
+          skewX={0}
+          skewY={0}
+          stroke={null}
+          strokeDasharray={null}
+          strokeDashoffset={null}
+          strokeLinecap={0}
+          strokeLinejoin={0}
+          strokeMiterlimit={4}
+          strokeOpacity={1}
+          strokeWidth={1}
+          x={0}
+          y={0}
+        >
+          <RNSVGPath
+            d="M12.8 3.621v8.6568h-1.6V3.5545L8.6046 6.224c-.3037.3124-.7962.3124-1.1 0-.3037-.3124-.3037-.819 0-1.1314l3.826-3.9352c.174-.179.41-.2554.637-.2293.227-.026.463.0505.637.2295l3.826 3.9352c.3037.3125.3037.819 0 1.1314-.3038.3125-.7963.3125-1.1 0L12.8 3.621zM8.0338 8v1.5556H6.4012c-.4785 0-.8012.2822-.8012.544v9.8007c0 .2617.3228.544.7997.544h11.2006c.477 0 .7997-.2823.7997-.544v-9.8006c0-.2623-.3216-.544-.796-.544h-1.623V8h1.623C18.927 8 20 8.9403 20 10.0997v9.8006C20 21.06 18.9254 22 17.6003 22H6.3997C5.0744 22 4 21.0597 4 19.9003v-9.8006C4 8.94 5.0743 8 6.4012 8h1.6326z"
+            fill={
+              Array [
+                0,
+                4279743874,
+              ]
+            }
+            fillOpacity={1}
+            fillRule={1}
+            matrix={
+              Array [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0,
+              ]
+            }
+            opacity={1}
+            originX={0}
+            originY={0}
+            propList={
+              Array [
+                "fill",
+              ]
+            }
+            rotation={0}
+            scaleX={1}
+            scaleY={1}
+            skewX={0}
+            skewY={0}
+            stroke={null}
+            strokeDasharray={null}
+            strokeDashoffset={null}
+            strokeLinecap={0}
+            strokeLinejoin={0}
+            strokeMiterlimit={4}
+            strokeOpacity={1}
+            strokeWidth={1}
+            x={0}
+            y={0}
+          />
+        </RNSVGGroup>
+      </RNSVGSvgView>
+    </View>
+  </View>
+</RCTSafeAreaView>
+`;

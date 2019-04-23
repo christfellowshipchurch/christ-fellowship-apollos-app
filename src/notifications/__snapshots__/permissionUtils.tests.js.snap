@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`requestPushPermissions must update the store if OneSignal returns true: After calling mutation 1`] = `
+Object {
+  "notificationsEnabled": true,
+}
+`;
+
+exports[`requestPushPermissions must update the store if OneSignal returns true: Before calling mutation 1`] = `
+Object {
+  "notificationsEnabled": false,
+}
+`;

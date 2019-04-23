@@ -1,0 +1,357 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`the ScriptureText component should accept additional props 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  onLayout={[Function]}
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <Text
+      accessible={false}
+      bold={false}
+      italic={false}
+      style={
+        Object {
+          "color": "#303030",
+          "fontFamily": "DroidSerif",
+          "fontSize": 16,
+          "lineHeight": 26,
+        }
+      }
+    >
+      "True faith means holding nothing back. It means putting every hope in God's fidelity to His Promises." ― Francis Chan
+    </Text>
+  </View>
+</RCTSafeAreaView>
+`;
+
+exports[`the ScriptureText component should accept and render passed in styles 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  onLayout={[Function]}
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <Text
+      bold={false}
+      italic={false}
+      style={
+        Object {
+          "color": "salmon",
+          "fontFamily": "DroidSerif",
+          "fontSize": 16,
+          "lineHeight": 26,
+        }
+      }
+    >
+      Salmon text
+    </Text>
+  </View>
+</RCTSafeAreaView>
+`;
+
+exports[`the ScriptureText component should render a loading state 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  onLayout={[Function]}
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "backgroundColor": "#A5A5A5",
+          "borderRadius": 16,
+          "height": 16,
+          "marginVertical": 5,
+          "width": "100%",
+        }
+      }
+    />
+  </View>
+</RCTSafeAreaView>
+`;
+
+exports[`the ScriptureText component should render as bold 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  onLayout={[Function]}
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <Text
+      bold={true}
+      italic={false}
+      style={
+        Object {
+          "color": "#303030",
+          "fontFamily": "DroidSerif-Bold",
+          "fontSize": 16,
+          "lineHeight": 26,
+        }
+      }
+    >
+      Bold ScriptureText text
+    </Text>
+  </View>
+</RCTSafeAreaView>
+`;
+
+exports[`the ScriptureText component should render as bold italic 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  onLayout={[Function]}
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <Text
+      bold={true}
+      italic={true}
+      style={
+        Object {
+          "color": "#303030",
+          "fontFamily": "DroidSerif-BoldItalic",
+          "fontSize": 16,
+          "lineHeight": 26,
+        }
+      }
+    >
+      Bold italic ScriptureText text
+    </Text>
+  </View>
+</RCTSafeAreaView>
+`;
+
+exports[`the ScriptureText component should render as italic 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  onLayout={[Function]}
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <Text
+      bold={false}
+      italic={true}
+      style={
+        Object {
+          "color": "#303030",
+          "fontFamily": "DroidSerif-Italic",
+          "fontSize": 16,
+          "lineHeight": 26,
+        }
+      }
+    >
+      Italic ScriptureText text
+    </Text>
+  </View>
+</RCTSafeAreaView>
+`;
+
+exports[`the ScriptureText component should render correctly 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  onLayout={[Function]}
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <Text
+      bold={false}
+      italic={false}
+      style={
+        Object {
+          "color": "#303030",
+          "fontFamily": "DroidSerif",
+          "fontSize": 16,
+          "lineHeight": 26,
+        }
+      }
+    >
+      Default ScriptureText text
+    </Text>
+  </View>
+</RCTSafeAreaView>
+`;
