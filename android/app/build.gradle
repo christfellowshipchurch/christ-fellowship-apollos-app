@@ -1,4 +1,20 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.10.0, 0.99.99]'
+    }
+}
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: "com.android.application"
+
+project.ext.envConfigFiles = [
+        release: ".env.production",
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
 
@@ -95,6 +111,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -107,6 +124,10 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+        resValue "string", "build_config_package", "com.christfellowship"
     }
     splits {
         abi {
@@ -144,7 +165,6 @@ dependencies {
     implementation project(':react-native-svg')
     implementation project(':react-native-splash-screen')
     implementation project(':react-native-screens')
-    implementation project(':react-native-passkit-wallet')
     implementation project(':react-native-onesignal')
     implementation project(':react-native-music-control')
     implementation project(':react-native-maps')
