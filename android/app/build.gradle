@@ -77,6 +77,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -143,8 +144,6 @@ dependencies {
     implementation project(':react-native-video')
     implementation project(':react-native-svg')
     implementation project(':react-native-splash-screen')
-    implementation project(':react-native-screens')
-    implementation project(':react-native-passkit-wallet')
     implementation project(':react-native-onesignal')
     implementation project(':react-native-music-control')
     implementation project(':react-native-maps')

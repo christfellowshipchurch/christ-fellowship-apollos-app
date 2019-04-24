@@ -8,8 +8,6 @@ import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.horcrux.svg.SvgPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.swmansion.rnscreens.RNScreenPackage;
-import com.mybdesign.RNPassKit.RNPassKitPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.tanguyantoine.react.MusicControl;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -43,8 +41,6 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactVideoPackage(),
             new SvgPackage(),
             new SplashScreenReactPackage(),
-            new RNScreenPackage(),
-            new RNPassKitPackage(),
             new ReactNativeOneSignalPackage(),
             new MusicControl(),
             new MapsPackage(),

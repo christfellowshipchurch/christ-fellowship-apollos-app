@@ -54,7 +54,6 @@
 		75037F6788BF44EABC0C0F97 /* Inter-UI-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 0C776060AE42480D8BDBEC4E /* Inter-UI-Medium.otf */; };
 		7B5D042782A149C8951932CC /* DroidSerif-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54C3FDE06D814EF2B00AE37E /* DroidSerif-Regular.ttf */; };
 		7D4A23A762264116AB8145A9 /* libRNPassKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41F80B4F54B3485993A0403C /* libRNPassKit.a */; };
-		8039E59C5D84464DB9D9D432 /* libDBCustomTabs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B8059F1ED28D434FAB5575A6 /* libDBCustomTabs.a */; };
 		805290FB86DF42D7BF7D7342 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C0E4C3CEC3CF4107A32755A1 /* libRNImagePicker.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8E555636C7004C7BB846B46B /* libMusicControl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E5D98319D804FDBAF44ACDC /* libMusicControl.a */; };
@@ -391,13 +390,6 @@
 			remoteGlobalIDString = 3DF7F6AC203AA09B00D0EAB7;
 			remoteInfo = "ReactNativeConfig-tvOS";
 		};
-		79A235B4226F66880032F472 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F4B3BC54CCD746A68912A2A2 /* ReactNativeCustomTabs.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DA7118681CC9158A0087DF95;
-			remoteInfo = DBCustomTabs;
-		};
 		79A235B7226F66880032F472 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8D5449B603394DF3B4B9D9CE /* RNAirplay.xcodeproj */;
@@ -587,7 +579,6 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EF67EDE85275413E90A55C8D /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
-		F4B3BC54CCD746A68912A2A2 /* ReactNativeCustomTabs.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeCustomTabs.xcodeproj; path = "../node_modules/react-native-custom-tabs/ios/ReactNativeCustomTabs.xcodeproj"; sourceTree = "<group>"; };
 		FA656B8C82F44801A116E406 /* Inter-UI-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-BoldItalic.otf"; path = "../assets/fonts/Inter-UI-BoldItalic.otf"; sourceTree = "<group>"; };
 		FDD5211697F64416B1D9CF4D /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		FDFDA295833C46E79190DBC8 /* Inter-UI-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-BlackItalic.otf"; path = "../assets/fonts/Inter-UI-BlackItalic.otf"; sourceTree = "<group>"; };
@@ -621,7 +612,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				B7596B9D969D4D919CFF3EC1 /* libRNAirplay.a in Frameworks */,
 				00CDFE0199B74E34885AEAE0 /* libReactNativeConfig.a in Frameworks */,
-				8039E59C5D84464DB9D9D432 /* libDBCustomTabs.a in Frameworks */,
 				43053AC2258941EABA611F46 /* libRNDeviceInfo.a in Frameworks */,
 				805290FB86DF42D7BF7D7342 /* libRNImagePicker.a in Frameworks */,
 				2A5E92011D284F7FA15FAABF /* libBVLinearGradient.a in Frameworks */,
@@ -851,14 +841,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		79A2357F226F66880032F472 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				79A235B5226F66880032F472 /* libDBCustomTabs.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		79A23581226F66880032F472 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1001,7 +983,6 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				8D5449B603394DF3B4B9D9CE /* RNAirplay.xcodeproj */,
 				953245D3C6074343B34064C6 /* ReactNativeConfig.xcodeproj */,
-				F4B3BC54CCD746A68912A2A2 /* ReactNativeCustomTabs.xcodeproj */,
 				04E61CB3084E455A84653876 /* RNDeviceInfo.xcodeproj */,
 				02946FF9552E4E33B82BEF53 /* RNImagePicker.xcodeproj */,
 				A46EF78D55F64D2E97598535 /* BVLinearGradient.xcodeproj */,
@@ -1273,10 +1254,6 @@
 				{
 					ProductGroup = 79A2358D226F66880032F472 /* Products */;
 					ProjectRef = 953245D3C6074343B34064C6 /* ReactNativeConfig.xcodeproj */;
-				},
-				{
-					ProductGroup = 79A2357F226F66880032F472 /* Products */;
-					ProjectRef = F4B3BC54CCD746A68912A2A2 /* ReactNativeCustomTabs.xcodeproj */;
 				},
 				{
 					ProductGroup = 79A23591226F66880032F472 /* Products */;
@@ -1629,13 +1606,6 @@
 			fileType = archive.ar;
 			path = "libReactNativeConfig-tvOS.a";
 			remoteRef = 79A235B1226F66880032F472 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		79A235B5226F66880032F472 /* libDBCustomTabs.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libDBCustomTabs.a;
-			remoteRef = 79A235B4226F66880032F472 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		79A235B8226F66880032F472 /* libRNAirplay.a */ = {
