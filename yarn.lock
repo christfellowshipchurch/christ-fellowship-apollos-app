@@ -12931,10 +12931,10 @@ react-native-modal@^6.2.0:
     prop-types "^15.6.1"
     react-native-animatable "^1.2.4"
 
-react-native-music-control@0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/react-native-music-control/-/react-native-music-control-0.10.0.tgz#b1b790766b5cf873f3750bb971c0e9544e541b74"
-  integrity sha512-o8q7u20+iq+fQvhvCKGRy5b+NUk5VD9eLVZZBwQhqWdR7nrP2/hjGtCyXd/b6ehhQ9smQv5pFDwFBBEqFvbW9A==
+react-native-music-control@0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/react-native-music-control/-/react-native-music-control-0.10.2.tgz#e14e4847ed441567aa6cc988d2a19d381abdd0f0"
+  integrity sha512-AGdqqmXxdivMktZNwJqSCFmjKbfBXA9ug2HkXehjtY8cZmYodagSlTlltYOnYxalte5ejI1kmUKMrB/NDacgtg==
 
 react-native-onesignal@3.2.7:
   version "3.2.7"
