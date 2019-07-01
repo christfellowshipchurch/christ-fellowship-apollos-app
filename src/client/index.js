@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
-import SplashScreen from 'react-native-splash-screen';
 
 import { authLink } from '@apollosproject/ui-auth';
 import { resolvers, schema, defaults } from '../store';
@@ -42,7 +41,6 @@ class ClientProvider extends PureComponent {
     } catch (e) {
       throw e;
     } finally {
-      if (SplashScreen && SplashScreen.hide) SplashScreen.hide();
       client.mutate({ mutation: MARK_CACHE_LOADED });
     }
   }

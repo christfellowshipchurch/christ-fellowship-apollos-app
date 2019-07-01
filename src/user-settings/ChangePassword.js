@@ -5,7 +5,6 @@ import { Mutation } from 'react-apollo';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   Button,
   ButtonLink,
@@ -13,10 +12,16 @@ import {
   BackgroundView,
   PaddedView,
   FlexedView,
+  styled,
 } from '@apollosproject/ui-kit';
 
-import getAuthToken from '../store/getAuthToken';
-import changePassword from './passwordChange';
+import GET_AUTH_TOKEN from '../store/getAuthToken';
+import CHANGE_PASSWORD from './passwordChange';
+
+const Footer = styled({
+  flex: 1,
+  justifyContent: 'flex-end',
+})(SafeAreaView);
 
 class ChangePassword extends PureComponent {
   static navigationOptions = ({ navigation }) => ({
@@ -39,32 +44,29 @@ class ChangePassword extends PureComponent {
 
   renderForm = (props) => (
     <FlexedView>
-      <KeyboardAwareScrollView>
-        <BackgroundView>
-          <PaddedView>
-            <TextInput
-              label="New Password"
-              type="password"
-              value={props.values.password}
-              error={props.touched.password && props.errors.password}
-              onChangeText={(text) => props.setFieldValue('password', text)}
-            />
-            <TextInput
-              label="Confirm Password"
-              type="password"
-              value={props.values.confirmPassword}
-              error={
-                props.touched.confirmPassword && props.errors.confirmPassword
-              }
-              onChangeText={(text) =>
-                props.setFieldValue('confirmPassword', text)
-              }
-            />
-          </PaddedView>
-        </BackgroundView>
-      </KeyboardAwareScrollView>
-
-      <SafeAreaView>
+      <BackgroundView>
+        <PaddedView>
+          <TextInput
+            label="New Password"
+            type="password"
+            value={props.values.password}
+            error={props.touched.password && props.errors.password}
+            onChangeText={(text) => props.setFieldValue('password', text)}
+          />
+          <TextInput
+            label="Confirm Password"
+            type="password"
+            value={props.values.confirmPassword}
+            error={
+              props.touched.confirmPassword && props.errors.confirmPassword
+            }
+            onChangeText={(text) =>
+              props.setFieldValue('confirmPassword', text)
+            }
+          />
+        </PaddedView>
+      </BackgroundView>
+      <Footer>
         <PaddedView>
           <Button
             disabled={props.isSubmitting}
@@ -73,17 +75,17 @@ class ChangePassword extends PureComponent {
             loading={props.isSubmitting}
           />
         </PaddedView>
-      </SafeAreaView>
+      </Footer>
     </FlexedView>
   );
 
   render() {
     return (
       <Mutation
-        mutation={changePassword}
+        mutation={CHANGE_PASSWORD}
         update={async (cache, { data: { token } }) => {
           await cache.writeQuery({
-            query: getAuthToken,
+            query: GET_AUTH_TOKEN,
             data: { authToken: token },
           });
 

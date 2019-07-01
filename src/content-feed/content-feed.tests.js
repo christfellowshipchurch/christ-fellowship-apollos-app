@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 
 import Providers from 'ChristFellowship/src/Providers';
 
-import getContentFeed from './getContentFeed';
+import GET_CONTENT_FEED from './getContentFeed';
 
 import ContentFeed from './index';
 
@@ -11,7 +11,7 @@ describe('content feed query component', () => {
   it('renders a feedview after successful query', () => {
     const mock = {
       request: {
-        query: getContentFeed,
+        query: GET_CONTENT_FEED,
       },
       result: {
         data: {

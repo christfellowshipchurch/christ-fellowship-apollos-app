@@ -5,6 +5,7 @@ export default gql`
     updateLikeEntity(input: { nodeId: $itemId, operation: $operation }) {
       id
       isLiked
+      likedCount
     }
   }
 `;

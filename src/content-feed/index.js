@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 import { BackgroundView, FeedView } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
+import fetchMoreResolver from 'ChristFellowship/src/utils/fetchMoreResolver';
 
-import getContentFeed from './getContentFeed';
+import GET_CONTENT_FEED from './getContentFeed';
 /**
  * This is where the component description lives
  * A FeedView wrapped in a query to pull content data.
@@ -46,11 +47,11 @@ class ContentFeed extends PureComponent {
     return (
       <BackgroundView>
         <Query
-          query={getContentFeed}
+          query={GET_CONTENT_FEED}
           variables={{ itemId }}
           fetchPolicy="cache-and-network"
         >
-          {({ loading, error, data, refetch }) => (
+          {({ loading, error, data, refetch, fetchMore, variables }) => (
             <FeedView
               ListItemComponent={ContentCardConnected}
               content={get(
@@ -58,6 +59,12 @@ class ContentFeed extends PureComponent {
                 'node.childContentItemsConnection.edges',
                 []
               ).map((edge) => edge.node)}
+              fetchMore={fetchMoreResolver({
+                collectionName: 'node.childContentItemsConnection',
+                fetchMore,
+                variables,
+                data,
+              })}
               isLoading={loading}
               error={error}
               refetch={refetch}

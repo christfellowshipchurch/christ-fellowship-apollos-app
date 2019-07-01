@@ -10,7 +10,7 @@ import {
   TouchableScale,
 } from '@apollosproject/ui-kit';
 
-import getHorizontalContent from './getHorizontalContent';
+import GET_HORIZONTAL_CONTENT from './getHorizontalContent';
 
 const loadingStateObject = {
   node: {
@@ -81,7 +81,7 @@ class HorizontalContentFeed extends Component {
 
     return (
       <Query
-        query={getHorizontalContent}
+        query={GET_HORIZONTAL_CONTENT}
         variables={{ itemId: this.props.contentId }}
       >
         {this.renderFeed}

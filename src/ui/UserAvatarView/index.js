@@ -41,7 +41,9 @@ const UserAvatarView = withIsLoading(
         <H3>
           {firstName} {lastName}
         </H3>
-        <ChannelLabel icon="pin" label={location || ''} isLoading={isLoading} />
+        {location && (
+          <ChannelLabel icon="pin" label={location} isLoading={isLoading} />
+        )}
       </Content>
     </Container>
   )

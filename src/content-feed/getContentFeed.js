@@ -1,13 +1,16 @@
 import gql from 'graphql-tag';
 
-import { largeCardFragment } from 'ChristFellowship/src/ui/ContentCardConnected';
-import { contentItemFragment } from '../content-single/getContentItem';
+import { LARGE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected';
+import { CONTENT_ITEM_FRAGMENT } from '../content-single/getContentItem';
 
 export default gql`
-  query getContentFeed($itemId: ID!) {
+  query getContentFeed($itemId: ID!, $after: String, $first: Int) {
     node(id: $itemId) {
       ... on ContentChannel {
-        childContentItemsConnection {
+        childContentItemsConnection(after: $after, first: $first) {
+          pageInfo {
+            endCursor
+          }
           edges {
             node {
               ...contentItemFragment
@@ -18,6 +21,6 @@ export default gql`
       }
     }
   }
-  ${contentItemFragment}
-  ${largeCardFragment}
+  ${CONTENT_ITEM_FRAGMENT}
+  ${LARGE_CARD_FRAGMENT}
 `;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
+import { storiesOf } from '@apollosproject/ui-storybook';
 import { H3 } from '@apollosproject/ui-kit';
 import ContentTableCard from '.';
 

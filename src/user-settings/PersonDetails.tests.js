@@ -4,14 +4,14 @@ import wait from 'waait';
 
 import Providers from 'ChristFellowship/src/Providers';
 
-import getUserProfile from '../tabs/connect/getUserProfile';
+import GET_USER_PROFILE from '../tabs/connect/getUserProfile';
 import PersonalDetails from './PersonalDetails';
 
 describe('PersonalDetails component', () => {
   it('renders PersonalDetails when logged in', async () => {
     const mock = {
       request: {
-        query: getUserProfile,
+        query: GET_USER_PROFILE,
       },
       result: {
         data: {

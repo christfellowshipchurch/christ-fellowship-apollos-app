@@ -11,14 +11,18 @@ import {
   BackgroundView,
   H3,
   H6,
+  TouchableScale,
 } from '@apollosproject/ui-kit';
+
+import fetchMoreResolver from '../../utils/fetchMoreResolver';
 import ContentCardConnected from '../../ui/ContentCardConnected';
 
 import { LiveButton } from '../../live';
 
 import ContentTableCard from '../../ui/ContentTableCard';
-import getUserFeed from './getUserFeed';
-import getPersonaFeed from './getPersonaFeed';
+import GET_USER_FEED from './getUserFeed';
+import GET_PERSONA_FEED from './getPersonaFeed';
+import GET_CAMPAIGN_CONTENT_ITEM from './getCampaignContentItem';
 
 const LogoTitle = styled(({ theme }) => ({
   height: theme.sizing.baseUnit,
@@ -54,13 +58,26 @@ class Home extends PureComponent {
     return (
       <BackgroundView>
         <SafeAreaView>
-          <Query query={getUserFeed} fetchPolicy="cache-and-network">
-            {({ loading, error, data, refetch }) => (
+          <Query
+            query={GET_USER_FEED}
+            variables={{
+              first: 10,
+              after: null,
+            }}
+            fetchPolicy="cache-and-network"
+          >
+            {({ loading, error, data, refetch, fetchMore, variables }) => (
               <FeedView
                 ListItemComponent={ContentCardConnected}
                 content={get(data, 'userFeed.edges', []).map(
                   (edge) => edge.node
                 )}
+                fetchMore={fetchMoreResolver({
+                  collectionName: 'userFeed',
+                  fetchMore,
+                  variables,
+                  data,
+                })}
                 isLoading={loading}
                 error={error}
                 refetch={refetch}
@@ -69,20 +86,54 @@ class Home extends PureComponent {
                     <LogoTitle source={require('./wordmark.png')} />
                     <LiveButton />
                     <Query
-                      query={getPersonaFeed}
+                      query={GET_CAMPAIGN_CONTENT_ITEM}
                       fetchPolicy="cache-and-network"
                     >
-                      {({ data: personaData, loading: actionLoading }) => (
+                      {({ data: featuredData, loading: isFeaturedLoading }) => {
+                        const featuredContent = get(
+                          featuredData,
+                          'campaigns.edges',
+                          []
+                        ).map((edge) => edge.node);
+
+                        const featuredItem = get(
+                          featuredContent[0],
+                          'childContentItemsConnection.edges[0].node',
+                          {}
+                        );
+
+                        return (
+                          <TouchableScale
+                            onPress={() =>
+                              this.handleOnPress({ id: featuredItem.id })
+                            }
+                          >
+                            <ContentCardConnected
+                              contentId={featuredItem.id}
+                              isLoading={isFeaturedLoading}
+                            />
+                          </TouchableScale>
+                        );
+                      }}
+                    </Query>
+                    <Query
+                      query={GET_PERSONA_FEED}
+                      fetchPolicy="cache-and-network"
+                    >
+                      {({
+                        data: personaData,
+                        loading: isContentTableLoading,
+                      }) => (
                         <ContentTableCard
-                          isLoading={actionLoading}
+                          isLoading={isContentTableLoading}
                           onPress={this.handleOnPress}
                           header={
                             <>
-                              <StyledH6 isLoading={actionLoading}>
+                              <StyledH6 isLoading={isContentTableLoading}>
                                 FOR YOU
                               </StyledH6>
                               <H3
-                                isLoading={actionLoading}
+                                isLoading={isContentTableLoading}
                                 numberOfLines={3}
                                 ellipsizeMode="tail"
                               >

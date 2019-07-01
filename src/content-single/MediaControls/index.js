@@ -4,9 +4,9 @@ import { Query, Mutation } from 'react-apollo';
 import { View } from 'react-native';
 import { get } from 'lodash';
 
-import { playVideoMutation } from 'ChristFellowship/src/ui/MediaPlayer/mutations';
+import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
 import { Icon, styled, Button } from '@apollosproject/ui-kit';
-import getContentMedia from './getContentMedia';
+import GET_CONTENT_MEDIA from './getContentMedia';
 
 const buttonSizeDifferential = 4;
 
@@ -58,7 +58,7 @@ class MediaControls extends PureComponent {
     const coverImageSources = (coverImage && coverImage.sources) || [];
 
     return (
-      <Mutation mutation={playVideoMutation}>
+      <Mutation mutation={PLAY_VIDEO}>
         {(play) => (
           <Container>
             {videoSource ? (
@@ -92,7 +92,7 @@ class MediaControls extends PureComponent {
     if (!this.props.contentId) return null;
     return (
       <Query
-        query={getContentMedia}
+        query={GET_CONTENT_MEDIA}
         variables={{ contentId: this.props.contentId }}
       >
         {this.renderControls}

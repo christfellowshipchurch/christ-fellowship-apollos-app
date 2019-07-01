@@ -3,14 +3,15 @@ package com.christfellowship;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.horcrux.svg.SvgPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.swmansion.rnscreens.RNScreensPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.tanguyantoine.react.MusicControl;
-import com.airbnb.android.react.maps.MapsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -35,14 +36,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new MapsPackage(),
             new RNFetchBlobPackage(),
             new RNCWebViewPackage(),
             new ReactVideoPackage(),
             new SvgPackage(),
             new SplashScreenReactPackage(),
+            new RNScreensPackage(),
             new ReactNativeOneSignalPackage(),
             new MusicControl(),
-            new MapsPackage(),
             new LinearGradientPackage(),
             new ImagePickerPackage(),
             new RNDeviceInfo(),

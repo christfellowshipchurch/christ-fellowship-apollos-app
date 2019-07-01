@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { PaddedView, H2, styled } from '@apollosproject/ui-kit';
-import { ScriptureList } from 'ChristFellowship/src/ui/Scripture';
+import { ScriptureList } from '@apollosproject/ui-scripture';
 import HorizontalContentFeed from '../HorizontalContentFeed';
 import HTMLContent from '../HTMLContent';
 

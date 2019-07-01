@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
-import { contentItemFragment } from 'ChristFellowship/src/content-single/getContentItem';
-import { tileCardFragment } from 'ChristFellowship/src/ui/ContentCardConnected';
+import { CONTENT_ITEM_FRAGMENT } from 'ChristFellowship/src/content-single/getContentItem';
+import { TILE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected';
 
 export default gql`
   query getContentChannels {
@@ -19,6 +19,6 @@ export default gql`
       }
     }
   }
-  ${contentItemFragment}
-  ${tileCardFragment}
+  ${CONTENT_ITEM_FRAGMENT}
+  ${TILE_CARD_FRAGMENT}
 `;

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const contentItemFragment = gql`
+export const CONTENT_ITEM_FRAGMENT = gql`
   fragment contentItemFragment on ContentItem {
     id
     title
@@ -48,5 +48,5 @@ export default gql`
       }
     }
   }
-  ${contentItemFragment}
+  ${CONTENT_ITEM_FRAGMENT}
 `;

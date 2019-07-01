@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const coverImageFragment = gql`
+export const COVER_IMAGE_FRAGMENT = gql`
   fragment coverImageFragment on ContentItem {
     coverImage {
       sources {
@@ -10,7 +10,7 @@ export const coverImageFragment = gql`
   }
 `;
 
-export const themeFragment = gql`
+export const THEME_FRAGMENT = gql`
   fragment themeFragment on ContentItem {
     theme {
       type
@@ -24,14 +24,14 @@ export const themeFragment = gql`
   }
 `;
 
-export const contentCardMetricsFragment = gql`
+export const CONTENT_CARD_METRICS_FRAGMENT = gql`
   fragment contentCardMetricsFragment on ContentItem {
     isLiked
     likedCount
   }
 `;
 
-export const baseCardFragment = gql`
+export const BASE_CARD_FRAGMENT = gql`
   fragment baseCardFragment on ContentItem {
     id
     __typename
@@ -41,12 +41,12 @@ export const baseCardFragment = gql`
     title
     summary
   }
-  ${contentCardMetricsFragment}
-  ${coverImageFragment}
-  ${themeFragment}
+  ${CONTENT_CARD_METRICS_FRAGMENT}
+  ${COVER_IMAGE_FRAGMENT}
+  ${THEME_FRAGMENT}
 `;
 
-export const tileCardFragment = gql`
+export const TILE_CARD_FRAGMENT = gql`
   fragment tileCardFragment on ContentItem {
     ... on ContentSeriesContentItem {
       id
@@ -64,20 +64,20 @@ export const tileCardFragment = gql`
       ...baseCardFragment
     }
   }
-  ${baseCardFragment}
-  ${themeFragment}
-  ${coverImageFragment}
-  ${contentCardMetricsFragment}
+  ${BASE_CARD_FRAGMENT}
+  ${THEME_FRAGMENT}
+  ${COVER_IMAGE_FRAGMENT}
+  ${CONTENT_CARD_METRICS_FRAGMENT}
 `;
 
-export const largeCardFragment = gql`
+export const LARGE_CARD_FRAGMENT = gql`
   fragment largeCardFragment on ContentItem {
     ...baseCardFragment
   }
-  ${baseCardFragment}
+  ${BASE_CARD_FRAGMENT}
 `;
 
-const getContentCard = gql`
+const GET_CONTENT_CARD = gql`
   query getContentCard($contentId: ID!, $tile: Boolean!) {
     node(id: $contentId) {
       id
@@ -86,8 +86,8 @@ const getContentCard = gql`
       ...largeCardFragment @skip(if: $tile)
     }
   }
-  ${tileCardFragment}
-  ${largeCardFragment}
+  ${TILE_CARD_FRAGMENT}
+  ${LARGE_CARD_FRAGMENT}
 `;
 
-export default getContentCard;
+export default GET_CONTENT_CARD;

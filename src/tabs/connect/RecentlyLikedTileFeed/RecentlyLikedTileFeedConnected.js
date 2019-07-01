@@ -2,12 +2,12 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 
-import getLikedContent from '../getLikedContent';
+import GET_LIKED_CONTENT from '../getLikedContent';
 import RecentlyLikedTileFeed from './RecentlyLikedTileFeed';
 
 const RecentlyLikedTileFeedConnected = ({ navigation }) => (
   <Query
-    query={getLikedContent}
+    query={GET_LIKED_CONTENT}
     fetchPolicy="cache-and-network"
     variables={{ first: 3 }}
   >

@@ -2,7 +2,7 @@ import React from 'react';
 import { renderWithApolloData } from 'ChristFellowship/src/utils/testUtils';
 
 import Providers from 'ChristFellowship/src/Providers';
-import getCampusLocations from './getCampusLocations';
+import GET_CAMPUS_LOCATIONS from './getCampusLocations';
 import Location from './index';
 
 const campuses = [
@@ -80,6 +80,10 @@ describe('Display Native Map with Locations', () => {
     latitudeDelta: 100,
     longitudeDelta: 10,
   };
+  const userLocation = {
+    latitude: 39.104797,
+    longitude: -84.511959,
+  };
   it('Render a native map view', async () => {
     const navigation = {
       navigate: jest.fn(),
@@ -89,10 +93,10 @@ describe('Display Native Map with Locations', () => {
 
     const mock = {
       request: {
-        query: getCampusLocations,
+        query: GET_CAMPUS_LOCATIONS,
         variables: {
-          latitude: initialRegion.latitude,
-          longitude: initialRegion.longitude,
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
         },
       },
       result: {

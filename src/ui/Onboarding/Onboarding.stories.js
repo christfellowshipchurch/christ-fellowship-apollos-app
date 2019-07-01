@@ -1,6 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react-native';
-
+import { storiesOf } from '@apollosproject/ui-storybook';
 import Onboarding from '.';
 
-storiesOf('Onboarding', module).add('Example', () => <Onboarding />);
+storiesOf('Onboarding', module).add('full', () => <Onboarding />);

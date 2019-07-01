@@ -1,17 +1,15 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
+import { Platform, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
-
 import Share from 'ChristFellowship/src/ui/Share';
 
 import { SideBySideView, styled } from '@apollosproject/ui-kit';
 import LikeButton from 'ChristFellowship/src/ui/LikeButton';
-import { MediaPlayerSpacer } from 'ChristFellowship/src/ui/MediaPlayer';
+import { MediaPlayerSpacer } from '@apollosproject/ui-media-player';
 
-import getShareContent from './getShareContent';
+import GET_SHARE_CONTENT from './getShareContent';
 
 const PositioningView = styled(({ theme }) => ({
   justifyContent: 'space-around',
@@ -22,14 +20,14 @@ const PositioningView = styled(({ theme }) => ({
 const Container = styled(({ theme }) => ({
   backgroundColor: theme.colors.paper,
   ...Platform.select(theme.shadows.default),
-}))(SafeAreaView);
+}))(View);
 
 const ActionContainer = ({ itemId }) => (
   <Container>
     <MediaPlayerSpacer>
       <PositioningView>
         <LikeButton itemId={itemId} />
-        <Query query={getShareContent} variables={{ itemId }}>
+        <Query query={GET_SHARE_CONTENT} variables={{ itemId }}>
           {({ data: { node } = {}, error, loading }) => {
             const sharing = get(node, 'sharing');
             return loading || error || !sharing ? null : (

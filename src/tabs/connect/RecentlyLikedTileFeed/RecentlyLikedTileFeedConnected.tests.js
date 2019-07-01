@@ -4,14 +4,14 @@ import wait from 'waait';
 
 import Providers from 'ChristFellowship/src/Providers';
 
-import getLikedContent from '../getLikedContent';
+import GET_LIKED_CONTENT from '../getLikedContent';
 import RecentlyLikedTileFeedConnected from './RecentlyLikedTileFeedConnected';
 
 describe('RecentlyLikedTileFeedConnected', () => {
   it('renders a RecentlyLikedTileFeedConnected', async () => {
     const mock = {
       request: {
-        query: getLikedContent,
+        query: GET_LIKED_CONTENT,
       },
       result: {
         data: {
@@ -87,7 +87,7 @@ describe('RecentlyLikedTileFeedConnected', () => {
   it('renders nothing if no liked content', async () => {
     const mock = {
       request: {
-        query: getLikedContent,
+        query: GET_LIKED_CONTENT,
       },
       result: {
         data: {

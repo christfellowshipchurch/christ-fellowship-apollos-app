@@ -13,7 +13,7 @@ import {
 import ContentTab from './ContentTab';
 import ScriptureTab from './ScriptureTab';
 
-import getScripture from './getScripture';
+import GET_SCRIPTURE from './getScripture';
 
 const FlexedSafeAreaView = styled({ flex: 1 })(SafeAreaView);
 
@@ -86,10 +86,11 @@ class DevotionalContentItem extends PureComponent {
     loading,
   }) => {
     if (error) return <ErrorCard error={error} />;
+
     // only include scriptures where the references are not null
-    const validScriptures = scriptures.filter(
-      (scripture) => scripture.reference != null
-    );
+    const validScriptures = scriptures
+      ? scriptures.filter((scripture) => scripture.reference != null)
+      : [];
 
     const hasScripture = loading || validScriptures.length;
     const tabRoutes = [{ title: 'Devotional', key: 'content' }];
@@ -109,7 +110,7 @@ class DevotionalContentItem extends PureComponent {
     return (
       <BackgroundView>
         <FlexedSafeAreaView forceInset={{ top: 'always' }}>
-          <Query query={getScripture} variables={{ itemId: this.props.id }}>
+          <Query query={GET_SCRIPTURE} variables={{ itemId: this.props.id }}>
             {this.renderTabs}
           </Query>
         </FlexedSafeAreaView>

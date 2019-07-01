@@ -4,9 +4,9 @@ import { Query } from 'react-apollo';
 import { get } from 'lodash';
 
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
-import getContentCard from './query';
+import GET_CONTENT_CARD from './query';
 
-export { tileCardFragment, largeCardFragment } from './query';
+export { TILE_CARD_FRAGMENT, LARGE_CARD_FRAGMENT } from './query';
 
 const ContentCardConnected = ({
   contentId,
@@ -18,7 +18,7 @@ const ContentCardConnected = ({
     return <ContentCard {...otherProps} isLoading tile={tile} />;
 
   return (
-    <Query query={getContentCard} variables={{ contentId, tile: !!tile }}>
+    <Query query={GET_CONTENT_CARD} variables={{ contentId, tile: !!tile }}>
       {({ data: { node = {} } = {}, loading, error }) => {
         if (error) return <ErrorCard error={error} />;
 

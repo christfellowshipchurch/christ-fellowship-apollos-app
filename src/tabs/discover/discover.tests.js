@@ -5,13 +5,13 @@ import { createStackNavigator } from 'react-navigation';
 import Providers from 'ChristFellowship/src/Providers';
 
 import Discover from './Discover';
-import getContentChannels from './getContentChannels';
+import GET_CONTENT_CHANNELS from './getContentChannels';
 
 describe('Test the Discover Component Query', () => {
   it('Should retrieve the Content Channel Feeds', () => {
     const mock = {
       request: {
-        query: getContentChannels,
+        query: GET_CONTENT_CHANNELS,
       },
       result: {
         data: {

@@ -4,8 +4,7 @@ import { ModalViewHeader } from '@apollosproject/ui-kit';
 
 const NavigationHeader = ({ scene, navigation }) => {
   let onBack = null;
-  if (scene.index > 0) onBack = () => navigation.pop();
-
+  if (scene.index > 0) onBack = () => navigation.goBack();
   const onClose = () => {
     // Since we're dealing with nested navigators, we have to trigger two actions:
     // One action that pops us to the top of the modal's navigation history
@@ -16,11 +15,16 @@ const NavigationHeader = ({ scene, navigation }) => {
     // handling for calling `.pop()` at the top of a nested navigators stack.
     //
     // Because react (or redux?) chains renders, this still results in only one clean animation!
-    navigation.popToTop();
+    //
+    // This "double pop" is only needed when we are already deep in a navigation stack.
+    // In ReactNavigation, we could look at using "goBack('ContentSingle')"
+    if (scene.index > 0) {
+      navigation.popToTop();
+    }
     navigation.pop();
   };
 
-  return <ModalViewHeader onClose={onClose} onBack={onBack} />;
+  return <ModalViewHeader onClose={onClose} onBack={onBack} navigationHeader />;
 };
 
 NavigationHeader.propTypes = {

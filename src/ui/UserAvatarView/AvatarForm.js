@@ -12,11 +12,11 @@ import {
   H5,
   styled,
 } from '@apollosproject/ui-kit';
-import getUserProfile from '../../tabs/connect/getUserProfile';
+import GET_USER_PROFILE from '../../tabs/connect/getUserProfile';
 import uploadPhoto from './uploadPhoto';
 
 const GetPhotoData = ({ children }) => (
-  <Query query={getUserProfile}>
+  <Query query={GET_USER_PROFILE}>
     {({ data: { currentUser = {} } = {} }) => {
       const photo = get(currentUser, 'profile.photo');
       return children({ photo });
@@ -28,12 +28,11 @@ GetPhotoData.propTypes = {
   children: PropTypes.func.isRequired,
 };
 
-const StyledAvatar = withTheme(({ theme }) => ({
-  containerStyle: {
-    marginRight: 0,
-    marginBottom: theme.sizing.baseUnit / 2,
-  },
-}))(Avatar);
+const StyledView = styled(({ theme }) => ({
+  marginRight: 0,
+  marginBottom: theme.sizing.baseUnit * 0.75,
+  marginTop: theme.sizing.baseUnit * 0.5,
+}))(View);
 
 const RoundTouchable = withTheme(({ theme, size }) => ({
   borderRadius: get(theme.sizing.avatar, size, theme.sizing.avatar.small),
@@ -80,13 +79,13 @@ export default class AvatarForm extends PureComponent {
             >
               <GetPhotoData>
                 {({ photo }) => (
-                  <View>
-                    <StyledAvatar
+                  <StyledView>
+                    <Avatar
                       source={photo}
                       size="medium"
                       isLoading={isUploadingFile}
                     />
-                  </View>
+                  </StyledView>
                 )}
               </GetPhotoData>
             </RoundTouchable>

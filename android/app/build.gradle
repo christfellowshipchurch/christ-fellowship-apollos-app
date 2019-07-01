@@ -3,13 +3,18 @@ buildscript {
         maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal
     }
     dependencies {
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.1, 0.99.99]'
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.10.0, 0.99.99]'
     }
 }
 
 apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
-
 apply plugin: "com.android.application"
+
+project.ext.envConfigFiles = [
+    release: ".env.production",
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 import com.android.build.OutputFile
 
@@ -88,7 +93,6 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -117,8 +121,12 @@ android {
         applicationId "com.christfellowship"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 14
+        versionName "1.0.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
+        resValue "string", "build_config_package", "com.christfellowship"
     }
     splits {
         abi {
@@ -150,14 +158,21 @@ android {
 }
 
 dependencies {
+       // added this and the two google play packages below when upgraded rn-maps to 0.24.2
+    implementation(project(':react-native-maps')){
+      exclude group: 'com.google.android.gms', module: 'play-services-base'
+      exclude group: 'com.google.android.gms', module: 'play-services-maps'
+    }
+    implementation 'com.google.android.gms:play-services-base:16.1.0'
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation project(':rn-fetch-blob')
     implementation project(':react-native-webview')
     implementation project(':react-native-video')
     implementation project(':react-native-svg')
     implementation project(':react-native-splash-screen')
+    implementation project(':react-native-screens')
     implementation project(':react-native-onesignal')
     implementation project(':react-native-music-control')
-    implementation project(':react-native-maps')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-device-info')

@@ -5,12 +5,9 @@ import { Dimensions } from 'react-native';
 
 import { PaddedView, ButtonLink } from '@apollosproject/ui-kit';
 
-import getUserProfile from '../../tabs/connect/getUserProfile';
+import GET_CAMPUSES from './getCampusLocations';
+import CHANGE_CAMPUS from './campusChange';
 import MapView from './MapView';
-
-import getAllCampuses from './getCampusLocations';
-
-import campusChange from './campusChange';
 
 const getCurrentLocation = () =>
   new Promise((resolve, reject) => {
@@ -19,10 +16,6 @@ const getCurrentLocation = () =>
       (e) => reject(e)
     );
   });
-
-const screen = Dimensions.get('window');
-
-const ASPECT_RATIO = screen.width / screen.height;
 
 class Location extends PureComponent {
   static propTypes = {
@@ -46,7 +39,9 @@ class Location extends PureComponent {
       latitude: 39.809734,
       longitude: -98.555618,
       latitudeDelta: 100,
-      longitudeDelta: 100 * ASPECT_RATIO,
+      longitudeDelta:
+        (100 * Dimensions.get('window').width) /
+        Dimensions.get('window').height,
     },
   };
 
@@ -61,7 +56,10 @@ class Location extends PureComponent {
   });
 
   state = {
-    region: this.props.initialRegion,
+    userLocation: {
+      latitude: 39.104797,
+      longitude: -84.511959,
+    },
   };
 
   componentDidMount() {
@@ -79,38 +77,20 @@ class Location extends PureComponent {
 
   render() {
     const { navigation, onFinished } = this.props;
+    // we should use the `onFinished` from the navigation param, if it exists.
+    const handleFinished = navigation.getParam('onFinished', onFinished);
+
     return (
       <Query
-        query={getAllCampuses}
+        query={GET_CAMPUSES}
         variables={{
-          latitude: this.state.region.latitude,
-          longitude: this.state.region.longitude,
+          latitude: this.state.userLocation.latitude,
+          longitude: this.state.userLocation.longitude,
         }}
         fetchPolicy="cache-and-network"
       >
         {({ loading, error, data: { campuses = [] } = {} }) => (
-          <Mutation
-            mutation={campusChange}
-            update={async (cache, { data: { updateUserCampus } }) => {
-              const { currentUser } = await cache.readQuery({
-                query: getUserProfile,
-              });
-              await cache.writeQuery({
-                query: getUserProfile,
-                data: {
-                  currentUser: {
-                    ...currentUser,
-                    profile: {
-                      ...currentUser.profile,
-                      campus: {
-                        ...updateUserCampus.campus,
-                      },
-                    },
-                  },
-                },
-              });
-            }}
-          >
+          <Mutation mutation={CHANGE_CAMPUS}>
             {(handlePress) => (
               <MapView
                 navigation={navigation}
@@ -126,7 +106,7 @@ class Location extends PureComponent {
                     },
                   });
                   await navigation.goBack();
-                  if (onFinished) onFinished();
+                  if (handleFinished) handleFinished();
                 }}
               />
             )}

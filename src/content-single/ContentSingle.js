@@ -8,7 +8,7 @@ import { ErrorCard, ThemeMixin } from '@apollosproject/ui-kit';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 
 import ActionContainer from './ActionContainer';
-import getContentItem from './getContentItem';
+import GET_CONTENT_ITEM from './getContentItem';
 
 import DevotionalContentItem from './DevotionalContentItem';
 import UniversalContentItem from './UniversalContentItem';
@@ -25,6 +25,8 @@ class ContentSingle extends PureComponent {
 
   static navigationOptions = {
     header: NavigationHeader,
+    headerTransparent: true,
+    headerMode: 'float',
   };
 
   get itemId() {
@@ -93,7 +95,7 @@ class ContentSingle extends PureComponent {
 
   render() {
     return (
-      <Query query={getContentItem} variables={this.queryVariables}>
+      <Query query={GET_CONTENT_ITEM} variables={this.queryVariables}>
         {this.renderWithData}
       </Query>
     );

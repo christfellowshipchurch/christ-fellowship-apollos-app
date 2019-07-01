@@ -4,14 +4,14 @@ import wait from 'waait';
 
 import Providers from 'ChristFellowship/src/Providers';
 
-import getLikedContent from '../getLikedContent';
+import GET_LIKED_CONTENT from '../getLikedContent';
 import LikedContentList from '.';
 
 describe('LikedContentList component', () => {
   it('renders LikedContentList', async () => {
     const mock = {
       request: {
-        query: getLikedContent,
+        query: GET_LIKED_CONTENT,
       },
       result: {
         data: {

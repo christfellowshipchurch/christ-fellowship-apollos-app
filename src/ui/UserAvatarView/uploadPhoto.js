@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import ImagePicker from 'react-native-image-picker';
 import { ReactNativeFile } from 'apollo-upload-client';
-import getUserProfile from '../../tabs/connect/getUserProfile';
+import GET_USER_PROFILE from '../../tabs/connect/getUserProfile';
 
 const options = {
   title: 'Select Profile Image',
@@ -57,10 +57,10 @@ export default async ({ client, onUpload = () => ({}) }) => {
           },
         }
       ) => {
-        const data = cache.readQuery({ query: getUserProfile });
+        const data = cache.readQuery({ query: GET_USER_PROFILE });
 
         cache.writeQuery({
-          query: getUserProfile,
+          query: GET_USER_PROFILE,
           data: {
             currentUser: {
               ...data.currentUser,

@@ -1,18 +1,17 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 
-import getUserProfile from '../getUserProfile';
+import GET_USER_PROFILE from '../getUserProfile';
 import UserAvatarHeader from './UserAvatarHeader';
 
 const UserAvatarHeaderConnected = ({ navigation }) => (
-  <Query query={getUserProfile} fetchPolicy="cache-and-network">
+  <Query query={GET_USER_PROFILE} fetchPolicy="cache-and-network">
     {({
       data: {
         currentUser: {
-          profile: { photo, firstName, lastName, campus: { name } } = {
-            campus: {},
-          },
+          profile: { photo, firstName, lastName, campus } = {},
         } = {},
       } = {},
       refetch,
@@ -20,7 +19,7 @@ const UserAvatarHeaderConnected = ({ navigation }) => (
       <UserAvatarHeader
         firstName={firstName}
         lastName={lastName}
-        location={name}
+        location={get(campus, 'name')}
         photo={photo}
         refetch={refetch}
         navigation={navigation}

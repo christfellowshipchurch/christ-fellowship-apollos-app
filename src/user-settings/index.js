@@ -18,7 +18,7 @@ import {
 import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
 import AvatarForm from 'ChristFellowship/src/ui/UserAvatarView/AvatarForm';
 
-import { getLoginState, logout } from '@apollosproject/ui-auth';
+import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth';
 
 const AvatarView = styled({
   alignItems: 'center',
@@ -43,7 +43,7 @@ class UserSettings extends PureComponent {
 
   render() {
     return (
-      <Query query={getLoginState} fetchPolicy="cache-and-network">
+      <Query query={GET_LOGIN_STATE} fetchPolicy="cache-and-network">
         {({ data: { isLoggedIn = false, loading } }) => {
           if (loading) return <ActivityIndicator />;
           if (!isLoggedIn) return null;
@@ -129,7 +129,7 @@ class UserSettings extends PureComponent {
                       </Touchable>
                     </TableView>
                     <TableView>
-                      <Mutation mutation={logout}>
+                      <Mutation mutation={LOGOUT}>
                         {(handleLogout) => (
                           <Touchable
                             onPress={async () => {

@@ -1,8 +1,8 @@
 import { Linking } from 'react-native';
 
 const Browser = {
-  openURL: async (url, options = {}) => {
-    if (!Linking.canOpenURL()) throw new Error('URL not supported');
+  openURL: async (url) => {
+    if (!Linking.canOpenURL(url)) throw new Error('URL not supported');
     Linking.openURL(url);
   },
 };

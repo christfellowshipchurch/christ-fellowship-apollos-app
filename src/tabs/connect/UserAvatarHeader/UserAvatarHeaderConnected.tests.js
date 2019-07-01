@@ -1,31 +1,51 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
-import wait from 'waait';
+import { renderWithApolloData } from 'ChristFellowship/src/utils/testUtils';
 
 import Providers from 'ChristFellowship/src/Providers';
 
-import getUserProfile from '../getUserProfile';
+import GET_USER_PROFILE from '../getUserProfile';
 import UserAvatarHeaderConnected from './UserAvatarHeaderConnected';
 
 describe('user avatar header connect', () => {
   it('renders user avatar header if logged in', async () => {
     const mock = {
       request: {
-        query: getUserProfile,
+        query: GET_USER_PROFILE,
       },
       result: {
         data: {
           currentUser: {
-            id: 'AuthenticatedUser:057b0758543270d1cb21784cac4d3f5c',
+            __typename: 'AuthenticatedUser',
+            id: 'AuthenticatedUser:123',
             profile: {
+              id: 'Person:123',
+              __typename: 'Person',
+              gender: 'Male',
+              birthDate: '1980-02-10T00:00:00',
               firstName: 'Isaac',
               lastName: 'Hardy',
-              location: 'Anderson, SC',
+              campus: {
+                __typename: 'Campus',
+                id: 'Campus:a0f64573eabf00a607bec911794d50fb',
+                name: 'Chicago Campus',
+                latitude: 42.09203,
+                longitude: -88.13289,
+                distanceFromLocation: null,
+                street1: '67 Algonquin Rd',
+                street2: '',
+                city: 'South Barrington',
+                state: 'IL',
+                postalCode: '60010-6143',
+                image: {
+                  __typename: 'ImageMediaSource',
+                  uri: 'https://picsum.photos/300/300/?random',
+                },
+              },
               email: 'isaac.hardy@newspring.cc',
-              nickName: 'Ike',
+              nickName: 'Batman',
               photo: {
-                uri:
-                  'https://apollosrock.newspring.cc:443/GetImage.ashx?guid=60fd5f35-3167-4c26-9a30-d44937287b87',
+                __typename: 'ImageMediaSource',
+                uri: 'https://some-uri.com/test.jpg',
               },
             },
           },
@@ -33,12 +53,11 @@ describe('user avatar header connect', () => {
       },
     };
     const navigation = { navigate: jest.fn(), getParam: jest.fn() };
-    const tree = renderer.create(
+    const tree = await renderWithApolloData(
       <Providers mocks={[mock]}>
         <UserAvatarHeaderConnected navigation={navigation} />
       </Providers>
     );
-    await wait(0); // wait for response from graphql
     expect(tree).toMatchSnapshot();
   });
 });

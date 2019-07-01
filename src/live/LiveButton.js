@@ -12,7 +12,7 @@ import {
 } from '@apollosproject/ui-kit';
 import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
 
-import getLiveStream from './getLiveStream';
+import GET_LIVE_STREAM from './getLiveStream';
 
 const LiveCard = styled(({ theme }) => ({
   backgroundColor: theme.colors.lightSecondary,
@@ -20,7 +20,7 @@ const LiveCard = styled(({ theme }) => ({
 
 const LiveNowButton = () => (
   <Query
-    query={getLiveStream}
+    query={GET_LIVE_STREAM}
     fetchPolicy="cache-and-network"
     pollInterval={60000}
   >

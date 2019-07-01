@@ -5,7 +5,7 @@ import { get } from 'lodash';
 import { FeedView, BackgroundView } from '@apollosproject/ui-kit';
 
 import TileContentFeed from './TileContentFeed';
-import getContentChannels from './getContentChannels';
+import GET_CONTENT_CHANNELS from './getContentChannels';
 
 const childContentItemLoadingState = {
   title: '',
@@ -33,7 +33,7 @@ class Discover extends PureComponent {
   render() {
     return (
       <BackgroundView>
-        <Query query={getContentChannels} fetchPolicy="cache-and-network">
+        <Query query={GET_CONTENT_CHANNELS} fetchPolicy="cache-and-network">
           {({
             error,
             loading,

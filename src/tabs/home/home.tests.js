@@ -4,13 +4,13 @@ import renderer from 'react-test-renderer';
 import Providers from 'ChristFellowship/src/Providers';
 
 import Home from './Home';
-import getUserFeed from './getUserFeed';
+import GET_USER_FEED from './getUserFeed';
 
 describe('User Home Feed Query', () => {
   it('should return correct query results', () => {
     const mock = {
       request: {
-        query: getUserFeed,
+        query: GET_USER_FEED,
       },
       result: {
         data: {

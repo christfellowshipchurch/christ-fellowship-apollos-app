@@ -1,15 +1,15 @@
-import getAllLikedContent from 'ChristFellowship/src/tabs/connect/getLikedContent';
-import { contentItemFragment } from 'ChristFellowship/src/content-single/getContentItem';
+import GET_ALL_LIKED_CONTENT from 'ChristFellowship/src/tabs/connect/getLikedContent';
+import { CONTENT_ITEM_FRAGMENT } from 'ChristFellowship/src/content-single/getContentItem';
 
 const addItemToLikedContentList = ({ cache, item, variables }) => {
   try {
     const data = cache.readQuery({
-      query: getAllLikedContent,
+      query: GET_ALL_LIKED_CONTENT,
       variables,
     });
     const fullItem = cache.readFragment({
       id: `${item.__typename}:${item.id}`,
-      fragment: contentItemFragment,
+      fragment: CONTENT_ITEM_FRAGMENT,
     });
     const newEdges = [
       fullItem,
@@ -19,7 +19,7 @@ const addItemToLikedContentList = ({ cache, item, variables }) => {
       node,
     }));
     cache.writeQuery({
-      query: getAllLikedContent,
+      query: GET_ALL_LIKED_CONTENT,
       variables,
       data: {
         ...data,
@@ -39,7 +39,7 @@ const addItemToLikedContentList = ({ cache, item, variables }) => {
 const removeItemFromLikedContentList = ({ cache, item, variables }) => {
   try {
     const data = cache.readQuery({
-      query: getAllLikedContent,
+      query: GET_ALL_LIKED_CONTENT,
       variables,
     });
 
@@ -48,7 +48,7 @@ const removeItemFromLikedContentList = ({ cache, item, variables }) => {
     );
 
     cache.writeQuery({
-      query: getAllLikedContent,
+      query: GET_ALL_LIKED_CONTENT,
       variables,
       data: {
         ...data,

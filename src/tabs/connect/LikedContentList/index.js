@@ -4,9 +4,10 @@ import { Query } from 'react-apollo';
 import { get } from 'lodash';
 
 import { BackgroundView, FeedView } from '@apollosproject/ui-kit';
+import fetchMoreResolver from 'ChristFellowship/src/utils/fetchMoreResolver';
 import ContentCardConnected from '../../../ui/ContentCardConnected';
 
-import getLikedContent from '../getLikedContent';
+import GET_LIKED_CONTENT from '../getLikedContent';
 /** A FeedView wrapped in a query to pull content data. */
 class LikedContentList extends PureComponent {
   /** Function for React Navigation to set information in the header. */
@@ -37,11 +38,11 @@ class LikedContentList extends PureComponent {
     return (
       <BackgroundView>
         <Query
-          query={getLikedContent}
+          query={GET_LIKED_CONTENT}
           fetchPolicy="cache-and-network"
           variables={{ first: 20 }}
         >
-          {({ loading, error, data, refetch }) => (
+          {({ loading, error, data, refetch, fetchMore, variables }) => (
             <FeedView
               ListItemComponent={ContentCardConnected}
               content={get(data, 'likedContent.edges', []).map(
@@ -51,6 +52,12 @@ class LikedContentList extends PureComponent {
               error={error}
               refetch={refetch}
               onPressItem={this.handleOnPress}
+              fetchMore={fetchMoreResolver({
+                collectionName: 'likedContent',
+                fetchMore,
+                variables,
+                data,
+              })}
             />
           )}
         </Query>

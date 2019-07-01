@@ -5,13 +5,13 @@ import { Query } from 'react-apollo';
 import HTMLView from '@apollosproject/ui-htmlview';
 import { ErrorCard } from '@apollosproject/ui-kit';
 
-import getContentItemContent from './getContentItemContent';
+import GET_CONTENT_ITEM_CONTENT from './getContentItemContent';
 
 const HTMLContent = ({ contentId }) => {
   if (!contentId) return <HTMLView isLoading />;
 
   return (
-    <Query query={getContentItemContent} variables={{ contentId }}>
+    <Query query={GET_CONTENT_ITEM_CONTENT} variables={{ contentId }}>
       {({ data: { node: { htmlContent } = {} } = {}, loading, error }) => {
         if (error) return <ErrorCard error={error} />;
         return (

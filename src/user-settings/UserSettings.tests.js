@@ -4,14 +4,14 @@ import wait from 'waait';
 
 import Providers from 'ChristFellowship/src/Providers';
 
-import getLoginState from '../tabs/connect/getLoginState';
+import GET_LOGIN_STATE from '../tabs/connect/getLoginState';
 import UserSettings from '.';
 
 describe('UserSettings component', () => {
   it('renders UserSettings when logged in', async () => {
     const mock = {
       request: {
-        query: getLoginState,
+        query: GET_LOGIN_STATE,
       },
       result: {
         data: { isLoggedIn: true },

@@ -6,6 +6,7 @@ export default gql`
     currentUser {
       id
       profile {
+        id
         firstName
         lastName
         campus {

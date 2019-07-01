@@ -1,9 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import wait from 'waait';
 import Providers from 'ChristFellowship/src/Providers';
-import getContentItemContent from '../HTMLContent/getContentItemContent';
-import getScripture from './getScripture';
+import { renderWithApolloData } from 'ChristFellowship/src/utils/testUtils';
+import GET_CONTENT_ITEM_CONTENT from '../HTMLContent/getContentItemContent';
+import GET_SCRIPTURE from './getScripture';
 import Devotional from '.';
 
 const content = {
@@ -32,7 +32,7 @@ const scriptures = [
 
 const scriptureMock = {
   request: {
-    query: getScripture,
+    query: GET_SCRIPTURE,
     variables: { itemId: '1' },
   },
   result: {
@@ -44,7 +44,7 @@ const scriptureMock = {
 
 const contentItemHTMLMock = {
   request: {
-    query: getContentItemContent,
+    query: GET_CONTENT_ITEM_CONTENT,
     variables: { contentId: '1' },
   },
   result: {
@@ -66,7 +66,7 @@ const navigation = {
 
 describe('the Devotional component', () => {
   it('renders a devotional', async () => {
-    const tree = renderer.create(
+    const tree = await renderWithApolloData(
       <Providers mocks={mocks}>
         <Devotional
           id="1"
@@ -76,16 +76,19 @@ describe('the Devotional component', () => {
         />
       </Providers>
     );
-    await wait(0); // wait for response
     expect(tree).toMatchSnapshot();
   });
   it('renders even with empty scripture array', async () => {
-    const tree = renderer.create(
+    const tree = await renderWithApolloData(
       <Providers mocks={mocks}>
-        <Devotional id="1" content={content} loading navigation={navigation} />
+        <Devotional
+          id="1"
+          content={content}
+          loading={false}
+          navigation={navigation}
+        />
       </Providers>
     );
-    await wait(0); // wait for response
     expect(tree).toMatchSnapshot();
   });
   it('renders a loading state', async () => {
@@ -94,7 +97,6 @@ describe('the Devotional component', () => {
         <Devotional id="1" content={content} loading navigation={navigation} />
       </Providers>
     );
-    await wait(0); // wait for response
     expect(tree).toMatchSnapshot();
   });
 });

@@ -7,12 +7,12 @@ import { Query, Mutation } from 'react-apollo';
 import Like from 'ChristFellowship/src/ui/Like';
 import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
 
-import updateLikeEntity from './updateLikeEntity';
-import getLikedContentItem from './getLikedContentItem';
+import UPDATE_LIKE_ENTITY from './updateLikeEntity';
+import GET_LIKED_CONTENT_ITEM from './getLikedContentItem';
 import updateLikedContent from './updateLikedContent';
 
 const GetLikeData = ({ itemId, children }) => (
-  <Query query={getLikedContentItem} variables={{ itemId }}>
+  <Query query={GET_LIKED_CONTENT_ITEM} variables={{ itemId }}>
     {({ data: { node = {} } = {}, loading }) => {
       const isLiked = loading ? false : get(node, 'isLiked') || false;
       return children({ isLiked, item: node });
@@ -34,11 +34,12 @@ const UpdateLikeStatus = ({
   <AnalyticsConsumer>
     {({ track }) => (
       <Mutation
-        mutation={updateLikeEntity}
+        mutation={UPDATE_LIKE_ENTITY}
         optimisticResponse={{
           updateLikeEntity: {
             id: itemId, // unknown at this time
             isLiked: !isLiked,
+            likedCount: 0, // field required but exact value is not needed
             __typename: item && item.__typename,
           },
         }}
@@ -52,7 +53,7 @@ const UpdateLikeStatus = ({
         ) => {
           updateLikedContent({ liked, cache, item });
           cache.writeQuery({
-            query: getLikedContentItem,
+            query: GET_LIKED_CONTENT_ITEM,
             data: {
               node: {
                 ...item,
