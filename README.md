@@ -1,4 +1,5 @@
 # Apollos Church App prototype
+[![Build status](https://build.appcenter.ms/v0.1/apps/946ec29f-74c8-4263-9bd0-f7046d115220/branches/master/badge)](https://appcenter.ms)
 
 [![codecov](https://codecov.io/gh/ApollosProject/apollos-prototype/branch/master/graph/badge.svg)](https://codecov.io/gh/ApollosProject/apollos-prototype)
 
