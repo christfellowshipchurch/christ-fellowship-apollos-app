@@ -1,20 +1,27 @@
 {
   "name": "ChristFellowship",
-  "version": "0.0.1",
+  "version": "5.0.0",
   "private": true,
+  "engines": {
+    "node": ">=8.11.x"
+  },
+  "files": [
+    "src"
+  ],
   "scripts": {
     "android": "SIM=\"$($HOME/Library/Android/sdk/emulator/emulator -list-avds | sed -n 1p)\" && $HOME/Library/Android/sdk/emulator/emulator -avd \"${SIM}\" & react-native run-android --appId com.apolloschurch.app --main-activity LaunchActivity",
     "codecov": "cat ./coverage/lcov.info | codecov",
     "fixlint": "eslint ./src --fix",
     "ios": "react-native run-ios --simulator=\"iPhone X\"",
+    "storybook:enable": "sed -i '' 's/STORYBOOK=false/STORYBOOK=true/g' .env",
+    "storybook:disable": "sed -i '' 's/STORYBOOK=true/STORYBOOK=false/g' .env",
+    "generate-stories": "rnstl --searchDir ./src --pattern **/*.stories.js",
     "lint": "eslint ./src --ext .js",
+    "version": "node ../../scripts/update-apollos-version.js && git add apollos.json",
     "postversion": "react-native-version --never-amend --android android/app/build.gradle --ios ios/",
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "storybook": "rnstl --searchDir ../ --pattern \"apollos*/src/**/*.stories.js\" && storybook start -p 7007  | react-native start --projectRoot $PWD/storybook",
-    "test": "jest",
-    "release": "standard-version --release-as minor",
-    "prestart": "yarn generate-stories & node ./scripts/get-introspection-data.js",
-    "generate-stories": "rnstl --searchDir ./src --pattern **/*.stories.js"
+    "prestart": "lerna run generate-stories & node ./scripts/get-introspection-data.js",
+    "start": "react-native start",
+    "test": "jest"
   },
   "dependencies": {
     "@apollosproject/ui-analytics": "^1.0.0",
