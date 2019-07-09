@@ -40,4 +40,11 @@
  */
 // const overrides = {};
 
-export default {};
+const colors = {
+    primary: '#000',
+    secondary: '#00aeef'
+}
+
+export default {
+    colors
+};
