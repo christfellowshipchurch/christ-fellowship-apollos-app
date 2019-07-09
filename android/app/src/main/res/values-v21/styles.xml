@@ -7,10 +7,12 @@
 
     <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
+        <item name="android:statusBarColor">@color/primary</item>
     </style>
 
     <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
-        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary</item>
     </style>
 
 </resources>
