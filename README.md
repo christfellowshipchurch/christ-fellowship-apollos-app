@@ -1,6 +1,4 @@
-<div style="text-align:>
-
-[![alt Christ Fellowship Church](./doc-images/cf-icon.png =100x100)](https://christfellowship.church) [![alt The Apollos Project](./doc-images/apollos-icon.png =100x100)](https://apollosapp.io)
+[![alt Christ Fellowship Church](./doc-images/cf-icon.png)](https://christfellowship.church) [![alt The Apollos Project](./doc-images/apollos-icon.png)](https://apollosapp.io)
 # Christ Fellowship Apollos App
 
 ## App Version
