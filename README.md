@@ -1,9 +1,7 @@
-<div style="margin:30px; display:flex; justify-content:center; align-items:center;">
-    <img alt="Christ Fellowship Church" src="./doc-images/cf-icon.png" height="100"/>
-    <span style="font-size:50px;">&nbsp;&</span>
-    <img alt="The Apollos Project" src="./doc-images/apollos-icon.png" height="100"/>
-</div>
-<h1 style="text-align:center;font-weight:bold">Christ Fellowship Apollos App</h1>
+<div style="text-align:>
+
+[![alt Christ Fellowship Church](./doc-images/cf-icon.png =100x100)](https://christfellowship.church) [![alt The Apollos Project](./doc-images/apollos-icon.png =100x100)](https://apollosapp.io)
+# Christ Fellowship Apollos App
 
 ## App Version
 [![Package Version](https://img.shields.io/github/package-json/v/christfellowshipchurch/apollos-app.svg)](https://github.com/christfellowshipchurch/apollos-app)
