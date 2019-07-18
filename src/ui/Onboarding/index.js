@@ -36,19 +36,6 @@ function Onboarding({ navigation }) {
               />
             }
           />
-          <LocationFinderConnected
-            onPressPrimary={swipeForward}
-            onNavigate={() => {
-              navigation.navigate('Location', {
-                onFinished: swipeForward,
-              });
-            }}
-            BackgroundComponent={
-              <GradientOverlayImage
-                source={'https://picsum.photos/640/640/?random'}
-              />
-            }
-          />
           <ApolloConsumer>
             {(client) => (
               <AskNotificationsConnected
