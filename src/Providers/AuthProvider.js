@@ -49,6 +49,7 @@ export const resolvers = {
 
     // handles all events that should fire after a user logs in
     handleLogin: async (root, { authToken }, { cache, client }) => {
+      console.log("Handling Login")
       try {
         // stores local cache of authToken
         await AsyncStorage.setItem('authToken', authToken);

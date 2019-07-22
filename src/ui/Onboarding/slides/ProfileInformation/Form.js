@@ -13,7 +13,7 @@ import {
 } from '../styles'
 
 // memo = sfc PureComponent 💥
-const AskName = memo(
+const ProfileInformationForm = memo(
     ({
         onPressPrimary,
         firstName,
@@ -104,7 +104,7 @@ const AskName = memo(
     }
 );
 
-AskName.propTypes = {
+ProfileInformationForm.propTypes = {
     /* The `Swiper` component used in `<Onboading>` looks for and hijacks the title prop of it's
      * children. Thus we have to use more unique name.
      */
@@ -120,11 +120,11 @@ AskName.propTypes = {
     defaultDate: PropTypes.instanceOf(Date),
 };
 
-AskName.defaultProps = {
+ProfileInformationForm.defaultProps = {
     genderList: ['Male', 'Female'],
     defaultDate: new Date(),
 };
 
-AskName.displayName = 'AskName';
+ProfileInformationForm.displayName = 'ProfileInformationForm';
 
-export default AskName;
+export default ProfileInformationForm;

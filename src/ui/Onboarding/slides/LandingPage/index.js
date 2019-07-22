@@ -29,7 +29,7 @@ const validate = async ({ username }) => {
 }
 
 const handleSubmit = async ({ username }, { setSubmitting, props: { client } }) => {
-    console.log("Submitting Form")
+    setSubmitting(true);
     try {
         const { email, phoneNumber } = await parseUsername(username)
 
@@ -76,11 +76,10 @@ const handleSubmit = async ({ username }, { setSubmitting, props: { client } }) 
                 }
             })
         }
-
-        setSubmitting(false)
     } catch (e) {
         console.log("There was error submitting the form", { e })
     }
+    setSubmitting(false)
 }
 
 const UsernameForm = withFormik({
