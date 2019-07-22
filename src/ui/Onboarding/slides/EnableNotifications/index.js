@@ -1,48 +1,20 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { ApolloConsumer } from 'react-apollo'
-import { get } from 'lodash'
-import { withFormik } from 'formik'
 import Form from './form'
-import * as Yup from 'yup'
-import { UPDATE_PROFILE } from './mutations'
+import PushNotification from 'react-native-push-notification'
 
-const handleSubmit = async ({ firstName, lastName, gender, birthDate }, { setSubmitting, props: { client } }) => {
-    try {
-        client.mutate({
-            mutation: UPDATE_PROFILE,
-            variables: {
-                firstName,
-                lastName,
-                gender,
-                birthDate
-            },
-            update: (cache, { data: { updateProfileFields: { id } } }) => {
-                console.log("Updated Person Record")
-            }
-        })
-    } catch (e) {
-        console.log("There was error submitting the form", { e })
-    }
-    setSubmitting(false)
+const handleSubmit = () => {
+    console.log("requesting Push Notification permission")
+    PushNotification.requestPermissions();
 }
 
-const ProfileInformationForm = withFormik({
-    validationSchema: Yup.object().shape({
-        firstName: Yup.string().required('Please enter your first name'),
-        lastName: Yup.string().required('Please enter your last name'),
-        gender: Yup.string().required('Please make sure you have entered a valid password'),
-        birthDate: Yup.string().required('Please make sure you have entered a valid password')
-    }),
-    handleSubmit
-})(Form);
+const handleSkip = ({ navigation }) => {
+    navigation.navigate('Home')
+}
 
-const ProfileInformation = (props) => (
-    <ApolloConsumer>
-        {(client) => <ProfileInformationForm {...props} client={client} />}
-    </ApolloConsumer>
+const EnableNotifications = (props) => (
+    <Form {...props} handleSubmit={handleSubmit} handleSkip={() => handleSkip(props)} />
 )
 
-ProfileInformation.displayName = 'ProfileInformation';
+EnableNotifications.displayName = 'EnableNotifications';
 
-export default ProfileInformation;
+export default EnableNotifications;

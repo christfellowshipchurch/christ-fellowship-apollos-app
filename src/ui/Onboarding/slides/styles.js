@@ -65,4 +65,8 @@ const StyledDate = styled(({ theme }) => ({
     marginBottom: theme.sizing.baseUnit,
 }))(DateInput);
 
-export { FlexedSafeAreaView, BrandIcon, TitleText, PromptText, NextButton, StyledRadio, RadioLabel, Label, StyledDate };
+const CenterAlignedLink = styled(({ theme }) => ({
+    textAlign: 'center'
+}))(H5);
+
+export { FlexedSafeAreaView, BrandIcon, TitleText, PromptText, NextButton, StyledRadio, RadioLabel, Label, StyledDate, CenterAlignedLink };

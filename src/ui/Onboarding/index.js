@@ -14,6 +14,10 @@ import {
 
 import { requestPushPermissions } from '@apollosproject/ui-notifications';
 
+import {
+  LandingPage, PassCode, ProfileInformation, EnableNotifications
+} from './slides'
+
 function Onboarding({ navigation }) {
   return (
     <OnboardingSwiper>

@@ -70,7 +70,10 @@ export const resolvers = {
         });
 
         // calls registration of push notifications (see NotificationsProvider for handler)
-        PushNotification.requestPermissions()
+
+        // if PN are enabled, request permissions
+        // if PN are not enabled, do not request permissions and just update the User Profile to have PN set to Disabled
+        // PushNotification.requestPermissions()
 
         // tracks the event of a user logging in
         track({ eventName: 'UserLogin', client });
