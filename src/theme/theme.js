@@ -41,8 +41,8 @@
 // const overrides = {};
 
 const colors = {
-    primary: '#000',
-    secondary: '#00aeef'
+    primary: '#00aeef',
+    secondary: '#000',
 }
 
 export default {

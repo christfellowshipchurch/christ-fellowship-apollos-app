@@ -1,106 +1,99 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
-import { get } from 'lodash';
-import {
-    styled,
-    H6,
-    PaddedView,
-    TextInput,
-    BackgroundView,
-    Button
-} from '@apollosproject/ui-kit';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Alert } from 'react-native'
+import { ApolloConsumer } from 'react-apollo'
+import { withFormik } from 'formik'
+import Form from './form'
+import * as Yup from 'yup'
+import REQUEST_PIN from './requestPin'
 
-import {
-    FlexedSafeAreaView,
-    TitleText,
-    PromptText,
-    BrandIcon,
-} from '../styles.js';
+const parseUsername = async (username) => {
+    // remove all non-integer characters
+    const digits = username.replace(/[^0-9]/gi, '')
+    return {
+        // Yup for email validation
+        email: await Yup.string().email().isValid(username),
+        // validation for 10 digit phone numbers (US numbers)
+        phoneNumber: digits.length === 10
+    }
+}
 
-const LegalText = styled(
-    ({ theme }) => ({
-        color: theme.colors.text.tertiary,
-    }),
-    'ui-auth.SMSLandingPage.LegalText'
-)(H6);
+const validate = async ({ username }) => {
+    const validation = await parseUsername(username)
 
-const LandingPage = ({
-    disabled,
-    errors,
-    isLoading,
-    onPressNext,
-    setFieldValue,
-    loginPolicyInfo,
-    loginPromptText,
-    BackgroundComponent,
-}) => (
-        <KeyboardAvoidingView style={StyleSheet.absoluteFill} behavior={'padding'}>
-            <BackgroundComponent>
-                <FlexedSafeAreaView>
-                    <ScrollView>
-                        <PaddedView>
-                            <BrandIcon />
-                            <TitleText>Welcome Home!</TitleText>
-                            <PromptText padded>We're more than a blah blah blah. We're a bleebidy bloobidy do</PromptText>
-                            <PromptText padded>
-                                {loginPromptText}
-                            </PromptText>
+    validation.errors = !validation.email && !validation.phoneNumber
+        ? { username: 'Please enter a valid phone number or email address' }
+        : {}
 
-                            <TextInput
-                                autoFocus
-                                autoComplete={'tel'}
-                                label={'Mobile Number or Email'}
-                                type={'phone'}
-                                enablesReturnKeyAutomatically
-                                returnKeyType={'next'}
-                                onSubmitEditing={onPressNext}
-                                error={get(errors, 'phone')}
-                                onChangeText={(text) => setFieldValue('phone', text)}
-                            />
-                            <LegalText>{loginPolicyInfo}</LegalText>
-                        </PaddedView>
-                    </ScrollView>
+    if (validation.errors) throw validation.errors
+}
 
-                    {onPressNext ? (
-                        <PaddedView>
-                            <Button
-                                title={'Next'}
-                                onPress={onPressNext}
-                                disabled={disabled}
-                                loading={isLoading}
-                            />
-                        </PaddedView>
-                    ) : null}
-                </FlexedSafeAreaView>
-            </BackgroundComponent>
-        </KeyboardAvoidingView>
-    );
+const handleSubmit = async ({ username }, { setSubmitting, props: { client } }) => {
+    console.log("Submitting Form")
+    try {
+        const { email, phoneNumber } = await parseUsername(username)
 
-LandingPage.propTypes = {
-    authTitleText: PropTypes.string,
-    disabled: PropTypes.bool,
-    errors: PropTypes.shape({
-        phone: PropTypes.string,
-    }),
-    isLoading: PropTypes.bool,
-    onPressNext: PropTypes.func, // used to navigate and/or submit the form
-    setFieldValue: PropTypes.func.isRequired,
-    loginPolicyInfo: PropTypes.string,
-    loginPromptText: PropTypes.string,
-    BackgroundComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-};
+        if (email) {
+            Alert.alert(
+                'Email',
+                "You're attempting an email login",
+                [
+                    {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel Pressed'),
+                        style: 'cancel',
+                    },
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false },
+            );
+        } else if (phoneNumber) {
+            client.mutate({
+                mutation: REQUEST_PIN,
+                variables: {
+                    phoneNumber: username,
+                },
+                update: (cache, { data: { requestSmsLoginPin: { success } } }) => {
+                    if (success) {
+                        // navigate to Confirmation Code validation
 
-LandingPage.defaultProps = {
-    titleText: 'Welcome Home!',
-    loginPolicyInfo:
-        "We'll never share your information or contact you (unless you ask!).",
-    loginPromptText:
-        "Get started by entering in either you phone number or email address.",
-    BackgroundComponent: BackgroundView,
-};
+                        Alert.alert(
+                            'Phone Number',
+                            "You successfully received an SMS Confirmation Code",
+                            [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                { text: 'OK', onPress: () => console.log('OK Pressed') },
+                            ],
+                            { cancelable: false },
+                        );
+                    } else {
+                        // show some error on the screen
+                    }
+                }
+            })
+        }
 
-LandingPage.LegalText = LegalText;
+        setSubmitting(false)
+    } catch (e) {
+        console.log("There was error submitting the form", { e })
+    }
+}
+
+const UsernameForm = withFormik({
+    mapPropsToValues: () => ({ username: '' }),
+    validate,
+    handleSubmit
+})(Form);
+
+const LandingPage = (props) => (
+    <ApolloConsumer>
+        {(client) => <UsernameForm {...props} client={client} />}
+    </ApolloConsumer>
+)
 
 LandingPage.displayName = 'LandingPage';
 
