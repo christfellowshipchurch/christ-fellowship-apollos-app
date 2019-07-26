@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
+import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 
 import { BackgroundView, withTheme } from '@apollosproject/ui-kit';
@@ -30,24 +30,51 @@ const ProtectedRouteWithSplashScreen = (props) => {
   return <ProtectedRoute {...props} onRouteChange={handleOnRouteChange} />;
 };
 
+// const AppNavigator = createStackNavigator(
+//   {
+//     ProtectedRoute: ProtectedRouteWithSplashScreen,
+//     Tabs,
+//     ContentSingle,
+//     Auth,
+//     PersonalDetails,
+//     ChangePassword,
+//     Location,
+//     Passes,
+//     UserWebBrowser,
+//     LandingScreen: Onboarding,
+//   },
+//   {
+//     initialRouteName: 'ProtectedRoute',
+//     mode: 'modal',
+//     headerMode: 'screen',
+//   }
+// );
+
+const AppContent = createStackNavigator({
+  Tabs,
+  ContentSingle,
+  Auth,
+  PersonalDetails,
+  ChangePassword,
+  Location,
+  Passes,
+  UserWebBrowser,
+}, {
+    initialRouteName: 'Tabs',
+    mode: 'modal',
+    headerMode: 'screen',
+  })
+
 const AppNavigator = createStackNavigator(
   {
+
     ProtectedRoute: ProtectedRouteWithSplashScreen,
-    Tabs,
-    ContentSingle,
-    Auth,
-    PersonalDetails,
-    ChangePassword,
-    Location,
-    Passes,
-    UserWebBrowser,
-    Onboarding,
-    LandingScreen,
+    Tabs: AppContent,
+    LandingScreen: Onboarding,
   },
   {
     initialRouteName: 'ProtectedRoute',
-    mode: 'modal',
-    headerMode: 'screen',
+    headerMode: 'none'
   }
 );
 
