@@ -4,6 +4,8 @@ import { UserWebBrowserConsumer } from 'ChristFellowship/src/user-web-browser';
 import ChangeLivestream from './ChangeLivestream';
 import TouchableCell from './TouchableCell';
 
+import PushNotifications from './EnableTwilioNotifyPN';
+
 export default class TestingControlPanel extends PureComponent {
   static navigationOptions = () => ({
     title: 'Testing Control Panel',
@@ -33,6 +35,7 @@ export default class TestingControlPanel extends PureComponent {
           iconName="Avatar"
           cellText={`Launch Onboarding`}
         />
+        <PushNotifications />
       </TableView>
     );
   }

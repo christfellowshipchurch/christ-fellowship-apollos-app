@@ -46,13 +46,16 @@ export const resolvers = {
         query: GET_LOGGED_IN,
       });
 
-      const { pushId } = cache.readQuery({
-        query: gql`
-          query {
-            pushId @client
-          }
-        `,
-      });
+      // const { pushId } = cache.readQuery({
+      //   query: gql`
+      //     query {
+      //       pushId @client
+      //     }
+      //   `,
+      // });
+
+      const pushId = 'abc'
+
 
       if (isLoggedIn && pushId) {
         updatePushId({ pushId, client });

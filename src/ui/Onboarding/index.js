@@ -1,80 +1,27 @@
 import React from 'react';
 
-import { GradientOverlayImage } from '@apollosproject/ui-kit';
-import { ApolloConsumer } from 'react-apollo';
-
 import {
-  AskNotificationsConnected,
-  AskNameConnected,
-  FeaturesConnected,
-  AboutYouConnected,
-  LocationFinderConnected,
-  OnboardingSwiper,
-} from '@apollosproject/ui-onboarding';
+  Identity, Passcode, ProfileInformation, EnableNotifications
+} from './slides'
 
-import { requestPushPermissions } from '@apollosproject/ui-notifications';
+import { createStackNavigator } from 'react-navigation';
 
-function Onboarding({ navigation }) {
-  return (
-    <OnboardingSwiper>
-      {({ swipeForward }) => (
-        <>
-          <AskNameConnected onPressPrimary={swipeForward} />
-          <FeaturesConnected
-            onPressPrimary={swipeForward}
-            BackgroundComponent={
-              <GradientOverlayImage
-                source={'https://picsum.photos/640/640/?random'}
-              />
-            }
-          />
-          <AboutYouConnected
-            onPressPrimary={swipeForward}
-            BackgroundComponent={
-              <GradientOverlayImage
-                source={'https://picsum.photos/640/640/?random'}
-              />
-            }
-          />
-          <LocationFinderConnected
-            onPressPrimary={swipeForward}
-            onNavigate={() => {
-              navigation.navigate('Location', {
-                onFinished: swipeForward,
-              });
-            }}
-            BackgroundComponent={
-              <GradientOverlayImage
-                source={'https://picsum.photos/640/640/?random'}
-              />
-            }
-          />
-          <ApolloConsumer>
-            {(client) => (
-              <AskNotificationsConnected
-                onPressPrimary={() => navigation.replace('Tabs')}
-                onRequestPushPermissions={() =>
-                  requestPushPermissions({ client })
-                }
-                primaryNavText={'Finish'}
-                BackgroundComponent={
-                  <GradientOverlayImage
-                    source={'https://picsum.photos/640/640/?random'}
-                  />
-                }
-              />
-            )}
-          </ApolloConsumer>
-        </>
-      )}
-    </OnboardingSwiper>
-  );
-}
+const OnboardingNavigator = createStackNavigator(
+  {
+    Identity,
+    Passcode,
+    ProfileInformation,
+    EnableNotifications,
+  },
+  {
+    initialRouteName: 'Identity',
+  }
+);
 
-Onboarding.navigationOptions = {
-  title: 'Onboarding',
+OnboardingNavigator.navigationOptions = {
   header: null,
-  gesturesEnabled: false,
 };
 
-export default Onboarding;
+const Onboarding = (props) => <OnboardingNavigator {...props} />
+
+export default OnboardingNavigator
