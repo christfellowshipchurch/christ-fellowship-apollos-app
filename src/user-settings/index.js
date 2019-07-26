@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 import PropTypes from 'prop-types';
 import { Query, Mutation } from 'react-apollo';
@@ -134,7 +135,13 @@ class UserSettings extends PureComponent {
                           <Touchable
                             onPress={async () => {
                               await handleLogout();
-                              await this.props.navigation.navigate('Connect');
+
+                              const navigationAction = NavigationActions.navigate({
+                                routeName: 'LandingScreen',
+                                params: {},
+                                action: NavigationActions.navigate({ routeName: 'Identity' })
+                              })
+                              this.props.navigation.dispatch(navigationAction)
                             }}
                           >
                             <Cell>
