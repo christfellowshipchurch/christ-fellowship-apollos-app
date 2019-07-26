@@ -22,7 +22,8 @@ const EnableNotificationsForm =
         titleText,
         promptText,
         skipButtonText,
-        handleSkip
+        handleSkip,
+        navigation
     }) => (
             <KeyboardAvoidingView style={StyleSheet.absoluteFill} behavior={'padding'}>
                 <FlexedSafeAreaView>
