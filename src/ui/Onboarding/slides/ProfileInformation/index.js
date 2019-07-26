@@ -1,48 +1,94 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { ApolloConsumer } from 'react-apollo'
 import { get } from 'lodash'
+import { ApolloConsumer } from 'react-apollo'
+import moment from 'moment'
 import { withFormik } from 'formik'
 import Form from './form'
 import * as Yup from 'yup'
-import { UPDATE_PROFILE } from './mutations'
+import { UPDATE_PROFILE, HANDLE_LOGIN } from './mutations'
 
-const handleSubmit = async ({ firstName, lastName, gender, birthDate }, { setSubmitting, props: { client } }) => {
-    try {
-        client.mutate({
-            mutation: UPDATE_PROFILE,
-            variables: {
-                firstName,
-                lastName,
-                gender,
-                birthDate
-            },
-            update: (cache, { data: { updateProfileFields: { id } } }) => {
-                console.log("Updated Person Record")
-            }
-        })
-    } catch (e) {
-        console.log("There was error submitting the form", { e })
+const handleSubmit = async (
+    { firstName, lastName, gender = "Unknown", birthDate },
+    { setSubmitting, setErrors, props: { client, navigation, username, password } }) => {
+    if (username && password) {
+        try {
+            client.mutate({
+                mutation: UPDATE_PROFILE,
+                variables: {
+                    username,
+                    password,
+                    firstName,
+                    lastName,
+                    gender,
+                    birthDate
+                },
+                update: (cache, { data: { relateUserLoginToPerson: { token } } }) => {
+                    if (token) {
+                        try {
+                            client.mutate({
+                                mutation: HANDLE_LOGIN,
+                                variables: {
+                                    authToken: token
+                                },
+                                update: () => {
+                                    navigation.navigate('EnableNotifications')
+                                }
+                            })
+                        } catch (e) {
+                            setErrors({ general: "An error occurred. Please try again" })
+                        }
+                    } else {
+                        setErrors({ general: "An error occurred. Please try again" })
+                    }
+                }
+            })
+        } catch (e) {
+            console.log("There was error submitting the form", { e })
+            setSubmitting(false)
+        }
+    } else {
+        setErrors({ general: "An error occurred. Please try again" })
+        setSubmitting(false)
     }
-    setSubmitting(false)
 }
 
 const ProfileInformationForm = withFormik({
     validationSchema: Yup.object().shape({
         firstName: Yup.string().required('Please enter your first name'),
         lastName: Yup.string().required('Please enter your last name'),
-        gender: Yup.string().required('Please make sure you have entered a valid password'),
-        birthDate: Yup.string().required('Please make sure you have entered a valid password')
+        birthDate: Yup.string()
+            .required('Make sure you have selected your birthday')
+            .test(
+                'birthDate',
+                'You must be at least 13 years old to create an account',
+                value => {
+                    return moment().diff(moment(value), 'years') >= 13;
+                }
+            )
     }),
     handleSubmit
 })(Form);
 
-const ProfileInformation = (props) => (
-    <ApolloConsumer>
-        {(client) => <ProfileInformationForm {...props} client={client} />}
-    </ApolloConsumer>
-)
+const ProfileInformation = (props) => {
+    props = {
+        ...props,
+        username: get(props, 'navigation.state.params.username', null),
+        password: get(props, 'navigation.state.params.password', null)
+    }
+
+    return (
+        <ApolloConsumer>
+            {(client) => <ProfileInformationForm {...props} client={client} />}
+        </ApolloConsumer>
+    )
+}
 
 ProfileInformation.displayName = 'ProfileInformation';
+
+ProfileInformation.navigationOptions = {
+    title: 'ProfileInformation',
+    header: null,
+}
+
 
 export default ProfileInformation;

@@ -1,20 +1,31 @@
 import gql from 'graphql-tag';
 
 export const UPDATE_PROFILE = gql`
-    mutation updateDetails($firstName:String!, $lastName:String!, $gender: String!, $birthDate: String!) {
-        updateProfileFields(
-        input: [
-            { field: FirstName, value: $firstName }
-            { field: LastName, value: $lastName }
-            { field: Gender, value: $gender }
-            { field: BirthDate, value: $birthDate }
-        ]
+    mutation relateUserLoginToPerson(
+        $username:String!, 
+        $password:String!, 
+        $firstName:String!, 
+        $lastName:String!, 
+        $birthDate: String!, 
+        $gender: String!) {
+        
+        relateUserLoginToPerson(
+            identity:$username,
+            passcode:$password,
+            input: [
+                { field: FirstName, value: $firstName }
+                { field: LastName, value: $lastName }
+                { field: BirthDate, value: $birthDate }
+                { field: Gender, value: $gender }
+            ]
         ) {
-            firstName
-        lastName
-        gender
-        birthDate
-        id
+            token
         }
     }
+`
+
+export const HANDLE_LOGIN = gql`
+  mutation handleLogin($authToken: String!) {
+    handleLogin(authToken: $authToken) @client
+  }
 `

@@ -36,7 +36,6 @@ import {
 const ProfileInformationForm =
     ({
         values,
-        touched,
         errors,
         setFieldValue,
         isLoading,
@@ -48,7 +47,7 @@ const ProfileInformationForm =
         isSubmitting,
         titleText,
         promptText,
-        requiredFieldText
+        requiredFieldText,
     }) => {
         let LastNameInput = null;
 
@@ -62,15 +61,18 @@ const ProfileInformationForm =
                             <PromptText padded>
                                 {promptText}
                             </PromptText>
+                            {get(errors, 'general', null)
+                                ? (
+                                    <H6 padded>
+                                        {get(errors, 'general')}
+                                    </H6>
+                                ) : null}
                             <TextInput
                                 label={'First Name*'}
                                 type={'text'}
                                 returnKeyType={'next'}
                                 value={get(values, 'firstName')}
-                                error={
-                                    get(touched, 'firstName', false) &&
-                                    get(errors, 'firstName', null)
-                                }
+                                error={get(errors, 'firstName', null)}
                                 onChangeText={(text) => setFieldValue('firstName', text)}
                                 onSubmitEditing={() => LastNameInput.focus()}
                                 disabled={isLoading}
@@ -81,10 +83,7 @@ const ProfileInformationForm =
                                 type={'text'}
                                 returnKeyType={'next'}
                                 value={get(values, 'lastName')}
-                                error={
-                                    get(touched, 'lastName', false) &&
-                                    get(errors, 'lastName', null)
-                                }
+                                error={get(errors, 'lastName', null)}
                                 onChangeText={(text) => setFieldValue('lastName', text)}
                                 disabled={isLoading}
                                 enablesReturnKeyAutomatically
@@ -93,12 +92,29 @@ const ProfileInformationForm =
                                 }}
                             />
 
+                            <Label padded>Birthday*</Label>
+                            <StyledDate
+                                type={'DateInput'}
+                                placeholder={'Select date of birth...'}
+                                value={moment
+                                    .utc(get(values, 'birthDate', defaultDate) || defaultDate)
+                                    .toDate()}
+                                error={get(errors, 'birthDate', null)}
+                                displayValue={
+                                    // only show a birthday if we have one.
+                                    get(values, 'birthDate', '') // DatePicker shows displayValue > placeholder > label in that order
+                                        ? moment(values.birthDate).format('MM/DD/YYYY')
+                                        : '' // Pass an empty string if we don't have a birthday to show the placeholder.
+                                }
+                                onChange={(value) => setFieldValue('birthDate', value)}
+                            />
+
                             <Label padded>Gender</Label>
                             <StyledRadio
                                 label="Gender"
                                 type="radio"
                                 value={get(values, 'gender')}
-                                error={get(touched, 'gender') && get(errors, 'gender')}
+                                error={get(errors, 'gender', null)}
                                 onChange={(value) => setFieldValue('gender', value)}
                             >
                                 {genderList.map((gender) => [
@@ -110,24 +126,6 @@ const ProfileInformationForm =
                                     />,
                                 ])}
                             </StyledRadio>
-
-                            <Label>Birthday</Label>
-                            <StyledDate
-                                type={'DateInput'}
-                                placeholder={'Select date of birth...'}
-                                value={moment
-                                    .utc(get(values, 'birthDate', defaultDate) || defaultDate)
-                                    .toDate()}
-                                error={get(touched, 'birthDate') && get(errors, 'birthDate')}
-                                displayValue={
-                                    // only show a birthday if we have one.
-                                    get(values, 'birthDate', '') // DatePicker shows displayValue > placeholder > label in that order
-                                        ? moment(values.birthDate).format('MM/DD/YYYY')
-                                        : '' // Pass an empty string if we don't have a birthday to show the placeholder.
-                                }
-                                onChange={(value) => setFieldValue('birthDate', value)}
-                            />
-                            <LegalText>{requiredFieldText}</LegalText>
                         </PaddedView>
                     </ScrollView>
 
