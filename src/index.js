@@ -18,37 +18,18 @@ import Location from './user-settings/Locations';
 import LandingScreen from './LandingScreen';
 import UserWebBrowser from './user-web-browser';
 import Onboarding from './ui/Onboarding';
+import PrivacyPolicy from './ui/PrivacyPolicy'
 
 const AppStatusBar = withTheme(({ theme }) => ({
   barStyle: 'dark-content',
   backgroundColor: theme.colors.paper,
-}))(StatusBar);
+}))(StatusBar)
 
 const ProtectedRouteWithSplashScreen = (props) => {
   const handleOnRouteChange = () => SplashScreen.hide();
 
   return <ProtectedRoute {...props} onRouteChange={handleOnRouteChange} />;
-};
-
-// const AppNavigator = createStackNavigator(
-//   {
-//     ProtectedRoute: ProtectedRouteWithSplashScreen,
-//     Tabs,
-//     ContentSingle,
-//     Auth,
-//     PersonalDetails,
-//     ChangePassword,
-//     Location,
-//     Passes,
-//     UserWebBrowser,
-//     LandingScreen: Onboarding,
-//   },
-//   {
-//     initialRouteName: 'ProtectedRoute',
-//     mode: 'modal',
-//     headerMode: 'screen',
-//   }
-// );
+}
 
 const AppContent = createStackNavigator({
   Tabs,
@@ -71,10 +52,11 @@ const AppNavigator = createStackNavigator(
     ProtectedRoute: ProtectedRouteWithSplashScreen,
     Tabs: AppContent,
     LandingScreen: Onboarding,
+    PrivacyPolicy
   },
   {
     initialRouteName: 'ProtectedRoute',
-    headerMode: 'none'
+    header: null,
   }
 );
 

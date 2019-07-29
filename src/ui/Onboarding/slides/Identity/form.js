@@ -7,7 +7,8 @@ import {
     H6,
     PaddedView,
     TextInput,
-    Button
+    Button,
+    ButtonLink
 } from '@apollosproject/ui-kit';
 
 import {
@@ -30,10 +31,13 @@ const UsernameForm = ({
     loginPolicyInfo,
     loginPromptText,
     loginButtonText,
+    loginDislaimerText,
     handleSubmit,
     values,
     touched,
-    isSubmitting
+    isSubmitting,
+    navigation,
+    navigateToPrivacyPolicy
 }) => {
     const disabled = has(errors, 'username') || get(values, 'username', '') === ''
 
@@ -62,16 +66,23 @@ const UsernameForm = ({
                             autoFocus
                             enablesReturnKeyAutomatically
                         />
+
+
                         <LegalText>{loginPolicyInfo}</LegalText>
                     </PaddedView>
                 </ScrollView>
 
                 <PaddedView>
+                    <PaddedView>
+                        <LegalText padded>
+                            {loginDislaimerText} <ButtonLink onPress={() => navigateToPrivacyPolicy(navigation)}>Privacy Policy</ButtonLink>
+                        </LegalText>
+                    </PaddedView>
                     <Button
                         title={loginButtonText}
                         onPress={handleSubmit}
                         disabled={disabled}
-                        loading={isSubmitting} s
+                        loading={isSubmitting}
                     />
                 </PaddedView>
             </FlexedSafeAreaView>
@@ -90,6 +101,7 @@ UsernameForm.propTypes = {
     loginPolicyInfo: PropTypes.string,
     loginPromptText: PropTypes.string,
     loginButtonText: PropTypes.string,
+    loginDislaimerText: PropTypes.string,
 };
 
 UsernameForm.defaultProps = {
@@ -98,7 +110,8 @@ UsernameForm.defaultProps = {
         "We'll never share your information or contact you (unless you ask!).",
     loginPromptText:
         "Get started by entering in either you phone number or email address.",
-    loginButtonText: 'Get Started',
+    loginButtonText: 'Agree and Continue',
+    loginDislaimerText: 'I understand and agree to the following policies as laid out by Christ Fellowship Church:'
 };
 
 UsernameForm.LegalText = LegalText;

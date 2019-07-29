@@ -20,8 +20,6 @@ const OnboardingNavigator = createStackNavigator(
 
 OnboardingNavigator.navigationOptions = {
   header: null,
-};
-
-const Onboarding = (props) => <OnboardingNavigator {...props} />
+}
 
 export default OnboardingNavigator
