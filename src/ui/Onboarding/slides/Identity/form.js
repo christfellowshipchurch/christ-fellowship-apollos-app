@@ -35,7 +35,7 @@ const UsernameForm = ({
     touched,
     isSubmitting
 }) => {
-    const disabled = has(errors, 'username') || get(values, 'username', '') === ''
+    const disabled = has(errors, 'username') || get(values, 'username', '') === '' || isSubmitting
 
     return (
         <KeyboardAvoidingView style={StyleSheet.absoluteFill} behavior={'padding'}>
