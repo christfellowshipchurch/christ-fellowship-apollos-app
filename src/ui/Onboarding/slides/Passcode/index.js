@@ -89,6 +89,8 @@ const handleSubmit = async (
                         setErrors({
                             password: "Sorry! We are unable to log you in at this time"
                         })
+
+                        setSubmitting(false)
                     }
                 },
                 onError: ({ graphQLErrors }) => {
@@ -106,10 +108,14 @@ const handleSubmit = async (
                         setErrors({
                             password: `The ${errorLanguage[type]} you entered is incorrect`
                         })
+
+                        setSubmitting(false)
                     } else {
                         setErrors({
                             password: 'Unknown error. Please try again later.'
                         })
+
+                        setSubmitting(false)
                     }
                 }
             })
@@ -133,12 +139,16 @@ const handleSubmit = async (
                         setErrors({
                             password: "Sorry! We are unable to log you in at this time"
                         })
+
+                        setSubmitting(false)
                     }
                 },
                 onError: () => {
                     setErrors({
                         password: "There was an issue creating your account. Please try again"
                     })
+
+                    setSubmitting(false)
                 }
             })
         }

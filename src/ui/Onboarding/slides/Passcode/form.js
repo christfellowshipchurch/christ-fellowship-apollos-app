@@ -37,7 +37,7 @@ const PasscodeForm = ({
     touched,
     isSubmitting
 }) => {
-    const disabled = has(errors, 'password') || get(values, 'password', '') === ''
+    const disabled = has(errors, 'password') || get(values, 'password', '') === '' || isSubmitting
     const inputType = type === 'password' ? 'password' : 'numeric'
 
     return (
