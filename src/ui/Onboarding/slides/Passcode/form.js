@@ -54,6 +54,7 @@ const PasscodeForm = ({
                         <TextInput
                             textContentType='password'
                             autoComplete={'password'}
+                            autoCompleteType={'password'}
                             label={inputLabel[type]}
                             type={inputType}
                             value={values.password}
