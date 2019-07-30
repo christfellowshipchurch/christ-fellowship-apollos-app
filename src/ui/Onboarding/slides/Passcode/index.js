@@ -127,14 +127,7 @@ const handleSubmit = async (
                 onUpdate: ({ createNewUserLogin: { token } }) => {
                     // if a token exists, the account was successfully created and authenticated
                     if (token) {
-                        handleLogin({
-                            client,
-                            navigation,
-                            authToken: token,
-                            isExistingIdentity,
-                            identity,
-                            passcode
-                        })
+                        navigation.navigate('ProfileInformation', { username: identity, password: passcode })
                     } else {
                         setErrors({
                             password: "Sorry! We are unable to log you in at this time"
