@@ -50,7 +50,7 @@ const UsernameForm = ({
                         </PromptText>
 
                         <TextInput
-                            textContentType='username'
+                            textContentType='telephoneNumber'
                             label={'Mobile Number or Email'}
                             type="text"
                             value={values.username}

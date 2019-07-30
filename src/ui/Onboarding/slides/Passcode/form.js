@@ -38,7 +38,8 @@ const PasscodeForm = ({
     isSubmitting
 }) => {
     const disabled = has(errors, 'password') || get(values, 'password', '') === '' || isSubmitting
-    const inputType = type === 'password' ? 'password' : 'numeric'
+    const inputType = type === 'sms' ? 'numeric' : 'password'
+    const textContentType = type === 'sms' ? 'oneTimeCode' : 'password'
 
     return (
         <KeyboardAvoidingView style={StyleSheet.absoluteFill} behavior={'padding'}>
@@ -52,8 +53,8 @@ const PasscodeForm = ({
                         </PromptText>
 
                         <TextInput
-                            autoComplete={'password'}
                             autoCompleteType={'password'}
+                            textContentType={textContentType}
                             label={inputLabel[type]}
                             type={inputType}
                             value={values.password}
@@ -94,10 +95,10 @@ PasscodeForm.defaultProps = {
     },
     buttonText: 'Submit',
     inputLabel: {
-        code: "Confirmation Code",
+        sms: "Confirmation Code",
         password: "Password"
     },
-    type: 'sms' // code or password
+    type: 'sms' // sms or password
 };
 
 PasscodeForm.LegalText = LegalText;

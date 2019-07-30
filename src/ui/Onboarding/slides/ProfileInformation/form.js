@@ -70,6 +70,7 @@ const ProfileInformationForm =
                             <TextInput
                                 label={'First Name*'}
                                 type={'text'}
+                                textContentType='givenName'
                                 returnKeyType={'next'}
                                 value={get(values, 'firstName')}
                                 error={get(errors, 'firstName', null)}
@@ -81,6 +82,7 @@ const ProfileInformationForm =
                             <TextInput
                                 label={'Last Name*'}
                                 type={'text'}
+                                textContentType='familyName'
                                 returnKeyType={'next'}
                                 value={get(values, 'lastName')}
                                 error={get(errors, 'lastName', null)}
