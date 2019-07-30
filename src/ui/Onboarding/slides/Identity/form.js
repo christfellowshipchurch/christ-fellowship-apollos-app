@@ -57,9 +57,7 @@ const UsernameForm = ({
                             returnKeyType={'next'}
                             error={touched.username && errors.username}
                             onChangeText={(text) => setFieldValue('username', text)}
-                            // onSubmitEditing={onSubmit}
                             autoCapitalize='none'
-                            autoFocus
                             enablesReturnKeyAutomatically
                         />
                         <LegalText>{loginPolicyInfo}</LegalText>
@@ -71,7 +69,7 @@ const UsernameForm = ({
                         title={loginButtonText}
                         onPress={handleSubmit}
                         disabled={disabled}
-                        loading={isSubmitting} s
+                        loading={isSubmitting}
                     />
                 </PaddedView>
             </FlexedSafeAreaView>

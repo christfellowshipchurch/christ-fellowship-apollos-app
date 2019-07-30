@@ -18,11 +18,6 @@ const OnboardingNavigator = createStackNavigator(
   }
 );
 
-OnboardingNavigator.navigationOptions = {
-  header: null,
-  gesturesEnabled: false,
-};
-
 const Onboarding = (props) => <OnboardingNavigator {...props} />
 
 export default OnboardingNavigator

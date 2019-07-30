@@ -27,15 +27,13 @@ const EnableNotificationsForm =
     }) => (
             <KeyboardAvoidingView style={StyleSheet.absoluteFill} behavior={'padding'}>
                 <FlexedSafeAreaView>
-                    <ScrollView>
-                        <PaddedView>
-                            <BrandIcon />
-                            <TitleText>{titleText}</TitleText>
-                            <PromptText padded>
-                                {promptText}
-                            </PromptText>
-                        </PaddedView>
-                    </ScrollView>
+                    <PaddedView>
+                        <BrandIcon />
+                        <TitleText>{titleText}</TitleText>
+                        <PromptText padded>
+                            {promptText}
+                        </PromptText>
+                    </PaddedView>
 
                     <PaddedView>
                         <Button

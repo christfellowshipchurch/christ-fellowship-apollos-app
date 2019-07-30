@@ -70,7 +70,7 @@ const AppNavigator = createStackNavigator(
 
     ProtectedRoute: ProtectedRouteWithSplashScreen,
     Tabs: AppContent,
-    LandingScreen: Onboarding,
+    LandingScreen: Onboarding
   },
   {
     initialRouteName: 'ProtectedRoute',

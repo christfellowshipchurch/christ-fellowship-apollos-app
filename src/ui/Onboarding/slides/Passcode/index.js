@@ -189,11 +189,9 @@ const Passcode = (props) => {
     )
 }
 
-Passcode.displayName = 'Passcode';
-
 Passcode.navigationOptions = {
-    title: 'Passcode',
     header: null,
+    gesturesEnabled: false
 }
 
 export default Passcode;

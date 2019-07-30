@@ -60,7 +60,6 @@ const PasscodeForm = ({
                             returnKeyType={'next'}
                             error={touched.password && errors.password}
                             onChangeText={(text) => setFieldValue('password', text)}
-                            // onSubmitEditing={onSubmit}
                             autoCapitalize='none'
                             autoFocus
                             enablesReturnKeyAutomatically
