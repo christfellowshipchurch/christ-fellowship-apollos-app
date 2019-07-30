@@ -52,13 +52,12 @@ const PasscodeForm = ({
                         </PromptText>
 
                         <TextInput
-                            textContentType='password'
                             autoComplete={'password'}
                             autoCompleteType={'password'}
                             label={inputLabel[type]}
                             type={inputType}
                             value={values.password}
-                            returnKeyType={'next'}
+                            returnKeyType={'done'}
                             error={touched.password && errors.password}
                             onChangeText={(text) => setFieldValue('password', text)}
                             autoCapitalize='none'
