@@ -18,11 +18,9 @@ const EnableNotifications = (props) => (
         handleSkip={() => handleSkip(props)} />
 )
 
-EnableNotifications.displayName = 'EnableNotifications';
-
 EnableNotifications.navigationOptions = {
-    title: 'EnableNotifications',
     header: null,
+    gesturesEnabled: false
 }
 
 export default EnableNotifications;

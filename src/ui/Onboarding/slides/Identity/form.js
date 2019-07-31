@@ -1,29 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
 import { has, get } from 'lodash'
-import { KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
 import {
     styled,
     H6,
-    PaddedView,
     TextInput,
-    Button,
     ButtonLink
-} from '@apollosproject/ui-kit';
+} from '@apollosproject/ui-kit'
 
 import {
-    FlexedSafeAreaView,
+    FormFields,
+    SubmitButton
+} from '../containers.js'
+
+import {
     TitleText,
     PromptText,
     BrandIcon,
-} from '../styles.js';
+} from '../styles.js'
 
 const LegalText = styled(
     ({ theme }) => ({
         color: theme.colors.text.tertiary,
     }),
     'ui-auth.SMSLandingPage.LegalText'
-)(H6);
+)(H6)
 
 const UsernameForm = ({
     errors,
@@ -39,70 +39,47 @@ const UsernameForm = ({
     navigation,
     navigateToPrivacyPolicy
 }) => {
-    const disabled = has(errors, 'username') || get(values, 'username', '') === ''
+    const disabled = has(errors, 'username') || get(values, 'username', '') === '' || isSubmitting
 
     return (
-        <KeyboardAvoidingView style={StyleSheet.absoluteFill} behavior={'padding'}>
-            <FlexedSafeAreaView>
-                <ScrollView>
-                    <PaddedView>
-                        <BrandIcon />
-                        <TitleText>Welcome Home!</TitleText>
-                        <PromptText padded>We're more than a blah blah blah. We're a bleebidy bloobidy do</PromptText>
-                        <PromptText padded>
-                            {loginPromptText}
-                        </PromptText>
+        <React.Fragment>
+            <FormFields>
+                <BrandIcon />
+                <TitleText>Welcome Home!</TitleText>
+                <PromptText padded>We're more than a blah blah blah. We're a bleebidy bloobidy do</PromptText>
+                <PromptText padded>
+                    {loginPromptText}
+                </PromptText>
 
-                        <TextInput
-                            textContentType='username'
-                            label={'Mobile Number or Email'}
-                            type="text"
-                            value={values.username}
-                            returnKeyType={'next'}
-                            error={touched.username && errors.username}
-                            onChangeText={(text) => setFieldValue('username', text)}
-                            // onSubmitEditing={onSubmit}
-                            autoCapitalize='none'
-                            autoFocus
-                            enablesReturnKeyAutomatically
-                        />
-
-
-                        <LegalText>{loginPolicyInfo}</LegalText>
-                    </PaddedView>
-                </ScrollView>
-
-                <PaddedView>
-                    <PaddedView>
-                        <LegalText padded>
-                            {loginDislaimerText} <ButtonLink onPress={() => navigateToPrivacyPolicy(navigation)}>Privacy Policy</ButtonLink>
-                        </LegalText>
-                    </PaddedView>
-                    <Button
-                        title={loginButtonText}
-                        onPress={handleSubmit}
-                        disabled={disabled}
-                        loading={isSubmitting}
-                    />
-                </PaddedView>
-            </FlexedSafeAreaView>
-        </KeyboardAvoidingView>
+                <TextInput
+                    textContentType='telephoneNumber'
+                    label={'Mobile Number or Email'}
+                    type="text"
+                    value={values.username}
+                    returnKeyType={'done'}
+                    error={touched.username && errors.username}
+                    onChangeText={(text) => setFieldValue('username', text)}
+                    autoCapitalize='none'
+                    enablesReturnKeyAutomatically
+                />
+                <LegalText>{loginPolicyInfo}</LegalText>
+            </FormFields>
+            <PaddedView>
+                <LegalText padded>
+                    {loginDislaimerText} <ButtonLink onPress={() => navigateToPrivacyPolicy(navigation)}>Privacy Policy</ButtonLink>
+                </LegalText>
+            </PaddedView>
+            <SubmitButton
+                buttonProps={{
+                    title: loginButtonText,
+                    onPress: handleSubmit,
+                    disabled,
+                    loading: isSubmitting
+                }}
+            />
+        </React.Fragment>
     )
-};
-
-UsernameForm.propTypes = {
-    authTitleText: PropTypes.string,
-    disabled: PropTypes.bool,
-    errors: PropTypes.shape({
-        phone: PropTypes.string,
-    }),
-    isLoading: PropTypes.bool,
-    setFieldValue: PropTypes.func.isRequired,
-    loginPolicyInfo: PropTypes.string,
-    loginPromptText: PropTypes.string,
-    loginButtonText: PropTypes.string,
-    loginDislaimerText: PropTypes.string,
-};
+}
 
 UsernameForm.defaultProps = {
     titleText: 'Welcome Home!',
@@ -112,10 +89,8 @@ UsernameForm.defaultProps = {
         "Get started by entering in either you phone number or email address.",
     loginButtonText: 'Agree and Continue',
     loginDislaimerText: 'I understand and agree to the following policies as laid out by Christ Fellowship Church:'
-};
+}
 
-UsernameForm.LegalText = LegalText;
+UsernameForm.LegalText = LegalText
 
-UsernameForm.displayName = 'LandingPage';
-
-export default UsernameForm;
+export default UsernameForm

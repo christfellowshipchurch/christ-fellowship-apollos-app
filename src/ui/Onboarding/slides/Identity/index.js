@@ -99,9 +99,8 @@ const LandingPage = (props) => (
 )
 
 LandingPage.navigationOptions = {
-    title: 'LandingPage',
     header: null,
-    gesturesEnabled: false,
+    gesturesEnabled: false
 }
 
 export default LandingPage;

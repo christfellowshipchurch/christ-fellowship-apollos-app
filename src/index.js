@@ -60,6 +60,10 @@ const AppNavigator = createStackNavigator(
   }
 );
 
+AppNavigator.navigationOptions = {
+  gesturesEnabled: false,
+}
+
 const App = () => (
   <Providers>
     <BackgroundView>
