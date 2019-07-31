@@ -4,7 +4,8 @@ import {
     styled,
     H6,
     TextInput,
-    ButtonLink
+    ButtonLink,
+    PaddedView
 } from '@apollosproject/ui-kit'
 
 import {
@@ -16,11 +17,13 @@ import {
     TitleText,
     PromptText,
     BrandIcon,
+    FlexedFooter
 } from '../styles.js'
 
 const LegalText = styled(
     ({ theme }) => ({
         color: theme.colors.text.tertiary,
+        marginTop: theme.sizing.baseUnit
     }),
     'ui-auth.SMSLandingPage.LegalText'
 )(H6)
@@ -63,18 +66,17 @@ const UsernameForm = ({
                     enablesReturnKeyAutomatically
                 />
                 <LegalText>{loginPolicyInfo}</LegalText>
-            </FormFields>
-            <PaddedView>
-                <LegalText padded>
+                <LegalText>
                     {loginDislaimerText} <ButtonLink onPress={() => navigateToPrivacyPolicy(navigation)}>Privacy Policy</ButtonLink>
                 </LegalText>
-            </PaddedView>
+            </FormFields>
+
             <SubmitButton
                 buttonProps={{
                     title: loginButtonText,
                     onPress: handleSubmit,
                     disabled,
-                    loading: isSubmitting
+                    loading: isSubmitting,
                 }}
             />
         </React.Fragment>
