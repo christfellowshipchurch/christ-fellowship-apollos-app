@@ -56,7 +56,7 @@ const AppNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'ProtectedRoute',
-    header: null,
+    headerMode: 'none'
   }
 );
 
@@ -70,7 +70,7 @@ const App = () => (
       <AppStatusBar barStyle="dark-content" />
       <AppNavigator
         ref={(navigatorRef) => {
-          NavigationService.setTopLevelNavigator(navigatorRef);
+          NavigationService.setTopLevelNavigator(navigatorRef)
         }}
       />
       <MediaPlayer />
@@ -78,4 +78,4 @@ const App = () => (
   </Providers>
 );
 
-export default App;
+export default App
