@@ -1,28 +1,28 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
 import { has, get } from 'lodash'
-import { KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
 import {
     styled,
     H6,
-    PaddedView,
     TextInput,
-    Button
-} from '@apollosproject/ui-kit';
+} from '@apollosproject/ui-kit'
 
 import {
-    FlexedSafeAreaView,
+    FormFields,
+    SubmitButton
+} from '../containers.js'
+
+import {
     TitleText,
     PromptText,
     BrandIcon,
-} from '../styles.js';
+} from '../styles.js'
 
 const LegalText = styled(
     ({ theme }) => ({
         color: theme.colors.text.tertiary,
     }),
     'ui-auth.SMSLandingPage.LegalText'
-)(H6);
+)(H6)
 
 const PasscodeForm = ({
     errors,
@@ -42,46 +42,40 @@ const PasscodeForm = ({
     const textContentType = type === 'sms' ? 'oneTimeCode' : 'password'
 
     return (
-        <KeyboardAvoidingView style={StyleSheet.absoluteFill} behavior={'padding'}>
-            <FlexedSafeAreaView>
-                <ScrollView>
-                    <PaddedView>
-                        <BrandIcon />
-                        <TitleText>{titleText[type]}</TitleText>
-                        <PromptText padded>
-                            {promptText[type]}
-                        </PromptText>
+        <React.Fragment>
+            <FormFields>
+                <BrandIcon />
+                <TitleText>{titleText[type]}</TitleText>
+                <PromptText padded>
+                    {promptText[type]}
+                </PromptText>
 
-                        <TextInput
-                            autoCompleteType={'password'}
-                            textContentType={textContentType}
-                            label={inputLabel[type]}
-                            type={inputType}
-                            value={values.password}
-                            returnKeyType={'done'}
-                            error={touched.password && errors.password}
-                            onChangeText={(text) => setFieldValue('password', text)}
-                            autoCapitalize='none'
-                            autoFocus
-                            enablesReturnKeyAutomatically
-                        />
-                    </PaddedView>
-                </ScrollView>
+                <TextInput
+                    autoCompleteType={'password'}
+                    textContentType={textContentType}
+                    label={inputLabel[type]}
+                    type={inputType}
+                    value={values.password}
+                    returnKeyType={'done'}
+                    error={touched.password && errors.password}
+                    onChangeText={(text) => setFieldValue('password', text)}
+                    autoCapitalize='none'
+                    autoFocus
+                    enablesReturnKeyAutomatically
+                />
+            </FormFields>
+            <SubmitButton
+                buttonProps={{
+                    title: buttonText,
+                    onPress: handleSubmit,
+                    disabled,
+                    loading: isSubmitting
+                }}
 
-                <PaddedView>
-                    <Button
-                        title={buttonText}
-                        onPress={handleSubmit}
-                        disabled={disabled}
-                        loading={isSubmitting}
-                    />
-                </PaddedView>
-            </FlexedSafeAreaView>
-        </KeyboardAvoidingView>
+            />
+        </React.Fragment>
     )
-};
-
-PasscodeForm.propTypes = {};
+}
 
 PasscodeForm.defaultProps = {
     titleText: {
@@ -99,10 +93,8 @@ PasscodeForm.defaultProps = {
         password: "Password"
     },
     type: 'sms' // sms or password
-};
+}
 
-PasscodeForm.LegalText = LegalText;
+PasscodeForm.LegalText = LegalText
 
-PasscodeForm.displayName = 'LandingPage';
-
-export default PasscodeForm;
+export default PasscodeForm
