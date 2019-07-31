@@ -82,6 +82,10 @@ const handleSubmit = async ({ username }, { setSubmitting, props: { client, navi
     // setSubmitting(false)
 }
 
+const navigationToPrivacyPolicy = (navigation) => {
+    navigation.navigate('PrivacyPolicy')
+}
+
 const UsernameForm = withFormik({
     mapPropsToValues: () => ({ username: '' }),
     validate,
@@ -90,7 +94,7 @@ const UsernameForm = withFormik({
 
 const LandingPage = (props) => (
     <ApolloConsumer>
-        {(client) => <UsernameForm {...props} client={client} />}
+        {(client) => <UsernameForm {...props} client={client} navigateToPrivacyPolicy={navigationToPrivacyPolicy} />}
     </ApolloConsumer>
 )
 

@@ -4,6 +4,8 @@ import {
     styled,
     H6,
     TextInput,
+    ButtonLink,
+    PaddedView
 } from '@apollosproject/ui-kit'
 
 import {
@@ -15,11 +17,13 @@ import {
     TitleText,
     PromptText,
     BrandIcon,
+    FlexedFooter
 } from '../styles.js'
 
 const LegalText = styled(
     ({ theme }) => ({
         color: theme.colors.text.tertiary,
+        marginTop: theme.sizing.baseUnit
     }),
     'ui-auth.SMSLandingPage.LegalText'
 )(H6)
@@ -30,10 +34,13 @@ const UsernameForm = ({
     loginPolicyInfo,
     loginPromptText,
     loginButtonText,
+    loginDislaimerText,
     handleSubmit,
     values,
     touched,
-    isSubmitting
+    isSubmitting,
+    navigation,
+    navigateToPrivacyPolicy
 }) => {
     const disabled = has(errors, 'username') || get(values, 'username', '') === '' || isSubmitting
 
@@ -59,13 +66,17 @@ const UsernameForm = ({
                     enablesReturnKeyAutomatically
                 />
                 <LegalText>{loginPolicyInfo}</LegalText>
+                <LegalText>
+                    {loginDislaimerText} <ButtonLink onPress={() => navigateToPrivacyPolicy(navigation)}>Privacy Policy</ButtonLink>
+                </LegalText>
             </FormFields>
+
             <SubmitButton
                 buttonProps={{
                     title: loginButtonText,
                     onPress: handleSubmit,
                     disabled,
-                    loading: isSubmitting
+                    loading: isSubmitting,
                 }}
             />
         </React.Fragment>
@@ -78,7 +89,8 @@ UsernameForm.defaultProps = {
         "We'll never share your information or contact you (unless you ask!).",
     loginPromptText:
         "Get started by entering in either you phone number or email address.",
-    loginButtonText: 'Get Started',
+    loginButtonText: 'Agree and Continue',
+    loginDislaimerText: 'I understand and agree to the following policies as laid out by Christ Fellowship Church:'
 }
 
 UsernameForm.LegalText = LegalText
