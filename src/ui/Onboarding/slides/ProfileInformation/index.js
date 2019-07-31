@@ -83,11 +83,9 @@ const ProfileInformation = (props) => {
     )
 }
 
-ProfileInformation.displayName = 'ProfileInformation';
-
 ProfileInformation.navigationOptions = {
-    title: 'ProfileInformation',
     header: null,
+    gesturesEnabled: false
 }
 
 

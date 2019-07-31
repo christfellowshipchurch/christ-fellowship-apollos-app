@@ -70,13 +70,17 @@ const AppNavigator = createStackNavigator(
 
     ProtectedRoute: ProtectedRouteWithSplashScreen,
     Tabs: AppContent,
-    LandingScreen: Onboarding,
+    LandingScreen: Onboarding
   },
   {
     initialRouteName: 'ProtectedRoute',
     headerMode: 'none'
   }
 );
+
+AppNavigator.navigationOptions = {
+  gesturesEnabled: false,
+}
 
 const App = () => (
   <Providers>

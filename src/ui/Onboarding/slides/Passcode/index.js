@@ -89,6 +89,8 @@ const handleSubmit = async (
                         setErrors({
                             password: "Sorry! We are unable to log you in at this time"
                         })
+
+                        setSubmitting(false)
                     }
                 },
                 onError: ({ graphQLErrors }) => {
@@ -106,10 +108,14 @@ const handleSubmit = async (
                         setErrors({
                             password: `The ${errorLanguage[type]} you entered is incorrect`
                         })
+
+                        setSubmitting(false)
                     } else {
                         setErrors({
                             password: 'Unknown error. Please try again later.'
                         })
+
+                        setSubmitting(false)
                     }
                 }
             })
@@ -121,24 +127,21 @@ const handleSubmit = async (
                 onUpdate: ({ createNewUserLogin: { token } }) => {
                     // if a token exists, the account was successfully created and authenticated
                     if (token) {
-                        handleLogin({
-                            client,
-                            navigation,
-                            authToken: token,
-                            isExistingIdentity,
-                            identity,
-                            passcode
-                        })
+                        navigation.navigate('ProfileInformation', { username: identity, password: passcode })
                     } else {
                         setErrors({
                             password: "Sorry! We are unable to log you in at this time"
                         })
+
+                        setSubmitting(false)
                     }
                 },
                 onError: () => {
                     setErrors({
                         password: "There was an issue creating your account. Please try again"
                     })
+
+                    setSubmitting(false)
                 }
             })
         }
@@ -179,11 +182,9 @@ const Passcode = (props) => {
     )
 }
 
-Passcode.displayName = 'Passcode';
-
 Passcode.navigationOptions = {
-    title: 'Passcode',
     header: null,
+    gesturesEnabled: false
 }
 
 export default Passcode;

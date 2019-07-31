@@ -1,62 +1,52 @@
-import React from 'react';
-import { KeyboardAvoidingView, StyleSheet, ScrollView } from 'react-native';
+import React from 'react'
 import {
-    PaddedView,
-    Button,
     ButtonLink
-} from '@apollosproject/ui-kit';
+} from '@apollosproject/ui-kit'
 
 import {
-    FlexedSafeAreaView,
+    FormFields,
+    SubmitButton
+} from '../containers.js'
+
+import {
     TitleText,
     PromptText,
     BrandIcon,
-    CenterAlignedLink
-} from '../styles';
+    CenterAlignedLink,
+} from '../styles'
 
 const EnableNotificationsForm =
     ({
         buttonText,
         handleSubmit,
-        disabled,
         titleText,
         promptText,
         skipButtonText,
         handleSkip,
-        navigation
     }) => (
-            <KeyboardAvoidingView style={StyleSheet.absoluteFill} behavior={'padding'}>
-                <FlexedSafeAreaView>
-                    <ScrollView>
-                        <PaddedView>
-                            <BrandIcon />
-                            <TitleText>{titleText}</TitleText>
-                            <PromptText padded>
-                                {promptText}
-                            </PromptText>
-                        </PaddedView>
-                    </ScrollView>
-
-                    <PaddedView>
-                        <Button
-                            title={buttonText}
-                            onPress={handleSubmit}
-                        />
-                    </PaddedView>
-                    <PaddedView>
-                        <CenterAlignedLink>
-                            <ButtonLink
-                                onPress={handleSkip}
-                            >
-                                {skipButtonText}
-                            </ButtonLink>
-                        </CenterAlignedLink>
-                    </PaddedView>
-                </FlexedSafeAreaView>
-            </KeyboardAvoidingView>
+            <React.Fragment>
+                <FormFields>
+                    <BrandIcon />
+                    <TitleText>{titleText}</TitleText>
+                    <PromptText padded>
+                        {promptText}
+                    </PromptText>
+                </FormFields>
+                <SubmitButton
+                    buttonProps={{
+                        title: buttonText,
+                        onPress: handleSubmit
+                    }}
+                />
+                <CenterAlignedLink>
+                    <ButtonLink
+                        onPress={handleSkip}
+                    >
+                        {skipButtonText}
+                    </ButtonLink>
+                </CenterAlignedLink>
+            </React.Fragment>
         )
-
-EnableNotificationsForm.propTypes = {};
 
 EnableNotificationsForm.defaultProps = {
     buttonText: 'Enable Push Notifications',
@@ -64,8 +54,6 @@ EnableNotificationsForm.defaultProps = {
     titleText: "Let's stay in touch",
     promptText: "Turning on Push Notifications allow for to blah blah blah. So let's go ahead and doopidy dee doo",
     requiredFieldText: "*indicates a required field"
-};
+}
 
-EnableNotificationsForm.displayName = 'ProfileInformationForm';
-
-export default EnableNotificationsForm;
+export default EnableNotificationsForm
