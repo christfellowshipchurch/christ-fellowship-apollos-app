@@ -22,26 +22,30 @@ const GetPhotoData = ({ children }) => (
       return children({ photo });
     }}
   </Query>
-);
+)
 
 GetPhotoData.propTypes = {
   children: PropTypes.func.isRequired,
-};
+}
 
 const StyledView = styled(({ theme }) => ({
   marginRight: 0,
   marginBottom: theme.sizing.baseUnit * 0.75,
   marginTop: theme.sizing.baseUnit * 0.5,
-}))(View);
+}))(View)
 
 const RoundTouchable = withTheme(({ theme, size }) => ({
   borderRadius: get(theme.sizing.avatar, size, theme.sizing.avatar.small),
-}))(Touchable);
+}))(Touchable)
 
 const Wrapper = styled({
   justifyContent: 'center',
   alignItems: 'center',
-})(View);
+})(View)
+
+const LightButtonLink = styled(({ theme }) => ({
+  color: theme.colors.white,
+}))(ButtonLink)
 
 export default class AvatarForm extends PureComponent {
   state = {
@@ -75,14 +79,14 @@ export default class AvatarForm extends PureComponent {
             <RoundTouchable
               disabled={this.props.disabled}
               onPress={() => this.handleUploadPhoto({ client })}
-              size="medium"
+              size="large"
             >
               <GetPhotoData>
                 {({ photo }) => (
                   <StyledView>
                     <Avatar
                       source={photo}
-                      size="medium"
+                      size="large"
                       isLoading={isUploadingFile}
                     />
                   </StyledView>
@@ -91,9 +95,9 @@ export default class AvatarForm extends PureComponent {
             </RoundTouchable>
             {this.props.text ? (
               <H5>
-                <ButtonLink onPress={() => this.handleUploadPhoto({ client })}>
+                <LightButtonLink onPress={() => this.handleUploadPhoto({ client })}>
                   Change Photo
-                </ButtonLink>
+                </LightButtonLink>
               </H5>
             ) : null}
           </Wrapper>

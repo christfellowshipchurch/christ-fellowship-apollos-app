@@ -1,9 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { compose } from 'recompose';
-import { withNavigation } from 'react-navigation';
+import React from 'react'
+import { View, ImageBackground } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
+import PropTypes from 'prop-types'
+import { compose } from 'recompose'
+import { withNavigation } from 'react-navigation'
 
-import UserAvatarView from 'ChristFellowship/src/ui/UserAvatarView';
+import UserAvatarView from 'ChristFellowship/src/ui/UserAvatarView'
 
 import {
   withIsLoading,
@@ -13,21 +15,37 @@ import {
   styled,
   PaddedView,
   FlexedView,
-} from '@apollosproject/ui-kit';
+  GradientOverlayImage
+} from '@apollosproject/ui-kit'
 
 const Container = styled(({ theme }) => ({
   alignItems: 'center',
   flexDirection: 'row',
-  paddingTop: theme.sizing.baseUnit * 2,
-  paddingBottom: 0,
-}))(PaddedView);
+}))(ImageBackground)
+
+const PaddedFlexedView = styled(({ theme }) => ({
+  paddingVertical: theme.sizing.baseUnit * 2,
+}))(FlexedView)
+
+const SettingsContainer = styled(({ theme }) => ({
+  alignItems: 'flex-end',
+  paddingVertical: theme.sizing.baseUnit,
+  paddingHorizontal: theme.sizing.baseUnit * 1.5,
+}))(Touchable)
 
 const SettingsIcon = compose(
   withTheme(({ theme }) => ({
     name: 'settings',
-    fill: theme.colors.text.tertiary,
+    fill: theme.colors.white,
   }))
-)(Icon);
+)(Icon)
+
+const DarkOverlay = styled(({ theme }) => ({
+  backgroundColor: 'rgba(0, 0, 0, .55)',
+  position: 'absolute',
+  height: '100%',
+  width: '100%'
+}))(View)
 
 const UserAvatarHeader = ({
   firstName,
@@ -37,21 +55,22 @@ const UserAvatarHeader = ({
   disabled,
   isLoading,
 }) => (
-  <Container>
-    <FlexedView>
-      <UserAvatarView
-        firstName={firstName}
-        lastName={lastName}
-        location={location}
-        disabled={disabled}
-        isLoading={isLoading}
-      />
-    </FlexedView>
-    <Touchable onPress={() => navigation.navigate('UserSettings')}>
-      <SettingsIcon />
-    </Touchable>
-  </Container>
-);
+    <Container source={{ uri: 'https://picsum.photos/375/812/?random' }}>
+      <DarkOverlay />
+      <PaddedFlexedView>
+        <SettingsContainer onPress={() => navigation.navigate('UserSettings')}>
+          <SettingsIcon />
+        </SettingsContainer>
+        <UserAvatarView
+          firstName={firstName}
+          lastName={lastName}
+          location={location}
+          disabled={disabled}
+          isLoading={isLoading}
+        />
+      </PaddedFlexedView>
+    </Container>
+  )
 
 UserAvatarHeader.propTypes = {
   firstName: PropTypes.string,
@@ -63,6 +82,6 @@ UserAvatarHeader.propTypes = {
   }),
   disabled: PropTypes.bool,
   isLoading: PropTypes.bool,
-};
+}
 
-export default withNavigation(withIsLoading(UserAvatarHeader));
+export default withNavigation(withIsLoading(UserAvatarHeader))

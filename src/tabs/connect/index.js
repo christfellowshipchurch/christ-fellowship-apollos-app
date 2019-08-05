@@ -11,7 +11,13 @@ const ConnectNavigator = createStackNavigator(
   {
     Connect,
     TestingControlPanel,
-    UserSettings,
+    UserSettings: {
+      screen: UserSettings,
+      navigationOptions: () => ({
+        title: 'My Account Settings',
+        header: null // TODO : this is not working
+      })
+    },
     LikedContentList,
   },
   {
