@@ -81,6 +81,124 @@ const ActionTable = () => (
               <CellText>Open Testing Panel</CellText>
             </Cell>
           </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
+          <Touchable
+            onPress={() => NavigationActions.navigate('TestingControlPanel')}
+          >
+            <Cell>
+              <CellIcon name="settings" />
+              <CellText>Open Testing Panel</CellText>
+            </Cell>
+          </Touchable>
+          <Divider />
         </TableView>
       </View>
     )}

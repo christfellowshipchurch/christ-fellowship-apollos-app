@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ScrollView, SafeAreaView, StatusBar } from 'react-native';
+import { ScrollView, SafeAreaView, StatusBar, View } from 'react-native';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -66,14 +66,10 @@ class Connect extends PureComponent {
           {({ data }) => {
             if (get(data, 'isLoggedIn', false))
               return (
-                <SafeAreaView>
-                  <StatusBar barStyle="light-content" />
-                  <StyledScrollView>
-                    <UserAvatarHeaderConnected key="UserAvatarHeaderConnected" />
-                    <ActionTable />
-                  </StyledScrollView>
-                </SafeAreaView>
-              );
+                <UserAvatarHeaderConnected key="UserAvatarHeaderConnected">
+                  <ActionTable />
+                </UserAvatarHeaderConnected>
+              )
             return (
               <SafeAreaView>
                 <ScrollView>

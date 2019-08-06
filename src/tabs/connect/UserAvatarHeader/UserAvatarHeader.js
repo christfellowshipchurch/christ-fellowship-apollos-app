@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ImageBackground } from 'react-native'
+import { Animated, View, ImageBackground, StyleSheet } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import PropTypes from 'prop-types'
 import { compose } from 'recompose'
@@ -18,9 +18,9 @@ import {
   GradientOverlayImage
 } from '@apollosproject/ui-kit'
 
-const Container = styled(({ theme }) => ({
-  alignItems: 'center',
-  flexDirection: 'row',
+const CampusImage = styled(({ theme }) => ({
+  width: '100%',
+  height: 375
 }))(ImageBackground)
 
 const PaddedFlexedView = styled(({ theme }) => ({
@@ -47,6 +47,48 @@ const DarkOverlay = styled(({ theme }) => ({
   width: '100%'
 }))(View)
 
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    // flex: 0,
+    // zIndex: 2,
+    height: 375,
+    width: '100%',
+    backgroundColor: 'transparent',
+
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  headerBackground: {
+    position: 'absolute',
+    flex: 0,
+    height: 375,
+    width: '100%',
+    backgroundColor: 'blue',
+    // zIndex: 2,
+  }
+})
+
+const HeaderBackground = ({ animationRange, scrollRangeForAnimation }) => {
+  const animateHeader = {
+    transform: [
+      {
+        translateY: animationRange.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, scrollRangeForAnimation * -1],
+        }),
+      },
+    ],
+  }
+  return (
+    <Animated.View style={[styles.headerBackground, animateHeader]} pointerEvents="none">
+      <CampusImage source={{ uri: 'https://picsum.photos/375/812/?random' }}>
+        <DarkOverlay />
+      </CampusImage>
+    </Animated.View>
+  )
+}
+
 const UserAvatarHeader = ({
   firstName,
   lastName,
@@ -54,9 +96,11 @@ const UserAvatarHeader = ({
   navigation,
   disabled,
   isLoading,
+  animationRange,
+  scrollRangeForAnimation
 }) => (
-    <Container source={{ uri: 'https://picsum.photos/375/812/?random' }}>
-      <DarkOverlay />
+    <View style={styles.container}>
+      <HeaderBackground animationRange={animationRange} scrollRangeForAnimation={scrollRangeForAnimation} />
       <PaddedFlexedView>
         <SettingsContainer onPress={() => navigation.navigate('UserSettings')}>
           <SettingsIcon />
@@ -69,7 +113,7 @@ const UserAvatarHeader = ({
           isLoading={isLoading}
         />
       </PaddedFlexedView>
-    </Container>
+    </View >
   )
 
 UserAvatarHeader.propTypes = {
