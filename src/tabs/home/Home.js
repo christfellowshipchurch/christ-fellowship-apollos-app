@@ -21,7 +21,7 @@ import { LiveButton } from '../../live';
 
 import ContentTableCard from '../../ui/ContentTableCard';
 import GET_USER_FEED from './getUserFeed';
-import GET_PERSONA_FEED from './getPersonaFeed';
+import GET_FEED_FEATURES from './getFeedFeatures';
 import GET_CAMPAIGN_CONTENT_ITEM from './getCampaignContentItem';
 
 const LogoTitle = styled(({ theme }) => ({
@@ -117,37 +117,35 @@ class Home extends PureComponent {
                       }}
                     </Query>
                     <Query
-                      query={GET_PERSONA_FEED}
+                      query={GET_FEED_FEATURES}
                       fetchPolicy="cache-and-network"
                     >
-                      {({
-                        data: personaData,
-                        loading: isContentTableLoading,
-                      }) => (
-                        <ContentTableCard
-                          isLoading={isContentTableLoading}
-                          onPress={this.handleOnPress}
-                          header={
-                            <>
-                              <StyledH6 isLoading={isContentTableLoading}>
-                                FOR YOU
-                              </StyledH6>
-                              <H3
-                                isLoading={isContentTableLoading}
-                                numberOfLines={3}
-                                ellipsizeMode="tail"
-                              >
-                                Explore what God calls you to today
-                              </H3>
-                            </>
-                          }
-                          content={get(
-                            personaData,
-                            'personaFeed.edges',
-                            []
-                          ).map((edge) => edge.node)}
-                        />
-                      )}
+                      {({ data: features, loading: featuresLoading }) =>
+                        get(features, 'userFeedFeatures', []).map(
+                          ({ title, subtitle, actions, id }) => (
+                            <ContentTableCard
+                              isLoading={featuresLoading}
+                              onPress={this.handleOnPress}
+                              key={id}
+                              header={
+                                <>
+                                  <StyledH6 isLoading={featuresLoading}>
+                                    {title}
+                                  </StyledH6>
+                                  <H3
+                                    isLoading={featuresLoading}
+                                    numberOfLines={3}
+                                    ellipsizeMode="tail"
+                                  >
+                                    {subtitle}
+                                  </H3>
+                                </>
+                              }
+                              content={actions}
+                            />
+                          )
+                        )
+                      }
                     </Query>
                   </>
                 }

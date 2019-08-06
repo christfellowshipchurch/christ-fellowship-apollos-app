@@ -21,6 +21,17 @@ export default gql`
           }
         }
       }
+      ... on WeekendContentItem {
+        liveStream {
+          isLive
+          media {
+            sources {
+              uri
+            }
+          }
+          webViewUrl
+        }
+      }
     }
   }
 `;

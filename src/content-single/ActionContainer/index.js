@@ -1,15 +1,11 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
-import { get } from 'lodash';
-import Share from 'ChristFellowship/src/ui/Share';
+import ShareButton from 'ChristFellowship/src/ui/ShareButton';
 
 import { SideBySideView, styled } from '@apollosproject/ui-kit';
 import LikeButton from 'ChristFellowship/src/ui/LikeButton';
 import { MediaPlayerSpacer } from '@apollosproject/ui-media-player';
-
-import GET_SHARE_CONTENT from './getShareContent';
 
 const PositioningView = styled(({ theme }) => ({
   justifyContent: 'space-around',
@@ -27,14 +23,7 @@ const ActionContainer = ({ itemId }) => (
     <MediaPlayerSpacer>
       <PositioningView>
         <LikeButton itemId={itemId} />
-        <Query query={GET_SHARE_CONTENT} variables={{ itemId }}>
-          {({ data: { node } = {}, error, loading }) => {
-            const sharing = get(node, 'sharing');
-            return loading || error || !sharing ? null : (
-              <Share content={sharing} />
-            );
-          }}
-        </Query>
+        <ShareButton itemId={itemId} />
       </PositioningView>
     </MediaPlayerSpacer>
   </Container>

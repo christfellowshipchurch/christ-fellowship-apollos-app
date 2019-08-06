@@ -51,6 +51,7 @@ class HorizontalContentFeed extends Component {
 
   renderFeed = ({ data, loading, error }) => {
     if (error) return null;
+    if (loading) return null;
 
     const childContent = get(
       data,
@@ -66,10 +67,9 @@ class HorizontalContentFeed extends Component {
 
     const content = siblingContent.length ? siblingContent : childContent;
 
-    return (content && content.length) || loading ? (
+    return content && content.length ? (
       <HorizontalTileFeed
         content={content}
-        isLoading={loading}
         loadingStateObject={loadingStateObject}
         renderItem={this.renderItem}
       />

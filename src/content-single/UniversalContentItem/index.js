@@ -12,6 +12,7 @@ import {
 import MediaControls from '../MediaControls';
 import HTMLContent from '../HTMLContent';
 import HorizontalContentFeed from '../HorizontalContentFeed';
+import Features from '../Features';
 
 const FlexedScrollView = styled({ flex: 1 })(ScrollView);
 
@@ -32,6 +33,7 @@ const UniversalContentItem = ({ content, loading }) => {
             {content.title}
           </H2>
           <HTMLContent contentId={content.id} />
+          <Features contentId={content.id} />
         </PaddedView>
         <HorizontalContentFeed contentId={content.id} />
       </FlexedScrollView>

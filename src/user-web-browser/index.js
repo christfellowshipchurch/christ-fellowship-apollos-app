@@ -8,8 +8,7 @@ import { WebView } from 'react-native-webview';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
-const Browser = ({ url, cookie = '', modal, navigation }) => {
-  console.warn(cookie);
+const Browser = ({ url, cookie, modal, navigation }) => {
   if (modal) {
     return (
       <ModalView navigation={navigation}>
@@ -26,7 +25,7 @@ Browser.propTypes = {
   modal: PropTypes.bool.isRequired,
 };
 
-const WITH_USER_COOKIE = gql`
+export const WITH_USER_COOKIE = gql`
   query currentUserCookie {
     currentUser {
       id
