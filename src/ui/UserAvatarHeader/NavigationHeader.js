@@ -28,10 +28,6 @@ const Header = styled(({ theme }) => ({
   justifyContent: 'center'
 }))(FlexedView)
 
-const HeaderAction = styled(({ theme }) => ({
-  alignSelf: 'flex-start'
-}))(Touchable)
-
 const HeaderTitle = ({ range, minHeight, maxHeight, children }) => {
   const opacity = range.interpolate({
     inputRange: [minHeight, maxHeight],

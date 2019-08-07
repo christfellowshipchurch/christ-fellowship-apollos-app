@@ -49,10 +49,10 @@ const UserSettings = ({
                 <View>
                   <RowHeader>
                     <Name>
-                      <H4>{'My Home Campus'}</H4>
+                      <H4>{'Coming Soon!'}</H4>
                     </Name>
                   </RowHeader>
-                  <TableView>
+                  {/* <TableView>
                     <Touchable
                       onPress={() => openUrl('https://apollosrock.newspring.cc/page/235')}
                     >
@@ -98,7 +98,7 @@ const UserSettings = ({
                         <CellText>Open Testing Panel</CellText>
                       </Cell>
                     </Touchable>
-                  </TableView>
+                  </TableView> */}
                 </View>
               )}
             </WebBrowserConsumer>
