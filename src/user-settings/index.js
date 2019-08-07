@@ -1,11 +1,8 @@
-import React, { PureComponent } from 'react';
-import { StackActions, NavigationActions } from 'react-navigation';
-
-import PropTypes from 'prop-types';
-import { Query, Mutation } from 'react-apollo';
-
+import React from 'react'
+import { View } from 'react-native'
+import { NavigationActions } from 'react-navigation'
+import { Query, Mutation } from 'react-apollo'
 import {
-  BackgroundView,
   PaddedView,
   TableView,
   Cell,
@@ -15,152 +12,101 @@ import {
   Touchable,
   styled,
   ActivityIndicator,
-} from '@apollosproject/ui-kit';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
-import AvatarForm from 'ChristFellowship/src/ui/UserAvatarView/AvatarForm';
+  H4
+} from '@apollosproject/ui-kit'
 
-import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth';
+import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser'
+import UserAvatarHeader from '../ui/UserAvatarHeader'
+import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth'
 
-const AvatarView = styled({
+const RowHeader = styled(({ theme }) => ({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
   alignItems: 'center',
-  justifyContent: 'center',
-})(PaddedView);
+  paddingVertical: theme.sizing.baseUnit,
+}))(PaddedView)
 
-const BackgroundContainer = styled(({ theme }) => ({
-  paddingTop: theme.sizing.baseUnit * 1.75,
-}))(BackgroundView);
+const Name = styled({
+  flexGrow: 1,
+})(View)
 
-class UserSettings extends PureComponent {
-  static navigationOptions = () => ({
-    title: 'Settings',
-  });
+const UserSettings = ({
+  navigation
+}) => (
+    <Query query={GET_LOGIN_STATE} fetchPolicy="cache-and-network">
+      {({ data: { isLoggedIn = false, loading } }) => {
+        if (loading) return <ActivityIndicator />
+        if (!isLoggedIn) return null
 
-  static propTypes = {
-    navigation: PropTypes.shape({
-      getParam: PropTypes.func,
-      navigate: PropTypes.func,
-    }),
-  };
+        return (
+          <UserAvatarHeader
+            title={'Account Settings'}
+            navigation={navigation}
+            withGoBack
+            disableSettings >
+            <WebBrowserConsumer>
+              {(openUrl) => (
+                <View>
+                  <RowHeader>
+                    <Name>
+                      <H4>{'Coming Soon!'}</H4>
+                    </Name>
+                  </RowHeader>
+                  {/* <TableView>
+                    <Touchable
+                      onPress={() => openUrl('https://apollosrock.newspring.cc/page/235')}
+                    >
+                      <Cell>
+                        <CellIcon name="check" />
+                        <CellText>Find a serving opportunity</CellText>
+                      </Cell>
+                    </Touchable>
+                    <Divider />
+                    <Touchable
+                      onPress={() => openUrl('https://apollosrock.newspring.cc/page/236')}
+                    >
+                      <Cell>
+                        <CellIcon name="groups" />
+                        <CellText>Join a small group</CellText>
+                      </Cell>
+                    </Touchable>
+                    <Divider />
+                    <Touchable
+                      onPress={() => openUrl('https://apollosrock.newspring.cc/page/233')}
+                    >
+                      <Cell>
+                        <CellIcon name="share" />
+                        <CellText>I need prayer</CellText>
+                      </Cell>
+                    </Touchable>
+                    <Divider />
+                    <Touchable
+                      onPress={() => openUrl('https://apollosrock.newspring.cc/page/186')}
+                    >
+                      <Cell>
+                        <CellIcon name="download" />
+                        <CellText>I would like to give</CellText>
+                      </Cell>
+                    </Touchable>
+                  </TableView>
+                  <TableView>
+                    <Touchable
+                      onPress={() => NavigationActions.navigate('TestingControlPanel')}
+                    >
+                      <Cell>
+                        <CellIcon name="settings" />
+                        <CellText>Open Testing Panel</CellText>
+                      </Cell>
+                    </Touchable>
+                  </TableView> */}
+                </View>
+              )}
+            </WebBrowserConsumer>
+          </UserAvatarHeader>
 
-  render() {
-    return (
-      <Query query={GET_LOGIN_STATE} fetchPolicy="cache-and-network">
-        {({ data: { isLoggedIn = false, loading } }) => {
-          if (loading) return <ActivityIndicator />;
-          if (!isLoggedIn) return null;
-          return (
-            <BackgroundContainer>
-              <AvatarView>
-                <AvatarForm text />
-              </AvatarView>
-              <WebBrowserConsumer>
-                {(openUrl) => (
-                  <BackgroundView>
-                    <TableView>
-                      <Touchable
-                        onPress={async () => {
-                          await this.props.navigation.navigate(
-                            'PersonalDetails'
-                          );
-                        }}
-                      >
-                        <Cell>
-                          <CellText>Personal Details</CellText>
-                          <CellIcon name="arrow-next" />
-                        </Cell>
-                      </Touchable>
-                      <Divider />
-                      <Touchable
-                        onPress={async () => {
-                          await this.props.navigation.navigate('Location');
-                        }}
-                      >
-                        <Cell>
-                          <CellText>Location</CellText>
-                          <CellIcon name="arrow-next" />
-                        </Cell>
-                      </Touchable>
-                      <Divider />
-                      <Touchable
-                        onPress={async () => {
-                          await this.props.navigation.navigate(
-                            'ChangePassword'
-                          );
-                        }}
-                      >
-                        <Cell>
-                          <CellText>Change Password</CellText>
-                          <CellIcon name="arrow-next" />
-                        </Cell>
-                      </Touchable>
-                    </TableView>
-                    <TableView>
-                      <Touchable
-                        onPress={() =>
-                          openUrl('https://apollosrock.newspring.cc/')
-                        }
-                      >
-                        <Cell>
-                          <CellText>Give Feedback</CellText>
-                          <CellIcon name="arrow-next" />
-                        </Cell>
-                      </Touchable>
-                    </TableView>
-                    <TableView>
-                      <Touchable
-                        onPress={() =>
-                          openUrl('https://apollosrock.newspring.cc/')
-                        }
-                      >
-                        <Cell>
-                          <CellText>Privacy Policy</CellText>
-                          <CellIcon name="arrow-next" />
-                        </Cell>
-                      </Touchable>
-                      <Divider />
-                      <Touchable
-                        onPress={() =>
-                          openUrl('https://apollosrock.newspring.cc/')
-                        }
-                      >
-                        <Cell>
-                          <CellText>Terms of Use</CellText>
-                          <CellIcon name="arrow-next" />
-                        </Cell>
-                      </Touchable>
-                    </TableView>
-                    <TableView>
-                      <Mutation mutation={LOGOUT}>
-                        {(handleLogout) => (
-                          <Touchable
-                            onPress={async () => {
-                              await handleLogout();
+        )
+      }}
+    </Query>
+  )
 
-                              const navigationAction = NavigationActions.navigate({
-                                routeName: 'LandingScreen',
-                                params: {},
-                                action: NavigationActions.navigate({ routeName: 'Identity' })
-                              })
-                              this.props.navigation.dispatch(navigationAction)
-                            }}
-                          >
-                            <Cell>
-                              <CellText>Logout</CellText>
-                              <CellIcon name="arrow-next" />
-                            </Cell>
-                          </Touchable>
-                        )}
-                      </Mutation>
-                    </TableView>
-                  </BackgroundView>
-                )}
-              </WebBrowserConsumer>
-            </BackgroundContainer>
-          );
-        }}
-      </Query>
-    );
-  }
-}
-
-export default UserSettings;
+export default UserSettings

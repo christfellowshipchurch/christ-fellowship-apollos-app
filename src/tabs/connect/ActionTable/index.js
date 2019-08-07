@@ -15,12 +15,19 @@ import {
 import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
 import NavigationActions from 'ChristFellowship/src/NavigationService';
 
-const RowHeader = styled(({ theme }) => ({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingVertical: theme.sizing.baseUnit,
-}))(PaddedView);
+const RowLink = ({ title, icon, link = 'https://beta.christfellowship.church' }) => (
+  <React.Fragment>
+    <Touchable
+      onPress={() => openUrl(link)}
+    >
+      <Cell>
+        <CellIcon name={icon} />
+        <CellText>{title}</CellText>
+      </Cell>
+    </Touchable>
+    <Divider />
+  </React.Fragment>
+)
 
 const Name = styled({
   flexGrow: 1,
@@ -29,60 +36,13 @@ const Name = styled({
 const ActionTable = () => (
   <WebBrowserConsumer>
     {(openUrl) => (
-      <View>
-        <RowHeader>
-          <Name>
-            <H4>{'Connect with Apollos'}</H4>
-          </Name>
-        </RowHeader>
-        <TableView>
-          <Touchable
-            onPress={() => openUrl('https://apollosrock.newspring.cc/page/235')}
-          >
-            <Cell>
-              <CellIcon name="check" />
-              <CellText>Find a serving opportunity</CellText>
-            </Cell>
-          </Touchable>
-          <Divider />
-          <Touchable
-            onPress={() => openUrl('https://apollosrock.newspring.cc/page/236')}
-          >
-            <Cell>
-              <CellIcon name="groups" />
-              <CellText>Join a small group</CellText>
-            </Cell>
-          </Touchable>
-          <Divider />
-          <Touchable
-            onPress={() => openUrl('https://apollosrock.newspring.cc/page/233')}
-          >
-            <Cell>
-              <CellIcon name="share" />
-              <CellText>I need prayer</CellText>
-            </Cell>
-          </Touchable>
-          <Divider />
-          <Touchable
-            onPress={() => openUrl('https://apollosrock.newspring.cc/page/186')}
-          >
-            <Cell>
-              <CellIcon name="download" />
-              <CellText>I would like to give</CellText>
-            </Cell>
-          </Touchable>
-        </TableView>
-        <TableView>
-          <Touchable
-            onPress={() => NavigationActions.navigate('TestingControlPanel')}
-          >
-            <Cell>
-              <CellIcon name="settings" />
-              <CellText>Open Testing Panel</CellText>
-            </Cell>
-          </Touchable>
-        </TableView>
-      </View>
+      <TableView>
+        <RowLink title="Profile Information" icon="profile" />
+        <RowLink title="Family Information" icon="groups" />
+        <RowLink title="Communication Preferences" icon="avatar" />
+        <RowLink title="My Faith Milestones" icon="pray" />
+        <RowLink title="Provacy, Terms of Use, Feedback" icon="information" />
+      </TableView>
     )}
   </WebBrowserConsumer>
 );

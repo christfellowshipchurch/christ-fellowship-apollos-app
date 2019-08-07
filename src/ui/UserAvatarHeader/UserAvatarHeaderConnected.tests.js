@@ -3,7 +3,7 @@ import { renderWithApolloData } from 'ChristFellowship/src/utils/testUtils';
 
 import Providers from 'ChristFellowship/src/Providers';
 
-import GET_USER_PROFILE from '../getUserProfile';
+import GET_USER_PROFILE from './getUserProfile';
 import UserAvatarHeaderConnected from './UserAvatarHeaderConnected';
 
 describe('user avatar header connect', () => {
