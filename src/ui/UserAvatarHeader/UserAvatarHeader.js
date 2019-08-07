@@ -1,5 +1,5 @@
 import React from 'react'
-import { Animated, View, ImageBackground, StyleSheet, Text } from 'react-native'
+import { Animated, View, ImageBackground, StyleSheet, Text, SafeAreaView } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import PropTypes from 'prop-types'
 import { compose } from 'recompose'
@@ -25,9 +25,10 @@ const CampusImage = styled(({ theme }) => ({
 }))(ImageBackground)
 
 const PaddedFlexedView = styled(({ theme }) => ({
-  paddingTop: theme.sizing.baseUnit * 2,
+  marginTop: theme.sizing.baseUnit,
+  flex: 1,
   flexDirection: 'column'
-}))(FlexedView)
+}))(SafeAreaView)
 
 
 const DarkOverlay = styled(({ theme }) => ({
@@ -62,7 +63,9 @@ const BackgroundImage = ({ range, children }) => (
   }} >
     <CampusImage source={{ uri: 'https://picsum.photos/375/812/?random' }}>
       <DarkOverlay />
-      {children}
+      <View style={{ zIndex: 3, height: '100%', width: '100%' }}>
+        {children}
+      </View>
     </CampusImage>
   </Animated.View>
 )
@@ -74,11 +77,20 @@ const UserAvatarHeader = ({
   navigation,
   disabled,
   isLoading,
-  animation
+  animation,
+  title,
+  withGoBack,
+  disableSettings
 }) => (
     <BackgroundImage {...animation}>
-      <PaddedFlexedView style={{ zIndex: 3 }}>
-        <NavigationHeader animation={animation} />
+      <PaddedFlexedView>
+        <NavigationHeader
+          style={{ zIndex: 4 }}
+          navigation={navigation}
+          animation={animation}
+          title={title}
+          withGoBack={withGoBack}
+          disableSettings={disableSettings} />
         <Content>
           <UserAvatarView
             firstName={firstName}
@@ -90,7 +102,6 @@ const UserAvatarHeader = ({
           />
         </Content>
       </PaddedFlexedView>
-
     </BackgroundImage>
   )
 

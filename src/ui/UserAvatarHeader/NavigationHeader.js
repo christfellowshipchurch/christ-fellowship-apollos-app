@@ -1,5 +1,5 @@
 import React from 'react'
-import { Animated } from 'react-native'
+import { Animated, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { withNavigation } from 'react-navigation'
 
@@ -10,18 +10,25 @@ import {
   FlexedView,
 } from '@apollosproject/ui-kit'
 
+const Container = styled(({ theme, height }) => ({
+  position: 'absolute',
+  height,
+  width: '100%',
+  top: 0,
+  left: 0,
+  // backgroundColor: 'purple',
+  marginTop: theme.sizing.baseUnit * -0.75
+}))(View)
 
 const Header = styled(({ theme }) => ({
-  position: 'absolute',
   flexDirection: 'row',
-  paddingTop: theme.sizing.baseUnit * 4,
+  // paddingTop: theme.sizing.baseUnit * 4,
   paddingHorizontal: theme.sizing.baseUnit * 2,
   alignItems: 'center',
   justifyContent: 'center'
 }))(FlexedView)
 
 const HeaderAction = styled(({ theme }) => ({
-  width: '10%',
   alignSelf: 'flex-start'
 }))(Touchable)
 
@@ -33,7 +40,6 @@ const HeaderTitle = ({ range, minHeight, maxHeight, children }) => {
 
   return (
     <Animated.Text style={{
-      width: '80%',
       textAlign: 'center',
       color: 'white',
       opacity
@@ -45,19 +51,36 @@ const HeaderTitle = ({ range, minHeight, maxHeight, children }) => {
 
 const NavigationHeader = ({
   navigation,
-  animation
+  animation,
+  style,
+  withGoBack = false,
+  title,
+  disableSettings = false
 }) => (
-    <Header>
-      <HeaderAction onPress={() => navigation.navigate('UserSettings')}>
-        <Icon name="arrow-back" fill={'white'} />
-      </HeaderAction>
+    <Container height={animation.minHeight} style={style}>
+      <Header>
+        <View style={{ flex: 1 }}>
+          {withGoBack &&
+            <Touchable onPress={() => navigation.goBack()}>
+              <Icon name="arrow-back" fill={'white'} />
+            </Touchable>
+          }
+        </View>
 
-      <HeaderTitle {...animation}>Title</HeaderTitle>
+        <View style={{ flex: 3 }}>
+          <HeaderTitle {...animation}>{title}</HeaderTitle>
+        </View>
 
-      <HeaderAction onPress={() => navigation.navigate('UserSettings')}>
-        <Icon name="settings" fill={'white'} />
-      </HeaderAction>
-    </Header>
+        <View style={{ flex: 1, alignItems: 'flex-end' }}>
+          {!disableSettings &&
+            <Touchable onPress={() => navigation.navigate('UserSettings')}>
+              <Icon name="settings" fill={'white'} />
+            </Touchable>
+          }
+        </View>
+
+      </Header>
+    </Container>
   )
 
 NavigationHeader.propTypes = {

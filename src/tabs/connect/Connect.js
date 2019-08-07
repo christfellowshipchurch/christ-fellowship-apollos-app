@@ -17,8 +17,8 @@ import {
 } from '@apollosproject/ui-kit';
 import ActionTable from './ActionTable';
 import Toolbar from './Toolbar';
-import { UserAvatarHeaderConnected } from './UserAvatarHeader';
-import { RecentlyLikedTileFeedConnected } from './RecentlyLikedTileFeed';
+import UserAvatarHeader from '../../ui/UserAvatarHeader'
+import { RecentlyLikedTileFeedConnected } from './RecentlyLikedTileFeed'
 
 const Title = styled(({ theme }) => ({
   color: theme.colors.primary,
@@ -66,9 +66,9 @@ class Connect extends PureComponent {
           {({ data }) => {
             if (get(data, 'isLoggedIn', false))
               return (
-                <UserAvatarHeaderConnected key="UserAvatarHeaderConnected">
+                <UserAvatarHeader key="UserAvatarHeaderConnected" navigation={this.props.navigation}>
                   <ActionTable />
-                </UserAvatarHeaderConnected>
+                </UserAvatarHeader>
               )
             return (
               <SafeAreaView>

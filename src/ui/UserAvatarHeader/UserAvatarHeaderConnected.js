@@ -4,7 +4,7 @@ import { Query } from 'react-apollo'
 import PropTypes from 'prop-types'
 import { get } from 'lodash'
 
-import GET_USER_PROFILE from '../getUserProfile'
+import GET_USER_PROFILE from './getUserProfile'
 import UserAvatarHeader from './UserAvatarHeader'
 
 const HEADER_MIN_HEIGHT = 150
@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
   }
 })
 
-const UserAvatarHeaderConnected = ({ navigation, children }) => {
+const UserAvatarHeaderConnected = (props) => {
+  const { children } = props
   const [scrollY, setScrollY] = useState(new Animated.Value(0))
   const animationRange = scrollY.interpolate({
     inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
@@ -46,13 +47,13 @@ const UserAvatarHeaderConnected = ({ navigation, children }) => {
               location={get(campus, 'name')}
               photo={photo}
               refetch={refetch}
-              navigation={navigation}
               disabled
               animation={{
                 range: animationRange,
                 minHeight: HEADER_MIN_HEIGHT,
                 maxHeight: HEADER_MAX_HEIGHT
               }}
+              {...props}
             />
             <ScrollView
               style={styles.scrollView}
