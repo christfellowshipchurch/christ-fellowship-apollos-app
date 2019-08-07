@@ -1,11 +1,12 @@
 import React from 'react'
-import { Animated, View, ImageBackground, StyleSheet } from 'react-native'
+import { Animated, View, ImageBackground, StyleSheet, Text } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import PropTypes from 'prop-types'
 import { compose } from 'recompose'
 import { withNavigation } from 'react-navigation'
 
-import UserAvatarView from 'ChristFellowship/src/ui/UserAvatarView'
+import NavigationHeader from './NavigationHeader'
+import UserAvatarView from './UserAvatarView'
 
 import {
   withIsLoading,
@@ -15,30 +16,19 @@ import {
   styled,
   PaddedView,
   FlexedView,
-  GradientOverlayImage
+  H4
 } from '@apollosproject/ui-kit'
 
 const CampusImage = styled(({ theme }) => ({
   width: '100%',
-  height: 375
+  height: '100%',
 }))(ImageBackground)
 
 const PaddedFlexedView = styled(({ theme }) => ({
-  paddingVertical: theme.sizing.baseUnit * 2,
+  paddingTop: theme.sizing.baseUnit * 2,
+  flexDirection: 'column'
 }))(FlexedView)
 
-const SettingsContainer = styled(({ theme }) => ({
-  alignItems: 'flex-end',
-  paddingVertical: theme.sizing.baseUnit,
-  paddingHorizontal: theme.sizing.baseUnit * 1.5,
-}))(Touchable)
-
-const SettingsIcon = compose(
-  withTheme(({ theme }) => ({
-    name: 'settings',
-    fill: theme.colors.white,
-  }))
-)(Icon)
 
 const DarkOverlay = styled(({ theme }) => ({
   backgroundColor: 'rgba(0, 0, 0, .55)',
@@ -47,47 +37,35 @@ const DarkOverlay = styled(({ theme }) => ({
   width: '100%'
 }))(View)
 
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    // flex: 0,
-    // zIndex: 2,
-    height: 375,
-    width: '100%',
-    backgroundColor: 'transparent',
+const Content = styled(({ theme }) => ({
+  width: '100%',
+  height: '100%',
+  paddingHorizontal: '20%',
+  // position: 'absolute',
+  top: 0,
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  // paddingTop: theme.sizing.baseUnit * 4
+}))(View)
 
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  headerBackground: {
-    position: 'absolute',
-    flex: 0,
-    height: 375,
-    width: '100%',
-    backgroundColor: 'blue',
-    // zIndex: 2,
-  }
-})
 
-const HeaderBackground = ({ animationRange, scrollRangeForAnimation }) => {
-  const animateHeader = {
-    transform: [
-      {
-        translateY: animationRange.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, scrollRangeForAnimation * -1],
-        }),
-      },
-    ],
-  }
-  return (
-    <Animated.View style={[styles.headerBackground, animateHeader]} pointerEvents="none">
-      <CampusImage source={{ uri: 'https://picsum.photos/375/812/?random' }}>
-        <DarkOverlay />
-      </CampusImage>
-    </Animated.View>
-  )
-}
+const BackgroundImage = ({ range, children }) => (
+  <Animated.View style={{
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'lightskyblue',
+    height: range,
+    zIndex: 2,
+  }} >
+    <CampusImage source={{ uri: 'https://picsum.photos/375/812/?random' }}>
+      <DarkOverlay />
+      {children}
+    </CampusImage>
+  </Animated.View>
+)
 
 const UserAvatarHeader = ({
   firstName,
@@ -96,24 +74,24 @@ const UserAvatarHeader = ({
   navigation,
   disabled,
   isLoading,
-  animationRange,
-  scrollRangeForAnimation
+  animation
 }) => (
-    <View style={styles.container}>
-      <HeaderBackground animationRange={animationRange} scrollRangeForAnimation={scrollRangeForAnimation} />
-      <PaddedFlexedView>
-        <SettingsContainer onPress={() => navigation.navigate('UserSettings')}>
-          <SettingsIcon />
-        </SettingsContainer>
-        <UserAvatarView
-          firstName={firstName}
-          lastName={lastName}
-          location={location}
-          disabled={disabled}
-          isLoading={isLoading}
-        />
+    <BackgroundImage {...animation}>
+      <PaddedFlexedView style={{ zIndex: 3 }}>
+        <NavigationHeader animation={animation} />
+        <Content>
+          <UserAvatarView
+            firstName={firstName}
+            lastName={lastName}
+            location={location}
+            disabled={disabled}
+            isLoading={isLoading}
+            animation={animation}
+          />
+        </Content>
       </PaddedFlexedView>
-    </View >
+
+    </BackgroundImage>
   )
 
 UserAvatarHeader.propTypes = {

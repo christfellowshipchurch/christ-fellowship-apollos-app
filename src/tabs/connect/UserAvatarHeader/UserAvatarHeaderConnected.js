@@ -9,7 +9,6 @@ import UserAvatarHeader from './UserAvatarHeader'
 
 const HEADER_MIN_HEIGHT = 150
 const HEADER_MAX_HEIGHT = 375
-const scrollRangeForAnimation = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT
 
 const styles = StyleSheet.create({
   container: {
@@ -22,25 +21,12 @@ const styles = StyleSheet.create({
 })
 
 const UserAvatarHeaderConnected = ({ navigation, children }) => {
-  let _scrollView = null
   const [scrollY, setScrollY] = useState(new Animated.Value(0))
   const animationRange = scrollY.interpolate({
-    inputRange: [0, scrollRangeForAnimation],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
+    inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp'
   })
-  const onScrollEndSnapToEdge = event => {
-    const y = event.nativeEvent.contentOffset.y;
-    if (0 < y && y < scrollRangeForAnimation / 2) {
-      if (_scrollView) {
-        _scrollView.scrollTo({ y: 0 });
-      }
-    } else if (scrollRangeForAnimation / 2 <= y && y < scrollRangeForAnimation) {
-      if (_scrollView) {
-        _scrollView.scrollTo({ y: scrollRangeForAnimation });
-      }
-    }
-  }
 
   return (
     <Query query={GET_USER_PROFILE} fetchPolicy="cache-and-network">
@@ -62,20 +48,15 @@ const UserAvatarHeaderConnected = ({ navigation, children }) => {
               refetch={refetch}
               navigation={navigation}
               disabled
-              animationRange={animationRange}
-              scrollRangeForAnimation={scrollRangeForAnimation}
+              animation={{
+                range: animationRange,
+                minHeight: HEADER_MIN_HEIGHT,
+                maxHeight: HEADER_MAX_HEIGHT
+              }}
             />
             <ScrollView
-              style={{
-                flex: 1,
-                zIndex: -1
-              }}
-              ref={scrollView => {
-                _scrollView = scrollView ? scrollView._component : null;
-              }}
+              style={styles.scrollView}
               scrollEventThrottle={16}
-              onScrollEndDrag={onScrollEndSnapToEdge}
-              onMomentumScrollEnd={onScrollEndSnapToEdge}
               onScroll={Animated.event(
                 [
                   {

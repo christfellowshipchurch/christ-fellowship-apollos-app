@@ -1,166 +1,174 @@
-import React, { PureComponent } from 'react';
-import { StackActions, NavigationActions } from 'react-navigation';
+import React, { PureComponent } from 'react'
+import { View, ImageBackground, ScrollView } from 'react-native'
+import { StackActions, NavigationActions } from 'react-navigation'
 
-import PropTypes from 'prop-types';
-import { Query, Mutation } from 'react-apollo';
+import PropTypes from 'prop-types'
+import { Query, Mutation } from 'react-apollo'
+import { compose } from 'recompose'
 
 import {
   BackgroundView,
   PaddedView,
   TableView,
+  FlexedView,
   Cell,
   CellIcon,
   CellText,
   Divider,
   Touchable,
   styled,
+  withTheme,
   ActivityIndicator,
+  Icon,
+  H4
 } from '@apollosproject/ui-kit';
 import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
 import AvatarForm from 'ChristFellowship/src/ui/UserAvatarView/AvatarForm';
 
-import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth';
+import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth'
+
+const StyledScrollView = styled(({ theme }) => ({
+  backgroundColor: theme.colors.paper,
+}))(ScrollView)
+
+const Container = styled(({ theme }) => ({
+  alignItems: 'center',
+  flexDirection: 'row',
+}))(ImageBackground)
+
+const NavigationHeader = styled(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingBottom: theme.sizing.baseUnit
+}))(FlexedView)
+
+const PaddedFlexedView = styled(({ theme }) => ({
+  paddingVertical: theme.sizing.baseUnit * 4,
+}))(FlexedView)
+
+const BackIconContainer = styled(({ theme }) => ({
+  paddingVertical: theme.sizing.baseUnit,
+  paddingHorizontal: theme.sizing.baseUnit * 1.5,
+}))(Touchable)
+
+const BackIcon = compose(
+  withTheme(({ theme }) => ({
+    name: 'arrowBack',
+    fill: theme.colors.white,
+  }))
+)(Icon)
+
+const DarkOverlay = styled(({ theme }) => ({
+  backgroundColor: 'rgba(0, 0, 0, .55)',
+  position: 'absolute',
+  height: '100%',
+  width: '100%'
+}))(View)
 
 const AvatarView = styled({
   alignItems: 'center',
   justifyContent: 'center',
-})(PaddedView);
+})(PaddedView)
 
-const BackgroundContainer = styled(({ theme }) => ({
-  paddingTop: theme.sizing.baseUnit * 1.75,
-}))(BackgroundView);
+const RowHeader = styled(({ theme }) => ({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingVertical: theme.sizing.baseUnit,
+}))(PaddedView)
 
-class UserSettings extends PureComponent {
-  static navigationOptions = () => ({
-    title: 'Settings',
-  });
+const Name = styled({
+  flexGrow: 1,
+})(View)
 
-  static propTypes = {
-    navigation: PropTypes.shape({
-      getParam: PropTypes.func,
-      navigate: PropTypes.func,
-    }),
-  };
+const UserSettings = ({
+  navigation
+}) => (
+    <Query query={GET_LOGIN_STATE} fetchPolicy="cache-and-network">
+      {({ data: { isLoggedIn = false, loading } }) => {
+        if (loading) return <ActivityIndicator />
+        if (!isLoggedIn) return null
 
-  render() {
-    return (
-      <Query query={GET_LOGIN_STATE} fetchPolicy="cache-and-network">
-        {({ data: { isLoggedIn = false, loading } }) => {
-          if (loading) return <ActivityIndicator />;
-          if (!isLoggedIn) return null;
-          return (
-            <BackgroundContainer>
-              <AvatarView>
-                <AvatarForm text />
-              </AvatarView>
+        return (
+          <View>
+            <Container source={{ uri: 'https://picsum.photos/375/812/?random' }}>
+              <DarkOverlay />
+              <PaddedFlexedView>
+                <NavigationHeader>
+                  <BackIconContainer onPress={() => navigation.goBack()}>
+                    <BackIcon />
+                  </BackIconContainer>
+                </NavigationHeader>
+
+                <AvatarView>
+                  <AvatarForm text />
+                </AvatarView>
+              </PaddedFlexedView>
+            </Container>
+            <StyledScrollView>
               <WebBrowserConsumer>
                 {(openUrl) => (
-                  <BackgroundView>
+                  <View>
+                    <RowHeader>
+                      <Name>
+                        <H4>{'My Home Campus'}</H4>
+                      </Name>
+                    </RowHeader>
                     <TableView>
                       <Touchable
-                        onPress={async () => {
-                          await this.props.navigation.navigate(
-                            'PersonalDetails'
-                          );
-                        }}
+                        onPress={() => openUrl('https://apollosrock.newspring.cc/page/235')}
                       >
                         <Cell>
-                          <CellText>Personal Details</CellText>
-                          <CellIcon name="arrow-next" />
+                          <CellIcon name="check" />
+                          <CellText>Find a serving opportunity</CellText>
                         </Cell>
                       </Touchable>
                       <Divider />
                       <Touchable
-                        onPress={async () => {
-                          await this.props.navigation.navigate('Location');
-                        }}
+                        onPress={() => openUrl('https://apollosrock.newspring.cc/page/236')}
                       >
                         <Cell>
-                          <CellText>Location</CellText>
-                          <CellIcon name="arrow-next" />
+                          <CellIcon name="groups" />
+                          <CellText>Join a small group</CellText>
                         </Cell>
                       </Touchable>
                       <Divider />
                       <Touchable
-                        onPress={async () => {
-                          await this.props.navigation.navigate(
-                            'ChangePassword'
-                          );
-                        }}
+                        onPress={() => openUrl('https://apollosrock.newspring.cc/page/233')}
                       >
                         <Cell>
-                          <CellText>Change Password</CellText>
-                          <CellIcon name="arrow-next" />
-                        </Cell>
-                      </Touchable>
-                    </TableView>
-                    <TableView>
-                      <Touchable
-                        onPress={() =>
-                          openUrl('https://apollosrock.newspring.cc/')
-                        }
-                      >
-                        <Cell>
-                          <CellText>Give Feedback</CellText>
-                          <CellIcon name="arrow-next" />
-                        </Cell>
-                      </Touchable>
-                    </TableView>
-                    <TableView>
-                      <Touchable
-                        onPress={() =>
-                          openUrl('https://apollosrock.newspring.cc/')
-                        }
-                      >
-                        <Cell>
-                          <CellText>Privacy Policy</CellText>
-                          <CellIcon name="arrow-next" />
+                          <CellIcon name="share" />
+                          <CellText>I need prayer</CellText>
                         </Cell>
                       </Touchable>
                       <Divider />
                       <Touchable
-                        onPress={() =>
-                          openUrl('https://apollosrock.newspring.cc/')
-                        }
+                        onPress={() => openUrl('https://apollosrock.newspring.cc/page/186')}
                       >
                         <Cell>
-                          <CellText>Terms of Use</CellText>
-                          <CellIcon name="arrow-next" />
+                          <CellIcon name="download" />
+                          <CellText>I would like to give</CellText>
                         </Cell>
                       </Touchable>
                     </TableView>
                     <TableView>
-                      <Mutation mutation={LOGOUT}>
-                        {(handleLogout) => (
-                          <Touchable
-                            onPress={async () => {
-                              await handleLogout();
-
-                              const navigationAction = NavigationActions.navigate({
-                                routeName: 'LandingScreen',
-                                params: {},
-                                action: NavigationActions.navigate({ routeName: 'Identity' })
-                              })
-                              this.props.navigation.dispatch(navigationAction)
-                            }}
-                          >
-                            <Cell>
-                              <CellText>Logout</CellText>
-                              <CellIcon name="arrow-next" />
-                            </Cell>
-                          </Touchable>
-                        )}
-                      </Mutation>
+                      <Touchable
+                        onPress={() => NavigationActions.navigate('TestingControlPanel')}
+                      >
+                        <Cell>
+                          <CellIcon name="settings" />
+                          <CellText>Open Testing Panel</CellText>
+                        </Cell>
+                      </Touchable>
                     </TableView>
-                  </BackgroundView>
+                  </View>
                 )}
               </WebBrowserConsumer>
-            </BackgroundContainer>
-          );
-        }}
-      </Query>
-    );
-  }
-}
+            </StyledScrollView>
+          </View>
+        )
+      }}
+    </Query>
+  )
 
-export default UserSettings;
+export default UserSettings
