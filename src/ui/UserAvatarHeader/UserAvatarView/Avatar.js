@@ -23,7 +23,8 @@ const AnimatedContainer = ({
   minHeight,
   avatarSmall = AVATAR_SMALL,
   avatarLarge = AVATAR_LARGE,
-  edit
+  edit,
+  isLoading
 }) => {
   const size = range.interpolate({
     inputRange: [minHeight, maxHeight],
@@ -47,7 +48,7 @@ const AnimatedContainer = ({
     }}>
       {children}
 
-      {edit &&
+      {(edit && !isLoading) &&
         <View style={{
           flex: 1,
           alignItems: 'center',
@@ -94,7 +95,7 @@ const Avatar = ({
   edit,
   ...imageProps
 }) => (
-    <AnimatedContainer {...animation} edit={edit}>
+    <AnimatedContainer {...animation} edit={edit} isLoading={isLoading}>
       {isLoading ? <LoadingIcon /> : null}
       {source && source.uri ? (
         <Image
