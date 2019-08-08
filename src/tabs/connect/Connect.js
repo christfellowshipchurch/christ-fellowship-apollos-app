@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import { Text, View } from 'react-native'
-import { NavigationActions } from 'react-navigation'
 import { Query } from 'react-apollo'
 import { get } from 'lodash'
 import PropTypes from 'prop-types'
