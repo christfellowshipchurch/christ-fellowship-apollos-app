@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-native';
-import { Mutation } from 'react-apollo';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { SafeAreaView } from 'react-native'
+import { Mutation } from 'react-apollo'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+import { has, get } from 'lodash'
 
 import {
   Button,
@@ -13,15 +14,11 @@ import {
   PaddedView,
   FlexedView,
   styled,
-} from '@apollosproject/ui-kit';
+} from '@apollosproject/ui-kit'
 
-import GET_AUTH_TOKEN from '../store/getAuthToken';
-import CHANGE_PASSWORD from './passwordChange';
+import GET_AUTH_TOKEN from '../store/getAuthToken'
+import CHANGE_PASSWORD from './passwordChange'
 
-const Footer = styled({
-  flex: 1,
-  justifyContent: 'flex-end',
-})(SafeAreaView);
 
 class ChangePassword extends PureComponent {
   static navigationOptions = ({ navigation }) => ({
@@ -32,7 +29,7 @@ class ChangePassword extends PureComponent {
         <ButtonLink onPress={() => navigation.goBack()}>Cancel</ButtonLink>
       </PaddedView>
     ),
-  });
+  })
 
   static propTypes = {
     navigation: PropTypes.shape({
@@ -40,44 +37,56 @@ class ChangePassword extends PureComponent {
       navigate: PropTypes.func,
       goBack: PropTypes.func,
     }),
-  };
+  }
 
-  renderForm = (props) => (
-    <FlexedView>
-      <BackgroundView>
-        <PaddedView>
-          <TextInput
-            label="New Password"
-            type="password"
-            value={props.values.password}
-            error={props.touched.password && props.errors.password}
-            onChangeText={(text) => props.setFieldValue('password', text)}
-          />
-          <TextInput
-            label="Confirm Password"
-            type="password"
-            value={props.values.confirmPassword}
-            error={
-              props.touched.confirmPassword && props.errors.confirmPassword
-            }
-            onChangeText={(text) =>
-              props.setFieldValue('confirmPassword', text)
-            }
-          />
-        </PaddedView>
-      </BackgroundView>
-      <Footer>
-        <PaddedView>
-          <Button
-            disabled={props.isSubmitting}
-            onPress={props.handleSubmit}
-            title="Save"
-            loading={props.isSubmitting}
-          />
-        </PaddedView>
-      </Footer>
-    </FlexedView>
-  );
+  renderForm = ({
+    isSubmitting,
+    setFieldValue,
+    errors,
+    values,
+    touched,
+    handleSubmit
+  }) => {
+    const disabled = isSubmitting
+      || get(values, 'password', '') === ''
+      || get(values, 'confirmPassword', '') === ''
+      || has(errors, 'password')
+      || has(errors, 'confirmPassword')
+
+    return (
+      <FlexedView>
+        <BackgroundView>
+          <PaddedView>
+            <TextInput
+              label="New Password"
+              type="password"
+              value={values.password}
+              error={touched.password && errors.password}
+              onChangeText={(text) => setFieldValue('password', text)}
+            />
+            <TextInput
+              label="Confirm Password"
+              type="password"
+              value={values.confirmPassword}
+              error={
+                touched.confirmPassword && errors.confirmPassword
+              }
+              onChangeText={(text) =>
+                setFieldValue('confirmPassword', text)
+              }
+            />
+
+            <Button
+              disabled={disabled}
+              onPress={handleSubmit}
+              title="Update Password"
+              loading={isSubmitting}
+            />
+          </PaddedView>
+        </BackgroundView>
+      </FlexedView>
+    )
+  }
 
   render() {
     return (
@@ -87,11 +96,11 @@ class ChangePassword extends PureComponent {
           await cache.writeQuery({
             query: GET_AUTH_TOKEN,
             data: { authToken: token },
-          });
+          })
 
           await cache.writeData({
             data: { authToken: token },
-          });
+          })
         }}
       >
         {(updatePassword) => (
@@ -107,27 +116,27 @@ class ChangePassword extends PureComponent {
             })}
             onSubmit={async (variables, { setSubmitting, setFieldError }) => {
               try {
-                await updatePassword({ variables });
+                await updatePassword({ variables })
 
-                await this.props.navigation.goBack();
+                // await this.props.navigation.goBack()
               } catch (e) {
-                const { graphQLErrors } = e;
-                if (graphQLErrors.length) {
+                const { graphQLErrors } = e
+                if (graphQLErrors && graphQLErrors.length) {
                   setFieldError(
                     'confirmPassword',
                     'Unknown error. Please try again later.'
-                  );
+                  )
                 }
               }
-              setSubmitting(false);
+              setSubmitting(false)
             }}
           >
             {this.renderForm}
           </Formik>
         )}
       </Mutation>
-    );
+    )
   }
 }
 
-export default ChangePassword;
+export default ChangePassword

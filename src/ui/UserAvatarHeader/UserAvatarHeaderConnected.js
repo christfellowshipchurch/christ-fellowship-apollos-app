@@ -69,7 +69,9 @@ const UserAvatarHeaderConnected = (props) => {
                 }
               )} >
               <Animated.View style={{ height: HEADER_MAX_HEIGHT }}></Animated.View>
-              {children}
+              {typeof (children) === 'function'
+                ? children({ firstName, lastName, campus })
+                : children}
             </ScrollView>
           </View>
         )}

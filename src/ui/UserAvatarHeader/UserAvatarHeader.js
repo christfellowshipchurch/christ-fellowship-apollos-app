@@ -38,17 +38,40 @@ const DarkOverlay = styled(({ theme }) => ({
   width: '100%'
 }))(View)
 
-const Content = styled(({ theme }) => ({
-  width: '100%',
-  height: '100%',
-  paddingHorizontal: '20%',
-  // position: 'absolute',
-  top: 0,
-  flex: 1,
-  alignItems: 'center',
-  justifyContent: 'center',
-  // paddingTop: theme.sizing.baseUnit * 4
-}))(View)
+// const Content = styled(({ theme, withGoBack }) => ({
+//   width: '100%',
+//   height: '100%',
+//   paddingHorizontal: withGoBack ? '20%' : 0,
+//   top: 0,
+//   flex: 1,
+//   alignItems: 'center',
+//   justifyContent: 'center',
+//   // paddingTop: theme.sizing.baseUnit * 4
+// }))(View)
+
+const Content = ({ withGoBack, children, range, minHeight, maxHeight }) => {
+  let paddingRight = withGoBack
+    ? "20%"
+    : range.interpolate({
+      inputRange: [minHeight, maxHeight],
+      outputRange: ["20%", "0%"],
+    })
+
+  return (
+    <Animated.View style={{
+      width: '100%',
+      height: '100%',
+      paddingLeft: withGoBack ? '20%' : 0,
+      paddingRight,
+      top: 0,
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      {children}
+    </Animated.View>
+  )
+}
 
 
 const BackgroundImage = ({ range, children }) => (
@@ -92,7 +115,7 @@ const UserAvatarHeader = ({
           title={title}
           withGoBack={withGoBack || edit}
           disableSettings={disableSettings || edit} />
-        <Content>
+        <Content {...animation} withGoBack={withGoBack || edit}>
           <UserAvatarView
             firstName={firstName}
             lastName={lastName}
@@ -101,6 +124,7 @@ const UserAvatarHeader = ({
             isLoading={isLoading}
             animation={animation}
             edit={edit}
+            withGoBack={withGoBack}
           />
         </Content>
       </PaddedFlexedView>
