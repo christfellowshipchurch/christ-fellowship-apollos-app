@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { ScrollView, SafeAreaView } from 'react-native'
+import { Text, View } from 'react-native'
 import { Query } from 'react-apollo'
 import { get } from 'lodash'
 import PropTypes from 'prop-types'
@@ -18,6 +18,10 @@ const Connect = ({ navigation }) => (
         if (get(data, 'isLoggedIn', false))
           return (
             <UserAvatarHeader key="UserAvatarHeaderConnected" navigation={navigation}>
+              <View style={{ height: 1000 }}>
+                <ActionTable />
+                <Text style={{ paddingHorizontal: 20 }}>Scroll up and down to see the Profile resize in real time</Text>
+              </View>
               <ActionTable />
             </UserAvatarHeader>
           )

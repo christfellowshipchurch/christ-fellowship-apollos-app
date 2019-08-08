@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { Query, Mutation } from 'react-apollo'
 import {
@@ -42,14 +42,14 @@ const UserSettings = ({
           <UserAvatarHeader
             title={'Account Settings'}
             navigation={navigation}
-            withGoBack
-            disableSettings >
+            edit >
             <WebBrowserConsumer>
               {(openUrl) => (
-                <View>
+                <View style={{ height: 1000 }}>
                   <RowHeader>
                     <Name>
                       <H4>{'Coming Soon!'}</H4>
+                      <Text>Scroll up and down to see the Profile resize in real time</Text>
                     </Name>
                   </RowHeader>
                   {/* <TableView>

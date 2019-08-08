@@ -27,11 +27,6 @@ const Container = styled(({ theme }) => ({
   width: '100%'
 }))(FlexedView)
 
-const StyledHeader = styled(({ theme }) => ({
-  color: theme.colors.white,
-  textAlign: 'center'
-}))(H3)
-
 const StyledSubHeader = styled(({ theme }) => ({
   color: theme.colors.white,
   textAlign: 'center',
@@ -51,7 +46,8 @@ const AnimatedAvitar = ({
   isLoading,
   disabled,
   height,
-  onLayout
+  onLayout,
+  edit
 }) => {
   const width = range.interpolate({
     inputRange: [minHeight, maxHeight],
@@ -66,9 +62,14 @@ const AnimatedAvitar = ({
       top: '50%',
       transform: [{ translateY: (height / 2) * -1 }]
     }}
-
-      onLayout={onLayout}>
-      <AvatarForm isLoading={isLoading} text={false} disabled={disabled} animation={{ range, minHeight, maxHeight }} />
+      onLayout={onLayout}
+    >
+      <AvatarForm
+        edit={edit}
+        isLoading={isLoading}
+        text={false}
+        disabled={disabled}
+        animation={{ range, minHeight, maxHeight }} />
     </Animated.View>
   )
 }
@@ -83,9 +84,9 @@ const AnimatedProfileInformation = ({
   height,
   isLoading,
   marginTop,
-  onLayout
+  onLayout,
+  edit
 }) => {
-
   const widthPercent = range.interpolate({
     inputRange: [minHeight, maxHeight],
     outputRange: ['60%', '100%'],
@@ -121,7 +122,8 @@ const AnimatedProfileInformation = ({
       }}>
         {`${firstName} ${lastName}`}
       </Animated.Text>
-      {location && (
+
+      {(location && !edit) && (
         <Location>
           <Icon name={'pin'} fill={'white'} size={12} isLoading={isLoading} />
           <StyledSubHeader>{location}</StyledSubHeader>
@@ -131,7 +133,15 @@ const AnimatedProfileInformation = ({
   )
 }
 
-const Content = ({ animation, isLoading, disabled, firstName, lastName, location }) => {
+const Content = ({
+  animation,
+  isLoading,
+  disabled,
+  firstName,
+  lastName,
+  location,
+  edit
+}) => {
   const [avatarLayout, setAvatarLayout] = useState({ height: 0, width: 0 })
   const [infoLayout, setInfoLayout] = useState({ height: 0, width: 0 })
 
@@ -150,6 +160,7 @@ const Content = ({ animation, isLoading, disabled, firstName, lastName, location
           setAvatarLayout({ height })
         }}
         {...avatarLayout}
+        edit={edit}
       />
 
       <AnimatedProfileInformation
@@ -163,42 +174,20 @@ const Content = ({ animation, isLoading, disabled, firstName, lastName, location
         }}
         {...infoLayout}
         marginTop={avatarLayout.height / 2}
-        isLoading={isLoading} />
+        isLoading={isLoading}
+        edit={edit}
+      />
     </View>
   )
 }
 
 const UserAvatarView = withIsLoading(
-  (props = {
-    theme,
-    firstName,
-    lastName,
-    location,
-    isLoading,
-    disabled,
-    animation,
-    ...viewProps
-  }) => {
-
-    return (
-      // todo: handle file select stuff
-      <Container>
-        <Content {...props} />
-
-        {/* <View>
-          <StyledHeader>
-            {firstName} {lastName}
-          </StyledHeader>
-          {location && (
-            <Location>
-              <Icon name={'pin'} fill={'white'} size={'12'} isLoading={isLoading} />
-              <StyledSubHeader>{location}</StyledSubHeader>
-            </Location>
-          )}
-        </View> */}
-      </Container>
-    )
-  }
+  (props) => (
+    // todo: handle file select stuff
+    <Container>
+      <Content {...props} />
+    </Container>
+  )
 )
 
 UserAvatarView.propTypes = {
