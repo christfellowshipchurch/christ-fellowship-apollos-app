@@ -28,7 +28,16 @@ const validate = async ({ username }) => {
     if (validation.errors) throw validation.errors
 }
 
-const handleSubmit = async ({ username }, { setSubmitting, props: { client, navigation } }) => {
+const handleSubmit = async (
+    { username },
+    {
+        setSubmitting,
+        setFieldValue,
+        props: {
+            client,
+            navigation
+        }
+    }) => {
     setSubmitting(true)
     const { email, phoneNumber } = await parseUsername(username)
 
@@ -42,7 +51,13 @@ const handleSubmit = async ({ username }, { setSubmitting, props: { client, navi
                 update: (cache, { data: { isValidIdentity: { success, isExistingIdentity } } }) => {
                     if (success) {
                         // navigate to Passcode validation
-                        navigation.navigate('Passcode', { username, type: 'password', isExistingIdentity })
+                        navigation.navigate(
+                            'Passcode',
+                            {
+                                username,
+                                type: 'password',
+                                isExistingIdentity
+                            })
                     } else {
                         // show some error on the screen
                     }
