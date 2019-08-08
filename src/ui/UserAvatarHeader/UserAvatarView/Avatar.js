@@ -10,20 +10,29 @@ import {
   ActivityIndicator,
   Icon,
   styled,
-  withTheme
+  withTheme,
 } from '@apollosproject/ui-kit'
 
-const AnimatedContainer = ({ children, range, maxHeight, minHeight, avatarSmall = 80, avatarLarge = 160 }) => {
+const AVATAR_SMALL = 80
+const AVATAR_LARGE = 160
+
+const AnimatedContainer = ({
+  children,
+  range,
+  maxHeight,
+  minHeight,
+  avatarSmall = AVATAR_SMALL,
+  avatarLarge = AVATAR_LARGE,
+  edit
+}) => {
   const size = range.interpolate({
     inputRange: [minHeight, maxHeight],
     outputRange: [avatarSmall, avatarLarge],
-    // extrapolate: 'clamp'
   })
 
   const borderRadius = range.interpolate({
     inputRange: [minHeight, maxHeight],
     outputRange: [avatarSmall / 2, avatarLarge / 2],
-    // extrapolate: 'clamp'
   })
 
   return (
@@ -33,21 +42,25 @@ const AnimatedContainer = ({ children, range, maxHeight, minHeight, avatarSmall 
       backgroundColor: 'white',
       borderRadius,
       alignItems: 'center',
-      justifyContent: 'flex-end',
+      justifyContent: 'center',
       overflow: 'hidden',
     }}>
       {children}
+
+      {edit &&
+        <View style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'rgba(0, 0, 0, .5)',
+          opacity: 0.75
+        }}>
+          <Icon name="camera" size={24} fill='white' />
+        </View>}
     </Animated.View>
   )
-}
-
-const AnimatedPlaceholder = ({ range, maxHeight, minHeight, avatarSmall = 80, avatarLarge = 160 }) => {
-  const size = range.interpolate({
-    inputRange: [minHeight, maxHeight],
-    outputRange: [avatarSmall, avatarLarge],
-  })
-
-  return (<PlaceholderIcon name="avatar" size={size} />)
 }
 
 const LoadingIcon = compose(
@@ -71,7 +84,6 @@ const Image = styled(({ themeSize }) => ({
   left: 0,
   right: 0,
   bottom: 0,
-  // borderRadius: themeSize / 2,
 }))(ConnectedImage)
 
 const Avatar = ({
@@ -79,10 +91,10 @@ const Avatar = ({
   source,
   isLoading,
   animation,
-  ...imageProps }) => {
-  console.log({ animation })
-  return (
-    <AnimatedContainer {...animation}>
+  edit,
+  ...imageProps
+}) => (
+    <AnimatedContainer {...animation} edit={edit}>
       {isLoading ? <LoadingIcon /> : null}
       {source && source.uri ? (
         <Image
@@ -91,11 +103,10 @@ const Avatar = ({
           isLoading={isLoading}
         />
       ) : (
-          <PlaceholderIcon name="avatar" size={80} />
+          <PlaceholderIcon name="profile" size={AVATAR_SMALL / 2} />
         )}
     </AnimatedContainer>
   )
-}
 
 Avatar.propTypes = {
   size: PropTypes.oneOf(['small', 'medium', 'large']),

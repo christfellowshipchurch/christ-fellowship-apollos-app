@@ -41,7 +41,7 @@ const ActionTable = () => (
         <RowLink title="Family Information" icon="groups" />
         <RowLink title="Communication Preferences" icon="avatar" />
         <RowLink title="My Faith Milestones" icon="pray" />
-        <RowLink title="Provacy, Terms of Use, Feedback" icon="information" />
+        <RowLink title="Privacy, Terms of Use, Feedback" icon="information" />
       </TableView>
     )}
   </WebBrowserConsumer>

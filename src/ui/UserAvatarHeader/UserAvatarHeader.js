@@ -80,7 +80,8 @@ const UserAvatarHeader = ({
   animation,
   title,
   withGoBack,
-  disableSettings
+  disableSettings,
+  edit
 }) => (
     <BackgroundImage {...animation}>
       <PaddedFlexedView>
@@ -89,8 +90,8 @@ const UserAvatarHeader = ({
           navigation={navigation}
           animation={animation}
           title={title}
-          withGoBack={withGoBack}
-          disableSettings={disableSettings} />
+          withGoBack={withGoBack || edit}
+          disableSettings={disableSettings || edit} />
         <Content>
           <UserAvatarView
             firstName={firstName}
@@ -99,6 +100,7 @@ const UserAvatarHeader = ({
             disabled={disabled}
             isLoading={isLoading}
             animation={animation}
+            edit={edit}
           />
         </Content>
       </PaddedFlexedView>

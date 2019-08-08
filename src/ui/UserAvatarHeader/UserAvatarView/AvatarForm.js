@@ -1,14 +1,12 @@
-import React, { PureComponent, useState } from 'react';
-import { View } from 'react-native';
+import React, { useState } from 'react';
+import { View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { Query, ApolloConsumer } from 'react-apollo';
 
 import {
   Touchable,
-  ButtonLink,
   withTheme,
-  H5,
   styled,
 } from '@apollosproject/ui-kit'
 import GET_USER_PROFILE from '../getUserProfile'
@@ -31,12 +29,11 @@ GetPhotoData.propTypes = {
 
 const StyledView = styled(({ theme }) => ({
   marginRight: 0,
-  marginBottom: theme.sizing.baseUnit * 0.75,
-  marginTop: theme.sizing.baseUnit * 0.5,
+  padding: theme.sizing.baseUnit * 0.5,
 }))(View)
 
 const RoundTouchable = withTheme(({ theme, size }) => ({
-  // borderRadius: get(theme.sizing.avatar, size, theme.sizing.avatar.small),
+  ...Platform.select(theme.shadows.default),
 }))(Touchable)
 
 const Wrapper = styled({
@@ -44,14 +41,10 @@ const Wrapper = styled({
   alignItems: 'center',
 })(View)
 
-const LightButtonLink = styled(({ theme }) => ({
-  color: theme.colors.white,
-}))(ButtonLink)
-
 const AvatarForm = ({
   disabled,
-  text,
-  animation
+  animation,
+  edit
 }) => {
   const [isUploadingFile, setIsUploadingFile] = useState(false)
   const handleUploadPhoto = async ({ client }) => {
@@ -75,7 +68,6 @@ const AvatarForm = ({
           <RoundTouchable
             disabled={disabled}
             onPress={() => handleUploadPhoto({ client })}
-          // size="large"
           >
             <GetPhotoData>
               {({ photo }) => (
@@ -85,18 +77,12 @@ const AvatarForm = ({
                     size="large"
                     isLoading={isUploadingFile}
                     animation={animation}
+                    edit={edit}
                   />
                 </StyledView>
               )}
             </GetPhotoData>
           </RoundTouchable>
-          {text ? (
-            <H5>
-              <LightButtonLink onPress={() => handleUploadPhoto({ client })}>
-                Change Photo
-              </LightButtonLink>
-            </H5>
-          ) : null}
         </Wrapper>
       )}
     </ApolloConsumer>
