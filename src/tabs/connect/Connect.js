@@ -26,8 +26,13 @@ const Connect = ({ navigation }) => (
             </UserAvatarHeader>
           )
 
-        // navigate back to the on boarding if for some odd reason you get to the Connect screen without logging in
-        this.props.navigation.navigate('LandingScreen')
+        // On logout or when not properly authenitcated
+        // navigate back to the Identity screen of the Profile Stack navigator
+        navigation.reset({
+          routeName: 'Profile',
+          params: {},
+          action: navigation.navigate({ routeName: 'Identity' }),
+        })
 
         return (
           <View></View>

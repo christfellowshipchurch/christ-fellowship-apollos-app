@@ -66,7 +66,7 @@ const AvatarForm = ({
       {(client) => (
         <Wrapper>
           <RoundTouchable
-            disabled={disabled}
+            disabled={disabled && !edit}
             onPress={() => handleUploadPhoto({ client })}
           >
             <GetPhotoData>

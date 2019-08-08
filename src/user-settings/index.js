@@ -26,12 +26,30 @@ const RowHeader = styled(({ theme }) => ({
   paddingVertical: theme.sizing.baseUnit,
 }))(PaddedView)
 
+const RowLink = ({ title, icon, onPress }) => (
+  <React.Fragment>
+    <Touchable
+      onPress={onPress}
+    >
+      <Cell>
+        <CellIcon name={icon} />
+        <CellText>{title}</CellText>
+        <CellIcon name={'arrow-next'} />
+      </Cell>
+    </Touchable>
+    <Divider />
+  </React.Fragment>
+)
+
 const Name = styled({
   flexGrow: 1,
 })(View)
 
 const UserSettings = ({
-  navigation
+  navigation,
+  title = 'Account Settings',
+  campusRowTitle = 'My Home Campus',
+  logoutText = 'Log Out'
 }) => (
     <Query query={GET_LOGIN_STATE} fetchPolicy="cache-and-network">
       {({ data: { isLoggedIn = false, loading } }) => {
@@ -40,68 +58,35 @@ const UserSettings = ({
 
         return (
           <UserAvatarHeader
-            title={'Account Settings'}
+            title={title}
             navigation={navigation}
             edit >
-            <WebBrowserConsumer>
-              {(openUrl) => (
-                <View style={{ height: 1000 }}>
-                  <RowHeader>
-                    <Name>
-                      <H4>{'Coming Soon!'}</H4>
-                      <Text>Scroll up and down to see the Profile resize in real time</Text>
-                    </Name>
-                  </RowHeader>
-                  {/* <TableView>
-                    <Touchable
-                      onPress={() => openUrl('https://apollosrock.newspring.cc/page/235')}
-                    >
-                      <Cell>
-                        <CellIcon name="check" />
-                        <CellText>Find a serving opportunity</CellText>
-                      </Cell>
-                    </Touchable>
-                    <Divider />
-                    <Touchable
-                      onPress={() => openUrl('https://apollosrock.newspring.cc/page/236')}
-                    >
-                      <Cell>
-                        <CellIcon name="groups" />
-                        <CellText>Join a small group</CellText>
-                      </Cell>
-                    </Touchable>
-                    <Divider />
-                    <Touchable
-                      onPress={() => openUrl('https://apollosrock.newspring.cc/page/233')}
-                    >
-                      <Cell>
-                        <CellIcon name="share" />
-                        <CellText>I need prayer</CellText>
-                      </Cell>
-                    </Touchable>
-                    <Divider />
-                    <Touchable
-                      onPress={() => openUrl('https://apollosrock.newspring.cc/page/186')}
-                    >
-                      <Cell>
-                        <CellIcon name="download" />
-                        <CellText>I would like to give</CellText>
-                      </Cell>
-                    </Touchable>
-                  </TableView>
-                  <TableView>
-                    <Touchable
-                      onPress={() => NavigationActions.navigate('TestingControlPanel')}
-                    >
-                      <Cell>
-                        <CellIcon name="settings" />
-                        <CellText>Open Testing Panel</CellText>
-                      </Cell>
-                    </Touchable>
-                  </TableView> */}
-                </View>
-              )}
-            </WebBrowserConsumer>
+            <RowHeader>
+              <H4>{campusRowTitle}</H4>
+            </RowHeader>
+            <TableView>
+              <Mutation mutation={LOGOUT}>
+                {(handleLogout) => (
+                  <RowLink
+                    title={logoutText}
+                    icon={'umbrella'}
+                    onPress={async () => {
+                      // trigger handle logout
+                      // rest of logout navigation and logic is handled on the Connect screen
+                      await handleLogout()
+                    }} />
+
+                )}
+              </Mutation>
+            </TableView>
+
+            <View style={{ height: 1000 }}>
+              <RowHeader>
+                <Name>
+                  <Text>Scroll up and down to see the Profile resize in real time</Text>
+                </Name>
+              </RowHeader>
+            </View>
           </UserAvatarHeader>
 
         )
