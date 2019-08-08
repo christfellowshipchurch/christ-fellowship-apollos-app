@@ -87,11 +87,6 @@ const AnimatedProfileInformation = ({
   onLayout,
   edit
 }) => {
-  const widthPercent = range.interpolate({
-    inputRange: [minHeight, maxHeight],
-    outputRange: ['60%', '100%'],
-  })
-
   const fontSize = range.interpolate({
     inputRange: [minHeight, maxHeight],
     outputRange: [16, 24],
@@ -102,14 +97,19 @@ const AnimatedProfileInformation = ({
     outputRange: [(height / 2) * -1, marginTop],
   })
 
+  const paddingLeft = range.interpolate({
+    inputRange: [minHeight, maxHeight],
+    outputRange: ['30%', '0%'],
+  })
+
   return (
     <Animated.View style={{
       flex: 1,
       alignItems: 'center',
-      width: widthPercent,
+      alignSelf: 'center',
+      paddingLeft,
       textAlign: 'center',
       position: 'absolute',
-      right: 0,
       top: '50%',
       transform: [{ translateY }],
     }}

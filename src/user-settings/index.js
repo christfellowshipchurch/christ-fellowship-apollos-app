@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import { NavigationActions } from 'react-navigation'
+import { get } from 'lodash'
 import { Query, Mutation } from 'react-apollo'
 import {
   PaddedView,
@@ -15,9 +15,10 @@ import {
   H4
 } from '@apollosproject/ui-kit'
 
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser'
 import UserAvatarHeader from '../ui/UserAvatarHeader'
 import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth'
+import HAS_EMAIL_USER_LOGIN from './hasEmailUserLogin'
+import ChangePassword from './ChangePassword'
 
 const RowHeader = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -61,32 +62,67 @@ const UserSettings = ({
             title={title}
             navigation={navigation}
             edit >
-            <RowHeader>
-              <H4>{campusRowTitle}</H4>
-            </RowHeader>
-            <TableView>
-              <Mutation mutation={LOGOUT}>
-                {(handleLogout) => (
+            {({ campus }) => (
+              <React.Fragment>
+                <RowHeader>
+                  <H4>{campusRowTitle}</H4>
+                </RowHeader>
+                <TableView>
                   <RowLink
-                    title={logoutText}
-                    icon={'umbrella'}
-                    onPress={async () => {
-                      // trigger handle logout
-                      // rest of logout navigation and logic is handled on the Connect screen
-                      await handleLogout()
-                    }} />
+                    title={get(campus, 'name', 'Select My Location')}
+                    icon={'pin'}
+                    onPress={() => navigation.navigate('Location')} />
+                </TableView>
 
-                )}
-              </Mutation>
-            </TableView>
+                <Query query={HAS_EMAIL_USER_LOGIN} fetchPolicy="cache-and-network">
+                  {({
+                    data: { hasEmailUserLogin = false },
+                    loading: lookingForEmailUserLogin,
+                    error
+                  }) => {
+                    if (lookingForEmailUserLogin) return <ActivityIndicator />
+                    if (error) return null
 
-            <View style={{ height: 1000 }}>
-              <RowHeader>
-                <Name>
-                  <Text>Scroll up and down to see the Profile resize in real time</Text>
-                </Name>
-              </RowHeader>
-            </View>
+                    return hasEmailUserLogin
+                      ? (
+                        <React.Fragment>
+                          <RowHeader>
+                            <H4>Change My Password</H4>
+                          </RowHeader>
+                          <TableView>
+                            <ChangePassword />
+                          </TableView>
+                        </React.Fragment>
+                      ) : null
+                  }}
+
+                </Query>
+
+                <TableView>
+                  <Mutation mutation={LOGOUT}>
+                    {(handleLogout) => (
+                      <RowLink
+                        title={logoutText}
+                        icon={'umbrella'}
+                        onPress={async () => {
+                          // trigger handle logout
+                          // rest of logout navigation and logic is handled on the Connect screen
+                          await handleLogout()
+                        }} />
+
+                    )}
+                  </Mutation>
+                </TableView>
+
+                <View style={{ height: 1000 }}>
+                  <RowHeader>
+                    <Name>
+                      <Text>Scroll up and down to see the Profile resize in real time</Text>
+                    </Name>
+                  </RowHeader>
+                </View>
+              </React.Fragment>
+            )}
           </UserAvatarHeader>
 
         )
