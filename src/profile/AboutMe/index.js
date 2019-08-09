@@ -16,6 +16,7 @@ import {
 
 import UserAvatarHeader from 'ChristFellowship/src/ui/UserAvatarHeader'
 import InfoForm from './InfoForm'
+import AddressForm from './AddressForm'
 
 const RowHeader = styled(({ theme }) => ({
     flexDirection: 'row',
@@ -75,7 +76,7 @@ const AboutMe = ({
                             <H3>{addressRowTitle}</H3>
                         </RowHeader>
                         <TableView>
-
+                            <AddressForm />
                         </TableView>
 
                         <View style={{ height: 1000 }}>
