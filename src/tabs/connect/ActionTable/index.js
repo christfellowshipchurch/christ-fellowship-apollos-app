@@ -1,6 +1,4 @@
-import React from 'react';
-import { View } from 'react-native';
-
+import React from 'react'
 import {
   TableView,
   Cell,
@@ -9,46 +7,40 @@ import {
   Divider,
   Touchable,
   styled,
-  PaddedView,
-  H4,
-} from '@apollosproject/ui-kit';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
-import NavigationActions from 'ChristFellowship/src/NavigationService';
+} from '@apollosproject/ui-kit'
 
-const RowLink = ({ title, icon, link = 'https://beta.christfellowship.church' }) => (
+const RowLink = ({ title, icon, onPress }) => (
   <React.Fragment>
     <Touchable
-      onPress={() => openUrl(link)}
+      onPress={onPress}
     >
       <Cell>
         <CellIcon name={icon} />
         <CellText>{title}</CellText>
+        <CellIcon name={'arrow-next'} />
       </Cell>
     </Touchable>
     <Divider />
   </React.Fragment>
 )
 
-const Name = styled({
-  flexGrow: 1,
-})(View);
-
-const ActionTable = () => (
-  <WebBrowserConsumer>
-    {(openUrl) => (
-      <TableView>
-        <RowLink title="Profile Information" icon="profile" />
-        <RowLink title="Family Information" icon="groups" />
-        <RowLink title="Communication Preferences" icon="avatar" />
-        <RowLink title="My Faith Milestones" icon="pray" />
-        <RowLink title="Privacy, Terms of Use, Feedback" icon="information" />
-      </TableView>
-    )}
-  </WebBrowserConsumer>
-);
+const ActionTable = ({
+  navigation
+}) => (
+    <TableView>
+      <RowLink
+        title="Profile Information"
+        icon="profile"
+        onPress={() => navigation.navigate('AboutMe')} />
+      <RowLink title="Family Information" icon="groups" />
+      <RowLink title="Communication Preferences" icon="avatar" />
+      <RowLink title="My Faith Milestones" icon="pray" />
+      <RowLink title="Privacy, Terms of Use, Feedback" icon="information" />
+    </TableView>
+  )
 
 const StyledActionTable = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 100,
-}))(ActionTable);
+}))(ActionTable)
 
-export default StyledActionTable;
+export default StyledActionTable

@@ -16,7 +16,7 @@ import {
   styled,
 } from '@apollosproject/ui-kit'
 
-import GET_AUTH_TOKEN from '../store/getAuthToken'
+import GET_AUTH_TOKEN from 'ChristFellowship/src/store/getAuthToken'
 import CHANGE_PASSWORD from './passwordChange'
 
 
