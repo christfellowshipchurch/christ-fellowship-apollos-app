@@ -19,7 +19,7 @@ const Connect = ({ navigation }) => (
           return (
             <UserAvatarHeader key="UserAvatarHeaderConnected" navigation={navigation}>
               <View style={{ height: 1000 }}>
-                <ActionTable />
+                <ActionTable navigation={navigation} />
                 <Text style={{ paddingHorizontal: 20 }}>Scroll up and down to see the Profile resize in real time</Text>
               </View>
               <ActionTable />
