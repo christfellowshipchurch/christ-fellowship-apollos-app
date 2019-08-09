@@ -159,7 +159,7 @@ const AddressForm = ({
                         enablesReturnKeyAutomatically
                     />
 
-                    <StateSelect value={get(values, 'state')} />
+                    {/* <StateSelect value={get(values, 'state')} /> */}
 
                     <TextInput
                         label={'Zip Code'}

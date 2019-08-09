@@ -243,7 +243,7 @@ const InfoForm = ({
                             // TODO : error handling
                         }} />
 
-                    <EthnicitySelect value={get(values, 'ethnicity', ethnicityPlaceholder)} placeholder={ethnicityPlaceholder} />
+                    {/* <EthnicitySelect value={get(values, 'ethnicity', ethnicityPlaceholder)} placeholder={ethnicityPlaceholder} /> */}
 
                 </PaddedView>
             </BackgroundView>
