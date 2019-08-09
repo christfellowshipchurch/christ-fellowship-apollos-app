@@ -19,10 +19,10 @@ const ConnectNavigator = createStackNavigator(
       screen: AboutMe,
       navigationOptions: () => ({ header: null })
     },
-    // AppInformation: {
-    //   screen: UserSettings,
-    //   navigationOptions: () => ({ header: null })
-    // },
+    AppInformation: {
+      screen: AppInformation,
+      navigationOptions: () => ({ header: null })
+    },
     // CommunicationPreferences: {
     //   screen: UserSettings,
     //   navigationOptions: () => ({ header: null })

@@ -32,10 +32,14 @@ const ActionTable = ({
         title="Profile Information"
         icon="profile"
         onPress={() => navigation.navigate('AboutMe')} />
+
       <RowLink title="Family Information" icon="groups" />
       <RowLink title="Communication Preferences" icon="avatar" />
       <RowLink title="My Faith Milestones" icon="pray" />
-      <RowLink title="Privacy, Terms of Use, Feedback" icon="information" />
+      <RowLink
+        title="Privacy, Terms of Use, Feedback"
+        icon="information"
+        onPress={() => navigation.navigate('AppInformation')} />
     </TableView>
   )
 

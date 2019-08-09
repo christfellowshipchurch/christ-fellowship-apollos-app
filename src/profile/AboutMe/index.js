@@ -36,7 +36,9 @@ const Name = styled({
 const AboutMe = ({
     navigation,
     infoRowTitle = 'Personal Information',
-    addressRowTitle = 'Home Address'
+    addressRowTitle = 'Home Address',
+    changeNameRowTitle = 'Change Your Name',
+    changeNameDescription = 'In order to change your name blah bloo blee sdfoinsadov deebidy derp'
 }) => (
         <UserAvatarHeader
             navigation={navigation}
@@ -77,6 +79,15 @@ const AboutMe = ({
                         </RowHeader>
                         <TableView>
                             <AddressForm />
+                        </TableView>
+
+                        <RowHeader>
+                            <H3>{changeNameRowTitle}</H3>
+                        </RowHeader>
+                        <TableView>
+                            <PaddedView>
+                                <Text>{changeNameDescription}</Text>
+                            </PaddedView>
                         </TableView>
 
                         <View style={{ height: 1000 }}>

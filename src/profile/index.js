@@ -1,5 +1,5 @@
 export AboutMe from './AboutMe'
-// export AppInformation from './AppInformation'
+export AppInformation from './AppInformation'
 // export CommuncationPreferences from './CommuncationPreferences'
 // export FaithMilestones from './FaithMilestones'
 // export FamilyInformation from './FamilyInformation'
