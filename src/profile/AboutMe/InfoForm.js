@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
-import { Mutation } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import { withFormik } from 'formik'
 import * as Yup from 'yup'
 import { has, get } from 'lodash'
@@ -21,10 +21,15 @@ import {
     DateInput,
     Picker,
     Icon,
-    Touchable
+    Touchable,
 } from '@apollosproject/ui-kit'
 
 import { UDPATE_GENDER, UPDATE_BIRTHDATE, UPDATE_ETHNICITY } from './mutations'
+import { GET_ETHNICITY_LIST } from './queries'
+
+const ErrorMessage = styled(({ theme }) => ({
+    color: theme.colors.alert
+}))(H5)
 
 const StyledRadio = styled(({ theme }) => ({
     marginBottom: theme.sizing.baseUnit,
@@ -42,11 +47,6 @@ const Label = styled(({ theme, padded }) => ({
     opacity: 0.7,
     ...(padded ? { marginTop: theme.sizing.baseUnit } : {}),
 }))(H6)
-
-const StyledDate = styled(({ theme }) => ({
-    marginTop: 0,
-    marginBottom: theme.sizing.baseUnit,
-}))(DateInput)
 
 const DropDownContainer = styled(({ theme }) => ({
     padding: theme.sizing.baseUnit * 0.5,
@@ -94,6 +94,112 @@ const ActivityIndicatorOverlay = () => (
     </Overlay>
 )
 
+const GenderSelect = ({ value, genderList, onChange, onSuccess, onError }) => (
+    <Mutation
+        mutation={UDPATE_GENDER}
+        update={(cache, { data }) => onSuccess(get(data, 'updateProfileFields', { gender: '' }))}
+    >
+        {(updateGender) => (
+            <>
+                <Label padded>Gender</Label>
+                <StyledRadio
+                    label="Gender"
+                    type="radio"
+                    value={value}
+                    onChange={async (gender) => {
+                        onChange()
+                        try {
+                            await updateGender({ variables: { gender } })
+                        } catch (e) {
+                            onError(e)
+                        }
+                    }}
+                >
+                    {genderList.map((gender) => [
+                        <RadioButton
+                            key={gender}
+                            value={gender}
+                            label={() => <RadioLabel>{gender}</RadioLabel>}
+                            underline={false}
+                        />,
+                    ])}
+                </StyledRadio>
+            </>
+        )}
+    </Mutation>
+)
+
+const BirthDateSelect = ({ value, onChange, onSuccess, onError }) => {
+    const [showDateTimePicker, setShowDateTimePicker] = useState(false)
+
+    return (
+        <Mutation
+            mutation={UPDATE_BIRTHDATE}
+            update={(cache, { data }) => onSuccess(get(data, 'updateProfileFields', { birthDate: null }))}
+        >
+            {(updateBirthDate) => (
+                <>
+                    <Label padded>Birth Date</Label>
+                    <DropDown
+                        value={value}
+                        icon='profile'
+                        onPress={() => setShowDateTimePicker(true)} />
+                    <DateTimePicker
+                        date={moment.utc(value).toDate()}
+                        isVisible={showDateTimePicker}
+                        onConfirm={(birthDate) => {
+                            onChange()
+
+                            try {
+                                updateBirthDate({ variables: { birthDate } })
+                            } catch (e) {
+                                onError(e)
+                            }
+
+                            setShowDateTimePicker(false)
+                        }}
+                        onCancel={() => setShowDateTimePicker(false)}
+                    />
+                </>
+            )}
+        </Mutation>
+    )
+}
+
+// TODO : make my own Picker
+const EthnicitySelect = ({ value = '', placeholder, onChange }) => {
+    const [selectedValue, setSelectedValue] = useState(value)
+    return (
+        <Query query={GET_ETHNICITY_LIST} fetchPolicy="cache-and-network">
+            {({ data, loading, error }) => {
+                const disabled = loading || error
+                const values = get(data, 'getEthnicityList.values', [])
+
+                return (
+                    <>
+                        <Label padded>Ethnicity</Label>
+                        <Picker
+                            placeholder={placeholder}
+                            label=""
+                            value={selectedValue}
+                            displayValue={selectedValue}
+                            onValueChange={(ethnicity) => {
+                                console.log({ ethnicity })
+                                setSelectedValue(ethnicity)
+                                onChange(ethnicity)
+                            }}>
+                            {values.map((n, i) => {
+                                console.log({ n })
+                                return <Picker.Item label={n.value} value={n.value} key={i} />
+                            })}
+                        </Picker>
+                    </>
+                )
+            }}
+        </Query>
+    )
+}
+
 const InfoForm = ({
     isSubmitting = true,
     setSubmitting,
@@ -103,101 +209,47 @@ const InfoForm = ({
     genderList = ['Male', 'Female'],
     birthDatePlaceholder = 'Select Birth Date',
     ethnicityPlaceholder = 'Select Ethnicity',
-}) => {
-    const [showDateTimePicker, setShowDateTimePicker] = useState(false)
-
-    return (
+}) => (
         <FlexedView>
             <BackgroundView>
                 <PaddedView>
-                    <Mutation
-                        mutation={UDPATE_GENDER}
-                        update={(cache, { data }) => {
-                            setFieldValue('gender', get(data, 'updateProfileFields.gender'))
+                    {has(errors, 'info') && <ErrorMessage>Something went wrong... so so terribly wrong... sorry</ErrorMessage>}
+                    <GenderSelect
+                        value={get(values, 'gender')}
+                        genderList={genderList}
+                        onChange={() => setSubmitting(true)}
+                        onSuccess={({ gender }) => {
+                            setFieldValue('gender', gender)
                             setSubmitting(false)
-                        }} >
-                        {(updateGender) => (
-                            <>
-                                <Label padded>Gender</Label>
-                                <StyledRadio
-                                    label="Gender"
-                                    type="radio"
-                                    value={get(values, 'gender')}
-                                    error={get(errors, 'gender', null)}
-                                    onChange={async (gender) => {
-                                        setSubmitting(true)
-                                        try {
-                                            await updateGender({ variables: { gender } })
-                                        } catch (e) {
-                                            console.log({ e })
-                                            setSubmitting(false)
-                                        }
-                                    }}
-                                >
-                                    {genderList.map((gender) => [
-                                        <RadioButton
-                                            key={gender}
-                                            value={gender}
-                                            label={() => <RadioLabel>{gender}</RadioLabel>}
-                                            underline={false}
-                                        />,
-                                    ])}
-                                </StyledRadio>
-                            </>
-                        )}
-                    </Mutation>
-
-                    <Mutation
-                        mutation={UPDATE_BIRTHDATE}
-                        update={(cache, { data }) => {
-                            setFieldValue('birthDate', get(data, 'updateProfileFields.birthDate'))
+                        }}
+                        onError={(e) => {
                             setSubmitting(false)
-                        }} >
-                        {(updateBirthDate) => (
-                            <>
-                                <Label padded>Birth Date</Label>
-                                <DropDown
-                                    value={has(values, 'birthDate')
-                                        ? moment
-                                            .utc(get(values, 'birthDate'))
-                                            .format('MMM DD, YYYY')
-                                        : birthDatePlaceholder}
-                                    icon='profile'
-                                    onPress={() => setShowDateTimePicker(true)} />
-                                <DateTimePicker
-                                    date={moment
-                                        .utc(get(values, 'birthDate', new Date()))
-                                        .toDate()}
-                                    isVisible={showDateTimePicker}
-                                    onConfirm={(birthDate) => {
-                                        setSubmitting(true)
+                            // TODO : error handling
+                        }} />
 
-                                        try {
-                                            updateBirthDate({ variables: { birthDate } })
-                                        } catch (e) {
-                                            console.log({ e })
-                                        }
+                    <BirthDateSelect
+                        value={has(values, 'birthDate')
+                            ? moment
+                                .utc(get(values, 'birthDate'))
+                                .format('MMM DD, YYYY')
+                            : birthDatePlaceholder}
+                        onChange={() => setSubmitting(true)}
+                        onSuccess={({ birthDate }) => {
+                            setFieldValue('birthDate', birthDate)
+                            setSubmitting(false)
+                        }}
+                        onError={(e) => {
+                            setSubmitting(false)
+                            // TODO : error handling
+                        }} />
 
-                                        setShowDateTimePicker(false)
-                                    }}
-                                    onCancel={() => setShowDateTimePicker(false)}
-                                />
-                            </>
-                        )}
-                    </Mutation>
+                    <EthnicitySelect value={get(values, 'ethnicity', ethnicityPlaceholder)} placeholder={ethnicityPlaceholder} />
 
-                    <Label padded>Ethnicity</Label>
-                    <DropDown
-                        value={get(values, 'ethnicity', ethnicityPlaceholder)}
-                        icon='profile'
-                        disabled
-                    />
                 </PaddedView>
             </BackgroundView>
             {isSubmitting && <ActivityIndicatorOverlay />}
         </FlexedView>
     )
-}
 
 const FormikForm = ({ onSubmit, initialValues, isInitialValid }) => {
     const Form = withFormik({
