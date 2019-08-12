@@ -90,6 +90,15 @@ const AboutMe = ({
                             </PaddedView>
                         </TableView>
 
+                        <RowHeader>
+                            <H3>{changeNameRowTitle}</H3>
+                        </RowHeader>
+                        <TableView>
+                            <PaddedView>
+                                <Text>{changeNameDescription}</Text>
+                            </PaddedView>
+                        </TableView>
+
                         <View style={{ height: 1000 }}>
                             <RowHeader>
                                 <Name>
