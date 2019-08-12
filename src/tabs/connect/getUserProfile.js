@@ -20,6 +20,13 @@ export default gql`
           uri
         }
       }
+      address {
+        street1
+        street2
+        city
+        state
+        postalCode
+      }
     }
   }
   ${CampusParts}

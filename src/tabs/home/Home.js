@@ -85,7 +85,7 @@ class Home extends PureComponent {
                   <>
                     <LogoTitle source={require('./wordmark.png')} />
                     <LiveButton />
-                    <Query
+                    {/* <Query
                       query={GET_CAMPAIGN_CONTENT_ITEM}
                       fetchPolicy="cache-and-network"
                     >
@@ -115,8 +115,8 @@ class Home extends PureComponent {
                           </TouchableScale>
                         );
                       }}
-                    </Query>
-                    <Query
+                    </Query> */}
+                    {/* <Query
                       query={GET_PERSONA_FEED}
                       fetchPolicy="cache-and-network"
                     >
@@ -148,7 +148,7 @@ class Home extends PureComponent {
                           ).map((edge) => edge.node)}
                         />
                       )}
-                    </Query>
+                    </Query> */}
                   </>
                 }
                 onPressItem={this.handleOnPress}

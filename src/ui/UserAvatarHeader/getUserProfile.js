@@ -19,6 +19,15 @@ export default gql`
         photo {
           uri
         }
+        address {
+          street1
+          street2
+          city
+          state
+          postalCode
+        }
+        salvationDate
+        baptismDate
       }
     }
   }

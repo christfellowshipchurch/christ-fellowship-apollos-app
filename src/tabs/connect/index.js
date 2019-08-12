@@ -27,10 +27,10 @@ const ConnectNavigator = createStackNavigator(
     //   screen: UserSettings,
     //   navigationOptions: () => ({ header: null })
     // },
-    // FaithMilestones: {
-    //   screen: UserSettings,
-    //   navigationOptions: () => ({ header: null })
-    // },
+    FaithMilestones: {
+      screen: FaithMilestones,
+      navigationOptions: () => ({ header: null })
+    },
     // FamilyInformation: {
     //   screen: UserSettings,
     //   navigationOptions: () => ({ header: null })

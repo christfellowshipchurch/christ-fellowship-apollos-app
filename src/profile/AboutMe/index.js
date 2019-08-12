@@ -44,8 +44,8 @@ const AboutMe = ({
             navigation={navigation}
             minimize
             withGoBack >
-            {({ birthDate, gender }) => {
-                console.log({ birthDate, gender })
+            {({ birthDate, gender, address }) => {
+                console.log({ birthDate, gender, address })
 
                 return (
                     <AboutMeContainer>
@@ -78,7 +78,7 @@ const AboutMe = ({
                             <H3>{addressRowTitle}</H3>
                         </RowHeader>
                         <TableView>
-                            <AddressForm />
+                            <AddressForm initialValues={{ ...address }} />
                         </TableView>
 
                         <RowHeader>

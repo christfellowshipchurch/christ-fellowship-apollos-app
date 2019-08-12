@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native'
 import { Query, Mutation } from 'react-apollo'
 import { withFormik } from 'formik'
 import * as Yup from 'yup'
-import { has, get } from 'lodash'
+import { has, get, isEmpty } from 'lodash'
 import moment from 'moment'
 import DateTimePicker from 'react-native-modal-datetime-picker'
 
@@ -22,7 +22,8 @@ import {
     Picker,
     Icon,
     Touchable,
-    TextInput
+    TextInput,
+    Button
 } from '@apollosproject/ui-kit'
 
 import { GET_STATES_LIST } from './queries'
@@ -122,8 +123,23 @@ const AddressForm = ({
     errors,
     values,
     isLoading,
-    touched
-}) => (
+    touched,
+    handleSubmit
+}) => {
+    const [inputChanged, setInputChanged] = useState(false)
+    const disabled = isSubmitting
+        || !inputChanged
+        || !get(values, 'street1', null)
+        || !get(values, 'city', null)
+        || !get(values, 'postalCode', null)
+        || !get(values, 'state', null)
+
+    const onChangeText = (key, value) => {
+        setInputChanged(true)
+        setFieldValue(key, value)
+    }
+
+    return (
         <FlexedView>
             <BackgroundView>
                 <PaddedView>
@@ -132,14 +148,14 @@ const AddressForm = ({
                     <TextInput
                         label={'Street Address'}
                         type={'text'}
-                        // textContentType={'familyName'} // ios autofill
+                        textContentType={'fullStreetAddress'} // ios autofill
                         returnKeyType={'next'}
-                        value={get(values, 'streetAddress')}
+                        value={get(values, 'street1')}
                         error={
-                            get(touched, 'streetAddress', false) &&
-                            get(errors, 'streetAddress', null)
+                            get(touched, 'street1', false) &&
+                            get(errors, 'street1', null)
                         }
-                        onChangeText={(text) => setFieldValue('streetAddress', text)}
+                        onChangeText={(text) => onChangeText('street1', text)}
                         disabled={isLoading}
                         enablesReturnKeyAutomatically
                     />
@@ -147,14 +163,14 @@ const AddressForm = ({
                     <TextInput
                         label={'City'}
                         type={'text'}
-                        // textContentType={'familyName'} // ios autofill
+                        textContentType={'addressCity'} // ios autofill
                         returnKeyType={'next'}
                         value={get(values, 'city')}
                         error={
                             get(touched, 'city', false) &&
                             get(errors, 'city', null)
                         }
-                        onChangeText={(text) => setFieldValue('city', text)}
+                        onChangeText={(text) => onChangeText('city', text)}
                         disabled={isLoading}
                         enablesReturnKeyAutomatically
                     />
@@ -164,23 +180,31 @@ const AddressForm = ({
                     <TextInput
                         label={'Zip Code'}
                         type={'text'}
-                        // textContentType={'familyName'} // ios autofill
+                        textContentType={'postalCode'} // ios autofill
                         returnKeyType={'next'}
-                        value={get(values, 'zipCode')}
+                        value={get(values, 'postalCode')}
                         error={
-                            get(touched, 'zipCode', false) &&
-                            get(errors, 'zipCode', null)
+                            get(touched, 'postalCode', false) &&
+                            get(errors, 'postalCode', null)
                         }
-                        onChangeText={(text) => setFieldValue('zipCode', text)}
+                        onChangeText={(text) => onChangeText('postalCode', text)}
                         disabled={isLoading}
                         enablesReturnKeyAutomatically
                     />
+
+                    {/* <Button
+                        disabled={disabled}
+                        onPress={handleSubmit}
+                        title="Update Address"
+                        loading={isSubmitting}
+                    /> */}
 
                 </PaddedView>
             </BackgroundView>
             {isSubmitting && <ActivityIndicatorOverlay />}
         </FlexedView>
     )
+}
 
 const FormikForm = ({ onSubmit, initialValues, isInitialValid }) => {
     const Form = withFormik({

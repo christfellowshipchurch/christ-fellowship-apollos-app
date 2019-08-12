@@ -45,6 +45,33 @@ const colors = {
     secondary: '#000',
 }
 
+/* Base Typography sizing and fonts.
+ * To control speicfic styles used on different type components (like H1, H2, etc), see "overrides"
+ */
+const typography = {
+    baseFontSize: 16,
+    baseLineHeight: 23.04, // 1.44 ratio
+    sans: {
+        regular: {
+            default: 'Gotham-Light',
+            italic: 'Gotham-LightItalic',
+        },
+        medium: {
+            default: 'Gotham-Medium',
+            italic: 'Gotham-MediumItalic',
+        },
+        bold: {
+            default: 'Gotham-Bold',
+            italic: 'Gotham-BoldItalic',
+        },
+        black: {
+            default: 'Gotham-Black',
+            italic: 'Gotham-BlackItalic',
+        },
+    },
+}
+
 export default {
-    colors
-};
+    colors,
+    typography,
+}

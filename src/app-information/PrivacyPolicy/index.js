@@ -1,5 +1,6 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
+import React from 'react'
+import { ScrollView } from 'react-native'
+import { HeaderBackButton } from 'react-navigation'
 import {
   styled,
   H2,
@@ -50,7 +51,8 @@ const PrivacyPolicy = () => {
 
 PrivacyPolicy.navigationOptions = {
   title: 'Privacy Policy',
-  headerMode: 'screen'
+  headerMode: 'screen',
+  headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />
 }
 
 export default PrivacyPolicy
