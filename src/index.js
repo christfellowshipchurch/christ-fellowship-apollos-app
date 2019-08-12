@@ -1,6 +1,6 @@
 import React from 'react'
 import { StatusBar } from 'react-native'
-import { createSwitchNavigator, createStackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation'
 import SplashScreen from 'react-native-splash-screen'
 
 import { BackgroundView, withTheme } from '@apollosproject/ui-kit'
@@ -18,7 +18,7 @@ import Location from './user-settings/Locations'
 import LandingScreen from './LandingScreen'
 import UserWebBrowser from './user-web-browser'
 import Onboarding from './ui/Onboarding'
-import PrivacyPolicy from './ui/PrivacyPolicy'
+import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information'
 
 const AppStatusBar = withTheme(({ theme }) => ({
   barStyle: 'dark-content',
@@ -46,13 +46,25 @@ const AppContent = createStackNavigator({
     headerMode: 'screen',
   })
 
+const AppInfo = createStackNavigator({
+  PrivacyPolicy,
+  TermsOfUse,
+  ValueProp
+}, {
+    initialRouteName: 'PrivacyPolicy',
+    mode: 'modal',
+    headerMode: 'screen',
+  })
+
+
+
 const AppNavigator = createStackNavigator(
   {
 
     ProtectedRoute: ProtectedRouteWithSplashScreen,
     Tabs: AppContent,
     LandingScreen: Onboarding,
-    PrivacyPolicy
+    AppInfo
   },
   {
     initialRouteName: 'ProtectedRoute',

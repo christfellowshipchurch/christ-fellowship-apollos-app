@@ -59,9 +59,19 @@ const AppInfo = ({
                     </H3>
                 </RowHeader>
                 <TableView>
-                    <RowLink title='Why do you want my info?' icon='warning' />
-                    <RowLink title='Privacy Policy' icon='information' />
-                    <RowLink title='Terms of Service' icon='information' />
+                    <RowLink
+                        title='Why do you want my info?'
+                        icon='warning'
+                        onPress={() => navigation.navigate('ValueProp')} />
+
+                    <RowLink
+                        title='Privacy Policy'
+                        icon='information'
+                        onPress={() => navigation.navigate('PrivacyPolicy')} />
+                    <RowLink
+                        title='Terms of Service'
+                        icon='information'
+                        onPress={() => navigation.navigate('TermsOfUse')} />
                     <RowLink title='Send Us Feedback' icon='text' />
                 </TableView>
 
