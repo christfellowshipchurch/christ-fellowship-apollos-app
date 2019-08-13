@@ -9,16 +9,20 @@ export default gql`
         id
         firstName
         lastName
+        nickName
+        email
+        gender
+        birthDate
+        ethnicity
+        
         campus {
           ...CampusParts
         }
-        email
-        nickName
-        gender
-        birthDate
+
         photo {
           uri
         }
+        
         address {
           street1
           street2
@@ -26,6 +30,7 @@ export default gql`
           state
           postalCode
         }
+
         salvationDate
         baptismDate
       }
