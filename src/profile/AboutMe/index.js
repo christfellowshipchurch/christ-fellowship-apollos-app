@@ -44,9 +44,7 @@ const AboutMe = ({
             navigation={navigation}
             minimize
             withGoBack >
-            {({ birthDate, gender, address }) => {
-                console.log({ birthDate, gender, address })
-
+            {({ birthDate, gender, address, ethnicity }) => {
                 return (
                     <AboutMeContainer>
                         <RowHeader>
@@ -54,7 +52,7 @@ const AboutMe = ({
                         </RowHeader>
                         <TableView>
                             <InfoForm
-                                initialValues={{ gender, birthDate }}
+                                initialValues={{ gender, birthDate, ethnicity }}
                                 isInitialValid={() =>
                                     !!(['Male', 'Female'].includes(gender) || birthDate)
                                 }
@@ -79,15 +77,6 @@ const AboutMe = ({
                         </RowHeader>
                         <TableView>
                             <AddressForm initialValues={{ ...address }} />
-                        </TableView>
-
-                        <RowHeader>
-                            <H3>{changeNameRowTitle}</H3>
-                        </RowHeader>
-                        <TableView>
-                            <PaddedView>
-                                <Text>{changeNameDescription}</Text>
-                            </PaddedView>
                         </TableView>
 
                         <RowHeader>

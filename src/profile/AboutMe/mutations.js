@@ -25,7 +25,7 @@ export const UPDATE_BIRTHDATE = gql`
 `
 
 export const UPDATE_ETHNICITY = gql`
-  mutation updateEthnicity($ethnicity: String) {
+  mutation updateEthnicity($ethnicity: String!) {
     updateProfileFields(
       input: [
         { field: Ethnicity, value: $ethnicity }

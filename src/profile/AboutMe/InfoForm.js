@@ -27,6 +27,7 @@ import {
 
 import { UDPATE_GENDER, UPDATE_BIRTHDATE, UPDATE_ETHNICITY } from './mutations'
 import { GET_ETHNICITY_LIST } from './queries'
+import { createEventHandlerWithConfig } from 'recompose';
 
 const ErrorMessage = styled(({ theme }) => ({
     color: theme.colors.alert
@@ -167,7 +168,7 @@ const BirthDateSelect = ({ value, onChange, onSuccess, onError }) => {
     )
 }
 
-const EthnicitySelect = ({ value = '', placeholder, onChange }) => {
+const EthnicitySelect = ({ value = '', placeholder, onChange, onSuccess }) => {
     const [selectedValue, setSelectedValue] = useState(value)
     return (
         <Query query={GET_ETHNICITY_LIST} fetchPolicy="cache-and-network">
@@ -176,23 +177,35 @@ const EthnicitySelect = ({ value = '', placeholder, onChange }) => {
                 const values = get(data, 'getEthnicityList.values', [])
 
                 return (
-                    <>
-                        <Label padded>Ethnicity</Label>
-                        <Picker
-                            placeholder={placeholder}
-                            label=""
-                            value={selectedValue}
-                            displayValue={selectedValue}
-                            onValueChange={(ethnicity) => {
-                                setSelectedValue(ethnicity)
-                                onChange(ethnicity)
-                            }}>
-                            {values.map((n, i) => {
-                                console.log({ n })
-                                return <PickerItem label={n.value} value={n.value} key={i} />
-                            })}
-                        </Picker>
-                    </>
+                    <Mutation
+                        mutation={UPDATE_ETHNICITY}
+                        update={(cache, { data }) => onSuccess(get(data, 'updateProfileFields', { ethnicity: null }))}
+                    >
+                        {(updateEthnicity) => (
+                            <>
+                                <Label padded>Ethnicity</Label>
+                                <Picker
+                                    placeholder={placeholder}
+                                    label=""
+                                    value={selectedValue}
+                                    displayValue={selectedValue}
+                                    onValueChange={(ethnicity) => {
+                                        setSelectedValue(ethnicity)
+                                        onChange(ethnicity)
+                                        try {
+                                            updateEthnicity({ variables: { ethnicity } })
+                                        } catch (e) {
+                                            onError(e)
+                                        }
+
+                                    }} >
+                                    {values.map((n, i) => <PickerItem label={n.value} value={n.value} key={i} />
+                                    )}
+                                </Picker>
+                            </>
+                        )}
+
+                    </Mutation>
                 )
             }}
         </Query>
@@ -243,7 +256,12 @@ const InfoForm = ({
                         }} />
 
                     <EthnicitySelect
-                        value={get(values, 'ethnicity', ethnicityPlaceholder)}
+                        value={get(values, 'ethnicity', '')}
+                        onChange={() => setSubmitting(true)}
+                        onSuccess={({ ethnicity }) => {
+                            setFieldValue('ethnicity', ethnicity)
+                            setSubmitting(false)
+                        }}
                         placeholder={ethnicityPlaceholder} />
 
                 </PaddedView>
