@@ -22,7 +22,10 @@
     "storybook:disable": "sed -i '' 's/STORYBOOK=true/STORYBOOK=false/g' .env",
     "storybook:enable": "sed -i '' 's/STORYBOOK=false/STORYBOOK=true/g' .env",
     "test": "jest",
-    "version": "node ../../scripts/update-apollos-version.js && git add apollos.json"
+    "version": "node ../../scripts/update-apollos-version.js && git add apollos.json",
+    "nuke": "yarn nuke:node && yarn nuke:cache",
+    "nuke:node": "rm -rdf ./node_modules && yarn cache clean && yarn",
+    "nuke:cache": "watchman watch-del-all && react-native start --reset-cache"
   },
   "dependencies": {
     "@apollosproject/ui-analytics": "^1.1.0-beta.3",
