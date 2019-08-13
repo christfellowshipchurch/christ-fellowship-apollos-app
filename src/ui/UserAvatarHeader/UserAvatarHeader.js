@@ -50,7 +50,7 @@ const Content = ({
   let paddingLeft = withGoBack
     ? padding.max
     : range.interpolate({
-      inputRange: [minHeight, minHeight * 1.05, maxHeight],
+      inputRange: [minHeight, minHeight * 1.1, maxHeight],
       outputRange: [padding.min, padding.max, padding.max],
     })
 
