@@ -91,7 +91,7 @@ describe('the Devotional component', () => {
     );
     expect(tree).toMatchSnapshot();
   });
-  it('renders a loading state', async () => {
+  it('renders a loading state of null', async () => {
     const tree = renderer.create(
       <Providers mocks={mocks}>
         <Devotional id="1" content={content} loading navigation={navigation} />
