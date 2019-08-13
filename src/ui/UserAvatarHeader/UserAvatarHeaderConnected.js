@@ -71,16 +71,9 @@ const UserAvatarHeaderConnected = (props) => {
             <ScrollView
               style={styles.scrollView}
               scrollEventThrottle={16}
-              onScroll={Animated.event(
-                [
-                  {
-                    nativeEvent: { contentOffset: { y: scrollY } },
-                  },
-                ],
-                {
-                  // useNativeDriver: true,
-                }
-              )} >
+              onScroll={Animated.event([{
+                nativeEvent: { contentOffset: { y: scrollY } },
+              }])} >
               <Animated.View style={{ height: HEADER_MAX_HEIGHT }}></Animated.View>
               {typeof (children) === 'function'
                 ? children({ ...profile })

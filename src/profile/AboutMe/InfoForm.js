@@ -20,6 +20,7 @@ import {
     RadioButton,
     DateInput,
     Picker,
+    PickerItem,
     Icon,
     Touchable,
 } from '@apollosproject/ui-kit'
@@ -166,7 +167,6 @@ const BirthDateSelect = ({ value, onChange, onSuccess, onError }) => {
     )
 }
 
-// TODO : make my own Picker
 const EthnicitySelect = ({ value = '', placeholder, onChange }) => {
     const [selectedValue, setSelectedValue] = useState(value)
     return (
@@ -184,13 +184,12 @@ const EthnicitySelect = ({ value = '', placeholder, onChange }) => {
                             value={selectedValue}
                             displayValue={selectedValue}
                             onValueChange={(ethnicity) => {
-                                console.log({ ethnicity })
                                 setSelectedValue(ethnicity)
                                 onChange(ethnicity)
                             }}>
                             {values.map((n, i) => {
                                 console.log({ n })
-                                return <Picker.Item label={n.value} value={n.value} key={i} />
+                                return <PickerItem label={n.value} value={n.value} key={i} />
                             })}
                         </Picker>
                     </>
@@ -243,7 +242,9 @@ const InfoForm = ({
                             // TODO : error handling
                         }} />
 
-                    {/* <EthnicitySelect value={get(values, 'ethnicity', ethnicityPlaceholder)} placeholder={ethnicityPlaceholder} /> */}
+                    <EthnicitySelect
+                        value={get(values, 'ethnicity', ethnicityPlaceholder)}
+                        placeholder={ethnicityPlaceholder} />
 
                 </PaddedView>
             </BackgroundView>

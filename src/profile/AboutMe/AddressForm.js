@@ -20,6 +20,7 @@ import {
     RadioButton,
     DateInput,
     Picker,
+    PickerItem,
     Icon,
     Touchable,
     TextInput,
@@ -85,7 +86,6 @@ const ActivityIndicatorOverlay = () => (
     </Overlay>
 )
 
-// TODO : make my own Picker
 const StateSelect = ({ value = '', placeholder, onChange }) => {
     const [selectedValue, setSelectedValue] = useState(value)
     return (
@@ -94,20 +94,21 @@ const StateSelect = ({ value = '', placeholder, onChange }) => {
                 const disabled = loading || error
                 const values = get(data, 'getStatesList.values', [])
 
+                console.log({ values })
+
                 return (
                     <Picker
                         placeholder={placeholder}
                         label="State"
                         value={selectedValue}
                         displayValue={selectedValue}
-                        onValueChange={(ethnicity) => {
-                            console.log({ ethnicity })
-                            setSelectedValue(ethnicity)
-                            onChange(ethnicity)
+                        onValueChange={(state) => {
+                            setSelectedValue(state)
+                            onChange(state)
                         }}>
                         {values.map((n, i) => {
                             console.log({ n })
-                            return <Picker.Item label={n.value} value={n.value} key={i} />
+                            return <PickerItem label={n.value} value={n.value} key={i} />
                         })}
                     </Picker>
                 )
@@ -133,6 +134,7 @@ const AddressForm = ({
         || !get(values, 'city', null)
         || !get(values, 'postalCode', null)
         || !get(values, 'state', null)
+        || true
 
     const onChangeText = (key, value) => {
         setInputChanged(true)
@@ -175,7 +177,9 @@ const AddressForm = ({
                         enablesReturnKeyAutomatically
                     />
 
-                    {/* <StateSelect value={get(values, 'state')} /> */}
+                    <StateSelect
+                        value={get(values, 'state')}
+                        onChange={(state) => onChangeText('state', state)} />
 
                     <TextInput
                         label={'Zip Code'}
@@ -192,12 +196,12 @@ const AddressForm = ({
                         enablesReturnKeyAutomatically
                     />
 
-                    {/* <Button
+                    <Button
                         disabled={disabled}
                         onPress={handleSubmit}
                         title="Update Address"
                         loading={isSubmitting}
-                    /> */}
+                    />
 
                 </PaddedView>
             </BackgroundView>
