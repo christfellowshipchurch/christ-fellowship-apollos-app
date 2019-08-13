@@ -38,20 +38,17 @@ const DarkOverlay = styled(({ theme }) => ({
   width: '100%'
 }))(View)
 
-// const Content = styled(({ theme, withGoBack }) => ({
-//   width: '100%',
-//   height: '100%',
-//   paddingHorizontal: withGoBack ? '20%' : 0,
-//   top: 0,
-//   flex: 1,
-//   alignItems: 'center',
-//   justifyContent: 'center',
-//   // paddingTop: theme.sizing.baseUnit * 4
-// }))(View)
-
-const Content = ({ withGoBack, children, range, minHeight, maxHeight }) => {
-  let paddingRight = withGoBack
-    ? "20%"
+const Content = ({
+  withGoBack,
+  children,
+  range,
+  minHeight,
+  maxHeight,
+  delay
+}) => {
+  const padding = { min: '0%', max: '20%' }
+  let paddingLeft = withGoBack
+    ? padding.max
     : range.interpolate({
       inputRange: [minHeight, minHeight * 1.1, maxHeight],
       outputRange: [padding.min, padding.max, padding.max],
@@ -61,12 +58,13 @@ const Content = ({ withGoBack, children, range, minHeight, maxHeight }) => {
     <Animated.View style={{
       width: '100%',
       height: '100%',
-      paddingLeft: withGoBack ? '20%' : 0,
-      paddingRight,
+      paddingLeft,
+      paddingRight: padding.max,
       top: 0,
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: 'red'
     }}>
       {children}
     </Animated.View>
