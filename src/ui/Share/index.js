@@ -34,6 +34,7 @@ Share.propTypes = {
     message: PropTypes.string,
     title: PropTypes.string,
     url: PropTypes.string,
+    id: PropTypes.string,
   }),
 };
 

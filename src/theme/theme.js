@@ -25,6 +25,9 @@
 /* Base alpha values. These are used to keep transparent values across the app consistant */
 // export const alpha = {};
 
+/* Base overlays. These are used as configuration for LinearGradients across the app */
+// export const overlays = () => ({});
+
 /* Overrides allow you to override the styles of any component styled using the `styled` HOC.
  * For example, this component:
  * const SomeComponent = styled({ margin: 10, padding: 20 }, 'SomeComponent');
