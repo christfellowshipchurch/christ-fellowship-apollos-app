@@ -34,7 +34,10 @@ const ActionTable = ({
         onPress={() => navigation.navigate('AboutMe')} />
 
       <RowLink title="Family Information" icon="groups" />
-      <RowLink title="Communication Preferences" icon="avatar" />
+      <RowLink
+        title="Communication Preferences"
+        icon="avatar"
+        onPress={() => navigation.navigate('CommunicationPreferences')} />
       <RowLink
         title="My Faith Milestones"
         icon="pray"

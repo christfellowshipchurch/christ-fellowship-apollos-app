@@ -10,10 +10,12 @@ export default gql`
         firstName
         lastName
         nickName
-        email
         gender
         birthDate
         ethnicity
+
+        email
+        phoneNumber
         
         campus {
           ...CampusParts
@@ -33,6 +35,11 @@ export default gql`
 
         salvationDate
         baptismDate
+
+        communicationPreferences {
+          allowSMS
+          allowEmail
+        }
       }
     }
   }

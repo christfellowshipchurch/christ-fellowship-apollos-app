@@ -23,10 +23,10 @@ const ConnectNavigator = createStackNavigator(
       screen: AppInformation,
       navigationOptions: () => ({ header: null })
     },
-    // CommunicationPreferences: {
-    //   screen: UserSettings,
-    //   navigationOptions: () => ({ header: null })
-    // },
+    CommunicationPreferences: {
+      screen: CommunicationPreferences,
+      navigationOptions: () => ({ header: null })
+    },
     FaithMilestones: {
       screen: FaithMilestones,
       navigationOptions: () => ({ header: null })
