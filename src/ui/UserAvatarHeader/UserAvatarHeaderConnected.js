@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    zIndex: 1
+    zIndex: 1,
   }
 })
 
@@ -25,6 +25,8 @@ const UserAvatarHeaderConnected = (props) => {
   const { children, minimize } = props
   const HEADER_MIN_HEIGHT = 150
   const HEADER_MAX_HEIGHT = minimize ? HEADER_MIN_HEIGHT : 375
+  const ANIMATION_DELAY = HEADER_MIN_HEIGHT === HEADER_MAX_HEIGHT ? 1 : 0.6
+
   const [scrollY, setScrollY] = useState(new Animated.Value(0))
   const animationRange = scrollY.interpolate({
     inputRange: [0, HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT],
@@ -47,7 +49,7 @@ const UserAvatarHeaderConnected = (props) => {
         if (loading) return <ActivityIndicator />
         if (error) return null
 
-        const { photo, firstName, lastName, campus, gender, birthDate } = profile
+        const { photo, firstName, lastName, campus } = profile
         return (
           <View style={styles.container}>
             <StatusBar barStyle="light-content" />
@@ -61,7 +63,8 @@ const UserAvatarHeaderConnected = (props) => {
               animation={{
                 range: animationRange,
                 minHeight: HEADER_MIN_HEIGHT,
-                maxHeight: HEADER_MAX_HEIGHT
+                maxHeight: HEADER_MAX_HEIGHT,
+                delay: ANIMATION_DELAY
               }}
               {...props}
             />
