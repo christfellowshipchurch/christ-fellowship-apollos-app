@@ -64,7 +64,6 @@ const Content = ({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'red'
     }}>
       {children}
     </Animated.View>
