@@ -33,16 +33,11 @@ const StyledSubHeader = styled(({ theme }) => ({
   paddingLeft: theme.sizing.baseUnit * 0.25
 }))(H5)
 
-const Location = styled(({ theme }) => ({
-  flex: 1,
-  flexDirection: 'row',
-  alignItems: 'center'
-}))(View)
-
 const AnimatedAvitar = ({
   range,
   minHeight,
   maxHeight,
+  delay,
   isLoading,
   disabled,
   height,
@@ -50,17 +45,18 @@ const AnimatedAvitar = ({
   edit
 }) => {
   const width = range.interpolate({
-    inputRange: [minHeight, maxHeight],
-    outputRange: ['40%', '100%'],
+    inputRange: [minHeight, maxHeight * delay, maxHeight],
+    outputRange: ['40%', '100%', '100%'],
   })
 
   return (
     <Animated.View style={{
       width,
+      alignSelf: 'flex-start',
       position: 'absolute',
       left: 0,
       top: '50%',
-      transform: [{ translateY: (height / 2) * -1 }]
+      transform: [{ translateY: (height / 2) * -1 }],
     }}
       onLayout={onLayout}
     >
@@ -69,7 +65,7 @@ const AnimatedAvitar = ({
         isLoading={isLoading}
         text={false}
         disabled={disabled}
-        animation={{ range, minHeight, maxHeight }} />
+        animation={{ range, minHeight, maxHeight, delay }} />
     </Animated.View>
   )
 }
@@ -78,56 +74,96 @@ const AnimatedProfileInformation = ({
   range,
   minHeight,
   maxHeight,
+  delay,
   firstName,
   lastName,
   location,
   height,
+  width,
   isLoading,
   marginTop,
   onLayout,
   edit
 }) => {
-  const fontSize = range.interpolate({
-    inputRange: [minHeight, maxHeight],
-    outputRange: [16, 24],
+  const [nameWidth, setNameWidth] = useState(0)
+  const [locationWidth, setLocationWidth] = useState(0)
+
+  // container animation calculations and styling
+  const container = {
+    width: { min: '60%', max: '100%' },
+    translateY: { min: (height / 2) * -1, max: marginTop }
+  }
+
+  const widthPercent = range.interpolate({
+    inputRange: [minHeight, maxHeight * delay, maxHeight],
+    outputRange: [container.width.min, container.width.max, container.width.max],
   })
 
   const translateY = range.interpolate({
-    inputRange: [minHeight, maxHeight],
-    outputRange: [(height / 2) * -1, marginTop],
+    inputRange: [minHeight, maxHeight * delay, maxHeight],
+    outputRange: [container.translateY.min, container.translateY.max, container.translateY.max],
   })
 
-  const paddingLeft = range.interpolate({
-    inputRange: [minHeight, maxHeight],
-    outputRange: ['30%', '0%'],
+  // name text animation calculations and styling
+  const name = {
+    fontSize: { min: 16, max: 24 },
+    translateX: { min: 0, max: (width - nameWidth) / 2 }
+  }
+
+  const fontSize = range.interpolate({
+    inputRange: [minHeight, maxHeight * delay, maxHeight],
+    outputRange: [name.fontSize.min, name.fontSize.max, name.fontSize.max],
+  })
+
+  const nameTranslateX = range.interpolate({
+    inputRange: [minHeight, maxHeight * delay, maxHeight],
+    outputRange: [name.translateX.min, name.translateX.max, name.translateX.max],
+  })
+
+  // subtitle text animation calculations and styling
+  const subtitle = {
+    translateX: { min: 0, max: (width - locationWidth) / 2 }
+  }
+
+  const subtitleTranslateX = range.interpolate({
+    inputRange: [minHeight, maxHeight * delay, maxHeight],
+    outputRange: [subtitle.translateX.min, subtitle.translateX.max, subtitle.translateX.max],
   })
 
   return (
     <Animated.View style={{
+      width: widthPercent,
       flex: 1,
-      alignItems: 'center',
-      alignSelf: 'center',
-      paddingLeft,
-      textAlign: 'center',
+      flexDirection: 'column',
+      alignItems: 'flex-start',
       position: 'absolute',
       top: '50%',
+      right: 0,
       transform: [{ translateY }],
     }}
       onLayout={onLayout}>
+
       <Animated.Text style={{
-        textAlign: 'center',
         fontSize,
         fontWeight: 'bold',
         color: 'white',
-      }}>
+        transform: [{ translateX: nameTranslateX }],
+      }}
+        onLayout={(e) => setNameWidth(e.nativeEvent.layout.width)} >
         {`${firstName} ${lastName}`}
       </Animated.Text>
 
       {(location && !edit) && (
-        <Location>
+        <Animated.View style={{
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          transform: [{ translateX: subtitleTranslateX }],
+        }}
+          onLayout={(e) => setLocationWidth(e.nativeEvent.layout.width)} >
           <Icon name={'pin'} fill={'white'} size={12} isLoading={isLoading} />
           <StyledSubHeader>{location}</StyledSubHeader>
-        </Location>
+        </Animated.View>
       )}
     </Animated.View>
   )
@@ -149,7 +185,7 @@ const Content = ({
     <View style={{
       width: '100%',
       height: '100%',
-      position: 'relative'
+      position: 'relative',
     }}>
       <AnimatedAvitar
         {...animation}
