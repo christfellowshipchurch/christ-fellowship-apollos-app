@@ -1,44 +1,56 @@
-import React, { PureComponent } from 'react';
-import { ScrollView, SafeAreaView } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+import { Text, View } from 'react-native'
+import { Query } from 'react-apollo'
+import { get } from 'lodash'
+import PropTypes from 'prop-types'
 
-import { BackgroundView, styled } from '@apollosproject/ui-kit';
-import ActionTable from './ActionTable';
-import Toolbar from './Toolbar';
-import { UserAvatarHeaderConnected } from './UserAvatarHeader';
-import { RecentlyLikedTileFeedConnected } from './RecentlyLikedTileFeed';
+import { GET_LOGIN_STATE } from '@apollosproject/ui-auth'
+import {
+  BackgroundView,
+} from '@apollosproject/ui-kit'
+import ActionTable from './ActionTable'
+import UserAvatarHeader from '../../ui/UserAvatarHeader'
 
-const StyledScrollView = styled(({ theme }) => ({
-  marginVertical: theme.sizing.baseUnit,
-}))(ScrollView);
+const Connect = ({ navigation }) => (
+  <BackgroundView>
+    <Query query={GET_LOGIN_STATE}>
+      {({ data }) => {
+        if (get(data, 'isLoggedIn', false))
+          return (
+            <UserAvatarHeader key="UserAvatarHeaderConnected" navigation={navigation}>
+              <View style={{ height: 1000 }}>
+                <ActionTable navigation={navigation} />
+                <Text style={{ paddingHorizontal: 20 }}>Scroll up and down to see the Profile resize in real time</Text>
+              </View>
+            </UserAvatarHeader>
+          )
 
-class Connect extends PureComponent {
-  static navigationOptions = () => ({
-    title: 'Connect',
-    header: null,
-  });
+        // On logout or when not properly authenitcated
+        // navigate back to the Identity screen of the Profile Stack navigator
+        navigation.reset({
+          routeName: 'Profile',
+          params: {},
+          action: navigation.navigate({ routeName: 'Identity' }),
+        })
 
-  static propTypes = {
-    navigation: PropTypes.shape({
-      getParam: PropTypes.func,
-      navigate: PropTypes.func,
-    }),
-  };
+        return (
+          <View></View>
+        )
+      }}
+    </Query>
+  </BackgroundView>
+)
 
-  render() {
-    return (
-      <BackgroundView>
-        <SafeAreaView>
-          <StyledScrollView>
-            <UserAvatarHeaderConnected key="UserAvatarHeaderConnected" />
-            <RecentlyLikedTileFeedConnected key="RecentlyLikedTileFeedConnected" />
-            <Toolbar />
-            <ActionTable />
-          </StyledScrollView>
-        </SafeAreaView>
-      </BackgroundView>
-    );
-  }
+Connect.navigationOptions = {
+  title: 'Connect',
+  header: null
 }
 
-export default Connect;
+Connect.propTypes = {
+  navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+    navigate: PropTypes.func,
+  }),
+}
+
+export default Connect

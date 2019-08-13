@@ -1,18 +1,44 @@
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation'
 
-import UserSettings from 'ChristFellowship/src/user-settings';
+import Connect from './Connect'
+import {
+  AboutMe,
+  AppInformation,
+  CommunicationPreferences,
+  FaithMilestones,
+  FamilyInformation,
+  UserSettings
+} from 'ChristFellowship/src/profile'
 
-import TestingControlPanel from '../../testing-control-panel';
-import tabBarIcon from '../tabBarIcon';
-import Connect from './Connect';
-import LikedContentList from './LikedContentList';
+import tabBarIcon from '../tabBarIcon'
 
 const ConnectNavigator = createStackNavigator(
   {
     Connect,
-    TestingControlPanel,
-    UserSettings,
-    LikedContentList,
+    AboutMe: {
+      screen: AboutMe,
+      navigationOptions: () => ({ header: null })
+    },
+    AppInformation: {
+      screen: AppInformation,
+      navigationOptions: () => ({ header: null })
+    },
+    // CommunicationPreferences: {
+    //   screen: UserSettings,
+    //   navigationOptions: () => ({ header: null })
+    // },
+    FaithMilestones: {
+      screen: FaithMilestones,
+      navigationOptions: () => ({ header: null })
+    },
+    // FamilyInformation: {
+    //   screen: UserSettings,
+    //   navigationOptions: () => ({ header: null })
+    // },
+    UserSettings: {
+      screen: UserSettings,
+      navigationOptions: () => ({ header: null })
+    },
   },
   {
     initialRouteName: 'Connect',
@@ -24,4 +50,4 @@ ConnectNavigator.navigationOptions = {
   tabBarIcon: tabBarIcon('profile'),
 };
 
-export default ConnectNavigator;
+export default ConnectNavigator

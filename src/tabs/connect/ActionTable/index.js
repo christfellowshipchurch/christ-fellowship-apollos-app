@@ -1,6 +1,4 @@
-import React from 'react';
-import { View } from 'react-native';
-
+import React from 'react'
 import {
   TableView,
   Cell,
@@ -9,86 +7,47 @@ import {
   Divider,
   Touchable,
   styled,
-  PaddedView,
-  H4,
-} from '@apollosproject/ui-kit';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
-import NavigationActions from 'ChristFellowship/src/NavigationService';
+} from '@apollosproject/ui-kit'
 
-const RowHeader = styled(({ theme }) => ({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingVertical: theme.sizing.baseUnit,
-}))(PaddedView);
+const RowLink = ({ title, icon, onPress }) => (
+  <React.Fragment>
+    <Touchable
+      onPress={onPress}
+    >
+      <Cell>
+        <CellIcon name={icon} />
+        <CellText>{title}</CellText>
+        <CellIcon name={'arrow-next'} />
+      </Cell>
+    </Touchable>
+    <Divider />
+  </React.Fragment>
+)
 
-const Name = styled({
-  flexGrow: 1,
-})(View);
+const ActionTable = ({
+  navigation
+}) => (
+    <TableView>
+      <RowLink
+        title="Profile Information"
+        icon="profile"
+        onPress={() => navigation.navigate('AboutMe')} />
 
-const ActionTable = () => (
-  <WebBrowserConsumer>
-    {(openUrl) => (
-      <View>
-        <RowHeader>
-          <Name>
-            <H4>{'Connect with Apollos'}</H4>
-          </Name>
-        </RowHeader>
-        <TableView>
-          <Touchable
-            onPress={() => openUrl('https://apollosrock.newspring.cc/page/235')}
-          >
-            <Cell>
-              <CellIcon name="check" />
-              <CellText>Find a serving opportunity</CellText>
-            </Cell>
-          </Touchable>
-          <Divider />
-          <Touchable
-            onPress={() => openUrl('https://apollosrock.newspring.cc/page/236')}
-          >
-            <Cell>
-              <CellIcon name="groups" />
-              <CellText>Join a small group</CellText>
-            </Cell>
-          </Touchable>
-          <Divider />
-          <Touchable
-            onPress={() => openUrl('https://apollosrock.newspring.cc/page/233')}
-          >
-            <Cell>
-              <CellIcon name="share" />
-              <CellText>I need prayer</CellText>
-            </Cell>
-          </Touchable>
-          <Divider />
-          <Touchable
-            onPress={() => openUrl('https://apollosrock.newspring.cc/page/186')}
-          >
-            <Cell>
-              <CellIcon name="download" />
-              <CellText>I would like to give</CellText>
-            </Cell>
-          </Touchable>
-        </TableView>
-        <TableView>
-          <Touchable
-            onPress={() => NavigationActions.navigate('TestingControlPanel')}
-          >
-            <Cell>
-              <CellIcon name="settings" />
-              <CellText>Open Testing Panel</CellText>
-            </Cell>
-          </Touchable>
-        </TableView>
-      </View>
-    )}
-  </WebBrowserConsumer>
-);
+      <RowLink title="Family Information" icon="groups" />
+      <RowLink title="Communication Preferences" icon="avatar" />
+      <RowLink
+        title="My Faith Milestones"
+        icon="pray"
+        onPress={() => navigation.navigate('FaithMilestones')} />
+      <RowLink
+        title="Privacy, Terms of Use, Feedback"
+        icon="information"
+        onPress={() => navigation.navigate('AppInformation')} />
+    </TableView>
+  )
 
 const StyledActionTable = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 100,
-}))(ActionTable);
+}))(ActionTable)
 
-export default StyledActionTable;
+export default StyledActionTable

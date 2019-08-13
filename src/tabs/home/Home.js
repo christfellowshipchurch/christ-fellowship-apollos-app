@@ -85,7 +85,7 @@ class Home extends PureComponent {
                   <>
                     <LogoTitle source={require('./wordmark.png')} />
                     <LiveButton />
-                    <Query
+                    {/* <Query
                       query={GET_CAMPAIGN_CONTENT_ITEM}
                       fetchPolicy="cache-and-network"
                     >
@@ -115,38 +115,40 @@ class Home extends PureComponent {
                           </TouchableScale>
                         );
                       }}
-                    </Query>
-                    <Query
-                      query={GET_FEED_FEATURES}
+                    </Query> */}
+                    {/* <Query
+                      query={GET_PERSONA_FEED}
                       fetchPolicy="cache-and-network"
                     >
-                      {({ data: features, loading: featuresLoading }) =>
-                        get(features, 'userFeedFeatures', []).map(
-                          ({ title, subtitle, actions, id }) => (
-                            <ContentTableCard
-                              isLoading={featuresLoading}
-                              onPress={this.handleOnPress}
-                              key={id}
-                              header={
-                                <>
-                                  <StyledH6 isLoading={featuresLoading}>
-                                    {title}
-                                  </StyledH6>
-                                  <H3
-                                    isLoading={featuresLoading}
-                                    numberOfLines={3}
-                                    ellipsizeMode="tail"
-                                  >
-                                    {subtitle}
-                                  </H3>
-                                </>
-                              }
-                              content={actions}
-                            />
-                          )
-                        )
-                      }
-                    </Query>
+                      {({
+                        data: personaData,
+                        loading: isContentTableLoading,
+                      }) => (
+                        <ContentTableCard
+                          isLoading={isContentTableLoading}
+                          onPress={this.handleOnPress}
+                          header={
+                            <>
+                              <StyledH6 isLoading={isContentTableLoading}>
+                                FOR YOU
+                              </StyledH6>
+                              <H3
+                                isLoading={isContentTableLoading}
+                                numberOfLines={3}
+                                ellipsizeMode="tail"
+                              >
+                                Explore what God calls you to today
+                              </H3>
+                            </>
+                          }
+                          content={get(
+                            personaData,
+                            'personaFeed.edges',
+                            []
+                          ).map((edge) => edge.node)}
+                        />
+                      )}
+                    </Query> */}
                   </>
                 }
                 onPressItem={this.handleOnPress}
