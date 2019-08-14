@@ -237,4 +237,4 @@ UserAvatarView.propTypes = {
   ...View.propTypes,
 }
 
-export default UserAvatarView;
+export default UserAvatarView

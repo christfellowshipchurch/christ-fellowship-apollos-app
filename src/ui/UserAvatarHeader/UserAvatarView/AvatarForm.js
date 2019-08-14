@@ -74,7 +74,6 @@ const AvatarForm = ({
                 <StyledView>
                   <Avatar
                     source={photo}
-                    size="large"
                     isLoading={isUploadingFile}
                     animation={animation}
                     edit={edit}

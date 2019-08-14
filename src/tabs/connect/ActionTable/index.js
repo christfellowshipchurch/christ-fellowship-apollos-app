@@ -33,7 +33,10 @@ const ActionTable = ({
         icon="profile"
         onPress={() => navigation.navigate('AboutMe')} />
 
-      <RowLink title="Family Information" icon="groups" />
+      <RowLink
+        title="Family Information"
+        icon="groups"
+        onPress={() => navigation.navigate('FamilyInformation')} />
       <RowLink
         title="Communication Preferences"
         icon="avatar"

@@ -15,6 +15,10 @@ import {
 
 const AVATAR_SMALL = 80
 const AVATAR_LARGE = 160
+const avatarSizeMap = {
+  small: AVATAR_SMALL,
+  large: AVATAR_LARGE
+}
 
 const AnimatedContainer = ({
   children,
@@ -24,17 +28,24 @@ const AnimatedContainer = ({
   avatarSmall = AVATAR_SMALL,
   avatarLarge = AVATAR_LARGE,
   edit,
-  isLoading
+  isLoading,
+  sizeOverride
 }) => {
-  const size = range.interpolate({
-    inputRange: [minHeight, maxHeight],
-    outputRange: [avatarSmall, avatarLarge],
-  })
+  const size = sizeOverride
+    ? avatarSizeMap[sizeOverride]
+    : range.interpolate({
+      inputRange: [minHeight, maxHeight],
+      outputRange: [avatarSmall, avatarLarge],
+    })
 
-  const borderRadius = range.interpolate({
-    inputRange: [minHeight, maxHeight],
-    outputRange: [avatarSmall / 2, avatarLarge / 2],
-  })
+  const borderRadius = sizeOverride
+    ? avatarSizeMap[sizeOverride] / 2
+    : range.interpolate({
+      inputRange: [minHeight, maxHeight],
+      outputRange: [avatarSmall / 2, avatarLarge / 2],
+    })
+
+  console.log({ sizeOverride, size, borderRadius })
 
   return (
     <Animated.View style={{
@@ -93,9 +104,10 @@ const Avatar = ({
   isLoading,
   animation,
   edit,
+  size,
   ...imageProps
 }) => (
-    <AnimatedContainer {...animation} edit={edit} isLoading={isLoading}>
+    <AnimatedContainer {...animation} edit={edit} isLoading={isLoading} sizeOverride={size}>
       {isLoading ? <LoadingIcon /> : null}
       {source && source.uri ? (
         <Image
@@ -110,11 +122,15 @@ const Avatar = ({
   )
 
 Avatar.propTypes = {
-  size: PropTypes.oneOf(['small', 'medium', 'large']),
+  size: PropTypes.oneOf(['small', 'large', null]),
   containerStyle: PropTypes.any, // eslint-disable-line
   animation: PropTypes.any,
   ...ConnectedImage.propTypes,
-};
+}
+
+Avatar.defaultProps = {
+  size: null
+}
 
 export default withTheme(({ theme, size }) => ({
   themeSize: get(theme.sizing.avatar, size, theme.sizing.avatar.small),
