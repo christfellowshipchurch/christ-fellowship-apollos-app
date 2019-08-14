@@ -2,11 +2,7 @@ import gql from 'graphql-tag'
 
 export const UDPATE_PHONE_NUMBER = gql`
   mutation updatePhoneNumber($phoneNumber: String!) {
-    updatePhoneNumber(
-      input: [
-        { field: PhoneNumber, value: $phoneNumber }
-      ]
-    ) {
+    updatePhoneNumber(phoneNumber:$phoneNumber) {
       phoneNumber
     }
   }

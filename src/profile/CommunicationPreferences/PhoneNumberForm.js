@@ -14,7 +14,7 @@ import {
     TextInput
 } from '@apollosproject/ui-kit'
 
-import { UPDATE_SMS_PREFERENCE } from './mutations'
+import { UDPATE_PHONE_NUMBER, UPDATE_SMS_PREFERENCE } from './mutations'
 
 
 const ErrorMessage = styled(({ theme }) => ({
@@ -53,20 +53,28 @@ const PhoneNumberForm = ({
                 <PaddedView>
                     {has(errors, 'phoneNumber') && <ErrorMessage>Something went wrong... so so terribly wrong... sorry</ErrorMessage>}
 
-                    <TextInput
-                        label={'Cell Phone'}
-                        type={'text'}
-                        textContentType={'telephoneNumber'} // ios autofill
-                        returnKeyType={'next'}
-                        value={get(values, 'phoneNumber')}
-                        error={
-                            get(touched, 'phoneNumber', false) &&
-                            get(errors, 'phoneNumber', null)
-                        }
-                        onChangeText={(text) => setFieldValue('phoneNumber', text)}
-                        disabled={true}
-                        enablesReturnKeyAutomatically
-                    />
+                    <Mutation
+                        mutation={UDPATE_PHONE_NUMBER}
+                        update={(cache, { data }) => setSubmitting(false)} >
+                        {(updatePhoneNumber) => (
+                            <TextInput
+                                label={'Cell Phone'}
+                                type={'text'}
+                                textContentType={'telephoneNumber'} // ios autofill
+                                returnKeyType={'next'}
+                                value={get(values, 'phoneNumber')}
+                                error={
+                                    get(touched, 'phoneNumber', false) &&
+                                    get(errors, 'phoneNumber', null)
+                                }
+                                onChangeText={(text) => setFieldValue('phoneNumber', text)}
+                                onSubmitEditing={() => {
+                                    setSubmitting(true)
+                                    updatePhoneNumber({ variables: { phoneNumber: get(values, 'phoneNumber') } })
+                                }}
+                            />
+                        )}
+                    </Mutation>
 
                     <Mutation
                         mutation={UPDATE_SMS_PREFERENCE}
