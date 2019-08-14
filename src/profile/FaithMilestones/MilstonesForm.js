@@ -20,6 +20,8 @@ import {
     Touchable,
 } from '@apollosproject/ui-kit'
 
+import { UPDATE_SALVATION, UPDATE_BAPTISM } from './mutations'
+
 const ErrorMessage = styled(({ theme }) => ({
     color: theme.colors.alert
 }))(H5)
@@ -79,35 +81,31 @@ const ActivityIndicatorOverlay = () => (
 const DateSelect = ({ title, value, onChange, onSuccess, onError, mutation }) => {
     const [showDateTimePicker, setShowDateTimePicker] = useState(false)
 
+
+    console.log({ mutation })
     return (
-        // <Mutation {...mutation}>
-        //     {(updateBirthDate) => (
-        <>
-            <Label padded>{title}</Label>
-            <DropDown
-                value={value}
-                icon='calendar'
-                onPress={() => setShowDateTimePicker(true)} />
-            <DateTimePicker
-                date={moment.utc(value).toDate()}
-                isVisible={showDateTimePicker}
-                onConfirm={(date) => {
-                    onSuccess({ date })
-                    onChange()
-
-                    try {
-                        updateBirthDate({ variables: { birthDate } })
-                    } catch (e) {
-                        onError(e)
-                    }
-
-                    setShowDateTimePicker(false)
-                }}
-                onCancel={() => setShowDateTimePicker(false)}
-            />
-        </>
-        //     )}
-        // </Mutation>
+        <Mutation
+            mutation={mutation}
+            update={onSuccess} >
+            {(mutate) => (
+                <>
+                    <Label padded>{title}</Label>
+                    <DropDown
+                        value={value}
+                        icon='calendar'
+                        onPress={() => setShowDateTimePicker(true)} />
+                    <DateTimePicker
+                        date={moment.utc(value).toDate()}
+                        isVisible={showDateTimePicker}
+                        onConfirm={(date) => {
+                            setShowDateTimePicker(false)
+                            onChange({ mutate, date })
+                        }}
+                        onCancel={() => setShowDateTimePicker(false)}
+                    />
+                </>
+            )}
+        </Mutation>
     )
 }
 
@@ -132,15 +130,24 @@ const MilestonesForm = ({
                                 .utc(get(values, 'salvationDate'))
                                 .format('MMM DD, YYYY')
                             : salvationPlaceholder}
-                        onChange={() => setSubmitting(true)}
-                        onSuccess={({ date }) => {
+                        onChange={({ mutate, date }) => {
+                            setSubmitting(true)
+
                             setFieldValue('salvationDate', date)
-                            setSubmitting(false)
+                            try {
+                                const salvation = moment.utc(date).format()
+                                mutate({ variables: { salvation } })
+                            } catch (e) {
+                                isSubmitting(false)
+                            }
                         }}
+                        onSuccess={() => setSubmitting(false)}
                         onError={(e) => {
                             setSubmitting(false)
                             // TODO : error handling
-                        }} />
+                        }}
+                        mutation={UPDATE_SALVATION}
+                    />
 
                     <DateSelect
                         title={baptismRowTitle}
@@ -149,15 +156,23 @@ const MilestonesForm = ({
                                 .utc(get(values, 'baptismDate'))
                                 .format('MMM DD, YYYY')
                             : baptismPlaceholder}
-                        onChange={() => setSubmitting(true)}
-                        onSuccess={({ date }) => {
+                        onChange={({ mutate, date }) => {
+                            setSubmitting(true)
+
                             setFieldValue('baptismDate', date)
-                            setSubmitting(false)
+                            try {
+                                const baptism = moment.utc(date).format()
+                                mutate({ variables: { baptism } })
+                            } catch (e) {
+                                isSubmitting(false)
+                            }
                         }}
+                        onSuccess={() => setSubmitting(false)}
                         onError={(e) => {
                             setSubmitting(false)
                             // TODO : error handling
-                        }} />
+                        }}
+                        mutation={UPDATE_BAPTISM} />
 
                 </PaddedView>
             </BackgroundView>
