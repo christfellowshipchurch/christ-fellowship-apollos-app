@@ -30,7 +30,7 @@ const Header = styled(({ theme }) => ({
 
 const HeaderTitle = ({ range, minHeight, maxHeight, children }) => {
   const opacity = range.interpolate({
-    inputRange: [maxHeight / 2, maxHeight],
+    inputRange: [maxHeight - 20, maxHeight],
     outputRange: [0, 1],
   })
 
