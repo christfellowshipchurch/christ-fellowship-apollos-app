@@ -74,14 +74,6 @@ const AppInfo = ({
                         onPress={() => navigation.navigate('TermsOfUse')} />
                     <RowLink title='Send Us Feedback' icon='text' />
                 </TableView>
-
-                <View style={{ height: 1000 }}>
-                    <RowHeader>
-                        <Name>
-                            <Text>Scroll up and down to see the Profile resize in real time</Text>
-                        </Name>
-                    </RowHeader>
-                </View>
             </AppInfoContainer>
         </UserAvatarHeader>
     )

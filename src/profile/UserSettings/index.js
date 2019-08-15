@@ -113,14 +113,6 @@ const UserSettings = ({
                     )}
                   </Mutation>
                 </TableView>
-
-                <View style={{ height: 1000 }}>
-                  <RowHeader>
-                    <Name>
-                      <Text>Scroll up and down to see the Profile resize in real time</Text>
-                    </Name>
-                  </RowHeader>
-                </View>
               </React.Fragment>
             )}
           </UserAvatarHeader>
