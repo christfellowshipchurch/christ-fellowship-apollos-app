@@ -65,6 +65,8 @@ const SpouseForm = ({
                             if (loading) return <ActivityIndicatorOverlay />
                             if (error) return <H6>There was an error</H6>
 
+                            if (!getSpouse) return <H4>Have you heard of Young Adults?</H4>
+
                             const { id, firstName, lastName, photo } = getSpouse
 
                             return id
