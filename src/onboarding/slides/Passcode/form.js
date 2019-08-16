@@ -1,21 +1,21 @@
-import React from 'react'
-import { has, get } from 'lodash'
+import React from './node_modules/react'
+import { has, get } from './node_modules/lodash'
 import {
     styled,
     H6,
     TextInput,
-} from '@apollosproject/ui-kit'
+} from './node_modules/@apollosproject/ui-kit'
 
 import {
     FormFields,
     SubmitButton
-} from '../containers.js'
+} from '../../containers.js/index.js'
 
 import {
     TitleText,
     PromptText,
     BrandIcon,
-} from '../styles.js'
+} from '../../styles.js/index.js'
 
 const LegalText = styled(
     ({ theme }) => ({

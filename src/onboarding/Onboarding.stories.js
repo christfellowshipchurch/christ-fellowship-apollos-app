@@ -1,9 +1,10 @@
 import React from 'react';
 import { storiesOf } from '@apollosproject/ui-storybook';
 import Onboarding from '.';
-import {
-    Identity, Passcode, ProfileInformation, EnableNotifications
-} from './slides'
+import Identity from './Identity'
+import Passcode from './Passcode'
+import ProfileInformation from './ProfileInformation'
+import EnableNotifications from './EnableNotifications'
 
 storiesOf('Onboarding', module).add('full', () => <Onboarding />);
 storiesOf('Onboarding', module).add('Landing Page', () => <Identity />);

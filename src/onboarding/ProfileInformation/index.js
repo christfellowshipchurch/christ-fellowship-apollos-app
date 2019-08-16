@@ -60,7 +60,7 @@ const ProfileInformationForm = withFormik({
             .required('Make sure you have selected your birthday')
             .test(
                 'birthDate',
-                'You must be at least 13 years old to create an account',
+                'We’re sorry, you must be 13 years of age or older to use this app. Please see your campus location page for CF Kids services and programs available to you at our church.',
                 value => {
                     return moment().diff(moment(value), 'years') >= 13;
                 }

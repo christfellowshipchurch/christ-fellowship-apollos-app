@@ -1,19 +1,19 @@
-import React from 'react'
+import React from './node_modules/react'
 import {
     ButtonLink
-} from '@apollosproject/ui-kit'
+} from './node_modules/@apollosproject/ui-kit'
 
 import {
     FormFields,
     SubmitButton
-} from '../containers.js'
+} from '../../containers.js/index.js'
 
 import {
     TitleText,
     PromptText,
     BrandIcon,
     CenterAlignedLink,
-} from '../styles'
+} from '../../styles'
 
 const EnableNotificationsForm =
     ({

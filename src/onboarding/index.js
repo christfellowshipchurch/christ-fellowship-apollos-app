@@ -1,8 +1,9 @@
 import React from 'react'
 
-import {
-  Identity, Passcode, ProfileInformation, EnableNotifications
-} from './slides'
+import Identity from './Identity'
+import Passcode from './Passcode'
+import ProfileInformation from './ProfileInformation'
+import EnableNotifications from './EnableNotifications'
 
 import { createStackNavigator } from 'react-navigation'
 
@@ -21,7 +22,5 @@ const OnboardingNavigator = createStackNavigator(
 OnboardingNavigator.navigationOptions = {
   header: null,
 }
-
-const Onboarding = (props) => <OnboardingNavigator {...props} />
 
 export default OnboardingNavigator

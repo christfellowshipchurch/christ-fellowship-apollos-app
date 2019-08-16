@@ -1,29 +1,29 @@
-import React from 'react';
-import { has, get } from 'lodash'
-import moment from 'moment'
+import React from './node_modules/react';
+import { has, get } from './node_modules/lodash'
+import moment from './node_modules/moment'
 import {
     H6,
     TextInput,
     RadioButton
-} from '@apollosproject/ui-kit'
+} from './node_modules/@apollosproject/ui-kit'
 
 import {
     TitleText,
     PromptText,
     BrandIcon,
-} from '../styles.js'
+} from '../../styles.js/index.js'
 
 import {
     FormFields,
     SubmitButton
-} from '../containers.js'
+} from '../../containers.js/index.js'
 
 import {
     StyledRadio,
     RadioLabel,
     Label,
     StyledDate,
-} from '../styles'
+} from '../../styles'
 
 const ProfileInformationForm =
     ({

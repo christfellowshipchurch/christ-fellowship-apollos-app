@@ -7,6 +7,11 @@ import Form from './form'
 import * as Yup from 'yup'
 import { AUTHENTICATE_CREDENTIALS, HANDLE_LOGIN, HANDLE_NEW_LOGIN, CREATE_NEW_LOGIN } from './mutations'
 
+const ERROR_MSG = {
+    sms: 'Sorry, that does not match the code we sent. Please double check your text messages and try again.',
+    password: 'Password error'
+}
+
 const handleLogin = ({ client, navigation, authToken, isExistingIdentity, identity, passcode }) => {
     client.mutate({
         mutation: HANDLE_LOGIN,
@@ -74,8 +79,6 @@ const handleSubmit = async (
                 passcode: password,
                 onUpdate: ({ authenticateCredentials: { token } }) => {
                     // successful login on an existing Sms User Login
-
-                    console.log({ token })
                     if (token) {
                         handleLogin({
                             client,
@@ -87,7 +90,7 @@ const handleSubmit = async (
                         })
                     } else {
                         setErrors({
-                            password: "Sorry! We are unable to log you in at this time"
+                            password: ERROR_MSG[type]
                         })
 
                         setSubmitting(false)
@@ -100,13 +103,8 @@ const handleSubmit = async (
                         && graphQLErrors.find(({ extensions }) => extensions.code === 'UNAUTHENTICATED')
                     ) {
                         // the code or password entered was for an existing user login and was incorrect
-                        const errorLanguage = {
-                            sms: 'confirmation code',
-                            password: 'password'
-                        }
-
                         setErrors({
-                            password: `The ${errorLanguage[type]} you entered is incorrect`
+                            password: ERROR_MSG[type]
                         })
 
                         setSubmitting(false)
@@ -130,7 +128,7 @@ const handleSubmit = async (
                         navigation.navigate('ProfileInformation', { username: identity, password: passcode })
                     } else {
                         setErrors({
-                            password: "Sorry! We are unable to log you in at this time"
+                            password: ERROR_MSG[type]
                         })
 
                         setSubmitting(false)

@@ -1,11 +1,16 @@
 import React from 'react'
+import { Text } from 'react-native'
 import PropTypes from 'prop-types'
 import { Alert } from 'react-native'
 import { ApolloConsumer } from 'react-apollo'
 import { withFormik } from 'formik'
-import Form from './form'
 import * as Yup from 'yup'
+
 import { REQUEST_PIN, IS_VALID_IDENTITY } from './mutations'
+
+import { Button } from '@apollosproject/ui-kit'
+import Form from './form'
+import { Container } from '../containers'
 
 const parseUsername = async (username) => {
     // remove all non-integer characters
@@ -105,7 +110,7 @@ const UsernameForm = withFormik({
     mapPropsToValues: () => ({ username: '' }),
     validate,
     handleSubmit
-})(Form);
+})(Form)
 
 const LandingPage = (props) => (
     <ApolloConsumer>
@@ -115,7 +120,8 @@ const LandingPage = (props) => (
 
 LandingPage.navigationOptions = {
     header: null,
-    gesturesEnabled: false
+    gesturesEnabled: false,
+    displayName: 'Identity'
 }
 
-export default LandingPage;
+export default LandingPage
