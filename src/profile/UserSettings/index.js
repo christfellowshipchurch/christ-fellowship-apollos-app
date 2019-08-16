@@ -17,7 +17,7 @@ import {
 
 import UserAvatarHeader from 'ChristFellowship/src/ui/UserAvatarHeader'
 import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth'
-import HAS_EMAIL_USER_LOGIN from './hasEmailUserLogin'
+import GET_USER_LOGIN_TYPES from './getUserLoginTypes'
 import ChangePassword from './ChangePassword'
 
 const RowHeader = styled(({ theme }) => ({
@@ -74,16 +74,16 @@ const UserSettings = ({
                     onPress={() => navigation.navigate('Location')} />
                 </TableView>
 
-                <Query query={HAS_EMAIL_USER_LOGIN} fetchPolicy="cache-and-network">
+                <Query query={GET_USER_LOGIN_TYPES} fetchPolicy="cache-and-network">
                   {({
-                    data: { hasEmailUserLogin = false },
-                    loading: lookingForEmailUserLogin,
+                    data: { getUserLoginTypes },
+                    loading: lookingForUserLogins,
                     error
                   }) => {
-                    if (lookingForEmailUserLogin) return <ActivityIndicator />
+                    if (lookingForUserLogins) return <ActivityIndicator />
                     if (error) return null
 
-                    return hasEmailUserLogin
+                    return get(getUserLoginTypes, 'email', false)
                       ? (
                         <React.Fragment>
                           <RowHeader>
