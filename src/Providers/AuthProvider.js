@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 import { track } from '@apollosproject/ui-analytics';

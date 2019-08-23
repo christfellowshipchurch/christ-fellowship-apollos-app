@@ -1,6 +1,6 @@
 import React from 'react'
 import { StatusBar } from 'react-native'
-import { createStackNavigator } from 'react-navigation'
+import { createAppContainer, createStackNavigator } from 'react-navigation'
 import SplashScreen from 'react-native-splash-screen'
 
 import './icon-library'
@@ -73,11 +73,13 @@ AppNavigator.navigationOptions = {
   gesturesEnabled: false,
 }
 
+const AppContainer = createAppContainer(AppNavigator)
+
 const App = () => (
   <Providers>
     <BackgroundView>
       <AppStatusBar barStyle="dark-content" />
-      <AppNavigator
+      <AppContainer
         ref={(navigatorRef) => {
           NavigationService.setTopLevelNavigator(navigatorRef)
         }}
