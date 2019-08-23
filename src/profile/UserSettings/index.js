@@ -1,125 +1,103 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-import { get } from 'lodash'
-import { Query, Mutation } from 'react-apollo'
+import { get, has } from 'lodash'
+import { useQuery, useMutation } from 'react-apollo'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {
-  PaddedView,
-  TableView,
-  Cell,
-  CellIcon,
-  CellText,
-  Divider,
+  FlexedView,
   Touchable,
-  styled,
   ActivityIndicator,
-  H4
+  H4,
+  withTheme
 } from '@apollosproject/ui-kit'
 
-import UserAvatarHeader from 'ChristFellowship/src/ui/UserAvatarHeader'
+import UserAvatarHeader from '../../ui/UserAvatarHeader'
+import { FormCard } from '../../ui/Cards'
 import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth'
 import GET_USER_LOGIN_TYPES from './getUserLoginTypes'
 import ChangePassword from './ChangePassword'
 
-const RowHeader = styled(({ theme }) => ({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingVertical: theme.sizing.baseUnit,
-}))(PaddedView)
+const PaddedIcon = withTheme(({ theme, icon }) => ({
+  paddingHorizontal: theme.sizing.baseUnit,
+  icon: ['fal', icon],
+  size: 24
+}))(FontAwesomeIcon)
 
-const RowLink = ({ title, icon, onPress }) => (
-  <React.Fragment>
-    <Touchable
-      onPress={onPress}
-    >
-      <Cell>
-        <CellIcon name={icon} />
-        <CellText>{title}</CellText>
-        <CellIcon name={'arrow-next'} />
-      </Cell>
-    </Touchable>
-    <Divider />
-  </React.Fragment>
+const LocationTitle = ({ title, onPress }) => (
+  <Touchable
+    onPress={onPress}
+  >
+    <FlexedView style={{ flexDirection: 'row' }}>
+      <PaddedIcon icon='map-marker-alt' style={{ alignSelf: 'flex-start' }} />
+      <H4 style={{ flex: 4 }}>{title}</H4>
+      <PaddedIcon icon='angle-right' style={{ alignSelf: 'flex-end' }} />
+    </FlexedView>
+  </Touchable>
 )
 
-const Name = styled({
-  flexGrow: 1,
-})(View)
+const ChangePasswordCard = () => {
+  const { loading, error, data: { getUserLoginTypes } } = useQuery(GET_USER_LOGIN_TYPES, { fetchPolicy: "cache-and-network" })
+
+  if (loading || error) return <ActivityIndicator />
+
+  return has(getUserLoginTypes, 'email')
+    ? (
+      <FormCard title='Change My Password'>
+        <ChangePassword />
+      </FormCard>
+    ) : null
+}
+
+const LogoutCard = () => {
+  const [handleLogout] = useMutation(LOGOUT)
+
+  return (
+    <Touchable
+      onPress={async () => {
+        // trigger handle logout
+        // rest of logout navigation and logic is handled on the Connect screen
+        await handleLogout()
+      }} >
+      <FormCard>
+        <FlexedView style={{ flexDirection: 'row' }}>
+          <H4>Log Out</H4>
+          <FontAwesomeIcon size={24} icon={['fal', 'angle-right']} style={{ alignSelf: 'flex-end' }} />
+        </FlexedView>
+      </FormCard>
+    </Touchable>
+  )
+}
 
 const UserSettings = ({
   navigation,
   title = 'Account Settings',
   campusRowTitle = 'My Home Campus',
-  logoutText = 'Log Out'
-}) => (
-    <Query query={GET_LOGIN_STATE} fetchPolicy="cache-and-network">
-      {({ data: { isLoggedIn = false, loading } }) => {
-        if (loading) return <ActivityIndicator />
-        if (!isLoggedIn) return null
+}) => {
+  const { loading, error, data: { isLoggedIn } } = useQuery(GET_LOGIN_STATE)
 
-        return (
-          <UserAvatarHeader
-            title={title}
-            navigation={navigation}
-            edit >
-            {({ campus }) => (
-              <React.Fragment>
-                <RowHeader>
-                  <H4>{campusRowTitle}</H4>
-                </RowHeader>
-                <TableView>
-                  <RowLink
-                    title={get(campus, 'name', 'Select My Location')}
-                    icon={'pin'}
-                    onPress={() => navigation.navigate('Location')} />
-                </TableView>
+  if (loading) return <ActivityIndicator />
+  if (!isLoggedIn || error) return null
 
-                <Query query={GET_USER_LOGIN_TYPES} fetchPolicy="cache-and-network">
-                  {({
-                    data: { getUserLoginTypes },
-                    loading: lookingForUserLogins,
-                    error
-                  }) => {
-                    if (lookingForUserLogins) return <ActivityIndicator />
-                    if (error) return null
+  return (
+    <UserAvatarHeader
+      title={title}
+      navigation={navigation}
+      edit >
+      {({ campus }) => (
+        <React.Fragment>
+          <FormCard title={campusRowTitle}>
+            <LocationTitle
+              title={get(campus, 'name', 'Select My Location')}
+              onPress={() => navigation.navigate('Location')} />
+            {/* onPress={() => { }} /> */}
+          </FormCard>
 
-                    return get(getUserLoginTypes, 'email', false)
-                      ? (
-                        <React.Fragment>
-                          <RowHeader>
-                            <H4>Change My Password</H4>
-                          </RowHeader>
-                          <TableView>
-                            <ChangePassword />
-                          </TableView>
-                        </React.Fragment>
-                      ) : null
-                  }}
+          <ChangePasswordCard />
 
-                </Query>
-
-                <TableView>
-                  <Mutation mutation={LOGOUT}>
-                    {(handleLogout) => (
-                      <RowLink
-                        title={logoutText}
-                        icon={'umbrella'}
-                        onPress={async () => {
-                          // trigger handle logout
-                          // rest of logout navigation and logic is handled on the Connect screen
-                          await handleLogout()
-                        }} />
-
-                    )}
-                  </Mutation>
-                </TableView>
-              </React.Fragment>
-            )}
-          </UserAvatarHeader>
-
-        )
-      }}
-    </Query>
+          <LogoutCard />
+        </React.Fragment>
+      )}
+    </UserAvatarHeader>
   )
+}
 
 export default UserSettings

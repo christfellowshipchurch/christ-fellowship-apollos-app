@@ -3,9 +3,10 @@ import { has, get } from 'lodash'
 import {
     styled,
     H6,
-    TextInput,
     Button
 } from '@apollosproject/ui-kit'
+
+import { TextInput } from 'ChristFellowship/src/ui/inputs'
 
 import {
     Container
@@ -50,11 +51,13 @@ const PasscodeForm = ({
                 type={inputType}
                 value={values.password}
                 returnKeyType={'done'}
-                error={touched.password && errors.password}
+                error={errors.password}
                 onChangeText={(text) => setFieldValue('password', text)}
                 autoCapitalize='none'
                 autoFocus
                 enablesReturnKeyAutomatically
+                errorIndicator={has(errors, 'password')}
+                icon='lock'
             />
             <Container.Footer>
                 <Button

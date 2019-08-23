@@ -46,6 +46,8 @@
 const colors = {
     primary: '#00aeef',
     secondary: '#000',
+    alert: '#d52158',
+    success: '#1ec27f'
 }
 
 /* Base Typography sizing and fonts.

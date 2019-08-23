@@ -1,11 +1,10 @@
 import React from 'react'
 import { has, get, upperCase } from 'lodash'
 import {
-    styled,
-    H6,
-    TextInput,
     Button
 } from '@apollosproject/ui-kit'
+
+import { TextInput } from 'ChristFellowship/src/ui/inputs'
 
 import {
     Container,
@@ -27,6 +26,8 @@ const UsernameForm = ({
 }) => {
     const disabled = has(errors, 'username') || get(values, 'username', '') === '' || isSubmitting
 
+    console.log({ errors })
+
     return (
         <Container title={title} description={description}>
             <TextInput
@@ -35,10 +36,13 @@ const UsernameForm = ({
                 type="text"
                 value={values.username}
                 returnKeyType={'done'}
-                error={touched.username && errors.username}
+                error={errors.username}
                 onChangeText={(text) => setFieldValue('username', text)}
                 autoCapitalize='none'
                 enablesReturnKeyAutomatically
+                errorIndicator={has(values, 'username') && values.username !== ''}
+                hideErrorText
+                icon='user'
             />
 
             <Container.Footer>

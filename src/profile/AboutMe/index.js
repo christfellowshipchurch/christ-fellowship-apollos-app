@@ -15,6 +15,7 @@ import {
 } from '@apollosproject/ui-kit'
 
 import UserAvatarHeader from 'ChristFellowship/src/ui/UserAvatarHeader'
+import { FormCard } from 'ChristFellowship/src/ui/Cards'
 import InfoForm from './InfoForm'
 import AddressForm from './AddressForm'
 
@@ -28,10 +29,6 @@ const RowHeader = styled(({ theme }) => ({
 const AboutMeContainer = styled(({ theme }) => ({
     paddingVertical: theme.sizing.baseUnit,
 }))(View)
-
-const Name = styled({
-    flexGrow: 1,
-})(View)
 
 const AboutMe = ({
     navigation,
@@ -47,46 +44,18 @@ const AboutMe = ({
             {({ birthDate, gender, address, ethnicity }) => {
                 return (
                     <AboutMeContainer>
-                        <RowHeader>
-                            <H3>{infoRowTitle}</H3>
-                        </RowHeader>
-                        <TableView>
-                            <InfoForm
-                                initialValues={{ gender, birthDate, ethnicity }}
-                                isInitialValid={() =>
-                                    !!(['Male', 'Female'].includes(gender) || birthDate)
-                                }
-                                onSubmit={async (variables, { setSubmitting, setFieldError }) => {
-                                    try {
-                                        await updatePassword({ variables })
-                                    } catch (e) {
-                                        const { graphQLErrors } = e
-                                        if (graphQLErrors && graphQLErrors.length) {
-                                            setFieldError(
-                                                'confirmPassword',
-                                                'Unknown error. Please try again later.'
-                                            )
-                                        }
-                                    }
-                                    setSubmitting(false)
-                                }} />
-                        </TableView>
+                        <InfoForm
+                            initialValues={{ gender, birthDate, ethnicity }}
+                            isInitialValid={() =>
+                                !!(['Male', 'Female'].includes(gender) || birthDate)
+                            }
+                            title={infoRowTitle} />
 
-                        <RowHeader>
-                            <H3>{addressRowTitle}</H3>
-                        </RowHeader>
-                        <TableView>
-                            <AddressForm initialValues={{ ...address }} />
-                        </TableView>
+                        <AddressForm initialValues={{ ...address }} title={addressRowTitle} />
 
-                        <RowHeader>
-                            <H3>{changeNameRowTitle}</H3>
-                        </RowHeader>
-                        <TableView>
-                            <PaddedView>
-                                <Text>{changeNameDescription}</Text>
-                            </PaddedView>
-                        </TableView>
+                        <FormCard title={changeNameRowTitle}>
+                            <Text>{changeNameDescription}</Text>
+                        </FormCard>
                     </AboutMeContainer>
                 )
             }}

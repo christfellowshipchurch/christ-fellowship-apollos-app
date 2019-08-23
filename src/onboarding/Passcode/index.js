@@ -155,7 +155,7 @@ const handleSubmit = async (
 const PasscodeForm = withFormik({
     mapPropsToValues: () => ({ password: '' }),
     validationSchema: Yup.object().shape({
-        password: Yup.string().required('Please make sure you have entered a valid password')
+        password: Yup.string().required('Please make sure you something entered above')
     }),
     handleSubmit
 })(Form)

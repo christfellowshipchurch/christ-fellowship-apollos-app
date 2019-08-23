@@ -1,11 +1,11 @@
-import React from './node_modules/react';
-import { has, get } from './node_modules/lodash'
-import moment from './node_modules/moment'
+import React from 'react';
+import { has, get } from 'lodash'
+import moment from 'moment'
 import {
     H6,
     TextInput,
     RadioButton
-} from './node_modules/@apollosproject/ui-kit'
+} from '@apollosproject/ui-kit'
 
 import {
     TitleText,

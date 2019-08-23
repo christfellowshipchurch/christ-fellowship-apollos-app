@@ -1,111 +1,31 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import { StyleSheet } from 'react-native'
-import { Query, Mutation } from 'react-apollo'
+import { useMutation } from 'react-apollo'
 import { withFormik } from 'formik'
-import * as Yup from 'yup'
 import { has, get } from 'lodash'
 import moment from 'moment'
-import DateTimePicker from 'react-native-modal-datetime-picker'
-
-import {
-    ActivityIndicator,
-    BackgroundView,
-    PaddedView,
-    FlexedView,
-    styled,
-    H5,
-    H6,
-    Icon,
-    Touchable,
-} from '@apollosproject/ui-kit'
+import { FormCard } from 'ChristFellowship/src/ui/Cards'
+import { DateInput } from 'ChristFellowship/src/ui/inputs'
 
 import { UPDATE_SALVATION, UPDATE_BAPTISM } from './mutations'
 
-const ErrorMessage = styled(({ theme }) => ({
-    color: theme.colors.alert
-}))(H5)
-
-const Label = styled(({ theme, padded }) => ({
-    color: 'gray',
-    opacity: 0.7,
-    ...(padded ? { marginTop: theme.sizing.baseUnit } : {}),
-}))(H6)
-
-const DropDownContainer = styled(({ theme }) => ({
-    padding: theme.sizing.baseUnit * 0.5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderBottomColor: theme.colors.background.inactive,
-    borderBottomWidth: StyleSheet.hairlineWidth
-}))(FlexedView)
-
-const DropDownValue = styled(({ theme }) => ({
-    paddingHorizontal: theme.sizing.baseUnit,
-    flex: 3
-}))(H5)
-
-const DropDownIcon = styled(({ theme }) => ({
-    flex: 1,
-    alignContent: 'center'
-}))(Icon)
-
-const DropDown = ({ icon, value, onPress, ...props }) => (
-    <Touchable onPress={onPress} {...props}>
-        <DropDownContainer>
-            <DropDownIcon name={icon} size={20} />
-            <DropDownValue>{value}</DropDownValue>
-            <DropDownIcon name='arrow-down' size={20} />
-        </DropDownContainer>
-    </Touchable>
-)
-
-const Overlay = styled(() => ({
-    alignContent: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, .75)',
-    top: 0,
-    left: 0,
-    zIndex: 1
-}))(FlexedView)
-
-const ActivityIndicatorOverlay = () => (
-    <Overlay>
-        <ActivityIndicator />
-    </Overlay>
-)
-
-const DateSelect = ({ title, value, onChange, onSuccess, onError, mutation }) => {
+const DateSelect = ({ label, value, onChange, onSuccess, onError, mutation }) => {
     const [showDateTimePicker, setShowDateTimePicker] = useState(false)
-
-
-    console.log({ mutation })
+    const [mutate] = useMutation(mutation, { update: onSuccess })
     return (
-        <Mutation
-            mutation={mutation}
-            update={onSuccess} >
-            {(mutate) => (
-                <>
-                    <Label padded>{title}</Label>
-                    <DropDown
-                        value={value}
-                        icon='calendar'
-                        onPress={() => setShowDateTimePicker(true)} />
-                    <DateTimePicker
-                        date={moment.utc(value).toDate()}
-                        isVisible={showDateTimePicker}
-                        onConfirm={(date) => {
-                            setShowDateTimePicker(false)
-                            onChange({ mutate, date })
-                        }}
-                        onCancel={() => setShowDateTimePicker(false)}
-                    />
-                </>
-            )}
-        </Mutation>
+        <DateInput
+            label={label}
+            icon='calendar-alt'
+            date={moment.utc(value).toDate()}
+            value={moment(value).format('MMM D, YYYY')}
+            displayValue={value
+                ? moment(value).format('MMM D, YYYY')
+                : ''}
+            isVisible={showDateTimePicker}
+            onConfirm={(date) => {
+                setShowDateTimePicker(false)
+                onChange({ mutate, date })
+            }}
+        />
     )
 }
 
@@ -120,64 +40,61 @@ const MilestonesForm = ({
     baptismRowTitle = 'I got baptized on:',
     baptismPlaceholder = 'Baptism Date',
 }) => (
-        <FlexedView>
-            <BackgroundView>
-                <PaddedView>
-                    <DateSelect
-                        title={salvationRowTitle}
-                        value={has(values, 'salvationDate')
-                            ? moment
-                                .utc(get(values, 'salvationDate'))
-                                .format('MMM DD, YYYY')
-                            : salvationPlaceholder}
-                        onChange={({ mutate, date }) => {
-                            setSubmitting(true)
+        <>
+            <FormCard title={salvationRowTitle} isLoading={isSubmitting}>
+                <DateSelect
+                    value={has(values, 'salvationDate')
+                        ? moment
+                            .utc(get(values, 'salvationDate'))
+                            .format('MMM DD, YYYY')
+                        : salvationPlaceholder}
+                    onChange={({ mutate, date }) => {
+                        setSubmitting(true)
 
-                            setFieldValue('salvationDate', date)
-                            try {
-                                const salvation = moment.utc(date).format()
-                                mutate({ variables: { salvation } })
-                            } catch (e) {
-                                isSubmitting(false)
-                            }
-                        }}
-                        onSuccess={() => setSubmitting(false)}
-                        onError={(e) => {
-                            setSubmitting(false)
-                            // TODO : error handling
-                        }}
-                        mutation={UPDATE_SALVATION}
-                    />
+                        setFieldValue('salvationDate', date)
+                        try {
+                            const salvation = moment.utc(date).format()
+                            mutate({ variables: { salvation } })
+                        } catch (e) {
+                            isSubmitting(false)
+                        }
+                    }}
+                    onSuccess={() => setSubmitting(false)}
+                    onError={(e) => {
+                        setSubmitting(false)
+                        // TODO : error handling
+                    }}
+                    mutation={UPDATE_SALVATION}
+                    label={salvationPlaceholder}
+                />
+            </FormCard>
+            <FormCard title={baptismRowTitle} isLoading={isSubmitting}>
+                <DateSelect
+                    value={has(values, 'baptismDate')
+                        ? moment
+                            .utc(get(values, 'baptismDate'))
+                            .format('MMM DD, YYYY')
+                        : baptismPlaceholder}
+                    onChange={({ mutate, date }) => {
+                        setSubmitting(true)
 
-                    <DateSelect
-                        title={baptismRowTitle}
-                        value={has(values, 'baptismDate')
-                            ? moment
-                                .utc(get(values, 'baptismDate'))
-                                .format('MMM DD, YYYY')
-                            : baptismPlaceholder}
-                        onChange={({ mutate, date }) => {
-                            setSubmitting(true)
-
-                            setFieldValue('baptismDate', date)
-                            try {
-                                const baptism = moment.utc(date).format()
-                                mutate({ variables: { baptism } })
-                            } catch (e) {
-                                isSubmitting(false)
-                            }
-                        }}
-                        onSuccess={() => setSubmitting(false)}
-                        onError={(e) => {
-                            setSubmitting(false)
-                            // TODO : error handling
-                        }}
-                        mutation={UPDATE_BAPTISM} />
-
-                </PaddedView>
-            </BackgroundView>
-            {isSubmitting && <ActivityIndicatorOverlay />}
-        </FlexedView>
+                        setFieldValue('baptismDate', date)
+                        try {
+                            const baptism = moment.utc(date).format()
+                            mutate({ variables: { baptism } })
+                        } catch (e) {
+                            isSubmitting(false)
+                        }
+                    }}
+                    onSuccess={() => setSubmitting(false)}
+                    onError={(e) => {
+                        setSubmitting(false)
+                        // TODO : error handling
+                    }}
+                    mutation={UPDATE_BAPTISM}
+                    label={baptismPlaceholder} />
+            </FormCard>
+        </>
     )
 
 const FormikForm = ({

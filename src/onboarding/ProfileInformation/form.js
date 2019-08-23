@@ -3,20 +3,22 @@ import { has, get } from 'lodash'
 import moment from 'moment'
 import {
     H6,
-    TextInput,
-    RadioButton,
     Button
 } from '@apollosproject/ui-kit'
+
+import {
+    TextInput,
+    Radio,
+    RadioButton,
+    DateInput
+} from 'ChristFellowship/src/ui/inputs'
 
 import {
     Container
 } from '../containers.js'
 
 import {
-    StyledRadio,
-    RadioLabel,
     Label,
-    StyledDate,
 } from '../styles'
 
 const ProfileInformationForm =
@@ -59,6 +61,7 @@ const ProfileInformationForm =
                     onChangeText={(text) => setFieldValue('firstName', text)}
                     onSubmitEditing={() => LastNameInput.focus()}
                     disabled={isLoading}
+                    icon='user'
                     enablesReturnKeyAutomatically
                 />
 
@@ -72,18 +75,18 @@ const ProfileInformationForm =
                     onChangeText={(text) => setFieldValue('lastName', text)}
                     disabled={isLoading}
                     enablesReturnKeyAutomatically
+                    icon='user'
                     inputRef={(r) => {
                         LastNameInput = r;
                     }}
                 />
 
-                <Label padded>Birthday*</Label>
-                <StyledDate
-                    type={'DateInput'}
-                    placeholder={'Select date of birth...'}
-                    value={moment
-                        .utc(get(values, 'birthDate', defaultDate) || defaultDate)
-                        .toDate()}
+                <DateInput
+                    value={has(values, 'birthDate')
+                        ? moment
+                            .utc(get(values, 'birthDate', defaultDate) || defaultDate)
+                            .toString()
+                        : ''}
                     error={get(errors, 'birthDate', null)}
                     displayValue={
                         // only show a birthday if we have one.
@@ -91,11 +94,12 @@ const ProfileInformationForm =
                             ? moment(values.birthDate).format('MM/DD/YYYY')
                             : '' // Pass an empty string if we don't have a birthday to show the placeholder.
                     }
-                    onChange={(value) => setFieldValue('birthDate', value)}
+                    onConfirm={(value) => setFieldValue('birthDate', value)}
+                    icon='birthday-cake'
+                    label="Birthday*"
                 />
 
-                <Label padded>Gender</Label>
-                <StyledRadio
+                <Radio
                     label="Gender"
                     type="radio"
                     value={get(values, 'gender')}
@@ -106,11 +110,11 @@ const ProfileInformationForm =
                         <RadioButton
                             key={gender}
                             value={gender}
-                            label={() => <RadioLabel>{gender}</RadioLabel>}
+                            label={gender}
                             underline={false}
                         />,
                     ])}
-                </StyledRadio>
+                </Radio>
 
                 <Container.Footer>
                     <Button

@@ -2,32 +2,17 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import {
     PaddedView,
-    TableView,
-    Cell,
-    CellIcon,
-    CellText,
-    Divider,
     Touchable,
     styled,
     H3
 } from '@apollosproject/ui-kit'
 
 import UserAvatarHeader from 'ChristFellowship/src/ui/UserAvatarHeader'
-
-const RowHeader = styled(({ theme }) => ({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: theme.sizing.baseUnit,
-}))(PaddedView)
+import { TableView, Cell } from 'ChristFellowship/src/ui/TableView'
 
 const AppInfoContainer = styled(({ theme }) => ({
     paddingVertical: theme.sizing.baseUnit,
 }))(View)
-
-const Name = styled({
-    flexGrow: 1,
-})(View)
 
 const RowLink = ({ title, icon, onPress }) => (
     <React.Fragment>
@@ -52,29 +37,22 @@ const AppInfo = ({
             navigation={navigation}
             minimize
             withGoBack >
-            <AppInfoContainer>
-                <RowHeader>
-                    <H3>
-                        {appInfoRowTitle}
-                    </H3>
-                </RowHeader>
-                <TableView>
-                    <RowLink
-                        title='Why do you want my info?'
-                        icon='warning'
-                        onPress={() => navigation.navigate('ValueProp')} />
+            <TableView>
+                <Cell
+                    title='Why do you want my info?'
+                    icon='question-circle'
+                    onPress={() => navigation.navigate('ValueProp')} />
 
-                    <RowLink
-                        title='Privacy Policy'
-                        icon='information'
-                        onPress={() => navigation.navigate('PrivacyPolicy')} />
-                    <RowLink
-                        title='Terms of Service'
-                        icon='information'
-                        onPress={() => navigation.navigate('TermsOfUse')} />
-                    <RowLink title='Send Us Feedback' icon='text' />
-                </TableView>
-            </AppInfoContainer>
+                <Cell
+                    title='Privacy Policy'
+                    icon='info-circle'
+                    onPress={() => navigation.navigate('PrivacyPolicy')} />
+                <Cell
+                    title='Terms of Service'
+                    icon='info-circle'
+                    onPress={() => navigation.navigate('TermsOfUse')} />
+                <Cell title='Send Us Feedback' icon='external-link-square' />
+            </TableView>
         </UserAvatarHeader>
     )
 

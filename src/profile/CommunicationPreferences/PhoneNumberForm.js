@@ -1,43 +1,14 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
+import { useMutation } from 'react-apollo'
 import { withFormik } from 'formik'
-import { has, get } from 'lodash'
+import { get } from 'lodash'
 
 import {
-    ActivityIndicator,
-    BackgroundView,
-    PaddedView,
-    FlexedView,
-    styled,
-    H5,
     Switch,
     TextInput
 } from '@apollosproject/ui-kit'
-
+import { FormCard } from 'ChristFellowship/src/ui/Cards'
 import { UDPATE_PHONE_NUMBER, UPDATE_SMS_PREFERENCE } from './mutations'
-
-
-const ErrorMessage = styled(({ theme }) => ({
-    color: theme.colors.alert
-}))(H5)
-
-const Overlay = styled(() => ({
-    alignContent: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, .75)',
-    top: 0,
-    left: 0,
-    zIndex: 1
-}))(FlexedView)
-
-const ActivityIndicatorOverlay = () => (
-    <Overlay>
-        <ActivityIndicator />
-    </Overlay>
-)
 
 const PhoneNumberForm = ({
     isSubmitting = true,
@@ -47,60 +18,50 @@ const PhoneNumberForm = ({
     values,
     touched,
     allowSMSText = 'Allow Text Notifications'
-}) => (
-        <FlexedView>
-            <BackgroundView>
-                <PaddedView>
-                    {has(errors, 'phoneNumber') && <ErrorMessage>Something went wrong... so so terribly wrong... sorry</ErrorMessage>}
+}) => {
+    const [updatePhoneNumber] = useMutation(UDPATE_PHONE_NUMBER, {
+        update: () => setSubmitting(false)
+    })
+    const [updateSMSPreference] = useMutation(UPDATE_SMS_PREFERENCE, {
+        update: () => setSubmitting(false)
+    })
 
-                    <Mutation
-                        mutation={UDPATE_PHONE_NUMBER}
-                        update={(cache, { data }) => setSubmitting(false)} >
-                        {(updatePhoneNumber) => (
-                            <TextInput
-                                label={'Cell Phone'}
-                                type={'text'}
-                                textContentType={'telephoneNumber'} // ios autofill
-                                returnKeyType={'next'}
-                                value={get(values, 'phoneNumber')}
-                                error={
-                                    get(touched, 'phoneNumber', false) &&
-                                    get(errors, 'phoneNumber', null)
-                                }
-                                onChangeText={(text) => setFieldValue('phoneNumber', text)}
-                                onSubmitEditing={() => {
-                                    setSubmitting(true)
-                                    updatePhoneNumber({ variables: { phoneNumber: get(values, 'phoneNumber') } })
-                                }}
-                            />
-                        )}
-                    </Mutation>
+    return (
+        <FormCard title={get(values, 'title')} isLoading={isSubmitting}>
+            <TextInput
+                label={'Cell Phone'}
+                type={'text'}
+                textContentType={'telephoneNumber'} // ios autofill
+                returnKeyType={'next'}
+                value={get(values, 'phoneNumber')}
+                error={
+                    get(touched, 'phoneNumber', false) &&
+                    get(errors, 'phoneNumber', null)
+                }
+                onChangeText={(text) => setFieldValue('phoneNumber', text)}
+                onSubmitEditing={() => {
+                    setSubmitting(true)
+                    updatePhoneNumber({ variables: { phoneNumber: get(values, 'phoneNumber') } })
+                }}
+            />
 
-                    <Mutation
-                        mutation={UPDATE_SMS_PREFERENCE}
-                        update={(cache, { data }) => setSubmitting(false)} >
-                        {(updateSMSPreference) => (
-                            <Switch
-                                label={allowSMSText}
-                                value={get(values, 'allowSMS')}
-                                onValueChange={(allow) => {
-                                    setSubmitting(true)
-                                    updateSMSPreference({ variables: { allow } })
-                                    setFieldValue('allowSMS', allow)
-                                }} />
-                        )}
-                    </Mutation>
-                </PaddedView>
-            </BackgroundView>
-            {isSubmitting && <ActivityIndicatorOverlay />}
-        </FlexedView>
+            <Switch
+                label={allowSMSText}
+                value={get(values, 'allowSMS')}
+                onValueChange={(allow) => {
+                    setSubmitting(true)
+                    updateSMSPreference({ variables: { allow } })
+                    setFieldValue('allowSMS', allow)
+                }} />
+        </FormCard>
     )
+}
 
-const FormikForm = ({ onSubmit, initialValues, isInitialValid, allowSMSText }) => {
+const FormikForm = ({ onSubmit, initialValues, isInitialValid, allowSMSText, title }) => {
     const Form = withFormik({
-        mapPropsToValues: () => initialValues,
+        mapPropsToValues: () => ({ ...initialValues, title }),
         onSubmit,
-        initialValues,
+        initialValues: { ...initialValues, title },
         isInitialValid,
         allowSMSText
     })(PhoneNumberForm)
