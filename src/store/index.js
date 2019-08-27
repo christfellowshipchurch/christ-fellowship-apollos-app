@@ -1,8 +1,8 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
-import { schema as mediaPlayerSchema } from '@apollosproject/ui-media-player';
-import { updatePushId } from '@apollosproject/ui-notifications';
-import { CACHE_LOADED } from '../client/cache'; // eslint-disable-line
+import { schema as mediaPlayerSchema } from '@apollosproject/ui-media-player'
+import { updatePushId } from '@apollosproject/ui-notifications'
+import { CACHE_LOADED } from '../client/cache' // eslint-disable-line
 
 // TODO: this will require more organization...ie...not keeping everything in one file.
 // But this is simple while our needs our small.
@@ -19,19 +19,19 @@ export const schema = `
     updateDevicePushId(pushId: String!)
     updatePushPermissions(enabled: Boolean!)
   }
-${mediaPlayerSchema}
-`;
+  ${mediaPlayerSchema}
+`
 
 export const defaults = {
   __typename: 'Query',
   cacheLoaded: false,
-};
+}
 
 const GET_LOGGED_IN = gql`
   query {
     isLoggedIn @client
   }
-`;
+`
 
 export const resolvers = {
   Mutation: {
@@ -41,26 +41,23 @@ export const resolvers = {
         data: {
           cacheLoaded: true,
         },
-      });
+      })
       const { data: { isLoggedIn } = {} } = await client.query({
         query: GET_LOGGED_IN,
-      });
+      })
 
-      // const { pushId } = cache.readQuery({
-      //   query: gql`
-      //     query {
-      //       pushId @client
-      //     }
-      //   `,
-      // });
-
-      const pushId = 'abc'
-
+      const { pushId } = cache.readQuery({
+        query: gql`
+          query {
+            pushId @client
+          }
+        `,
+      })
 
       if (isLoggedIn && pushId) {
-        updatePushId({ pushId, client });
+        updatePushId({ pushId, client })
       }
-      return null;
+      return null
     },
   },
-};
+}

@@ -31,7 +31,7 @@ const SpouseForm = ({
 
     return (
         <FormCard title={get(values, 'title')} isLoading={loading}>
-            {has(getSpouse, 'id')
+            {!loading && has(getSpouse, 'id')
                 ? <FlexedView style={{
                     flexDirection: 'row',
                     alignItems: 'center',
