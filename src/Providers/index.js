@@ -1,5 +1,4 @@
 import React from 'react'
-import Config from 'react-native-config'
 import { Providers } from '@apollosproject/ui-kit'
 import { AnalyticsProvider } from '@apollosproject/ui-analytics'
 import { MediaPlayerProvider } from '@apollosproject/ui-media-player'

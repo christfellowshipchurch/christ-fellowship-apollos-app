@@ -1,10 +1,7 @@
-import gql from 'graphql-tag'
-import { Alert } from 'react-native'
-import { schema as mediaPlayerSchema } from '@apollosproject/ui-media-player'
-import { updatePushId } from '@apollosproject/ui-notifications'
-import { CACHE_LOADED } from '../client/cache' // eslint-disable-line
-
 import PushNotification from 'react-native-push-notification'
+import gql from 'graphql-tag'
+import { schema as mediaPlayerSchema } from '@apollosproject/ui-media-player'
+import { CACHE_LOADED } from '../client/cache' // eslint-disable-line
 
 // TODO: this will require more organization...ie...not keeping everything in one file.
 // But this is simple while our needs our small.

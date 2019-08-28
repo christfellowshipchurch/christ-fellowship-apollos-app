@@ -1,11 +1,7 @@
-import { Component, useState, useEffect } from 'react'
 import gql from 'graphql-tag'
-import { Linking, Platform, Alert } from 'react-native'
-import PropTypes from 'prop-types'
-import { withApollo, useMutation, useQuery } from 'react-apollo'
+import { Platform } from 'react-native'
+import { useMutation } from 'react-apollo'
 import { get } from 'lodash'
-import { GET_LOGIN_STATE } from '@apollosproject/ui-auth'
-
 import PushNotification from 'react-native-push-notification'
 
 const UPDATE_DEVICE_PUSH_ID = gql`

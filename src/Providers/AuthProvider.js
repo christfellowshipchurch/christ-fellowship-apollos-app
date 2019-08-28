@@ -1,11 +1,9 @@
 import React from 'react'
-import { Alert } from 'react-native'
 import PropTypes from 'prop-types'
 import AsyncStorage from '@react-native-community/async-storage'
 import { ApolloConsumer } from 'react-apollo'
 import gql from 'graphql-tag'
 import { track } from '@apollosproject/ui-analytics'
-import { GET_PUSH_ID } from '@apollosproject/ui-notifications'
 import PushNotification from 'react-native-push-notification'
 
 const getLoginState = gql`
