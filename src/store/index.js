@@ -1,8 +1,10 @@
 import gql from 'graphql-tag'
-
+import { Alert } from 'react-native'
 import { schema as mediaPlayerSchema } from '@apollosproject/ui-media-player'
 import { updatePushId } from '@apollosproject/ui-notifications'
 import { CACHE_LOADED } from '../client/cache' // eslint-disable-line
+
+import PushNotification from 'react-native-push-notification'
 
 // TODO: this will require more organization...ie...not keeping everything in one file.
 // But this is simple while our needs our small.
@@ -46,17 +48,18 @@ export const resolvers = {
         query: GET_LOGGED_IN,
       })
 
-      const { pushId } = cache.readQuery({
-        query: gql`
-          query {
-            pushId @client
+      // On cache load, we check to see if the user is already logged in
+      //    and then check to see if Push Notifications are already enabled
+      // If they are, we want to request permission to get the Device Id
+      //    to update our records
+      if (isLoggedIn) {
+        PushNotification.checkPermissions(({ alert, badge, sound }) => {
+          if (!!(alert || badge || sound)) {
+            PushNotification.requestPermissions()
           }
-        `,
-      })
-
-      if (isLoggedIn && pushId) {
-        updatePushId({ pushId, client })
+        })
       }
+
       return null
     },
   },

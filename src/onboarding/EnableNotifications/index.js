@@ -1,12 +1,11 @@
 import React from 'react'
 import { NavigationActions } from 'react-navigation'
 import Form from './form'
-import PushNotification from 'react-native-push-notification'
 
 const navigateToTabs = (navigation) => navigation.navigate('Tabs', { header: null })
 
 const handleSubmit = ({ navigation }) => {
-    PushNotification.requestPermissions()
+    PushNotification.request({ trigger: 'user' })
     navigateToTabs(navigation)
 }
 
@@ -23,4 +22,4 @@ EnableNotifications.navigationOptions = {
     gesturesEnabled: false
 }
 
-export default EnableNotifications;
+export default EnableNotifications

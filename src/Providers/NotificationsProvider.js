@@ -1,126 +1,77 @@
-import { Component } from 'react'
-import { Linking, Platform } from 'react-native'
+import { Component, useState, useEffect } from 'react'
+import gql from 'graphql-tag'
+import { Linking, Platform, Alert } from 'react-native'
 import PropTypes from 'prop-types'
-import { withApollo } from 'react-apollo'
+import { withApollo, useMutation, useQuery } from 'react-apollo'
 import { get } from 'lodash'
 import { GET_LOGIN_STATE } from '@apollosproject/ui-auth'
 
-const defaults = {
-  pushId: null,
-  notificationsEnabled: Platform.OS === 'android',
-}
+import PushNotification from 'react-native-push-notification'
 
-const resolvers = {
-  Query: {
-    notificationsEnabled: async () => new Promise((resolve) =>
-      PushNotification.checkPermissions(({ alert, badge, sound }) =>
-        resolve(!!(alert || badge || sound))
-      ))
-  },
-  Mutation: {
-    updateDevicePushId: async (root, { pushId }, { cache, client }) => {
-      const query = gql`
-        query {
-          pushId @client
-        }
-      `
-      cache.writeQuery({
-        query,
-        data: {
-          pushId,
-        },
-      })
-
-      const { data: { isLoggedIn } = {} } = await client.query({
-        query: GET_LOGIN_STATE,
-      })
-
-      if (isLoggedIn) {
-        updatePushId({ pushId, client })
-      }
-      return null
-    },
-    updatePushPermissions: (root, { enabled }, { cache }) => {
-      cache.writeQuery({
-        query: GET_NOTIFICATIONS_ENABLED,
-        data: {
-          notificationsEnabled: enabled,
-        },
-      })
-
-      return null
-    },
-  },
-}
-
-class NotificationsProvider extends Component {
-  static propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.arrayOf(PropTypes.node),
-      PropTypes.node,
-    ]).isRequired,
-    navigate: PropTypes.func.isRequired,
-    client: PropTypes.shape({
-      mutate: PropTypes.func,
-      addResolvers: PropTypes.func,
-      writeData: PropTypes.func,
-      onResetStore: PropTypes.func,
-    }).isRequired,
-  }
-
-  static navigationOptions = {}
-
-  constructor(props) {
-    super(props)
-    const { client } = props
-    client.addResolvers(resolvers)
-    client.writeData({ data: defaults })
-    client.onResetStore(() => client.writeData({ data: defaults }))
-  }
-
-  componentDidMount() {
-    // calls registration of push notifications (see NotificationsProvider for handler)
-    // PushNotification.configure()
-
-    Linking.getInitialURL().then((url) => {
-      this.navigate(url)
-    })
-    Linking.addEventListener('url', ({ url }) => this.navigate(url))
-  }
-
-  componentWillUnmount() {
-    Linking.removeEventListener('url')
-  }
-
-  // TODO : navigate through the app based on data sent in the push notification
-  // navigate = (rawUrl) => {
-  //   if (!rawUrl) return
-  //   const url = URL.parse(rawUrl)
-  //   const route = url.pathname.substring(1)
-  //   const args = querystring.parse(url.query)
-  //   this.props.navigate(route, args)
-  // }
-
-  navigate = () => true
-
-  onOpened = (openResult) => {
-    console.log('Message: ', openResult.notification.payload.body)
-    console.log('Data: ', openResult.notification.payload.additionalData)
-    console.log('isActive: ', openResult.notification.isAppInFocus)
-    console.log('openResult: ', openResult)
-    // URL looks like this
-    // apolloschurchapp://AppStackNavigator/Connect
-    // apolloschurchapp://SomethingElse/Connect
-    // apolloschurchapp://SomethingElse/ContentSingle?itemId=SomeItemId:blablalba
-    const url = get(openResult, 'notification.payload.additionalData.url')
-    if (url) {
-      this.navigate(url)
+const UPDATE_DEVICE_PUSH_ID = gql`
+  mutation updateDevicePushId($enabled:Boolean, $bindingType:String, $address:String) {
+    updateUserPushSettingsTN(input:{ enabled: $enabled, bindingType: $bindingType, address: $address}) {
+      firstName
+      lastName
     }
   }
+`
 
-  render() {
-    return this.props.children
-  }
+const BINDING_TYPE = {
+  ios: "apn",
+  android: "gcn"
 }
 
-export default withApollo(NotificationsProvider)
+const PushNotificationProvider = ({ children }) => {
+  const [updateDevicePushId] = useMutation(UPDATE_DEVICE_PUSH_ID, {
+    // This keeps the data cache from updating to the return value of the mutation
+    //
+    // Since this is a Provider, we don't want to continually update state
+    //    as this results in an infinite loop of the mutation being called
+    ignoreResults: true,
+  })
+
+  PushNotification.configure({
+    // Called when Token is generated (iOS and Android)
+    onRegister: (address) => {
+      console.log('TOKEN:', address)
+      const token = get(address, 'token', '')
+      const bindingType = get(BINDING_TYPE, Platform.OS, "")
+      const variables = { enabled: true, bindingType, address: token }
+
+      // Updates the Device Id with the address of the device on register
+      updateDevicePushId({ variables })
+    },
+
+    // (required) Called when a remote or local notification is opened or received
+    onNotification: (notification) => {
+      console.log('NOTIFICATION:', notification)
+
+      // TODO : process the notification
+
+      // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
+      notification.finish(PushNotificationIOS.FetchResult.NoData)
+    },
+
+    // ANDROID ONLY: GCM or FCM Sender ID (product_number)
+    // senderID: 'YOUR GCM (OR FCM) SENDER ID',
+
+    // IOS ONLY: Permissions to register
+    permissions: {
+      alert: true,
+      badge: true,
+      sound: true
+    },
+
+    // Should the initial notification be popped automatically
+    // default: true
+    popInitialNotification: true,
+
+    // does not request permissions automatically
+    requestPermissions: false
+  })
+
+  return children
+}
+
+export default PushNotificationProvider

@@ -6,8 +6,7 @@ import { ApolloConsumer } from 'react-apollo'
 import gql from 'graphql-tag'
 import { track } from '@apollosproject/ui-analytics'
 import { GET_PUSH_ID } from '@apollosproject/ui-notifications'
-
-import PushNotifications from 'ChristFellowship/src/notifications'
+import PushNotification from 'react-native-push-notification'
 
 const getLoginState = gql`
   query {
@@ -65,28 +64,14 @@ export const resolvers = {
           data: { authToken },
         })
 
-        const { data: { pushId } = { data: {} } } = await client.query({
-          query: GET_PUSH_ID,
+        // On login, we check to see if Push Notifications are already enabled
+        // If they are, we want to request permission to get the Device Id
+        //    to update our records
+        PushNotification.checkPermissions(({ alert, badge, sound }) => {
+          if (!!(alert || badge || sound)) {
+            PushNotifications.requestPermissions()
+          }
         })
-
-        Alert.alert(
-          'Alert Title',
-          `${pushId ? JSON.stringify(variables) : 'No Push ID found'}`,
-          [
-            { text: 'Ask me later', onPress: () => console.log('Ask me later pressed') },
-            {
-              text: 'Cancel',
-              onPress: () => console.log('Cancel Pressed'),
-              style: 'cancel',
-            },
-            { text: 'OK', onPress: () => console.log('OK Pressed') },
-          ],
-          { cancelable: false },
-        )
-
-        if (pushId) {
-          PushNotifications.updateDeviceId({ pushId, client })
-        }
 
         track({ eventName: 'UserLogin', client })
       } catch (e) {
