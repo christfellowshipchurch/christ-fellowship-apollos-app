@@ -13,6 +13,7 @@ import {
     FlexedView,
     H4,
     H6,
+    Icon,
 } from '@apollosproject/ui-kit'
 import { FormCard } from 'ChristFellowship/src/ui/Cards'
 
@@ -25,14 +26,13 @@ const SpouseForm = ({
     errors,
     values,
 }) => {
-    const { loading, error, data } = useQuery(GET_CHILDREN, { fetchPolicy: 'cache-and-network' })
+    const { loading, error, data: { getChildren } } = useQuery(GET_CHILDREN, { fetchPolicy: 'cache-and-network' })
 
     if (error) return <H6>There was an error</H6>
-    const { getChildren } = data
 
     return (
         <FormCard title={get(values, 'title')} isLoading={loading}>
-            {!loading && getChildren.length &&
+            {getChildren.length &&
                 getChildren.map(({ id, firstName, lastName, photo }, i) =>
                     <FlexedView key={i} style={{
                         flexDirection: 'row',
