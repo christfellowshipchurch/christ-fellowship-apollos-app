@@ -1,22 +1,15 @@
 import React from 'react'
-import { Animated, View, ImageBackground, StyleSheet, Text, SafeAreaView } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+import { Animated, View, ImageBackground, SafeAreaView } from 'react-native'
 import PropTypes from 'prop-types'
-import { compose } from 'recompose'
 import { withNavigation } from 'react-navigation'
+import { get } from 'lodash'
 
 import NavigationHeader from './NavigationHeader'
 import UserAvatarView from './UserAvatarView'
 
 import {
   withIsLoading,
-  Touchable,
-  Icon,
-  withTheme,
   styled,
-  PaddedView,
-  FlexedView,
-  H4
 } from '@apollosproject/ui-kit'
 
 const CampusImage = styled(({ theme }) => ({
@@ -44,7 +37,6 @@ const Content = ({
   range,
   minHeight,
   maxHeight,
-  delay
 }) => {
   const padding = { min: '0%', max: '20%' }
   let paddingLeft = withGoBack
@@ -64,25 +56,22 @@ const Content = ({
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'red'
     }}>
       {children}
     </Animated.View>
   )
 }
 
-
-const BackgroundImage = ({ range, children }) => (
+const BackgroundImage = ({ range, children, uri }) => (
   <Animated.View style={{
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'lightskyblue',
     height: range,
     zIndex: 2,
   }} >
-    <CampusImage source={{ uri: 'https://picsum.photos/375/812/?random' }}>
+    <CampusImage source={{ uri }}>
       <DarkOverlay />
       <View style={{ zIndex: 3, height: '100%', width: '100%' }}>
         {children}
@@ -94,7 +83,7 @@ const BackgroundImage = ({ range, children }) => (
 const UserAvatarHeader = ({
   firstName,
   lastName,
-  location,
+  campus,
   navigation,
   disabled,
   isLoading,
@@ -104,7 +93,7 @@ const UserAvatarHeader = ({
   disableSettings,
   edit
 }) => (
-    <BackgroundImage {...animation}>
+    <BackgroundImage {...animation} uri={get(campus, 'featuredImage.uri', '')}>
       <PaddedFlexedView>
         <NavigationHeader
           style={{ zIndex: 4 }}
@@ -117,7 +106,7 @@ const UserAvatarHeader = ({
           <UserAvatarView
             firstName={firstName}
             lastName={lastName}
-            location={location}
+            location={get(campus, 'name')}
             disabled={disabled}
             isLoading={isLoading}
             animation={animation}

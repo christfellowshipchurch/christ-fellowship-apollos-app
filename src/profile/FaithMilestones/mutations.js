@@ -1,37 +1,25 @@
 import gql from 'graphql-tag'
 
-export const UDPATE_GENDER = gql`
-  mutation updateGender($gender: String!) {
+export const UPDATE_BAPTISM = gql`
+  mutation updateBaptism($baptism: String!) {
     updateProfileFields(
       input: [
-        { field: Gender, value: $gender }
+        { field: BaptismDate, value: $baptism }
       ]
     ) {
-      gender
+      baptismDate
     }
   }
 `
 
-export const UPDATE_BIRTHDATE = gql`
-  mutation updateBirthDate($birthDate: String!) {
+export const UPDATE_SALVATION = gql`
+  mutation updateSalvation($salvation: String!) {
     updateProfileFields(
       input: [
-        { field: BirthDate, value: $birthDate }
+        { field: SalvationDate, value: $salvation }
       ]
     ) {
-      birthDate
-    }
-  }
-`
-
-export const UPDATE_ETHNICITY = gql`
-  mutation updateEthnicity($ethnicity: String) {
-    updateProfileFields(
-      input: [
-        { field: Ethnicity, value: $ethnicity }
-      ]
-    ) {
-      ethnicity
+      salvationDate
     }
   }
 `

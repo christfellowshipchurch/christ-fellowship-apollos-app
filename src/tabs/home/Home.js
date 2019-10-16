@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -12,6 +12,7 @@ import {
   H3,
   H6,
   TouchableScale,
+  FlexedView
 } from '@apollosproject/ui-kit';
 
 import fetchMoreResolver from '../../utils/fetchMoreResolver';
@@ -29,6 +30,7 @@ const LogoTitle = styled(({ theme }) => ({
   margin: theme.sizing.baseUnit,
   alignSelf: 'center',
   resizeMode: 'contain',
+  width: '50%'
 }))(Image);
 
 const StyledH6 = styled(({ theme }) => ({
@@ -81,10 +83,13 @@ class Home extends PureComponent {
                 isLoading={loading}
                 error={error}
                 refetch={refetch}
+                stickyHeaderIndices={[0]}
                 ListHeaderComponent={
                   <>
-                    <LogoTitle source={require('./wordmark.png')} />
-                    <LiveButton />
+                    <View style={{ backgroundColor: 'white', }}>
+                      <LiveButton />
+                      <LogoTitle source={require('./wordmark.png')} />
+                    </View>
                     {/* <Query
                       query={GET_CAMPAIGN_CONTENT_ITEM}
                       fetchPolicy="cache-and-network"
@@ -124,30 +129,30 @@ class Home extends PureComponent {
                         data: personaData,
                         loading: isContentTableLoading,
                       }) => (
-                        <ContentTableCard
-                          isLoading={isContentTableLoading}
-                          onPress={this.handleOnPress}
-                          header={
-                            <>
-                              <StyledH6 isLoading={isContentTableLoading}>
-                                FOR YOU
+                          <ContentTableCard
+                            isLoading={isContentTableLoading}
+                            onPress={this.handleOnPress}
+                            header={
+                              <>
+                                <StyledH6 isLoading={isContentTableLoading}>
+                                  FOR YOU
                               </StyledH6>
-                              <H3
-                                isLoading={isContentTableLoading}
-                                numberOfLines={3}
-                                ellipsizeMode="tail"
-                              >
-                                Explore what God calls you to today
+                                <H3
+                                  isLoading={isContentTableLoading}
+                                  numberOfLines={3}
+                                  ellipsizeMode="tail"
+                                >
+                                  Explore what God calls you to today
                               </H3>
-                            </>
-                          }
-                          content={get(
-                            personaData,
-                            'personaFeed.edges',
-                            []
-                          ).map((edge) => edge.node)}
-                        />
-                      )}
+                              </>
+                            }
+                            content={get(
+                              personaData,
+                              'personaFeed.edges',
+                              []
+                            ).map((edge) => edge.node)}
+                          />
+                        )}
                     </Query> */}
                   </>
                 }

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import CampusParts from 'ChristFellowship/src/user-settings/Locations/campusFragment';
+import CampusParts from 'ChristFellowship/src/profile/UserSettings/Locations/campusFragment'
 
 export default gql`
   query getCurrentUserProfile {
@@ -10,10 +10,12 @@ export default gql`
         firstName
         lastName
         nickName
-        email
         gender
         birthDate
         ethnicity
+
+        email
+        phoneNumber
         
         campus {
           ...CampusParts
@@ -33,6 +35,11 @@ export default gql`
 
         salvationDate
         baptismDate
+
+        communicationPreferences {
+          allowSMS
+          allowEmail
+        }
       }
     }
   }

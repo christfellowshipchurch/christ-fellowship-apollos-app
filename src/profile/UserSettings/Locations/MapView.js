@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated } from 'react-native';
+import { View, Animated, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import RNMapView from 'react-native-maps';
 import { debounce } from 'lodash';
@@ -16,7 +16,9 @@ import {
 
 import Marker from './Marker';
 
-const { CARD_WIDTH } = CampusCard;
+/* TODO: remove magic number. `theme.sizing.baseUnit * 2.25` This width value is a brittle
+ * calculation of width minus `CampusCard` margins */
+const CARD_WIDTH = Dimensions.get('window').width - 36;
 
 const FlexedMapView = styled({ flex: 1 })(({ mapRef, ...props }) => (
   <RNMapView ref={mapRef} {...props} />
@@ -31,6 +33,11 @@ const Footer = styled({
   left: 0,
   right: 0,
 })(View);
+
+const StyledCampusCard = styled(({ theme }) => ({
+  width: CARD_WIDTH,
+  marginHorizontal: theme.sizing.baseUnit / 4,
+}))(CampusCard);
 
 class MapView extends Component {
   static propTypes = {
@@ -61,10 +68,6 @@ class MapView extends Component {
     }),
   };
 
-  state = {
-    campus: null,
-  };
-
   animation = new Animated.Value(0);
 
   componentDidMount() {
@@ -81,28 +84,33 @@ class MapView extends Component {
     return { paddingHorizontal: this.props.theme.sizing.baseUnit * 0.75 }; // pad cards from edge of screen but account for card margin
   }
 
+  get currentCampus() {
+    const cardIndex = Math.floor(
+      this.previousScrollPosition / CARD_WIDTH + 0.3
+    ); // animate 30% away from landing on the next item;
+    const campus = this.props.campuses[cardIndex];
+    return campus;
+  }
+
   updateCoordinates = ({ value }) => {
     this.previousScrollPosition = value;
-    const cardIndex = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item;
-    const campus = this.props.campuses[cardIndex];
-    this.setState({ campus });
+
+    const campus = this.currentCampus;
+
+    const { userLocation } = this.props;
     if (!campus) {
-      this.map.fitToCoordinates(
-        [...this.props.campuses, this.props.userLocation],
-        {
-          edgePadding: {
-            top: 100,
-            left: 100,
-            right: 100,
-            // This is higher to avoid the campus cards (baseUnit * 6) on the bottom
-            bottom: 100 + this.props.theme.sizing.baseUnit * 12,
-          },
-        }
-      );
+      this.map.fitToCoordinates([...this.props.campuses, userLocation], {
+        edgePadding: {
+          top: 100,
+          left: 100,
+          right: 100,
+          // This is higher to avoid the campus cards (baseUnit * 6) on the bottom
+          bottom: 100 + this.props.theme.sizing.baseUnit * 12,
+        },
+      });
       return;
     }
 
-    const { userLocation } = this.props;
     this.map.fitToCoordinates([campus, userLocation], {
       edgePadding: {
         top: 100,
@@ -177,7 +185,7 @@ class MapView extends Component {
               )}
             >
               {campuses.map((campus) => (
-                <CampusCard
+                <StyledCampusCard
                   key={campus.id}
                   distance={campus.distanceFromLocation}
                   title={campus.name}
@@ -192,7 +200,7 @@ class MapView extends Component {
                 pill={false}
                 type="secondary"
                 onPress={() =>
-                  onLocationSelect(this.state.campus || campuses[0])
+                  onLocationSelect(this.currentCampus || campuses[0])
                 }
               />
             </PaddedView>

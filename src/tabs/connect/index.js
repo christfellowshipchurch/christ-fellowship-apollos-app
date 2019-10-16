@@ -23,18 +23,18 @@ const ConnectNavigator = createStackNavigator(
       screen: AppInformation,
       navigationOptions: () => ({ header: null })
     },
-    // CommunicationPreferences: {
-    //   screen: UserSettings,
-    //   navigationOptions: () => ({ header: null })
-    // },
+    CommunicationPreferences: {
+      screen: CommunicationPreferences,
+      navigationOptions: () => ({ header: null })
+    },
     FaithMilestones: {
       screen: FaithMilestones,
       navigationOptions: () => ({ header: null })
     },
-    // FamilyInformation: {
-    //   screen: UserSettings,
-    //   navigationOptions: () => ({ header: null })
-    // },
+    FamilyInformation: {
+      screen: FamilyInformation,
+      navigationOptions: () => ({ header: null })
+    },
     UserSettings: {
       screen: UserSettings,
       navigationOptions: () => ({ header: null })
@@ -47,7 +47,7 @@ const ConnectNavigator = createStackNavigator(
 );
 
 ConnectNavigator.navigationOptions = {
-  tabBarIcon: tabBarIcon('profile'),
+  tabBarIcon: tabBarIcon('user'),
 };
 
 export default ConnectNavigator
