@@ -36,23 +36,31 @@ const AppInfo = ({
         <UserAvatarHeader
             navigation={navigation}
             minimize
-            withGoBack >
-            <TableView>
-                <Cell
-                    title='Why do you want my info?'
-                    icon='question-circle'
-                    onPress={() => navigation.navigate('ValueProp')} />
+            withGoBack 
+        >
+            <AppInfoContainer>
+                <RowHeader>
+                    <H3>
+                        {appInfoRowTitle}
+                    </H3>
+                </RowHeader>
+                <TableView>
+                    <RowLink
+                        title='Why do you want my info?'
+                        icon='warning'
+                        onPress={() => navigation.navigate('ValueProp')} />
 
-                <Cell
-                    title='Privacy Policy'
-                    icon='info-circle'
-                    onPress={() => navigation.navigate('PrivacyPolicy')} />
-                <Cell
-                    title='Terms of Service'
-                    icon='info-circle'
-                    onPress={() => navigation.navigate('TermsOfUse')} />
-                <Cell title='Send Us Feedback' icon='external-link-square' />
-            </TableView>
+                    <RowLink
+                        title='Privacy Policy'
+                        icon='information'
+                        onPress={() => navigation.navigate('PrivacyPolicy')} />
+                    <RowLink
+                        title='Terms of Service'
+                        icon='information'
+                        onPress={() => navigation.navigate('TermsOfUse')} />
+                    <RowLink title='Send Us Feedback' icon='text' />
+                </TableView>
+            </AppInfoContainer>
         </UserAvatarHeader>
     )
 

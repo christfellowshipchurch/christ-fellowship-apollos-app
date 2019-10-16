@@ -38,7 +38,6 @@ const ActionTable = ({
         title="Profile Information"
         icon="user"
         onPress={() => navigation.navigate('AboutMe')} />
-
       <Cell
         title="Family Information"
         icon="users"
