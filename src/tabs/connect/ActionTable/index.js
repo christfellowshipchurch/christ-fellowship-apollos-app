@@ -1,24 +1,30 @@
 import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {
-  TableView,
-  Cell,
-  CellIcon,
-  CellText,
+  FlexedView,
   Divider,
   Touchable,
   styled,
+  H4
 } from '@apollosproject/ui-kit'
+import { TableView, Cell } from 'ChristFellowship/src/ui/TableView'
+
+const PaddedRow = styled(({ theme }) => ({
+  flexDirection: 'row',
+  justifyContent: 'center',
+  padding: theme.sizing.baseUnit
+}))(FlexedView)
 
 const RowLink = ({ title, icon, onPress }) => (
   <React.Fragment>
     <Touchable
       onPress={onPress}
     >
-      <Cell>
-        <CellIcon name={icon} />
-        <CellText>{title}</CellText>
-        <CellIcon name={'arrow-next'} />
-      </Cell>
+      <PaddedRow>
+        <FontAwesomeIcon icon={['fal', icon]} size={24} />
+        <H4 style={{ flex: 4, paddingLeft: 10 }}>{title}</H4>
+        <FontAwesomeIcon icon={['fal', 'angle-right']} size={24} />
+      </PaddedRow>
     </Touchable>
     <Divider />
   </React.Fragment>
@@ -28,32 +34,27 @@ const ActionTable = ({
   navigation
 }) => (
     <TableView>
-      <RowLink
+      <Cell
         title="Profile Information"
-        icon="profile"
+        icon="user"
         onPress={() => navigation.navigate('AboutMe')} />
-
-      <RowLink
+      <Cell
         title="Family Information"
-        icon="groups"
+        icon="users"
         onPress={() => navigation.navigate('FamilyInformation')} />
-      <RowLink
+      <Cell
         title="Communication Preferences"
-        icon="avatar"
+        icon="envelope"
         onPress={() => navigation.navigate('CommunicationPreferences')} />
-      <RowLink
+      <Cell
         title="My Faith Milestones"
-        icon="pray"
+        icon="bible"
         onPress={() => navigation.navigate('FaithMilestones')} />
-      <RowLink
+      <Cell
         title="Privacy, Terms of Use, Feedback"
-        icon="information"
+        icon="mobile"
         onPress={() => navigation.navigate('AppInformation')} />
     </TableView>
   )
 
-const StyledActionTable = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit * 100,
-}))(ActionTable)
-
-export default StyledActionTable
+export default ActionTable

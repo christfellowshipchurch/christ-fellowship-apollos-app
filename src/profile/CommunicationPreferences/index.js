@@ -1,22 +1,13 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
 import {
-    PaddedView,
-    TableView,
     styled,
-    H3
 } from '@apollosproject/ui-kit'
 
 import UserAvatarHeader from 'ChristFellowship/src/ui/UserAvatarHeader'
 import PhoneNumberForm from './PhoneNumberForm'
 import EmailForm from './EmailForm'
-
-const RowHeader = styled(({ theme }) => ({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: theme.sizing.baseUnit,
-}))(PaddedView)
+import PushNotifications from './PushNotifications'
 
 const Container = styled(({ theme }) => ({
     paddingVertical: theme.sizing.baseUnit,
@@ -26,6 +17,7 @@ const CommunciationsPreferences = ({
     navigation,
     phoneNumberRowTitle = 'Phone Number',
     emailRowTitle = 'Email Address',
+    pushNotificationsRowTitle = 'Enable Push Notifications'
 }) => (
         <UserAvatarHeader
             navigation={navigation}
@@ -34,19 +26,11 @@ const CommunciationsPreferences = ({
             {({ email, phoneNumber, communicationPreferences }) => {
                 return (
                     <Container>
-                        <RowHeader>
-                            <H3>{phoneNumberRowTitle}</H3>
-                        </RowHeader>
-                        <TableView>
-                            <PhoneNumberForm initialValues={{ phoneNumber, ...communicationPreferences }} />
-                        </TableView>
+                        <PushNotifications title={pushNotificationsRowTitle} />
 
-                        <RowHeader>
-                            <H3>{emailRowTitle}</H3>
-                        </RowHeader>
-                        <TableView>
-                            <EmailForm initialValues={{ email, ...communicationPreferences }} />
-                        </TableView>
+                        <PhoneNumberForm title={phoneNumberRowTitle} initialValues={{ phoneNumber, ...communicationPreferences }} />
+
+                        <EmailForm title={emailRowTitle} initialValues={{ email, ...communicationPreferences }} />
                     </Container>
                 )
             }}

@@ -45,8 +45,6 @@ const AnimatedContainer = ({
       outputRange: [avatarSmall / 2, avatarLarge / 2],
     })
 
-  console.log({ sizeOverride, size, borderRadius })
-
   return (
     <Animated.View style={{
       width: size,

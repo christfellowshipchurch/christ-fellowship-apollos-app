@@ -15,5 +15,8 @@ export default gql`
     image {
       uri
     }
+    featuredImage {
+      uri
+    }
   }
 `;

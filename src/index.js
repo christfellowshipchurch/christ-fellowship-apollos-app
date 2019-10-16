@@ -1,7 +1,9 @@
 import React from 'react'
 import { StatusBar } from 'react-native'
-import { createStackNavigator } from 'react-navigation'
+import { createAppContainer, createStackNavigator } from 'react-navigation'
 import SplashScreen from 'react-native-splash-screen'
+
+import './icon-library'
 
 import { BackgroundView, withTheme } from '@apollosproject/ui-kit'
 import Passes from '@apollosproject/ui-passes'
@@ -12,12 +14,9 @@ import Providers from './Providers'
 import NavigationService from './NavigationService'
 import ContentSingle from './content-single'
 import Tabs from './tabs'
-import PersonalDetails from './user-settings/PersonalDetails'
-import ChangePassword from './user-settings/ChangePassword'
-import Location from './user-settings/Locations'
-import LandingScreen from './LandingScreen'
+import Location from './profile/UserSettings/Locations'
 import UserWebBrowser from './user-web-browser'
-import Onboarding from './ui/Onboarding'
+import Onboarding from './onboarding'
 import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information'
 
 const AppStatusBar = withTheme(({ theme }) => ({
@@ -35,8 +34,6 @@ const AppContent = createStackNavigator({
   Tabs,
   ContentSingle,
   Auth,
-  PersonalDetails,
-  ChangePassword,
   Location,
   Passes,
   UserWebBrowser,
@@ -76,11 +73,13 @@ AppNavigator.navigationOptions = {
   gesturesEnabled: false,
 }
 
+const AppContainer = createAppContainer(AppNavigator)
+
 const App = () => (
   <Providers>
     <BackgroundView>
       <AppStatusBar barStyle="dark-content" />
-      <AppNavigator
+      <AppContainer
         ref={(navigatorRef) => {
           NavigationService.setTopLevelNavigator(navigatorRef)
         }}

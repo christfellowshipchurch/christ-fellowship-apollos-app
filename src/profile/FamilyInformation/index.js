@@ -39,19 +39,9 @@ const FaithMilestones = ({
             withGoBack >
             {() => (
                 <Container>
-                    <RowHeader>
-                        <H3>{spouseRowTitle}</H3>
-                    </RowHeader>
-                    <TableView>
-                        <SpouseForm />
-                    </TableView>
+                    <SpouseForm title={spouseRowTitle} />
 
-                    <RowHeader>
-                        <H3>{childrenRowTitle}</H3>
-                    </RowHeader>
-                    <TableView>
-                        <ChildrenForm />
-                    </TableView>
+                    <ChildrenForm title={childrenRowTitle} />
                 </Container>
             )}
         </UserAvatarHeader>
