@@ -2,32 +2,17 @@ import React from 'react'
 import { View, Text } from 'react-native'
 import {
     PaddedView,
-    TableView,
-    Cell,
-    CellIcon,
-    CellText,
-    Divider,
     Touchable,
     styled,
     H3
 } from '@apollosproject/ui-kit'
 
 import UserAvatarHeader from 'ChristFellowship/src/ui/UserAvatarHeader'
-
-const RowHeader = styled(({ theme }) => ({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: theme.sizing.baseUnit,
-}))(PaddedView)
+import { TableView, Cell } from 'ChristFellowship/src/ui/TableView'
 
 const AppInfoContainer = styled(({ theme }) => ({
     paddingVertical: theme.sizing.baseUnit,
 }))(View)
-
-const Name = styled({
-    flexGrow: 1,
-})(View)
 
 const RowLink = ({ title, icon, onPress }) => (
     <React.Fragment>
@@ -51,7 +36,8 @@ const AppInfo = ({
         <UserAvatarHeader
             navigation={navigation}
             minimize
-            withGoBack >
+            withGoBack 
+        >
             <AppInfoContainer>
                 <RowHeader>
                     <H3>
@@ -74,14 +60,6 @@ const AppInfo = ({
                         onPress={() => navigation.navigate('TermsOfUse')} />
                     <RowLink title='Send Us Feedback' icon='text' />
                 </TableView>
-
-                <View style={{ height: 1000 }}>
-                    <RowHeader>
-                        <Name>
-                            <Text>Scroll up and down to see the Profile resize in real time</Text>
-                        </Name>
-                    </RowHeader>
-                </View>
             </AppInfoContainer>
         </UserAvatarHeader>
     )

@@ -56,7 +56,7 @@ const UserAvatarHeaderConnected = (props) => {
             <UserAvatarHeader
               firstName={firstName}
               lastName={lastName}
-              location={get(campus, 'name')}
+              campus={campus}
               photo={photo}
               refetch={refetch}
               disabled

@@ -3,6 +3,10 @@ package com.christfellowship;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.geolocation.GeolocationPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.mybdesign.RNPassKit.RNPassKitPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -38,6 +42,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new GeolocationPackage(),
+            new RNGestureHandlerPackage(),
+            new RNFusedLocationPackage(),
+            new AsyncStoragePackage(),
             new ReactNativePushNotificationPackage(),
             new RNPassKitPackage(),
             new MapsPackage(),

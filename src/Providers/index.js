@@ -1,12 +1,11 @@
-import React from 'react';
-import Config from 'react-native-config';
-import { Providers } from '@apollosproject/ui-kit';
-import { AnalyticsProvider } from '@apollosproject/ui-analytics';
-import { MediaPlayerProvider } from '@apollosproject/ui-media-player';
+import React from 'react'
+import { Providers } from '@apollosproject/ui-kit'
+import { AnalyticsProvider } from '@apollosproject/ui-analytics'
+import { MediaPlayerProvider } from '@apollosproject/ui-media-player'
 
-import NavigationService from '../NavigationService';
-import ClientProvider from '../client';
-import customTheme, { customIcons } from '../theme';
+import NavigationService from '../NavigationService'
+import ClientProvider from '../client'
+import customTheme, { customIcons } from '../theme'
 
 import NotificationsProvider from './NotificationsProvider'
 import AuthProvider from './AuthProvider'
@@ -32,6 +31,6 @@ const AppProviders = (props) => (
       </AuthProvider>
     </NotificationsProvider>
   </ClientProvider>
-);
+)
 
-export default AppProviders;
+export default AppProviders

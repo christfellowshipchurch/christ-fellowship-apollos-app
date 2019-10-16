@@ -2,6 +2,7 @@ import React from 'react'
 import { Animated, View } from 'react-native'
 import PropTypes from 'prop-types'
 import { withNavigation } from 'react-navigation'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 import {
   Touchable,
@@ -30,7 +31,7 @@ const Header = styled(({ theme }) => ({
 
 const HeaderTitle = ({ range, minHeight, maxHeight, children }) => {
   const opacity = range.interpolate({
-    inputRange: [maxHeight / 2, maxHeight],
+    inputRange: [maxHeight - 20, maxHeight],
     outputRange: [0, 1],
   })
 
@@ -58,7 +59,7 @@ const NavigationHeader = ({
         <View style={{ flex: 1 }}>
           {withGoBack &&
             <Touchable onPress={() => navigation.goBack()}>
-              <Icon name="arrow-back" fill={'white'} />
+              <FontAwesomeIcon icon={['fal', "angle-left"]} fill={'white'} size={32} />
             </Touchable>
           }
         </View>
@@ -70,7 +71,7 @@ const NavigationHeader = ({
         <View style={{ flex: 1, alignItems: 'flex-end' }}>
           {!disableSettings &&
             <Touchable onPress={() => navigation.navigate('UserSettings')}>
-              <Icon name="settings" fill={'white'} />
+              <FontAwesomeIcon icon={['fal', "cog"]} fill={'white'} size={24} />
             </Touchable>
           }
         </View>

@@ -1,57 +1,63 @@
-import React from 'react';
-import { Query } from 'react-apollo';
-import { get } from 'lodash';
-
+import React from 'react'
+import { useQuery } from 'react-apollo'
+import { get } from 'lodash'
 import {
   Card,
-  CardContent,
   TouchableScale,
   styled,
-  ChannelLabel,
-  UIText,
-} from '@apollosproject/ui-kit';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
+  H6,
+  FlexedView,
+} from '@apollosproject/ui-kit'
+import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser'
 
-import GET_LIVE_STREAM from './getLiveStream';
+import GET_LIVE_STREAM from './getLiveStream'
 
-const LiveCard = styled(({ theme }) => ({
-  backgroundColor: theme.colors.lightSecondary,
-}))(Card);
+const Title = styled(({ theme }) => ({
+  color: theme.colors.alert,
+  fontWeight: 'bold'
+}))(H6)
 
-const LiveNowButton = () => (
-  <Query
-    query={GET_LIVE_STREAM}
-    fetchPolicy="cache-and-network"
-    pollInterval={60000}
-  >
-    {({ loading, data }) => {
-      const isLive = get(data, 'liveStream.isLive', false);
+const Pill = styled(({ theme }) => ({
+  backgroundColor: theme.colors.white,
+  borderColor: theme.colors.lightSecondary,
+  borderWidth: 1,
+  paddingVertical: theme.sizing.baseUnit * 0.5,
+  width: '25%',
+  alignSelf: 'center',
+  marginVertical: 0
+}))(Card)
 
-      return isLive ? (
-        <WebBrowserConsumer>
-          {(openUrl) => (
-            <TouchableScale
-              onPress={() => openUrl('https://apollos.churchonline.org/')}
-            >
-              <LiveCard isLoading={loading}>
-                <CardContent>
-                  <ChannelLabel
-                    icon="video"
-                    label={
-                      <UIText>
-                        <UIText bold>{`We're live.`} </UIText>
-                        Watch now!
-                      </UIText>
-                    }
-                  />
-                </CardContent>
-              </LiveCard>
-            </TouchableScale>
-          )}
-        </WebBrowserConsumer>
-      ) : null;
-    }}
-  </Query>
-);
+const FlexedViewContentCentered = styled(({ theme }) => ({
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignContent: 'center',
+}))(FlexedView)
 
-export default LiveNowButton;
+const LiveNowButton = () => {
+  const { loading, error, data } = useQuery(GET_LIVE_STREAM, {
+    fetchPolicy: "cache-and-network",
+    pollInterval: 60000
+  })
+
+  if (loading || error) return null
+
+  const isLive = get(data, 'liveStream.isLive', false)
+
+  return isLive ? (
+    <WebBrowserConsumer>
+      {(openUrl) => (
+        <TouchableScale
+          onPress={() => openUrl('https://apollos.churchonline.org/')}
+        >
+          <Pill>
+            <FlexedViewContentCentered>
+              <Title>• Live</Title>
+            </FlexedViewContentCentered>
+          </Pill>
+        </TouchableScale>
+      )}
+    </WebBrowserConsumer>
+  ) : null
+}
+
+export default LiveNowButton

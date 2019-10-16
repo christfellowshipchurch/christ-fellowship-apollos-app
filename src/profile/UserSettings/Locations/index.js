@@ -1,13 +1,14 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { Query, Mutation } from 'react-apollo';
-import { Dimensions } from 'react-native';
+import React, { PureComponent } from 'react'
+import PropTypes from 'prop-types'
+import { Query, Mutation } from 'react-apollo'
+import { Dimensions } from 'react-native'
+import { filter, get } from 'lodash'
 
-import { PaddedView, ButtonLink } from '@apollosproject/ui-kit';
+import { PaddedView, ButtonLink } from '@apollosproject/ui-kit'
 
-import GET_CAMPUSES from './getCampusLocations';
-import CHANGE_CAMPUS from './campusChange';
-import MapView from './MapView';
+import GET_CAMPUSES from './getCampusLocations'
+import CHANGE_CAMPUS from './campusChange'
+import MapView from './MapView'
 
 const getCurrentLocation = () =>
   new Promise((resolve, reject) => {
@@ -79,6 +80,7 @@ class Location extends PureComponent {
     const { navigation, onFinished } = this.props;
     // we should use the `onFinished` from the navigation param, if it exists.
     const handleFinished = navigation.getParam('onFinished', onFinished);
+    console.log(this.state.userLocation)
 
     return (
       <Query
@@ -89,29 +91,36 @@ class Location extends PureComponent {
         }}
         fetchPolicy="cache-and-network"
       >
-        {({ loading, error, data: { campuses = [] } = {} }) => (
-          <Mutation mutation={CHANGE_CAMPUS}>
-            {(handlePress) => (
-              <MapView
-                navigation={navigation}
-                isLoading={loading}
-                error={error}
-                campuses={campuses}
-                initialRegion={this.props.initialRegion}
-                userLocation={this.state.userLocation}
-                onLocationSelect={async ({ id }) => {
-                  await handlePress({
-                    variables: {
-                      campusId: id,
-                    },
-                  });
-                  await navigation.goBack();
-                  if (handleFinished) handleFinished();
-                }}
-              />
-            )}
-          </Mutation>
-        )}
+        {({ loading, error, data }) => {
+          const { campuses } = data
+          const filteredCampuses = filter(campuses, (n) => Boolean(get(n, 'image.uri', null)))
+
+          console.log({ data, campuses, filteredCampuses })
+
+          return (
+            <Mutation mutation={CHANGE_CAMPUS}>
+              {(handlePress) => (
+                <MapView
+                  navigation={navigation}
+                  isLoading={loading}
+                  error={error}
+                  campuses={filteredCampuses}
+                  initialRegion={this.props.initialRegion}
+                  userLocation={this.state.userLocation}
+                  onLocationSelect={async ({ id }) => {
+                    await handlePress({
+                      variables: {
+                        campusId: id,
+                      },
+                    });
+                    await navigation.goBack();
+                    if (handleFinished) handleFinished();
+                  }}
+                />
+              )}
+            </Mutation>
+          )
+        }}
       </Query>
     );
   }

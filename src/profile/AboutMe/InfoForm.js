@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
-import { Query, Mutation } from 'react-apollo'
+import { Query, Mutation, useQuery, useMutation } from 'react-apollo'
 import { withFormik } from 'formik'
 import * as Yup from 'yup'
 import { has, get } from 'lodash'
@@ -10,38 +9,22 @@ import DateTimePicker from 'react-native-modal-datetime-picker'
 
 import {
     ActivityIndicator,
-    BackgroundView,
-    PaddedView,
     FlexedView,
     styled,
     H5,
     H6,
-    Radio,
-    RadioButton,
-    DateInput,
-    Picker,
-    PickerItem,
     Icon,
     Touchable,
 } from '@apollosproject/ui-kit'
 
+import { FormCard } from 'ChristFellowship/src/ui/Cards'
+import { TextInput, DateInput, Picker, PickerItem, Radio, RadioButton } from 'ChristFellowship/src/ui/inputs'
+
 import { UDPATE_GENDER, UPDATE_BIRTHDATE, UPDATE_ETHNICITY } from './mutations'
 import { GET_ETHNICITY_LIST } from './queries'
-import { createEventHandlerWithConfig } from 'recompose';
 
 const ErrorMessage = styled(({ theme }) => ({
     color: theme.colors.alert
-}))(H5)
-
-const StyledRadio = styled(({ theme }) => ({
-    marginBottom: theme.sizing.baseUnit,
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-}))(Radio)
-
-const RadioLabel = styled(({ theme }) => ({
-    marginLeft: theme.sizing.baseUnit * 0.5,
 }))(H5)
 
 const Label = styled(({ theme, padded }) => ({
@@ -50,52 +33,6 @@ const Label = styled(({ theme, padded }) => ({
     ...(padded ? { marginTop: theme.sizing.baseUnit } : {}),
 }))(H6)
 
-const DropDownContainer = styled(({ theme }) => ({
-    padding: theme.sizing.baseUnit * 0.5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    borderBottomColor: theme.colors.background.inactive,
-    borderBottomWidth: StyleSheet.hairlineWidth
-}))(FlexedView)
-
-const DropDownValue = styled(({ theme }) => ({
-    paddingHorizontal: theme.sizing.baseUnit,
-    flex: 3
-}))(H5)
-
-const DropDownIcon = styled(({ theme }) => ({
-    flex: 1,
-    alignContent: 'center'
-}))(Icon)
-
-const DropDown = ({ icon, value, onPress, ...props }) => (
-    <Touchable onPress={onPress} {...props}>
-        <DropDownContainer>
-            <DropDownIcon name={icon} size={20} />
-            <DropDownValue>{value}</DropDownValue>
-            <DropDownIcon name='arrow-down' size={20} />
-        </DropDownContainer>
-    </Touchable>
-)
-
-const Overlay = styled(() => ({
-    alignContent: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, .75)',
-    top: 0,
-    left: 0,
-    zIndex: 1
-}))(FlexedView)
-
-const ActivityIndicatorOverlay = () => (
-    <Overlay>
-        <ActivityIndicator />
-    </Overlay>
-)
-
 const GenderSelect = ({ value, genderList, onChange, onSuccess, onError }) => (
     <Mutation
         mutation={UDPATE_GENDER}
@@ -103,8 +40,7 @@ const GenderSelect = ({ value, genderList, onChange, onSuccess, onError }) => (
     >
         {(updateGender) => (
             <>
-                <Label padded>Gender</Label>
-                <StyledRadio
+                <Radio
                     label="Gender"
                     type="radio"
                     value={value}
@@ -121,17 +57,18 @@ const GenderSelect = ({ value, genderList, onChange, onSuccess, onError }) => (
                         <RadioButton
                             key={gender}
                             value={gender}
-                            label={() => <RadioLabel>{gender}</RadioLabel>}
+                            label={gender}
                             underline={false}
                         />,
                     ])}
-                </StyledRadio>
+                </Radio>
             </>
         )}
     </Mutation>
 )
 
 const BirthDateSelect = ({ value, onChange, onSuccess, onError }) => {
+
     const [showDateTimePicker, setShowDateTimePicker] = useState(false)
 
     return (
@@ -140,75 +77,66 @@ const BirthDateSelect = ({ value, onChange, onSuccess, onError }) => {
             update={(cache, { data }) => onSuccess(get(data, 'updateProfileFields', { birthDate: null }))}
         >
             {(updateBirthDate) => (
-                <>
-                    <Label padded>Birth Date</Label>
-                    <DropDown
-                        value={value}
-                        icon='profile'
-                        onPress={() => setShowDateTimePicker(true)} />
-                    <DateTimePicker
-                        date={moment.utc(value).toDate()}
-                        isVisible={showDateTimePicker}
-                        onConfirm={(birthDate) => {
-                            onChange()
+                <DateInput
+                    label='Birth Date'
+                    value={moment(value).format('MMM D, YYYY')}
+                    displayValue={
+                        // only show a birthday if we have one.
+                        value // DatePicker shows displayValue > placeholder > label in that order
+                            ? moment(value).format('MMM D, YYYY')
+                            : '' // Pass an empty string if we don't have a birthday to show the placeholder.
+                    }
+                    isVisible={showDateTimePicker}
+                    onConfirm={(birthDate) => {
+                        onChange()
 
-                            try {
-                                updateBirthDate({ variables: { birthDate } })
-                            } catch (e) {
-                                onError(e)
-                            }
+                        try {
+                            updateBirthDate({ variables: { birthDate } })
+                        } catch (e) {
+                            onError(e)
+                        }
 
-                            setShowDateTimePicker(false)
-                        }}
-                        onCancel={() => setShowDateTimePicker(false)}
-                    />
-                </>
+                        setShowDateTimePicker(false)
+                    }}
+                    onCancel={() => setShowDateTimePicker(false)}
+                />
             )}
         </Mutation>
     )
 }
 
 const EthnicitySelect = ({ value = '', placeholder, onChange, onSuccess }) => {
+    const { loading, error, data } = useQuery(GET_ETHNICITY_LIST, {
+        fetchPolicy: "cache-and-network"
+    })
+    const [updateEthnicity] = useMutation(UPDATE_ETHNICITY, {
+        update: (cache, { data }) =>
+            onSuccess(get(data, 'updateProfileFields', { ethnicity: null }))
+    })
     const [selectedValue, setSelectedValue] = useState(value)
+
+    const values = get(data, 'getEthnicityList.values', [])
+
     return (
-        <Query query={GET_ETHNICITY_LIST} fetchPolicy="cache-and-network">
-            {({ data, loading, error }) => {
-                const disabled = loading || error
-                const values = get(data, 'getEthnicityList.values', [])
+        <Picker
+            icon='user'
+            placeholder={placeholder}
+            label="Ethnicity"
+            value={selectedValue}
+            displayValue={selectedValue}
+            onValueChange={(ethnicity) => {
+                setSelectedValue(ethnicity)
+                onChange(ethnicity)
+                try {
+                    updateEthnicity({ variables: { ethnicity } })
+                } catch (e) {
+                    onError(e)
+                }
 
-                return (
-                    <Mutation
-                        mutation={UPDATE_ETHNICITY}
-                        update={(cache, { data }) => onSuccess(get(data, 'updateProfileFields', { ethnicity: null }))}
-                    >
-                        {(updateEthnicity) => (
-                            <>
-                                <Label padded>Ethnicity</Label>
-                                <Picker
-                                    placeholder={placeholder}
-                                    label=""
-                                    value={selectedValue}
-                                    displayValue={selectedValue}
-                                    onValueChange={(ethnicity) => {
-                                        setSelectedValue(ethnicity)
-                                        onChange(ethnicity)
-                                        try {
-                                            updateEthnicity({ variables: { ethnicity } })
-                                        } catch (e) {
-                                            onError(e)
-                                        }
-
-                                    }} >
-                                    {values.map((n, i) => <PickerItem label={n.value} value={n.value} key={i} />
-                                    )}
-                                </Picker>
-                            </>
-                        )}
-
-                    </Mutation>
-                )
-            }}
-        </Query>
+            }} >
+            {values.map((n, i) => <PickerItem label={n.value} value={n.value} key={i} />
+            )}
+        </Picker>
     )
 }
 
@@ -222,62 +150,57 @@ const InfoForm = ({
     birthDatePlaceholder = 'Select Birth Date',
     ethnicityPlaceholder = 'Select Ethnicity',
 }) => (
-        <FlexedView>
-            <BackgroundView>
-                <PaddedView>
-                    {has(errors, 'info') && <ErrorMessage>Something went wrong... so so terribly wrong... sorry</ErrorMessage>}
-                    <GenderSelect
-                        value={get(values, 'gender')}
-                        genderList={genderList}
-                        onChange={() => setSubmitting(true)}
-                        onSuccess={({ gender }) => {
-                            setFieldValue('gender', gender)
-                            setSubmitting(false)
-                        }}
-                        onError={(e) => {
-                            setSubmitting(false)
-                            // TODO : error handling
-                        }} />
+        <FormCard title={get(values, 'title')} isLoading={isSubmitting}>
+            {has(errors, 'info') && <ErrorMessage>Something went wrong... so so terribly wrong... sorry</ErrorMessage>}
+            <GenderSelect
+                value={get(values, 'gender')}
+                genderList={genderList}
+                onChange={() => setSubmitting(true)}
+                onSuccess={({ gender }) => {
+                    setFieldValue('gender', gender)
+                    setSubmitting(false)
+                }}
+                onError={(e) => {
+                    setSubmitting(false)
+                    // TODO : error handling
+                }} />
 
-                    <BirthDateSelect
-                        value={has(values, 'birthDate')
-                            ? moment
-                                .utc(get(values, 'birthDate'))
-                                .format('MMM DD, YYYY')
-                            : birthDatePlaceholder}
-                        onChange={() => setSubmitting(true)}
-                        onSuccess={({ birthDate }) => {
-                            setFieldValue('birthDate', birthDate)
-                            setSubmitting(false)
-                        }}
-                        onError={(e) => {
-                            setSubmitting(false)
-                            // TODO : error handling
-                        }} />
+            <BirthDateSelect
+                value={has(values, 'birthDate')
+                    ? moment
+                        .utc(get(values, 'birthDate'))
+                        .format('MMM DD, YYYY')
+                    : birthDatePlaceholder}
+                onChange={() => setSubmitting(true)}
+                onSuccess={({ birthDate }) => {
+                    setFieldValue('birthDate', birthDate)
+                    setSubmitting(false)
+                }}
+                onError={(e) => {
+                    setSubmitting(false)
+                    // TODO : error handling
+                }} />
 
-                    <EthnicitySelect
-                        value={get(values, 'ethnicity', '')}
-                        onChange={() => setSubmitting(true)}
-                        onSuccess={({ ethnicity }) => {
-                            setFieldValue('ethnicity', ethnicity)
-                            setSubmitting(false)
-                        }}
-                        placeholder={ethnicityPlaceholder} />
+            <EthnicitySelect
+                value={get(values, 'ethnicity', '')}
+                onChange={() => setSubmitting(true)}
+                onSuccess={({ ethnicity }) => {
+                    setFieldValue('ethnicity', ethnicity)
+                    setSubmitting(false)
+                }}
+                placeholder={ethnicityPlaceholder} />
 
-                </PaddedView>
-            </BackgroundView>
-            {isSubmitting && <ActivityIndicatorOverlay />}
-        </FlexedView>
+        </FormCard>
     )
 
-const FormikForm = ({ onSubmit, initialValues, isInitialValid }) => {
+const FormikForm = ({ onSubmit, initialValues, isInitialValid, title }) => {
     const Form = withFormik({
-        mapPropsToValues: () => initialValues,
+        mapPropsToValues: () => ({ ...initialValues, title }),
         validationSchema: Yup.object().shape({
 
         }),
         onSubmit,
-        initialValues,
+        initialValues: { ...initialValues, title },
         isInitialValid,
     })(InfoForm)
 

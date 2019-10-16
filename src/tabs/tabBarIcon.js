@@ -1,16 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 
-import { Icon } from '@apollosproject/ui-kit';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 const tabBarIcon = (name) => {
   function TabBarIcon({ tintColor }) {
-    return <Icon name={name} fill={tintColor} size={24} />;
+    return <FontAwesomeIcon icon={['fal', name]} fill={tintColor} size={24} />
   }
   TabBarIcon.propTypes = {
     tintColor: PropTypes.string,
   };
-  return TabBarIcon;
+  return TabBarIcon
 };
 
-export default tabBarIcon;
+export default tabBarIcon
