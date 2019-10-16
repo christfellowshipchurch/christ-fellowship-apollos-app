@@ -7,6 +7,7 @@ import {
 import UserAvatarHeader from 'ChristFellowship/src/ui/UserAvatarHeader'
 import PhoneNumberForm from './PhoneNumberForm'
 import EmailForm from './EmailForm'
+import PushNotifications from './PushNotifications'
 
 const Container = styled(({ theme }) => ({
     paddingVertical: theme.sizing.baseUnit,
@@ -16,6 +17,7 @@ const CommunciationsPreferences = ({
     navigation,
     phoneNumberRowTitle = 'Phone Number',
     emailRowTitle = 'Email Address',
+    pushNotificationsRowTitle = 'Enable Push Notifications'
 }) => (
         <UserAvatarHeader
             navigation={navigation}
@@ -24,6 +26,8 @@ const CommunciationsPreferences = ({
             {({ email, phoneNumber, communicationPreferences }) => {
                 return (
                     <Container>
+                        <PushNotifications title={pushNotificationsRowTitle} />
+
                         <PhoneNumberForm title={phoneNumberRowTitle} initialValues={{ phoneNumber, ...communicationPreferences }} />
 
                         <EmailForm title={emailRowTitle} initialValues={{ email, ...communicationPreferences }} />

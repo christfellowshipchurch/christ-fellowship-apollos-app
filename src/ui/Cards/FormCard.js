@@ -23,12 +23,12 @@ export default ({ title, children, isLoading }) => (
     <Card>
         <CardContent>
             <FormCardTitle>{title}</FormCardTitle>
-            {children}
+            {isLoading
+                ? (<Overlay>
+                    <ActivityIndicator />
+                </Overlay>)
+                : children}
         </CardContent>
-        {isLoading && (
-            <Overlay>
-                <ActivityIndicator />
-            </Overlay>)}
     </Card>
 )
 

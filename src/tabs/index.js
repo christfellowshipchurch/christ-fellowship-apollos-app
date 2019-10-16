@@ -23,6 +23,6 @@ const TabNavigator = createBottomTabNavigator(
 
 TabNavigator.navigationOptions = {
   header: null,
-};
+}
 
-export default TabNavigator;
+export default TabNavigator

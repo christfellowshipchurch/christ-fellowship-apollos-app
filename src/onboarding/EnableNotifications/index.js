@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavigationActions } from 'react-navigation'
 import Form from './form'
 import PushNotification from 'react-native-push-notification'
 
@@ -23,4 +22,4 @@ EnableNotifications.navigationOptions = {
     gesturesEnabled: false
 }
 
-export default EnableNotifications;
+export default EnableNotifications
