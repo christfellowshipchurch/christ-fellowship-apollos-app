@@ -16,7 +16,7 @@ const wipeData = () => cache.writeData({ data: defaults });
 let resetStore;
 const onAuthError = () => {
   resetStore();
-  goToAuth();
+  // goToAuth();
 };
 
 const errorLink = buildErrorLink(onAuthError);

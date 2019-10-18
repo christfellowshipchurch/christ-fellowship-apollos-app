@@ -51,6 +51,7 @@
     "apollo-link-http": "1.5.11",
     "apollo-link-schema": "1.1.6",
     "apollo-upload-client": "9.0.0",
+    "awesome-phonenumber": "^2.20.0",
     "buffer": "^5.2.1",
     "color": "3.0.0",
     "dotenv": "^6.2.0",
