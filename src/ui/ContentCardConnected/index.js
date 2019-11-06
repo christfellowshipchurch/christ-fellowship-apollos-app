@@ -12,14 +12,22 @@ const ContentCardConnected = ({
   contentId,
   isLoading,
   tile,
+  card = ContentCard,
   ...otherProps
 }) => {
   if (!contentId || isLoading)
-    return <ContentCard {...otherProps} isLoading tile={tile} />;
+    return React.createElement(
+      card,
+      {
+        ...otherProps,
+        tile,
+        isLoading: true
+      }
+    )
 
   return (
     <Query query={GET_CONTENT_CARD} variables={{ contentId, tile: !!tile }}>
-      {({ data: { node = {} } = {}, loading, error }) => {
+      {({ data: { node = {}, contentDecorations = {} } = {}, loading, error }) => {
         if (error) return <ErrorCard error={error} />;
 
         const metrics = [
@@ -31,16 +39,18 @@ const ContentCardConnected = ({
 
         const coverImage = get(node, 'coverImage.sources', undefined);
 
-        return (
-          <ContentCard
-            {...node}
-            {...otherProps}
-            coverImage={coverImage}
-            metrics={metrics}
-            tile={tile}
-            isLoading={loading}
-          />
-        );
+        return React.createElement(
+          card,
+          {
+            ...node,
+            ...otherProps,
+            ...contentDecorations,
+            coverImage,
+            metrics,
+            tile,
+            isLoading: loading
+          }
+        )
       }}
     </Query>
   );
@@ -50,6 +60,11 @@ ContentCardConnected.propTypes = {
   isLoading: PropTypes.bool,
   contentId: PropTypes.string,
   tile: PropTypes.bool,
-};
+  card: PropTypes.func
+}
 
-export default ContentCardConnected;
+// ContentCardConnected.defaultProps = {
+//   card: ContentCard
+// }
+
+export default ContentCardConnected

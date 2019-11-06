@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import { useQuery } from 'react-apollo'
 import PropTypes from 'prop-types'
-import { get } from 'lodash'
+import { get, camelCase } from 'lodash'
 
 import {
   View,
@@ -19,6 +20,8 @@ import {
   styled,
 } from '@apollosproject/ui-kit'
 
+import { GET_FILTERS } from '../queries'
+
 const StyledH5 = styled(({ theme, active }) => ({
   color: active ? theme.colors.darkPrimary : theme.colors.darkSecondary,
   fontWeight: active ? "bold" : "normal"
@@ -34,7 +37,6 @@ const Container = styled(({ theme }) => ({
   marginLeft: theme.sizing.baseUnit,
 }))(ScrollView)
 
-
 const FilterRow = ({
   filters,
   selected,
@@ -46,18 +48,25 @@ const FilterRow = ({
         horizontal
         showsHorizontalScrollIndicator={false}
       >
-        {filters.map((n, i) => (
-          <Touchable
-            onPress={() => onChange(i)}
-            key={i}
-          >
-            <FilterButton style={{ height: '100%' }}>
-              <StyledH5 active={selected === i}>
-                {get(n, 'title', '')}
-              </StyledH5>
-            </FilterButton>
-          </Touchable>
-        ))}
+        {filters.map((n, i) => {
+          const title = get(n, 'title', '')
+          const id = get(n, 'id', '')
+
+          return (
+            <Touchable
+              onPress={() => onChange({ title, id })}
+              key={i}
+            >
+              <FilterButton style={{ height: '100%' }}>
+                <StyledH5
+                  active={selected === id}
+                >
+                  {title}
+                </StyledH5>
+              </FilterButton>
+            </Touchable>
+          )
+        })}
       </Container>
     </View>
   )
@@ -65,13 +74,13 @@ const FilterRow = ({
 
 FilterRow.propTypes = {
   filters: PropTypes.array,
-  selected: PropTypes.number,
+  selected: PropTypes.string,
   onChange: PropTypes.func,
 }
 
 FilterRow.defaultProps = {
   filters: [],
-  selected: 0,
+  selected: null,
   onChange: () => true,
 }
 

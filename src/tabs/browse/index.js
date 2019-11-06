@@ -1,12 +1,12 @@
 import { createStackNavigator } from 'react-navigation'
-import ContentFeed from 'ChristFellowship/src/content-feed'
+import { RowContentFeed } from 'ChristFellowship/src/content-feed'
 import tabBarIcon from '../tabBarIcon'
 import Browse from './Browse'
 
 export const BrowseNavigator = createStackNavigator(
   {
     Browse,
-    ContentFeed,
+    RowContentFeed,
   },
   {
     initialRouteName: 'Browse',

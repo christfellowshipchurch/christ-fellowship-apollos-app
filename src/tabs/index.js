@@ -12,7 +12,7 @@ const TabNavigator = createBottomTabNavigator(
   {
     Home,
     Browse,
-    Discover,
+    // Discover,
     Connect,
     More,
   },

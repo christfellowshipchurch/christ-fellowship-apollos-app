@@ -3,61 +3,49 @@ import { useQuery } from 'react-apollo'
 import PropTypes from 'prop-types'
 import { get } from 'lodash'
 
-import { View, SafeAreaView, ScrollView } from 'react-native'
+import { FeedView } from '@apollosproject/ui-kit'
+import CategoryTileFeed from '../CategoryTileFeed'
 import {
-  FlexedView,
-  BackgroundView,
-  H3,
-  styled
-} from '@apollosproject/ui-kit'
+  GET_CATEGORIES_FROM_FILTERS,
+} from '../queries'
 
-import FilterRow from './FilterRow'
-import TileContentFeed from './TileContentFeed'
-import { GET_FILTERS } from './queries'
-
-const HeaderTitle = styled(({ theme, active }) => ({
-  fontWeight: 'bold'
-}))(H3)
+const feedItemLoadingState = {
+  title: '',
+  isLoading: true,
+}
 
 const CategoryList = ({
-  title,
-  data
+  filterId
 }) => {
+  const { loading, error, data, refetch } = useQuery(
+    GET_CATEGORIES_FROM_FILTERS,
+    { variables: { id: filterId } }
+  )
+
+  const renderItem = ({ item }) => {
+    return <CategoryTileFeed
+      id={item.id}
+    />
+  }
 
   return (
-    <ScrollView
-      horizontal
-    >
-      {data.map((n, i) => (
-        <H3 key={i}>
-          {get(n, 'title', '')}
-        </H3>
-      ))}
-    </ScrollView>
+    <FeedView
+      error={error}
+      content={get(data, 'node.childContentItemsConnection.edges', []).map(
+        edges => edges.node
+      )}
+      isLoading={loading}
+      refetch={refetch}
+      renderItem={renderItem}
+      loadingStateObject={feedItemLoadingState}
+    />
   )
 }
 
 CategoryList.propTypes = {
-  title: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      image: {
-        uri: PropTypes.string,
-      },
-      description: PropTypes.string,
-      tag: PropTypes.string,
-    })
-  )
 }
 
 CategoryList.defaultProps = {
-  data: [],
-  image: {
-    uri: null,
-  },
-  description: "",
-  tag: "",
 }
 
 export default CategoryList

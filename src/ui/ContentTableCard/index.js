@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
-// import { View } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react'
+// import { View } from 'react-native'
+import PropTypes from 'prop-types'
 
 import {
   TableView,
@@ -10,7 +10,7 @@ import {
   withIsLoading,
 } from '@apollosproject/ui-kit';
 
-import ContentTableCardItem from './ContentTableCardItem';
+import ContentTableCardItem from './ContentTableCardItem'
 
 const Header = styled(({ theme }) => ({
   backgroundColor: theme.colors.background.paper,

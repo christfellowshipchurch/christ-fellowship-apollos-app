@@ -41,7 +41,11 @@
  *   },
  * }
  */
-// const overrides = {};
+const overrides = {
+    CardWrapper: {
+        borderRadius: 8
+    }
+}
 
 const colors = {
     primary: '#00aeef',
@@ -77,6 +81,7 @@ const typography = {
 }
 
 export default {
+    overrides,
     colors,
     typography,
 }

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export const COVER_IMAGE_FRAGMENT = gql`
   fragment coverImageFragment on ContentItem {
@@ -8,7 +8,7 @@ export const COVER_IMAGE_FRAGMENT = gql`
       }
     }
   }
-`;
+`
 
 export const THEME_FRAGMENT = gql`
   fragment themeFragment on ContentItem {
@@ -22,14 +22,14 @@ export const THEME_FRAGMENT = gql`
       }
     }
   }
-`;
+`
 
 export const CONTENT_CARD_METRICS_FRAGMENT = gql`
   fragment contentCardMetricsFragment on ContentItem {
     isLiked
     likedCount
   }
-`;
+`
 
 export const BASE_CARD_FRAGMENT = gql`
   fragment baseCardFragment on ContentItem {
@@ -44,7 +44,7 @@ export const BASE_CARD_FRAGMENT = gql`
   ${CONTENT_CARD_METRICS_FRAGMENT}
   ${COVER_IMAGE_FRAGMENT}
   ${THEME_FRAGMENT}
-`;
+`
 
 export const TILE_CARD_FRAGMENT = gql`
   fragment tileCardFragment on ContentItem {
@@ -63,19 +63,22 @@ export const TILE_CARD_FRAGMENT = gql`
     ... on MediaContentItem {
       ...baseCardFragment
     }
+    ... on ArticleContentItem {
+      ...baseCardFragment
+    }
   }
   ${BASE_CARD_FRAGMENT}
   ${THEME_FRAGMENT}
   ${COVER_IMAGE_FRAGMENT}
   ${CONTENT_CARD_METRICS_FRAGMENT}
-`;
+`
 
 export const LARGE_CARD_FRAGMENT = gql`
   fragment largeCardFragment on ContentItem {
     ...baseCardFragment
   }
   ${BASE_CARD_FRAGMENT}
-`;
+`
 
 const GET_CONTENT_CARD = gql`
   query getContentCard($contentId: ID!, $tile: Boolean!) {
@@ -85,9 +88,15 @@ const GET_CONTENT_CARD = gql`
       ...tileCardFragment @include(if: $tile)
       ...largeCardFragment @skip(if: $tile)
     }
+
+    contentDecorations(id: $contentId) {
+      tags
+      icon
+    }
   }
+
   ${TILE_CARD_FRAGMENT}
   ${LARGE_CARD_FRAGMENT}
-`;
+`
 
-export default GET_CONTENT_CARD;
+export default GET_CONTENT_CARD

@@ -10,7 +10,7 @@ import {
   withIsLoading,
   ConnectedImage,
   FlexedView,
-} from '@apollosproject/ui-kit';
+} from '@apollosproject/ui-kit'
 
 const CellImage = styled(({ theme }) => ({
   width: theme.sizing.baseUnit * 4,
@@ -18,18 +18,18 @@ const CellImage = styled(({ theme }) => ({
   borderRadius: theme.sizing.baseUnit,
   overflow: 'hidden',
   marginRight: theme.sizing.baseUnit,
-}))(View);
+}))(View)
 
 const StyledH6 = styled(({ theme }) => ({
   color: theme.colors.text.tertiary,
-}))(H6);
+}))(H6)
 
 const TextContainer = styled(({ theme }) => ({
   marginTop: theme.sizing.baseUnit / 2.5,
   borderBottomWidth: 0.5,
   height: theme.sizing.baseUnit * 4.25,
   borderColor: theme.colors.shadows.default,
-}))(FlexedView);
+}))(FlexedView)
 
 const Cell = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit,
@@ -38,41 +38,32 @@ const Cell = styled(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'flex-start',
   alignItems: 'center',
-}))(View);
+}))(View)
 
-class ContentTableCardItem extends PureComponent {
+class TileRowCard extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
-    imageSource: PropTypes.any, // eslint-disable-line
+    coverImage: PropTypes.any, // eslint-disable-line
     label: PropTypes.string,
     title: PropTypes.string,
     id: PropTypes.string,
-  };
+  }
 
   render() {
     return (
-      <TouchableScale
-        onPress={() =>
-          this.props.onPress({
-            id: this.props.id,
-            transitionKey: 2,
-          })
-        }
-      >
-        <Cell>
-          <CellImage>
-            <ConnectedImage source={this.props.imageSource} isLoading />
-          </CellImage>
-          <TextContainer>
-            <StyledH6>{this.props.label}</StyledH6>
-            <H4 numberOfLines={2} ellipsizeMode="tail">
-              {this.props.title}
-            </H4>
-          </TextContainer>
-        </Cell>
-      </TouchableScale>
-    );
+      <Cell>
+        <CellImage>
+          <ConnectedImage source={this.props.coverImage && this.props.coverImage.sources} isLoading />
+        </CellImage>
+        <TextContainer>
+          <StyledH6>{this.props.label}</StyledH6>
+          <H4 numberOfLines={2} ellipsizeMode="tail">
+            {this.props.title}
+          </H4>
+        </TextContainer>
+      </Cell>
+    )
   }
 }
 
-export default withIsLoading(ContentTableCardItem);
+export default withIsLoading(TileRowCard)
