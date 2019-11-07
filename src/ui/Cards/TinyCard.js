@@ -36,6 +36,7 @@ const Title = styled(({ theme }) => ({
 
 const StyledCard = styled(({ theme }) => ({
   width: 133,
+  height: 162,
   marginHorizontal: theme.sizing.baseUnit * 0.3,
   borderRadius: 8
 }))(Card)
@@ -55,7 +56,7 @@ const Image = withTheme(({ theme, useGradient }) => ({
     // borderTopRightRadius: 8,
     // borderTopLeftRadius: 8,
   }
-}))(GradientOverlayImage)
+}))(CardImage)
 
 const TagPositioning = styled(({ theme }) => ({
   marginTop: -theme.sizing.baseUnit * 2,
@@ -114,7 +115,7 @@ class TinyCard extends PureComponent {
             </Tag>
           </TagPositioning>
 
-          <Title numberOfLines={2}>
+          <Title numberOfLines={3}>
             {this.props.title}
           </Title>
         </Content>

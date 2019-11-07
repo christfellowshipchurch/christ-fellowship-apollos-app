@@ -86,9 +86,6 @@ export const TILE_CARD_FRAGMENT = gql`
     ... on MediaContentItem {
       ...baseCardFragment
     }
-    ... on ArticleContentItem {
-      ...baseCardFragment
-    }
   }
   ${BASE_CARD_FRAGMENT}
   ${THEME_FRAGMENT}

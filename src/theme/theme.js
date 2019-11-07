@@ -46,6 +46,12 @@ import Color from 'color'
 const overrides = {
     CardWrapper: {
         borderRadius: 8
+    },
+    Card: {
+        Image: {
+            borderRadius: 0,
+            backgroundColor: 'red'
+        }
     }
 }
 
