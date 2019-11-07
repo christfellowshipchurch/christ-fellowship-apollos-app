@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, Platform } from 'react-native'
 import PropTypes from 'prop-types'
 import { get } from 'lodash'
 
@@ -9,7 +9,7 @@ import {
   styled,
   TouchableScale,
   withIsLoading,
-  ConnectedImage,
+  GradientOverlayImage,
   FlexedView,
   Card,
   CardContent,
@@ -18,6 +18,7 @@ import {
   BodyText,
   withTheme,
 } from '@apollosproject/ui-kit'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 const Content = styled(({ theme }) => ({
   alignItems: 'flex-start', // needed to make `Label` display as an "inline" element
@@ -39,17 +40,22 @@ const StyledCard = styled(({ theme }) => ({
   borderRadius: 8
 }))(Card)
 
-const Image = withTheme(({ theme }) => ({
+const Image = withTheme(({ theme, useGradient }) => ({
+  // Sets the ratio of the image
   minAspectRatio: 1.33,
   maxAspectRatio: 1.33,
+  // Sets the ratio of the placeholder
+  forceRatio: 1.33,
+  // No ratios are respected without this
   maintainAspectRatio: true,
-  overlayColor: theme.colors.darkPrimary,
-  overlayType: 'gradient-bottom',
+  overlayColor: theme.colors.black,
+  overlayType: useGradient ? 'gradient-bottom-short' : 'gradient-none',
   style: {
-    borderTopRightRadius: 8,
-    borderTopLeftRadius: 8,
+    borderRadius: 0,
+    // borderTopRightRadius: 8,
+    // borderTopLeftRadius: 8,
   }
-}))(CardImage)
+}))(GradientOverlayImage)
 
 const TagPositioning = styled(({ theme }) => ({
   marginTop: -theme.sizing.baseUnit * 2,
@@ -62,6 +68,18 @@ const Tag = styled(({ theme }) => ({
   lineHeight: 14,
 }))(Text)
 
+const Icon = withTheme(({ theme, name }) => ({
+  icon: ['fal', name],
+  fill: theme.colors.white,
+  size: 16,
+  style: {
+    position: 'absolute',
+    right: 5,
+    top: 5,
+    ...Platform.select(theme.shadows.default)
+  }
+}))(FontAwesomeIcon)
+
 class TinyCard extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
@@ -72,18 +90,27 @@ class TinyCard extends PureComponent {
     tags: PropTypes.arrayOf(
       PropTypes.string
     ),
+    icon: PropTypes.string,
   }
 
   render() {
-    console.log(this.props)
+    const tag = get(this.props, 'tags[0]', '')
 
     return (
       <StyledCard>
-        <Image source={this.props.coverImage} />
+        <View style={{ backgroundColor: 'red' }}>
+          <Image
+            source={this.props.coverImage}
+            useGradient={tag !== ''}
+          />
+        </View>
+
+        <Icon name={this.props.icon || 'book-open'} />
+
         <Content>
           <TagPositioning>
             <Tag>
-              {get(this.props, 'tags[0]', '')}
+              {tag}
             </Tag>
           </TagPositioning>
 

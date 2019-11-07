@@ -9,6 +9,7 @@ import {
   styled,
   withTheme,
   H3,
+  H4,
   H5,
   H6,
   HorizontalTileFeed,
@@ -29,7 +30,7 @@ const RowHeader = styled(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'flex-end',
   zIndex: 2, // UX hack to improve tapability. Positions RowHeader above StyledHorizontalTileFeed
-  paddingTop: theme.sizing.baseUnit * 0.5,
+  paddingTop: theme.sizing.baseUnit * 2,
   paddingLeft: theme.sizing.baseUnit,
 }))(View)
 
@@ -45,6 +46,7 @@ const AndroidTouchableFix = withTheme(({ theme }) => ({
 }))(Touchable)
 
 const ButtonLinkSpacing = styled(({ theme }) => ({
+  color: theme.colors.primary,
   flexDirection: 'row', // correctly positions the loading state
   justifyContent: 'flex-end', // correctly positions the loading state
   padding: theme.sizing.baseUnit, // UX hack to improve tapability.
@@ -84,16 +86,16 @@ const CategoryContentTileFeed = ({
       <>
         <RowHeader>
           <Name>
-            <H3>{title}</H3>
+            <H4>{title}</H4>
           </Name>
           {/* TODO : > 5 */}
-          {content.length &&
+          {content.length > 5 &&
             <AndroidTouchableFix
               onPress={() => {
                 console.log({ id })
                 navigation.navigate('RowContentFeed', {
                   itemId: id,
-                  title
+                  itemTitle: title
                 })
               }}
             >

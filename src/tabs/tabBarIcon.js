@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -9,8 +9,8 @@ const tabBarIcon = (name) => {
   }
   TabBarIcon.propTypes = {
     tintColor: PropTypes.string,
-  };
+  }
   return TabBarIcon
-};
+}
 
 export default tabBarIcon

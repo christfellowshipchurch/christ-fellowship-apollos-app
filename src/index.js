@@ -57,7 +57,6 @@ const AppInfo = createStackNavigator({
 
 const AppNavigator = createStackNavigator(
   {
-
     ProtectedRoute: ProtectedRouteWithSplashScreen,
     Tabs: AppContent,
     LandingScreen: Login,
@@ -65,13 +64,12 @@ const AppNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'ProtectedRoute',
-    headerMode: 'none'
+    headerMode: 'none',
+    navigationOptions: {
+      gesturesEnabled: false,
+    }
   }
 )
-
-AppNavigator.navigationOptions = {
-  gesturesEnabled: false,
-}
 
 const AppContainer = createAppContainer(AppNavigator)
 

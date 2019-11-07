@@ -21,7 +21,7 @@ const TabNavigator = createBottomTabNavigator(
     lazy: true,
     removeClippedSubviews: true,
   }
-);
+)
 
 TabNavigator.navigationOptions = {
   header: null,

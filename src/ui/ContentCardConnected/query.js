@@ -31,6 +31,27 @@ export const CONTENT_CARD_METRICS_FRAGMENT = gql`
   }
 `
 
+export const ACCESSORY_FRAGMENT = gql`
+  fragment accessoryFragment on ContentItem {
+    ... on ContentSeriesContentItem {
+      tags
+      icon
+    }
+    ... on UniversalContentItem {
+      tags
+      icon
+    }
+    ... on DevotionalContentItem {
+      tags
+      icon
+    }
+    ... on MediaContentItem {
+      tags
+      icon
+    }
+  }
+`
+
 export const BASE_CARD_FRAGMENT = gql`
   fragment baseCardFragment on ContentItem {
     id
@@ -38,12 +59,14 @@ export const BASE_CARD_FRAGMENT = gql`
     ...contentCardMetricsFragment
     ...coverImageFragment
     ...themeFragment
+    ...accessoryFragment
     title
     summary
   }
   ${CONTENT_CARD_METRICS_FRAGMENT}
   ${COVER_IMAGE_FRAGMENT}
   ${THEME_FRAGMENT}
+  ${ACCESSORY_FRAGMENT}
 `
 
 export const TILE_CARD_FRAGMENT = gql`
@@ -87,11 +110,6 @@ const GET_CONTENT_CARD = gql`
       __typename
       ...tileCardFragment @include(if: $tile)
       ...largeCardFragment @skip(if: $tile)
-    }
-
-    contentDecorations(id: $contentId) {
-      tags
-      icon
     }
   }
 

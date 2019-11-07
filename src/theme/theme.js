@@ -1,3 +1,5 @@
+import Color from 'color'
+
 /* Add your custom theme definitions below. Anything that is supported in UI-Kit Theme can be
  overridden and/or customized here! */
 
@@ -80,8 +82,31 @@ const typography = {
     },
 }
 
+const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
+    'gradient-bottom-short': ({ overlayColor }) => ({
+        colors: [
+            `${Color(overlayColor)
+                .alpha(themeAlpha.low)
+                .string()}`,
+            `${Color(overlayColor)
+                .alpha(themeAlpha.high)
+                .string()}`,
+        ],
+        start: { x: 0, y: 0.6 },
+        end: { x: 0, y: 1 },
+        locations: [0, 0.6],
+    }),
+    'gradient-none': ({ overlayColor }) => ({
+        colors: ['transparent'],
+        start: { x: 0, y: 1 },
+        end: { x: 0, y: 1 },
+        locations: [0, 1],
+    }),
+})
+
 export default {
     overrides,
     colors,
     typography,
+    overlays
 }

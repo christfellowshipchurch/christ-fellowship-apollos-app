@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
-import { get } from 'lodash';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Query } from 'react-apollo'
+import { get } from 'lodash'
 
-import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
-import GET_CONTENT_CARD from './query';
+import { ContentCard, ErrorCard } from '@apollosproject/ui-kit'
+import GET_CONTENT_CARD from './query'
 
-export { TILE_CARD_FRAGMENT, LARGE_CARD_FRAGMENT } from './query';
+export { TILE_CARD_FRAGMENT, LARGE_CARD_FRAGMENT, ACCESSORY_FRAGMENT } from './query'
 
 const ContentCardConnected = ({
   contentId,
@@ -27,24 +27,23 @@ const ContentCardConnected = ({
 
   return (
     <Query query={GET_CONTENT_CARD} variables={{ contentId, tile: !!tile }}>
-      {({ data: { node = {}, contentDecorations = {} } = {}, loading, error }) => {
-        if (error) return <ErrorCard error={error} />;
+      {({ data: { node = {} } = {}, loading, error }) => {
+        if (error) return <ErrorCard error={error} />
 
         const metrics = [
           {
             icon: node.isLiked ? 'like-solid' : 'like',
             value: node.likedCount,
           },
-        ];
+        ]
 
-        const coverImage = get(node, 'coverImage.sources', undefined);
+        const coverImage = get(node, 'coverImage.sources', undefined)
 
         return React.createElement(
           card,
           {
             ...node,
             ...otherProps,
-            ...contentDecorations,
             coverImage,
             metrics,
             tile,
@@ -53,8 +52,8 @@ const ContentCardConnected = ({
         )
       }}
     </Query>
-  );
-};
+  )
+}
 
 ContentCardConnected.propTypes = {
   isLoading: PropTypes.bool,

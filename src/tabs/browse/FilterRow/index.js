@@ -34,7 +34,7 @@ const FilterButton = styled(({ theme }) => ({
 }))(View)
 
 const Container = styled(({ theme }) => ({
-  marginLeft: theme.sizing.baseUnit,
+  marginLeft: theme.sizing.baseUnit * 0.5,
 }))(ScrollView)
 
 const FilterRow = ({
