@@ -52,8 +52,6 @@ const PasscodeForm = ({
 
     const { type, identity, isExistingIdentity } = get(navigation, 'state.params')
 
-    console.log({ type })
-
     const handleSubmit = async () => {
         setSubmitting(true)
         const { passcode } = values

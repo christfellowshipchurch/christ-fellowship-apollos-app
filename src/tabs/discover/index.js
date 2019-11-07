@@ -1,5 +1,5 @@
 import { createStackNavigator } from 'react-navigation'
-import ContentFeed from 'ChristFellowship/src/content-feed'
+import { ContentFeed } from 'ChristFellowship/src/content-feed'
 import tabBarIcon from '../tabBarIcon'
 import Discover from './Discover'
 

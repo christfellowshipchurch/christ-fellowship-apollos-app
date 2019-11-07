@@ -1,0 +1,2242 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`content feed query component renders a feedview after successful query 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+  onLayout={[Function]}
+  style={
+    Object {
+      "bottom": 0,
+      "left": 0,
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+    }
+  }
+>
+  <View
+    onLayout={[Function]}
+    style={
+      Object {
+        "flex": 1,
+      }
+    }
+  />
+  <View
+    style={
+      Object {
+        "bottom": 0,
+        "left": 0,
+        "position": "absolute",
+        "right": 0,
+        "top": 0,
+      }
+    }
+  >
+    <BVLinearGradient
+      colors={
+        Array [
+          4294967295,
+          4294506484,
+        ]
+      }
+      endPoint={
+        Object {
+          "x": 0.5,
+          "y": 1,
+        }
+      }
+      locations={null}
+      startPoint={
+        Object {
+          "x": 0.5,
+          "y": 0,
+        }
+      }
+      style={
+        Object {
+          "flex": 1,
+          "height": "100%",
+        }
+      }
+    >
+      <RCTScrollView
+        contentContainerStyle={
+          Object {
+            "paddingVertical": 7.2,
+          }
+        }
+        data={
+          Array [
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId0",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId1",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId2",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId3",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId4",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId5",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId6",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId7",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId8",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+            Object {
+              "channelType": "",
+              "coverImage": Array [],
+              "id": "fakeId9",
+              "isLoading": true,
+              "parentChannel": Object {
+                "id": "",
+                "name": "",
+              },
+              "title": "",
+            },
+          ]
+        }
+        disableVirtualization={false}
+        getItem={[Function]}
+        getItemCount={[Function]}
+        horizontal={false}
+        initialNumToRender={10}
+        keyExtractor={[Function]}
+        maxToRenderPerBatch={10}
+        numColumns={1}
+        onContentSizeChange={[Function]}
+        onEndReached={[Function]}
+        onEndReachedThreshold={0.7}
+        onLayout={[Function]}
+        onMomentumScrollEnd={[Function]}
+        onPressItem={[Function]}
+        onRefresh={[Function]}
+        onScroll={[Function]}
+        onScrollBeginDrag={[Function]}
+        onScrollEndDrag={[Function]}
+        refreshControl={
+          <RefreshControlMock
+            onRefresh={[Function]}
+            refreshing={true}
+          />
+        }
+        refreshing={true}
+        renderItem={[Function]}
+        scrollEventThrottle={50}
+        stickyHeaderIndices={Array []}
+        updateCellsBatchingPeriod={50}
+        viewabilityConfigCallbackPairs={Array []}
+        windowSize={21}
+      >
+        <RCTRefreshControl />
+        <View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId0"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId1"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId2"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId3"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId4"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId5"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId6"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId7"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId8"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+          <View
+            onLayout={[Function]}
+            style={null}
+          >
+            <View
+              accessible={true}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scale": 1,
+                    },
+                  ],
+                }
+              }
+            >
+              <View
+                channelType=""
+                id="fakeId9"
+                parentChannel={
+                  Object {
+                    "id": "",
+                    "name": "",
+                  }
+                }
+                style={
+                  Object {
+                    "backgroundColor": "#FFFFFF",
+                    "borderRadius": 16,
+                    "marginHorizontal": 16,
+                    "marginVertical": 12,
+                    "shadowColor": "rgba(165, 165, 165, 0.30000000000000004)",
+                    "shadowOffset": Object {
+                      "height": 1,
+                      "width": 0,
+                    },
+                    "shadowOpacity": 1,
+                    "shadowRadius": 6,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "aspectRatio": undefined,
+                      "borderRadius": 16,
+                      "overflow": "hidden",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "aspectRatio": 2,
+                        "backgroundColor": "#A5A5A5",
+                        "overflow": "hidden",
+                        "width": "100%",
+                      }
+                    }
+                  >
+                    <Image
+                      onLoad={[Function]}
+                      source={Array []}
+                      style={
+                        Object {
+                          "aspectRatio": 2,
+                          "backgroundColor": "#A5A5A5",
+                          "opacity": 1,
+                          "resizeMode": "cover",
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "paddingBottom": 12,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 24,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 24,
+                          "marginVertical": 1.8000000000000007,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                    <View
+                      style={
+                        Object {
+                          "alignSelf": "stretch",
+                          "backgroundColor": "#A5A5A5",
+                          "borderRadius": 16,
+                          "height": 16,
+                          "marginVertical": 5,
+                          "width": "100%",
+                        }
+                      }
+                    />
+                  </View>
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "height": 32,
+                        "justifyContent": "space-between",
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                      }
+                    }
+                  />
+                  <View
+                    floating={false}
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "bottom": 0,
+                        "flexDirection": "row",
+                        "flexWrap": "wrap",
+                        "justifyContent": "space-between",
+                        "left": 0,
+                        "paddingHorizontal": 16,
+                        "paddingTop": 4,
+                        "paddingVertical": 16,
+                        "position": "absolute",
+                        "right": 0,
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "flexDirection": "column",
+                        }
+                      }
+                    >
+                      <View
+                        flexed={false}
+                        style={
+                          Object {
+                            "alignItems": "center",
+                            "flex": null,
+                            "flexDirection": "row",
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "backgroundColor": "#A5A5A5",
+                              "borderRadius": 16,
+                              "height": 19.2,
+                              "width": 19.2,
+                            }
+                          }
+                        />
+                        <View
+                          style={
+                            Object {
+                              "paddingHorizontal": 4,
+                            }
+                          }
+                          withIcon="empty"
+                        >
+                          <View
+                            style={
+                              Object {
+                                "alignSelf": "stretch",
+                                "backgroundColor": "#A5A5A5",
+                                "borderRadius": 16,
+                                "height": 12,
+                                "marginVertical": 2.6400000000000006,
+                                "width": "50%",
+                              }
+                            }
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      </RCTScrollView>
+    </BVLinearGradient>
+  </View>
+</RCTSafeAreaView>
+`;

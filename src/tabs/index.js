@@ -5,12 +5,14 @@ import TabBar from './tabBar'
 import Connect from './connect'
 import Home from './home'
 import Discover from './discover'
+import Browse from './browse'
 import More from './more'
 
 const TabNavigator = createBottomTabNavigator(
   {
     Home,
-    Discover,
+    Browse,
+    // Discover,
     Connect,
     More,
   },
@@ -19,7 +21,7 @@ const TabNavigator = createBottomTabNavigator(
     lazy: true,
     removeClippedSubviews: true,
   }
-);
+)
 
 TabNavigator.navigationOptions = {
   header: null,

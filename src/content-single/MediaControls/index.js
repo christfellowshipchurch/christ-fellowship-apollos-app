@@ -52,32 +52,32 @@ class MediaControls extends PureComponent {
     title,
     parentChannelName,
   }) => (
-    <Mutation mutation={PLAY_VIDEO}>
-      {(play) => (
-        <Container>
-          <MediaButtonBorder>
-            <MediaButton
-              type="primary"
-              onPress={() =>
-                play({
-                  variables: {
-                    mediaSource: videoSource,
-                    posterSources: coverImageSources,
-                    title,
-                    isVideo: true,
-                    artist: parentChannelName,
-                  },
-                })
-              }
-              useForeground
-            >
-              <MediaIcon name="play" />
-            </MediaButton>
-          </MediaButtonBorder>
-        </Container>
-      )}
-    </Mutation>
-  );
+      <Mutation mutation={PLAY_VIDEO}>
+        {(play) => (
+          <Container>
+            <MediaButtonBorder>
+              <MediaButton
+                type="primary"
+                onPress={() =>
+                  play({
+                    variables: {
+                      mediaSource: videoSource,
+                      posterSources: coverImageSources,
+                      title,
+                      isVideo: true,
+                      // artist: parentChannelName,
+                    },
+                  })
+                }
+                useForeground
+              >
+                <MediaIcon name="play" />
+              </MediaButton>
+            </MediaButtonBorder>
+          </Container>
+        )}
+      </Mutation>
+    );
 
   renderWebView = ({ webViewUrl }) => (
     <WebBrowserConsumer>
