@@ -49,6 +49,10 @@ export const ACCESSORY_FRAGMENT = gql`
       tags
       icon
     }
+    ... on EventContentItem {
+      startDate
+      endDate
+    }
   }
 `
 

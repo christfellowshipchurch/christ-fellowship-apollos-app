@@ -1,10 +1,14 @@
 import { createStackNavigator } from 'react-navigation'
+
 import More from './More'
+import Events from './events'
+
 import tabBarIcon from '../tabBarIcon'
 
 const MoreNavigator = createStackNavigator(
   {
     More,
+    Events,
   },
   {
     initialRouteName: 'More',
