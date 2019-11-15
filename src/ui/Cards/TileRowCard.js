@@ -3,12 +3,10 @@ import { View, Platform } from 'react-native'
 import PropTypes from 'prop-types'
 
 import {
-  H4,
   H5,
   H6,
   styled,
   withTheme,
-  TouchableScale,
   withIsLoading,
   ConnectedImage,
   FlexedView,
@@ -32,16 +30,13 @@ const Title = styled(({ theme }) => ({
 }))(H5)
 
 const TextContainer = styled(({ theme }) => ({
-  // marginTop: theme.sizing.baseUnit / 2.5,
-  // borderBottomWidth: 0.5,
   height: theme.sizing.baseUnit * 4.25,
-  // borderColor: theme.colors.shadows.default,
+  justifyContent: 'center'
 }))(FlexedView)
 
 const Cell = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit,
-  marginVertical: theme.sizing.baseUnit / 4,
-  // backgroundColor: theme.colors.background.paper,
+  marginVertical: theme.sizing.baseUnit / 2,
   flexDirection: 'row',
   justifyContent: 'flex-start',
   alignItems: 'center',
@@ -78,20 +73,26 @@ class TileRowCard extends PureComponent {
             source={this.props.coverImage && this.props.coverImage.sources}
             isLoading
           />
-          <Icon name={this.props.icon || 'book-open'} />
+          {this.props.icon && this.props.icon !== '' &&
+            <Icon name={this.props.icon} />}
         </CellImage>
         <TextContainer>
-          <StyledH6>
-            {this.props.label}
-          </StyledH6>
-          <Title numberOfLines={2} ellipsizeMode="tail">
-            {this.props.title}
-          </Title>
-          <StyledH6 numberOfLines={2} ellipsizeMode="tail">
-            {this.props.summary}
-          </StyledH6>
+          {this.props.label !== '' &&
+            <StyledH6>
+              {this.props.label}
+            </StyledH6>}
+
+          {this.props.title !== '' &&
+            <Title numberOfLines={2} ellipsizeMode="tail">
+              {this.props.title}
+            </Title>}
+
+          {this.props.summary !== '' &&
+            <StyledH6 numberOfLines={2} ellipsizeMode="tail">
+              {this.props.summary}
+            </StyledH6>}
         </TextContainer>
-      </Cell>
+      </Cell >
     )
   }
 }

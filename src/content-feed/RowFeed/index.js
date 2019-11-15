@@ -38,10 +38,14 @@ const HeaderContainer = styled(({ theme }) => ({
 const BackIcon = withTheme(({ theme }) => ({
   color: theme.colors.darkSecondary,
   icon: ['fal', 'angle-left'],
-  size: 42
+  size: 42,
+  style: {
+    flex: 1,
+    justifyContent: 'flex-start'
+  }
 }))(FontAwesomeIcon)
 
-const HeaderComponent = ({
+export const RowFeedHeaderComponent = ({
   navigation,
   title,
 }) => (
@@ -103,7 +107,7 @@ class ContentRowFeed extends PureComponent {
 
     return (
       <BackgroundView style={{ flex: 1 }}>
-        <HeaderComponent
+        <RowFeedHeaderComponent
           navigation={navigation}
           title={itemTitle}
         />
