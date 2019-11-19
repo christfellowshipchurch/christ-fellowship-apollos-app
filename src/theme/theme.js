@@ -70,8 +70,8 @@ const typography = {
     baseLineHeight: 23.04, // 1.44 ratio
     sans: {
         regular: {
-            default: 'Gotham-Light',
-            italic: 'Gotham-LightItalic',
+            default: 'Gotham-Book',
+            italic: 'Gotham-BookItalic',
         },
         medium: {
             default: 'Gotham-Medium',
