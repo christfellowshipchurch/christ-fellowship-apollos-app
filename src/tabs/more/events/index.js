@@ -41,6 +41,7 @@ const formatDate = (props) => {
 
 const EventContentItemRow = ({
   title,
+  summary,
   startDate,
   endDate,
   coverImage,
@@ -49,6 +50,7 @@ const EventContentItemRow = ({
   return <TileRowCard
     label={formatDate({ startDate, endDate })}
     title={title}
+    summary={summary}
     coverImage={coverImage}
     isLoading={loading}
   />
