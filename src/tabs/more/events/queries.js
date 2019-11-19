@@ -5,6 +5,8 @@ export const GET_EVENTS = gql`
         allEvents {
             id
             title
+            summary
+
             startDate
             endDate
 
