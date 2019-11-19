@@ -18,7 +18,7 @@ const Container = styled(({ theme }) => ({
   ...Platform.select(theme.shadows.default),
 }))(View);
 
-const ActionContainer = ({ itemId }) => (
+const ActionContainer = ({ itemId }) => itemId !== '' && (
   <Container>
     <MediaPlayerSpacer>
       <PositioningView>
@@ -32,6 +32,10 @@ const ActionContainer = ({ itemId }) => (
 ActionContainer.propTypes = {
   content: PropTypes.shape({}),
   itemId: PropTypes.string,
+};
+
+ActionContainer.defaultProps = {
+  itemId: '',
 };
 
 export default ActionContainer;

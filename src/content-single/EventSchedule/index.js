@@ -121,7 +121,9 @@ const CampusSelection = ({
           {campus}
         </H3>
         <BodyText>
-          Select Campus
+          {campus == ''
+            ? 'Select Campus'
+            : 'Change Campus'}
         </BodyText>
 
         <PickerList
@@ -184,8 +186,11 @@ const EventSchedules = ({
         const schedules = get(data, 'node.childContentItemsConnection.edges', [])
           .map(edge => edge.node)
         const schedulesByCampus = parseSchedulesByCampus(schedules)
+        const selectedCampus = schedulesByCampus.length == 1
+          ? schedulesByCampus[0]
+          : find(schedulesByCampus, (n) => n.campus.name === defaultCampus)
 
-        setPayload(find(schedulesByCampus, (n) => n.campus.name === defaultCampus))
+        setPayload(selectedCampus)
       }
     }
   )
