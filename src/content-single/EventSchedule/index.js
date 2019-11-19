@@ -121,7 +121,9 @@ const CampusSelection = ({
           {campus}
         </H3>
         <BodyText>
-          Select Campus
+          {campus == ''
+            ? 'Select Campus'
+            : 'Change Campus'}
         </BodyText>
 
         <PickerList
