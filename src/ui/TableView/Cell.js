@@ -18,7 +18,7 @@ const Cell = ({ title, icon, onPress }) => (
         onPress={onPress}
     >
         <PaddedRow>
-            <FontAwesomeIcon icon={['fal', icon]} size={24} />
+            <FontAwesomeIcon icon={icon} size={24} />
             <H4 style={{ flex: 4, paddingLeft: 10 }}>{title}</H4>
             <FontAwesomeIcon icon={['fal', 'angle-right']} size={24} />
         </PaddedRow>
@@ -26,7 +26,7 @@ const Cell = ({ title, icon, onPress }) => (
 )
 
 Cell.defaultProps = {
-    icon: 'link',
+    icon: ['fal', 'link'],
     title: 'Cell Title',
     onPress: () => { }
 }
