@@ -184,22 +184,41 @@ const DirectionsTouchable = withTheme(({ theme, location }) => ({
 }))(Touchable)
 
 const EventSchedules = ({
-  loading,
-  error,
-  campuses,
-  defaultCampus
+  contentId
 }) => {
-  const [payload, setPayload] = useState(defaultCampus)
+  const [payload, setPayload] = useState({})
+  const { loading, error, data } = useQuery(GET_EVENT_SCHEDULES,
+    {
+      fetchPolicy: 'cache-and-network',
+      variables: { id: contentId },
+      onCompleted: (data) => {
+        const defaultCampus = get(data, 'currentUser.profile.campus.name')
+        const schedules = get(data, 'node.childContentItemsConnection.edges', [])
+          .map(edge => edge.node)
+        const schedulesByCampus = parseSchedulesByCampus(schedules)
+        const selectedCampus = schedulesByCampus.length == 1
+          ? schedulesByCampus[0]
+          : find(schedulesByCampus, (n) => n.campus.name === defaultCampus)
+
+        setPayload(selectedCampus)
+      }
+    }
+  )
+
+  // Map the children to a collection of content items
+  const schedules = get(data, 'node.childContentItemsConnection.edges', [])
+    .map(edge => edge.node)
+  const schedulesByCampus = parseSchedulesByCampus(schedules)
   const location = get(payload, 'location', '')
 
   return (
     <ContentContainer>
       <CampusSelection
-        campuses={campuses}
+        campuses={schedulesByCampus}
         campus={get(payload, 'campus.name', '')}
         loading={loading}
         onChange={(campus) =>
-          setPayload(find(campuses, (n) => n.campus.name === campus))
+          setPayload(find(schedulesByCampus, (n) => n.campus.name === campus))
         }
       />
 
@@ -217,41 +236,7 @@ const EventSchedules = ({
 }
 
 EventSchedules.propTypes = {
-  loading: PropTypes.bool,
-  error: PropTypes.object,
-  campuses: PropTypes.arrayOf(
-    PropTypes.object
-  ),
-  defaultCampus: PropTypes.object,
-}
-
-const EventSchedulesConnected = ({ contentId }) => {
-  const { loading, error, data } = useQuery(GET_EVENT_SCHEDULES,
-    {
-      variables: { id: contentId },
-      fetchPolicy: 'cache-and-network'
-    }
-  )
-
-  // Map the children to a collection of content items
-  const defaultCampus = get(data, 'currentUser.profile.campus.name')
-  const schedules = get(data, 'node.childContentItemsConnection.edges', [])
-    .map(edge => edge.node)
-  const schedulesByCampus = parseSchedulesByCampus(schedules)
-  const selectedCampus = schedulesByCampus.length == 1
-    ? schedulesByCampus[0]
-    : find(schedulesByCampus, (n) => n.campus.name === defaultCampus)
-
-  return <EventSchedules
-    loading={loading}
-    error={error}
-    campuses={schedulesByCampus}
-    defaultCampus={selectedCampus}
-  />
-}
-
-EventSchedulesConnected.propTypes = {
   contentId: PropTypes.string,
 }
 
-export default EventSchedulesConnected
+export default EventSchedules

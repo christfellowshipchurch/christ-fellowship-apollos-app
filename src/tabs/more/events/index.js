@@ -65,7 +65,7 @@ const Events = ({
     error,
     data,
     refetch,
-  } = useQuery(GET_EVENTS)
+  } = useQuery(GET_EVENTS, { fetchPolicy: 'cache-and-network' })
 
   /** Function that is called when a card in the feed is pressed.
      * Takes the user to the ContentSingle
