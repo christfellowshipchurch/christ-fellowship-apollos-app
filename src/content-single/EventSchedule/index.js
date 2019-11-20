@@ -14,14 +14,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import {
   styled,
   withTheme,
-  GradientOverlayImage,
-  BackgroundView,
-  PaddedView,
   FlexedView,
   H3,
   H5,
   BodyText,
-  Touchable
+  Touchable,
 } from '@apollosproject/ui-kit'
 import PickerList from '@apollosproject/ui-kit/src/inputs/Picker/PickerList'
 

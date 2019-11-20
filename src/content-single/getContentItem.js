@@ -39,14 +39,25 @@ export const CONTENT_ITEM_FRAGMENT = gql`
   }
 `;
 
+export const EVENT_ITEM_FRAGMENT = gql`
+  fragment eventContentItemFragment on EventContentItem {
+    callsToAction {
+      call
+      action
+    }
+  }
+`;
+
 export default gql`
   query getContentItem($itemId: ID!) {
     node(id: $itemId) {
       __typename
       ... on ContentItem {
         ...contentItemFragment
+        ...eventContentItemFragment
       }
     }
   }
   ${CONTENT_ITEM_FRAGMENT}
+  ${EVENT_ITEM_FRAGMENT}
 `;

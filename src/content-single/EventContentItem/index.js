@@ -8,7 +8,9 @@ import {
   BackgroundView,
   PaddedView,
   H2,
+  H4,
   BodyText,
+  Button
 } from '@apollosproject/ui-kit'
 import MediaControls from '../MediaControls'
 import HTMLContent from '../HTMLContent'
@@ -33,8 +35,17 @@ const Summary = styled(({ theme }) => ({
   color: theme.colors.white
 }))(BodyText)
 
+const StyledButton = styled(({ theme }) => ({
+  marginVertical: theme.sizing.baseUnit * 0.25
+}))(Button)
+
+const Subtitle = styled(({ theme }) => ({
+  marginTop: theme.sizing.baseUnit * 2
+}))(H4)
+
 const EventContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', [])
+  const callsToAction = get(content, 'callsToAction', [])
   return (
     <BackgroundView>
       <FlexedScrollView>
@@ -68,6 +79,16 @@ const EventContentItem = ({ content, loading }) => {
         <MediaControls contentId={content.id} />
         <PaddedView>
           <EventSchedule contentId={content.id} />
+
+          {callsToAction.map((n, i) => (
+            <StyledButton
+              key={i}
+              title={n.call}
+              pill={false}
+            />
+          ))}
+
+          <Subtitle>Event Details</Subtitle>
           <HTMLContent contentId={content.id} />
           <Features contentId={content.id} />
         </PaddedView>
@@ -94,6 +115,12 @@ EventContentItem.propTypes = {
         reference: PropTypes.string,
         /** The scripture source to render */
         html: PropTypes.string,
+      })
+    ),
+    callsToAction: PropTypes.arrayOf(
+      PropTypes.shape({
+        call: PropTypes.string,
+        action: PropTypes.string,
       })
     ),
   }),
