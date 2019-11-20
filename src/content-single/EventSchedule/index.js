@@ -112,6 +112,12 @@ const CampusSelection = ({
   const [focused, setFocused] = useState(false)
   const [value, setValue] = useState(campus)
 
+  if (!loading && campuses.length === 0) return (
+    <BodyText style={{ fontStyle: 'italic' }}>
+      Check back soon for dates and times
+    </BodyText>
+  )
+
   return (
     <Touchable
       onPress={() => setFocused(!focused)}
@@ -223,6 +229,7 @@ const EventSchedulesConnected = ({ contentId }) => {
   const { loading, error, data } = useQuery(GET_EVENT_SCHEDULES,
     {
       variables: { id: contentId },
+      fetchPolicy: 'cache-and-network'
     }
   )
 
