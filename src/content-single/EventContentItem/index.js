@@ -4,6 +4,7 @@ import { get } from 'lodash'
 import PropTypes from 'prop-types'
 import {
   styled,
+  withTheme,
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
@@ -39,8 +40,10 @@ const StyledButton = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.25
 }))(Button)
 
-const Subtitle = styled(({ theme }) => ({
-  marginTop: theme.sizing.baseUnit * 2
+const Subtitle = withTheme(({ theme, extraSpacing }) => ({
+  style: {
+    marginTop: extraSpacing ? theme.sizing.baseUnit * 2 : theme.sizing.baseUnit
+  }
 }))(H4)
 
 const EventContentItem = ({ content, loading }) => {
@@ -88,7 +91,9 @@ const EventContentItem = ({ content, loading }) => {
             />
           ))}
 
-          <Subtitle>Event Details</Subtitle>
+          <Subtitle extraSpacing={callsToAction.length > 0}>
+            Event Details
+            </Subtitle>
           <HTMLContent contentId={content.id} />
           <Features contentId={content.id} />
         </PaddedView>
