@@ -44,6 +44,9 @@ import Color from 'color'
  * }
  */
 const overrides = {
+    Button: {
+        borderRadius: 8
+    },
     CardWrapper: {
         borderRadius: 8
     },

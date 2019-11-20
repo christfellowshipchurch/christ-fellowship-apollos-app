@@ -13,6 +13,7 @@ import {
   BodyText,
   Button
 } from '@apollosproject/ui-kit'
+import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser'
 import MediaControls from '../MediaControls'
 import HTMLContent from '../HTMLContent'
 import HorizontalContentFeed from '../HorizontalContentFeed'
@@ -83,13 +84,18 @@ const EventContentItem = ({ content, loading }) => {
         <PaddedView>
           <EventSchedule contentId={content.id} />
 
-          {callsToAction.map((n, i) => (
-            <StyledButton
-              key={i}
-              title={n.call}
-              pill={false}
-            />
-          ))}
+          {callsToAction.length > 0 &&
+            <WebBrowserConsumer>
+              {(openUrl) => callsToAction.map((n, i) => (
+                <StyledButton
+                  key={i}
+                  title={n.call}
+                  pill={false}
+                  onPress={() => openUrl(n.action)}
+                />
+              ))}
+            </WebBrowserConsumer>
+          }
 
           <Subtitle extraSpacing={callsToAction.length > 0}>
             Event Details
