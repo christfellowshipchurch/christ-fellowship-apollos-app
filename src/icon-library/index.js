@@ -35,6 +35,8 @@ import {
     faBookOpen,
     faMicrophone,
     faClock,
+    faHandshake,
+    faEnvelopeOpenDollar,
 } from '@fortawesome/pro-light-svg-icons'
 
 // load desired icons in an array to not overload the library with more
@@ -74,6 +76,8 @@ const icons = [
     faBookOpen,
     faMicrophone,
     faClock,
+    faHandshake,
+    faEnvelopeOpenDollar,
 ]
 
 library.add(...icons)
