@@ -70,7 +70,7 @@ const More = ({
                   onPress={() => openUrl('https://beta.christfellowship.church/locations')}
                 />
                 <Cell
-                  title='Contact'
+                  title='Contact Us'
                   onPress={() => openUrl('https://gochristfellowship.com/new-here/contact-us')}
                 />
               </TableView>
