@@ -9,21 +9,14 @@ import {
   styled,
   FeedView,
   BackgroundView,
-  H3,
-  H6,
-  TouchableScale,
-  FlexedView
 } from '@apollosproject/ui-kit';
 
 import fetchMoreResolver from '../../utils/fetchMoreResolver';
-import ContentCardConnected from '../../ui/ContentCardConnected';
+import ActionMapper from './ActionMapper'
 
 import { LiveButton } from '../../live';
 
-import ContentTableCard from '../../ui/ContentTableCard';
-import GET_USER_FEED from './getUserFeed';
 import GET_FEED_FEATURES from './getFeedFeatures';
-import GET_CAMPAIGN_CONTENT_ITEM from './getCampaignContentItem';
 
 const LogoTitle = styled(({ theme }) => ({
   height: theme.sizing.baseUnit,
@@ -33,9 +26,15 @@ const LogoTitle = styled(({ theme }) => ({
   width: '50%'
 }))(Image);
 
-const StyledH6 = styled(({ theme }) => ({
-  color: theme.colors.text.tertiary,
-}))(H6);
+const ActionWrapper = styled(({ theme }) => ({
+  paddingVertical: theme.sizing.baseUnit * 2,
+  borderBottomColor: theme.colors.lightSecondary,
+  borderBottomWidth: 1,
+}))(View)
+
+const COLOR_MAP = [
+  'primary', 'success', 'alert', 'warning'
+]
 
 class Home extends PureComponent {
   static navigationOptions = () => ({
@@ -56,12 +55,20 @@ class Home extends PureComponent {
       transitionKey: item.transitionKey,
     });
 
+  renderItem = ({ item }) => {
+    return <ActionMapper
+      titleColor={COLOR_MAP[Math.floor(Math.random() * 3)]}
+      navigation={this.props.navigation}
+      {...item}
+    />
+  }
+
   render() {
     return (
       <BackgroundView>
         <SafeAreaView>
           <Query
-            query={GET_USER_FEED}
+            query={GET_FEED_FEATURES}
             variables={{
               first: 10,
               after: null,
@@ -70,12 +77,9 @@ class Home extends PureComponent {
           >
             {({ loading, error, data, refetch, fetchMore, variables }) => (
               <FeedView
-                ListItemComponent={ContentCardConnected}
-                content={get(data, 'userFeed.edges', []).map(
-                  (edge) => edge.node
-                )}
+                content={get(data, 'userFeedFeatures', [])}
                 fetchMore={fetchMoreResolver({
-                  collectionName: 'userFeed',
+                  collectionName: 'userFeedFeatures',
                   fetchMore,
                   variables,
                   data,
@@ -83,82 +87,16 @@ class Home extends PureComponent {
                 isLoading={loading}
                 error={error}
                 refetch={refetch}
-                stickyHeaderIndices={[0]}
                 ListHeaderComponent={
-                  <>
-                    <View style={{ backgroundColor: 'white', }}>
-                      <LiveButton />
-                      <LogoTitle source={require('./wordmark.png')} />
-                    </View>
-                    {/* <Query
-                      query={GET_CAMPAIGN_CONTENT_ITEM}
-                      fetchPolicy="cache-and-network"
-                    >
-                      {({ data: featuredData, loading: isFeaturedLoading }) => {
-                        const featuredContent = get(
-                          featuredData,
-                          'campaigns.edges',
-                          []
-                        ).map((edge) => edge.node);
-
-                        const featuredItem = get(
-                          featuredContent[0],
-                          'childContentItemsConnection.edges[0].node',
-                          {}
-                        );
-
-                        return (
-                          <TouchableScale
-                            onPress={() =>
-                              this.handleOnPress({ id: featuredItem.id })
-                            }
-                          >
-                            <ContentCardConnected
-                              contentId={featuredItem.id}
-                              isLoading={isFeaturedLoading}
-                            />
-                          </TouchableScale>
-                        );
-                      }}
-                    </Query> */}
-                    {/* <Query
-                      query={GET_PERSONA_FEED}
-                      fetchPolicy="cache-and-network"
-                    >
-                      {({
-                        data: personaData,
-                        loading: isContentTableLoading,
-                      }) => (
-                          <ContentTableCard
-                            isLoading={isContentTableLoading}
-                            onPress={this.handleOnPress}
-                            header={
-                              <>
-                                <StyledH6 isLoading={isContentTableLoading}>
-                                  FOR YOU
-                              </StyledH6>
-                                <H3
-                                  isLoading={isContentTableLoading}
-                                  numberOfLines={3}
-                                  ellipsizeMode="tail"
-                                >
-                                  Explore what God calls you to today
-                              </H3>
-                              </>
-                            }
-                            content={get(
-                              personaData,
-                              'personaFeed.edges',
-                              []
-                            ).map((edge) => edge.node)}
-                          />
-                        )}
-                    </Query> */}
-                  </>
+                  <View style={{ backgroundColor: 'white', }}>
+                    <LiveButton />
+                    <LogoTitle source={require('./wordmark.png')} />
+                  </View>
                 }
-                onPressItem={this.handleOnPress}
+                renderItem={this.renderItem}
               />
-            )}
+            )
+            }
           </Query>
         </SafeAreaView>
       </BackgroundView>
