@@ -5,10 +5,15 @@ import { withNavigation } from 'react-navigation';
 import { Query } from 'react-apollo';
 
 import {
+  styled,
+  H3,
   CardTile,
   HorizontalTileFeed,
   TouchableScale,
+  HighlightCard,
 } from '@apollosproject/ui-kit';
+
+import { TinyCard } from 'ChristFellowship/src/ui/Cards'
 
 import GET_HORIZONTAL_CONTENT from './getHorizontalContent';
 
@@ -19,6 +24,10 @@ const loadingStateObject = {
     isLoading: true,
   },
 };
+
+const Title = styled(({ theme }) => ({
+  paddingHorizontal: theme.sizing.baseUnit
+}))(H3)
 
 class HorizontalContentFeed extends Component {
   static propTypes = {
@@ -34,17 +43,19 @@ class HorizontalContentFeed extends Component {
     });
   };
 
-  renderItem = ({ item, index }) => (
+  renderItem = ({ item, index, ...cardProps }) => (
     <TouchableScale onPress={() => this.handleOnPressItem(item)}>
-      <CardTile
+      <TinyCard
         number={index + 1}
         title={get(item, 'title', '')}
-        /*
-         * These are props that are not yet being passed in the data.
-         * We will need to make sure they get added back when that data is available.
-         * byLine={item.content.speaker}
-         * date={item.meta.date}
-         */
+        {...cardProps}
+        coverImage={get(item, 'coverImage.sources', [])}
+      /*
+       * These are props that are not yet being passed in the data.
+       * We will need to make sure they get added back when that data is available.
+       * byLine={item.content.speaker}
+       * date={item.meta.date}
+       */
       />
     </TouchableScale>
   );
@@ -67,13 +78,17 @@ class HorizontalContentFeed extends Component {
 
     const content = siblingContent.length ? siblingContent : childContent;
 
-    return content && content.length ? (
+    return content && content.length ? ([
+      <Title key={`HorizontalContentFeed:Title`}>
+        Related Items
+      </Title>,
       <HorizontalTileFeed
+        key={`HorizontalContentFeed:Content`}
         content={content}
         loadingStateObject={loadingStateObject}
         renderItem={this.renderItem}
       />
-    ) : null;
+    ]) : null;
   };
 
   render() {

@@ -16,8 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 const { ImageSourceType } = ConnectedImage
 
 const CellImage = styled(({ theme }) => ({
-  width: theme.sizing.baseUnit * 5.5,
-  height: theme.sizing.baseUnit * 5.5,
+  width: '100%',
   borderRadius: 8,
   overflow: 'hidden',
   marginRight: theme.sizing.baseUnit,
@@ -32,16 +31,13 @@ const Title = styled(({ theme }) => ({
 }))(H5)
 
 const TextContainer = styled(({ theme }) => ({
-  height: theme.sizing.baseUnit * 4.25,
+  // height: theme.sizing.baseUnit * 4.25,
   justifyContent: 'center'
 }))(FlexedView)
 
-const Cell = styled(({ theme, inCardStack = false }) => ({
+const Cell = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit,
-  marginVertical: theme.sizing.baseUnit * (inCardStack ? 0.75 : 0.5),
-  flexDirection: 'row',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
+  marginVertical: theme.sizing.baseUnit * 0.75,
 }))(View)
 
 const Icon = withTheme(({ theme, name }) => ({
@@ -56,7 +52,7 @@ const Icon = withTheme(({ theme, name }) => ({
   }
 }))(FontAwesomeIcon)
 
-class TileRowCard extends PureComponent {
+class StackedImageCard extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
     coverImage: PropTypes.oneOfType([
@@ -68,12 +64,11 @@ class TileRowCard extends PureComponent {
     title: PropTypes.string,
     id: PropTypes.string,
     name: PropTypes.string,
-    inCardStack: PropTypes.bool,
   }
 
   render() {
     return (
-      <Cell inCardStack={this.props.inCardStack}>
+      <Cell>
         <CellImage>
           <ConnectedImage
             source={this.props.coverImage}
@@ -103,4 +98,4 @@ class TileRowCard extends PureComponent {
   }
 }
 
-export default withIsLoading(TileRowCard)
+export default withIsLoading(StackedImageCard)

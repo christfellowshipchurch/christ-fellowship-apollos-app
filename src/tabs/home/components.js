@@ -5,11 +5,9 @@ import { View } from 'react-native'
 import {
     withTheme,
     styled,
-    H2,
     H3,
     TouchableScale,
     ButtonLink,
-    ContentCard
 } from '@apollosproject/ui-kit'
 
 const RowHeader = styled(({ theme }) => ({
@@ -18,7 +16,7 @@ const RowHeader = styled(({ theme }) => ({
     alignItems: 'flex-end',
     zIndex: 2, // UX hack to improve tapability. Positions RowHeader above StyledHorizontalTileFeed
     paddingHorizontal: theme.sizing.baseUnit,
-    // marginTop: theme.sizing.baseUnit * 1.5,
+    marginBottom: theme.sizing.baseUnit * 0.25,
 }))(View)
 
 const Title = withTheme(({ theme, color }) => ({
