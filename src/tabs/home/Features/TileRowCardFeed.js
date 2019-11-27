@@ -43,7 +43,6 @@ const TileRowCardFeed = ({
             title={title}
             color={titleColor}
         />
-
         {actions.map(({ relatedNode }, i) => (
             <TouchableScale
                 key={`TileRowCardFeed:${relatedNode.id}`}
