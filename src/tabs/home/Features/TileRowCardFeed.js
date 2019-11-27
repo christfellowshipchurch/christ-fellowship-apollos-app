@@ -35,7 +35,6 @@ const StyledHorizontalTileFeed = styled(({ theme }) => ({
 const TileRowCardFeed = ({
     title,
     actions,
-    isLoading = false,
     navigation,
     titleColor
 }) => {
@@ -44,8 +43,10 @@ const TileRowCardFeed = ({
             title={title}
             color={titleColor}
         />
+
         {actions.map(({ relatedNode }, i) => (
             <TouchableScale
+                key={`TileRowCardFeed:${relatedNode.id}`}
                 onPress={() => {
                     navigation.push('ContentSingle', {
                         itemId: relatedNode.id,
@@ -55,11 +56,18 @@ const TileRowCardFeed = ({
                 <ContentCardConnected
                     card={TileRowCard}
                     contentId={relatedNode.id}
-                    isLoading={isLoading}
                 />
             </TouchableScale>
         ))}
     </>
+}
+
+TileRowCardFeed.propTypes = {
+
+}
+
+TileRowCardFeed.defaultProps = {
+
 }
 
 export default withNavigation(TileRowCardFeed)

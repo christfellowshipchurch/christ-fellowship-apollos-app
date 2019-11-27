@@ -1,10 +1,10 @@
 import React from 'react'
-import { uniq } from 'lodash'
 import PropTypes from 'prop-types'
+import { uniq, indexOf } from 'lodash'
 
 import {
-    ContentCard,
     TouchableScale,
+    DefaultCard
 } from '@apollosproject/ui-kit'
 
 import {
@@ -15,6 +15,7 @@ import {
 } from '../Features'
 import { ActionWrapper } from '../components'
 import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected'
+import { COLOR_MAP } from '../Home'
 
 const ACTION_TYPES = {
     event: 'READ_EVENT',
@@ -57,36 +58,35 @@ const ActionMapper = ({
     }
 
     return actions.map(({ title: actionTitle, action, relatedNode }, i) => {
+        const startingColorIndex = indexOf(COLOR_MAP, titleColor)
+        const actionTitleColor = COLOR_MAP[(startingColorIndex + i) % COLOR_MAP.length]
         const key = `ActionMapper:${i}`
         let CardType = null
 
         switch (action) {
             case ACTION_TYPES.global:
                 // break
-                return <ActionWrapper>
+                return <ActionWrapper key={key}>
                     <AnnouncementFeed
-                        key={key}
                         itemId={relatedNode.id}
-                        titleColor={titleColor}
+                        titleColor={actionTitleColor}
                     />
                 </ActionWrapper>
             case ACTION_TYPES.children:
-                return <ActionWrapper>
+                return <ActionWrapper key={key}>
                     <ChildrenFeed
-                        key={key}
                         itemId={relatedNode.id}
                         title={actionTitle}
-                        titleColor={titleColor}
+                        titleColor={actionTitleColor}
                     />
                 </ActionWrapper>
             default:
-                CardType = ContentCard
+                CardType = DefaultCard
                 break
         }
 
-        return !!CardType && <ActionWrapper>
+        return !!CardType && <ActionWrapper key={key}>
             <TouchableScale
-                key={key}
                 onPress={() =>
                     navigation.navigate(
                         'ContentSingle',

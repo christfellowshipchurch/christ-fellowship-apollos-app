@@ -51,7 +51,7 @@ const EventContentItemRow = ({
     label={formatDate({ startDate, endDate })}
     title={title}
     summary={summary}
-    coverImage={coverImage}
+    coverImage={coverImage.sources}
     isLoading={loading}
   />
 }

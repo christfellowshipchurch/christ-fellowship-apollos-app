@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import { Image, View } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -26,13 +26,7 @@ const LogoTitle = styled(({ theme }) => ({
   width: '50%'
 }))(Image);
 
-const ActionWrapper = styled(({ theme }) => ({
-  paddingVertical: theme.sizing.baseUnit * 2,
-  borderBottomColor: theme.colors.lightSecondary,
-  borderBottomWidth: 1,
-}))(View)
-
-const COLOR_MAP = [
+export const COLOR_MAP = [
   'primary', 'success', 'alert', 'warning'
 ]
 
@@ -47,6 +41,7 @@ class Home extends PureComponent {
       setParams: PropTypes.func,
       navigate: PropTypes.func,
     }),
+    colorIndex: PropTypes.number
   };
 
   handleOnPress = (item) =>
@@ -57,7 +52,7 @@ class Home extends PureComponent {
 
   renderItem = ({ item }) => {
     return <ActionMapper
-      titleColor={COLOR_MAP[Math.floor(Math.random() * 3)]}
+      titleColor={COLOR_MAP[item.colorIndex]}
       navigation={this.props.navigation}
       {...item}
     />
@@ -77,7 +72,8 @@ class Home extends PureComponent {
           >
             {({ loading, error, data, refetch, fetchMore, variables }) => (
               <FeedView
-                content={get(data, 'userFeedFeatures', [])}
+                content={get(data, 'userFeedFeatures', [])
+                  .map((n, i) => ({ ...n, colorIndex: i % COLOR_MAP.length }))}
                 fetchMore={fetchMoreResolver({
                   collectionName: 'userFeedFeatures',
                   fetchMore,
@@ -88,11 +84,16 @@ class Home extends PureComponent {
                 error={error}
                 refetch={refetch}
                 ListHeaderComponent={
-                  <View style={{ backgroundColor: 'white', }}>
-                    <LiveButton />
+                  <View
+                    style={{ backgroundColor: 'white', }}
+                  >
+                    {/* <LiveButton
+                      key="HomeFeedLiveButton"
+                    /> */}
                     <LogoTitle source={require('./wordmark.png')} />
                   </View>
                 }
+                stickyHeaderIndices={[0]}
                 renderItem={this.renderItem}
               />
             )

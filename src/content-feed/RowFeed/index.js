@@ -125,9 +125,10 @@ class ContentRowFeed extends PureComponent {
                   data,
                   'node.childContentItemsConnection.edges',
                   []
-                ).map((edge) => ({
-                  ...edge.node,
-                  label: get(edge, 'node.tags[0]', navigation.getParam('itemTitle', 'Content Channel'))
+                ).map(({ node }) => ({
+                  ...node,
+                  coverImage: get(node, 'coverImage.sources', []),
+                  label: get(node, 'tags[0]', navigation.getParam('itemTitle', 'Content Channel'))
                 }))}
                 fetchMore={fetchMoreResolver({
                   collectionName: 'node.childContentItemsConnection',

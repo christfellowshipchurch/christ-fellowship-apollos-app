@@ -19,8 +19,8 @@ import {
   withIsLoading,
 } from '@apollosproject/ui-kit'
 
-import { TinyCard } from 'ChristFellowship/src/ui/Cards'
-import ContentCardConnected from '../../../ui/ContentCardConnected'
+import { TinyCard } from './node_modules/ChristFellowship/src/ui/Cards'
+import ContentCardConnected from '../../../../ui/ContentCardConnected'
 import {
   GET_CATEGORY_PREVIEW
 } from '../queries'

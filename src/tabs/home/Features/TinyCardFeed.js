@@ -85,6 +85,7 @@ const TinyCardFeed = ({
         <StyledHorizontalTileFeed
             loadingStateObject={tinyCardRowLoadingObject}
             content={actions.map(n => n.relatedNode)}
+            isLoading={isLoading}
             renderItem={({ item }) => (
                 <TouchableScale
                     onPress={() => {
@@ -96,7 +97,6 @@ const TinyCardFeed = ({
                     <ContentCardConnected
                         card={TinyCard}
                         contentId={item.id}
-                        isLoading={isLoading}
                         inHorizontalList
                     />
                 </TouchableScale>

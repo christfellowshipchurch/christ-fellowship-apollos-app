@@ -1,13 +1,15 @@
 import React from 'react'
 import { View } from 'react-native'
 import { useQuery } from 'react-apollo'
-import { get } from 'lodash'
+import { get, indexOf } from 'lodash'
 import PropTypes from 'prop-types'
 import { withNavigation } from 'react-navigation'
 
 import {
+    styled,
     TouchableScale,
-    ContentCard
+    DefaultCard,
+    FlexedView,
 } from '@apollosproject/ui-kit'
 
 import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected'
@@ -15,6 +17,14 @@ import { TileRowCard } from 'ChristFellowship/src/ui/Cards'
 import GET_CONTENT_FEED from 'ChristFellowship/src/content-feed/getContentFeed'
 
 import { SectionHeader } from '../components'
+
+const StyledFlexedView = styled(({ theme }) => ({
+    flexDirection: 'column'
+}))(FlexedView)
+
+const StyledTouchableScale = styled(({ theme }) => ({
+    // paddingVertical: theme.sizing.baseUnit
+}))(TouchableScale)
 
 const ChildrenFeed = ({
     title,
@@ -43,24 +53,26 @@ const ChildrenFeed = ({
                 })
             }}
         />
-        {get(data, 'node.childContentItemsConnection.edges', []).map(({ node }, i) =>
-            <TouchableScale
-                key={`ChildrenFeed:${itemId}${i}`}
-                onPress={() =>
-                    navigation.navigate(
-                        'ContentSingle',
-                        { itemId }
-                    )
-                }
-            >
-                <ContentCardConnected
-                    isLoading={loading}
-                    contentId={node.id}
-                    {...node}
-                    card={i === 0 ? ContentCard : TileRowCard}
-                />
-            </TouchableScale>
-        )}
+        <StyledFlexedView>
+            {get(data, 'node.childContentItemsConnection.edges', []).map(({ node }, i) =>
+                <StyledTouchableScale
+                    key={`ChildrenFeed:${itemId}${i}`}
+                    onPress={() =>
+                        navigation.navigate(
+                            'ContentSingle',
+                            { itemId: node.id }
+                        )
+                    }
+                >
+                    <ContentCardConnected
+                        isLoading={loading}
+                        contentId={node.id}
+                        {...node}
+                        card={i === 0 ? DefaultCard : TileRowCard}
+                    />
+                </StyledTouchableScale>
+            )}
+        </StyledFlexedView>
     </View>
 }
 
