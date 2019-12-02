@@ -35,8 +35,10 @@ const Title = styled(({ theme }) => ({
 }))(BodyText)
 
 const StyledCard = styled(({ theme }) => ({
-  width: 133,
-  height: 162,
+  // width: 133,
+  width: 155,
+  height: 175,
+  // height: 162,
   marginHorizontal: theme.sizing.baseUnit * 0.3,
   borderRadius: 8
 }))(Card)
@@ -115,7 +117,7 @@ class TinyCard extends PureComponent {
             </Tag>
           </TagPositioning>
 
-          <Title numberOfLines={3}>
+          <Title numberOfLines={4}>
             {this.props.title}
           </Title>
         </Content>
