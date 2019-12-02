@@ -4,7 +4,6 @@ export const CONTENT_ITEM_FRAGMENT = gql`
   fragment contentItemFragment on ContentItem {
     id
     title
-    isLiked
     likedCount
     summary
     coverImage {
