@@ -31,7 +31,7 @@ const Title = styled(({ theme }) => ({
 }))(H5)
 
 const TextContainer = styled(({ theme }) => ({
-  // height: theme.sizing.baseUnit * 4.25,
+  marginTop: theme.sizing.baseUnit * 0.5,
   justifyContent: 'center'
 }))(FlexedView)
 
