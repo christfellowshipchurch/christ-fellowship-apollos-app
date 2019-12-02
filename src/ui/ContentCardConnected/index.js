@@ -5,6 +5,7 @@ import { get } from 'lodash'
 
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit'
 import GET_CONTENT_CARD from './query'
+import { formatDate } from 'ChristFellowship/src/utils/events'
 
 export { TILE_CARD_FRAGMENT, LARGE_CARD_FRAGMENT, ACCESSORY_FRAGMENT } from './query'
 
@@ -37,7 +38,11 @@ const ContentCardConnected = ({
           },
         ]
 
+        const typename = get(node, '__typename', '')
         const coverImage = get(node, 'coverImage.sources', undefined)
+        const label = typename === 'EventContentItem'
+          ? formatDate(node)
+          : get(otherProps, 'label', '')
 
         return React.createElement(
           card,
@@ -47,7 +52,8 @@ const ContentCardConnected = ({
             coverImage,
             metrics,
             tile,
-            isLoading: loading
+            isLoading: loading,
+            label,
           }
         )
       }}
