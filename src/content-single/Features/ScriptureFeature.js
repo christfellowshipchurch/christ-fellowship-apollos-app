@@ -3,28 +3,28 @@ import PropTypes from 'prop-types';
 
 import { ActionCard } from '@apollosproject/ui-kit';
 import { ScriptureItem } from '@apollosproject/ui-scripture';
-import ShareButton from 'ChristFellowship/src/ui/ShareButton';
+import ShareContentButtonConnected from 'ChristFellowship/src/ui/ShareContentButtonConnected';
 
-const createSharingText = ({ html, reference }) =>
-  `${html.replace(/<[^>]*>?/gm, '')} ${reference}`;
-
-const ScriptureFeature = ({ scriptures, isLoading, contentId }) => (
+const ScriptureFeature = ({
+  scriptures,
+  sharing: { message } = {},
+  isLoading,
+  contentId,
+}) => (
   <ActionCard
     icon={'text'}
     action={
-      <ShareButton
-        message={scriptures.map(createSharingText).join('\n\n')}
-        itemId={contentId}
-      />
+      <ShareContentButtonConnected message={message} itemId={contentId} />
     }
   >
-    {scriptures.map(({ copyright, reference, html, id }) => (
+    {scriptures.map(({ copyright, reference, html, id, version }) => (
       <ScriptureItem
         key={id}
         reference={reference}
         html={html}
         isLoading={isLoading}
         copyright={copyright}
+        version={version}
       />
     ))}
   </ActionCard>
@@ -38,18 +38,24 @@ ScriptureFeature.propTypes = {
       reference: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
       copyright: PropTypes.string,
+      version: PropTypes.string,
     })
   ),
+  sharing: PropTypes.shape({ message: PropTypes.string }),
   contentId: PropTypes.string.isRequired,
 };
 
 export const SCRIPTURE_FEATURE_FRAGMENT = `
 fragment ScriptureFeatureFragment on ScriptureFeature {
+  sharing {
+    message
+  }
   scriptures {
     id
     html
     reference
     copyright
+    version
   }
 }
 `;

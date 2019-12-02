@@ -1,4 +1,4 @@
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 export const COVER_IMAGE_FRAGMENT = gql`
   fragment coverImageFragment on ContentItem {
@@ -8,7 +8,7 @@ export const COVER_IMAGE_FRAGMENT = gql`
       }
     }
   }
-`
+`;
 
 export const THEME_FRAGMENT = gql`
   fragment themeFragment on ContentItem {
@@ -29,7 +29,7 @@ export const CONTENT_CARD_METRICS_FRAGMENT = gql`
     isLiked
     likedCount
   }
-`
+`;
 
 export const ACCESSORY_FRAGMENT = gql`
   fragment accessoryFragment on ContentItem {
@@ -54,7 +54,7 @@ export const ACCESSORY_FRAGMENT = gql`
       endDate
     }
   }
-`
+`;
 
 export const BASE_CARD_FRAGMENT = gql`
   fragment baseCardFragment on ContentItem {
@@ -62,6 +62,38 @@ export const BASE_CARD_FRAGMENT = gql`
     __typename
     ...contentCardMetricsFragment
     ...coverImageFragment
+    ...themeFragment
+    title
+    hyphenatedTitle: title(hyphenated: true)
+    summary
+    isLiked
+    ... on MediaContentItem {
+      videos {
+        sources {
+          uri
+        }
+      }
+    }
+    ... on WeekendContentItem {
+      videos {
+        sources {
+          uri
+        }
+      }
+      liveStream {
+        isLive
+      }
+      parentChannel {
+        id
+        name
+      }
+    }
+    ... on DevotionalContentItem {
+      parentChannel {
+        id
+        name
+      }
+    }
     ...themeFragment
     ...accessoryFragment
     title
@@ -95,27 +127,25 @@ export const TILE_CARD_FRAGMENT = gql`
   ${THEME_FRAGMENT}
   ${COVER_IMAGE_FRAGMENT}
   ${CONTENT_CARD_METRICS_FRAGMENT}
-`
+`;
 
 export const LARGE_CARD_FRAGMENT = gql`
   fragment largeCardFragment on ContentItem {
     ...baseCardFragment
   }
   ${BASE_CARD_FRAGMENT}
-`
+`;
 
 const GET_CONTENT_CARD = gql`
-  query getContentCard($contentId: ID!, $tile: Boolean!) {
+  query getContentCard($contentId: ID!) {
     node(id: $contentId) {
       id
       __typename
-      ...tileCardFragment @include(if: $tile)
-      ...largeCardFragment @skip(if: $tile)
+      ...largeCardFragment
     }
   }
-
-  ${TILE_CARD_FRAGMENT}
   ${LARGE_CARD_FRAGMENT}
-`
+`;
 
-export default GET_CONTENT_CARD
+export default GET_CONTENT_CARD;
+
