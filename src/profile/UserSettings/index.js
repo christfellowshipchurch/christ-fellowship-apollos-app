@@ -35,9 +35,11 @@ const LocationTitle = ({ title, onPress }) => (
 )
 
 const ChangePasswordCard = () => {
-  const { loading, error, data: { getUserLoginTypes } } = useQuery(GET_USER_LOGIN_TYPES, { fetchPolicy: "cache-and-network" })
+  const { loading, error, data } = useQuery(GET_USER_LOGIN_TYPES, { fetchPolicy: "cache-and-network" })
 
   if (loading || error) return <ActivityIndicator />
+
+  const getUserLoginTypes = get(data, 'getUserLoginTypes', {})
 
   return has(getUserLoginTypes, 'email')
     ? (
