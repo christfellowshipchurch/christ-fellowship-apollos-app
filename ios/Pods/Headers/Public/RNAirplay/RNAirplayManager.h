@@ -1,0 +1,1 @@
+../../../../../node_modules/@apollosproject/react-native-airplay-btn/ios/RNAirplayManager.h

@@ -3,9 +3,14 @@ import PropTypes from 'prop-types'
 import { Query } from 'react-apollo'
 import { get } from 'lodash'
 
+<<<<<<< ours
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit'
 import GET_CONTENT_CARD from './query'
 import { formatDate } from 'ChristFellowship/src/utils/events'
+=======
+export { BASE_CARD_FRAGMENT } from './query';
+export contentCardComponentMapper from './contentCardComponentMapper';
+>>>>>>> theirs
 
 export { TILE_CARD_FRAGMENT, LARGE_CARD_FRAGMENT, ACCESSORY_FRAGMENT } from './query'
 

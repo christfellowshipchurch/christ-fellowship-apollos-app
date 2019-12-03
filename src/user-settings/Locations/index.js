@@ -65,7 +65,7 @@ class Location extends PureComponent {
           },
         });
       },
-      () => null,
+      (e) => console.warn('Error getting location!', e),
       { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
     );
   }
@@ -83,21 +83,28 @@ class Location extends PureComponent {
         }}
         fetchPolicy="cache-and-network"
       >
-        {({ loading, error, data: { campuses = [], currentUser } = {} }) => (
+        {({ loading, error, data: { campuses, currentUser } = {} }) => (
           <Mutation mutation={CHANGE_CAMPUS}>
             {(handlePress) => (
               <MapView
                 navigation={this.props.navigation}
                 isLoading={loading}
                 error={error}
-                campuses={campuses}
+                campuses={campuses || []}
                 initialRegion={this.props.initialRegion}
                 userLocation={this.state.userLocation}
                 currentCampus={get(currentUser, 'profile.campus')}
-                onLocationSelect={async ({ id }) => {
-                  await handlePress({
+                onLocationSelect={async (campus) => {
+                  handlePress({
                     variables: {
-                      campusId: id,
+                      campusId: campus.id,
+                    },
+                    optimisticResponse: {
+                      updateUserCampus: {
+                        __typename: 'Mutation',
+                        id: currentUser.id,
+                        campus,
+                      },
                     },
                   });
                   await navigation.goBack();

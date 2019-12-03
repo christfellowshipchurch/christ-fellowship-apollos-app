@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 
-import { LARGE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected';
-import { CONTENT_ITEM_FRAGMENT } from 'ChristFellowship/src/content-single/getContentItem';
+import { BASE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected';
 
 export default gql`
   query getAllLikedContent($first: Int, $after: String) {
@@ -12,13 +11,12 @@ export default gql`
       edges {
         node {
           ... on ContentItem {
-            ...contentItemFragment
-            ...largeCardFragment
+            isLiked
+            ...baseCardFragment
           }
         }
       }
     }
   }
-  ${CONTENT_ITEM_FRAGMENT}
-  ${LARGE_CARD_FRAGMENT}
+  ${BASE_CARD_FRAGMENT}
 `;

@@ -197,22 +197,6 @@
 				DC74A378C1CC40E4B6192D7F /* Inter-UI-Medium.otf */,
 				A460FD7884FD4574A818005A /* Inter-UI-MediumItalic.otf */,
 				A613256118404CB691DE2C8E /* Inter-UI-Regular.otf */,
-				B70941AAD510479FABF5C96D /* Gotham-Black.otf */,
-				C0ECE378AC5E488E92AD4BF2 /* Gotham-BlackItalic.otf */,
-				E4E0C3207F414F59A2970BA0 /* Gotham-Bold.otf */,
-				DEE16E4F19B843C2B48AADB4 /* Gotham-BoldItalic.otf */,
-				273762D08C384641A4CADAA9 /* Gotham-Book.otf */,
-				9883FDB4CA484D5AB1C50A1F /* Gotham-BookItalic.otf */,
-				9962B4614BDB43E28C1048F6 /* Gotham-Light.otf */,
-				40B7B3F0431E489A855AD6A5 /* Gotham-LightItalic.otf */,
-				30E101A8631F4BF8AB6A58C2 /* Gotham-Medium.otf */,
-				914F2993E8A942CBAFEB021E /* Gotham-MediumItalic.otf */,
-				5FE5652F215C4DF38FC4D57C /* Gotham-Thin.otf */,
-				CBB2D8AF307B4419825D2261 /* Gotham-ThinItalic.otf */,
-				0B7EDF49548B436AB4036890 /* Gotham-Ultra.otf */,
-				B4A7E0D8CB48492792B09F2F /* Gotham-UltraItalic.otf */,
-				ABD3723DD649442BA60F7861 /* Gotham-XLight.otf */,
-				5BE81C4A599041949D4894D5 /* Gotham-XLightItalic.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -438,22 +422,6 @@
 				1C48DCDE11AC47C48E918489 /* Inter-UI-Medium.otf in Resources */,
 				FCB3069DB5DD4170B2CAEFC4 /* Inter-UI-MediumItalic.otf in Resources */,
 				AB3BD177B8A14193A5EEDDF8 /* Inter-UI-Regular.otf in Resources */,
-				AF51658065EB4563A961DA92 /* Gotham-Black.otf in Resources */,
-				B24DACE5DA8E42998AFA9E86 /* Gotham-BlackItalic.otf in Resources */,
-				36B1910AF5074A69ACA4BFE5 /* Gotham-Bold.otf in Resources */,
-				C6264BDE54F5476EB0803113 /* Gotham-BoldItalic.otf in Resources */,
-				9AB689FCF4B741D29C1E004E /* Gotham-Book.otf in Resources */,
-				F1A8292EB8D34BD8928B5A21 /* Gotham-BookItalic.otf in Resources */,
-				F8E7CF0467A94C83BD11EFD8 /* Gotham-Light.otf in Resources */,
-				50D9ACA950774626A3061E0F /* Gotham-LightItalic.otf in Resources */,
-				F3358EEE027A4CECBEB59D64 /* Gotham-Medium.otf in Resources */,
-				FA23D2C4079648ABAF3FCEE9 /* Gotham-MediumItalic.otf in Resources */,
-				C489D4270FC541F19ABB4D69 /* Gotham-Thin.otf in Resources */,
-				1CD0A0A67C6D4A9498C164FD /* Gotham-ThinItalic.otf in Resources */,
-				C2434D70506149B5B12C1DDE /* Gotham-Ultra.otf in Resources */,
-				EDEB30767A084467B995AF53 /* Gotham-UltraItalic.otf in Resources */,
-				EB917D2ADC4C41818148C8A0 /* Gotham-XLight.otf in Resources */,
-				3BA4610E031249B1A08121E2 /* Gotham-XLightItalic.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -709,15 +677,14 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 54F271B8EB67A4997A2C7D96 /* Pods-ChristFellowship.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
 				CURRENT_PROJECT_VERSION = 75;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ChristFellowship/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

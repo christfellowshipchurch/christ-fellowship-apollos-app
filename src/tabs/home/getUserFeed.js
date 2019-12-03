@@ -1,7 +1,6 @@
 import gql from 'graphql-tag';
 
-import { CONTENT_ITEM_FRAGMENT } from 'ChristFellowship/src/content-single/getContentItem';
-import { LARGE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected';
+import { BASE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected';
 
 export default gql`
   query getUserFeed($first: Int, $after: String) {
@@ -11,12 +10,10 @@ export default gql`
       }
       edges {
         node {
-          ...largeCardFragment
-          ...contentItemFragment
+          ...baseCardFragment
         }
       }
     }
   }
-  ${CONTENT_ITEM_FRAGMENT}
-  ${LARGE_CARD_FRAGMENT}
+  ${BASE_CARD_FRAGMENT}
 `;

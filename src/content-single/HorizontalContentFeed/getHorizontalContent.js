@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { BASE_CARD_FRAGMENT } from '../../ui/ContentCardConnected/query';
 
 export default gql`
   query getHorizontalContent($itemId: ID!, $cursor: String) {
@@ -9,24 +10,7 @@ export default gql`
           edges {
             cursor
             node {
-              id
-              coverImage {
-                name
-                sources {
-                  uri
-                }
-              }
-              parentChannel {
-                id
-                name
-                iconName
-              }
-              title
-              sharing {
-                url
-                message
-                title
-              }
+              ...baseCardFragment
             }
           }
         }
@@ -34,28 +18,12 @@ export default gql`
           edges {
             cursor
             node {
-              id
-              coverImage {
-                name
-                sources {
-                  uri
-                }
-              }
-              parentChannel {
-                id
-                name
-                iconName
-              }
-              title
-              sharing {
-                url
-                message
-                title
-              }
+              ...baseCardFragment
             }
           }
         }
       }
     }
   }
+  ${BASE_CARD_FRAGMENT}
 `;

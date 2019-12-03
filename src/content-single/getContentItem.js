@@ -1,11 +1,11 @@
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 export const CONTENT_ITEM_FRAGMENT = gql`
   fragment contentItemFragment on ContentItem {
     id
     title
-    likedCount
     summary
+    htmlContent
     coverImage {
       name
       sources {
@@ -46,6 +46,7 @@ export const EVENT_ITEM_FRAGMENT = gql`
     }
   }
 `;
+
 
 export default gql`
   query getContentItem($itemId: ID!) {

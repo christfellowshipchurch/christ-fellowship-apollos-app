@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
 import { Query } from 'react-apollo';
+import { get } from 'lodash';
 
 import {
   ErrorCard,
@@ -80,12 +81,12 @@ class DevotionalContentItem extends PureComponent {
     />
   );
 
-  renderTabs = ({
-    data: { node: { scriptures = [] } = {} } = {},
-    error,
-    loading,
-  }) => {
+  renderLoading = () => <ContentTab title={''} isLoading />;
+
+  renderTabs = ({ data, error, loading }) => {
     if (error) return <ErrorCard error={error} />;
+
+    const scriptures = get(data, 'node.scriptures', []);
 
     // only include scriptures where the references are not null
     const validScriptures = scriptures
@@ -94,15 +95,17 @@ class DevotionalContentItem extends PureComponent {
 
     const hasScripture = loading || validScriptures.length;
     const tabRoutes = [{ title: 'Devotional', key: 'content' }];
-    if (hasScripture) tabRoutes.push({ title: 'Scripture', key: 'scripture' });
-    return (
-      <TabView
-        routes={tabRoutes}
-        renderScene={SceneMap({
-          content: this.contentRoute({ scriptures, loading }),
-          scripture: this.scriptureRoute({ scriptures, loading }),
-        })}
-      />
+    const map = {
+      content: this.contentRoute({ scriptures, loading }),
+    };
+    if (hasScripture) {
+      tabRoutes.push({ title: 'Scripture', key: 'scripture' });
+      map.scripture = this.scriptureRoute({ scriptures, loading });
+    }
+    return tabRoutes.length < 2 ? (
+      map[tabRoutes[0].key]()
+    ) : (
+      <TabView routes={tabRoutes} renderScene={SceneMap(map)} />
     );
   };
 
@@ -111,7 +114,11 @@ class DevotionalContentItem extends PureComponent {
       <BackgroundView>
         <FlexedSafeAreaView forceInset={{ top: 'always' }}>
           <Query query={GET_SCRIPTURE} variables={{ itemId: this.props.id }}>
-            {this.renderTabs}
+            {({ data, loading, error }) =>
+              loading
+                ? this.renderLoading()
+                : this.renderTabs({ data, loading, error })
+            }
           </Query>
         </FlexedSafeAreaView>
       </BackgroundView>

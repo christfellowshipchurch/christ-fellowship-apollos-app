@@ -66,12 +66,15 @@ export const BASE_CARD_FRAGMENT = gql`
     title
     hyphenatedTitle: title(hyphenated: true)
     summary
-    isLiked
     ... on MediaContentItem {
       videos {
         sources {
           uri
         }
+      }
+      parentChannel {
+        id
+        name
       }
     }
     ... on WeekendContentItem {
@@ -79,9 +82,6 @@ export const BASE_CARD_FRAGMENT = gql`
         sources {
           uri
         }
-      }
-      liveStream {
-        isLive
       }
       parentChannel {
         id
@@ -129,22 +129,15 @@ export const TILE_CARD_FRAGMENT = gql`
   ${CONTENT_CARD_METRICS_FRAGMENT}
 `;
 
-export const LARGE_CARD_FRAGMENT = gql`
-  fragment largeCardFragment on ContentItem {
-    ...baseCardFragment
-  }
-  ${BASE_CARD_FRAGMENT}
-`;
-
 const GET_CONTENT_CARD = gql`
   query getContentCard($contentId: ID!) {
     node(id: $contentId) {
       id
       __typename
-      ...largeCardFragment
+      ...baseCardFragment
     }
   }
-  ${LARGE_CARD_FRAGMENT}
+  ${BASE_CARD_FRAGMENT}
 `;
 
 export default GET_CONTENT_CARD;

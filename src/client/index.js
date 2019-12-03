@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
+import { getVersion, getApplicationName } from 'react-native-device-info';
 
 import { authLink, buildErrorLink } from '@apollosproject/ui-auth';
 import { resolvers, schema, defaults } from '../store';
@@ -30,6 +31,8 @@ export const client = new ApolloClient({
   shouldBatch: true,
   resolvers,
   typeDefs: schema,
+  name: getApplicationName(),
+  version: getVersion(),
 });
 
 // Hack to give auth link access to method on client;

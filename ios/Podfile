@@ -38,7 +38,7 @@ end
 target 'ChristFellowship-tvOS' do
   # Pods for apolloschurchapp-tvOS
 
-  target 'apolloschurchapp-tvOSTests' do
+  target 'ChristFellowship-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end

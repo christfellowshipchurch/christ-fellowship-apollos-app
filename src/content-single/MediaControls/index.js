@@ -5,8 +5,16 @@ import { View } from 'react-native';
 import { get } from 'lodash';
 
 import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
-import { Icon, styled, Button } from '@apollosproject/ui-kit';
+import {
+  styled,
+  TouchableScale,
+  MediaThumbnail,
+  MediaThumbnailIcon,
+  MediaThumbnailItem,
+  H6,
+} from '@apollosproject/ui-kit';
 import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
+import { LiveConsumer } from '../../live';
 import GET_CONTENT_MEDIA from './getContentMedia';
 
 const buttonSizeDifferential = 4;
@@ -41,10 +49,22 @@ const Container = styled(({ theme }) => ({
     buttonSizeDifferential, // MediaButton size / 2 + border
 }))(View);
 
+const StyledMediaThumbnail = styled({ marginVertical: 0 })(MediaThumbnail);
+
 class MediaControls extends PureComponent {
   static propTypes = {
     contentId: PropTypes.string,
   };
+
+  renderPlayButton = ({ action, coverImageSources }) => (
+    <Container>
+      <MediaButtonBorder>
+        <MediaButton onPress={action} type="primary">
+          <MediaIcon name="play" />
+        </MediaButton>
+      </MediaButtonBorder>
+    </Container>
+  );
 
   renderMedia = ({
     videoSource,
@@ -52,67 +72,46 @@ class MediaControls extends PureComponent {
     title,
     parentChannelName,
   }) => (
-      <Mutation mutation={PLAY_VIDEO}>
-        {(play) => (
-          <Container>
-            <MediaButtonBorder>
-              <MediaButton
-                type="primary"
-                onPress={() =>
-                  play({
-                    variables: {
-                      mediaSource: videoSource,
-                      posterSources: coverImageSources,
-                      title,
-                      isVideo: true,
-                      // artist: parentChannelName,
-                    },
-                  })
-                }
-                useForeground
-              >
-                <MediaIcon name="play" />
-              </MediaButton>
-            </MediaButtonBorder>
-          </Container>
-        )}
-      </Mutation>
-    );
+    <Mutation mutation={PLAY_VIDEO}>
+      {(play) =>
+        this.renderPlayButton({
+          action: () =>
+            play({
+              variables: {
+                mediaSource: videoSource,
+                posterSources: coverImageSources,
+                title,
+                isVideo: true,
+                artist: parentChannelName,
+              },
+            }),
+          coverImageSources,
+        })
+      }
+    </Mutation>
+  );
 
-  renderWebView = ({ webViewUrl }) => (
+  renderWebView = ({ webViewUrl, coverImageSources }) => (
     <WebBrowserConsumer>
-      {(openUrl) => (
-        <Container>
-          <MediaButtonBorder>
-            <MediaButton
-              type="primary"
-              onPress={() => openUrl(webViewUrl)}
-              useForeground
-            >
-              <MediaIcon name="play" />
-            </MediaButton>
-          </MediaButtonBorder>
-        </Container>
-      )}
+      {(openUrl) =>
+        this.renderPlayButton({
+          action: () => openUrl(webViewUrl),
+          coverImageSources,
+        })
+      }
     </WebBrowserConsumer>
   );
 
   renderControls = ({
+    liveStream,
     loading,
     error,
     data: {
-      node: {
-        videos,
-        title,
-        parentChannel = {},
-        coverImage = {},
-        liveStream = {},
-      } = {},
+      node: { videos, title, parentChannel = {}, coverImage = {} } = {},
     } = {},
   }) => {
     if (loading || error) return null;
-
-    const isLive = get(liveStream, 'isLive', false);
+    const isLive = !!liveStream;
     const hasLiveStreamContent = !!(
       get(liveStream, 'webViewUrl') || get(liveStream, 'media.sources[0]')
     );
@@ -139,6 +138,7 @@ class MediaControls extends PureComponent {
     if (isLive && get(liveStream, 'webViewUrl')) {
       return this.renderWebView({
         webViewUrl: liveStream.webViewUrl,
+        coverImageSources,
       });
     }
 
@@ -154,12 +154,19 @@ class MediaControls extends PureComponent {
   render() {
     if (!this.props.contentId) return null;
     return (
-      <Query
-        query={GET_CONTENT_MEDIA}
-        variables={{ contentId: this.props.contentId }}
-      >
-        {this.renderControls}
-      </Query>
+      <LiveConsumer contentId={this.props.contentId}>
+        {(liveStream) => (
+          <Query
+            query={GET_CONTENT_MEDIA}
+            fetchPolicy="cache-and-network"
+            variables={{ contentId: this.props.contentId }}
+          >
+            {({ data, loading, error }) =>
+              this.renderControls({ data, loading, error, liveStream })
+            }
+          </Query>
+        )}
+      </LiveConsumer>
     );
   }
 }

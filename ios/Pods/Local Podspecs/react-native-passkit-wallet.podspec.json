@@ -1,0 +1,22 @@
+{
+  "name": "react-native-passkit-wallet",
+  "version": "0.1.4",
+  "homepage": "https://github.com/miyabi/react-native-passkit-wallet",
+  "summary": "React Native module to handle PassKit.",
+  "license": "MIT",
+  "authors": "Masayuki Iwai",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/miyabi/react-native-passkit-wallet.git",
+    "tag": "v0.1.4"
+  },
+  "source_files": "ios/RNPassKit/*.{h,m}",
+  "preserve_paths": "**/*.js",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}
