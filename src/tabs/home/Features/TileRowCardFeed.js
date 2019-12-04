@@ -36,12 +36,16 @@ const TileRowCardFeed = ({
     title,
     actions,
     navigation,
-    titleColor
+    titleColor,
+    callToAction,
+    onPress
 }) => {
     return <>
         <SectionHeader
             title={title}
             color={titleColor}
+            callToAction={callToAction}
+            onPress={onPress}
         />
         {actions.map(({ relatedNode }, i) => (
             <TouchableScale

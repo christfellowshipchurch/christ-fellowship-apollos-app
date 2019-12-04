@@ -47,7 +47,7 @@ const ConnectNavigator = createStackNavigator(
 );
 
 ConnectNavigator.navigationOptions = {
-  tabBarIcon: tabBarIcon('user'),
+  tabBarIcon: tabBarIcon('user-circle'),
 };
 
 export default ConnectNavigator

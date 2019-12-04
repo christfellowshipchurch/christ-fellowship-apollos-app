@@ -1,3 +1,5 @@
+export CurrentUserProfile from './CurrentUserProfile'
+
 export AboutMe from './AboutMe'
 export AppInformation from './AppInformation'
 export CommunicationPreferences from './CommunicationPreferences'

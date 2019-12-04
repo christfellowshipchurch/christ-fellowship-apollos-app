@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react'
-import { Text, View } from 'react-native'
+import React from 'react'
+import { View, } from 'react-native'
 import { Query } from 'react-apollo'
 import { get } from 'lodash'
 import PropTypes from 'prop-types'
@@ -8,8 +8,7 @@ import { GET_LOGIN_STATE } from '@apollosproject/ui-auth'
 import {
   BackgroundView,
 } from '@apollosproject/ui-kit'
-import ActionTable from './ActionTable'
-import UserAvatarHeader from '../../ui/UserAvatarHeader'
+import { CurrentUserProfile } from 'ChristFellowship/src/profile'
 
 const Connect = ({ navigation }) => (
   <BackgroundView>
@@ -17,10 +16,14 @@ const Connect = ({ navigation }) => (
       {({ data }) => {
         if (get(data, 'isLoggedIn', false))
           return (
-            <UserAvatarHeader key="UserAvatarHeaderConnected" navigation={navigation}>
-              <ActionTable navigation={navigation} />
-            </UserAvatarHeader>
+            <CurrentUserProfile />
           )
+
+        // return (
+        //   <UserAvatarHeader key="UserAvatarHeaderConnected" navigation={navigation}>
+        //     <ActionTable navigation={navigation} />
+        //   </UserAvatarHeader>
+        // )
 
         // On logout or when not properly authenitcated
         // navigate back to the Identity screen of the Profile Stack navigator
@@ -39,7 +42,7 @@ const Connect = ({ navigation }) => (
 )
 
 Connect.navigationOptions = {
-  title: 'Connect',
+  title: 'Profile',
   header: null
 }
 
