@@ -42,8 +42,6 @@ class ContentFeed extends PureComponent {
     });
 
   render() {
-    console.log(this.props)
-
     const { navigation } = this.props
     const itemId = navigation.getParam('itemId', [])
     return (
