@@ -49,7 +49,7 @@ const ChangePasswordCard = () => {
     ) : null
 }
 
-const LogoutCard = () => {
+export const LogoutCard = () => {
   const [handleLogout] = useMutation(LOGOUT)
 
   return (
@@ -93,7 +93,7 @@ const UserSettings = ({
             {/* onPress={() => { }} /> */}
           </FormCard>
 
-          <ChangePasswordCard />
+          {/* <ChangePasswordCard /> */}
 
           <LogoutCard />
         </React.Fragment>

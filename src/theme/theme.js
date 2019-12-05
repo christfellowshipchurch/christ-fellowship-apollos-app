@@ -112,11 +112,36 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
         end: { x: 0, y: 1 },
         locations: [0, 1],
     }),
+    'gradient-user-profile': ({ overlayColor }) => ({
+        colors: [
+            `${Color(overlayColor)
+                .alpha(0.25)
+                .string()}`,
+            `${Color(overlayColor)
+                .alpha(0.6)
+                .string()}`,
+            `${Color(overlayColor)
+                .alpha(0.87)
+                .string()}`,
+        ],
+        start: { x: 0, y: 0 },
+        end: { x: 0, y: 1 },
+        locations: [0, 0.7, 1],
+    }),
 })
+
+const sizing = {
+    avatar: {
+        small: 40,
+        medium: 80,
+        large: 150,
+    },
+}
 
 export default {
     overrides,
     colors,
     typography,
-    overlays
+    overlays,
+    sizing
 }

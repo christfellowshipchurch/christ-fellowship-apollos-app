@@ -43,6 +43,8 @@ const ActionMapper = ({
                 titleColor={titleColor}
                 isLoading={isLoading}
                 actions={actions}
+                callToAction='See All'
+                onPress={() => navigation.navigate('Events')}
             />
         </ActionWrapper>
     } else if (actionTypes.length === 1 && actionTypes.includes(ACTION_TYPES.content)) {

@@ -50,10 +50,11 @@ const ContentCardConnected = ({
             ...node,
             ...otherProps,
             coverImage,
-            metrics,
+            // metrics,
             tile,
             isLoading: loading,
             label,
+            labelText: label // for the Highlight Card
           }
         )
       }}

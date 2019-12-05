@@ -35,10 +35,8 @@ const Title = styled(({ theme }) => ({
 }))(BodyText)
 
 const StyledCard = styled(({ theme }) => ({
-  // width: 133,
   width: 155,
   height: 175,
-  // height: 162,
   marginHorizontal: theme.sizing.baseUnit * 0.3,
   borderRadius: 8
 }))(Card)
