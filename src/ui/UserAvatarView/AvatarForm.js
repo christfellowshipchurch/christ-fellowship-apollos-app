@@ -9,7 +9,7 @@ import {
   withTheme,
   styled,
 } from '@apollosproject/ui-kit'
-import GET_USER_PROFILE from '../getUserProfile'
+import GET_USER_PROFILE from './getUserProfile'
 import uploadPhoto from './uploadPhoto'
 
 import Avatar from './Avatar'

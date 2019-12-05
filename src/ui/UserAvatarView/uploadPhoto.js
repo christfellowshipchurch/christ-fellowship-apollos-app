@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import ImagePicker from 'react-native-image-picker';
 import { ReactNativeFile } from 'apollo-upload-client';
-import GET_USER_PROFILE from '../getUserProfile'
+import GET_USER_PROFILE from './getUserProfile'
 
 const options = {
   title: 'Select Profile Image',
