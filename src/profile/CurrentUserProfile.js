@@ -34,8 +34,6 @@ const CurrentUserProfile = () => {
         `${profile.address.city}, ${profile.address.state} ${profile.address.postalCode.substring(0, 5)}`
     ]
 
-    console.log({ address })
-
     const profileFields = [
         { title: 'Home Address', content: address },
         { title: 'Birthday', content: moment(profile.birthDate).format('MMM D, YYYY') },
