@@ -36,7 +36,8 @@ const TextInput = enhance((props) => {
         errorIndicator,
         hideErrorText,
         error,
-        disabled
+        disabled,
+        hideIcon
     } = props
     const [focused, setFocused] = useState(false)
     const color = disabled
@@ -54,7 +55,7 @@ const TextInput = enhance((props) => {
             prefix={
                 <StyledIcon
                     icon={icon}
-                    color={color} />}
+                    color={hideIcon ? 'transparent' : color} />}
             suffix={(errorIndicator || disabled) && <Indicator error={Boolean(error)} disabled={disabled} />} />
     )
 })
@@ -63,7 +64,8 @@ TextInput.defaultProps = {
     icon: 'text',
     errorIndicator: false,
     hideErrorText: false,
-    disabled: false
+    disabled: false,
+    hideIcon: false
 }
 
 export default TextInput

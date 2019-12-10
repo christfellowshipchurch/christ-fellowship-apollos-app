@@ -23,6 +23,8 @@ import {
     H4
 } from '@apollosproject/ui-kit'
 
+import { withNavigation } from 'react-navigation'
+
 const FlexedScrollView = styled({ flex: 1 })(ScrollView)
 
 const FeaturedImage = withTheme(({ theme }) => ({
@@ -93,13 +95,14 @@ const ProfileHeader = ({
     campus,
     navigation,
     children,
-    edit: editMode,
+    edit,
     editButtonText,
     onEdit,
     onSave,
-    onCancel,
 }) => {
-    // const [editMode, setEditMode] = useState(edit)
+    const [editMode, setEditMode] = useState(edit)
+
+    useEffect(() => onEdit(editMode), [editMode])
 
     return (
         <StretchyView>
@@ -116,7 +119,7 @@ const ProfileHeader = ({
                         <NavigationContainer>
                             <FlexedView>
                                 {editMode && <Touchable
-                                    onPress={onCancel}
+                                    onPress={() => setEditMode(false)}
                                 >
                                     <BodyText>
                                         Cancel
@@ -136,7 +139,7 @@ const ProfileHeader = ({
                                 style={{ alignItems: 'flex-end' }}
                             >
                                 {!editMode && <Touchable
-                                    onPress={() => true}
+                                    onPress={() => navigation.navigate('UserSettings')}
                                 >
                                     <FontAwesomeIcon icon={['fal', "cog"]} fill={'white'} size={24} />
                                 </Touchable>}
@@ -162,14 +165,13 @@ const ProfileHeader = ({
                                         {campus}
                                     </CampusName>
 
-                                    <TouchableScale
-                                        onPress={() => {
-                                            if (editMode) onSave()
-                                            onEdit()
-                                        }}
-                                    >
+                                    <TouchableScale>
                                         <EditButton
                                             editMode={editMode}
+                                            onPress={() => {
+                                                if (editMode) onSave()
+                                                setEditMode(!editMode)
+                                            }}
                                         >
                                             {editButtonText[`${editMode}`]}
                                         </EditButton>
@@ -225,4 +227,4 @@ ProfileHeader.propTypes = {
     onSave: PropTypes.func,
 }
 
-export default ProfileHeader
+export default withNavigation(ProfileHeader)

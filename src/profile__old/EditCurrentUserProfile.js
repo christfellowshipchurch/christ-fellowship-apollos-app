@@ -1,6 +1,5 @@
 import React from 'react'
 import { useQuery, useMutation } from 'react-apollo'
-import { withNavigation } from 'react-navigation'
 import { get } from 'lodash'
 import moment from 'moment'
 
@@ -9,20 +8,28 @@ import {
 } from '@apollosproject/ui-kit'
 
 import UserProfile from './UserProfile'
+import ProfileHeader from './ProfileHeader'
+import EditUserProfile from './EditUserProfile'
 
 import { CURRENT_USER } from './queries'
 import { UPDATE_CURRENT_USER } from './mutations'
 
-const CurrentUserProfile = ({
-    navigation
-}) => {
+const CurrentUserProfile = () => {
     const {
         loading,
         error,
         refetch,
         data: {
             currentUser: {
-                profile,
+                profile: {
+                    firstName,
+                    lastName,
+                    photo,
+                    campus,
+                    address,
+                    gender,
+                    birthDate,
+                } = {},
             } = {},
             getStatesList
         } = {}
@@ -30,6 +37,7 @@ const CurrentUserProfile = ({
         CURRENT_USER,
         { fetchPolicy: "cache-and-network" }
     )
+    const [updateProfile] = useMutation(UPDATE_CURRENT_USER)
 
     if (loading) return <ActivityIndicator />
     if (error) return null
@@ -46,6 +54,26 @@ const CurrentUserProfile = ({
         { title: 'Gender', content: profile.gender },
     ]
 
+    return <ProfileHeader
+        firstName={firstName}
+        lastName={lastName}
+        avatar={photo}
+        featuredImage={campus.featuredImage}
+        campus={campus.name}
+        edit
+    >
+        <EditUserProfile
+            birthDate={birthDate}
+            street1={address.street1}
+            street2={address.street2}
+            city={address.city}
+            state={address.state}
+            postalCode={address.postalCode}
+            gender={gender}
+            states={get(getStatesList, 'values', [])}
+        />
+    </ProfileHeader>
+
     return <UserProfile
         {...profile}
         fields={profileFields}
@@ -53,9 +81,8 @@ const CurrentUserProfile = ({
             console.log({ fields })
             // updateProfile()
         }}
-        onEdit={() => navigation.navigate('EditCurrentUserProfile')}
         states={get(getStatesList, 'values', [])}
     />
 }
 
-export default withNavigation(CurrentUserProfile)
+export default CurrentUserProfile

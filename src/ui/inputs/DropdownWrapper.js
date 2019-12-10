@@ -28,10 +28,12 @@ const Placeholder = styled(
     'Inputs.Picker.Placeholder'
 )(H6)
 
-const StyledIcon = withTheme(({ theme, focused, icon }) => ({
+const StyledIcon = withTheme(({ theme, focused, icon, hideIcon }) => ({
     size: 28,
     icon: ['fal', icon],
-    color: focused ? theme.colors.primary : theme.colors.darkSecondary,
+    color: hideIcon
+        ? 'transparent'
+        : (focused ? theme.colors.primary : theme.colors.darkSecondary),
     marginHorizontal: theme.sizing.baseUnit * 0.5
 }))(FontAwesomeIcon)
 
@@ -49,7 +51,8 @@ const Dropdown = ({
     handleOnPress,
     icon,
     error,
-    children
+    children,
+    hideIcon,
 }) => {
     const rotate = focusAnimation.interpolate({
         inputRange: [0, 1],
@@ -66,7 +69,11 @@ const Dropdown = ({
             <TouchableOpacity onPress={handleOnPress}>
                 <AddonRow>
                     <InputAddon>
-                        <StyledIcon focused={focused} icon={icon} />
+                        <StyledIcon
+                            focused={focused}
+                            icon={icon}
+                            hideIcon={hideIcon}
+                        />
                     </InputAddon>
                     <Animated.View style={animatedStyle}>
                         <StyledH6 style={{ ...style, paddingTop: 12 }}>
@@ -103,11 +110,13 @@ Dropdown.propTypes = {
     value: PropTypes.any, // eslint-disable-line
     wrapperStyle: PropTypes.any, // eslint-disable-line
     style: PropTypes.any, // eslint-disable-line
-    icon: PropTypes.string
+    icon: PropTypes.string,
+    hideIcon: PropTypes.bool,
 }
 
 Dropdown.defaultProps = {
-    icon: 'ellipsis-v'
+    icon: 'ellipsis-v',
+    hideIcon: false,
 }
 
 const EnhancedComponent = withFocusAnimation(Dropdown)
