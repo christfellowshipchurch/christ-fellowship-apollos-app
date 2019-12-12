@@ -8,7 +8,7 @@ import {
 
 const Title = styled(({ theme, marginTop }) => ({
     marginBottom: theme.sizing.baseUnit * 0.5,
-    marginLeft: theme.sizing.baseUnit * 1.5,
+    marginLeft: theme.sizing.baseUnit,
     marginTop: marginTop
         ? theme.sizing.baseUnit
         : 0,

@@ -80,7 +80,6 @@ class Location extends PureComponent {
     const { navigation, onFinished } = this.props;
     // we should use the `onFinished` from the navigation param, if it exists.
     const handleFinished = navigation.getParam('onFinished', onFinished);
-    console.log(this.state.userLocation)
 
     return (
       <Query
@@ -94,8 +93,6 @@ class Location extends PureComponent {
         {({ loading, error, data }) => {
           const { campuses } = data
           const filteredCampuses = filter(campuses, (n) => Boolean(get(n, 'image.uri', null)))
-
-          console.log({ data, campuses, filteredCampuses })
 
           return (
             <Mutation mutation={CHANGE_CAMPUS}>

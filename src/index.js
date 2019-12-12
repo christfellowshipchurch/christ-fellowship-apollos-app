@@ -19,6 +19,7 @@ import UserWebBrowser from './user-web-browser'
 import Login from './login'
 import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information'
 import { EditCurrentUserProfile } from './profile'
+import Settings from './settings'
 
 const AppStatusBar = withTheme(({ theme }) => ({
   barStyle: 'dark-content',
@@ -46,16 +47,15 @@ const AppContent = createStackNavigator({
 })
 
 const AppInfo = createStackNavigator({
+  Settings,
   PrivacyPolicy,
   TermsOfUse,
   ValueProp
 }, {
-  initialRouteName: 'PrivacyPolicy',
-  mode: 'modal',
+  initialRouteName: 'Settings',
+  // mode: 'modal',
   headerMode: 'screen',
 })
-
-
 
 const AppNavigator = createStackNavigator(
   {

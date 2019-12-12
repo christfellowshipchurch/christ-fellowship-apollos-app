@@ -44,7 +44,7 @@ export const CURRENT_USER = gql`
 
 export const GET_STATES = gql`
 query getStates {
-  getStatesList {
+    getStatesList {
     id
     values {
       id

@@ -53,6 +53,7 @@ const Dropdown = ({
     error,
     children,
     hideIcon,
+    actionIcon,
 }) => {
     const rotate = focusAnimation.interpolate({
         inputRange: [0, 1],
@@ -82,7 +83,7 @@ const Dropdown = ({
                     </Animated.View>
                     <InputAddon>
                         <Animated.View style={{ transform: [{ rotate }] }}>
-                            <StyledIcon focused={focused} icon='angle-down' />
+                            <StyledIcon focused={focused} icon={actionIcon} />
                         </Animated.View>
                     </InputAddon>
                 </AddonRow>
@@ -111,11 +112,13 @@ Dropdown.propTypes = {
     wrapperStyle: PropTypes.any, // eslint-disable-line
     style: PropTypes.any, // eslint-disable-line
     icon: PropTypes.string,
+    actionIcon: PropTypes.string,
     hideIcon: PropTypes.bool,
 }
 
 Dropdown.defaultProps = {
     icon: 'ellipsis-v',
+    actionIcon: 'angle-down',
     hideIcon: false,
 }
 

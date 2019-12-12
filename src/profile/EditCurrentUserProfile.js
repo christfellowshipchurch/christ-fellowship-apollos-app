@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useQuery, useMutation } from 'react-apollo'
 import { withNavigation } from 'react-navigation'
 import { get, keys, upperFirst } from 'lodash'
-import moment from 'moment'
+
+import { useForm } from 'ChristFellowship/src/hooks'
 
 import {
     ActivityIndicator,
 } from '@apollosproject/ui-kit'
 
-import UserProfile from './UserProfile'
 import ProfileHeader from './ProfileHeader'
 import EditUserProfile from './EditUserProfile'
 
@@ -16,42 +16,63 @@ import { CURRENT_USER } from './queries'
 import { UPDATE_CURRENT_USER } from './mutations'
 
 const EditCurrentUserProfile = ({
-    navigation
+    navigation,
+    firstName,
+    lastName,
+    photo,
+    campus,
+    address: {
+        street1,
+        street2,
+        city,
+        state,
+        postalCode
+    } = {},
+    gender,
+    birthDate,
 }) => {
-    const [values, setValues] = useState({})
     const {
-        loading,
-        error,
-        refetch,
-        data: {
-            currentUser: {
-                profile: {
-                    firstName,
-                    lastName,
-                    photo,
-                    campus,
-                    address,
-                    gender,
-                    birthDate,
-                } = {},
-            } = {},
-            getStatesList
-        } = {}
-    } = useQuery(
-        CURRENT_USER,
+        values,
+        setValue,
+    } = useForm({
+        defaultValues: {
+            street1,
+            street2,
+            city,
+            state,
+            postalCode,
+            gender,
+            birthDate
+        }
+    })
+    const [updateProfile, { loading, error }] = useMutation(
+        UPDATE_CURRENT_USER,
         {
-            fetchPolicy: "cache-and-network",
-            onCompleted: ({
-                currentUser: {
-                    profile: { address, gender, birthDate, } = {},
-                } = {},
-            } = {}) => setValues({ birthDate, gender, ...address })
+            update: async (cache, { data: { updateProfileFields, updateAddress } }) => {
+                // read the CURRENT_USER query
+                const { currentUser } = cache.readQuery({ query: CURRENT_USER })
+                const { birthDate, gender } = updateProfileFields
+                // write to the cache the results of the current cache
+                //  and append any new fields that have been returned from the mutation
+                await cache.writeQuery({
+                    query: CURRENT_USER,
+                    data: {
+                        currentUser: {
+                            ...currentUser,
+                            profile: {
+                                ...currentUser.profile,
+                                birthDate,
+                                gender,
+                                address: updateAddress
+                            }
+                        }
+                    },
+                })
+
+                navigation.goBack()
+            }
         }
     )
-    const [updateProfile] = useMutation(UPDATE_CURRENT_USER)
-
-    if (loading) return <ActivityIndicator />
-    if (error) return null
 
     return <ProfileHeader
         firstName={firstName}
@@ -60,31 +81,64 @@ const EditCurrentUserProfile = ({
         featuredImage={campus.featuredImage}
         campus={campus.name}
         edit
-        onCancel={() => navigation.navigate('Connect')}
+        onCancel={() => navigation.goBack()}
         onSave={() => {
-            const valueKeys = keys(values)
-            const input = valueKeys.map(n => ({ field: upperFirst(n), value: values[n] }))
+            const address = {
+                street1: get(values, 'street1', ''),
+                street2: get(values, 'street2', ''),
+                city: get(values, 'city', ''),
+                state: get(values, 'state', ''),
+                postalCode: get(values, 'postalCode', ''),
+            }
+            const valueKeys = keys(values).filter(n => !keys(address).includes(n))
+            const profileFields = valueKeys.map(n => ({ field: upperFirst(n), value: values[n] }))
 
-            console.log({ input })
-            navigation.navigate('Connect')
+            updateProfile({ variables: { address, profileFields } })
         }}
+        isLoading={loading}
     >
         <EditUserProfile
-            birthDate={birthDate}
-            street1={address.street1}
-            street2={address.street2}
-            city={address.city}
-            state={address.state}
-            postalCode={address.postalCode}
-            gender={gender}
-            states={get(getStatesList, 'values', [])}
+            birthDate={get(values, 'birthDate', '')}
+            street1={get(values, 'street1', '')}
+            street2={get(values, 'street2', '')}
+            city={get(values, 'city', '')}
+            state={get(values, 'state', '')}
+            postalCode={get(values, 'postalCode', '')}
+            gender={get(values, 'gender', '')}
             campus={campus.name}
+            onChange={(key, value) => setValue(key, value)}
+            isLoading={loading}
         />
     </ProfileHeader>
 }
 
-EditCurrentUserProfile.navigationOptions = {
+const EditCurrentUserProfileConnected = ({ navigation }) => {
+    const {
+        loading,
+        error,
+        data: {
+            currentUser: {
+                profile
+            } = {},
+        } = {}
+    } = useQuery(
+        CURRENT_USER,
+        {
+            fetchPolicy: "cache-and-network",
+        }
+    )
+
+    if (loading) return <ActivityIndicator />
+    if (error) return null
+
+    return <EditCurrentUserProfile
+        {...profile}
+        navigation={navigation}
+    />
+}
+
+EditCurrentUserProfileConnected.navigationOptions = {
     header: null
 }
 
-export default withNavigation(EditCurrentUserProfile)
+export default withNavigation(EditCurrentUserProfileConnected)

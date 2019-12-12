@@ -78,7 +78,6 @@ const CurrentUserProfile = () => {
         {...profile}
         fields={profileFields}
         onSave={(fields) => {
-            console.log({ fields })
             // updateProfile()
         }}
         states={get(getStatesList, 'values', [])}

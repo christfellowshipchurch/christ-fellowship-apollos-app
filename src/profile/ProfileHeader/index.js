@@ -4,7 +4,7 @@ import {
     Dimensions,
     View,
 } from 'react-native'
-import { SafeAreaView } from 'react-navigation'
+import { SafeAreaView, withNavigation } from 'react-navigation'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
@@ -74,7 +74,7 @@ const CampusName = styled(({ theme }) => ({
     fontSize: 14,
 }))(BodyText)
 
-const EditButton = styled(({ theme, editMode }) => ({
+const EditButton = styled(({ theme, editMode, disabled }) => ({
     borderColor: editMode ? theme.colors.primary : theme.colors.white,
     backgroundColor: editMode ? theme.colors.primary : theme.colors.transparent,
     borderRadius: 3,
@@ -82,7 +82,8 @@ const EditButton = styled(({ theme, editMode }) => ({
     fontSize: 12,
     paddingHorizontal: 25,
     fontWeight: 'bold',
-    marginVertical: theme.sizing.baseUnit
+    marginVertical: theme.sizing.baseUnit,
+    opacity: disabled ? 0.5 : 1,
 }))(BodyText)
 
 const ProfileHeader = ({
@@ -98,9 +99,8 @@ const ProfileHeader = ({
     onEdit,
     onSave,
     onCancel,
+    isLoading,
 }) => {
-    // const [editMode, setEditMode] = useState(edit)
-
     return (
         <StretchyView>
             {({ Stretchy, ...scrollViewProps }) => (
@@ -117,6 +117,7 @@ const ProfileHeader = ({
                             <FlexedView>
                                 {editMode && <Touchable
                                     onPress={onCancel}
+                                    disabled={isLoading}
                                 >
                                     <BodyText>
                                         Cancel
@@ -136,7 +137,8 @@ const ProfileHeader = ({
                                 style={{ alignItems: 'flex-end' }}
                             >
                                 {!editMode && <Touchable
-                                    onPress={() => true}
+                                    onPress={() => navigation.navigate('Settings')}
+                                    disabled={isLoading}
                                 >
                                     <FontAwesomeIcon icon={['fal', "cog"]} fill={'white'} size={24} />
                                 </Touchable>}
@@ -145,7 +147,6 @@ const ProfileHeader = ({
 
                         <ProfileContainer>
                             <ThemeMixin mixin={{ type: 'dark' }}>
-
 
                                 <FlexedViewCenterColumns>
                                     <Avatar
@@ -167,9 +168,11 @@ const ProfileHeader = ({
                                             if (editMode) onSave()
                                             onEdit()
                                         }}
+                                        disabled={isLoading}
                                     >
                                         <EditButton
                                             editMode={editMode}
+                                            disabled={isLoading}
                                         >
                                             {editButtonText[`${editMode}`]}
                                         </EditButton>
@@ -204,6 +207,7 @@ ProfileHeader.defaultProps = {
     },
     onEdit: () => true,
     onSave: () => true,
+    isLoading: false,
 }
 
 ProfileHeader.propTypes = {
@@ -223,6 +227,7 @@ ProfileHeader.propTypes = {
     }),
     onEdit: PropTypes.func,
     onSave: PropTypes.func,
+    isLoading: PropTypes.bool,
 }
 
-export default ProfileHeader
+export default withNavigation(ProfileHeader)

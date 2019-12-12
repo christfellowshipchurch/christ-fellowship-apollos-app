@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useQuery } from 'react-apollo'
 import { withNavigation } from 'react-navigation'
 import PropTypes from 'prop-types'
-import { get } from "lodash"
 import moment from 'moment'
 
-import { useForm } from 'ChristFellowship/src/hooks'
-
 import {
+    styled,
+    ActivityIndicator,
+    FlexedView,
     H4,
-    BodyText
 } from '@apollosproject/ui-kit'
 
 import {
@@ -19,37 +18,64 @@ import {
     PickerItem,
     Radio,
     RadioButton,
-    InputWrapper
+    InputWrapper,
 } from 'ChristFellowship/src/ui/inputs'
-import { ContentContainer, FieldContainer } from '../components'
+import { FieldContainer, ContentContainer } from '../components'
 
-import { CURRENT_USER_PROFILE } from '../queries'
+import { GET_STATES } from '../queries'
+
+const Overlay = styled(() => ({
+    alignContent: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(255, 255, 255, .75)',
+    top: 0,
+    left: 0,
+    zIndex: 1
+}))(FlexedView)
 
 const EditUserProfile = ({
-    states,
     genderList,
     navigation,
-    ...defaultValues
+    onChange,
+    street1,
+    city,
+    state,
+    postalCode,
+    birthDate,
+    gender,
+    campus,
+    isLoading,
 }) => {
     const {
-        values,
-        setValue
-    } = useForm({ defaultValues })
+        loading: loadingStates,
+        data: {
+            getStatesList: {
+                values: states = []
+            } = {}
+        } = {},
+    } = useQuery(GET_STATES)
+    const disabled = isLoading || loadingStates
 
-    const onChange = (field, value) => setValue(field, value)
-    const birthDate = get(values, 'birthDate', '')
+    return <ContentContainer>
+        {disabled && <Overlay>
+            <ActivityIndicator />
+        </Overlay>}
 
-    return [
         <FieldContainer key={`ProfileForm:Campus`}>
             <H4>
                 Campus
             </H4>
             <InputWrapper
-                displayValue={get(values, 'campus', '')}
+                displayValue={campus}
                 icon="church"
+                actionIcon='angle-right'
                 handleOnPress={() => navigation.navigate('Location')}
+                disabled={disabled}
             />
-        </FieldContainer>,
+        </FieldContainer>
 
         <FieldContainer key={`ProfileForm:HomeAddress`}>
             <H4>
@@ -57,28 +83,25 @@ const EditUserProfile = ({
             </H4>
             <TextInput
                 label="Street Address"
-                value={get(values, 'street1', '')}
+                value={street1}
                 onChangeText={(text) => onChange('street1', text)}
                 icon="home"
-            />
-            <TextInput
-                label="Apt #"
-                value={get(values, 'street2', '')}
-                onChangeText={(text) => onChange('street2', text)}
-                hideIcon
+                disabled={disabled}
             />
             <TextInput
                 label="City"
-                value={get(values, 'city', '')}
+                value={city}
                 onChangeText={(text) => onChange('city', text)}
                 hideIcon
+                disabled={disabled}
             />
             <Picker
                 label="State"
-                value={get(values, 'state', '')}
-                displayValue={get(values, 'state', '')}
+                value={state}
+                displayValue={state}
                 onValueChange={(state) => onChange('state', state)}
                 hideIcon
+                disabled={disabled}
             >
                 {states.map((n, i) =>
                     <PickerItem label={n.value} value={n.value} key={i} />
@@ -86,11 +109,12 @@ const EditUserProfile = ({
             </Picker>
             <TextInput
                 label="Zip Code"
-                value={get(values, 'postalCode', '').substring(0, 5)}
+                value={postalCode.substring(0, 5)}
                 onChangeText={(text) => onChange('postalCode', text)}
                 hideIcon
+                disabled={disabled}
             />
-        </FieldContainer>,
+        </FieldContainer>
 
         <FieldContainer key={`ProfileForm:Gender`}>
             <H4>
@@ -99,19 +123,19 @@ const EditUserProfile = ({
             <Radio
                 label=""
                 type="radio"
-                value={get(values, 'gender', '')}
+                value={gender}
                 onChange={(gender) => onChange('gender', gender)}
+                disabled={disabled}
             >
-                {genderList.map((gender) => [
+                {genderList.map((gender) =>
                     <RadioButton
                         key={gender}
                         value={gender}
                         label={gender}
                         underline={false}
-                    />,
-                ])}
+                    />)}
             </Radio>
-        </FieldContainer>,
+        </FieldContainer>
 
         <FieldContainer key={`ProfileForm:Birthday`}>
             <H4>
@@ -126,92 +150,40 @@ const EditUserProfile = ({
                     ? moment(birthDate).format('MMM D, YYYY')
                     : ''}
                 onConfirm={(birthDate) => onChange('birthDate', birthDate)}
+                disabled={disabled}
             />
         </FieldContainer>
-    ]
+    </ContentContainer>
 }
 
 EditUserProfile.defaultProps = {
-    defaultValues: {},
     states: [],
-    genderList: ['Male', 'Female']
+    genderList: ['Male', 'Female'],
+    onUpdate: () => true,
+    street1: '',
+    street2: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    birthDate: '',
+    gender: '',
+    campus: '',
+    isLoading: false
 }
 
-// const EditUserProfile = ({
-//     navigation
-// }) => {
-//     const {
-//         loading,
-//         error,
-//         data: {
-//             currentUser: {
-//                 profile,
-//             } = {},
-//             getStatesList = {}
-//         } = {}
-//     } = useQuery(
-//         CURRENT_USER_PROFILE,
-//         { fetchPolicy: "cache-and-network" }
-//     )
-
-//     return (
-//         <ContentContainer>
-//             <ProfileForm
-//                 campus={get(profile, 'campus.name', '')}
-//                 street1={get(profile, 'address.street1', '')}
-//                 street2={get(profile, 'address.street2', '')}
-//                 city={get(profile, 'address.city', '')}
-//                 state={get(profile, 'address.state', '')}
-//                 postalCode={get(profile, 'address.postalCode', '')}
-//                 gender={get(profile, 'gender', '')}
-//                 birthDate={get(profile, 'birthDate', '')}
-//                 states={get(getStatesList, 'values', [])}
-//                 navigation={navigation}
-//             />
-//         </ContentContainer>
-//     )
-// }
-
-// EditUserProfile.defaultProps = {
-//     firstName: '',
-//     lastName: '',
-//     photo: {
-//         uri: '',
-//     },
-//     campus: {
-//         name: '',
-//         featuredImage: {
-//             uri: '',
-//         },
-//     },
-//     fields: [],
-//     genderList: ['Male', 'Female']
-// }
-
-// EditUserProfile.propTypes = {
-//     firstName: PropTypes.string,
-//     lastName: PropTypes.string,
-//     photo: PropTypes.shape({
-//         uri: PropTypes.string,
-//     }),
-//     campus: PropTypes.shape({
-//         name: PropTypes.string,
-//         featuredImage: PropTypes.shape({
-//             uri: PropTypes.string,
-//         }),
-//     }),
-//     fields: PropTypes.arrayOf(
-//         PropTypes.shape({
-//             title: PropTypes.string,
-//             content: PropTypes.oneOfType([
-//                 PropTypes.string,
-//                 PropTypes.arrayOf(
-//                     PropTypes.string
-//                 )
-//             ]),
-//         })
-//     ),
-//     genderList: PropTypes.arrayOf(PropTypes.string),
-// }
+EditUserProfile.propTypes = {
+    states: PropTypes.array,
+    genderList: PropTypes.arrayOf(PropTypes.string),
+    onUpdate: PropTypes.func,
+    street1: PropTypes.string,
+    street2: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+    postalCode: PropTypes.string,
+    birthDate: PropTypes.string,
+    gender: PropTypes.string,
+    campus: PropTypes.string,
+    isLoading: PropTypes.bool
+}
 
 export default withNavigation(EditUserProfile)

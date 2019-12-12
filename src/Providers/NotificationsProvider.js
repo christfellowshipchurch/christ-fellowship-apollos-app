@@ -30,7 +30,6 @@ const PushNotificationProvider = ({ children }) => {
   PushNotification.configure({
     // Called when Token is generated (iOS and Android)
     onRegister: (address) => {
-      console.log('TOKEN:', address)
       const token = get(address, 'token', '')
       const bindingType = get(BINDING_TYPE, Platform.OS, "")
       const variables = { enabled: true, bindingType, address: token }
@@ -41,8 +40,6 @@ const PushNotificationProvider = ({ children }) => {
 
     // (required) Called when a remote or local notification is opened or received
     onNotification: (notification) => {
-      console.log('NOTIFICATION:', notification)
-
       // TODO : process the notification
 
       // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)

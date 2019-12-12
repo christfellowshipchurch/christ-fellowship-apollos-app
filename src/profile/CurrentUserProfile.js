@@ -50,7 +50,6 @@ const CurrentUserProfile = ({
         {...profile}
         fields={profileFields}
         onSave={(fields) => {
-            console.log({ fields })
             // updateProfile()
         }}
         onEdit={() => navigation.navigate('EditCurrentUserProfile')}
