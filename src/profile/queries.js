@@ -43,13 +43,27 @@ export const CURRENT_USER = gql`
 `
 
 export const GET_STATES = gql`
-query getStates {
-  getStatesList {
-    id
-    values {
+  query getStates {
+    getStatesList {
       id
-      value
+      values {
+        id
+        value
+      }
     }
   }
-}
 `
+
+export const GET_USER_PHOTO = gql`
+  query CurrentUserPhoto {
+    currentUser {
+      id
+      profile {
+        id
+        photo {
+          uri
+        }
+      }
+    }
+  }
+`;

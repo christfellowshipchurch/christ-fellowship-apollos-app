@@ -22,6 +22,7 @@ import {
     TouchableScale,
     H4
 } from '@apollosproject/ui-kit'
+import ChangeAvatar from '../ChangeAvatar'
 
 const FlexedScrollView = styled({ flex: 1 })(ScrollView)
 
@@ -149,11 +150,12 @@ const ProfileHeader = ({
                             <ThemeMixin mixin={{ type: 'dark' }}>
 
                                 <FlexedViewCenterColumns>
-                                    <Avatar
-                                        source={avatar}
-                                        size="large"
-                                        edit={editMode}
-                                    />
+                                    {editMode
+                                        ? <ChangeAvatar />
+                                        : <Avatar
+                                            source={avatar}
+                                            size="large"
+                                        />}
 
                                     <ProfileName>
                                         {`${firstName} ${lastName}`}

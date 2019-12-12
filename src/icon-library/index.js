@@ -42,6 +42,7 @@ import {
     faList,
     faEnvelopeOpenText,
     faCommentLines,
+    faCameraAlt,
 } from '@fortawesome/pro-light-svg-icons'
 
 // load desired icons in an array to not overload the library with more
@@ -88,6 +89,7 @@ const icons = [
     faList,
     faEnvelopeOpenText,
     faCommentLines,
+    faCameraAlt
 ]
 
 library.add(...icons)
