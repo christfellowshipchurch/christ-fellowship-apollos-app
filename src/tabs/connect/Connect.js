@@ -19,12 +19,6 @@ const Connect = ({ navigation }) => (
             <CurrentUserProfile />
           )
 
-        // return (
-        //   <UserAvatarHeader key="UserAvatarHeaderConnected" navigation={navigation}>
-        //     <ActionTable navigation={navigation} />
-        //   </UserAvatarHeader>
-        // )
-
         // On logout or when not properly authenitcated
         // navigate back to the Identity screen of the Profile Stack navigator
         navigation.reset({

@@ -1,7 +1,7 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 import CampusParts from 'ChristFellowship/src/locations/campusFragment'
 
-export default gql`
+export const CURRENT_USER = gql`
   query getCurrentUserProfile {
     currentUser {
       id
@@ -9,10 +9,8 @@ export default gql`
         id
         firstName
         lastName
-        nickName
         gender
         birthDate
-        ethnicity
 
         email
         phoneNumber
@@ -33,9 +31,6 @@ export default gql`
           postalCode
         }
 
-        salvationDate
-        baptismDate
-
         communicationPreferences {
           allowSMS
           allowEmail
@@ -43,5 +38,18 @@ export default gql`
       }
     }
   }
+
   ${CampusParts}
-`;
+`
+
+export const GET_STATES = gql`
+query getStates {
+    getStatesList {
+    id
+    values {
+      id
+      value
+    }
+  }
+}
+`

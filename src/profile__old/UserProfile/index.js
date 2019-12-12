@@ -18,7 +18,6 @@ const UserProfile = ({
     fields,
     edit,
     onSave,
-    onEdit,
     states,
     ...profileProps
 }) => {
@@ -34,8 +33,8 @@ const UserProfile = ({
                 avatar={photo}
                 featuredImage={campus.featuredImage}
                 campus={campus.name}
-                onEdit={onEdit}
-                onSave={onSave}
+                onEdit={(edit) => setEditMode(edit)}
+                onSave={() => onSave(editValues)}
             >
                 {editMode
                     ? <EditUserProfile

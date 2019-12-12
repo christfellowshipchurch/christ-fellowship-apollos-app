@@ -9,14 +9,8 @@ import PushNotification from 'react-native-push-notification'
 import { render } from 'react-dom';
 
 const requestPN = (enable = true) => {
-  console.log(`${enable ? '' : 'Not '}Requesting Permission for PN`)
-
   if (enable) PushNotification.requestPermissions()
   else PushNotification.abandonPermissions()
-
-  PushNotification.checkPermissions(({ alert, badge, sound }) => {
-    console.log({ alert, badge, sound })
-  })
 }
 
 // Testing as a React component class that extends Component instead of an anonymous function
@@ -28,7 +22,6 @@ class EnableTwilioNotifyPN extends Component {
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
       onRegister: function (token) {
-        console.log('TOKEN:', token);
         Alert.alert(
           'Enabled Push Notifications',
           'Push notifications have been registered and token has been registered',
@@ -46,8 +39,6 @@ class EnableTwilioNotifyPN extends Component {
 
       // (required) Called when a remote or local notification is opened or received
       onNotification: function (notification) {
-        console.log('NOTIFICATION:', notification);
-
         // process the notification
 
         // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)

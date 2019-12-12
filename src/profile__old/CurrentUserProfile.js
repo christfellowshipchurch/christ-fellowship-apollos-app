@@ -1,6 +1,5 @@
 import React from 'react'
 import { useQuery, useMutation } from 'react-apollo'
-import { withNavigation } from 'react-navigation'
 import { get } from 'lodash'
 import moment from 'moment'
 
@@ -13,9 +12,7 @@ import UserProfile from './UserProfile'
 import { CURRENT_USER } from './queries'
 import { UPDATE_CURRENT_USER } from './mutations'
 
-const CurrentUserProfile = ({
-    navigation
-}) => {
+const CurrentUserProfile = () => {
     const {
         loading,
         error,
@@ -52,9 +49,8 @@ const CurrentUserProfile = ({
         onSave={(fields) => {
             // updateProfile()
         }}
-        onEdit={() => navigation.navigate('EditCurrentUserProfile')}
         states={get(getStatesList, 'values', [])}
     />
 }
 
-export default withNavigation(CurrentUserProfile)
+export default CurrentUserProfile

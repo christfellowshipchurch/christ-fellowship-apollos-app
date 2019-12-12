@@ -14,10 +14,12 @@ import Providers from './Providers'
 import NavigationService from './NavigationService'
 import ContentSingle from './content-single'
 import Tabs from './tabs'
-import Location from './profile/UserSettings/Locations'
+import Location from './locations'
 import UserWebBrowser from './user-web-browser'
 import Login from './login'
 import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information'
+import { EditCurrentUserProfile } from './profile'
+import Settings from './settings'
 
 const AppStatusBar = withTheme(({ theme }) => ({
   barStyle: 'dark-content',
@@ -37,6 +39,7 @@ const AppContent = createStackNavigator({
   Location,
   Passes,
   UserWebBrowser,
+  EditCurrentUserProfile,
 }, {
   initialRouteName: 'Tabs',
   mode: 'modal',
@@ -44,16 +47,15 @@ const AppContent = createStackNavigator({
 })
 
 const AppInfo = createStackNavigator({
+  Settings,
   PrivacyPolicy,
   TermsOfUse,
   ValueProp
 }, {
-  initialRouteName: 'PrivacyPolicy',
-  mode: 'modal',
+  initialRouteName: 'Settings',
+  // mode: 'modal',
   headerMode: 'screen',
 })
-
-
 
 const AppNavigator = createStackNavigator(
   {
