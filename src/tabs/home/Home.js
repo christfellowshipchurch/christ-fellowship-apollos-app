@@ -87,9 +87,9 @@ class Home extends PureComponent {
                   <View
                     style={{ backgroundColor: 'white', }}
                   >
-                    {/* <LiveButton
+                    <LiveButton
                       key="HomeFeedLiveButton"
-                    /> */}
+                    />
                     <LogoTitle source={require('./wordmark.png')} />
                   </View>
                 }
