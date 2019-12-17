@@ -67,7 +67,7 @@ const AppInfo = createStackNavigator(
   }
 );
 
-const AppNavigator = createAppContainer(
+const AppNavigator = createStackNavigator(
   {
     ProtectedRoute: ProtectedRouteWithSplashScreen,
     Tabs: AppContent,

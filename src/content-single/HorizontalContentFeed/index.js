@@ -13,12 +13,9 @@ import {
   HighlightCard,
 } from '@apollosproject/ui-kit';
 
-import { TinyCard } from 'ChristFellowship/src/ui/Cards'
-
-import { HorizontalTileFeed, TouchableScale } from '@apollosproject/ui-kit';
+import { TinyCard } from 'ChristFellowship/src/ui/Cards';
 
 import HorizontalContentCardConnected from '../../ui/HorizontalContentCardConnected';
-
 
 import GET_HORIZONTAL_CONTENT from './getHorizontalContent';
 
@@ -31,9 +28,8 @@ const loadingStateObject = {
 };
 
 const Title = styled(({ theme }) => ({
-  paddingHorizontal: theme.sizing.baseUnit
-}))(H3)
-
+  paddingHorizontal: theme.sizing.baseUnit,
+}))(H3);
 
 class HorizontalContentFeed extends Component {
   static propTypes = {
@@ -56,7 +52,7 @@ class HorizontalContentFeed extends Component {
         title={get(item, 'title', '')}
         {...cardProps}
         coverImage={get(item, 'coverImage.sources', [])}
-      /*
+        /*
        * These are props that are not yet being passed in the data.
        * We will need to make sure they get added back when that data is available.
        * byLine={item.content.speaker}

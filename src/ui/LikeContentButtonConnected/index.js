@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { Query, Mutation } from 'react-apollo';
 
-import Like from 'ChristFellowship/src/ui/Like';
+import LikeContentButton from 'ChristFellowship/src/ui/LikeContentButton';
 import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
 
 import UPDATE_LIKE_ENTITY from './updateLikeEntity';
@@ -100,12 +100,12 @@ UpdateLikeStatus.propTypes = {
   }),
 };
 
-const LikeButton = ({ itemId }) => (
+const LikeContentButtonConnected = ({ itemId }) => (
   <GetLikeData itemId={itemId}>
     {({ isLiked, item }) => (
       <UpdateLikeStatus itemId={itemId} item={item} isLiked={isLiked}>
         {({ toggleLike, isLiked: newLikeValue }) => (
-          <Like
+          <LikeContentButton
             itemId={itemId}
             isLiked={newLikeValue}
             toggleLike={toggleLike}
@@ -116,8 +116,8 @@ const LikeButton = ({ itemId }) => (
   </GetLikeData>
 );
 
-LikeButton.propTypes = {
+LikeContentButtonConnected.propTypes = {
   itemId: PropTypes.string,
 };
 
-export default LikeButton;
+export default LikeContentButtonConnected;

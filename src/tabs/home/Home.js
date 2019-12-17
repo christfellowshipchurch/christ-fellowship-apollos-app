@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -20,6 +20,7 @@ import ActionMapper from './ActionMapper';
 import Features from './Features';
 import GET_USER_FEED from './getUserFeed';
 import GET_CAMPAIGN_CONTENT_ITEM from './getCampaignContentItem';
+import GET_FEED_FEATURES from './getFeedFeatures';
 
 const LogoTitle = styled(({ theme }) => ({
   height: theme.sizing.baseUnit,

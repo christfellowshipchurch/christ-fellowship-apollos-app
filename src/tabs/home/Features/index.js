@@ -5,7 +5,7 @@ import { get } from 'lodash';
 
 import { styled, ActionListCard, H3, H6 } from '@apollosproject/ui-kit';
 
-import GET_FEED_FEATURES from './getFeedFeatures';
+import GET_FEED_FEATURES from '../getFeedFeatures';
 
 const StyledH6 = styled(({ theme }) => ({
   color: theme.colors.text.tertiary,
@@ -133,3 +133,7 @@ const Features = memo(({ navigation }) => (
 Features.displayName = 'Features';
 
 export default Features;
+export ChildrenFeed from './ChildrenFeed';
+export AnnouncementFeed from './AnnouncementFeed';
+export TinyCardFeed from './TinyCardFeed';
+export TileRowCardFeed from './TileRowCardFeed';
