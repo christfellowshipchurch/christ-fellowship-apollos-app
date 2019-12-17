@@ -14,6 +14,8 @@ PODS:
     - glog
   - glog (0.3.5)
   - OneSignal (2.10.1)
+  - Permission-PhotoLibrary (2.0.8):
+    - RNPermissions
   - React (0.60.5):
     - React-Core (= 0.60.5)
     - React-DevSupport (= 0.60.5)
@@ -124,6 +126,8 @@ PODS:
     - React
   - RNInAppBrowser (3.3.3):
     - React
+  - RNPermissions (2.0.8):
+    - React
   - RNScreens (1.0.0-alpha.23):
     - React
   - RNSVG (9.5.1):
@@ -135,6 +139,7 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary.podspec`)
   - React (from `../node_modules/react-native/`)
   - React-Core (from `../node_modules/react-native/React`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
@@ -171,12 +176,13 @@ DEPENDENCIES:
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - boost-for-react-native
     - OneSignal
 
@@ -189,6 +195,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Permission-PhotoLibrary:
+    :path: "../node_modules/react-native-permissions/ios/PhotoLibrary.podspec"
   React:
     :path: "../node_modules/react-native/"
   React-Core:
@@ -261,6 +269,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNInAppBrowser:
     :path: "../node_modules/react-native-inappbrowser-reborn"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -275,6 +285,7 @@ SPEC CHECKSUMS:
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   OneSignal: 8fb749fa07f88006403c9b659a570fb7fb74519a
+  Permission-PhotoLibrary: c15c7245aeb74aff3ad5edf70ce34adbcf02541b
   React: 53c53c4d99097af47cf60594b8706b4e3321e722
   React-Core: ba421f6b4f4cbe2fb17c0b6fc675f87622e78a64
   React-cxxreact: 8384287780c4999351ad9b6e7a149d9ed10a2395
@@ -311,10 +322,11 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 687c1b2ab6d86ff1ca1208783320cd144138c7f2
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
   RNInAppBrowser: 0800f17fd7ed9fc503eb68e427befebb41ee719b
+  RNPermissions: 923c1506d0bde387fbcfc18a8f87945806d03c19
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
   RNSVG: 0eb087cfb5d7937be93c45b163b26352a647e681
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: dd495a91b2153aea74bb3fe0b67515e3034d28d0
+PODFILE CHECKSUM: cb8a98e082dcbc242189b457272e3aeb05af7a74
 
 COCOAPODS: 1.8.3

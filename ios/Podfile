@@ -2,7 +2,9 @@ platform :ios, '9.0'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
 target 'ChristFellowship' do
-  # Pods for apolloschurchapp
+  permissions_path = '../node_modules/react-native-permissions/ios'
+
+  # Pods for ChristFellowship
   pod 'React', :path => '../node_modules/react-native/'
   pod 'React-Core', :path => '../node_modules/react-native/React'
   pod 'React-DevSupport', :path => '../node_modules/react-native/React'
@@ -26,6 +28,7 @@ target 'ChristFellowship' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
 
   target 'ChristFellowshipTests' do
     inherit! :search_paths
@@ -36,7 +39,7 @@ target 'ChristFellowship' do
 end
 
 target 'ChristFellowship-tvOS' do
-  # Pods for apolloschurchapp-tvOS
+  # Pods for ChristFellowship-tvOS
 
   target 'ChristFellowship-tvOSTests' do
     inherit! :search_paths

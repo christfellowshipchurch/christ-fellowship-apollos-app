@@ -38,7 +38,7 @@ const ButtonLinkSpacing = styled(({ theme }) => ({
 }))(View);
 
 const AndroidTouchableFix = withTheme(({ theme }) => ({
-  borderRadius: theme.sizing.baseUnit / 2,
+  borderRadius: theme.sizing.baseBorderRadius / 2,
 }))(Touchable);
 
 const StyledHorizontalTileFeed = styled(({ theme }) => ({

@@ -1,1 +1,0 @@
-../../../../../node_modules/react-native-onesignal/ios/RCTOneSignal/RCTOneSignalEventEmitter.h
