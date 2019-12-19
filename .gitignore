@@ -7,7 +7,7 @@
 /node_modules
 
 # storybook
-storyLoader.js
+# storyLoader.js
 
 # Android studio
 *.apk
