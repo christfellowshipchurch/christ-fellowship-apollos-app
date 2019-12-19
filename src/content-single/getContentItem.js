@@ -47,7 +47,6 @@ export const EVENT_ITEM_FRAGMENT = gql`
   }
 `;
 
-
 export default gql`
   query getContentItem($itemId: ID!) {
     node(id: $itemId) {

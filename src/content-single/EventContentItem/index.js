@@ -1,7 +1,7 @@
-import React from 'react'
-import { View, ScrollView } from 'react-native'
-import { get } from 'lodash'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { View, ScrollView } from 'react-native';
+import { get } from 'lodash';
+import PropTypes from 'prop-types';
 import {
   styled,
   withTheme,
@@ -11,103 +11,112 @@ import {
   H2,
   H4,
   BodyText,
-  Button
-} from '@apollosproject/ui-kit'
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser'
-import MediaControls from '../MediaControls'
-import HTMLContent from '../HTMLContent'
-import HorizontalContentFeed from '../HorizontalContentFeed'
-import Features from '../Features'
-import EventSchedule from '../EventSchedule'
+  Button,
+  StretchyView,
+} from '@apollosproject/ui-kit';
+import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
+import MediaControls from '../MediaControls';
+import HTMLContent from '../HTMLContent';
+import HorizontalContentFeed from '../HorizontalContentFeed';
+import Features from '../Features';
+import EventSchedule from '../EventSchedule';
 
-const FlexedScrollView = styled({ flex: 1 })(ScrollView)
+const FlexedScrollView = styled({ flex: 1 })(ScrollView);
 
 const TitleContainer = styled(({ theme }) => ({
   position: 'absolute',
   bottom: 20,
   left: 0,
   width: '100%',
-}))(PaddedView)
+}))(PaddedView);
 
 const Title = styled(({ theme }) => ({
-  color: theme.colors.white
-}))(H2)
+  color: theme.colors.white,
+}))(H2);
 
 const Summary = styled(({ theme }) => ({
-  color: theme.colors.white
-}))(BodyText)
+  color: theme.colors.white,
+}))(BodyText);
 
 const StyledButton = styled(({ theme }) => ({
-  marginVertical: theme.sizing.baseUnit * 0.25
-}))(Button)
+  marginVertical: theme.sizing.baseUnit * 0.25,
+}))(Button);
 
 const Subtitle = withTheme(({ theme, extraSpacing }) => ({
   style: {
-    marginTop: extraSpacing ? theme.sizing.baseUnit * 2 : theme.sizing.baseUnit
-  }
-}))(H4)
+    marginTop: extraSpacing ? theme.sizing.baseUnit * 2 : theme.sizing.baseUnit,
+  },
+}))(H4);
 
 const EventContentItem = ({ content, loading }) => {
-  const coverImageSources = get(content, 'coverImage.sources', [])
-  const callsToAction = get(content, 'callsToAction', [])
+  const coverImageSources = get(content, 'coverImage.sources', []);
+  const callsToAction = get(content, 'callsToAction', []);
   return (
     <BackgroundView>
-      <FlexedScrollView>
-        <View>
-          {coverImageSources.length || loading ? (
-            <GradientOverlayImage
-              isLoading={!coverImageSources.length && loading}
-              source={coverImageSources}
-              overlayColor={'black'}
-              overlayType="gradient-bottom"
-              // Sets the ratio of the image
-              minAspectRatio={1}
-              maxAspectRatio={1}
-              // Sets the ratio of the placeholder
-              forceRatio={1}
-              // No ratios are respected without this
-              maintainAspectRatio={true}
-            />
-          ) : null}
+      <StretchyView>
+        {({ Stretchy, ...scrollViewProps }) => (
+          <FlexedScrollView {...scrollViewProps}>
+            <View>
+              {coverImageSources.length || loading ? (
+                <Stretchy>
+                  <GradientOverlayImage
+                    isLoading={!coverImageSources.length && loading}
+                    source={coverImageSources}
+                    overlayColor={'black'}
+                    overlayType="gradient-bottom"
+                    // Sets the ratio of the image
+                    minAspectRatio={1}
+                    maxAspectRatio={1}
+                    // Sets the ratio of the placeholder
+                    forceRatio={1}
+                    // No ratios are respected without this
+                    maintainAspectRatio
+                  />
+                </Stretchy>
+              ) : null}
 
-          <TitleContainer>
-            <Title isLoading={!content.title && loading}>
-              {content.title}
-            </Title>
-            <Summary isLoading={!content.summary && loading}>
-              {content.summary}
-            </Summary>
-          </TitleContainer>
-        </View>
+              <TitleContainer>
+                <Title isLoading={!content.title && loading}>
+                  {content.title}
+                </Title>
+                <Summary isLoading={!content.summary && loading}>
+                  {content.summary}
+                </Summary>
+              </TitleContainer>
+            </View>
 
-        <MediaControls contentId={content.id} />
-        <PaddedView>
-          <EventSchedule contentId={content.id} />
+            <MediaControls contentId={content.id} />
+            <PaddedView>
+              <EventSchedule contentId={content.id} />
 
-          {callsToAction.length > 0 &&
-            <WebBrowserConsumer>
-              {(openUrl) => callsToAction.map((n, i) => (
-                <StyledButton
-                  key={i}
-                  title={n.call}
-                  pill={false}
-                  onPress={() => openUrl(n.action)}
-                />
-              ))}
-            </WebBrowserConsumer>
-          }
+              {callsToAction.length > 0 && (
+                <WebBrowserConsumer>
+                  {(openUrl) =>
+                    callsToAction.map((n, i) => (
+                      <StyledButton
+                        key={i}
+                        title={n.call}
+                        pill={false}
+                        onPress={() => openUrl(n.action)}
+                      />
+                    ))
+                  }
+                </WebBrowserConsumer>
+              )}
 
-          <Subtitle extraSpacing={callsToAction.length > 0}>
-            Event Details
-            </Subtitle>
-          <HTMLContent contentId={content.id} />
-          <Features contentId={content.id} />
-        </PaddedView>
-        <HorizontalContentFeed contentId={content.id} />
-      </FlexedScrollView>
-    </BackgroundView >
-  )
-}
+              <Subtitle extraSpacing={callsToAction.length > 0}>
+                Event Details
+              </Subtitle>
+              <HTMLContent contentId={content.id} />
+              <Features contentId={content.id} />
+            </PaddedView>
+            <HorizontalContentFeed contentId={content.id} />
+          </FlexedScrollView>
+        )}
+      </StretchyView>
+    </BackgroundView>
+  );
+};
 
 EventContentItem.propTypes = {
   content: PropTypes.shape({
@@ -136,6 +145,6 @@ EventContentItem.propTypes = {
     ),
   }),
   loading: PropTypes.bool,
-}
+};
 
-export default EventContentItem
+export default EventContentItem;

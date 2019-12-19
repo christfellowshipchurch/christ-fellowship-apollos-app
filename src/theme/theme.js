@@ -58,10 +58,6 @@ const overrides = {
     },
 };
 
-const sizing = {
-    baseBorderRadius: 8,
-};
-
 const colors = {
     primary: '#00aeef',
     secondary: '#000',
@@ -132,15 +128,16 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
         end: { x: 0, y: 1 },
         locations: [0, 0.7, 1],
     }),
-})
+});
 
 const sizing = {
+    baseBorderRadius: 8,
     avatar: {
         small: 40,
         medium: 80,
         large: 150,
     },
-}
+};
 
 export default {
     overrides,

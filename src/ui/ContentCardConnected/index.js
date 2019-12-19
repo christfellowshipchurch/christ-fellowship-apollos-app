@@ -21,7 +21,7 @@ const ContentCardConnected = ({
   contentId,
   isLoading,
   tile,
-  card = ContentCard,
+  card,
   ...otherProps
 }) => {
   if (!contentId || isLoading)
@@ -72,8 +72,8 @@ ContentCardConnected.propTypes = {
   card: PropTypes.func,
 };
 
-// ContentCardConnected.defaultProps = {
-//   card: ContentCard
-// }
+ContentCardConnected.defaultProps = {
+  card: ContentCard,
+};
 
 export default ContentCardConnected;

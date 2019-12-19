@@ -16,7 +16,7 @@ import {
   withIsLoading,
 } from '@apollosproject/ui-kit';
 
-import ContentCard from 'ChristFellowship/src/ui/ContentCardConnected';
+import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
 
 const RowHeader = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -74,7 +74,7 @@ class RecentlyLikedTileFeed extends Component {
         });
       }}
     >
-      <ContentCard
+      <ContentCardConnected
         isLoading={item.isLoading}
         tile
         contentId={item.id}
