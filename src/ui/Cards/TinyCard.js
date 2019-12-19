@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react'
-import { View, Text, Platform } from 'react-native'
-import PropTypes from 'prop-types'
-import { get } from 'lodash'
+import React, { PureComponent } from 'react';
+import { View, Text, Platform } from 'react-native';
+import PropTypes from 'prop-types';
+import { get } from 'lodash';
 
 import {
   H6,
@@ -17,29 +17,28 @@ import {
   CardLabel,
   BodyText,
   withTheme,
-} from '@apollosproject/ui-kit'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+} from '@apollosproject/ui-kit';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 const Content = styled(({ theme }) => ({
   alignItems: 'flex-start', // needed to make `Label` display as an "inline" element
   paddingHorizontal: theme.sizing.baseUnit * 0.65, // TODO: refactor CardContent to have this be the default
   paddingBottom: theme.sizing.baseUnit, // TODO: refactor CardContent to have this be the default
   paddingTop: theme.sizing.baseUnit * 0.5, // TODO: refactor CardContent to have this be the default
-}))(CardContent)
+}))(CardContent);
 
 const Title = styled(({ theme }) => ({
   fontSize: 12,
   lineHeight: 14,
-  fontWeight: "bold",
-  color: theme.colors.darkSecondary
-}))(BodyText)
+  fontWeight: 'bold',
+  color: theme.colors.darkSecondary,
+}))(BodyText);
 
 const StyledCard = styled(({ theme }) => ({
   width: 133,
   height: 162,
   marginHorizontal: theme.sizing.baseUnit * 0.3,
-  borderRadius: 8
-}))(Card)
+}))(Card);
 
 const Image = withTheme(({ theme, useGradient }) => ({
   // Sets the ratio of the image
@@ -51,23 +50,18 @@ const Image = withTheme(({ theme, useGradient }) => ({
   maintainAspectRatio: true,
   overlayColor: theme.colors.black,
   overlayType: useGradient ? 'gradient-bottom-short' : 'gradient-none',
-  style: {
-    borderRadius: 0,
-    // borderTopRightRadius: 8,
-    // borderTopLeftRadius: 8,
-  }
-}))(CardImage)
+}))(CardImage);
 
 const TagPositioning = styled(({ theme }) => ({
   marginTop: -theme.sizing.baseUnit * 2,
   marginBottom: theme.sizing.baseUnit,
-}))(View)
+}))(View);
 
 const Tag = styled(({ theme }) => ({
   color: theme.colors.lightPrimary,
   fontSize: 10,
   lineHeight: 14,
-}))(Text)
+}))(Text);
 
 const Icon = withTheme(({ theme, name }) => ({
   icon: ['fal', name],
@@ -77,9 +71,9 @@ const Icon = withTheme(({ theme, name }) => ({
     position: 'absolute',
     right: 5,
     top: 5,
-    ...Platform.select(theme.shadows.default)
-  }
-}))(FontAwesomeIcon)
+    ...Platform.select(theme.shadows.default),
+  },
+}))(FontAwesomeIcon);
 
 class TinyCard extends PureComponent {
   static propTypes = {
@@ -88,40 +82,31 @@ class TinyCard extends PureComponent {
     label: PropTypes.string,
     title: PropTypes.string,
     id: PropTypes.string,
-    tags: PropTypes.arrayOf(
-      PropTypes.string
-    ),
+    tags: PropTypes.arrayOf(PropTypes.string),
     icon: PropTypes.string,
-  }
+  };
 
   render() {
-    const tag = get(this.props, 'tags[0]', '')
+    const tag = get(this.props, 'tags[0]', '');
 
     return (
       <StyledCard>
         <View style={{ backgroundColor: 'red' }}>
-          <Image
-            source={this.props.coverImage}
-            useGradient={tag !== ''}
-          />
+          <Image source={this.props.coverImage} useGradient={tag !== ''} />
         </View>
 
         <Icon name={this.props.icon || 'book-open'} />
 
         <Content>
           <TagPositioning>
-            <Tag>
-              {tag}
-            </Tag>
+            <Tag>{tag}</Tag>
           </TagPositioning>
 
-          <Title numberOfLines={3}>
-            {this.props.title}
-          </Title>
+          <Title numberOfLines={3}>{this.props.title}</Title>
         </Content>
       </StyledCard>
-    )
+    );
   }
 }
 
-export default withIsLoading(TinyCard)
+export default withIsLoading(TinyCard);
