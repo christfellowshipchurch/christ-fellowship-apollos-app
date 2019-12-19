@@ -1,8 +1,8 @@
-import gql from 'graphql-tag'
-import CampusParts from 'ChristFellowship/src/locations/campusFragment'
+import gql from 'graphql-tag';
+import CampusParts from 'ChristFellowship/src/locations/campusFragment';
 
 export default gql`
-  query getCurrentUserProfile {
+  query CurrentUserProfile {
     currentUser {
       id
       profile {
@@ -19,13 +19,6 @@ export default gql`
         photo {
           uri
         }
-      }
-      address {
-        street1
-        street2
-        city
-        state
-        postalCode
       }
     }
   }

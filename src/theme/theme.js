@@ -1,4 +1,4 @@
-import Color from 'color'
+import Color from 'color';
 
 /* Add your custom theme definitions below. Anything that is supported in UI-Kit Theme can be
  overridden and/or customized here! */
@@ -45,18 +45,18 @@ import Color from 'color'
  */
 const overrides = {
     Button: {
-        borderRadius: 8
+        borderRadius: 8,
     },
     CardWrapper: {
-        borderRadius: 8
+        borderRadius: 8,
     },
     Card: {
         Image: {
             borderRadius: 0,
-            backgroundColor: 'red'
-        }
-    }
-}
+            backgroundColor: 'red',
+        },
+    },
+};
 
 const colors = {
     primary: '#00aeef',
@@ -64,7 +64,7 @@ const colors = {
     alert: '#d52158',
     success: '#1ec27f',
     warning: '#e09541',
-}
+};
 
 /* Base Typography sizing and fonts.
  * To control speicfic styles used on different type components (like H1, H2, etc), see "overrides"
@@ -90,7 +90,7 @@ const typography = {
             italic: 'Gotham-BlackItalic',
         },
     },
-}
+};
 
 const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
     'gradient-bottom-short': ({ overlayColor }) => ({
@@ -128,20 +128,21 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
         end: { x: 0, y: 1 },
         locations: [0, 0.7, 1],
     }),
-})
+});
 
 const sizing = {
+    baseBorderRadius: 8,
     avatar: {
         small: 40,
         medium: 80,
         large: 150,
     },
-}
+};
 
 export default {
     overrides,
     colors,
     typography,
     overlays,
-    sizing
-}
+    sizing,
+};

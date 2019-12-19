@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import { Image, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import SafeAreaView from 'react-native-safe-area-view';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -9,13 +9,19 @@ import {
   styled,
   FeedView,
   BackgroundView,
+  TouchableScale,
+  FeaturedCard,
 } from '@apollosproject/ui-kit';
-
-import fetchMoreResolver from '../../utils/fetchMoreResolver';
-import ActionMapper from './ActionMapper'
 
 import { LiveButton } from '../../live';
 
+import fetchMoreResolver from '../../utils/fetchMoreResolver';
+import ContentCardConnected from '../../ui/ContentCardConnected';
+
+import ActionMapper from './ActionMapper';
+import Features from './Features';
+import GET_USER_FEED from './getUserFeed';
+import GET_CAMPAIGN_CONTENT_ITEM from './getCampaignContentItem';
 import GET_FEED_FEATURES from './getFeedFeatures';
 
 const LogoTitle = styled(({ theme }) => ({
@@ -23,12 +29,10 @@ const LogoTitle = styled(({ theme }) => ({
   margin: theme.sizing.baseUnit,
   alignSelf: 'center',
   resizeMode: 'contain',
-  width: '50%'
+  width: '50%',
 }))(Image);
 
-export const COLOR_MAP = [
-  'primary', 'success', 'alert', 'warning'
-]
+export const COLOR_MAP = ['primary', 'success', 'alert', 'warning'];
 
 class Home extends PureComponent {
   static navigationOptions = () => ({
@@ -41,7 +45,7 @@ class Home extends PureComponent {
       setParams: PropTypes.func,
       navigate: PropTypes.func,
     }),
-    colorIndex: PropTypes.number
+    colorIndex: PropTypes.number,
   };
 
   handleOnPress = (item) =>
@@ -50,13 +54,13 @@ class Home extends PureComponent {
       transitionKey: item.transitionKey,
     });
 
-  renderItem = ({ item }) => {
-    return <ActionMapper
+  renderItem = ({ item }) => (
+    <ActionMapper
       titleColor={COLOR_MAP[item.colorIndex]}
       navigation={this.props.navigation}
       {...item}
     />
-  }
+  );
 
   render() {
     return (
@@ -72,8 +76,10 @@ class Home extends PureComponent {
           >
             {({ loading, error, data, refetch, fetchMore, variables }) => (
               <FeedView
-                content={get(data, 'userFeedFeatures', [])
-                  .map((n, i) => ({ ...n, colorIndex: i % COLOR_MAP.length }))}
+                content={get(data, 'userFeedFeatures', []).map((n, i) => ({
+                  ...n,
+                  colorIndex: i % COLOR_MAP.length,
+                }))}
                 fetchMore={fetchMoreResolver({
                   collectionName: 'userFeedFeatures',
                   fetchMore,
@@ -84,20 +90,15 @@ class Home extends PureComponent {
                 error={error}
                 refetch={refetch}
                 ListHeaderComponent={
-                  <View
-                    style={{ backgroundColor: 'white', }}
-                  >
-                    <LiveButton
-                      key="HomeFeedLiveButton"
-                    />
+                  <View style={{ backgroundColor: 'white' }}>
+                    <LiveButton key="HomeFeedLiveButton" />
                     <LogoTitle source={require('./wordmark.png')} />
                   </View>
                 }
                 stickyHeaderIndices={[0]}
                 renderItem={this.renderItem}
               />
-            )
-            }
+            )}
           </Query>
         </SafeAreaView>
       </BackgroundView>

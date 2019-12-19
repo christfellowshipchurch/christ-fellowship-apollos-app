@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, pure } from 'recompose';
-import share from 'ChristFellowship/src/utils/content/share';
 import { Touchable, Icon, withTheme } from '@apollosproject/ui-kit';
 import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
+import share from '../../utils/content/share';
 
 const enhance = compose(
   pure,
   withTheme()
 );
 
-const Share = enhance(({ content, theme }) => (
+const ShareContentButton = enhance(({ content, theme }) => (
   <AnalyticsConsumer>
     {({ track }) => {
       const onPress = () => {
         share(content);
         track({
-          eventName: 'ShareContent',
+          eventName: 'Share',
           properties: { id: content.id, title: content.title },
         });
       };
@@ -29,13 +29,12 @@ const Share = enhance(({ content, theme }) => (
   </AnalyticsConsumer>
 ));
 
-Share.propTypes = {
+ShareContentButton.propTypes = {
   content: PropTypes.shape({
-    message: PropTypes.string,
     title: PropTypes.string,
     url: PropTypes.string,
     id: PropTypes.string,
   }),
 };
 
-export default Share;
+export default ShareContentButton;

@@ -1,12 +1,14 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
-import { PaddedView, H2, styled } from '@apollosproject/ui-kit';
+import { PaddedView, H2, styled, withIsLoading } from '@apollosproject/ui-kit';
 import { ScriptureList } from '@apollosproject/ui-scripture';
 import HorizontalContentFeed from '../HorizontalContentFeed';
 import HTMLContent from '../HTMLContent';
 
-const ContentContainer = styled({ paddingVertical: 0 })(PaddedView);
+const ContentContainer = withIsLoading(
+  styled({ paddingVertical: 0 })(PaddedView)
+);
 
 /**
  * This is the Content side of the Devotional tabbed component.
@@ -22,10 +24,8 @@ const ContentTab = ({
   navigation,
 }) => (
   <ScrollView>
-    <ContentContainer>
-      <H2 padded isLoading={!title && isLoading}>
-        {title}
-      </H2>
+    <ContentContainer isLoading={isLoading}>
+      <H2 padded>{title}</H2>
       {references && references.length ? (
         <ScriptureList
           references={references}

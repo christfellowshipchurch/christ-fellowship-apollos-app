@@ -5,46 +5,46 @@ import { View } from 'react-native';
 import { get } from 'lodash';
 
 import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
-import { Icon, styled, Button } from '@apollosproject/ui-kit';
+import {
+  styled,
+  TouchableScale,
+  MediaThumbnail,
+  MediaThumbnailIcon,
+  MediaThumbnailItem,
+  H6,
+} from '@apollosproject/ui-kit';
 import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
+import { LiveConsumer } from '../../live';
 import GET_CONTENT_MEDIA from './getContentMedia';
-
-const buttonSizeDifferential = 4;
-
-const MediaIcon = Icon; // todo: add back styles
-const MediaButton = styled(({ theme }) => ({
-  width: theme.sizing.baseUnit * buttonSizeDifferential,
-  height: theme.sizing.baseUnit * buttonSizeDifferential,
-  borderRadius: theme.sizing.baseUnit * (buttonSizeDifferential / 2),
-  backgroundColor: theme.colors.secondary,
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderWidth: 0, // remove default button border
-}))(Button);
-
-/** MediaButtton "border styles" live in a seperate component so that Android places it's elevation
- * shadow in the right place. */
-const MediaButtonBorder = styled(({ theme }) => ({
-  borderRadius:
-    theme.sizing.baseUnit * (buttonSizeDifferential / 2) +
-    buttonSizeDifferential, // this is eqivalent to the MediaButton size above + the padding below
-  padding: buttonSizeDifferential, // padding + backgroundColor = MediaButton + "borderStyles"
-  backgroundColor: theme.colors.paper,
-}))(View);
 
 const Container = styled(({ theme }) => ({
   flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginTop:
-    -theme.sizing.baseUnit * (buttonSizeDifferential / 2) -
-    buttonSizeDifferential, // MediaButton size / 2 + border
+  alignItems: 'flex-start',
+  justifyContent: 'flex-start',
+  marginTop: -(theme.sizing.baseUnit * 2.5),
 }))(View);
+
+const StyledMediaThumbnail = styled({ marginVertical: 0 })(MediaThumbnail);
 
 class MediaControls extends PureComponent {
   static propTypes = {
     contentId: PropTypes.string,
   };
+
+  renderPlayButton = ({ action, coverImageSources }) => (
+    <Container>
+      <TouchableScale onPress={action}>
+        <StyledMediaThumbnail image={coverImageSources}>
+          <MediaThumbnailItem centered>
+            <MediaThumbnailIcon name="play" />
+          </MediaThumbnailItem>
+          <MediaThumbnailItem centered bottom>
+            <H6 padded>Play</H6>
+          </MediaThumbnailItem>
+        </StyledMediaThumbnail>
+      </TouchableScale>
+    </Container>
+  );
 
   renderMedia = ({
     videoSource,
@@ -52,67 +52,46 @@ class MediaControls extends PureComponent {
     title,
     parentChannelName,
   }) => (
-      <Mutation mutation={PLAY_VIDEO}>
-        {(play) => (
-          <Container>
-            <MediaButtonBorder>
-              <MediaButton
-                type="primary"
-                onPress={() =>
-                  play({
-                    variables: {
-                      mediaSource: videoSource,
-                      posterSources: coverImageSources,
-                      title,
-                      isVideo: true,
-                      // artist: parentChannelName,
-                    },
-                  })
-                }
-                useForeground
-              >
-                <MediaIcon name="play" />
-              </MediaButton>
-            </MediaButtonBorder>
-          </Container>
-        )}
-      </Mutation>
-    );
+    <Mutation mutation={PLAY_VIDEO}>
+      {(play) =>
+        this.renderPlayButton({
+          action: () =>
+            play({
+              variables: {
+                mediaSource: videoSource,
+                posterSources: coverImageSources,
+                title,
+                isVideo: true,
+                artist: parentChannelName,
+              },
+            }),
+          coverImageSources,
+        })
+      }
+    </Mutation>
+  );
 
-  renderWebView = ({ webViewUrl }) => (
+  renderWebView = ({ webViewUrl, coverImageSources }) => (
     <WebBrowserConsumer>
-      {(openUrl) => (
-        <Container>
-          <MediaButtonBorder>
-            <MediaButton
-              type="primary"
-              onPress={() => openUrl(webViewUrl)}
-              useForeground
-            >
-              <MediaIcon name="play" />
-            </MediaButton>
-          </MediaButtonBorder>
-        </Container>
-      )}
+      {(openUrl) =>
+        this.renderPlayButton({
+          action: () => openUrl(webViewUrl),
+          coverImageSources,
+        })
+      }
     </WebBrowserConsumer>
   );
 
   renderControls = ({
+    liveStream,
     loading,
     error,
     data: {
-      node: {
-        videos,
-        title,
-        parentChannel = {},
-        coverImage = {},
-        liveStream = {},
-      } = {},
+      node: { videos, title, parentChannel = {}, coverImage = {} } = {},
     } = {},
   }) => {
     if (loading || error) return null;
-
-    const isLive = get(liveStream, 'isLive', false);
+    const isLive = !!liveStream;
     const hasLiveStreamContent = !!(
       get(liveStream, 'webViewUrl') || get(liveStream, 'media.sources[0]')
     );
@@ -139,6 +118,7 @@ class MediaControls extends PureComponent {
     if (isLive && get(liveStream, 'webViewUrl')) {
       return this.renderWebView({
         webViewUrl: liveStream.webViewUrl,
+        coverImageSources,
       });
     }
 
@@ -154,12 +134,19 @@ class MediaControls extends PureComponent {
   render() {
     if (!this.props.contentId) return null;
     return (
-      <Query
-        query={GET_CONTENT_MEDIA}
-        variables={{ contentId: this.props.contentId }}
-      >
-        {this.renderControls}
-      </Query>
+      <LiveConsumer contentId={this.props.contentId}>
+        {(liveStream) => (
+          <Query
+            query={GET_CONTENT_MEDIA}
+            fetchPolicy="cache-and-network"
+            variables={{ contentId: this.props.contentId }}
+          >
+            {({ data, loading, error }) =>
+              this.renderControls({ data, loading, error, liveStream })
+            }
+          </Query>
+        )}
+      </LiveConsumer>
     );
   }
 }

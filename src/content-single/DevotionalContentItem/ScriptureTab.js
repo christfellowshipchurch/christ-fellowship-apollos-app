@@ -13,12 +13,17 @@ import HorizontalContentFeed from '../HorizontalContentFeed';
 const ScriptureTab = ({ id, scripture, isLoading, navigation }) => (
   <ScrollView>
     <PaddedView>
-      {scripture.map((ref) => (
+      {scripture.map((ref, i) => (
         <ScriptureItem
           key={ref.id}
           reference={ref.reference}
           html={ref.html}
           isLoading={isLoading}
+          copyright={
+            // only show last copyright
+            scripture.length - 1 === i ? ref.copyright : null
+          }
+          version={ref.version}
         />
       ))}
     </PaddedView>
@@ -40,6 +45,10 @@ ScriptureTab.propTypes = {
       reference: PropTypes.string,
       /** The scripture source to render */
       html: PropTypes.string,
+      /** The copyright of the Bible version */
+      copyright: PropTypes.string,
+      /** The Bible version abbreviation */
+      version: PropTypes.string,
     })
   ),
 };

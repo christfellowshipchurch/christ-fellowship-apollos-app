@@ -8,6 +8,7 @@ import {
   BackgroundView,
   PaddedView,
   H2,
+  StretchyView,
 } from '@apollosproject/ui-kit';
 import MediaControls from '../MediaControls';
 import HTMLContent from '../HTMLContent';
@@ -20,23 +21,30 @@ const UniversalContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   return (
     <BackgroundView>
-      <FlexedScrollView>
-        {coverImageSources.length || loading ? (
-          <GradientOverlayImage
-            isLoading={!coverImageSources.length && loading}
-            source={coverImageSources}
-          />
-        ) : null}
-        <MediaControls contentId={content.id} />
-        <PaddedView>
-          <H2 padded isLoading={!content.title && loading}>
-            {content.title}
-          </H2>
-          <HTMLContent contentId={content.id} />
-          <Features contentId={content.id} />
-        </PaddedView>
-        <HorizontalContentFeed contentId={content.id} />
-      </FlexedScrollView>
+      <StretchyView>
+        {({ Stretchy, ...scrollViewProps }) => (
+          <FlexedScrollView {...scrollViewProps}>
+            {coverImageSources.length || loading ? (
+              <Stretchy>
+                <GradientOverlayImage
+                  isLoading={!coverImageSources.length && loading}
+                  source={coverImageSources}
+                />
+              </Stretchy>
+            ) : null}
+            <MediaControls contentId={content.id} />
+            {/* fixes text/navigation spacing by adding vertical padding if we dont have an image */}
+            <PaddedView vertical={!coverImageSources.length}>
+              <H2 padded isLoading={!content.title && loading}>
+                {content.title}
+              </H2>
+              <HTMLContent contentId={content.id} />
+            </PaddedView>
+            <Features contentId={content.id} />
+            <HorizontalContentFeed contentId={content.id} />
+          </FlexedScrollView>
+        )}
+      </StretchyView>
     </BackgroundView>
   );
 };

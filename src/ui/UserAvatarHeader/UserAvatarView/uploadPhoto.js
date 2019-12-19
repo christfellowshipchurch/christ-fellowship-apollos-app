@@ -9,6 +9,8 @@ const options = {
   storageOptions: {
     skipBackup: true,
     path: 'images',
+    waitUntilSaved: true,
+    cameraRoll: true,
   },
 };
 

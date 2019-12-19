@@ -25,8 +25,8 @@ const MarkerRingView = styled(({ theme }) => ({
   justifyContent: 'center',
 }))(View);
 
-const StyledMarker = memo(({ latitude, longitude, opacityStyle }) => (
-  <Marker coordinate={{ latitude, longitude }}>
+const StyledMarker = memo(({ latitude, longitude, opacityStyle, onPress }) => (
+  <Marker onPress={onPress} coordinate={{ latitude, longitude }}>
     <Animated.View style={opacityStyle}>
       <MarkerRingView>
         <MarkerView />
@@ -41,6 +41,7 @@ StyledMarker.propTypes = {
   latitude: PropTypes.number.isRequired,
   longitude: PropTypes.number.isRequired,
   opacityStyle: PropTypes.shape({}),
+  onPress: PropTypes.func.isRequired,
 };
 
 export default StyledMarker;

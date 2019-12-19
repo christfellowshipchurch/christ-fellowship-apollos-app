@@ -1,10 +1,10 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
 import PropTypes from 'prop-types';
-import ShareButton from 'ChristFellowship/src/ui/ShareButton';
+import ShareContentButtonConnected from 'ChristFellowship/src/ui/ShareContentButtonConnected';
 
 import { SideBySideView, styled } from '@apollosproject/ui-kit';
-import LikeButton from 'ChristFellowship/src/ui/LikeButton';
+import LikeContentButtonConnected from 'ChristFellowship/src/ui/LikeContentButtonConnected';
 import { MediaPlayerSpacer } from '@apollosproject/ui-media-player';
 
 const PositioningView = styled(({ theme }) => ({
@@ -18,12 +18,12 @@ const Container = styled(({ theme }) => ({
   ...Platform.select(theme.shadows.default),
 }))(View);
 
-const ActionContainer = ({ itemId }) => itemId !== '' && (
+const ActionContainer = ({ itemId }) => (
   <Container>
     <MediaPlayerSpacer>
       <PositioningView>
-        <LikeButton itemId={itemId} />
-        <ShareButton itemId={itemId} />
+        <LikeContentButtonConnected itemId={itemId} />
+        <ShareContentButtonConnected itemId={itemId} />
       </PositioningView>
     </MediaPlayerSpacer>
   </Container>
@@ -32,10 +32,6 @@ const ActionContainer = ({ itemId }) => itemId !== '' && (
 ActionContainer.propTypes = {
   content: PropTypes.shape({}),
   itemId: PropTypes.string,
-};
-
-ActionContainer.defaultProps = {
-  itemId: '',
 };
 
 export default ActionContainer;

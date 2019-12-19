@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { LARGE_CARD_FRAGMENT, ACCESSORY_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected'
+import { ACCESSORY_FRAGMENT, BASE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected'
 import { CONTENT_ITEM_FRAGMENT } from '../content-single/getContentItem'
 
 export default gql`
@@ -14,7 +14,7 @@ export default gql`
           edges {
             node {
               ...contentItemFragment
-              ...largeCardFragment
+              ...baseCardFragment
               ...accessoryFragment
             }
           }
@@ -30,8 +30,8 @@ export default gql`
           edges {
             node {
               ...contentItemFragment
-              ...largeCardFragment
               ...accessoryFragment
+              ...baseCardFragment
             }
           }
         }
@@ -39,6 +39,6 @@ export default gql`
     }
   }
   ${CONTENT_ITEM_FRAGMENT}
-  ${LARGE_CARD_FRAGMENT}
   ${ACCESSORY_FRAGMENT}
-`
+  ${BASE_CARD_FRAGMENT}
+`;

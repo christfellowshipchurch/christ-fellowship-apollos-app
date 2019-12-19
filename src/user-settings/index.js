@@ -56,7 +56,7 @@ const UserSettings = ({
       {({ data: { isLoggedIn = false, loading } }) => {
         if (loading) return <ActivityIndicator />
         if (!isLoggedIn) return null
-  
+
         return (
           <UserAvatarHeader
             title={title}

@@ -1,28 +1,12 @@
 package com.christfellowship;
 
 import android.app.Application;
+import android.util.Log;
 
+import com.facebook.react.PackageList;
+import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
+import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
-import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
-import com.reactnativecommunity.geolocation.GeolocationPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
-import com.mybdesign.RNPassKit.RNPassKitPackage;
-import com.airbnb.android.react.maps.MapsPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
-import com.brentvatne.react.ReactVideoPackage;
-import com.horcrux.svg.SvgPackage;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.swmansion.rnscreens.RNScreensPackage;
-import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
-import com.tanguyantoine.react.MusicControl;
-import com.BV.LinearGradient.LinearGradientPackage;
-import com.imagepicker.ImagePickerPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -41,29 +25,11 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new RNPermissionsPackage(),
-            new GeolocationPackage(),
-            new RNGestureHandlerPackage(),
-            new RNFusedLocationPackage(),
-            new AsyncStoragePackage(),
-            new ReactNativePushNotificationPackage(),
-            new RNPassKitPackage(),
-            new MapsPackage(),
-            new RNFetchBlobPackage(),
-            new RNCWebViewPackage(),
-            new ReactVideoPackage(),
-            new SvgPackage(),
-            new SplashScreenReactPackage(),
-            new RNScreensPackage(),
-            new ReactNativeOneSignalPackage(),
-            new MusicControl(),
-            new LinearGradientPackage(),
-            new ImagePickerPackage(),
-            new RNDeviceInfo(),
-            new ReactNativeConfigPackage()
-      );
+      @SuppressWarnings("UnnecessaryLocalVariable")
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      // Packages that cannot be autolinked yet can be added manually here, for example:
+      // packages.add(new MyReactNativePackage());
+      return packages;
     }
 
     @Override

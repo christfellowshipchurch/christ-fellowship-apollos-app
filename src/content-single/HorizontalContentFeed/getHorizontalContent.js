@@ -1,59 +1,29 @@
 import gql from 'graphql-tag';
+import { BASE_CARD_FRAGMENT } from '../../ui/ContentCardConnected/query';
 
 export default gql`
-  query getHorizontalContent($itemId: ID!) {
+  query getHorizontalContent($itemId: ID!, $cursor: String) {
     node(id: $itemId) {
       ... on ContentItem {
         id
-        childContentItemsConnection {
+        childContentItemsConnection(after: $cursor) {
           edges {
+            cursor
             node {
-              id
-              coverImage {
-                name
-                sources {
-                  uri
-                }
-              }
-              parentChannel {
-                id
-                name
-                iconName
-              }
-              title
-              sharing {
-                url
-                message
-                title
-              }
+              ...baseCardFragment
             }
           }
         }
-        siblingContentItemsConnection {
+        siblingContentItemsConnection(after: $cursor) {
           edges {
+            cursor
             node {
-              id
-              coverImage {
-                name
-                sources {
-                  uri
-                }
-              }
-              parentChannel {
-                id
-                name
-                iconName
-              }
-              title
-              sharing {
-                url
-                message
-                title
-              }
+              ...baseCardFragment
             }
           }
         }
       }
     }
   }
+  ${BASE_CARD_FRAGMENT}
 `;

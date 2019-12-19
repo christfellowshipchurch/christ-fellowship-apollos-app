@@ -1,24 +1,19 @@
-import React, { useState } from 'react'
-import {
-    Animated,
-    TouchableOpacity,
-} from 'react-native'
-import PropTypes from 'prop-types'
-import {
-    H6,
-    styled,
-    withTheme
-} from '@apollosproject/ui-kit'
+import React, { useState } from 'react';
+import { Animated, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
+import { H6, styled, withTheme } from '@apollosproject/ui-kit';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import FloatingLabel from '@apollosproject/ui-kit/src/inputs/FloatingLabel'
-import ErrorText from '@apollosproject/ui-kit/src/inputs/ErrorText'
-import InputUnderline from '@apollosproject/ui-kit/src/inputs/InputUnderline'
-import InputWrapper from '@apollosproject/ui-kit/src/inputs/InputWrapper'
-import withFocusAnimation from '@apollosproject/ui-kit/src/inputs/withFocusAnimation'
-import InputAddon, { AddonRow } from '@apollosproject/ui-kit/src/inputs/InputAddon'
-import withInputControlStyles from '@apollosproject/ui-kit/src/inputs/withInputControlStyles'
+import FloatingLabel from '@apollosproject/ui-kit/src/inputs/FloatingLabel';
+import ErrorText from '@apollosproject/ui-kit/src/inputs/ErrorText';
+import InputUnderline from '@apollosproject/ui-kit/src/inputs/InputUnderline';
+import InputWrapper from '@apollosproject/ui-kit/src/inputs/InputWrapper';
+import withFocusAnimation from '@apollosproject/ui-kit/src/inputs/withFocusAnimation';
+import InputAddon, {
+    AddonRow,
+} from '@apollosproject/ui-kit/src/inputs/InputAddon';
+import withInputControlStyles from '@apollosproject/ui-kit/src/inputs/withInputControlStyles';
 
 const StyledH6 = withInputControlStyles(H6);
 const Placeholder = styled(
@@ -26,16 +21,18 @@ const Placeholder = styled(
         color: theme.colors.text.tertiary,
     }),
     'Inputs.Picker.Placeholder'
-)(H6)
+)(H6);
 
 const StyledIcon = withTheme(({ theme, focused, icon, hideIcon }) => ({
     size: 28,
     icon: ['fal', icon],
     color: hideIcon
         ? 'transparent'
-        : (focused ? theme.colors.primary : theme.colors.darkSecondary),
-    marginHorizontal: theme.sizing.baseUnit * 0.5
-}))(FontAwesomeIcon)
+        : focused
+            ? theme.colors.primary
+            : theme.colors.darkSecondary,
+    marginHorizontal: theme.sizing.baseUnit * 0.5,
+}))(FontAwesomeIcon);
 
 const Dropdown = ({
     displayValue,
@@ -58,28 +55,26 @@ const Dropdown = ({
     const rotate = focusAnimation.interpolate({
         inputRange: [0, 1],
         outputRange: ['0deg', '180deg'],
-    })
-    const labelAnimation = value || !label ? new Animated.Value(1) : focusAnimation
-    const animatedStyle = { opacity: labelAnimation, flex: 1 }
+    });
+    const labelAnimation =
+        value || !label ? new Animated.Value(1) : focusAnimation;
+    const animatedStyle = { opacity: labelAnimation, flex: 1 };
 
-    if (focused) onFocus()
-    else onBlur()
+    if (focused) onFocus();
+    else onBlur();
 
     return (
         <InputWrapper style={wrapperStyle}>
             <TouchableOpacity onPress={handleOnPress}>
                 <AddonRow>
                     <InputAddon>
-                        <StyledIcon
-                            focused={focused}
-                            icon={icon}
-                            hideIcon={hideIcon}
-                        />
+                        <StyledIcon focused={focused} icon={icon} hideIcon={hideIcon} />
                     </InputAddon>
                     <Animated.View style={animatedStyle}>
                         <StyledH6 style={{ ...style, paddingTop: 12 }}>
                             {displayValue || <Placeholder>{placeholder}</Placeholder>}
                         </StyledH6>
+                        <FloatingLabel animation={labelAnimation}>{label}</FloatingLabel>
                     </Animated.View>
                     <InputAddon>
                         <Animated.View style={{ transform: [{ rotate }] }}>
@@ -91,15 +86,14 @@ const Dropdown = ({
 
             {children}
 
-            <FloatingLabel animation={labelAnimation}>{label}</FloatingLabel>
             <InputUnderline animation={focusAnimation} />
 
             {error && typeof error === 'string' ? (
                 <ErrorText>{error}</ErrorText>
             ) : null}
         </InputWrapper>
-    )
-}
+    );
+};
 
 Dropdown.propTypes = {
     placeholder: PropTypes.string,
@@ -114,14 +108,14 @@ Dropdown.propTypes = {
     icon: PropTypes.string,
     actionIcon: PropTypes.string,
     hideIcon: PropTypes.bool,
-}
+};
 
 Dropdown.defaultProps = {
     icon: 'ellipsis-v',
     actionIcon: 'angle-down',
     hideIcon: false,
-}
+};
 
-const EnhancedComponent = withFocusAnimation(Dropdown)
+const EnhancedComponent = withFocusAnimation(Dropdown);
 
-export default EnhancedComponent
+export default EnhancedComponent;

@@ -16,7 +16,7 @@ import {
   withIsLoading,
 } from '@apollosproject/ui-kit';
 
-import ContentCard from 'ChristFellowship/src/ui/ContentCardConnected';
+import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
 
 const RowHeader = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -38,7 +38,7 @@ const ButtonLinkSpacing = styled(({ theme }) => ({
 }))(View);
 
 const AndroidTouchableFix = withTheme(({ theme }) => ({
-  borderRadius: theme.sizing.baseUnit / 2,
+  borderRadius: theme.sizing.baseBorderRadius / 2,
 }))(Touchable);
 
 const StyledHorizontalTileFeed = styled(({ theme }) => ({
@@ -74,7 +74,7 @@ class RecentlyLikedTileFeed extends Component {
         });
       }}
     >
-      <ContentCard
+      <ContentCardConnected
         isLoading={item.isLoading}
         tile
         contentId={item.id}
