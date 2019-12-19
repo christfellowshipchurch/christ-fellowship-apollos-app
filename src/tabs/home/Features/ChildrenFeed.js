@@ -1,8 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { useQuery } from 'react-apollo'
-import { get, indexOf } from 'lodash'
-import PropTypes from 'prop-types'
+import { get } from 'lodash'
 import { withNavigation } from 'react-navigation'
 
 import {
@@ -67,7 +66,6 @@ const ChildrenFeed = ({
                     <ContentCardConnected
                         isLoading={loading}
                         contentId={node.id}
-                        {...node}
                         card={i === 0 ? DefaultCard : TileRowCard}
                     />
                 </StyledTouchableScale>

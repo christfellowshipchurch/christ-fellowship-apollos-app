@@ -1,16 +1,12 @@
 import React from 'react'
-import { View } from 'react-native'
 import { useQuery } from 'react-apollo'
 import { get } from 'lodash'
-import PropTypes from 'prop-types'
 import { withNavigation } from 'react-navigation'
 
 import {
     styled,
-    H3,
     TouchableScale,
     FlexedView,
-    FeaturedCard,
     HighlightCard
 } from '@apollosproject/ui-kit'
 
@@ -57,10 +53,15 @@ const AnnoumcementFeed = ({
         {content.map(({ node }, i) => {
             const isRow = (content.length - 2) % 2 === 0 && i === content.length - 1
             let card = HighlightCard
+            let placement = ''
 
             if (i > 0) {
-                if (isRow) card = TileRowCard
-                else card = StackedImageCard
+                if (isRow) {
+                    card = TileRowCard
+                } else {
+                    card = StackedImageCard
+                    placement = i % 2 === 0 ? 'right' : 'left'
+                }
             }
 
             return <StyledTouchableScale
@@ -76,9 +77,8 @@ const AnnoumcementFeed = ({
             >
                 <ContentCardConnected
                     contentId={node.id}
-                    {...node}
-                    coverImage={get(node, 'coverImage', null) || undefined}
                     card={card}
+                    placement={placement}
                 />
             </StyledTouchableScale>
         })}

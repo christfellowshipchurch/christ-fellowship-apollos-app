@@ -72,6 +72,7 @@ const useForm = (props) => {
         submitting,
         setSubmitting,
         resetForm,
+        overrideValues: setValue
     }
 }
 

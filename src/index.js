@@ -14,18 +14,13 @@ import Auth, { ProtectedRoute } from '@apollosproject/ui-auth';
 import Providers from './Providers';
 import NavigationService from './NavigationService';
 import ContentSingle from './content-single';
-// import Event from './event';
 import Tabs from './tabs';
-// import PersonalDetails from './user-settings/PersonalDetails';
-// import ChangePassword from './user-settings/ChangePassword';
-// import ChangePassword from './user-settings/ChangePassword';
-import Location from './profile/UserSettings/Locations';
-// import LandingScreen from './LandingScreen';
+import Location from './locations';
 import UserWebBrowser from './user-web-browser';
-// import Onboarding from './ui/Onboarding';
-
 import Login from './login';
 import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information';
+import { EditCurrentUserProfile } from './profile';
+import Settings from './settings';
 
 const AppStatusBar = withTheme(({ theme }) => ({
   barStyle: 'dark-content',
@@ -46,6 +41,7 @@ const AppContent = createStackNavigator(
     Location,
     Passes,
     UserWebBrowser,
+    EditCurrentUserProfile,
   },
   {
     initialRouteName: 'Tabs',
@@ -56,13 +52,14 @@ const AppContent = createStackNavigator(
 
 const AppInfo = createStackNavigator(
   {
+    Settings,
     PrivacyPolicy,
     TermsOfUse,
     ValueProp,
   },
   {
-    initialRouteName: 'PrivacyPolicy',
-    mode: 'modal',
+    initialRouteName: 'Settings',
+    // mode: 'modal',
     headerMode: 'screen',
   }
 );

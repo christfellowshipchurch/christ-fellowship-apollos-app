@@ -9,6 +9,7 @@ import {
     faText,
     faCheckCircle,
     faTimesCircle,
+    faTimes,
     faBan,
     faAngleDown,
     faEllipsisV,
@@ -37,6 +38,12 @@ import {
     faClock,
     faHandshake,
     faEnvelopeOpenDollar,
+    faUserCircle,
+    faChurch,
+    faList,
+    faEnvelopeOpenText,
+    faCommentLines,
+    faCameraAlt,
 } from '@fortawesome/pro-light-svg-icons'
 
 // load desired icons in an array to not overload the library with more
@@ -50,6 +57,7 @@ const icons = [
     faText,
     faCheckCircle,
     faTimesCircle,
+    faTimes,
     faBan,
     faAngleDown,
     faAngleRight,
@@ -78,6 +86,12 @@ const icons = [
     faClock,
     faHandshake,
     faEnvelopeOpenDollar,
+    faUserCircle,
+    faChurch,
+    faList,
+    faEnvelopeOpenText,
+    faCommentLines,
+    faCameraAlt
 ]
 
 library.add(...icons)

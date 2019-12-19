@@ -64,7 +64,6 @@ const Browse = ({
                 .map(edge => edge.node)
               }
               onChange={({ id }) => {
-                console.log({ id })
                 setActiveFilter(id)
               }}
               selected={activeFilter}

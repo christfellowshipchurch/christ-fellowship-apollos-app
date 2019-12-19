@@ -35,8 +35,8 @@ const Title = styled(({ theme }) => ({
 }))(BodyText);
 
 const StyledCard = styled(({ theme }) => ({
-  width: 133,
-  height: 162,
+  width: 155,
+  height: 175,
   marginHorizontal: theme.sizing.baseUnit * 0.3,
 }))(Card);
 
@@ -91,7 +91,7 @@ class TinyCard extends PureComponent {
 
     return (
       <StyledCard>
-        <View style={{ backgroundColor: 'red' }}>
+        <View>
           <Image source={this.props.coverImage} useGradient={tag !== ''} />
         </View>
 
@@ -102,7 +102,7 @@ class TinyCard extends PureComponent {
             <Tag>{tag}</Tag>
           </TagPositioning>
 
-          <Title numberOfLines={3}>{this.props.title}</Title>
+          <Title numberOfLines={4}>{this.props.title}</Title>
         </Content>
       </StyledCard>
     );

@@ -13,6 +13,8 @@ import {
   FeaturedCard,
 } from '@apollosproject/ui-kit';
 
+import { LiveButton } from '../../live';
+
 import fetchMoreResolver from '../../utils/fetchMoreResolver';
 import ContentCardConnected from '../../ui/ContentCardConnected';
 
@@ -89,9 +91,7 @@ class Home extends PureComponent {
                 refetch={refetch}
                 ListHeaderComponent={
                   <View style={{ backgroundColor: 'white' }}>
-                    {/* <LiveButton
-                      key="HomeFeedLiveButton"
-                    /> */}
+                    <LiveButton key="HomeFeedLiveButton" />
                     <LogoTitle source={require('./wordmark.png')} />
                   </View>
                 }

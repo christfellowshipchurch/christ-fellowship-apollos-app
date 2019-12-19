@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import CampusParts from 'ChristFellowship/src/user-settings/Locations/campusFragment';
+import CampusParts from 'ChristFellowship/src/locations/campusFragment';
 
 export default gql`
   query CurrentUserProfile {

@@ -35,8 +35,9 @@ const TextContainer = styled(({ theme }) => ({
   justifyContent: 'center',
 }))(FlexedView);
 
-const Cell = styled(({ theme }) => ({
-  paddingHorizontal: theme.sizing.baseUnit,
+const Cell = styled(({ theme, placement }) => ({
+  paddingLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.75 : 1),
+  paddingRight: theme.sizing.baseUnit * (placement === 'left' ? 0.75 : 1),
   marginVertical: theme.sizing.baseUnit * 0.75,
 }))(View);
 
@@ -64,11 +65,12 @@ class StackedImageCard extends PureComponent {
     title: PropTypes.string,
     id: PropTypes.string,
     name: PropTypes.string,
+    placement: PropTypes.oneOf(['', 'left', 'right']),
   };
 
   render() {
     return (
-      <Cell>
+      <Cell placement={this.props.placement}>
         <CellImage>
           <ConnectedImage source={this.props.coverImage} isLoading />
           {this.props.icon &&
