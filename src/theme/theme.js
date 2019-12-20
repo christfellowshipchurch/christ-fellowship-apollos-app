@@ -1,4 +1,5 @@
 import Color from 'color';
+import dark from './dark-theme';
 
 /* Add your custom theme definitions below. Anything that is supported in UI-Kit Theme can be
  overridden and/or customized here! */
@@ -43,20 +44,6 @@ import Color from 'color';
  *   },
  * }
  */
-// const overrides = {
-//     Button: {
-//         borderRadius: 8,
-//     },
-//     CardWrapper: {
-//         borderRadius: 8,
-//     },
-//     Card: {
-//         Image: {
-//             borderRadius: 0,
-//             backgroundColor: 'red',
-//         },
-//     },
-// };
 
 const colors = {
     primary: '#00aeef',
@@ -139,10 +126,12 @@ const sizing = {
     },
 };
 
+const types = { dark };
+
 export default {
-    // overrides,
     colors,
     typography,
     overlays,
     sizing,
+    // types,
 };

@@ -112,6 +112,8 @@ PODS:
     - React-Core (= 0.60.5)
   - React-RCTWebSocket (0.60.5):
     - React-Core (= 0.60.5)
+  - ReactNativeDarkMode (0.2.1):
+    - React
   - rn-fetch-blob (0.10.16):
     - React-Core
   - RNAirplay (1.0.0):
@@ -169,6 +171,7 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-RCTWebSocket (from `../node_modules/react-native/Libraries/WebSocket`)
+  - ReactNativeDarkMode (from `../node_modules/react-native-dark-mode`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNAirplay (from `../node_modules/@apollosproject/react-native-airplay-btn`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
@@ -182,10 +185,10 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - OneSignal
-  trunk:
+  https://cdn.cocoapods.org/:
     - boost-for-react-native
+  https://github.com/cocoapods/specs.git:
+    - OneSignal
 
 EXTERNAL SOURCES:
   BVLinearGradient:
@@ -256,6 +259,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   React-RCTWebSocket:
     :path: "../node_modules/react-native/Libraries/WebSocket"
+  ReactNativeDarkMode:
+    :path: "../node_modules/react-native-dark-mode"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
   RNAirplay:
@@ -316,6 +321,7 @@ SPEC CHECKSUMS:
   React-RCTText: b074d89033583d4f2eb5faf7ea2db3a13c7553a2
   React-RCTVibration: 2105b2e0e2b66a6408fc69a46c8a7fb5b2fdade0
   React-RCTWebSocket: cd932a16b7214898b6b7f788c8bddb3637246ac4
+  ReactNativeDarkMode: 0e6e7bdbd387eb949fa7ff238a48f6d6431a428d
   rn-fetch-blob: 651b8d076b43d0d7aa294a3d9ec16c00aab8bef9
   RNAirplay: 75777dd55dafbd3687703c3eb9c290ea6cc43248
   RNCAsyncStorage: 2e2e3feb9bdadc752a026703d8c4065ca912e75a
@@ -330,4 +336,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: cb8a98e082dcbc242189b457272e3aeb05af7a74
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.7.5
