@@ -14,114 +14,126 @@ import { CURRENT_USER } from './queries';
 import { UPDATE_CURRENT_USER } from './mutations';
 
 const EditCurrentUserProfile = ({
-    navigation,
-    firstName,
-    lastName,
-    photo,
-    campus,
-    address: { street1, street2, city, state, postalCode } = {},
-    gender,
-    birthDate,
+  navigation,
+  firstName,
+  lastName,
+  photo,
+  campus,
+  address: { street1, street2, city, state, postalCode } = {},
+  gender,
+  birthDate,
 }) => {
-    const { values, setValue } = useForm({
-        defaultValues: {
-            street1,
-            street2,
-            city,
-            state,
-            postalCode,
-            gender,
-            birthDate,
+  const { values, setValue } = useForm({
+    defaultValues: {
+      street1,
+      street2,
+      city,
+      state,
+      postalCode,
+      gender,
+      birthDate,
+    },
+  });
+  const [updateProfile, { loading, error }] = useMutation(UPDATE_CURRENT_USER, {
+    update: async (cache, { data: { updateProfileFields, updateAddress } }) => {
+      // read the CURRENT_USER query
+      const { currentUser } = cache.readQuery({ query: CURRENT_USER });
+      const { birthDate, gender } = updateProfileFields;
+      // write to the cache the results of the current cache
+      //  and append any new fields that have been returned from the mutation
+      await cache.writeQuery({
+        query: CURRENT_USER,
+        data: {
+          currentUser: {
+            ...currentUser,
+            profile: {
+              ...currentUser.profile,
+              birthDate,
+              gender,
+              address: updateAddress,
+            },
+          },
         },
-    });
-    const [updateProfile, { loading, error }] = useMutation(UPDATE_CURRENT_USER, {
-        update: async (cache, { data: { updateProfileFields, updateAddress } }) => {
-            // read the CURRENT_USER query
-            const { currentUser } = cache.readQuery({ query: CURRENT_USER });
-            const { birthDate, gender } = updateProfileFields;
-            // write to the cache the results of the current cache
-            //  and append any new fields that have been returned from the mutation
-            await cache.writeQuery({
-                query: CURRENT_USER,
-                data: {
-                    currentUser: {
-                        ...currentUser,
-                        profile: {
-                            ...currentUser.profile,
-                            birthDate,
-                            gender,
-                            address: updateAddress,
-                        },
-                    },
-                },
-            });
+      });
 
-            navigation.goBack();
-        },
-    });
+      navigation.goBack();
+    },
+  });
 
-    return (
-        <ProfileHeader
-            firstName={firstName}
-            lastName={lastName}
-            avatar={photo}
-            featuredImage={campus.featuredImage}
-            campus={campus.name}
-            edit
-            onCancel={() => navigation.goBack()}
-            onSave={() => {
-                const address = {
-                    street1: get(values, 'street1', ''),
-                    street2: get(values, 'street2', ''),
-                    city: get(values, 'city', ''),
-                    state: get(values, 'state', ''),
-                    postalCode: get(values, 'postalCode', ''),
-                };
-                const valueKeys = keys(values).filter(
-                    (n) => !keys(address).includes(n)
-                );
-                const profileFields = valueKeys.map((n) => ({
-                    field: upperFirst(n),
-                    value: values[n],
-                }));
+  return (
+    <ProfileHeader
+      firstName={firstName}
+      lastName={lastName}
+      avatar={photo}
+      featuredImage={campus.featuredImage}
+      campus={campus.name}
+      edit
+      onCancel={() => navigation.goBack()}
+      onSave={() => {
+        const address = {
+          street1: get(values, 'street1', ''),
+          street2: get(values, 'street2', ''),
+          city: get(values, 'city', ''),
+          state: get(values, 'state', ''),
+          postalCode: get(values, 'postalCode', ''),
+        };
+        const valueKeys = keys(values).filter(
+          (n) => !keys(address).includes(n)
+        );
+        const profileFields = valueKeys.map((n) => ({
+          field: upperFirst(n),
+          value: values[n],
+        }));
 
-                updateProfile({ variables: { address, profileFields } });
-            }}
-            isLoading={loading}
-        >
-            <EditUserProfile
-                birthDate={get(values, 'birthDate', '')}
-                street1={get(values, 'street1', '')}
-                street2={get(values, 'street2', '')}
-                city={get(values, 'city', '')}
-                state={get(values, 'state', '')}
-                postalCode={get(values, 'postalCode', '')}
-                gender={get(values, 'gender', '')}
-                campus={campus.name}
-                onChange={(key, value) => setValue(key, value)}
-                isLoading={loading}
-            />
-        </ProfileHeader>
-    );
+        updateProfile({ variables: { address, profileFields } });
+      }}
+      isLoading={loading}
+    >
+      <EditUserProfile
+        birthDate={get(values, 'birthDate', '')}
+        street1={get(values, 'street1', '')}
+        street2={get(values, 'street2', '')}
+        city={get(values, 'city', '')}
+        state={get(values, 'state', '')}
+        postalCode={get(values, 'postalCode', '')}
+        gender={get(values, 'gender', '')}
+        campus={campus.name}
+        onChange={(key, value) => setValue(key, value)}
+        isLoading={loading}
+      />
+    </ProfileHeader>
+  );
 };
 
 const EditCurrentUserProfileConnected = ({ navigation }) => {
-    const {
-        loading,
-        error,
-        data: { currentUser: { profile } = {} } = {},
-    } = useQuery(CURRENT_USER, {
-        fetchPolicy: 'cache-and-network',
-    });
+  const {
+    loading,
+    error,
+    data: { currentUser: { profile } = {} } = {},
+  } = useQuery(CURRENT_USER, {
+    fetchPolicy: 'cache-and-network',
+  });
 
-    if (loading) return <ActivityIndicator />;
-    if (error) return null;
+  if (loading) return <ActivityIndicator />;
+  if (error) return null;
 
-    return <EditCurrentUserProfile {...profile} navigation={navigation} />;
+  return (
+    <EditCurrentUserProfile
+      {...profile}
+      navigation={navigation}
+      address={{
+        street1: get(profile, 'address.street1', ''),
+        street2: get(profile, 'address.street2', ''),
+        city: get(profile, 'address.city', ''),
+        state: get(profile, 'address.state', ''),
+        postalCode: get(profile, 'address.postalCode', ''),
+      }}
+    />
+  );
 };
 
 EditCurrentUserProfileConnected.navigationOptions = {
-    header: null,
+  header: null,
 };
 
 export default withNavigation(EditCurrentUserProfileConnected);
