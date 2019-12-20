@@ -38,8 +38,8 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-# project.xcworkspace
-.DS_Store
+project.xcworkspace
+# .DS_Store
 
 # misc
 .env
