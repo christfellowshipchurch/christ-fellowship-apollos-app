@@ -1,5 +1,5 @@
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { forEach } from 'lodash'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { forEach } from 'lodash';
 import {
     faHome,
     faCog,
@@ -44,7 +44,8 @@ import {
     faEnvelopeOpenText,
     faCommentLines,
     faCameraAlt,
-} from '@fortawesome/pro-light-svg-icons'
+    faShareSquare,
+} from '@fortawesome/pro-light-svg-icons';
 
 // load desired icons in an array to not overload the library with more
 // icons than needed (for performance)
@@ -91,10 +92,11 @@ const icons = [
     faList,
     faEnvelopeOpenText,
     faCommentLines,
-    faCameraAlt
-]
+    faCameraAlt,
+    faShareSquare,
+];
 
-library.add(...icons)
+library.add(...icons);
 
 // iterate over each icon and add it to the library
 // forEach(icons, n => library.add(n))

@@ -43,20 +43,20 @@ import Color from 'color';
  *   },
  * }
  */
-const overrides = {
-    Button: {
-        borderRadius: 8,
-    },
-    CardWrapper: {
-        borderRadius: 8,
-    },
-    Card: {
-        Image: {
-            borderRadius: 0,
-            backgroundColor: 'red',
-        },
-    },
-};
+// const overrides = {
+//     Button: {
+//         borderRadius: 8,
+//     },
+//     CardWrapper: {
+//         borderRadius: 8,
+//     },
+//     Card: {
+//         Image: {
+//             borderRadius: 0,
+//             backgroundColor: 'red',
+//         },
+//     },
+// };
 
 const colors = {
     primary: '#00aeef',
@@ -140,7 +140,7 @@ const sizing = {
 };
 
 export default {
-    overrides,
+    // overrides,
     colors,
     typography,
     overlays,
