@@ -38,7 +38,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-project.xcworkspace
+# project.xcworkspace
 .DS_Store
 
 # misc
