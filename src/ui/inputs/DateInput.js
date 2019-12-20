@@ -1,50 +1,49 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
-import moment from 'moment'
-import DateTimePicker from 'react-native-modal-datetime-picker'
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import { useDarkMode } from 'react-native-dark-mode';
 
-import DropdownWrapper from './DropdownWrapper'
+import DropdownWrapper from './DropdownWrapper';
 
 const DateInput = (props) => {
-    const [focused, setFocused] = useState(false)
-    const {
-        value,
-        onConfirm,
-        label,
-        ...dateInputProps
-    } = props
+    const [focused, setFocused] = useState(false);
+    const { value, onConfirm, label, ...dateInputProps } = props;
+    const isDarkMode = useDarkMode();
 
-    const date = moment.utc(value).toDate()
+    const date = moment.utc(value).toDate();
 
     return (
         <DropdownWrapper
             {...props}
             label={label}
             handleOnPress={() => setFocused(!focused)}
-            focused={focused} >
+            focused={focused}
+        >
             <DateTimePicker
                 {...dateInputProps}
                 // date={date}
                 isVisible={focused}
                 onConfirm={(date) => {
-                    setFocused(false)
-                    onConfirm(date)
+                    setFocused(false);
+                    onConfirm(date);
                 }}
+                isDarkModeEnabled={isDarkMode}
                 onCancel={() => setFocused(false)}
             />
-        </DropdownWrapper >
-    )
-}
+        </DropdownWrapper>
+    );
+};
 
 DateInput.propTypes = {
     value: PropTypes.string,
-    onConfirm: PropTypes.func
-}
+    onConfirm: PropTypes.func,
+};
 
 DateInput.defaultProps = {
     value: moment().toString(),
     icon: 'calendar-alt',
-    label: moment().format('MMM DD, YYYY')
-}
+    label: moment().format('MMM DD, YYYY'),
+};
 
-export default DateInput
+export default DateInput;
