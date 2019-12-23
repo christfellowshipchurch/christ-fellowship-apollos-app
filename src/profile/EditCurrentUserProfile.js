@@ -1,11 +1,12 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { useQuery, useMutation } from 'react-apollo';
 import { withNavigation } from 'react-navigation';
 import { get, keys, upperFirst } from 'lodash';
 
 import { useForm } from 'ChristFellowship/src/hooks';
 
-import { ActivityIndicator } from '@apollosproject/ui-kit';
+import { ActivityIndicator, BackgroundView } from '@apollosproject/ui-kit';
 
 import ProfileHeader from './ProfileHeader';
 import EditUserProfile from './EditUserProfile';
@@ -61,47 +62,51 @@ const EditCurrentUserProfile = ({
   });
 
   return (
-    <ProfileHeader
-      firstName={firstName}
-      lastName={lastName}
-      avatar={photo}
-      featuredImage={campus.featuredImage}
-      campus={campus.name}
-      edit
-      onCancel={() => navigation.goBack()}
-      onSave={() => {
-        const address = {
-          street1: get(values, 'street1', ''),
-          street2: get(values, 'street2', ''),
-          city: get(values, 'city', ''),
-          state: get(values, 'state', ''),
-          postalCode: get(values, 'postalCode', ''),
-        };
-        const valueKeys = keys(values).filter(
-          (n) => !keys(address).includes(n)
-        );
-        const profileFields = valueKeys.map((n) => ({
-          field: upperFirst(n),
-          value: values[n],
-        }));
+    <BackgroundView>
+      <StatusBar barStyle="light-content" />
 
-        updateProfile({ variables: { address, profileFields } });
-      }}
-      isLoading={loading}
-    >
-      <EditUserProfile
-        birthDate={get(values, 'birthDate', '')}
-        street1={get(values, 'street1', '')}
-        street2={get(values, 'street2', '')}
-        city={get(values, 'city', '')}
-        state={get(values, 'state', '')}
-        postalCode={get(values, 'postalCode', '')}
-        gender={get(values, 'gender', '')}
+      <ProfileHeader
+        firstName={firstName}
+        lastName={lastName}
+        avatar={photo}
+        featuredImage={campus.featuredImage}
         campus={campus.name}
-        onChange={(key, value) => setValue(key, value)}
+        edit
+        onCancel={() => navigation.goBack()}
+        onSave={() => {
+          const address = {
+            street1: get(values, 'street1', ''),
+            street2: get(values, 'street2', ''),
+            city: get(values, 'city', ''),
+            state: get(values, 'state', ''),
+            postalCode: get(values, 'postalCode', ''),
+          };
+          const valueKeys = keys(values).filter(
+            (n) => !keys(address).includes(n)
+          );
+          const profileFields = valueKeys.map((n) => ({
+            field: upperFirst(n),
+            value: values[n],
+          }));
+
+          updateProfile({ variables: { address, profileFields } });
+        }}
         isLoading={loading}
-      />
-    </ProfileHeader>
+      >
+        <EditUserProfile
+          birthDate={get(values, 'birthDate', '')}
+          street1={get(values, 'street1', '')}
+          street2={get(values, 'street2', '')}
+          city={get(values, 'city', '')}
+          state={get(values, 'state', '')}
+          postalCode={get(values, 'postalCode', '')}
+          gender={get(values, 'gender', '')}
+          campus={campus.name}
+          onChange={(key, value) => setValue(key, value)}
+          isLoading={loading}
+        />
+      </ProfileHeader>
+    </BackgroundView>
   );
 };
 

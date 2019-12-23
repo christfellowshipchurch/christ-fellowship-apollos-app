@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
+import { useDarkMode } from 'react-native-dark-mode';
 
 import { ErrorCard, ThemeMixin } from '@apollosproject/ui-kit';
 
@@ -78,16 +79,16 @@ class ContentSingle extends PureComponent {
   renderWithData = ({ loading, error, data = {} }) => {
     if (error) return <ErrorCard error={error} />;
 
-    console.log({ loading, error, data });
-
     const content = data.node || {};
 
+    const isDarkMode = useDarkMode();
+    const defaultTheme = isDarkMode ? 'dark' : 'light';
     const { theme = {}, id } = content;
 
     return (
       <ThemeMixin
         mixin={{
-          type: get(theme, 'type', 'light').toLowerCase(),
+          type: get(theme, 'type', defaultTheme).toLowerCase(),
           colors: get(theme, 'colors'),
         }}
       >

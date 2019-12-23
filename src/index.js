@@ -14,6 +14,7 @@ import Auth, { ProtectedRoute } from '@apollosproject/ui-auth';
 import Providers from './Providers';
 import NavigationService from './NavigationService';
 import ContentSingle from './content-single';
+import { RowContentFeed } from './content-feed';
 import Tabs from './tabs';
 import Location from './locations';
 import UserWebBrowser from './user-web-browser';
@@ -21,11 +22,7 @@ import Login from './login';
 import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information';
 import { EditCurrentUserProfile } from './profile';
 import Settings from './settings';
-
-const AppStatusBar = withTheme(({ theme }) => ({
-  barStyle: 'dark-content',
-  backgroundColor: theme.colors.paper,
-}))(StatusBar);
+import Events from './tabs/more/events';
 
 const ProtectedRouteWithSplashScreen = (props) => {
   const handleOnRouteChange = () => SplashScreen.hide();
@@ -64,12 +61,43 @@ const AppInfo = createStackNavigator(
   }
 );
 
+// TODO : refactor this... it's garbage
+const AppContentFeeds = createStackNavigator(
+  {
+    RowContentFeed,
+  },
+  {
+    initialRouteName: 'RowContentFeed',
+    // mode: 'modal',
+    headerMode: 'screen',
+    navigationOptions: {
+      gesturesEnabled: true,
+    },
+  }
+);
+
+const EventFeeds = createStackNavigator(
+  {
+    Events,
+  },
+  {
+    initialRouteName: 'Events',
+    // mode: 'modal',
+    headerMode: 'screen',
+    navigationOptions: {
+      gesturesEnabled: true,
+    },
+  }
+);
+
 const AppNavigator = createStackNavigator(
   {
     ProtectedRoute: ProtectedRouteWithSplashScreen,
     Tabs: AppContent,
     LandingScreen: Login,
     AppInfo,
+    AppContentFeeds,
+    EventFeeds,
   },
   {
     initialRouteName: 'ProtectedRoute',
@@ -85,7 +113,6 @@ const AppContainer = createAppContainer(AppNavigator);
 const App = () => (
   <Providers>
     <BackgroundView>
-      <AppStatusBar barStyle="dark-content" />
       <AppContainer
         ref={(navigatorRef) => {
           NavigationService.setTopLevelNavigator(navigatorRef);

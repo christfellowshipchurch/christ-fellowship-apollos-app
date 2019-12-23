@@ -1,20 +1,20 @@
-import { createStackNavigator } from 'react-navigation'
-import { RowContentFeed } from 'ChristFellowship/src/content-feed'
-import tabBarIcon from '../tabBarIcon'
-import Browse from './Browse'
+import { createStackNavigator } from 'react-navigation';
+import { RowContentFeed } from 'ChristFellowship/src/content-feed';
+import tabBarIcon from '../tabBarIcon';
+import Browse from './Browse';
 
 export const BrowseNavigator = createStackNavigator(
   {
     Browse,
-    RowContentFeed,
+    // RowContentFeed,
   },
   {
     initialRouteName: 'Browse',
   }
-)
+);
 
 BrowseNavigator.navigationOptions = {
   tabBarIcon: tabBarIcon('search'),
-}
+};
 
-export default BrowseNavigator
+export default BrowseNavigator;

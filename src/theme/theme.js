@@ -133,5 +133,5 @@ export default {
     typography,
     overlays,
     sizing,
-    // types,
+    types,
 };

@@ -1,16 +1,11 @@
-import React, { useState } from 'react'
-import { useQuery } from 'react-apollo'
-import {
-  View,
-  Platform,
-  Linking,
-  Picker as NativePicker
-} from 'react-native'
-import { get, find } from 'lodash'
-import PropTypes from 'prop-types'
-import moment from 'moment'
+import React, { useState } from 'react';
+import { useQuery } from 'react-apollo';
+import { View, Platform, Linking, Picker as NativePicker } from 'react-native';
+import { get, find } from 'lodash';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
   styled,
   withTheme,
@@ -19,37 +14,38 @@ import {
   H5,
   BodyText,
   Touchable,
-} from '@apollosproject/ui-kit'
-import PickerList from '@apollosproject/ui-kit/src/inputs/Picker/PickerList'
+} from '@apollosproject/ui-kit';
+import PickerList from '@apollosproject/ui-kit/src/inputs/Picker/PickerList';
 
-import { GET_EVENT_SCHEDULES } from './queries'
+import { GET_EVENT_SCHEDULES } from './queries';
 
 const parseSchedulesByCampus = (schedules = []) => {
   // Set an empty array for adding dates
-  let parsed = []
+  let parsed = [];
 
   // Loop through each schedule and add new campus specific dates
-  schedules.forEach(schedule => {
-    const { campuses } = schedule
-    const campusDates = campuses.map(campus => ({
+  schedules.forEach((schedule) => {
+    const { campuses } = schedule;
+    const campusDates = campuses.map((campus) => ({
       campus,
       dates: schedule.dates,
-      location: schedule.location
-    }))
+      location: schedule.location,
+    }));
 
-    parsed = [...parsed, ...campusDates]
-  })
+    parsed = [...parsed, ...campusDates];
+  });
 
-  return parsed
-}
+  return parsed;
+};
 
 const Icon = withTheme(({ theme, icon, size }) => ({
   icon,
   size,
+  color: theme.colors.text.tertiary,
   style: {
     marginRight: theme.sizing.baseUnit,
-  }
-}))(FontAwesomeIcon)
+  },
+}))(FontAwesomeIcon);
 
 const TextIconRow = ({ icon, fontSize, fontWeight, children }) => (
   <FlexedView
@@ -60,153 +56,137 @@ const TextIconRow = ({ icon, fontSize, fontWeight, children }) => (
     }}
   >
     <Icon icon={['fal', icon]} size={fontSize} />
-    <BodyText style={{ fontWeight, fontSize }}>
-      {children}
-    </BodyText>
+    <BodyText style={{ fontWeight, fontSize }}>{children}</BodyText>
   </FlexedView>
-)
+);
 
 const ScheduleContainer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.75,
-}))(View)
+}))(View);
 
-const ScheduleList = ({ dates }) => dates.map((n, i) => {
-  const date = moment(n)
+const ScheduleList = ({ dates }) =>
+  dates.map((n, i) => {
+    const date = moment(n);
 
-  return <ScheduleContainer key={i}>
-    <TextIconRow
-      key={`ScheduleListDate:${i}`}
-      icon="calendar-alt"
-      fontSize={20}
-      fontWeight='bold'
-    >
-      {date.format('ddd MMM D')}
-    </TextIconRow>
-    <TextIconRow
-      key={`ScheduleListTime:${i}`}
-      icon="clock"
-      fontSize={20}
-    >
-      {date.format('LT')}
-    </TextIconRow>
-  </ScheduleContainer>
-
-})
+    return (
+      <ScheduleContainer key={i}>
+        <TextIconRow
+          key={`ScheduleListDate:${i}`}
+          icon="calendar-alt"
+          fontSize={20}
+          fontWeight="bold"
+        >
+          {date.format('ddd MMM D')}
+        </TextIconRow>
+        <TextIconRow key={`ScheduleListTime:${i}`} icon="clock" fontSize={20}>
+          {date.format('LT')}
+        </TextIconRow>
+      </ScheduleContainer>
+    );
+  });
 
 const CampusContainer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 1,
   marginBottom: theme.sizing.baseUnit * 1,
   borderBottomWidth: 1,
-  borderBottomColor: theme.colors.lightSecondary
-}))(View)
+  borderBottomColor: theme.colors.lightSecondary,
+}))(View);
 
-const CampusSelection = ({
-  campus,
-  loading,
-  campuses,
-  onChange
-}) => {
-  const [focused, setFocused] = useState(false)
-  const [value, setValue] = useState(campus)
+const CampusSelection = ({ campus, loading, campuses, onChange }) => {
+  const [focused, setFocused] = useState(false);
+  const [value, setValue] = useState(campus);
 
-  if (!loading && campuses.length === 0) return (
-    <BodyText style={{ fontStyle: 'italic' }}>
-      Check back soon for dates and times
-    </BodyText>
-  )
+  if (!loading && campuses.length === 0)
+    return (
+      <BodyText style={{ fontStyle: 'italic' }}>
+        Check back soon for dates and times
+      </BodyText>
+    );
 
   return (
-    <Touchable
-      onPress={() => setFocused(!focused)}
-    >
+    <Touchable onPress={() => setFocused(!focused)}>
       <CampusContainer>
-        <H3 isLoading={loading}>
-          {campus}
-        </H3>
+        <H3 isLoading={loading}>{campus}</H3>
 
-        {!loading &&
+        {!loading && (
           <BodyText>
-            {campus === ''
-              ? 'Select Campus'
-              : 'Change Campus'}
+            {campus === '' ? 'Select Campus' : 'Change Campus'}
           </BodyText>
-        }
+        )}
 
         <PickerList
           selectedValue={value}
-          // Sets the value of the Picker locally, 
+          // Sets the value of the Picker locally,
           //    but without triggering the callback func
           onValueChange={(newValue) => setValue(newValue)}
           // When the user manually presses the DONE button,
           //    we fire the callback function with the new value
           onRequestClose={() => {
-            setFocused(false)
-            onChange(value)
+            setFocused(false);
+            onChange(value);
           }}
           focused={focused}
         >
-          <NativePicker.Item
-            label={'Select a Campus'}
-            value={''}
-          />
-          {campuses.map((n, i) =>
+          <NativePicker.Item label={'Select a Campus'} value={''} />
+          {campuses.map((n, i) => (
             <NativePicker.Item
               key={i}
               label={n.campus.name}
               value={n.campus.name}
             />
-          )}
+          ))}
         </PickerList>
       </CampusContainer>
     </Touchable>
-  )
-}
+  );
+};
 
 const ContentContainer = styled(({ theme }) => ({
   paddingVertical: theme.sizing.baseUnit * 1.5,
-}))(View)
+}))(View);
 
 const DirectionsTouchable = withTheme(({ theme, location }) => ({
   onPress: Platform.select({
     ios: () => {
-      Linking.openURL(`http://maps.apple.com/maps?daddr=${location}`)
+      Linking.openURL(`http://maps.apple.com/maps?daddr=${location}`);
     },
     android: () => {
-      Linking.openURL(`http://maps.google.com/maps?daddr=${location}`)
-    }
+      Linking.openURL(`http://maps.google.com/maps?daddr=${location}`);
+    },
   }),
   style: {
     marginVertical: theme.sizing.baseUnit,
-  }
-}))(Touchable)
+  },
+}))(Touchable);
 
-const EventSchedules = ({
-  contentId
-}) => {
-  const [payload, setPayload] = useState({})
-  const { loading, error, data } = useQuery(GET_EVENT_SCHEDULES,
-    {
-      fetchPolicy: 'cache-and-network',
-      variables: { id: contentId },
-      onCompleted: (data) => {
-        const defaultCampus = get(data, 'currentUser.profile.campus.name')
-        const schedules = get(data, 'node.childContentItemsConnection.edges', [])
-          .map(edge => edge.node)
-        const schedulesByCampus = parseSchedulesByCampus(schedules)
-        const selectedCampus = schedulesByCampus.length == 1
+const EventSchedules = ({ contentId }) => {
+  const [payload, setPayload] = useState({});
+  const { loading, error, data } = useQuery(GET_EVENT_SCHEDULES, {
+    fetchPolicy: 'cache-and-network',
+    variables: { id: contentId },
+    onCompleted: (data) => {
+      const defaultCampus = get(data, 'currentUser.profile.campus.name');
+      const schedules = get(
+        data,
+        'node.childContentItemsConnection.edges',
+        []
+      ).map((edge) => edge.node);
+      const schedulesByCampus = parseSchedulesByCampus(schedules);
+      const selectedCampus =
+        schedulesByCampus.length == 1
           ? schedulesByCampus[0]
-          : find(schedulesByCampus, (n) => n.campus.name === defaultCampus)
+          : find(schedulesByCampus, (n) => n.campus.name === defaultCampus);
 
-        setPayload(selectedCampus)
-      }
-    }
-  )
+      setPayload(selectedCampus);
+    },
+  });
 
   // Map the children to a collection of content items
-  const schedules = get(data, 'node.childContentItemsConnection.edges', [])
-    .map(edge => edge.node)
-  const schedulesByCampus = parseSchedulesByCampus(schedules)
-  const location = get(payload, 'location', '')
+  const schedules = get(data, 'node.childContentItemsConnection.edges', []).map(
+    (edge) => edge.node
+  );
+  const schedulesByCampus = parseSchedulesByCampus(schedules);
+  const location = get(payload, 'location', '');
 
   return (
     <ContentContainer>
@@ -221,19 +201,18 @@ const EventSchedules = ({
 
       <ScheduleList dates={get(payload, 'dates', [])} />
 
-      {!!location && location !== '' &&
-        <DirectionsTouchable location={location}>
-          <H5>
-            {location}
-          </H5>
-        </DirectionsTouchable>}
-
+      {!!location &&
+        location !== '' && (
+          <DirectionsTouchable location={location}>
+            <H5>{location}</H5>
+          </DirectionsTouchable>
+        )}
     </ContentContainer>
-  )
-}
+  );
+};
 
 EventSchedules.propTypes = {
   contentId: PropTypes.string,
-}
+};
 
-export default EventSchedules
+export default EventSchedules;

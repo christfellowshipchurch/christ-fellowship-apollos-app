@@ -1,31 +1,42 @@
 import Color from 'color';
 
-const dark = ({ colors, alpha }) => ({
+const dark = ({ colors: themeColors, alpha }) => ({
+    overrides: {
+        Card: {
+            Content: {
+                borderColor: themeColors.white,
+                borderWidth: 1,
+            },
+        },
+    },
     colors: {
+        primary: themeColors.primary,
+        screen: themeColors.black,
+        paper: Color(themeColors.darkPrimary).darken(0.5),
+
         text: {
-            primary: colors.lightPrimary,
-            secondary: colors.lightSecondary,
-            tertiary: colors.lightTertiary,
-            link: colors.secondary,
+            primary: themeColors.lightPrimary,
+            secondary: themeColors.lightSecondary,
+            tertiary: themeColors.lightTertiary,
+            link: themeColors.lightSecondary,
         },
         background: {
-            screen: colors.black,
-            paper: colors.darkPrimary,
-            accent: Color(colors.darkTertiary)
+            screen: themeColors.black,
+            paper: Color(themeColors.darkPrimary).darken(0.5),
+            accent: Color(themeColors.darkTertiary)
                 .fade(alpha.medium)
                 .string(),
-            inactive: colors.darkTertiary,
+            inactive: themeColors.darkTertiary,
         },
         shadows: {
-            default: Color(colors.darkTertiary)
-                .fade(alpha.low)
-                .string(),
+            // default: Color(themeColors.darkPrimary).fade(0.05),
+            default: themeColors.transparent,
         },
         action: {
-            default: colors.darkTertiary,
-            primary: colors.primary,
-            secondary: colors.secondary,
-            tertiary: colors.tertiary,
+            default: themeColors.primary,
+            primary: themeColors.primary,
+            secondary: themeColors.secondary,
+            tertiary: themeColors.tertiary,
         },
     },
 });

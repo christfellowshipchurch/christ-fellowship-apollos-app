@@ -110,7 +110,10 @@ const EventContentItem = ({ content, loading }) => {
               <HTMLContent contentId={content.id} />
               <Features contentId={content.id} />
             </PaddedView>
-            <HorizontalContentFeed contentId={content.id} />
+            <HorizontalContentFeed
+              contentId={content.id}
+              relatedTitle="Events"
+            />
           </FlexedScrollView>
         )}
       </StretchyView>

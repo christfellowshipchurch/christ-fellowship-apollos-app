@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { Providers } from '@apollosproject/ui-kit';
 import { AnalyticsProvider } from '@apollosproject/ui-analytics';
 import { MediaPlayerProvider } from '@apollosproject/ui-media-player';
@@ -15,8 +16,7 @@ import AuthProvider from './AuthProvider';
 const AppProviders = (props) => {
   const isDarkMode = useDarkMode();
   const theme = isDarkMode ? 'dark' : 'light';
-
-  console.log({ theme });
+  const barStyle = isDarkMode ? 'light-content' : 'dark-content';
 
   return (
     <ClientProvider {...props}>
@@ -27,8 +27,9 @@ const AppProviders = (props) => {
         >
           <MediaPlayerProvider>
             <AnalyticsProvider>
+              <StatusBar barStyle={barStyle} />
               <Providers
-                themeInput={customTheme}
+                themeInput={{ ...customTheme, type: theme }}
                 iconInput={customIcons}
                 {...props}
               />
