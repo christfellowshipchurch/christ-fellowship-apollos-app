@@ -1,60 +1,55 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { View } from 'react-native'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import {
     styled,
     BackgroundView,
     H4,
     BodyText,
-    PaddedView
-} from '@apollosproject/ui-kit'
+    PaddedView,
+} from '@apollosproject/ui-kit';
 
-// Container for the Fields under the 
+// Container for the Fields under the
 export const ContentContainer = styled(({ theme }) => ({
     marginVertical: theme.sizing.baseUnit * 1.5,
-}))(View)
+    backgroundColor: theme.colors.transparent,
+}))(View);
 
 // Read Only Fields that show on the Profile
 export const FieldContainer = styled(({ theme }) => ({
     paddingHorizontal: theme.sizing.baseUnit * 1.5,
     marginVertical: theme.sizing.baseUnit * 0.75,
-}))(View)
+}))(View);
 
 const StyledBodyText = styled(({ theme }) => ({
-    color: theme.colors.darkSecondary
-}))(BodyText)
+    color: theme.colors.text.secondary,
+}))(BodyText);
 
 export const ProfileField = ({ title, content }) => {
-    const contentLines = typeof content === 'string'
-        ? [content]
-        : content
-    const nonEmptyContentLine = contentLines.filter(n => n && n !== '')
+    const contentLines = typeof content === 'string' ? [content] : content;
+    const nonEmptyContentLine = contentLines.filter((n) => n && n !== '');
 
-    return <FieldContainer>
-        <H4>
-            {title}
-        </H4>
-        {nonEmptyContentLine.map((n, i) =>
-            <StyledBodyText
-                key={`FieldContainer:${title}:${i}`}
-            >
-                {n}
-            </StyledBodyText>
-        )}
-    </FieldContainer>
-}
+    return (
+        <FieldContainer>
+            <H4>{title}</H4>
+            {nonEmptyContentLine.map((n, i) => (
+                <StyledBodyText key={`FieldContainer:${title}:${i}`}>
+                    {n}
+                </StyledBodyText>
+            ))}
+        </FieldContainer>
+    );
+};
 
 ProfileField.propTypes = {
     title: PropTypes.string,
     content: PropTypes.oneOfType([
         PropTypes.string,
-        PropTypes.arrayOf(
-            PropTypes.string
-        )
-    ])
-}
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
+};
 
 ProfileField.defaultProps = {
     title: '',
-    content: []
-}
+    content: [],
+};

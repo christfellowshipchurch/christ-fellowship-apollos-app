@@ -31,7 +31,7 @@ const Title = styled(({ theme }) => ({
   fontSize: 12,
   lineHeight: 14,
   fontWeight: 'bold',
-  color: theme.colors.darkSecondary,
+  color: theme.colors.text.primary,
 }))(BodyText);
 
 const StyledCard = styled(({ theme }) => ({

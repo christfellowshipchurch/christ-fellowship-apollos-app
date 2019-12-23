@@ -29,6 +29,7 @@ const StyledH6 = styled(({ theme }) => ({
 
 const Title = styled(({ theme }) => ({
   fontWeight: 'bold',
+  color: theme.colors.text.primary,
 }))(H5);
 
 const TextContainer = styled(({ theme }) => ({

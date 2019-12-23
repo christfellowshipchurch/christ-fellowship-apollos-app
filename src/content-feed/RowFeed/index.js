@@ -1,8 +1,9 @@
-import React, { PureComponent } from 'react'
-import { View, SafeAreaView } from 'react-native'
-import { Query } from 'react-apollo'
-import { get } from 'lodash'
-import PropTypes from 'prop-types'
+import React, { PureComponent } from 'react';
+import { View } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
+import { Query } from 'react-apollo';
+import { get } from 'lodash';
+import PropTypes from 'prop-types';
 
 import {
   BackgroundView,
@@ -11,29 +12,31 @@ import {
   H3,
   styled,
   withTheme,
-  Touchable
-} from '@apollosproject/ui-kit'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+  Touchable,
+} from '@apollosproject/ui-kit';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import { TileRowCard } from 'ChristFellowship/src/ui/Cards'
-import fetchMoreResolver from 'ChristFellowship/src/utils/fetchMoreResolver'
+import { TileRowCard } from 'ChristFellowship/src/ui/Cards';
+import fetchMoreResolver from 'ChristFellowship/src/utils/fetchMoreResolver';
 
-import GET_CONTENT_FEED from '../getContentFeed'
+import GET_CONTENT_FEED from '../getContentFeed';
 
 const HeaderTitle = styled(({ theme }) => ({
-}))(H3)
+  flex: 4,
+  textAlign: 'center',
+}))(H3);
 
 const HeaderIconContainer = styled(({ theme }) => ({
   flex: 1,
-}))(Touchable)
+}))(Touchable);
 
 const HeaderContainer = styled(({ theme }) => ({
   paddingTop: theme.sizing.baseUnit * 4,
   paddingHorizontal: theme.sizing.baseUnit,
   justifyContent: 'center',
   alignItems: 'center',
-  flexDirection: 'row'
-}))(FlexedView)
+  flexDirection: 'row',
+}))(FlexedView);
 
 const BackIcon = withTheme(({ theme }) => ({
   color: theme.colors.darkSecondary,
@@ -41,30 +44,23 @@ const BackIcon = withTheme(({ theme }) => ({
   size: 42,
   style: {
     flex: 1,
-    justifyContent: 'flex-start'
-  }
-}))(FontAwesomeIcon)
+    justifyContent: 'flex-start',
+  },
+}))(FontAwesomeIcon);
 
-export const RowFeedHeaderComponent = ({
-  navigation,
-  title,
-}) => (
-    <HeaderContainer>
-      <HeaderIconContainer
-        onPress={() => navigation.goBack()}
-      >
-        <BackIcon />
-      </HeaderIconContainer>
+export const RowFeedHeaderComponent = ({ navigation, title }) => (
+  <HeaderContainer>
+    <HeaderIconContainer onPress={() => navigation.goBack()}>
+      <BackIcon />
+    </HeaderIconContainer>
 
-      <HeaderTitle>
-        {title}
-      </HeaderTitle>
+    <HeaderTitle>{title}</HeaderTitle>
 
-      <HeaderIconContainer>
-        {/* 3 flex containers to help with even spacing */}
-      </HeaderIconContainer>
-    </HeaderContainer>
-  )
+    <HeaderIconContainer>
+      {/* 3 flex containers to help with even spacing */}
+    </HeaderIconContainer>
+  </HeaderContainer>
+);
 
 /**
  * This is where the component description lives
@@ -73,12 +69,12 @@ export const RowFeedHeaderComponent = ({
 class ContentRowFeed extends PureComponent {
   /** Function for React Navigation to set information in the header. */
   static navigationOptions = ({ navigation }) => {
-    const itemTitle = navigation.getParam('itemTitle', 'Content Channel')
+    const itemTitle = navigation.getParam('itemTitle', 'Content Channel');
     return {
       title: itemTitle,
-      header: null
-    }
-  }
+      header: null,
+    };
+  };
 
   static propTypes = {
     /** Functions passed down from React Navigation to use in navigating to/from
@@ -88,7 +84,7 @@ class ContentRowFeed extends PureComponent {
       getParam: PropTypes.func,
       navigate: PropTypes.func,
     }),
-  }
+  };
 
   /** Function that is called when a card in the feed is pressed.
    * Takes the user to the ContentSingle
@@ -97,27 +93,27 @@ class ContentRowFeed extends PureComponent {
     this.props.navigation.navigate('ContentSingle', {
       itemId: item.id,
       sharing: item.sharing,
-    })
-  }
+    });
+  };
 
   render() {
-    const { navigation } = this.props
-    const itemId = navigation.getParam('itemId', [])
-    const itemTitle = navigation.getParam('itemTitle', 'Content Channel')
+    const { navigation } = this.props;
+    const itemId = navigation.getParam('itemId', []);
+    const itemTitle = navigation.getParam('itemTitle', 'Content Channel');
 
     return (
       <BackgroundView style={{ flex: 1 }}>
-        <RowFeedHeaderComponent
-          navigation={navigation}
-          title={itemTitle}
-        />
+        <RowFeedHeaderComponent navigation={navigation} title={itemTitle} />
         <Query
           query={GET_CONTENT_FEED}
           variables={{ itemId }}
           fetchPolicy="cache-and-network"
         >
           {({ loading, error, data, refetch, fetchMore, variables }) => (
-            <View style={{ flex: 10 }}>
+            <SafeAreaView
+              style={{ flex: 10 }}
+              forceInset={{ top: 'never', bottom: 'always' }}
+            >
               <FeedView
                 // ListHeaderComponent={}
                 ListItemComponent={TileRowCard}
@@ -128,7 +124,11 @@ class ContentRowFeed extends PureComponent {
                 ).map(({ node }) => ({
                   ...node,
                   coverImage: get(node, 'coverImage.sources', []),
-                  label: get(node, 'tags[0]', navigation.getParam('itemTitle', 'Content Channel'))
+                  label: get(
+                    node,
+                    'tags[0]',
+                    navigation.getParam('itemTitle', 'Content Channel')
+                  ),
                 }))}
                 fetchMore={fetchMoreResolver({
                   collectionName: 'node.childContentItemsConnection',
@@ -141,12 +141,12 @@ class ContentRowFeed extends PureComponent {
                 refetch={refetch}
                 onPressItem={this.handleOnPress}
               />
-            </View>
+            </SafeAreaView>
           )}
         </Query>
       </BackgroundView>
-    )
+    );
   }
 }
 
-export default ContentRowFeed
+export default ContentRowFeed;

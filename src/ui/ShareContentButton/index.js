@@ -22,7 +22,7 @@ const ShareContentButton = enhance(({ content, theme }) => (
       };
       return (
         <Touchable onPress={onPress}>
-          <Icon name={'share'} fill={theme.colors.secondary} />
+          <Icon name={'share'} fill={theme.colors.primary} />
         </Touchable>
       );
     }}

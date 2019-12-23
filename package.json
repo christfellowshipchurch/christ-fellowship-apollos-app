@@ -87,7 +87,7 @@
     "react-native-linear-gradient": "^2.5.4",
     "react-native-maps": "0.25.0",
     "react-native-modal-datetime-picker": "7.6.0",
-    "react-native-music-control": "0.10.5",
+    "react-native-music-control": "0.10.7",
     "react-native-onesignal": "3.3.2",
     "react-native-passkit-wallet": "^0.1.4",
     "react-native-permissions": "^2.0.5",

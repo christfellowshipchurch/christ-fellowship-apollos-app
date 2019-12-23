@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import { Image, View } from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaView } from 'react-navigation';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -13,6 +13,7 @@ import {
   FeaturedCard,
 } from '@apollosproject/ui-kit';
 
+import { useDarkMode } from 'react-native-dark-mode';
 import { LiveButton } from '../../live';
 
 import fetchMoreResolver from '../../utils/fetchMoreResolver';
@@ -24,13 +25,22 @@ import GET_USER_FEED from './getUserFeed';
 import GET_CAMPAIGN_CONTENT_ITEM from './getCampaignContentItem';
 import GET_FEED_FEATURES from './getFeedFeatures';
 
+import WordmarkImg from './wordmark.png';
+import WordmarkVariantImg from './wordmark_variant.png';
+
 const LogoTitle = styled(({ theme }) => ({
+  marginTop: theme.sizing.baseUnit * 0.5,
   height: theme.sizing.baseUnit,
-  margin: theme.sizing.baseUnit,
   alignSelf: 'center',
   resizeMode: 'contain',
   width: '50%',
 }))(Image);
+
+const Wordmark = () => {
+  const isDarkMode = useDarkMode();
+
+  return <LogoTitle source={isDarkMode ? WordmarkVariantImg : WordmarkImg} />;
+};
 
 export const COLOR_MAP = ['primary', 'success', 'alert', 'warning'];
 
@@ -65,7 +75,7 @@ class Home extends PureComponent {
   render() {
     return (
       <BackgroundView>
-        <SafeAreaView>
+        <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
           <Query
             query={GET_FEED_FEATURES}
             variables={{
@@ -90,12 +100,12 @@ class Home extends PureComponent {
                 error={error}
                 refetch={refetch}
                 ListHeaderComponent={
-                  <View style={{ backgroundColor: 'white' }}>
+                  <SafeAreaView forceInset={{ bottom: 'never', top: 'never' }}>
                     <LiveButton key="HomeFeedLiveButton" />
-                    <LogoTitle source={require('./wordmark.png')} />
-                  </View>
+                    <Wordmark />
+                  </SafeAreaView>
                 }
-                stickyHeaderIndices={[0]}
+                // stickyHeaderIndices={[0]}
                 renderItem={this.renderItem}
               />
             )}

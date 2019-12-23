@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
@@ -27,8 +28,12 @@ const loadingStateObject = {
   },
 };
 
+const Container = styled(({ theme }) => ({
+  paddingBottom: theme.sizing.baseUnit,
+}))(View);
+
 const Title = styled(({ theme }) => ({
-  paddingHorizontal: theme.sizing.baseUnit,
+  marginLeft: theme.sizing.baseUnit,
 }))(H3);
 
 class HorizontalContentFeed extends Component {
@@ -52,17 +57,17 @@ class HorizontalContentFeed extends Component {
         title={get(item, 'title', '')}
         {...cardProps}
         coverImage={get(item, 'coverImage.sources', [])}
-        /*
-       * These are props that are not yet being passed in the data.
-       * We will need to make sure they get added back when that data is available.
-       * byLine={item.content.speaker}
-       * date={item.meta.date}
-       */
+      /*
+* These are props that are not yet being passed in the data.
+* We will need to make sure they get added back when that data is available.
+* byLine={item.content.speaker}
+* date={item.meta.date}
+*/
       />
     </TouchableScale>
   );
 
-  renderFeed = ({ data, loading, error, fetchMore }) => {
+  renderFeed = ({ data, loading, error, fetchMore, relatedTitle = '' }) => {
     if (error) return null;
     if (loading) return null;
 
@@ -79,40 +84,44 @@ class HorizontalContentFeed extends Component {
     const initialScrollIndex = currentIndex === -1 ? 0 : currentIndex;
 
     return content && content.length ? (
-      <HorizontalTileFeed
-        content={content}
-        loadingStateObject={loadingStateObject}
-        renderItem={this.renderItem}
-        initialScrollIndex={initialScrollIndex}
-        getItemLayout={(itemData, index) => ({
-          // We need to pass this function so that initialScrollIndex will work.
-          length: 240,
-          offset: 240 * index,
-          index,
-        })}
-        onEndReached={() =>
-          fetchMore({
-            query: GET_HORIZONTAL_CONTENT,
-            variables: { cursor, itemId: this.props.contentId },
-            updateQuery: (previousResult, { fetchMoreResult }) => {
-              const connection = isParent
-                ? 'childContentItemsConnection'
-                : 'siblingContentItemsConnection';
-              const newEdges = get(fetchMoreResult.node, connection, []).edges;
+      <Container>
+        <Title>{`Related ${relatedTitle}`}</Title>
+        <HorizontalTileFeed
+          content={content}
+          loadingStateObject={loadingStateObject}
+          renderItem={this.renderItem}
+          initialScrollIndex={initialScrollIndex}
+          getItemLayout={(itemData, index) => ({
+            // We need to pass this function so that initialScrollIndex will work.
+            length: 240,
+            offset: 240 * index,
+            index,
+          })}
+          onEndReached={() =>
+            fetchMore({
+              query: GET_HORIZONTAL_CONTENT,
+              variables: { cursor, itemId: this.props.contentId },
+              updateQuery: (previousResult, { fetchMoreResult }) => {
+                const connection = isParent
+                  ? 'childContentItemsConnection'
+                  : 'siblingContentItemsConnection';
+                const newEdges = get(fetchMoreResult.node, connection, [])
+                  .edges;
 
-              return {
-                node: {
-                  ...previousResult.node,
-                  [connection]: {
-                    ...previousResult.node[connection],
-                    edges: [...edges, ...newEdges],
+                return {
+                  node: {
+                    ...previousResult.node,
+                    [connection]: {
+                      ...previousResult.node[connection],
+                      edges: [...edges, ...newEdges],
+                    },
                   },
-                },
-              };
-            },
-          })
-        }
-      />
+                };
+              },
+            })
+          }
+        />
+      </Container>
     ) : null;
   };
 
@@ -124,7 +133,12 @@ class HorizontalContentFeed extends Component {
         query={GET_HORIZONTAL_CONTENT}
         variables={{ itemId: this.props.contentId }}
       >
-        {this.renderFeed}
+        {(queryProps) =>
+          this.renderFeed({
+            ...queryProps,
+            relatedTitle: this.props.relatedTitle,
+          })
+        }
       </Query>
     );
   }

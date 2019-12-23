@@ -41,7 +41,10 @@ const UniversalContentItem = ({ content, loading }) => {
               <HTMLContent contentId={content.id} />
             </PaddedView>
             <Features contentId={content.id} />
-            <HorizontalContentFeed contentId={content.id} />
+            <HorizontalContentFeed
+              contentId={content.id}
+              relatedTitle="Content"
+            />
           </FlexedScrollView>
         )}
       </StretchyView>

@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
-import { StatusBar } from 'react-native'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
+import PropTypes from 'prop-types';
 
-import {
-    BackgroundView,
-} from '@apollosproject/ui-kit'
-import ProfileHeader from '../ProfileHeader'
-import EditUserProfile from '../EditUserProfile'
+import { BackgroundView } from '@apollosproject/ui-kit';
+import ProfileHeader from '../ProfileHeader';
+import EditUserProfile from '../EditUserProfile';
 
-import { ContentContainer, ProfileField } from '../components'
+import { ContentContainer, ProfileField } from '../components';
 
 const UserProfile = ({
     firstName,
@@ -22,8 +20,8 @@ const UserProfile = ({
     states,
     ...profileProps
 }) => {
-    const [editMode, setEditMode] = useState(edit)
-    const [editValues, setEditValues] = useState({})
+    const [editMode, setEditMode] = useState(edit);
+    const [editValues, setEditValues] = useState({});
 
     return (
         <BackgroundView>
@@ -37,24 +35,27 @@ const UserProfile = ({
                 onEdit={onEdit}
                 onSave={onSave}
             >
-                {editMode
-                    ? <EditUserProfile
+                {editMode ? (
+                    <EditUserProfile
                         onValueChange={(values) => setEditValues(values)}
                         defaultValues={profileProps}
                         states={states}
                     />
-                    : <ContentContainer>
-                        {fields.map((n, i) => <ProfileField
-                            key={`UserProfileField:${i}`}
-                            title={n.title}
-                            content={n.content}
-                        />)}
-                    </ContentContainer>}
-
+                ) : (
+                        <ContentContainer>
+                            {fields.map((n, i) => (
+                                <ProfileField
+                                    key={`UserProfileField:${i}`}
+                                    title={n.title}
+                                    content={n.content}
+                                />
+                            ))}
+                        </ContentContainer>
+                    )}
             </ProfileHeader>
         </BackgroundView>
-    )
-}
+    );
+};
 
 UserProfile.defaultProps = {
     firstName: '',
@@ -72,7 +73,7 @@ UserProfile.defaultProps = {
     edit: false,
     onSave: () => true,
     states: [],
-}
+};
 
 UserProfile.propTypes = {
     firstName: PropTypes.string,
@@ -91,15 +92,13 @@ UserProfile.propTypes = {
             title: PropTypes.string,
             content: PropTypes.oneOfType([
                 PropTypes.string,
-                PropTypes.arrayOf(
-                    PropTypes.string
-                )
+                PropTypes.arrayOf(PropTypes.string),
             ]),
         })
     ),
     edit: PropTypes.bool,
     onSave: PropTypes.func,
     states: PropTypes.array,
-}
+};
 
-export default UserProfile
+export default UserProfile;
