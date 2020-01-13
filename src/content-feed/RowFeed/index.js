@@ -48,19 +48,23 @@ const BackIcon = withTheme(({ theme }) => ({
   },
 }))(FontAwesomeIcon);
 
-export const RowFeedHeaderComponent = ({ navigation, title }) => (
-  <HeaderContainer>
-    <HeaderIconContainer onPress={() => navigation.goBack()}>
-      <BackIcon />
-    </HeaderIconContainer>
+export const RowFeedHeaderComponent = ({
+  navigation,
+  title,
+  navigationKey = null,
+}) => (
+    <HeaderContainer>
+      <HeaderIconContainer onPress={() => navigation.goBack(navigationKey)}>
+        <BackIcon />
+      </HeaderIconContainer>
 
-    <HeaderTitle>{title}</HeaderTitle>
+      <HeaderTitle>{title}</HeaderTitle>
 
-    <HeaderIconContainer>
-      {/* 3 flex containers to help with even spacing */}
-    </HeaderIconContainer>
-  </HeaderContainer>
-);
+      <HeaderIconContainer>
+        {/* 3 flex containers to help with even spacing */}
+      </HeaderIconContainer>
+    </HeaderContainer>
+  );
 
 /**
  * This is where the component description lives
