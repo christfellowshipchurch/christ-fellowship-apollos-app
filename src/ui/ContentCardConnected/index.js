@@ -4,7 +4,10 @@ import { Query } from 'react-apollo';
 import { get } from 'lodash';
 
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
-import { formatDate } from 'ChristFellowship/src/utils/events';
+import {
+  formatDate,
+  getStartDateFromEvents,
+} from 'ChristFellowship/src/utils/events';
 import GET_CONTENT_CARD from './query';
 
 export { BASE_CARD_FRAGMENT } from './query';
@@ -29,6 +32,7 @@ const ContentCardConnected = ({
       ...otherProps,
       tile,
       isLoading: true,
+      title: '',
     });
 
   return (
@@ -47,7 +51,7 @@ const ContentCardConnected = ({
         const coverImage = get(node, 'coverImage.sources', undefined);
         const label =
           typename === 'EventContentItem'
-            ? formatDate(node)
+            ? getStartDateFromEvents(node)
             : get(otherProps, 'label', '');
 
         return React.createElement(card, {

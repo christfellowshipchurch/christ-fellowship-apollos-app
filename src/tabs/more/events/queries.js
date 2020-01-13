@@ -1,27 +1,31 @@
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 export const GET_EVENTS = gql`
-    query getEvents {
-        allEvents {
-            id
-            title
-            summary
+  query getEvents {
+    allEvents {
+      id
+      title
+      summary
 
-            startDate
-            endDate
+      startDate
+      endDate
 
-            coverImage {
-                name
-                sources {
-                  uri
-                }
-              }
-
-            sharing {
-                url
-                title
-                message
-            }
+      coverImage {
+        name
+        sources {
+          uri
         }
+      }
+
+      sharing {
+        url
+        title
+        message
+      }
+
+      events {
+        start
+      }
     }
-`
+  }
+`;

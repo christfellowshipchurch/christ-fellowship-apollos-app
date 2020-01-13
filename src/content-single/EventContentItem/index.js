@@ -19,7 +19,7 @@ import MediaControls from '../MediaControls';
 import HTMLContent from '../HTMLContent';
 import HorizontalContentFeed from '../HorizontalContentFeed';
 import Features from '../Features';
-import EventSchedule from '../EventSchedule';
+import EventDateTimes from '../EventDateTimes';
 
 const FlexedScrollView = styled({ flex: 1 })(ScrollView);
 
@@ -39,18 +39,21 @@ const Summary = styled(({ theme }) => ({
 }))(BodyText);
 
 const StyledButton = styled(({ theme }) => ({
-  marginVertical: theme.sizing.baseUnit * 0.25,
+  marginVertical: theme.sizing.baseUnit * 0.5,
 }))(Button);
 
 const Subtitle = withTheme(({ theme, extraSpacing }) => ({
   style: {
-    marginTop: extraSpacing ? theme.sizing.baseUnit * 2 : theme.sizing.baseUnit,
+    marginTop: extraSpacing
+      ? theme.sizing.baseUnit
+      : theme.sizing.baseUnit * 0.5,
   },
 }))(H4);
 
 const EventContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
+
   return (
     <BackgroundView>
       <StretchyView>
@@ -87,7 +90,11 @@ const EventContentItem = ({ content, loading }) => {
 
             <MediaControls contentId={content.id} />
             <PaddedView>
-              <EventSchedule contentId={content.id} />
+              <EventDateTimes
+                contentId={content.id}
+                events={content.events}
+                loading={loading}
+              />
 
               {callsToAction.length > 0 && (
                 <WebBrowserConsumer>
