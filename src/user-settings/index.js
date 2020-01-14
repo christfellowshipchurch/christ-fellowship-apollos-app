@@ -1,7 +1,7 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import { get } from 'lodash'
-import { Query, Mutation } from 'react-apollo'
+import React from 'react';
+import { View, Text } from 'react-native';
+import { get } from 'lodash';
+import { Query, Mutation } from 'react-apollo';
 import {
   PaddedView,
   TableView,
@@ -12,26 +12,24 @@ import {
   Touchable,
   styled,
   ActivityIndicator,
-  H4
-} from '@apollosproject/ui-kit'
+  H4,
+} from '@apollosproject/ui-kit';
 
-import UserAvatarHeader from '../ui/UserAvatarHeader'
-import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth'
-import HAS_EMAIL_USER_LOGIN from './hasEmailUserLogin'
-import ChangePassword from './ChangePassword'
+import { GET_LOGIN_STATE, LOGOUT } from '@apollosproject/ui-auth';
+import UserAvatarHeader from '../ui/UserAvatarHeader';
+import HAS_EMAIL_USER_LOGIN from './hasEmailUserLogin';
+import ChangePassword from './ChangePassword';
 
 const RowHeader = styled(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
   paddingVertical: theme.sizing.baseUnit,
-}))(PaddedView)
+}))(PaddedView);
 
 const RowLink = ({ title, icon, onPress }) => (
   <React.Fragment>
-    <Touchable
-      onPress={onPress}
-    >
+    <Touchable onPress={onPress}>
       <Cell>
         <CellIcon name={icon} />
         <CellText>{title}</CellText>
@@ -40,28 +38,25 @@ const RowLink = ({ title, icon, onPress }) => (
     </Touchable>
     <Divider />
   </React.Fragment>
-)
+);
 
 const Name = styled({
   flexGrow: 1,
-})(View)
+})(View);
 
 const UserSettings = ({
   navigation,
   title = 'Account Settings',
   campusRowTitle = 'My Home Campus',
-  logoutText = 'Log Out'
+  logoutText = 'Log Out',
 }) => (
     <Query query={GET_LOGIN_STATE} fetchPolicy="cache-and-network">
       {({ data: { isLoggedIn = false, loading } }) => {
-        if (loading) return <ActivityIndicator />
-        if (!isLoggedIn) return null
+        if (loading) return <ActivityIndicator />;
+        if (!isLoggedIn) return null;
 
         return (
-          <UserAvatarHeader
-            title={title}
-            navigation={navigation}
-            edit >
+          <UserAvatarHeader title={title} navigation={navigation} edit>
             {({ campus }) => (
               <React.Fragment>
                 <RowHeader>
@@ -71,31 +66,33 @@ const UserSettings = ({
                   <RowLink
                     title={get(campus, 'name', 'Select My Location')}
                     icon={'pin'}
-                    onPress={() => navigation.navigate('Location')} />
+                    onPress={() => navigation.navigate('Location')}
+                  />
                 </TableView>
 
-                <Query query={HAS_EMAIL_USER_LOGIN} fetchPolicy="cache-and-network">
+                <Query
+                  query={HAS_EMAIL_USER_LOGIN}
+                  fetchPolicy="cache-and-network"
+                >
                   {({
                     data: { hasEmailUserLogin = false },
                     loading: lookingForEmailUserLogin,
-                    error
+                    error,
                   }) => {
-                    if (lookingForEmailUserLogin) return <ActivityIndicator />
-                    if (error) return null
+                    if (lookingForEmailUserLogin) return <ActivityIndicator />;
+                    if (error) return null;
 
-                    return hasEmailUserLogin
-                      ? (
-                        <React.Fragment>
-                          <RowHeader>
-                            <H4>Change My Password</H4>
-                          </RowHeader>
-                          <TableView>
-                            <ChangePassword />
-                          </TableView>
-                        </React.Fragment>
-                      ) : null
+                    return hasEmailUserLogin ? (
+                      <React.Fragment>
+                        <RowHeader>
+                          <H4>Change My Password</H4>
+                        </RowHeader>
+                        <TableView>
+                          <ChangePassword />
+                        </TableView>
+                      </React.Fragment>
+                    ) : null;
                   }}
-
                 </Query>
 
                 <TableView>
@@ -107,9 +104,9 @@ const UserSettings = ({
                         onPress={async () => {
                           // trigger handle logout
                           // rest of logout navigation and logic is handled on the Connect screen
-                          await handleLogout()
-                        }} />
-
+                          await handleLogout();
+                        }}
+                      />
                     )}
                   </Mutation>
                 </TableView>
@@ -117,17 +114,18 @@ const UserSettings = ({
                 <View style={{ height: 1000 }}>
                   <RowHeader>
                     <Name>
-                      <Text>Scroll up and down to see the Profile resize in real time</Text>
+                      <Text>
+                        Scroll up and down to see the Profile resize in real time
+                    </Text>
                     </Name>
                   </RowHeader>
                 </View>
               </React.Fragment>
             )}
           </UserAvatarHeader>
-
-        )
+        );
       }}
     </Query>
-  )
+  );
 
-export default UserSettings
+export default UserSettings;
