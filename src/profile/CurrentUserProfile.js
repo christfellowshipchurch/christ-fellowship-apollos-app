@@ -9,7 +9,6 @@ import { ActivityIndicator } from '@apollosproject/ui-kit';
 import UserProfile from './UserProfile';
 
 import { CURRENT_USER } from './queries';
-import { UPDATE_CURRENT_USER } from './mutations';
 
 const CurrentUserProfile = ({ navigation }) => {
     const {

@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import {
-    ScrollView,
-    Dimensions,
-    View,
-} from 'react-native'
-import { SafeAreaView, withNavigation } from 'react-navigation'
-import PropTypes from 'prop-types'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import React, { useState, useEffect } from 'react';
+import { ScrollView, Dimensions, View } from 'react-native';
+import { SafeAreaView, withNavigation } from 'react-navigation';
+import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import {
     withTheme,
@@ -20,11 +16,11 @@ import {
     Touchable,
     ThemeMixin,
     TouchableScale,
-    H4
-} from '@apollosproject/ui-kit'
-import ChangeAvatar from '../ChangeAvatar'
+    H4,
+} from '@apollosproject/ui-kit';
+import ChangeAvatar from '../ChangeAvatar';
 
-const FlexedScrollView = styled({ flex: 1 })(ScrollView)
+const FlexedScrollView = styled({ flex: 1 })(ScrollView);
 
 const FeaturedImage = withTheme(({ theme }) => ({
     // Sets the ratio of the image
@@ -36,13 +32,13 @@ const FeaturedImage = withTheme(({ theme }) => ({
     maintainAspectRatio: true,
     overlayColor: theme.colors.black,
     overlayType: 'gradient-user-profile',
-}))(GradientOverlayImage)
+}))(GradientOverlayImage);
 
 const FlexedViewCenterColumns = styled(({ theme }) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-}))(FlexedView)
+}))(FlexedView);
 
 const ProfileContainer = styled(({ theme }) => ({
     width: '100%',
@@ -50,8 +46,9 @@ const ProfileContainer = styled(({ theme }) => ({
     position: 'absolute',
     top: 0,
     left: 0,
-    padding: theme.sizing.baseUnit * 1,
-}))(SafeAreaView)
+    padding: theme.sizing.baseUnit,
+    marginTop: theme.sizing.baseUnit * 1.5,
+}))(View);
 
 const NavigationContainer = styled(({ theme }) => ({
     flex: 1,
@@ -63,17 +60,17 @@ const NavigationContainer = styled(({ theme }) => ({
     top: 0,
     left: 0,
     padding: theme.sizing.baseUnit * 1.5,
-    zIndex: 1000 // ui hack to make sure the navigation is always accessible
-}))(SafeAreaView)
+    zIndex: 1000, // ui hack to make sure the navigation is always accessible
+}))(SafeAreaView);
 
 const ProfileName = styled(({ theme }) => ({
-    marginTop: theme.sizing.baseUnit * 0.5
-}))(H3)
+    marginTop: theme.sizing.baseUnit * 0.5,
+}))(H3);
 
 const CampusName = styled(({ theme }) => ({
     fontWeight: 'normal',
     fontSize: 14,
-}))(BodyText)
+}))(BodyText);
 
 const EditButton = styled(({ theme, editMode, disabled }) => ({
     borderColor: editMode ? theme.colors.primary : theme.colors.white,
@@ -85,7 +82,7 @@ const EditButton = styled(({ theme, editMode, disabled }) => ({
     fontWeight: 'bold',
     marginVertical: theme.sizing.baseUnit,
     opacity: disabled ? 0.5 : 1,
-}))(BodyText)
+}))(BodyText);
 
 const ProfileHeader = ({
     firstName,
@@ -101,86 +98,72 @@ const ProfileHeader = ({
     onSave,
     onCancel,
     isLoading,
-}) => {
-    return (
+}) => (
         <StretchyView>
             {({ Stretchy, ...scrollViewProps }) => (
                 <FlexedScrollView {...scrollViewProps}>
                     {!!avatar && (
                         <Stretchy>
-                            <FeaturedImage
-                                source={featuredImage}
-                            />
+                            <FeaturedImage source={featuredImage} />
                         </Stretchy>
                     )}
                     <ThemeMixin mixin={{ type: 'dark' }}>
-                        <NavigationContainer>
+                        <NavigationContainer forceInset={{ bottom: 'always', top: 'always' }}>
                             <FlexedView>
-                                {editMode && <Touchable
-                                    onPress={onCancel}
-                                    disabled={isLoading}
-                                >
-                                    <BodyText>
-                                        Cancel
-                                    </BodyText>
-                                </Touchable>}
+                                {editMode && (
+                                    <Touchable onPress={onCancel} disabled={isLoading}>
+                                        <BodyText>Cancel</BodyText>
+                                    </Touchable>
+                                )}
                             </FlexedView>
 
-                            <FlexedView
-                                style={{ alignItems: 'center' }}
-                            >
-                                {editMode && <BodyText style={{ fontWeight: 'bold' }}>
-                                    Edit Profile
-                                </BodyText>}
+                            <FlexedView style={{ alignItems: 'center' }}>
+                                {editMode && (
+                                    <BodyText style={{ fontWeight: 'bold' }}>Edit Profile</BodyText>
+                                )}
                             </FlexedView>
 
-                            <FlexedView
-                                style={{ alignItems: 'flex-end' }}
-                            >
-                                {!editMode && <Touchable
-                                    onPress={() => navigation.navigate('Settings')}
-                                    disabled={isLoading}
-                                >
-                                    <FontAwesomeIcon icon={['fal', "cog"]} fill={'white'} size={24} />
-                                </Touchable>}
+                            <FlexedView style={{ alignItems: 'flex-end' }}>
+                                {!editMode && (
+                                    <Touchable
+                                        onPress={() => navigation.navigate('Settings')}
+                                        disabled={isLoading}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={['fal', 'cog']}
+                                            fill={'white'}
+                                            size={24}
+                                        />
+                                    </Touchable>
+                                )}
                             </FlexedView>
                         </NavigationContainer>
 
                         <ProfileContainer>
                             <ThemeMixin mixin={{ type: 'dark' }}>
-
                                 <FlexedViewCenterColumns>
-                                    {editMode
-                                        ? <ChangeAvatar />
-                                        : <Avatar
-                                            source={avatar}
-                                            size="large"
-                                        />}
+                                    {editMode ? (
+                                        <ChangeAvatar />
+                                    ) : (
+                                            <Avatar source={avatar} size="large" />
+                                        )}
 
-                                    <ProfileName>
-                                        {`${firstName} ${lastName}`}
-                                    </ProfileName>
+                                    <ProfileName>{`${firstName} ${lastName}`}</ProfileName>
 
-                                    <CampusName>
-                                        {campus}
-                                    </CampusName>
+                                    <CampusName>{campus}</CampusName>
 
                                     <TouchableScale
                                         onPress={() => {
-                                            if (editMode) onSave()
-                                            onEdit()
+                                            if (editMode) onSave();
+                                            onEdit();
                                         }}
                                         disabled={isLoading}
                                     >
-                                        <EditButton
-                                            editMode={editMode}
-                                            disabled={isLoading}
-                                        >
+                                        <EditButton editMode={editMode} disabled={isLoading}>
                                             {editButtonText[`${editMode}`]}
                                         </EditButton>
                                     </TouchableScale>
                                 </FlexedViewCenterColumns>
-
                             </ThemeMixin>
                         </ProfileContainer>
                     </ThemeMixin>
@@ -189,8 +172,7 @@ const ProfileHeader = ({
                 </FlexedScrollView>
             )}
         </StretchyView>
-    )
-}
+    );
 
 ProfileHeader.defaultProps = {
     firstName: '',
@@ -204,13 +186,13 @@ ProfileHeader.defaultProps = {
     campus: '',
     edit: false,
     editButtonText: {
-        'true': 'Save',
-        'false': 'Edit Profile'
+        true: 'Save',
+        false: 'Edit Profile',
     },
     onEdit: () => true,
     onSave: () => true,
     isLoading: false,
-}
+};
 
 ProfileHeader.propTypes = {
     firstName: PropTypes.string,
@@ -224,12 +206,12 @@ ProfileHeader.propTypes = {
     }),
     edit: PropTypes.bool,
     editButtonText: PropTypes.shape({
-        'true': PropTypes.string,
-        'false': PropTypes.string,
+        true: PropTypes.string,
+        false: PropTypes.string,
     }),
     onEdit: PropTypes.func,
     onSave: PropTypes.func,
     isLoading: PropTypes.bool,
-}
+};
 
-export default withNavigation(ProfileHeader)
+export default withNavigation(ProfileHeader);
