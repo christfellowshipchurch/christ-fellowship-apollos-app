@@ -45,14 +45,18 @@ const Settings = ({ navigation, title }) => {
                     icon="list"
                     title="Terms & Conditions"
                     onPress={() =>
-                      openUrl('https://beta.christfellowship.church')
+                      openUrl(
+                        'https://beta.christfellowship.church/terms-of-use'
+                      )
                     }
                   />
                   <Cell
                     icon="lock"
                     title="Privacy Policy"
                     onPress={() =>
-                      openUrl('https://beta.christfellowship.church')
+                      openUrl(
+                        'https://beta.christfellowship.church/privacy-policy'
+                      )
                     }
                   />
                   <Cell
