@@ -1,12 +1,11 @@
 // import hoistNonReactStatic from 'hoist-non-react-statics';
 import React from 'react';
-import { StatusBar } from 'react-native';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 
 import './icon-library';
 
-import { BackgroundView, withTheme } from '@apollosproject/ui-kit';
+import { BackgroundView } from '@apollosproject/ui-kit';
 import Passes from '@apollosproject/ui-passes';
 import { MediaPlayer } from '@apollosproject/ui-media-player';
 import Auth, { ProtectedRoute } from '@apollosproject/ui-auth';
@@ -22,7 +21,6 @@ import Login from './login';
 import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information';
 import { EditCurrentUserProfile } from './profile';
 import Settings from './settings';
-import Events from './tabs/more/events';
 
 const ProtectedRouteWithSplashScreen = (props) => {
   const handleOnRouteChange = () => SplashScreen.hide();
@@ -56,7 +54,6 @@ const AppInfo = createStackNavigator(
   },
   {
     initialRouteName: 'Settings',
-    // mode: 'modal',
     headerMode: 'screen',
   }
 );
@@ -76,20 +73,6 @@ const AppContentFeeds = createStackNavigator(
   }
 );
 
-const EventFeeds = createStackNavigator(
-  {
-    Events,
-  },
-  {
-    initialRouteName: 'Events',
-    // mode: 'modal',
-    headerMode: 'screen',
-    navigationOptions: {
-      gesturesEnabled: true,
-    },
-  }
-);
-
 const AppNavigator = createStackNavigator(
   {
     ProtectedRoute: ProtectedRouteWithSplashScreen,
@@ -97,7 +80,7 @@ const AppNavigator = createStackNavigator(
     LandingScreen: Login,
     AppInfo,
     AppContentFeeds,
-    EventFeeds,
+    // EventFeeds,
   },
   {
     initialRouteName: 'ProtectedRoute',

@@ -7,7 +7,7 @@ import Events from './events';
 const MoreNavigator = createStackNavigator(
   {
     More,
-    // Events,
+    Events,
   },
   {
     initialRouteName: 'More',
