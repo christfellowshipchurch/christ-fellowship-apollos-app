@@ -7,8 +7,7 @@ export const GET_EVENTS = gql`
       title
       summary
 
-      startDate
-      endDate
+      nextOccurrence
 
       coverImage {
         name

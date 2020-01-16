@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
+import moment from 'moment';
 
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
 import {
@@ -49,10 +50,13 @@ const ContentCardConnected = ({
 
         const typename = get(node, '__typename', '');
         const coverImage = get(node, 'coverImage.sources', undefined);
-        const label =
-          typename === 'EventContentItem'
-            ? getStartDateFromEvents(node)
-            : get(otherProps, 'label', '');
+        let label = get(otherProps, 'label', '');
+
+        if (typename === 'EventContentItem') {
+          label = node.events.length
+            ? moment(get(node, 'nextOccurrence', new Date())).format('MMM D')
+            : 'Dates Coming Soon';
+        }
 
         return React.createElement(card, {
           ...node,

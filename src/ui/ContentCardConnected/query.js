@@ -22,7 +22,7 @@ export const THEME_FRAGMENT = gql`
       }
     }
   }
-`
+`;
 
 export const CONTENT_CARD_METRICS_FRAGMENT = gql`
   fragment contentCardMetricsFragment on ContentItem {
@@ -50,8 +50,10 @@ export const ACCESSORY_FRAGMENT = gql`
       icon
     }
     ... on EventContentItem {
-      startDate
-      endDate
+      nextOccurrence
+      events {
+        start
+      }
     }
   }
 `;
@@ -103,7 +105,7 @@ export const BASE_CARD_FRAGMENT = gql`
   ${COVER_IMAGE_FRAGMENT}
   ${THEME_FRAGMENT}
   ${ACCESSORY_FRAGMENT}
-`
+`;
 
 export const TILE_CARD_FRAGMENT = gql`
   fragment tileCardFragment on ContentItem {
@@ -141,4 +143,3 @@ const GET_CONTENT_CARD = gql`
 `;
 
 export default GET_CONTENT_CARD;
-

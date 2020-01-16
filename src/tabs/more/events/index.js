@@ -24,23 +24,9 @@ import {
 } from 'ChristFellowship/src/utils/events';
 import { GET_EVENTS } from './queries';
 
-const EventContentItemRow = ({
-  title,
-  summary,
-  startDate,
-  endDate,
-  coverImage,
-  loading,
-  events,
-}) => (
-    <TileRowCard
-      label={getStartDateFromEvents({ events })}
-      title={title}
-      summary={summary}
-      coverImage={coverImage.sources}
-      isLoading={loading}
-    />
-  );
+const EventContentItemRow = ({ id }) => (
+  <ContentCardConnected card={TileRowCard} contentId={id} />
+);
 
 const Events = ({ title, navigation }) => {
   const { loading, error, data, refetch } = useQuery(GET_EVENTS, {
@@ -57,6 +43,10 @@ const Events = ({ title, navigation }) => {
     });
   };
 
+  const sortedEvents = get(data, 'allEvents', []).sort((a, b) =>
+    moment(a.nextOccurrence).diff(b.nextOccurrence)
+  );
+
   return (
     <BackgroundView style={{ flex: 1 }}>
       <RowFeedHeaderComponent navigation={navigation} title={title} />
@@ -64,7 +54,7 @@ const Events = ({ title, navigation }) => {
       <View style={{ flex: 10 }}>
         <FeedView
           ListItemComponent={EventContentItemRow}
-          content={get(data, 'allEvents', [])}
+          content={sortedEvents}
           isLoading={loading}
           error={error}
           refetch={refetch}
