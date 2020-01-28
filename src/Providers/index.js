@@ -12,6 +12,7 @@ import customTheme, { customIcons } from '../theme';
 
 import NotificationsProvider from './NotificationsProvider';
 import AuthProvider from './AuthProvider';
+import { track, identify } from '../amplitude';
 
 const AppProviders = (props) => {
   const isDarkMode = useDarkMode();
@@ -26,7 +27,10 @@ const AppProviders = (props) => {
           closeAuth={() => NavigationService.navigate('Tabs')}
         >
           <MediaPlayerProvider>
-            <AnalyticsProvider>
+            <AnalyticsProvider
+              trackFunctions={[track]}
+              identifyFunctions={[identify]}
+            >
               <StatusBar barStyle={barStyle} />
               <Providers
                 themeInput={{ ...customTheme, type: theme }}
