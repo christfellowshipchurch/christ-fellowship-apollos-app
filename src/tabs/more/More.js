@@ -34,8 +34,8 @@ const More = ({
               <TableView title='Get Involved'>
                 <Cell
                   icon='users'
-                  title='Groups'
-                  onPress={() => openUrl('https://rock.gocf.org/groups')}
+                  title='Community'
+                  onPress={() => openUrl('https://beta.christfellowship.church/community-finder')}
                 />
                 <Cell
                   icon='handshake'
