@@ -39,14 +39,14 @@ jest.mock('Animated', () => {
     timing: (value, config) => ({
       start: (callback) => {
         value.setValue(config.toValue);
-        callback && callback();
+        callback && callback(); // eslint-disable-line
       },
       stop: () => ({}),
     }),
     spring: (value, config) => ({
       start: (callback) => {
         value.setValue(config.toValue);
-        callback && callback();
+        callback && callback(); // eslint-disable-line
       },
       stop: () => ({}),
     }),
@@ -77,7 +77,7 @@ jest.mock('@apollosproject/ui-analytics', () => ({
   AnalyticsConsumer: ({ children }) => children({ test: jest.fn() }),
   AnalyticsProvider: ({ children }) => children,
   TrackEventWhenLoaded: () => null,
-  withTrackOnPress: (Component) => (props) => <Component {...props} />,
+  withTrackOnPress: (Component) => (props) => <Component {...props} />, // eslint-disable-line
 }));
 
 jest.mock('@apollosproject/ui-notifications', () => ({

@@ -1,7 +1,5 @@
-import gql from 'graphql-tag'
-
-import { ACCESSORY_FRAGMENT, BASE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected'
-import { CONTENT_ITEM_FRAGMENT } from '../content-single/getContentItem'
+import gql from 'graphql-tag';
+import ApollosConfig from '@apollosproject/config';
 
 export default gql`
   query getContentFeed($itemId: ID!, $after: String, $first: Int) {
@@ -13,8 +11,7 @@ export default gql`
           }
           edges {
             node {
-              ...contentItemFragment
-              ...baseCardFragment
+              ...contentCardFragment
               ...accessoryFragment
             }
           }
@@ -29,16 +26,14 @@ export default gql`
           }
           edges {
             node {
-              ...contentItemFragment
+              ...contentCardFragment
               ...accessoryFragment
-              ...baseCardFragment
             }
           }
         }
       }
     }
   }
-  ${CONTENT_ITEM_FRAGMENT}
-  ${ACCESSORY_FRAGMENT}
-  ${BASE_CARD_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.ACCESSORY_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.CONTENT_CARD_FRAGMENT}
 `;

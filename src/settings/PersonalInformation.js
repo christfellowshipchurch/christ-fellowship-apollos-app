@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { useQuery, useMutation } from 'react-apollo';
 import Color from 'color';
@@ -15,10 +16,10 @@ import {
     CURRENT_USER,
     UPDATE_PROFILE_FIELDS,
     UPDATE_COMMUNCATION_PREFERENCE,
-} from 'ChristFellowship/src/profile';
-import { TextInput, Switch } from 'ChristFellowship/src/ui/inputs';
+} from '../profile';
+import { TextInput, Switch } from '../ui/inputs';
 
-import { useForm } from 'ChristFellowship/src/hooks';
+import { useForm } from '../hooks';
 
 const Container = styled(({ theme }) => ({
     marginVertical: theme.sizing.baseUnit * 0.5,
@@ -43,24 +44,6 @@ const PersonalInformation = ({
     allowSMS,
     isLoading,
 }) => {
-    const [
-        updatePersonalInformation,
-        { loading: loadingProfileFields },
-    ] = useMutation(UPDATE_PROFILE_FIELDS, {
-        update: async (cache, { data: { updateProfileFields } }) => {
-            const { email, phoneNumber } = updateProfileFields;
-            update(cache, { email, phoneNumber });
-        },
-    });
-    const [
-        updateCommunicationPreference,
-        { loading: loadingCommPref },
-    ] = useMutation(UPDATE_COMMUNCATION_PREFERENCE, {
-        update: async (cache, { data: { updateCommunicationPreference } }) => {
-            const { communicationPreferences } = updateCommunicationPreference;
-            update(cache, { communicationPreferences });
-        },
-    });
     const update = (cache, data) => {
         // read the CURRENT_USER query
         const { currentUser } = cache.readQuery({ query: CURRENT_USER });
@@ -79,6 +62,28 @@ const PersonalInformation = ({
             },
         });
     };
+    const [
+        updatePersonalInformation,
+        { loading: loadingProfileFields },
+    ] = useMutation(UPDATE_PROFILE_FIELDS, {
+        update: async (cache, { data: { updateProfileFields } }) => {
+            const {
+                email: updatedEmail,
+                phoneNumber: updatedPhoneNumber,
+            } = updateProfileFields;
+            update(cache, { email: updatedEmail, phoneNumber: updatedPhoneNumber });
+        },
+    });
+    const [
+        updateCommunicationPreference,
+        { loading: loadingCommPref },
+    ] = useMutation(UPDATE_COMMUNCATION_PREFERENCE, {
+        update: async (cache, { data: { updateCommunicationPreference } }) => {
+            const { communicationPreferences } = updateCommunicationPreference;
+            update(cache, { communicationPreferences });
+        },
+    });
+
     const { values, setValue } = useForm({
         defaultValues: {
             email,
@@ -168,7 +173,15 @@ const PersonalInformation = ({
     );
 };
 
-const PersonalInformationConnected = ({ }) => {
+PersonalInformation.propTypes = {
+    email: PropTypes.string,
+    phoneNumber: PropTypes.string,
+    allowEmail: PropTypes.bool,
+    allowSMS: PropTypes.bool,
+    isLoading: PropTypes.bool,
+};
+
+const PersonalInformationConnected = () => {
     const {
         loading,
         data: {

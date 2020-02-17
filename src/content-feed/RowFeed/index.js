@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
@@ -16,17 +15,17 @@ import {
 } from '@apollosproject/ui-kit';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import { TileRowCard } from 'ChristFellowship/src/ui/Cards';
-import fetchMoreResolver from 'ChristFellowship/src/utils/fetchMoreResolver';
+import { TileRowCard } from '../../ui/Cards';
+import fetchMoreResolver from '../../utils/fetchMoreResolver';
 
 import GET_CONTENT_FEED from '../getContentFeed';
 
-const HeaderTitle = styled(({ theme }) => ({
+const HeaderTitle = styled(() => ({
   flex: 4,
   textAlign: 'center',
 }))(H3);
 
-const HeaderIconContainer = styled(({ theme }) => ({
+const HeaderIconContainer = styled(() => ({
   flex: 1,
 }))(Touchable);
 
@@ -51,7 +50,7 @@ const BackIcon = withTheme(({ theme }) => ({
 export const RowFeedHeaderComponent = ({
   navigation,
   title,
-  navigationKey = null,
+  navigationKey,
 }) => (
     <HeaderContainer>
       <HeaderIconContainer onPress={() => navigation.goBack(navigationKey)}>
@@ -65,6 +64,16 @@ export const RowFeedHeaderComponent = ({
       </HeaderIconContainer>
     </HeaderContainer>
   );
+
+RowFeedHeaderComponent.defaultProps = {
+  title: '',
+  navigationKey: null,
+};
+
+RowFeedHeaderComponent.propTypes = {
+  title: PropTypes.string,
+  navigationKey: PropTypes.string,
+};
 
 /**
  * This is where the component description lives

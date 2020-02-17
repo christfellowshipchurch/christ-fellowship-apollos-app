@@ -19,7 +19,7 @@ import {
     Radio,
     RadioButton,
     InputWrapper,
-} from 'ChristFellowship/src/ui/inputs';
+} from '../../ui/inputs';
 import { FieldContainer, ContentContainer } from '../components';
 
 import { GET_STATES } from '../queries';
@@ -154,11 +154,9 @@ const EditUserProfile = ({
 };
 
 EditUserProfile.defaultProps = {
-    states: [],
     genderList: ['Male', 'Female'],
-    onUpdate: () => true,
+    onChange: () => null,
     street1: '',
-    street2: '',
     city: '',
     state: '',
     postalCode: '',
@@ -169,11 +167,8 @@ EditUserProfile.defaultProps = {
 };
 
 EditUserProfile.propTypes = {
-    states: PropTypes.array,
     genderList: PropTypes.arrayOf(PropTypes.string),
-    onUpdate: PropTypes.func,
     street1: PropTypes.string,
-    street2: PropTypes.string,
     city: PropTypes.string,
     state: PropTypes.string,
     postalCode: PropTypes.string,
@@ -181,6 +176,7 @@ EditUserProfile.propTypes = {
     gender: PropTypes.string,
     campus: PropTypes.string,
     isLoading: PropTypes.bool,
+    onChange: PropTypes.func,
 };
 
 export default withNavigation(EditUserProfile);

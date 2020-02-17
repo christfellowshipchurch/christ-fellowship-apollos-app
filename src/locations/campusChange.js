@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import CampusFragment from './campusFragment';
+import ApollosConfig from '@apollosproject/config';
 
 export default gql`
   mutation campusChange($campusId: String!) {
@@ -10,5 +10,5 @@ export default gql`
       }
     }
   }
-  ${CampusFragment}
+  ${ApollosConfig.FRAGMENTS.CAMPUS_PARTS_FRAGMENT}
 `;

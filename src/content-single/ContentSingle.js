@@ -13,6 +13,7 @@ import GET_CONTENT_ITEM from './getContentItem';
 
 import DevotionalContentItem from './DevotionalContentItem';
 import UniversalContentItem from './UniversalContentItem';
+import WeekendContentItem from './WeekendContentItem';
 import EventContentItem from './EventContentItem';
 
 import NavigationHeader from './NavigationHeader';
@@ -44,6 +45,7 @@ class ContentSingle extends PureComponent {
     if (!__typename && this.itemId) {
       [__typename] = this.itemId.split(':');
     }
+
     switch (__typename) {
       case 'DevotionalContentItem':
         return (
@@ -63,6 +65,15 @@ class ContentSingle extends PureComponent {
             error={error}
           />
         );
+      case 'WeekendContentItem':
+        return (
+          <WeekendContentItem
+            id={this.itemId}
+            content={content}
+            loading={loading}
+            error={error}
+          />
+        );
       case 'UniversalContentItem':
       default:
         return (
@@ -76,10 +87,12 @@ class ContentSingle extends PureComponent {
     }
   };
 
-  renderWithData = ({ loading, error, data = {} }) => {
+  renderWithData = ({ loading, error, data }) => {
     if (error) return <ErrorCard error={error} />;
 
-    const content = data.node || {};
+    console.log({ data });
+
+    const content = get(data, 'node', {});
 
     const isDarkMode = useDarkMode();
     const defaultTheme = isDarkMode ? 'dark' : 'light';
@@ -101,12 +114,15 @@ class ContentSingle extends PureComponent {
           }}
         />
         {this.renderContent({ content, loading, error })}
-        <ActionContainer itemId={id} />
+        {/* <ActionContainer itemId={id} /> */}
       </ThemeMixin>
     );
   };
 
   render() {
+    const { props } = this;
+
+    console.log({ props });
     return (
       <Query query={GET_CONTENT_ITEM} variables={this.queryVariables}>
         {this.renderWithData}

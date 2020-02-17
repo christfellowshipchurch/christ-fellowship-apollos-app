@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQuery, useMutation } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 import { withNavigation } from 'react-navigation';
 import { get } from 'lodash';
 import moment from 'moment';
@@ -44,9 +44,6 @@ const CurrentUserProfile = ({ navigation }) => {
         <UserProfile
             {...profile}
             fields={profileFields}
-            onSave={(fields) => {
-                // updateProfile()
-            }}
             onEdit={() => navigation.navigate('EditCurrentUserProfile')}
             states={get(getStatesList, 'values', [])}
         />

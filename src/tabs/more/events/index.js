@@ -1,27 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo';
 import { get } from 'lodash';
 import moment from 'moment';
 import { withNavigation } from 'react-navigation';
 
-import { View, SafeAreaView } from 'react-native';
-import {
-  FlexedView,
-  BackgroundView,
-  H3,
-  FeedView,
-  styled,
-} from '@apollosproject/ui-kit';
+import { View } from 'react-native';
+import { BackgroundView, FeedView } from '@apollosproject/ui-kit';
 
-import { RowFeedHeaderComponent } from 'ChristFellowship/src/content-feed/RowFeed';
-import { TileRowCard } from 'ChristFellowship/src/ui/Cards';
-import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
+import { RowFeedHeaderComponent } from '../../../content-feed/RowFeed';
+import { TileRowCard } from '../../../ui/Cards';
+import ContentCardConnected from '../../../ui/ContentCardConnected';
 
-import {
-  formatDate,
-  getStartDateFromEvents,
-} from 'ChristFellowship/src/utils/events';
 import { GET_EVENTS } from './queries';
 
 const EventContentItemRow = ({ id }) => (

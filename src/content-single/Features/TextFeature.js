@@ -2,13 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ActionCard, BodyText } from '@apollosproject/ui-kit';
-import ShareContentButtonConnected from 'ChristFellowship/src/ui/ShareContentButtonConnected';
+import { ShareButtonConnected } from '@apollosproject/ui-connected';
 
 const TextFeature = ({ body, sharing: { message } = {}, contentId }) => (
   <ActionCard
-    action={
-      <ShareContentButtonConnected message={message} itemId={contentId} />
-    }
+    action={<ShareButtonConnected message={message} itemId={contentId} />}
   >
     <BodyText>{body}</BodyText>
   </ActionCard>
@@ -19,15 +17,5 @@ TextFeature.propTypes = {
   sharing: PropTypes.shape({ message: PropTypes.string }),
   contentId: PropTypes.string.isRequired,
 };
-
-export const TEXT_FEATURE_FRAGMENT = `
-fragment TextFeatureFragment on TextFeature {
-  body
-  id
-  sharing {
-    message
-  }
-}
-`;
 
 export default TextFeature;

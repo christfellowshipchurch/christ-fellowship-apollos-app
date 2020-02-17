@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ScrollView, Dimensions, View } from 'react-native';
 import { SafeAreaView, withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
@@ -34,7 +34,7 @@ const FeaturedImage = withTheme(({ theme }) => ({
     overlayType: 'gradient-user-profile',
 }))(GradientOverlayImage);
 
-const FlexedViewCenterColumns = styled(({ theme }) => ({
+const FlexedViewCenterColumns = styled(() => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -67,7 +67,7 @@ const ProfileName = styled(({ theme }) => ({
     marginTop: theme.sizing.baseUnit * 0.5,
 }))(H3);
 
-const CampusName = styled(({ theme }) => ({
+const CampusName = styled(() => ({
     fontWeight: 'normal',
     fontSize: 14,
 }))(BodyText);

@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-apollo';
 import { get } from 'lodash';
 import {
-  Card,
   TouchableScale,
   styled,
   H4,
   FlexedView,
   withTheme,
 } from '@apollosproject/ui-kit';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { UserWebBrowserConsumer } from '../user-web-browser';
 
 import GET_LIVE_STREAM from './getLiveStream';
 
@@ -25,13 +24,13 @@ const Banner = styled(({ theme }) => ({
   justifyContent: 'space-between',
 }))(FlexedView);
 
-const Title = styled(({ theme }) => ({
+const Title = styled(() => ({
   color: 'white',
   fontWeight: 'bold',
   alignSelf: 'flex-start',
 }))(H4);
 
-const CloseButton = withTheme(({ theme }) => ({
+const CloseButton = withTheme(() => ({
   color: 'white',
   icon: ['fal', 'times'],
   size: 24,
@@ -48,7 +47,7 @@ const LiveNowButton = () => {
   if (loading || error) return null;
 
   return isLive ? (
-    <WebBrowserConsumer>
+    <UserWebBrowserConsumer>
       {(openUrl) => (
         <Banner>
           <TouchableScale
@@ -61,7 +60,7 @@ const LiveNowButton = () => {
           </TouchableScale>
         </Banner>
       )}
-    </WebBrowserConsumer>
+    </UserWebBrowserConsumer>
   ) : null;
 };
 

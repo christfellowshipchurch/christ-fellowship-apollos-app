@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { BASE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected';
+import ApollosConfig from '@apollosproject/config';
 
 export default gql`
   query campaigns {
@@ -10,7 +10,7 @@ export default gql`
           childContentItemsConnection {
             edges {
               node {
-                ...baseCardFragment
+                ...contentCardFragment
               }
             }
           }
@@ -18,5 +18,5 @@ export default gql`
       }
     }
   }
-  ${BASE_CARD_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.CONTENT_CARD_FRAGMENT}
 `;

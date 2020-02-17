@@ -14,16 +14,16 @@ import {
   Button,
   StretchyView,
 } from '@apollosproject/ui-kit';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
+import { HorizontalContentSeriesFeedConnected } from '@apollosproject/ui-connected';
+import { UserWebBrowserConsumer } from '../../user-web-browser';
 import MediaControls from '../MediaControls';
 import HTMLContent from '../HTMLContent';
-import HorizontalContentFeed from '../HorizontalContentFeed';
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
 
 const FlexedScrollView = styled({ flex: 1 })(ScrollView);
 
-const TitleContainer = styled(({ theme }) => ({
+const TitleContainer = styled(() => ({
   position: 'absolute',
   bottom: 20,
   left: 0,
@@ -50,7 +50,7 @@ const Subtitle = withTheme(({ theme, extraSpacing }) => ({
   },
 }))(H4);
 
-const EventContentItem = ({ content, loading }) => {
+const EventContentItem = ({ content, loading, navigation }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
 
@@ -97,18 +97,18 @@ const EventContentItem = ({ content, loading }) => {
               />
 
               {callsToAction.length > 0 && (
-                <WebBrowserConsumer>
+                <UserWebBrowserConsumer>
                   {(openUrl) =>
-                    callsToAction.map((n, i) => (
+                    callsToAction.map((n) => (
                       <StyledButton
-                        key={i}
+                        key={`${n.call}:${n.action}`}
                         title={n.call}
                         pill={false}
                         onPress={() => openUrl(n.action)}
                       />
                     ))
                   }
-                </WebBrowserConsumer>
+                </UserWebBrowserConsumer>
               )}
 
               <Subtitle extraSpacing={callsToAction.length > 0}>
@@ -117,8 +117,9 @@ const EventContentItem = ({ content, loading }) => {
               <HTMLContent contentId={content.id} />
               <Features contentId={content.id} />
             </PaddedView>
-            <HorizontalContentFeed
+            <HorizontalContentSeriesFeedConnected
               contentId={content.id}
+              navigation={navigation}
               relatedTitle="Events"
             />
           </FlexedScrollView>
@@ -153,6 +154,8 @@ EventContentItem.propTypes = {
         action: PropTypes.string,
       })
     ),
+    events: PropTypes.array,
+    summary: PropTypes.string,
   }),
   loading: PropTypes.bool,
 };

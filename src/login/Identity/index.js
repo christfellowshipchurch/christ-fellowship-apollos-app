@@ -3,12 +3,11 @@ import { useMutation } from 'react-apollo';
 import { has, get, upperCase } from 'lodash';
 import * as Yup from 'yup';
 
-import { useForm } from 'ChristFellowship/src/hooks';
-import { parseUsername } from 'ChristFellowship/src/utils/login';
-
 import { Button, FlexedView, H6, styled } from '@apollosproject/ui-kit';
-import { TextInput, Switch } from 'ChristFellowship/src/ui/inputs';
-import { Container } from '../containers.js';
+import { TextInput, Switch } from '../../ui/inputs';
+import { parseUsername } from '../../utils/login';
+import { useForm } from '../../hooks';
+import { Container } from '../containers';
 
 import { IS_VALID_IDENTITY, REQUEST_PIN } from '../mutations';
 

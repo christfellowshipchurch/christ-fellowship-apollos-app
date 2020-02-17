@@ -1,4 +1,4 @@
-// import hoistNonReactStatic from 'hoist-non-react-statics';
+import hoistNonReactStatic from 'hoist-non-react-statics';
 import React from 'react';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
@@ -10,7 +10,7 @@ import Passes from '@apollosproject/ui-passes';
 import { MediaPlayer } from '@apollosproject/ui-media-player';
 import Auth, { ProtectedRoute } from '@apollosproject/ui-auth';
 
-import Providers from './Providers';
+import Providers from './MainProvider';
 import NavigationService from './NavigationService';
 import ContentSingle from './content-single';
 import { RowContentFeed } from './content-feed';
@@ -22,6 +22,11 @@ import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information';
 import { EditCurrentUserProfile } from './profile';
 import Settings from './settings';
 
+// Hack to avoid needing to pass emailRequired through the navigator.navigate
+const EnhancedAuth = (props) => <Auth {...props} emailRequired />;
+// 😑
+hoistNonReactStatic(EnhancedAuth, Auth);
+
 const ProtectedRouteWithSplashScreen = (props) => {
   const handleOnRouteChange = () => SplashScreen.hide();
 
@@ -32,7 +37,7 @@ const AppContent = createStackNavigator(
   {
     Tabs,
     ContentSingle,
-    Auth,
+    Auth: EnhancedAuth,
     Location,
     Passes,
     UserWebBrowser,

@@ -13,9 +13,9 @@ import {
 } from '@apollosproject/ui-kit';
 import { LOGOUT } from '@apollosproject/ui-auth';
 
-import { TableView, Cell } from 'ChristFellowship/src/ui/TableView';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
-import { RowFeedHeaderComponent } from 'ChristFellowship/src/content-feed/RowFeed';
+import { TableView, Cell } from '../ui/TableView';
+import { UserWebBrowserConsumer } from '../user-web-browser';
+import { RowFeedHeaderComponent } from '../content-feed/RowFeed';
 
 import PersonalInformation from './PersonalInformation';
 
@@ -38,7 +38,7 @@ const Settings = ({ navigation, title }) => {
           <ScrollView>
             <PersonalInformation />
 
-            <WebBrowserConsumer>
+            <UserWebBrowserConsumer>
               {(openUrl) => (
                 <TableView title="App Information">
                   <Cell
@@ -68,7 +68,7 @@ const Settings = ({ navigation, title }) => {
                   />
                 </TableView>
               )}
-            </WebBrowserConsumer>
+            </UserWebBrowserConsumer>
 
             <FlexedView
               style={{ justifyContent: 'center', alignItems: 'center' }}

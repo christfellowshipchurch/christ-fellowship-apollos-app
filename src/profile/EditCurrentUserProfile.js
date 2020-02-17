@@ -4,9 +4,8 @@ import { useQuery, useMutation } from 'react-apollo';
 import { withNavigation } from 'react-navigation';
 import { get, keys, upperFirst } from 'lodash';
 
-import { useForm } from 'ChristFellowship/src/hooks';
-
 import { ActivityIndicator, BackgroundView } from '@apollosproject/ui-kit';
+import { useForm } from '../hooks';
 
 import ProfileHeader from './ProfileHeader';
 import EditUserProfile from './EditUserProfile';

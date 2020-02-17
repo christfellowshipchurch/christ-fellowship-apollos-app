@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ActionCard } from '@apollosproject/ui-kit';
 import { ScriptureItem } from '@apollosproject/ui-scripture';
-import ShareContentButtonConnected from 'ChristFellowship/src/ui/ShareContentButtonConnected';
+import { ShareButtonConnected } from '@apollosproject/ui-connected';
 
 const ScriptureFeature = ({
   scriptures,
@@ -13,9 +13,7 @@ const ScriptureFeature = ({
 }) => (
   <ActionCard
     icon={'text'}
-    action={
-      <ShareContentButtonConnected message={message} itemId={contentId} />
-    }
+    action={<ShareButtonConnected message={message} itemId={contentId} />}
   >
     {scriptures.map(({ copyright, reference, html, id, version }) => (
       <ScriptureItem
@@ -44,20 +42,5 @@ ScriptureFeature.propTypes = {
   sharing: PropTypes.shape({ message: PropTypes.string }),
   contentId: PropTypes.string.isRequired,
 };
-
-export const SCRIPTURE_FEATURE_FRAGMENT = `
-fragment ScriptureFeatureFragment on ScriptureFeature {
-  sharing {
-    message
-  }
-  scriptures {
-    id
-    html
-    reference
-    copyright
-    version
-  }
-}
-`;
 
 export default ScriptureFeature;
