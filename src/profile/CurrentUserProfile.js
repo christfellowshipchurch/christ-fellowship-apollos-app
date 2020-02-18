@@ -16,8 +16,9 @@ import UserProfile from './UserProfile';
 
 import { CURRENT_USER } from './queries';
 
-const HeaderTouchable = styled(({ theme }) => ({
+const HeaderTouchable = styled(({ theme, withTransparency }) => ({
     marginHorizontal: theme.sizing.baseUnit,
+    opacity: withTransparency ? 0.5 : 1,
 }))(Touchable);
 
 const CurrentUserProfile = ({ navigation }) => {
@@ -67,17 +68,18 @@ const CurrentUserProfile = ({ navigation }) => {
 
 CurrentUserProfile.navigationOptions = ({ navigation }) => ({
     headerTransparent: true,
-    headerRight: (
+    headerLeft: (
         <HeaderTouchable onPress={() => navigation.navigate('Settings')}>
             <FontAwesomeIcon icon={['fal', 'cog']} fill={'white'} size={24} />
         </HeaderTouchable>
     ),
-    headerLeft: (
+    headerRight: (
         <HeaderTouchable
             onPress={() => navigation.goBack(null)}
             disabled={navigation.getParam('isLoading')}
+            withTransparency
         >
-            <FontAwesomeIcon icon={['fal', 'angle-left']} fill={'white'} size={38} />
+            <FontAwesomeIcon icon={['fal', 'times']} fill={'white'} size={24} />
         </HeaderTouchable>
     ),
 });
