@@ -124,18 +124,19 @@ const ProfileHeader = ({
                             </FlexedView>
 
                             <FlexedView style={{ alignItems: 'flex-end' }}>
-                                {!editMode && (
-                                    <Touchable
-                                        onPress={() => navigation.navigate('Settings')}
-                                        disabled={isLoading}
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={['fal', 'cog']}
-                                            fill={'white'}
-                                            size={24}
-                                        />
-                                    </Touchable>
-                                )}
+                                {!editMode &&
+                                    false && (
+                                        <Touchable
+                                            onPress={() => navigation.navigate('Settings')}
+                                            disabled={isLoading}
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={['fal', 'cog']}
+                                                fill={'white'}
+                                                size={24}
+                                            />
+                                        </Touchable>
+                                    )}
                             </FlexedView>
                         </NavigationContainer>
 

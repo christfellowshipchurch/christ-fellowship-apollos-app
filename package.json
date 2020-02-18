@@ -49,7 +49,9 @@
     "@fortawesome/pro-light-svg-icons": "^5.10.1",
     "@fortawesome/react-native-fontawesome": "^0.1.0",
     "@react-native-community/async-storage": "^1.5.1",
+    "@react-native-community/blur": "^3.4.1",
     "@react-native-community/geolocation": "^2.0.2",
+    "@react-native-community/masked-view": "^0.1.6",
     "@react-native-community/push-notification-ios": "^1.0.3",
     "apollo-cache-inmemory": "1.5.1",
     "apollo-cache-persist": "0.1.1",
@@ -108,6 +110,7 @@
     "react-native-video-controls": "2.2.3",
     "react-native-webview": "^5.2.0",
     "react-navigation": "^3.11.0",
+    "react-navigation-stack": "^2.1.1",
     "react-navigation-tabs": "0.6.0",
     "recompose": "^0.30.0",
     "rn-fetch-blob": "^0.10.16",
@@ -162,7 +165,23 @@
     "waait": "1.0.2"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "collectCoverage": true,
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|rn-*|react-clone-referenced-element|react-navigation|@react-navigation|@apollosproject))"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/?(*.)(test|tests).{js,jsx,mjs}"
+    ],
+    "modulePaths": [
+      "<rootDir>/src/"
+    ],
+    "modulePathIgnorePatterns": [
+      "node_modules/.*/node_modules/react-native"
+    ],
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
   },
   "rnpm": {
     "assets": [

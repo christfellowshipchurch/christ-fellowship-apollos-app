@@ -3,12 +3,23 @@ import { useQuery } from 'react-apollo';
 import { withNavigation } from 'react-navigation';
 import { get } from 'lodash';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import { ActivityIndicator } from '@apollosproject/ui-kit';
+import {
+    BackgroundView,
+    ActivityIndicator,
+    Touchable,
+    styled,
+} from '@apollosproject/ui-kit';
 
 import UserProfile from './UserProfile';
 
 import { CURRENT_USER } from './queries';
+
+const HeaderTouchable = styled(({ theme, withTransparency }) => ({
+    marginHorizontal: theme.sizing.baseUnit,
+    opacity: withTransparency ? 0.5 : 1,
+}))(Touchable);
 
 const CurrentUserProfile = ({ navigation }) => {
     const {
@@ -18,7 +29,12 @@ const CurrentUserProfile = ({ navigation }) => {
         data: { currentUser: { profile } = {}, getStatesList } = {},
     } = useQuery(CURRENT_USER, { fetchPolicy: 'cache-and-network' });
 
-    if (loading) return <ActivityIndicator />;
+    if (loading)
+        return (
+            <BackgroundView>
+                <ActivityIndicator />
+            </BackgroundView>
+        );
     if (error) return null;
 
     const address = [
@@ -49,5 +65,23 @@ const CurrentUserProfile = ({ navigation }) => {
         />
     );
 };
+
+CurrentUserProfile.navigationOptions = ({ navigation }) => ({
+    headerTransparent: true,
+    headerLeft: (
+        <HeaderTouchable onPress={() => navigation.navigate('Settings')}>
+            <FontAwesomeIcon icon={['fal', 'cog']} fill={'white'} size={24} />
+        </HeaderTouchable>
+    ),
+    headerRight: (
+        <HeaderTouchable
+            onPress={() => navigation.goBack(null)}
+            disabled={navigation.getParam('isLoading')}
+            withTransparency
+        >
+            <FontAwesomeIcon icon={['fal', 'times']} fill={'white'} size={24} />
+        </HeaderTouchable>
+    ),
+});
 
 export default withNavigation(CurrentUserProfile);

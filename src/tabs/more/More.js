@@ -1,87 +1,114 @@
-import React from 'react';
-import { ScrollView, Linking } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Animated, ScrollView, Linking } from 'react-native';
+import { get } from 'lodash';
 import SafeAreaView from 'react-native-safe-area-view';
 import PropTypes from 'prop-types';
-import { H3, styled, BackgroundView } from '@apollosproject/ui-kit';
 
-import { TableView, Cell } from '../../ui/TableView';
-import { UserWebBrowserConsumer } from '../../user-web-browser';
+import { TableView, Cell } from 'ChristFellowship/src/ui/TableView';
+import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
 
-const HeaderTitle = styled(({ theme }) => ({
-  fontWeight: 'bold',
-  textAlign: 'center',
-  paddingVertical: theme.sizing.baseUnit,
-}))(H3);
+import {
+  HeaderSpacer,
+  navigationOptions,
+  BackgroundView,
+  BlurView,
+} from '../navigation';
 
-const More = ({ navigation, givingUrl }) => (
-  <BackgroundView>
-    <SafeAreaView forceInset={{ bottom: 'never' }}>
-      <HeaderTitle>More</HeaderTitle>
-      <UserWebBrowserConsumer>
-        {(openUrl) => (
-          <ScrollView>
-            <TableView title="Get Involved">
-              <Cell
-                icon="users"
-                title="Groups"
-                onPress={() => openUrl('https://rock.gocf.org/groups')}
-              />
-              <Cell
-                icon="handshake"
-                title="Serve"
-                onPress={() => openUrl('https://rock.gocf.org/dreamteam')}
-              />
-              <Cell
-                icon="calendar-alt"
-                title="Events"
-                onPress={() => navigation.navigate('Events')}
-              />
-              <Cell
-                icon="envelope-open-dollar"
-                title="Give"
-                onPress={() =>
-                  Linking.canOpenURL(givingUrl).then((supported) => {
-                    if (supported) {
-                      Linking.openURL(givingUrl);
-                    } else {
-                      console.log(`Don't know how to open URI: ${givingUrl}`);
-                    }
-                  })
-                }
-              />
-            </TableView>
+const More = ({ navigation, givingUrl }) => {
+  const [scrollY, setScrollY] = useState(new Animated.Value(0));
+  useEffect(() => navigation.setParams({ scrollY }), [scrollY]);
 
-            <TableView title="Our Church" padded>
-              <Cell
-                title="About Christ Fellowship"
-                onPress={() =>
-                  openUrl('https://beta.christfellowship.church/about')
-                }
-              />
-              <Cell
-                title="Church Locations"
-                onPress={() =>
-                  openUrl('https://beta.christfellowship.church/locations')
-                }
-              />
-              <Cell
-                title="Contact Us"
-                onPress={() =>
-                  openUrl('https://gochristfellowship.com/new-here/contact-us')
-                }
-              />
-            </TableView>
-          </ScrollView>
-        )}
-      </UserWebBrowserConsumer>
-    </SafeAreaView>
-  </BackgroundView>
-);
+  return (
+    <BackgroundView>
+      <SafeAreaView forceInset={{ bottom: 'never' }}>
+        <WebBrowserConsumer>
+          {(openUrl) => (
+            <Animated.ScrollView
+              scrollEventThrottle={16}
+              onScroll={Animated.event([
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollY },
+                  },
+                },
+                { useNativeDriver: true },
+              ])}
+            >
+              <HeaderSpacer />
+              <TableView title="Get Involved">
+                <Cell
+                  icon="users"
+                  title="Groups"
+                  onPress={() => openUrl('https://rock.gocf.org/groups')}
+                />
+                <Cell
+                  icon="handshake"
+                  title="Serve"
+                  onPress={() => openUrl('https://rock.gocf.org/dreamteam')}
+                />
+                <Cell
+                  icon="calendar-alt"
+                  title="Events"
+                  onPress={() => navigation.navigate('Events')}
+                />
+                <Cell
+                  icon="envelope-open-dollar"
+                  title="Give"
+                  onPress={() =>
+                    Linking.canOpenURL(givingUrl).then((supported) => {
+                      if (supported) {
+                        Linking.openURL(givingUrl);
+                      } else {
+                        console.log(`Don't know how to open URI: ${givingUrl}`);
+                      }
+                    })
+                  }
+                />
+              </TableView>
 
-More.navigationOptions = {
-  title: 'More',
-  header: null,
+              <TableView title="Our Church" padded>
+                <Cell
+                  title="About Christ Fellowship"
+                  onPress={() =>
+                    openUrl('https://beta.christfellowship.church/about')
+                  }
+                />
+                <Cell
+                  title="Church Locations"
+                  onPress={() =>
+                    openUrl('https://beta.christfellowship.church/locations')
+                  }
+                />
+                <Cell
+                  title="Contact Us"
+                  onPress={() =>
+                    openUrl(
+                      'https://gochristfellowship.com/new-here/contact-us'
+                    )
+                  }
+                />
+              </TableView>
+            </Animated.ScrollView>
+          )}
+        </WebBrowserConsumer>
+      </SafeAreaView>
+    </BackgroundView>
+  );
 };
+
+More.navigationOptions = ({ navigation, theme }) => ({
+  ...navigationOptions,
+  headerTitleStyle: {
+    ...navigationOptions.headerTitleStyle,
+    color: theme === 'dark' ? 'white' : 'black',
+  },
+  headerBackground: (
+    <BlurView
+      scrollY={get(navigation, 'state.params.scrollY', new Animated.Value(0))}
+    />
+  ),
+  title: 'More',
+});
 
 More.propTypes = {
   navigation: PropTypes.shape({

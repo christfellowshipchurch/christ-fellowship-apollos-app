@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import { GET_LOGIN_STATE } from '@apollosproject/ui-auth';
 import { BackgroundView } from '@apollosproject/ui-kit';
-import { CurrentUserProfile } from '../../profile';
+import { CurrentUserProfile } from 'ChristFellowship/src/profile';
 
 const Connect = ({ navigation }) => (
   <BackgroundView>
