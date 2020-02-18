@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ChristFellowshipTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChristFellowshipTests.m */; };
 		01F091B02048490A8F9EF4FE /* Inter-UI-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 63F6EE53A9B44B4388B5F1C2 /* Inter-UI-Italic.otf */; };
@@ -744,7 +745,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
-				CURRENT_PROJECT_VERSION = 107;
+				CURRENT_PROJECT_VERSION = 109;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -769,7 +770,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
-				CURRENT_PROJECT_VERSION = 107;
+				CURRENT_PROJECT_VERSION = 109;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
