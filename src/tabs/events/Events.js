@@ -74,10 +74,6 @@ const Events = ({ navigation }) => {
     });
   };
 
-  const sortedEvents = get(data, 'allEvents', []).sort((a, b) =>
-    moment(a.nextOccurrence).diff(b.nextOccurrence)
-  );
-
   // eslint-disable-next-line react/prop-types
   const renderItem = ({ item, isLoading }) => (
     <EventCollection {...item} onPress={handleOnPress} isLoading={isLoading} />
@@ -85,11 +81,23 @@ const Events = ({ navigation }) => {
 
   useEffect(() => navigation.setParams({ scrollY }), [scrollY]);
 
+  const allEventsSorted = get(data, 'allEvents', []).sort(
+    (a, b) =>
+      b.events.length - a.events.length ||
+      moment(a.nextOccurrence).diff(b.nextOccurrence)
+  );
+
   return (
     <BackgroundView>
-      <SafeAreaView>
+      <SafeAreaView
+        style={{ flex: 1 }}
+        forceInset={{ bottom: 'never', top: 'always' }}
+      >
         <FeedView
-          style={{ paddingTop: HEADER_OFFSET }}
+          ListFooterComponent={<View style={{ height: HEADER_OFFSET }} />}
+          style={{
+            paddingTop: HEADER_OFFSET,
+          }}
           content={[
             {
               title: 'Featured Events',
@@ -98,7 +106,11 @@ const Events = ({ navigation }) => {
               ),
               color: 'primary',
             },
-            { title: 'All Events', events: sortedEvents, color: 'warning' },
+            {
+              title: 'All Events',
+              events: allEventsSorted,
+              color: 'warning',
+            },
           ]}
           isLoading={loading}
           error={error}

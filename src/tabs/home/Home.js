@@ -66,41 +66,38 @@ const Home = ({ navigation }) => {
           }}
           fetchPolicy="cache-and-network"
         >
-          {({ loading, error, data, refetch, fetchMore, variables }) => {
-            console.log(JSON.stringify(data));
-            return (
-              <FeedView
-                content={get(data, 'userFeedFeatures', []).map((n, i) => ({
-                  ...n,
-                  colorIndex: i % COLOR_MAP.length,
-                }))}
-                fetchMore={fetchMoreResolver({
-                  collectionName: 'userFeedFeatures',
-                  fetchMore,
-                  variables,
-                  data,
-                })}
-                isLoading={loading}
-                error={error}
-                refetch={refetch}
-                ListHeaderComponent={
-                  <View>
-                    <HeaderSpacer />
-                    <LiveButton key="HomeFeedLiveButton" />
-                  </View>
-                }
-                renderItem={renderItem}
-                scrollEventThrottle={16}
-                onScroll={Animated.event([
-                  {
-                    nativeEvent: {
-                      contentOffset: { y: scrollY },
-                    },
+          {({ loading, error, data, refetch, fetchMore, variables }) => (
+            <FeedView
+              content={get(data, 'userFeedFeatures', []).map((n, i) => ({
+                ...n,
+                colorIndex: i % COLOR_MAP.length,
+              }))}
+              fetchMore={fetchMoreResolver({
+                collectionName: 'userFeedFeatures',
+                fetchMore,
+                variables,
+                data,
+              })}
+              isLoading={loading}
+              error={error}
+              refetch={refetch}
+              ListHeaderComponent={
+                <View>
+                  <HeaderSpacer />
+                  <LiveButton key="HomeFeedLiveButton" />
+                </View>
+              }
+              renderItem={renderItem}
+              scrollEventThrottle={16}
+              onScroll={Animated.event([
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollY },
                   },
-                ])}
-              />
-            );
-          }}
+                },
+              ])}
+            />
+          )}
         </Query>
       </SafeAreaView>
     </BackgroundView>

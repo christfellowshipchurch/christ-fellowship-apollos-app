@@ -48,7 +48,11 @@ export const BlurView = ({ scrollY, scrollDistance }) => {
 
     return (
         <Animated.View style={{ opacity, ...StyleSheet.absoluteFill }}>
-            <RNBlurView style={StyleSheet.absoluteFill} blurType={barStyle} />
+            <RNBlurView
+                blurAmount={32}
+                style={StyleSheet.absoluteFill}
+                blurType={barStyle}
+            />
         </Animated.View>
     );
 };
