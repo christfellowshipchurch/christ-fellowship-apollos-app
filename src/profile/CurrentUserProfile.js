@@ -1,14 +1,24 @@
 import React from 'react';
-import { useQuery, useMutation } from 'react-apollo';
+import { useQuery } from 'react-apollo';
 import { withNavigation } from 'react-navigation';
 import { get } from 'lodash';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import { ActivityIndicator } from '@apollosproject/ui-kit';
+import {
+    BackgroundView,
+    ActivityIndicator,
+    Touchable,
+    styled,
+} from '@apollosproject/ui-kit';
 
 import UserProfile from './UserProfile';
 
 import { CURRENT_USER } from './queries';
+
+const HeaderTouchable = styled(({ theme }) => ({
+    marginHorizontal: theme.sizing.baseUnit,
+}))(Touchable);
 
 const CurrentUserProfile = ({ navigation }) => {
     const {
@@ -18,7 +28,12 @@ const CurrentUserProfile = ({ navigation }) => {
         data: { currentUser: { profile } = {}, getStatesList } = {},
     } = useQuery(CURRENT_USER, { fetchPolicy: 'cache-and-network' });
 
-    if (loading) return <ActivityIndicator />;
+    if (loading)
+        return (
+            <BackgroundView>
+                <ActivityIndicator />
+            </BackgroundView>
+        );
     if (error) return null;
 
     const address = [
@@ -44,13 +59,27 @@ const CurrentUserProfile = ({ navigation }) => {
         <UserProfile
             {...profile}
             fields={profileFields}
-            onSave={(fields) => {
-                // updateProfile()
-            }}
             onEdit={() => navigation.navigate('EditCurrentUserProfile')}
             states={get(getStatesList, 'values', [])}
         />
     );
 };
+
+CurrentUserProfile.navigationOptions = ({ navigation }) => ({
+    headerTransparent: true,
+    headerRight: (
+        <HeaderTouchable onPress={() => navigation.navigate('Settings')}>
+            <FontAwesomeIcon icon={['fal', 'cog']} fill={'white'} size={24} />
+        </HeaderTouchable>
+    ),
+    headerLeft: (
+        <HeaderTouchable
+            onPress={() => navigation.goBack(null)}
+            disabled={navigation.getParam('isLoading')}
+        >
+            <FontAwesomeIcon icon={['fal', 'angle-left']} fill={'white'} size={38} />
+        </HeaderTouchable>
+    ),
+});
 
 export default withNavigation(CurrentUserProfile);

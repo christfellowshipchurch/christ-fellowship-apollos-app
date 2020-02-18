@@ -1,101 +1,125 @@
-import React from 'react'
-import { ScrollView, Linking } from 'react-native'
-import SafeAreaView from 'react-native-safe-area-view'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react';
+import { Animated, ScrollView, Linking } from 'react-native';
+import { get } from 'lodash';
+import SafeAreaView from 'react-native-safe-area-view';
+import PropTypes from 'prop-types';
+
+import { TableView, Cell } from 'ChristFellowship/src/ui/TableView';
+import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
+
 import {
-  H3,
-  styled,
+  HeaderSpacer,
+  navigationOptions,
   BackgroundView,
-} from '@apollosproject/ui-kit'
+  BlurView,
+} from '../navigation';
 
-import {
-  TableView, Cell
-} from 'ChristFellowship/src/ui/TableView'
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser'
+const More = ({ navigation, givingUrl }) => {
+  const [scrollY, setScrollY] = useState(new Animated.Value(0));
+  useEffect(() => navigation.setParams({ scrollY }), [scrollY]);
 
-const HeaderTitle = styled(({ theme, active }) => ({
-  fontWeight: 'bold',
-  textAlign: 'center',
-  paddingVertical: theme.sizing.baseUnit
-}))(H3)
-
-const More = ({
-  navigation,
-  givingUrl,
-}) => (
+  return (
     <BackgroundView>
       <SafeAreaView forceInset={{ bottom: 'never' }}>
-        <HeaderTitle>
-          More
-        </HeaderTitle>
         <WebBrowserConsumer>
           {(openUrl) => (
-            <ScrollView>
-              <TableView title='Get Involved'>
+            <Animated.ScrollView
+              scrollEventThrottle={16}
+              onScroll={Animated.event([
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollY },
+                  },
+                },
+                { useNativeDriver: true },
+              ])}
+            >
+              <HeaderSpacer />
+              <TableView title="Get Involved">
                 <Cell
-                  icon='users'
-                  title='Groups'
+                  icon="users"
+                  title="Groups"
                   onPress={() => openUrl('https://rock.gocf.org/groups')}
                 />
                 <Cell
-                  icon='handshake'
-                  title='Serve'
+                  icon="handshake"
+                  title="Serve"
                   onPress={() => openUrl('https://rock.gocf.org/dreamteam')}
                 />
                 <Cell
-                  icon='calendar-alt'
-                  title='Events'
+                  icon="calendar-alt"
+                  title="Events"
                   onPress={() => navigation.navigate('Events')}
                 />
                 <Cell
-                  icon='envelope-open-dollar'
-                  title='Give'
-                  onPress={() => Linking.canOpenURL(givingUrl).then(supported => {
-                    if (supported) {
-                      Linking.openURL(givingUrl)
-                    } else {
-                      console.log(`Don't know how to open URI: ${givingUrl}`)
-                    }
-                  })}
+                  icon="envelope-open-dollar"
+                  title="Give"
+                  onPress={() =>
+                    Linking.canOpenURL(givingUrl).then((supported) => {
+                      if (supported) {
+                        Linking.openURL(givingUrl);
+                      } else {
+                        console.log(`Don't know how to open URI: ${givingUrl}`);
+                      }
+                    })
+                  }
                 />
               </TableView>
 
-              <TableView title='Our Church' padded>
+              <TableView title="Our Church" padded>
                 <Cell
-                  title='About Christ Fellowship'
-                  onPress={() => openUrl('https://beta.christfellowship.church/about')}
+                  title="About Christ Fellowship"
+                  onPress={() =>
+                    openUrl('https://beta.christfellowship.church/about')
+                  }
                 />
                 <Cell
-                  title='Church Locations'
-                  onPress={() => openUrl('https://beta.christfellowship.church/locations')}
+                  title="Church Locations"
+                  onPress={() =>
+                    openUrl('https://beta.christfellowship.church/locations')
+                  }
                 />
                 <Cell
-                  title='Contact Us'
-                  onPress={() => openUrl('https://gochristfellowship.com/new-here/contact-us')}
+                  title="Contact Us"
+                  onPress={() =>
+                    openUrl(
+                      'https://gochristfellowship.com/new-here/contact-us'
+                    )
+                  }
                 />
               </TableView>
-            </ScrollView>
+            </Animated.ScrollView>
           )}
         </WebBrowserConsumer>
       </SafeAreaView>
     </BackgroundView>
-  )
+  );
+};
 
-More.navigationOptions = {
+More.navigationOptions = ({ navigation, theme }) => ({
+  ...navigationOptions,
+  headerTitleStyle: {
+    ...navigationOptions.headerTitleStyle,
+    color: theme === 'dark' ? 'white' : 'black',
+  },
+  headerBackground: (
+    <BlurView
+      scrollY={get(navigation, 'state.params.scrollY', new Animated.Value(0))}
+    />
+  ),
   title: 'More',
-  header: null,
-}
+});
 
 More.propTypes = {
   navigation: PropTypes.shape({
     getParam: PropTypes.func,
     navigate: PropTypes.func,
   }),
-  givingUrl: PropTypes.string
-}
+  givingUrl: PropTypes.string,
+};
 
 More.defaultProps = {
-  givingUrl: 'https://pushpay.com/g/christfellowship'
-}
+  givingUrl: 'https://pushpay.com/g/christfellowship',
+};
 
-export default More
+export default More;

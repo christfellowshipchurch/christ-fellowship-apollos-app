@@ -8,10 +8,11 @@ import Home from './Home';
 export const HomeNavigator = createStackNavigator(
   {
     Home,
-    Events,
+    // Events,
   },
   {
     initialRouteName: 'Home',
+    headerLayoutPreset: 'left',
   }
 );
 

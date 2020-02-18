@@ -120,7 +120,7 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
 const sizing = {
     baseBorderRadius: 8,
     avatar: {
-        small: 40,
+        small: 32,
         medium: 80,
         large: 150,
     },

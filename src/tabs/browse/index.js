@@ -10,6 +10,7 @@ export const BrowseNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'Browse',
+    headerLayoutPreset: 'left',
   }
 );
 
