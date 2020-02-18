@@ -45,6 +45,7 @@ import {
     faCommentLines,
     faCameraAlt,
     faShareSquare,
+    faCalendar,
 } from '@fortawesome/pro-light-svg-icons';
 
 // load desired icons in an array to not overload the library with more
@@ -94,6 +95,7 @@ const icons = [
     faCommentLines,
     faCameraAlt,
     faShareSquare,
+    faCalendar,
 ];
 
 library.add(...icons);

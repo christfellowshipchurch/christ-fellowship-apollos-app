@@ -14,7 +14,6 @@ const ThemedBottomTabBar = compose(
   styled(({ theme }) => ({
     borderTopWidth: 0,
     backgroundColor: theme.colors.background.paper,
-    paddingHorizontal: theme.sizing.baseUnit * 2.5,
   })),
   withTabBarMediaSpacer
 )(BottomTabBar);
