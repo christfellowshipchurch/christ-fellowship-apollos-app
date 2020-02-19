@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Animated, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { useQuery } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import moment from 'moment';
 import { withNavigation, SafeAreaView } from 'react-navigation';

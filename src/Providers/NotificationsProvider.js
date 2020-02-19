@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import { Platform } from 'react-native';
-import { useMutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';

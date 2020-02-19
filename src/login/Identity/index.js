@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import { has, get, upperCase } from 'lodash';
 import * as Yup from 'yup';
 

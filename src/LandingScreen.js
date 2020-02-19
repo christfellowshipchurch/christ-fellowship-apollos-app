@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { styled, GradientOverlayImage } from '@apollosproject/ui-kit';
 
 import ApollosLandingScreen from './ui/LandingScreen';
@@ -11,7 +10,12 @@ const FullScreenImage = styled({
 
 const LandingScreen = ({ navigation }) => (
   <ApollosLandingScreen
-    onPressPrimary={() => navigation.push('Auth')}
+    onPressPrimary={() => {
+      console.log({ navigation });
+      console.log('Pressed the BUTTON');
+      navigation.push('Auth');
+      // navigation.push('TestNavigation');
+    }}
     textColor={'white'}
     BackgroundComponent={
       <FullScreenImage source={'https://picsum.photos/375/812/?random'} />
@@ -22,12 +26,6 @@ const LandingScreen = ({ navigation }) => (
 
 LandingScreen.navigationOptions = {
   header: null,
-};
-
-LandingScreen.propTypes = {
-  navigation: PropTypes.shape({
-    push: PropTypes.func,
-  }),
 };
 
 export default LandingScreen;

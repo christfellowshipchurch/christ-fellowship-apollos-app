@@ -5,7 +5,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 import PropTypes from 'prop-types';
 
 import { TableView, Cell } from 'ChristFellowship/src/ui/TableView';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
+import { UserWebBrowserConsumer } from '../../user-web-browser';
 
 import {
   HeaderSpacer,
@@ -21,7 +21,7 @@ const More = ({ navigation, givingUrl }) => {
   return (
     <BackgroundView>
       <SafeAreaView forceInset={{ bottom: 'never' }}>
-        <WebBrowserConsumer>
+        <UserWebBrowserConsumer>
           {(openUrl) => (
             <Animated.ScrollView
               scrollEventThrottle={16}
@@ -90,7 +90,7 @@ const More = ({ navigation, givingUrl }) => {
               </TableView>
             </Animated.ScrollView>
           )}
-        </WebBrowserConsumer>
+        </UserWebBrowserConsumer>
       </SafeAreaView>
     </BackgroundView>
   );

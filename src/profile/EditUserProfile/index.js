@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQuery } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import moment from 'moment';

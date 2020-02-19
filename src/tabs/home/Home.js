@@ -84,7 +84,7 @@ const Home = ({ navigation }) => {
               ListHeaderComponent={
                 <View>
                   <HeaderSpacer />
-                  <LiveButton key="HomeFeedLiveButton" />
+                  {/* <LiveButton key="HomeFeedLiveButton" /> */}
                 </View>
               }
               renderItem={renderItem}

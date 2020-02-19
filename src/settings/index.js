@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { useMutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import { SafeAreaView, ScrollView, withNavigation } from 'react-navigation';
 import { getVersion } from 'react-native-device-info';
 

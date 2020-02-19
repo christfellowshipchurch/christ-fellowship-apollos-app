@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { get, has } from 'lodash';
 
 import { View, SafeAreaView, ScrollView } from 'react-native';

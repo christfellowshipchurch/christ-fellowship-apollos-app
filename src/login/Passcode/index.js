@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useMutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import { has, get } from 'lodash';
 
 import { styled, H6, Button } from '@apollosproject/ui-kit';
