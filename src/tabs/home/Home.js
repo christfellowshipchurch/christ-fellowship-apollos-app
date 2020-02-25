@@ -52,8 +52,9 @@ const Home = ({ navigation }) => {
       {...item}
     />
   );
+  const setNavigationParam = (params) => navigation.setParams(params);
 
-  useEffect(() => navigation.setParams({ scrollY }), [scrollY]);
+  useEffect(() => setNavigationParam({ scrollY }), [scrollY]);
 
   return (
     <BackgroundView>

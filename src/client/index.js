@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider as ApolloHookProvider } from '@apollo/react-hooks';
 import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { getVersion, getApplicationName } from 'react-native-device-info';
@@ -70,7 +71,12 @@ class ClientProvider extends PureComponent {
   }
 
   render() {
-    return <ApolloProvider {...this.props} client={client} />;
+    // return <ApolloProvider {...this.props} client={client} />;
+    return (
+      <ApolloProvider client={client}>
+        <ApolloHookProvider {...this.props} client={client} />
+      </ApolloProvider>
+    );
   }
 }
 

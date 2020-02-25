@@ -11,7 +11,9 @@ import {
   FlexedView,
   BodyText,
 } from '@apollosproject/ui-kit';
+
 import { LOGOUT } from '@apollosproject/ui-auth';
+import NavigationService from '../NavigationService';
 
 import { TableView, Cell } from '../ui/TableView';
 import { UserWebBrowserConsumer } from '../user-web-browser';
@@ -80,7 +82,12 @@ const Settings = ({ navigation, title }) => {
               <Cell
                 icon="share-square"
                 title="Log Out"
-                onPress={() => handleLogout()}
+                onPress={async () => {
+                  await handleLogout();
+                  // This resets the navigation stack, and the navigates to the first auth screen.
+                  // This ensures that user isn't navigated to a subscreen of Auth, like the pin entry screen.
+                  await NavigationService.resetToAuth();
+                }}
               />
             </TableView>
           </ScrollView>

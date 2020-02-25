@@ -4,6 +4,11 @@ import { get } from 'lodash';
 import SafeAreaView from 'react-native-safe-area-view';
 import PropTypes from 'prop-types';
 
+import {
+  RockAuthedWebBrowser,
+  UserAvatarUpdate,
+} from '@apollosproject/ui-connected';
+
 import { TableView, Cell } from 'ChristFellowship/src/ui/TableView';
 import { UserWebBrowserConsumer } from '../../user-web-browser';
 

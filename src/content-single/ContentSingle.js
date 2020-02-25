@@ -2,7 +2,11 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { useDarkMode } from 'react-native-dark-mode';
+import {
+  useDarkMode,
+  useDynamicValue,
+  DynamicValue,
+} from 'react-native-dark-mode';
 
 import { ErrorCard, ThemeMixin } from '@apollosproject/ui-kit';
 
@@ -17,6 +21,23 @@ import WeekendContentItem from './WeekendContentItem';
 import EventContentItem from './EventContentItem';
 
 import NavigationHeader from './NavigationHeader';
+
+const dynamicTheme = new DynamicValue('light', 'dark');
+
+const DynamicThemeMixin = ({ children, theme }) => {
+  const defaultTheme = useDynamicValue(dynamicTheme);
+
+  return (
+    <ThemeMixin
+      mixin={{
+        type: get(theme, 'type', defaultTheme).toLowerCase(),
+        colors: get(theme, 'colors'),
+      }}
+    >
+      {children}
+    </ThemeMixin>
+  );
+};
 
 class ContentSingle extends PureComponent {
   static propTypes = {
@@ -90,21 +111,11 @@ class ContentSingle extends PureComponent {
   renderWithData = ({ loading, error, data }) => {
     if (error) return <ErrorCard error={error} />;
 
-    console.log({ data });
-
     const content = get(data, 'node', {});
-
-    const isDarkMode = useDarkMode();
-    const defaultTheme = isDarkMode ? 'dark' : 'light';
     const { theme = {}, id } = content;
 
     return (
-      <ThemeMixin
-        mixin={{
-          type: get(theme, 'type', defaultTheme).toLowerCase(),
-          colors: get(theme, 'colors'),
-        }}
-      >
+      <DynamicThemeMixin theme={theme}>
         <TrackEventWhenLoaded
           loaded={!!(!loading && content.title)}
           eventName={'View Contentx'}
@@ -115,14 +126,11 @@ class ContentSingle extends PureComponent {
         />
         {this.renderContent({ content, loading, error })}
         {/* <ActionContainer itemId={id} /> */}
-      </ThemeMixin>
+      </DynamicThemeMixin>
     );
   };
 
   render() {
-    const { props } = this;
-
-    console.log({ props });
     return (
       <Query query={GET_CONTENT_ITEM} variables={this.queryVariables}>
         {this.renderWithData}

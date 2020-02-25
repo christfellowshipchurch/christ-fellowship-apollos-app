@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, Animated } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
@@ -14,14 +14,20 @@ import {
   Button,
   StretchyView,
 } from '@apollosproject/ui-kit';
-import { HorizontalContentSeriesFeedConnected } from '@apollosproject/ui-connected';
+import {
+  ContentHTMLViewConnected,
+  HorizontalContentSeriesFeedConnected,
+  MediaControlsConnected,
+} from '@apollosproject/ui-connected';
 import { UserWebBrowserConsumer } from '../../user-web-browser';
-import MediaControls from '../MediaControls';
-import HTMLContent from '../HTMLContent';
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
 
-const FlexedScrollView = styled({ flex: 1 })(ScrollView);
+const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
+
+const StyledMediaControlsConnected = styled(({ theme }) => ({
+  marginTop: -(theme.sizing.baseUnit * 2.5),
+}))(MediaControlsConnected);
 
 const TitleContainer = styled(() => ({
   position: 'absolute',
@@ -88,7 +94,7 @@ const EventContentItem = ({ content, loading, navigation }) => {
               </TitleContainer>
             </View>
 
-            <MediaControls contentId={content.id} />
+            <StyledMediaControlsConnected contentId={content.id} />
             <PaddedView>
               <EventDateTimes
                 contentId={content.id}
@@ -114,12 +120,11 @@ const EventContentItem = ({ content, loading, navigation }) => {
               <Subtitle extraSpacing={callsToAction.length > 0}>
                 Event Details
               </Subtitle>
-              <HTMLContent contentId={content.id} />
+              <ContentHTMLViewConnected contentId={content.id} />
               <Features contentId={content.id} />
             </PaddedView>
             <HorizontalContentSeriesFeedConnected
               contentId={content.id}
-              navigation={navigation}
               relatedTitle="Events"
             />
           </FlexedScrollView>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Dimensions, View } from 'react-native';
+import { Dimensions, View, Animated } from 'react-native';
 import { SafeAreaView, withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -16,11 +16,10 @@ import {
     Touchable,
     ThemeMixin,
     TouchableScale,
-    H4,
 } from '@apollosproject/ui-kit';
 import ChangeAvatar from '../ChangeAvatar';
 
-const FlexedScrollView = styled({ flex: 1 })(ScrollView);
+const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
 const FeaturedImage = withTheme(({ theme }) => ({
     // Sets the ratio of the image

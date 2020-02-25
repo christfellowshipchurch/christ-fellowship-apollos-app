@@ -36,10 +36,17 @@ const UniversalContentItem = ({ content, loading }) => {
                 <GradientOverlayImage
                   isLoading={!coverImageSources.length && loading}
                   source={coverImageSources}
+                  // Sets the ratio of the image
+                  minAspectRatio={1}
+                  maxAspectRatio={1}
+                  // Sets the ratio of the placeholder
+                  forceRatio={1}
+                  // No ratios are respected without this
+                  maintainAspectRatio
                 />
               </Stretchy>
             ) : null}
-            {/* <StyledMediaControlsConnected contentId={content.id} /> */}
+            <StyledMediaControlsConnected contentId={content.id} />
             {/* fixes text/navigation spacing by adding vertical padding if we dont have an image */}
             <PaddedView vertical={!coverImageSources.length}>
               <H2 padded isLoading={!content.title && loading}>
@@ -48,7 +55,7 @@ const UniversalContentItem = ({ content, loading }) => {
               <ContentHTMLViewConnected contentId={content.id} />
             </PaddedView>
             <Features contentId={content.id} />
-            {/* <HorizontalContentSeriesFeedConnected contentId={content.id} /> */}
+            <HorizontalContentSeriesFeedConnected contentId={content.id} />
           </FlexedScrollView>
         )}
       </StretchyView>

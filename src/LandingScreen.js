@@ -1,26 +1,14 @@
 import React from 'react';
-import { styled, GradientOverlayImage } from '@apollosproject/ui-kit';
 
-import ApollosLandingScreen from './ui/LandingScreen';
-
-const FullScreenImage = styled({
-  resizeMode: 'cover',
-  position: 'absolute',
-})(GradientOverlayImage);
+import UILandingScreen from './ui/LandingScreen';
+import AuthBackgroundComponent from './ui/AuthBackground';
 
 const LandingScreen = ({ navigation }) => (
-  <ApollosLandingScreen
-    onPressPrimary={() => {
-      console.log({ navigation });
-      console.log('Pressed the BUTTON');
-      navigation.push('Auth');
-      // navigation.push('TestNavigation');
-    }}
+  <UILandingScreen
+    onPressPrimary={() => navigation.push('Auth')}
     textColor={'white'}
-    BackgroundComponent={
-      <FullScreenImage source={'https://picsum.photos/375/812/?random'} />
-    }
-    primaryNavText={"Let's go!"}
+    BackgroundComponent={<AuthBackgroundComponent />}
+    buttonTitle="Let's go!"
   />
 );
 
