@@ -18,7 +18,7 @@ import { MediaPlayer } from '@apollosproject/ui-media-player';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
 import Auth from './auth';
 
-import Providers from './MainProvider';
+import Providers from './Providers';
 import NavigationService from './NavigationService';
 import ContentSingle from './content-single';
 import { RowContentFeed } from './content-feed';
