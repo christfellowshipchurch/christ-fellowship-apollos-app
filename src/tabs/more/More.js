@@ -44,12 +44,22 @@ const More = ({ navigation, givingUrl }) => {
                 <Cell
                   icon="users"
                   title="Groups"
-                  onPress={() => openUrl('https://rock.gocf.org/groups')}
+                  onPress={() =>
+                    navigation.navigate('InlineWebView', {
+                      title: 'Groups',
+                      uri: 'https://rock.gocf.org/groups',
+                    })
+                  }
                 />
                 <Cell
                   icon="handshake"
                   title="Serve"
-                  onPress={() => openUrl('https://rock.gocf.org/dreamteam')}
+                  onPress={() =>
+                    navigation.navigate('InlineWebView', {
+                      title: 'Serve',
+                      uri: 'https://rock.gocf.org/dreamteam',
+                    })
+                  }
                 />
                 <Cell
                   icon="envelope-open-dollar"
@@ -70,21 +80,28 @@ const More = ({ navigation, givingUrl }) => {
                 <Cell
                   title="About Christ Fellowship"
                   onPress={() =>
-                    openUrl('https://beta.christfellowship.church/about')
+                    navigation.navigate('InlineWebView', {
+                      title: 'About Christ Fellowship',
+                      uri: 'https://beta.christfellowship.church/about',
+                    })
                   }
                 />
                 <Cell
                   title="Church Locations"
                   onPress={() =>
-                    openUrl('https://beta.christfellowship.church/locations')
+                    navigation.navigate('InlineWebView', {
+                      title: 'Church Locations',
+                      uri: 'https://beta.christfellowship.church/locations',
+                    })
                   }
                 />
                 <Cell
                   title="Contact Us"
                   onPress={() =>
-                    openUrl(
-                      'https://gochristfellowship.com/new-here/contact-us'
-                    )
+                    navigation.navigate('InlineWebView', {
+                      title: 'Contact Us',
+                      uri: 'https://gochristfellowship.com/new-here/contact-us',
+                    })
                   }
                 />
               </TableView>
