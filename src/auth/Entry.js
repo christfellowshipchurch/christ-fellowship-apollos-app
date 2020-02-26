@@ -121,7 +121,7 @@ const Entry = ({
               disabled={disabled}
               loading={isLoading}
               title={'Next'}
-              type={'white'}
+              type={'primary'}
               pill={false}
             />
           </PaddedView>

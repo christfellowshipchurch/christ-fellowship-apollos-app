@@ -21,7 +21,7 @@ import {
 
 const More = ({ navigation, givingUrl }) => {
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
-  useEffect(() => navigation.setParams({ scrollY }), [scrollY]);
+  useEffect(() => navigation.setParams({ scrollY }), []);
 
   return (
     <BackgroundView>
@@ -50,11 +50,6 @@ const More = ({ navigation, givingUrl }) => {
                   icon="handshake"
                   title="Serve"
                   onPress={() => openUrl('https://rock.gocf.org/dreamteam')}
-                />
-                <Cell
-                  icon="calendar-alt"
-                  title="Events"
-                  onPress={() => navigation.navigate('Events')}
                 />
                 <Cell
                   icon="envelope-open-dollar"

@@ -2,6 +2,7 @@ import Color from 'color';
 
 const authEntry = ({ colors: themeColors, alpha }) => ({
     colors: {
+        white: '#000000',
         text: {
             primary: themeColors.darkPrimary,
             secondary: 'white',

@@ -11,6 +11,7 @@ import {
   PaddedView,
   BackgroundView,
   Button,
+  ThemeMixin,
 } from '@apollosproject/ui-kit';
 
 const Content = styled({
@@ -48,27 +49,29 @@ const LandingScreen = ({
   onPressPrimary,
   BackgroundComponent,
 }) => (
-    <BackgroundView>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={'transparent'}
-        translucent
-      />
-      {BackgroundComponent}
-      <Content>
-        <BrandImage source={require('./main_logo.png')} />
-        <TextContainer blurType="xlight">
-          <Title color={textColor}>{title}</Title>
-          <StyledH4 color={textColor}>{description}</StyledH4>
-        </TextContainer>
-        <StyledButton
-          title={buttonTitle}
-          pill={false}
-          onPress={onPressPrimary}
-          type="white"
+    <ThemeMixin mixin={{ type: 'auth-entry' }}>
+      <BackgroundView>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={'transparent'}
+          translucent
         />
-      </Content>
-    </BackgroundView>
+        {BackgroundComponent}
+        <Content>
+          <BrandImage source={require('./main_logo.png')} />
+          <TextContainer blurType="xlight">
+            <Title color={textColor}>{title}</Title>
+            <StyledH4 color={textColor}>{description}</StyledH4>
+          </TextContainer>
+          <StyledButton
+            title={buttonTitle}
+            pill={false}
+            onPress={onPressPrimary}
+            type="primary"
+          />
+        </Content>
+      </BackgroundView>
+    </ThemeMixin>
   );
 
 LandingScreen.propTypes = {

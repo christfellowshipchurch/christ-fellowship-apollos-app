@@ -6,64 +6,28 @@ import {
   RESULTS,
 } from 'react-native-permissions';
 
-import {
-  GradientOverlayImage,
-  styled,
-  BackgroundView,
-} from '@apollosproject/ui-kit';
+import { withThemeMixin } from '@apollosproject/ui-kit';
 import {
   AskNotificationsConnected,
-  AskNameConnected,
   FeaturesConnected,
-  AboutYouConnected,
   LocationFinderConnected,
   OnboardingSwiper,
 } from '@apollosproject/ui-onboarding';
 
-const FullscreenBackgroundView = styled({
-  position: 'absolute',
-  width: '100%',
-  height: '100%',
-})(BackgroundView);
-
-const StyledGradient = styled({
-  maxHeight: '40%',
-})(GradientOverlayImage);
+import AuthBackground from '../AuthBackground';
 
 function Onboarding({ navigation }) {
   return (
-    <>
-      <FullscreenBackgroundView />
+    <AuthBackground>
       <OnboardingSwiper>
         {({ swipeForward }) => (
           <>
-            <AskNameConnected onPressPrimary={swipeForward} />
-            <FeaturesConnected
-              onPressPrimary={swipeForward}
-              BackgroundComponent={
-                <StyledGradient
-                  source={'https://picsum.photos/640/640/?random'}
-                />
-              }
-            />
-            <AboutYouConnected
-              onPressPrimary={swipeForward}
-              BackgroundComponent={
-                <StyledGradient
-                  source={'https://picsum.photos/640/640/?random'}
-                />
-              }
-            />
+            <FeaturesConnected onPressPrimary={swipeForward} />
             <LocationFinderConnected
               onPressPrimary={swipeForward}
               onNavigate={() => {
                 navigation.navigate('Location');
               }}
-              BackgroundComponent={
-                <StyledGradient
-                  source={'https://picsum.photos/640/640/?random'}
-                />
-              }
             />
             <AskNotificationsConnected
               onRequestPushPermissions={(update) => {
@@ -81,23 +45,27 @@ function Onboarding({ navigation }) {
               }}
               onPressPrimary={() => navigation.replace('Tabs')}
               primaryNavText={'Finish'}
-              BackgroundComponent={
-                <StyledGradient
-                  source={'https://picsum.photos/640/640/?random'}
-                />
-              }
             />
           </>
         )}
       </OnboardingSwiper>
-    </>
+    </AuthBackground>
   );
 }
 
-Onboarding.navigationOptions = {
+const OnboardingWithTheme = withThemeMixin({
+  type: 'onboarding',
+  colors: {
+    background: {
+      paper: 'white',
+    },
+  },
+})(Onboarding);
+
+OnboardingWithTheme.navigationOptions = {
   title: 'Onboarding',
   header: null,
   gesturesEnabled: false,
 };
 
-export default Onboarding;
+export default OnboardingWithTheme;

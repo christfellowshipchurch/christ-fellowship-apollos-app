@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import { Animated, View, StyleSheet } from 'react-native';
 import { BlurView as RNBlurView } from '@react-native-community/blur';
 import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
-import {
-    BackgroundView as ApollosBackgroundView,
-    styled,
-} from '@apollosproject/ui-kit';
+import { BackgroundView as ApollosBackgroundView } from '@apollosproject/ui-kit';
 import HeaderRight from './HeaderRight';
 
 // eslint-disable-next-line import/prefer-default-export
@@ -15,10 +12,8 @@ export const navigationOptions = {
     headerTransparent: true,
     // header components
     headerRight: <HeaderRight />,
-    // headerBackground: <BlurView style={StyleSheet.absoluteFill} />,
     // styles
     headerStyle: {
-        // backgroundColor: 'black',
         shadowRadius: 0,
         shadowOffset: {
             height: 0,
@@ -33,11 +28,11 @@ export const navigationOptions = {
     },
 };
 
-export const BackgroundView = ({ headerHeight, children }) => (
+export const BackgroundView = ({ children }) => (
     <ApollosBackgroundView>{children}</ApollosBackgroundView>
 );
 
-const dynamicBlurType = new DynamicValue('light', 'dark');
+const dynamicBlurType = new DynamicValue('xlight', 'extraDark');
 
 export const BlurView = ({ scrollY, scrollDistance }) => {
     const barStyle = useDynamicValue(dynamicBlurType);
@@ -59,6 +54,9 @@ export const BlurView = ({ scrollY, scrollDistance }) => {
 
 BlurView.propTypes = {
     scrollDistance: PropTypes.number,
+    scrollY: PropTypes.shape({
+        interpolate: PropTypes.func,
+    }),
 };
 
 BlurView.defaultProps = {
@@ -68,3 +66,4 @@ BlurView.defaultProps = {
 
 export const HeaderSpacer = () => <View style={{ height: 64 }} />;
 export const HEADER_OFFSET = 64;
+export const SCROLL_DISTANCE = 20;

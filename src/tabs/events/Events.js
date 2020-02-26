@@ -79,7 +79,7 @@ const Events = ({ navigation }) => {
     <EventCollection {...item} onPress={handleOnPress} isLoading={isLoading} />
   );
 
-  useEffect(() => navigation.setParams({ scrollY }), [scrollY]);
+  useEffect(() => navigation.setParams({ scrollY }), []);
 
   const allEventsSorted = get(data, 'allEvents', []).sort(
     (a, b) =>

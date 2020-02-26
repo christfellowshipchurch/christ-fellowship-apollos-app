@@ -14,7 +14,7 @@ import {
   AuthProfileDetailsEntryConnected,
 } from '@apollosproject/ui-auth';
 
-import AuthProfileDetailsEntry from './AuthProfileDetailsEntry';
+// import AuthProfileDetailsEntry from './AuthProfileDetailsEntry';
 import Entry from './Entry';
 
 export {
@@ -49,10 +49,7 @@ const AuthNavigator = createStackNavigator(
       <AuthEmailEntryConnected {...props} Component={StyledEntry} />
     ),
     AuthPasswordEntryConnected,
-    AuthProfileEntryConnected: (props) => {
-      console.log({ props });
-      return <AuthProfileEntryConnected {...props} />;
-    },
+    AuthProfileEntryConnected,
     AuthProfileDetailsEntryConnected,
   },
   {

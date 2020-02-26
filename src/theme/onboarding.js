@@ -1,16 +1,31 @@
 import Color from 'color';
 
-const onboarding = ({ colors: themeColors, alpha }) => ({
-    override: {
+const onboarding = ({ colors: themeColors, alpha, sizing }) => ({
+    overrides: {
         'InputUnderline.blurred': {
             backgroundColor: '#ffffff',
         },
         'InputUnderline.focused': {
             backgroundColor: '#ffffff',
         },
+        'Onboarding.SlideContent.Title': {
+            paddingTop: sizing.baseUnit * 2,
+        },
+        'Onboarding.Slide.SkipButton': {
+            color: 'white',
+        },
+        'SideBySideView.Right': {
+            backgroundColor: 'white',
+        },
+        H5: {
+            color: 'black',
+        },
+        H6: {
+            color: themeColors.darkTertiary,
+        },
     },
     colors: {
-        white: '#000000',
+        white: '#000000', // ui hack to get Button text to be dark
         text: {
             primary: themeColors.lightPrimary,
             secondary: themeColors.lightSecondary,
