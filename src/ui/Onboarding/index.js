@@ -29,7 +29,7 @@ function Onboarding({ navigation }) {
                 navigation.navigate('Location');
               }}
             />
-            <AskNotificationsConnected
+            {/* <AskNotificationsConnected
               onRequestPushPermissions={(update) => {
                 checkNotifications().then((checkRes) => {
                   if (checkRes.status === RESULTS.DENIED) {
@@ -45,7 +45,7 @@ function Onboarding({ navigation }) {
               }}
               onPressPrimary={() => navigation.replace('Tabs')}
               primaryNavText={'Finish'}
-            />
+            /> */}
           </>
         )}
       </OnboardingSwiper>
