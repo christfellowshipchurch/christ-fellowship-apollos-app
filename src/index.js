@@ -25,7 +25,6 @@ import { RowContentFeed } from './content-feed';
 import Tabs from './tabs';
 // import Location from './locations';
 import UserWebBrowser from './user-web-browser';
-import Login from './login';
 import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information';
 import {
   CurrentUserProfile as Connect,
