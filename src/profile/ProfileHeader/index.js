@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, Dimensions, View } from 'react-native';
+import React from 'react';
+import { Dimensions, View, Animated } from 'react-native';
 import { SafeAreaView, withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -16,11 +16,10 @@ import {
     Touchable,
     ThemeMixin,
     TouchableScale,
-    H4,
 } from '@apollosproject/ui-kit';
 import ChangeAvatar from '../ChangeAvatar';
 
-const FlexedScrollView = styled({ flex: 1 })(ScrollView);
+const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
 const FeaturedImage = withTheme(({ theme }) => ({
     // Sets the ratio of the image
@@ -34,7 +33,7 @@ const FeaturedImage = withTheme(({ theme }) => ({
     overlayType: 'gradient-user-profile',
 }))(GradientOverlayImage);
 
-const FlexedViewCenterColumns = styled(({ theme }) => ({
+const FlexedViewCenterColumns = styled(() => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -67,7 +66,7 @@ const ProfileName = styled(({ theme }) => ({
     marginTop: theme.sizing.baseUnit * 0.5,
 }))(H3);
 
-const CampusName = styled(({ theme }) => ({
+const CampusName = styled(() => ({
     fontWeight: 'normal',
     fontSize: 14,
 }))(BodyText);

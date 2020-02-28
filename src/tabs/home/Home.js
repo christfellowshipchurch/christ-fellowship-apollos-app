@@ -9,10 +9,10 @@ import { styled, FeedView } from '@apollosproject/ui-kit';
 
 import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 import {
-  HeaderSpacer,
   navigationOptions,
   BackgroundView,
   BlurView,
+  HEADER_OFFSET,
 } from '../navigation';
 import { LiveButton } from '../../live';
 
@@ -35,6 +35,10 @@ const LogoTitle = styled(({ theme }) => ({
   width: '50%',
 }))(Image);
 
+const HeaderSpacer = styled(({ theme }) => ({
+  height: HEADER_OFFSET - theme.sizing.baseUnit,
+}))(View);
+
 const Wordmark = () => {
   const source = useDynamicValue(DynamicWordmark);
 
@@ -52,8 +56,11 @@ const Home = ({ navigation }) => {
       {...item}
     />
   );
+  const setNavigationParam = (params) => {
+    navigation.setParams(params);
+  };
 
-  useEffect(() => navigation.setParams({ scrollY }), [scrollY]);
+  useEffect(() => setNavigationParam({ scrollY }), []);
 
   return (
     <BackgroundView>

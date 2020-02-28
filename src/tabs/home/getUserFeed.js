@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
-
-import { BASE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected';
+import ApollosConfig from '@apollosproject/config';
 
 export default gql`
   query getUserFeed($first: Int, $after: String) {
@@ -10,10 +9,10 @@ export default gql`
       }
       edges {
         node {
-          ...baseCardFragment
+          ...contentCardFragment
         }
       }
     }
   }
-  ${BASE_CARD_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.CONTENT_CARD_FRAGMENT}
 `;

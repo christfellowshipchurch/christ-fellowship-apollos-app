@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react'
-import { View } from 'react-native'
-import PropTypes from 'prop-types'
-import { get } from 'lodash'
-import { Query, ApolloConsumer } from 'react-apollo'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import Color from 'color'
+import React, { PureComponent } from 'react';
+import { View } from 'react-native';
+import PropTypes from 'prop-types';
+import { get } from 'lodash';
+import { Query, ApolloConsumer } from 'react-apollo';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import Color from 'color';
 
 import {
     TouchableScale,
@@ -12,9 +12,9 @@ import {
     Avatar,
     styled,
     BodyText,
-} from '@apollosproject/ui-kit'
-import { GET_USER_PHOTO } from './queries'
-import uploadPhoto from './uploadPhoto'
+} from '@apollosproject/ui-kit';
+import { GET_USER_PHOTO } from './queries';
+import uploadPhoto from './uploadPhoto';
 
 const Overlay = styled(({ theme }) => ({
     position: 'absolute',
@@ -29,34 +29,34 @@ const Overlay = styled(({ theme }) => ({
     backgroundColor: Color(theme.colors.black)
         .alpha(theme.alpha.low)
         .string(),
-    borderRadius: theme.sizing.avatar.large / 2
-}))(View)
+    borderRadius: theme.sizing.avatar.large / 2,
+}))(View);
 
 const GetPhotoData = ({ children }) => (
     <Query query={GET_USER_PHOTO}>
         {({ data: { currentUser = {} } = {} }) => {
-            const photo = get(currentUser, 'profile.photo')
-            return children({ photo })
+            const photo = get(currentUser, 'profile.photo');
+            return children({ photo });
         }}
     </Query>
-)
+);
 
 GetPhotoData.propTypes = {
     children: PropTypes.func.isRequired,
-}
+};
 
 const Wrapper = styled({
     justifyContent: 'center',
     alignItems: 'center',
-})(View)
+})(View);
 
 export default class AvatarForm extends PureComponent {
     state = {
         isUploadingFile: false,
-    }
+    };
 
     componentWillUnmount() {
-        this.setState({ isUploadingFile: false })
+        this.setState({ isUploadingFile: false });
     }
 
     handleUploadPhoto = async ({ client }) => {
@@ -64,16 +64,16 @@ export default class AvatarForm extends PureComponent {
             await uploadPhoto({
                 client,
                 onUpload: () => this.setState({ isUploadingFile: true }),
-            })
-            await this.setState({ isUploadingFile: false })
+            });
+            await this.setState({ isUploadingFile: false });
         } catch (e) {
-            console.warn(e)
-            this.setState({ isUploadingFile: false })
+            console.warn(e);
+            this.setState({ isUploadingFile: false });
         }
-    }
+    };
 
     render() {
-        const { isUploadingFile } = this.state
+        const { isUploadingFile } = this.state;
 
         return (
             <ApolloConsumer>
@@ -81,9 +81,7 @@ export default class AvatarForm extends PureComponent {
                     <Wrapper>
                         <GetPhotoData>
                             {({ photo }) => (
-                                <PaddedView
-                                    horizontal={false}
-                                >
+                                <PaddedView horizontal={false}>
                                     <TouchableScale
                                         onPress={() => this.handleUploadPhoto({ client })}
                                     >
@@ -98,9 +96,7 @@ export default class AvatarForm extends PureComponent {
                                                 color={'white'}
                                                 size={24}
                                             />
-                                            <BodyText>
-                                                Update
-                                            </BodyText>
+                                            <BodyText>Update</BodyText>
                                         </Overlay>
                                     </TouchableScale>
                                 </PaddedView>
@@ -109,6 +105,6 @@ export default class AvatarForm extends PureComponent {
                     </Wrapper>
                 )}
             </ApolloConsumer>
-        )
+        );
     }
 }

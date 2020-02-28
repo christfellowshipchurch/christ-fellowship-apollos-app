@@ -1,6 +1,6 @@
-import PushNotification from 'react-native-push-notification'
-import gql from 'graphql-tag'
-import { schema as mediaPlayerSchema } from '@apollosproject/ui-media-player'
+import PushNotification from 'react-native-push-notification';
+import gql from 'graphql-tag';
+import { schema as mediaPlayerSchema } from '@apollosproject/ui-media-player';
 import { CACHE_LOADED } from '../client/cache' // eslint-disable-line
 
 // TODO: this will require more organization...ie...not keeping everything in one file.
@@ -19,18 +19,18 @@ export const schema = `
     updatePushPermissions(enabled: Boolean!)
   }
   ${mediaPlayerSchema}
-`
+`;
 
 export const defaults = {
   __typename: 'Query',
   cacheLoaded: false,
-}
+};
 
 const GET_LOGGED_IN = gql`
   query {
     isLoggedIn @client
   }
-`
+`;
 
 export const resolvers = {
   Mutation: {
@@ -40,10 +40,10 @@ export const resolvers = {
         data: {
           cacheLoaded: true,
         },
-      })
+      });
       const { data: { isLoggedIn } = {} } = await client.query({
         query: GET_LOGGED_IN,
-      })
+      });
 
       // On cache load, we check to see if the user is already logged in
       //    and then check to see if Push Notifications are already enabled
@@ -51,13 +51,13 @@ export const resolvers = {
       //    to update our records
       if (isLoggedIn) {
         PushNotification.checkPermissions(({ alert, badge, sound }) => {
-          if (!!(alert || badge || sound)) {
-            PushNotification.requestPermissions()
+          if (alert || badge || sound) {
+            PushNotification.requestPermissions();
           }
-        })
+        });
       }
 
-      return null
+      return null;
     },
   },
-}
+};

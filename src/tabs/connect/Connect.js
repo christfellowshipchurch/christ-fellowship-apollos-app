@@ -4,9 +4,9 @@ import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
-import { GET_LOGIN_STATE } from '@apollosproject/ui-auth';
 import { BackgroundView } from '@apollosproject/ui-kit';
 import { CurrentUserProfile } from 'ChristFellowship/src/profile';
+import { GET_LOGIN_STATE } from '@apollosproject/ui-auth';
 
 const Connect = ({ navigation }) => (
   <BackgroundView>

@@ -74,7 +74,7 @@ jest.mock('@apollosproject/ui-analytics', () => ({
   AnalyticsConsumer: ({ children }) => children({ test: jest.fn() }),
   AnalyticsProvider: ({ children }) => children,
   TrackEventWhenLoaded: () => null,
-  withTrackOnPress: (Component) => (props) => <Component {...props} />,
+  withTrackOnPress: (Component) => (props) => <Component {...props} />, // eslint-disable-line
 }));
 
 jest.mock('@apollosproject/ui-notifications', () => ({

@@ -69,9 +69,9 @@ PODS:
     - React
   - react-native-image-picker (0.28.0):
     - React
-  - react-native-maps (0.25.0):
+  - react-native-maps (0.26.1):
     - React
-  - react-native-music-control (0.10.7):
+  - react-native-music-control (0.10.6):
     - React
   - react-native-onesignal (3.3.2):
     - OneSignal (= 2.10.1)
@@ -191,9 +191,8 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
-    - boost-for-react-native
   https://github.com/cocoapods/specs.git:
+    - boost-for-react-native
     - OneSignal
 
 EXTERNAL SOURCES:
@@ -313,8 +312,8 @@ SPEC CHECKSUMS:
   react-native-config: 55548054279d92e0e4566ea15a8b9b81028ec342
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-image-picker: e6e06d4315e3c85bad17e4b2002cd29f11d202c8
-  react-native-maps: 190c02ca533fddac5bb49cf17bdece3644612107
-  react-native-music-control: e0eb7b9b43004134cb9e54d5dafee14e6f20eeea
+  react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
+  react-native-music-control: acf1bf348eee8231d0db9422f170fc752a904ce3
   react-native-onesignal: 8958311abbd9125f26e600914e48833b57321cbf
   react-native-passkit-wallet: 51e3babdaeec4c10b5736786ebd1bfb470fcaa36
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd

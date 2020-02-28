@@ -1,11 +1,8 @@
-import React from 'react'
-
-import Identity from './Identity'
-import Passcode from './Passcode'
-import ProfileInformation from './ProfileInformation'
-import EnableNotifications from './EnableNotifications'
-
-import { createStackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation';
+import Identity from './Identity';
+import Passcode from './Passcode';
+import ProfileInformation from './ProfileInformation';
+import EnableNotifications from './EnableNotifications';
 
 const OnboardingNavigator = createStackNavigator(
   {
@@ -17,10 +14,10 @@ const OnboardingNavigator = createStackNavigator(
   {
     initialRouteName: 'Identity',
   }
-)
+);
 
 OnboardingNavigator.navigationOptions = {
   header: null,
-}
+};
 
-export default OnboardingNavigator
+export default OnboardingNavigator;

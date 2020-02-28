@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import CampusParts from 'ChristFellowship/src/locations/campusFragment';
+import ApollosConfig from '@apollosproject/config';
 
 export default gql`
   query CurrentUserProfile {
@@ -22,5 +22,5 @@ export default gql`
       }
     }
   }
-  ${CampusParts}
+  ${ApollosConfig.FRAGMENTS.CAMPUS_PARTS_FRAGMENT}
 `;

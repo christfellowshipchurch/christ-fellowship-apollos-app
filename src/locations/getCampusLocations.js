@@ -1,10 +1,11 @@
 import gql from 'graphql-tag';
-import CampusFragment from './campusFragment';
+import ApollosConfig from '@apollosproject/config';
 
 export default gql`
   query getAllCampuses($latitude: Float!, $longitude: Float!) {
     campuses(location: { latitude: $latitude, longitude: $longitude }) {
       ...CampusParts
+      distanceFromLocation
     }
     currentUser {
       id
@@ -16,5 +17,5 @@ export default gql`
       }
     }
   }
-  ${CampusFragment}
+  ${ApollosConfig.FRAGMENTS.CAMPUS_PARTS_FRAGMENT}
 `;

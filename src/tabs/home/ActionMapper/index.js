@@ -4,7 +4,7 @@ import { uniq, indexOf } from 'lodash';
 
 import { TouchableScale, DefaultCard } from '@apollosproject/ui-kit';
 
-import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
+import ContentCardConnected from '../../../ui/ContentCardConnected';
 import {
     ChildrenFeed,
     AnnouncementFeed,
