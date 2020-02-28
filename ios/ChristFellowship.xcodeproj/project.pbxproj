@@ -745,7 +745,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
-				CURRENT_PROJECT_VERSION = 114;
+				CURRENT_PROJECT_VERSION = 116;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -770,7 +770,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
-				CURRENT_PROJECT_VERSION = 114;
+				CURRENT_PROJECT_VERSION = 116;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
