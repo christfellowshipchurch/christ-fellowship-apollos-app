@@ -153,7 +153,7 @@
     "graphql-import": "^0.7.1",
     "jest": "^24.8.0",
     "jest-react-native": "18.0.0",
-    "jetifier": "^1.6.4",
+    "jetifier": "^1.6.5",
     "lerna": "^3.0.6",
     "metro-react-native-babel-preset": "^0.56.0",
     "nodemon": "1.18.7",
