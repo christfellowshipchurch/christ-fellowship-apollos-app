@@ -1,5 +1,5 @@
 import React from 'react';
-import { Animated, Dimensions } from 'react-native';
+import { Animated, Dimensions, View } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
@@ -14,7 +14,7 @@ import {
   BackgroundView,
   PaddedView,
   H2,
-  StretchyView,
+  // StretchyView,
   ThemeMixin,
   ThemeConsumer,
   CardLabel,
@@ -39,15 +39,19 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
 const LiveAwareLabel = withTheme(({ isLive, title, theme }) => ({
   ...(isLive
     ? {
-        title: 'Live',
-        type: 'secondary',
-        icon: 'live-dot',
-        iconSize: theme.helpers.rem(0.4375), // using our typographic size unit based on fontSize so that the icon scales correctly with font size changes.
-      }
+      title: 'Live',
+      type: 'secondary',
+      icon: 'live-dot',
+      iconSize: theme.helpers.rem(0.4375), // using our typographic size unit based on fontSize so that the icon scales correctly with font size changes.
+    }
     : {
-        title,
-      }),
+      title,
+    }),
 }))(CardLabel);
+
+// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
+const StretchyView = ({ children, ...props }) =>
+  children({ Stretchy: View, ...props });
 
 const WeekendContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
