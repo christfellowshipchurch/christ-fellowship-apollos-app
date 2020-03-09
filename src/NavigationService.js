@@ -32,8 +32,10 @@ export const resetAction = ({ navigatorName, routeName }) =>
 const resetToAuth = () => {
   _navigator.dispatch(
     resetAction({
-      navigatorName: 'Auth',
-      routeName: 'AuthSMSPhoneEntryConnected',
+      // navigatorName: 'Auth',
+      // routeName: 'AuthSMSPhoneEntryConnected',
+      navigatorName: 'LandingScreen',
+      routeName: 'LandingScreen',
     })
   );
 };
