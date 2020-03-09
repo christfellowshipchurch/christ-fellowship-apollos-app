@@ -1,7 +1,7 @@
-import { createStackNavigator } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation';
 
-import Connect from './Connect'
-import tabBarIcon from '../tabBarIcon'
+import tabBarIcon from '../tabBarIcon';
+import Connect from './Connect';
 
 const ConnectNavigator = createStackNavigator(
   {
@@ -15,7 +15,7 @@ const ConnectNavigator = createStackNavigator(
 
 ConnectNavigator.navigationOptions = {
   tabBarIcon: tabBarIcon('user-circle'),
-  title: 'Profile'
+  title: 'Profile',
 };
 
-export default ConnectNavigator
+export default ConnectNavigator;

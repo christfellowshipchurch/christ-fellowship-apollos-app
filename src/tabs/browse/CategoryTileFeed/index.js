@@ -1,16 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { useQuery } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import PropTypes from 'prop-types';
 import { get, take } from 'lodash';
 
 import {
   styled,
   withTheme,
-  H3,
   H4,
-  H5,
   H6,
   HorizontalTileFeed,
   ButtonLink,
@@ -19,7 +17,7 @@ import {
   withIsLoading,
 } from '@apollosproject/ui-kit';
 
-import { TinyCard } from 'ChristFellowship/src/ui/Cards';
+import { TinyCard } from '../../../ui/Cards';
 import ContentCardConnected from '../../../ui/ContentCardConnected';
 import { GET_CATEGORY_PREVIEW } from '../queries';
 

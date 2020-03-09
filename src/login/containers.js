@@ -17,7 +17,7 @@ import {
     withTheme,
 } from '@apollosproject/ui-kit';
 
-import { FlexedSafeAreaView, FlexedFooter } from './styles.js';
+import { FlexedSafeAreaView, FlexedFooter } from './styles';
 
 const HeaderImage = styled({
     resizeMode: 'contain',

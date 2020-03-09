@@ -1,25 +1,5 @@
 import gql from 'graphql-tag';
-
-export const contentMediaFragment = gql`
-  fragment contentMediaFragment on ContentItem {
-    id
-    title
-    parentChannel {
-      id
-      name
-    }
-    coverImage {
-      sources {
-        uri
-      }
-    }
-    videos {
-      sources {
-        uri
-      }
-    }
-  }
-`;
+import ApollosConfig from '@apollosproject/config';
 
 export default gql`
   query getContentMedia($contentId: ID!) {
@@ -29,5 +9,5 @@ export default gql`
       }
     }
   }
-  ${contentMediaFragment}
+  ${ApollosConfig.FRAGMENTS.CONTENT_MEDIA_FRAGMENT}
 `;

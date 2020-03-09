@@ -5,21 +5,13 @@ import { get } from 'lodash';
 import moment from 'moment';
 
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
-import {
-  formatDate,
-  getStartDateFromEvents,
-} from 'ChristFellowship/src/utils/events';
 import GET_CONTENT_CARD from './query';
 
 export { BASE_CARD_FRAGMENT } from './query';
 // TODO: Replace passing a Card as a prop with using the component mapper.
 // export contentCardComponentMapper from './contentCardComponentMapper';
 
-export {
-  TILE_CARD_FRAGMENT,
-  LARGE_CARD_FRAGMENT,
-  ACCESSORY_FRAGMENT,
-} from './query';
+export { TILE_CARD_FRAGMENT, ACCESSORY_FRAGMENT } from './query';
 
 const ContentCardConnected = ({
   contentId,
@@ -41,12 +33,12 @@ const ContentCardConnected = ({
       {({ data: { node = {} } = {}, loading, error }) => {
         if (error) return <ErrorCard error={error} />;
 
-        const metrics = [
-          {
-            icon: node.isLiked ? 'like-solid' : 'like',
-            value: node.likedCount,
-          },
-        ];
+        // const metrics = [
+        //   {
+        //     icon: node.isLiked ? 'like-solid' : 'like',
+        //     value: node.likedCount,
+        //   },
+        // ];
 
         const typename = get(node, '__typename', '');
         const coverImage = get(node, 'coverImage.sources', undefined);

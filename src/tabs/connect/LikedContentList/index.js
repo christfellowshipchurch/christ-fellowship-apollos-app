@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import { get } from 'lodash';
 
 import { BackgroundView, FeedView } from '@apollosproject/ui-kit';
-import fetchMoreResolver from 'ChristFellowship/src/utils/fetchMoreResolver';
+import fetchMoreResolver from '../../../utils/fetchMoreResolver';
 import ContentCardConnected from '../../../ui/ContentCardConnected';
 
 import GET_LIKED_CONTENT from '../getLikedContent';

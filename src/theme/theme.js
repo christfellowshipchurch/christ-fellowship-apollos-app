@@ -1,5 +1,7 @@
 import Color from 'color';
 import dark from './dark-theme';
+import onboarding from './onboarding';
+import authEntry from './authEntry';
 
 /* Add your custom theme definitions below. Anything that is supported in UI-Kit Theme can be
  overridden and/or customized here! */
@@ -120,13 +122,82 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
 const sizing = {
     baseBorderRadius: 8,
     avatar: {
-        small: 40,
+        small: 32,
         medium: 80,
         large: 150,
     },
 };
 
-const types = { dark };
+const alpha = {
+    high: 0.8,
+    medium: 0.5,
+    low: 0.4,
+};
+
+const overrides = {
+    'Onboarding.SlideContent.Title': {
+        color: '#FFFFFF',
+    },
+    'Onboarding.SlideContent.Description': {
+        color: '#FFFFFF',
+    },
+    'Onboarding.Slide.PrimaryButton': {
+        backgroundColor: '#ffffff',
+        borderColor: '#ffffff',
+        flex: 1,
+    },
+    'Onboarding.Swiper.PaginationDot.Active': {
+        backgroundColor: '#ffffff',
+    },
+    'Onboarding.Swiper.PaginationDot': {
+        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    },
+    'DateInput.Chip': {
+        backgroundColor: 'transparent',
+        borderColor: 'white',
+    },
+    'ui-auth.TitleText': {
+        color: '#FFFFFF',
+    },
+    'ui-auth.RadioLabel': {
+        color: '#FCFCFC',
+    },
+    'Card.Image': {
+        resizeMode: 'cover',
+    },
+    'ui-kit.inputs.Search.InputWrapper': {
+        backgroundColor: '#F4F4F5',
+    },
+    'ui-kit.inputs.Search.ClearSearchButtonBackground': {
+        backgroundColor: '#F4F4F5',
+    },
+    'ui-auth.TabCard': {
+        backgroundColor: '#FFFFFF',
+    },
+    'ui-auth.NextButton': {
+        backgroundColor: '#FCFCFC',
+        borderColor: '#FCFCFC',
+    },
+    'ui-auth.PromptText': {
+        color: '#FCFCFC',
+    },
+    'ui-auth.FieldLabel': {
+        color: '#FCFCFC',
+    },
+};
+
+const buttons = ({ colors: themeColors }) => ({
+    white: {
+        fill: themeColors.white,
+        accent: themeColors.black,
+    },
+});
+
+const types = {
+    dark,
+    onboarding,
+    'auth-entry': authEntry,
+};
 
 export default {
     colors,
@@ -134,4 +205,7 @@ export default {
     overlays,
     sizing,
     types,
+    overrides,
+    alpha,
+    buttons,
 };

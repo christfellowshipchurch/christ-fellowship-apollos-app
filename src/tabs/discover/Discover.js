@@ -1,55 +1,47 @@
 import React, { PureComponent } from 'react';
-import { Query } from 'react-apollo';
-import { get } from 'lodash';
+import { throttle } from 'lodash';
 
-import { FeedView, BackgroundView } from '@apollosproject/ui-kit';
+import { BackgroundView } from '@apollosproject/ui-kit';
 
-import TileContentFeed from './TileContentFeed';
-import GET_CONTENT_CHANNELS from './getContentChannels';
+import SearchInputHeader, {
+  ReactNavigationStyleReset,
+} from '../../ui/SearchInputHeader';
 
-const childContentItemLoadingState = {
-  title: '',
-  isLoading: true,
-};
-
-const feedItemLoadingState = {
-  name: '',
-  isLoading: true,
-};
+import SearchFeed from './SearchFeed';
+import DiscoverFeed from './DiscoverFeed';
 
 class Discover extends PureComponent {
-  renderItem = ({ item }) => (
-    <TileContentFeed
-      id={item.id}
-      name={item.name}
-      content={get(item, 'childContentItemsConnection.edges', []).map(
-        (edge) => edge.node
-      )}
-      isLoading={item.isLoading}
-      loadingStateObject={childContentItemLoadingState}
-    />
+  state = {
+    searchText: '',
+    isFocused: false,
+  };
+
+  handleOnChangeText = throttle(
+    (value) =>
+      this.setState({
+        searchText: value,
+      }),
+    300
   );
+
+  handleOnFocus = (inputState) => {
+    this.setState({
+      isFocused: inputState,
+    });
+  };
 
   render() {
     return (
       <BackgroundView>
-        <Query query={GET_CONTENT_CHANNELS} fetchPolicy="cache-and-network">
-          {({
-            error,
-            loading,
-            data: { contentChannels = [] } = {},
-            refetch,
-          }) => (
-            <FeedView
-              error={error}
-              content={contentChannels}
-              isLoading={loading}
-              refetch={refetch}
-              renderItem={this.renderItem}
-              loadingStateObject={feedItemLoadingState}
-            />
-          )}
-        </Query>
+        <SearchInputHeader
+          onChangeText={this.handleOnChangeText}
+          onFocus={this.handleOnFocus}
+        />
+        {this.state.isFocused || this.state.searchText ? (
+          <SearchFeed searchText={this.state.searchText} />
+        ) : (
+          <DiscoverFeed />
+        )}
       </BackgroundView>
     );
   }
@@ -57,6 +49,7 @@ class Discover extends PureComponent {
 
 Discover.navigationOptions = {
   title: 'Discover',
+  headerStyle: ReactNavigationStyleReset.header,
 };
 
 export default Discover;

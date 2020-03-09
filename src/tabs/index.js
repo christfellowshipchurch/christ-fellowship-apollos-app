@@ -6,13 +6,14 @@ import TabBar from './tabBar';
 import Connect from './connect';
 import Home from './home';
 import Browse from './browse';
+import Events from './events';
 import More from './more';
 
 const TabNavigator = createBottomTabNavigator(
   {
     Home,
     Browse,
-    Connect,
+    Events,
     More,
   },
   {

@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import wait from 'waait';
 
-import Providers from 'ChristFellowship/src/Providers';
+import Providers from '../../../Providers';
 
 import GET_LIKED_CONTENT from '../getLikedContent';
 import RecentlyLikedTileFeedConnected from './RecentlyLikedTileFeedConnected';

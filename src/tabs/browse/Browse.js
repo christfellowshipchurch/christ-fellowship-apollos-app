@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { get, has } from 'lodash';
 
 import { View, SafeAreaView, ScrollView } from 'react-native';
-import { FlexedView, BackgroundView, H3, styled } from '@apollosproject/ui-kit';
+import { FlexedView, H3, styled } from '@apollosproject/ui-kit';
+
+import { HeaderSpacer, navigationOptions, BackgroundView } from '../navigation';
 
 import FilterRow from './FilterRow';
 import CategoryList from './CategoryList';
@@ -36,7 +38,7 @@ const Browse = ({ title }) => {
   return (
     <BackgroundView>
       <SafeAreaView style={{ height: '100%' }}>
-        <HeaderTitle>{title}</HeaderTitle>
+        <HeaderSpacer />
         <FilterRow
           filters={get(
             data,
@@ -54,10 +56,14 @@ const Browse = ({ title }) => {
   );
 };
 
-Browse.navigationOptions = {
+Browse.navigationOptions = ({ theme }) => ({
+  ...navigationOptions,
+  headerTitleStyle: {
+    ...navigationOptions.headerTitleStyle,
+    color: theme === 'dark' ? 'white' : 'black',
+  },
   title: 'Browse',
-  header: null,
-};
+});
 
 Browse.propTypes = {
   title: PropTypes.string,

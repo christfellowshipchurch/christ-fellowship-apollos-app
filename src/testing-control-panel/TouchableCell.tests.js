@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import Providers from 'ChristFellowship/src/Providers';
+import Providers from '../Providers';
 
 import TouchableCell from './TouchableCell';
 
