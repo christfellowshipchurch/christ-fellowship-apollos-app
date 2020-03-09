@@ -25,7 +25,7 @@ import { RowContentFeed } from './content-feed';
 import Tabs from './tabs';
 // import Location from './locations';
 import UserWebBrowser from './user-web-browser';
-import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information';
+import PrivacyPolicy from './privacy-policy';
 import {
   CurrentUserProfile as Connect,
   EditCurrentUserProfile,
@@ -105,6 +105,7 @@ const AppNavigator = createStackNavigator(
     EditCurrentUserProfile,
     Settings,
     Location,
+    PrivacyPolicy,
   },
   {
     initialRouteName: 'ProtectedRoute',
