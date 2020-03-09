@@ -6,7 +6,6 @@ import { styled, withTheme } from '@apollosproject/ui-kit';
 
 const ThemedBottomTabBar = compose(
   withTheme(({ theme }) => ({
-    // showLabel: false,
     activeTintColor: theme.colors.primary,
     inactiveTintColor: theme.colors.text.tertiary,
     safeAreaInset: { bottom: 'never' },
@@ -14,6 +13,7 @@ const ThemedBottomTabBar = compose(
   styled(({ theme }) => ({
     borderTopWidth: 0,
     backgroundColor: theme.colors.background.paper,
+    paddingTop: theme.sizing.baseUnit * 0.8
   })),
   withTabBarMediaSpacer
 )(BottomTabBar);
