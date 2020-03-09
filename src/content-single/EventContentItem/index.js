@@ -12,7 +12,7 @@ import {
   H4,
   BodyText,
   Button,
-  StretchyView,
+  // StretchyView,
 } from '@apollosproject/ui-kit';
 import {
   ContentHTMLViewConnected,
@@ -55,6 +55,10 @@ const Subtitle = withTheme(({ theme, extraSpacing }) => ({
       : theme.sizing.baseUnit * 0.5,
   },
 }))(H4);
+
+// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
+const StretchyView = ({ children, ...props }) =>
+  children({ Stretchy: View, ...props });
 
 const EventContentItem = ({ content, loading, navigation }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
