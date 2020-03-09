@@ -4,7 +4,7 @@ import { StyleSheet, View, ImageBackground, Image } from 'react-native';
 
 export const Overlay = styled(({ theme }) => ({
     ...StyleSheet.absoluteFill,
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.black,
     opacity: theme.alpha.high,
 }))(View);
 
