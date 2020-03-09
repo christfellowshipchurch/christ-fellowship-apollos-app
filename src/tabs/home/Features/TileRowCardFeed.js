@@ -4,8 +4,8 @@ import { withNavigation } from 'react-navigation';
 
 import { styled, TouchableScale } from '@apollosproject/ui-kit';
 
-import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
-import { TileRowCard } from 'ChristFellowship/src/ui/Cards';
+import ContentCardConnected from '../../../ui/ContentCardConnected';
+import { TileRowCard } from '../../../ui/Cards';
 import { SectionHeader } from '../components';
 
 const AdjustedView = styled(({ theme }) => ({

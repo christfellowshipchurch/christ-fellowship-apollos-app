@@ -15,6 +15,32 @@ const ContentCardConnected = memo(
       return <Component {...otherProps} isLoading tile={tile} />;
 
     return (
+      <Query query={GET_CONTENT_CARD} variables={{ contentId }}>
+        {({ data: { node = {} } = {}, loading, error }) => {
+          if (error) return <ErrorCard error={error} />;
+
+          const coverImage = get(node, 'coverImage.sources', undefined);
+          const hasMedia = !!get(node, 'videos.[0].sources[0]', null);
+          // const isLive = !!liveStream;
+          const isLive = false;
+          const labelText = get(node, 'parentChannel.name', '');
+
+          return (
+            <Component
+              {...node}
+              hasAction={hasMedia}
+              isLive={isLive}
+              labelText={isLive ? 'Live' : labelText}
+              {...otherProps}
+              coverImage={coverImage}
+              isLoading={loading}
+            />
+          );
+        }}
+      </Query>
+    );
+
+    return (
       <LiveConsumer contentId={contentId}>
         {(liveStream) => (
           <Query query={GET_CONTENT_CARD} variables={{ contentId }}>
@@ -23,7 +49,8 @@ const ContentCardConnected = memo(
 
               const coverImage = get(node, 'coverImage.sources', undefined);
               const hasMedia = !!get(node, 'videos.[0].sources[0]', null);
-              const isLive = !!liveStream;
+              // const isLive = !!liveStream;
+              const isLive = false;
               const labelText = get(node, 'parentChannel.name', '');
 
               return (

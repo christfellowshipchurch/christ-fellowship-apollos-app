@@ -81,7 +81,9 @@ class DevotionalContentItem extends PureComponent {
     />
   );
 
-  renderLoading = () => <ContentTab title={''} isLoading />;
+  renderLoading = () => (
+    <ContentTab title={''} isLoading navigation={this.props.navigation} />
+  );
 
   renderTabs = ({ data, error, loading }) => {
     if (error) return <ErrorCard error={error} />;

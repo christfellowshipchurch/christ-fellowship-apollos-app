@@ -1,19 +1,9 @@
 import React, { PureComponent } from 'react';
-<<<<<<< ours
-import { TableView, Divider } from '@apollosproject/ui-kit';
-import { UserWebBrowserConsumer } from 'ChristFellowship/src/user-web-browser';
-import ChangeLivestream from './ChangeLivestream';
-import TouchableCell from './TouchableCell';
-
-import PushNotifications from './EnableTwilioNotifyPN';
-
-=======
 import { TableView } from '@apollosproject/ui-kit';
-import { UserWebBrowserConsumer } from 'ChristFellowship/src/user-web-browser';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
+import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import { UserWebBrowserConsumer } from '../user-web-browser';
 import TouchableCell from './TouchableCell';
 
->>>>>>> theirs
 export default class TestingControlPanel extends PureComponent {
   static navigationOptions = () => ({
     title: 'Testing Control Panel',
@@ -22,11 +12,6 @@ export default class TestingControlPanel extends PureComponent {
   render() {
     return (
       <TableView>
-<<<<<<< ours
-        <ChangeLivestream />
-        <Divider />
-=======
->>>>>>> theirs
         <UserWebBrowserConsumer>
           {(openUserWebView) => (
             <TouchableCell
@@ -41,33 +26,33 @@ export default class TestingControlPanel extends PureComponent {
             />
           )}
         </UserWebBrowserConsumer>
-<<<<<<< ours
-=======
-        <WebBrowserConsumer>
+        <RockAuthedWebBrowser>
           {(openUrl) => (
-            <TouchableCell
-              handlePress={() =>
-                openUrl(
-                  'https://apollosrock.newspring.cc',
-                  {},
-                  { useRockToken: true }
-                )
-              }
-              iconName="share"
-              cellText={`Open InAppBrowser With Rock Token`}
-            />
+            <>
+              <TouchableCell
+                handlePress={() =>
+                  openUrl(
+                    'https://apollosrock.newspring.cc',
+                    {},
+                    { useRockToken: true }
+                  )
+                }
+                iconName="share"
+                cellText={`Open InAppBrowser With Rock Token`}
+              />
+              <TouchableCell
+                handlePress={() => openUrl('mailto:fake@apollosproject.com')}
+                iconName="share"
+                cellText={`Open Email link`}
+              />
+            </>
           )}
-        </WebBrowserConsumer>
->>>>>>> theirs
+        </RockAuthedWebBrowser>
         <TouchableCell
           handlePress={() => this.props.navigation.navigate('Onboarding')}
           iconName="Avatar"
           cellText={`Launch Onboarding`}
         />
-<<<<<<< ours
-        <PushNotifications />
-=======
->>>>>>> theirs
       </TableView>
     );
   }

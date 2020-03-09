@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
-import { ErrorCard } from '@apollosproject/ui-kit';
+import { ErrorCard, H3, PaddedView } from '@apollosproject/ui-kit';
 import { get } from 'lodash';
 import TextFeature from './TextFeature';
 import ScriptureFeature from './ScriptureFeature';
@@ -27,12 +27,22 @@ const Features = ({ contentId }) => {
         if (loading) return null;
 
         const features = get(node, 'features', []);
-        return features.map(({ __typename, ...feature }) => {
-          const Feature = FEATURE_MAP[__typename];
-          return (
-            <Feature key={feature.id} {...feature} contentId={contentId} />
-          );
-        });
+        if (!features || !features.length) return null;
+
+        return (
+          <PaddedView horizontal={false}>
+            <PaddedView vertical={false}>
+              <H3 padded>Engage</H3>
+            </PaddedView>
+            {features.map(({ __typename, ...feature }) => {
+              const Feature = FEATURE_MAP[__typename];
+              if (!Feature) return null;
+              return (
+                <Feature key={feature.id} {...feature} contentId={contentId} />
+              );
+            })}
+          </PaddedView>
+        );
       }}
     </Query>
   );

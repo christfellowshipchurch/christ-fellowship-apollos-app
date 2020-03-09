@@ -1,2 +1,2 @@
-export ContentFeed from './CardFeed'
-export RowContentFeed from './RowFeed'
+export ContentFeed from './CardFeed';
+export RowContentFeed from './RowFeed';

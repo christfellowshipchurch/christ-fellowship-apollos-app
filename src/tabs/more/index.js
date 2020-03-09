@@ -2,16 +2,16 @@ import { createStackNavigator } from 'react-navigation';
 
 import tabBarIcon from '../tabBarIcon';
 import More from './More';
-import Events from './events';
+import InlineWebView from './InlineWebView';
 
 const MoreNavigator = createStackNavigator(
   {
     More,
-    Events,
+    InlineWebView,
   },
   {
     initialRouteName: 'More',
-    headerMode: 'screen',
+    headerLayoutPreset: 'left',
   }
 );
 

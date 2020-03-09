@@ -10,11 +10,8 @@ const ContentSingleNavigator = createStackNavigator(
     initialRouteName: 'ContentSingle',
     headerMode: 'float',
     headerTransitionPreset: 'fade-in-place',
+    navigationOptions: { header: null },
   }
 );
-
-ContentSingleNavigator.navigationOptions = {
-  header: null,
-};
 
 export default ContentSingleNavigator;

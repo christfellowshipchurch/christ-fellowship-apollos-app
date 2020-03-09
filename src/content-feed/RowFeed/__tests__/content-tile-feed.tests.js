@@ -1,11 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import Providers from 'ChristFellowship/src/Providers';
+import Providers from '../../../Providers';
 
-import GET_CONTENT_FEED from './getContentFeed';
+import GET_CONTENT_FEED from '../../getContentFeed';
 
-import { ContentFeed } from './index';
+import ContentFeed from '../index';
 
 describe('content feed query component', () => {
   it('renders a feedview after successful query', () => {

@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
+import { Alert } from 'react-native';
 
-import { Query } from 'react-apollo';
-import { get } from 'lodash';
+import PushNotification, {
+  PushNotificationIOS,
+} from 'react-native-push-notification';
 
-import { client } from 'ChristFellowship/src/client';
 import TouchableCell from './TouchableCell';
-import PushNotification from 'react-native-push-notification'
-import { render } from 'react-dom';
 
 const requestPN = (enable = true) => {
-  if (enable) PushNotification.requestPermissions()
-  else PushNotification.abandonPermissions()
-}
+  if (enable) PushNotification.requestPermissions();
+  else PushNotification.abandonPermissions();
+};
 
 // Testing as a React component class that extends Component instead of an anonymous function
 class EnableTwilioNotifyPN extends Component {
-
   constructor(props) {
     super(props);
 
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
-      onRegister: function (token) {
+      onRegister(token) {
         Alert.alert(
           'Enabled Push Notifications',
           'Push notifications have been registered and token has been registered',
@@ -33,12 +31,12 @@ class EnableTwilioNotifyPN extends Component {
             },
             { text: 'OK', onPress: () => console.log('OK Pressed') },
           ],
-          { cancelable: false },
+          { cancelable: false }
         );
       },
 
       // (required) Called when a remote or local notification is opened or received
-      onNotification: function (notification) {
+      onNotification(notification) {
         // process the notification
 
         // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
@@ -52,7 +50,7 @@ class EnableTwilioNotifyPN extends Component {
       permissions: {
         alert: true,
         badge: true,
-        sound: true
+        sound: true,
       },
 
       // Should the initial notification be popped automatically
@@ -64,7 +62,7 @@ class EnableTwilioNotifyPN extends Component {
        * - Specified if permissions (ios) and token (android and ios) will requested or not,
        * - if not, you must call PushNotificationsHandler.requestPermissions() later
        */
-      requestPermissions: true
+      requestPermissions: true,
     });
   }
 
@@ -73,13 +71,13 @@ class EnableTwilioNotifyPN extends Component {
       <React.Fragment>
         <TouchableCell
           handlePress={() => requestPN()}
-          iconName='radio-checked'
-          cellText='Enable Twilio Notify Push Notifications'
+          iconName="radio-checked"
+          cellText="Enable Twilio Notify Push Notifications"
         />
         <TouchableCell
           handlePress={() => requestPN(false)}
-          iconName='radio-unchecked'
-          cellText='Disable Twilio Notify Push Notifications'
+          iconName="radio-unchecked"
+          cellText="Disable Twilio Notify Push Notifications"
         />
       </React.Fragment>
     );

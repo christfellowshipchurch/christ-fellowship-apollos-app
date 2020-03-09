@@ -1,6 +1,7 @@
-import gql from 'graphql-tag'
-import CampusParts from 'ChristFellowship/src/locations/campusFragment'
+import gql from 'graphql-tag';
+import ApollosConfig from '@apollosproject/config';
 
+// eslint-disable-next-line import/prefer-default-export
 export const GET_USER_PROFILE = gql`
   query getCurrentUserProfile {
     currentUser {
@@ -16,7 +17,7 @@ export const GET_USER_PROFILE = gql`
 
         email
         phoneNumber
-        
+
         campus {
           ...CampusParts
         }
@@ -24,7 +25,7 @@ export const GET_USER_PROFILE = gql`
         photo {
           uri
         }
-        
+
         address {
           street1
           street2
@@ -43,5 +44,5 @@ export const GET_USER_PROFILE = gql`
       }
     }
   }
-  ${CampusParts}
+  ${ApollosConfig.FRAGMENTS.CAMPUS_PARTS_FRAGMENT}
 `;

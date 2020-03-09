@@ -6,7 +6,7 @@ import {
   addDecorator,
 } from '@storybook/react-native';
 
-import Providers from 'apolloschurchapp/src/Providers';
+import Providers from '../src/Providers';
 
 // storyLoader.js is generated on storybook start. next line disabled for CI test.
 import { loadStories } from './storyLoader'; // eslint-disable-line
@@ -31,5 +31,5 @@ class StorybookUIHMRRoot extends Component {
   }
 }
 
-AppRegistry.registerComponent('apolloschurchapp', () => StorybookUIHMRRoot);
+AppRegistry.registerComponent('ChristFellowship', () => StorybookUIHMRRoot);
 export default StorybookUIHMRRoot;
