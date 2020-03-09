@@ -43,8 +43,8 @@ const More = ({ navigation, givingUrl }) => {
               title="Groups"
               onPress={() =>
                 navigation.navigate('InlineWebView', {
-                  title: 'Groups',
-                  uri: 'https://rock.gocf.org/groups',
+                  title: 'Community',
+                  uri: 'https://beta.christfellowship.church/community-finder',
                 })
               }
             />
