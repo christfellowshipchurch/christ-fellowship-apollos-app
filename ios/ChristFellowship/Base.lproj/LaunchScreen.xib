@@ -28,7 +28,7 @@
         </view>
     </objects>
     <resources>
-        <image name="splash-icon" width="1500" height="601"/>
+        <image name="splash-icon" width="500" height="200.33332824707031"/>
         <image name="splash_bg" width="2219.333251953125" height="1479.6666259765625"/>
     </resources>
 </document>
