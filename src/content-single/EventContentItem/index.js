@@ -22,6 +22,7 @@ import {
 import { UserWebBrowserConsumer } from '../../user-web-browser';
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
+import { connect } from 'formik';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -63,7 +64,12 @@ const StretchyView = ({ children, ...props }) =>
 const EventContentItem = ({ content, loading, navigation }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
+  const hideLabel = get(content, 'hideLabel', false)
+  const buttonLabel = hideLabel
+    ? 'Get Started'
+    : 'Check Back Soon for More Information'
 
+  console.log({content})
   return (
     <BackgroundView>
       <StretchyView>
@@ -100,11 +106,23 @@ const EventContentItem = ({ content, loading, navigation }) => {
 
             <StyledMediaControlsConnected contentId={content.id} />
             <PaddedView>
-              <EventDateTimes
-                contentId={content.id}
-                events={content.events}
-                loading={loading}
-              />
+
+              {content.events.length < 1 && callsToAction.length > 0 &&
+                <H4>{buttonLabel}</H4>
+              }
+
+              {content.events.length < 1 && callsToAction.length < 1 &&
+                <H4>Check Back Soon for More Information</H4>
+              }
+
+              {content.events.length > 0 &&
+                <EventDateTimes
+                  contentId={content.id}
+                  events={content.events}
+                  loading={loading}
+                />
+              }
+              
 
               {callsToAction.length > 0 && (
                 <UserWebBrowserConsumer>

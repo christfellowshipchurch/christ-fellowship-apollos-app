@@ -65,6 +65,7 @@ ApollosConfig.loadJs({
           call
           action
         }
+        hideLabel
       }
     `,
   },
