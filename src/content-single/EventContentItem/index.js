@@ -140,7 +140,7 @@ const EventContentItem = ({ content, loading, navigation }) => {
               )}
 
               <Subtitle extraSpacing={callsToAction.length > 0}>
-                Event Details
+                Details
               </Subtitle>
               <ContentHTMLViewConnected contentId={content.id} />
               <Features contentId={content.id} />
