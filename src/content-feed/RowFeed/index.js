@@ -125,10 +125,9 @@ class ContentRowFeed extends PureComponent {
           {({ loading, error, data, refetch, fetchMore, variables }) => (
             <SafeAreaView
               style={{ flex: 10 }}
-              forceInset={{ top: 'never', bottom: 'always' }}
+              forceInset={{ top: 'never', bottom: 'never' }}
             >
               <FeedView
-                // ListHeaderComponent={}
                 ListItemComponent={TileRowCard}
                 content={get(
                   data,

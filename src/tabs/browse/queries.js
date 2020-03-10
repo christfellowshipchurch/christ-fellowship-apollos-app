@@ -1,4 +1,7 @@
 import gql from 'graphql-tag';
+import ApollosConfig from '@apollosproject/config';
+
+console.log({ ApollosConfig });
 
 export const GET_FILTERS = gql`
   query getBrowseFilters {
@@ -43,15 +46,16 @@ export const GET_CATEGORY_PREVIEW = gql`
       ... on ContentItem {
         title
 
-        childContentItemsConnection(first: 6) {
+        childContentItemsConnection(first: 4) {
           edges {
             node {
               id
-              title
+              ...contentCardFragment
             }
           }
         }
       }
     }
   }
+  ${ApollosConfig.FRAGMENTS.CONTENT_CARD_FRAGMENT}
 `;

@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
-import { get, has } from 'lodash';
+import { get } from 'lodash';
 
-import { View, SafeAreaView, ScrollView } from 'react-native';
-import { FlexedView, H3, styled } from '@apollosproject/ui-kit';
+import { FlexedView } from '@apollosproject/ui-kit';
 
 import { HeaderSpacer, navigationOptions, BackgroundView } from '../navigation';
 
 import FilterRow from './FilterRow';
 import CategoryList from './CategoryList';
 import { GET_FILTERS } from './queries';
-
-const HeaderTitle = styled(({ theme, active }) => ({
-  fontWeight: 'bold',
-  textAlign: 'center',
-  paddingTop: theme.sizing.baseUnit,
-}))(H3);
 
 const Browse = ({ title }) => {
   const [activeFilter, setActiveFilter] = useState(null);
@@ -35,22 +30,27 @@ const Browse = ({ title }) => {
     },
   });
 
+  if (loading) return <ActivityIndicator />;
+
   return (
     <BackgroundView>
-      <SafeAreaView style={{ height: '100%' }}>
-        <HeaderSpacer />
-        <FilterRow
-          filters={get(
-            data,
-            'getBrowseFilters[0].childContentItemsConnection.edges',
-            []
-          ).map((edge) => edge.node)}
-          onChange={({ id }) => {
-            setActiveFilter(id);
-          }}
-          selected={activeFilter}
-        />
-        {!!activeFilter && <CategoryList filterId={activeFilter} />}
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <FilterRow
+            filters={get(
+              data,
+              'getBrowseFilters[0].childContentItemsConnection.edges',
+              []
+            ).map((edge) => edge.node)}
+            onChange={({ id }) => {
+              setActiveFilter(id);
+            }}
+            selected={activeFilter}
+          />
+        </View>
+        <View style={{ flex: 5 }}>
+          {!!activeFilter && <CategoryList filterId={activeFilter} />}
+        </View>
       </SafeAreaView>
     </BackgroundView>
   );
