@@ -1,12 +1,11 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { useQuery, useMutation } from 'react-apollo';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { withNavigation } from 'react-navigation';
 import { get, keys, upperFirst } from 'lodash';
 
-import { useForm } from 'ChristFellowship/src/hooks';
-
 import { ActivityIndicator, BackgroundView } from '@apollosproject/ui-kit';
+import { useForm } from '../hooks';
 
 import ProfileHeader from './ProfileHeader';
 import EditUserProfile from './EditUserProfile';

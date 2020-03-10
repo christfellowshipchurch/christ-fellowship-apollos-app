@@ -1,11 +1,12 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
 import PropTypes from 'prop-types';
-import ShareContentButtonConnected from 'ChristFellowship/src/ui/ShareContentButtonConnected';
-
 import { SideBySideView, styled } from '@apollosproject/ui-kit';
-import LikeContentButtonConnected from 'ChristFellowship/src/ui/LikeContentButtonConnected';
 import { MediaPlayerSpacer } from '@apollosproject/ui-media-player';
+import {
+  LikeButtonConnected,
+  ShareButtonConnected,
+} from '@apollosproject/ui-connected';
 
 const PositioningView = styled(({ theme }) => ({
   justifyContent: 'space-around',
@@ -22,8 +23,8 @@ const ActionContainer = ({ itemId }) => (
   <Container>
     <MediaPlayerSpacer>
       <PositioningView>
-        <LikeContentButtonConnected itemId={itemId} />
-        <ShareContentButtonConnected itemId={itemId} />
+        <LikeButtonConnected itemId={itemId} />
+        <ShareButtonConnected itemId={itemId} />
       </PositioningView>
     </MediaPlayerSpacer>
   </Container>

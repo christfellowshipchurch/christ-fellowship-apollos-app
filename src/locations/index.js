@@ -1,22 +1,14 @@
-import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
-import { Query, Mutation } from 'react-apollo'
-import { Dimensions } from 'react-native'
-import { filter, get } from 'lodash'
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { Query, Mutation } from 'react-apollo';
+import { Dimensions } from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
+import MapView from '@apollosproject/ui-mapview';
+import { PaddedView, ButtonLink } from '@apollosproject/ui-kit';
+import { get } from 'lodash';
 
-import { PaddedView, ButtonLink } from '@apollosproject/ui-kit'
-
-import GET_CAMPUSES from './getCampusLocations'
-import CHANGE_CAMPUS from './campusChange'
-import MapView from './MapView'
-
-const getCurrentLocation = () =>
-  new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => resolve(position),
-      (e) => reject(e)
-    );
-  });
+import GET_CAMPUSES from './getCampusLocations';
+import CHANGE_CAMPUS from './campusChange';
 
 class Location extends PureComponent {
   static propTypes = {
@@ -31,7 +23,6 @@ class Location extends PureComponent {
       latitudeDelta: PropTypes.number,
       longitudeDelta: PropTypes.number,
     }),
-    onFinished: PropTypes.func,
   };
 
   static defaultProps = {
@@ -57,66 +48,67 @@ class Location extends PureComponent {
   });
 
   state = {
-    userLocation: {
-      latitude: 39.104797,
-      longitude: -84.511959,
-    },
+    userLocation: null,
   };
 
-  componentDidMount() {
-    return getCurrentLocation().then((position) => {
-      if (position) {
+  async componentDidMount() {
+    Geolocation.getCurrentPosition(
+      (position) => {
         this.setState({
           userLocation: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           },
         });
-      }
-    });
+      },
+      (e) => console.warn('Error getting location!', e),
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
   }
 
   render() {
-    const { navigation, onFinished } = this.props;
-    // we should use the `onFinished` from the navigation param, if it exists.
-    const handleFinished = navigation.getParam('onFinished', onFinished);
-
     return (
       <Query
         query={GET_CAMPUSES}
         variables={{
-          latitude: this.state.userLocation.latitude,
-          longitude: this.state.userLocation.longitude,
+          latitude: get(this.state, 'userLocation.latitude'),
+          longitude: get(this.state, 'userLocation.longitude'),
         }}
         fetchPolicy="cache-and-network"
       >
-        {({ loading, error, data }) => {
-          const { campuses } = data
-          const filteredCampuses = filter(campuses, (n) => Boolean(get(n, 'image.uri', null)))
+        {({ loading, error, data: { campuses, currentUser } = {} }) => {
+          console.log({ campuses, currentUser });
 
           return (
             <Mutation mutation={CHANGE_CAMPUS}>
               {(handlePress) => (
                 <MapView
-                  navigation={navigation}
+                  navigation={this.props.navigation}
                   isLoading={loading}
                   error={error}
-                  campuses={filteredCampuses}
+                  campuses={campuses || []}
                   initialRegion={this.props.initialRegion}
                   userLocation={this.state.userLocation}
-                  onLocationSelect={async ({ id }) => {
-                    await handlePress({
+                  currentCampus={get(currentUser, 'profile.campus')}
+                  onLocationSelect={async (campus) => {
+                    handlePress({
                       variables: {
-                        campusId: id,
+                        campusId: campus.id,
+                      },
+                      optimisticResponse: {
+                        updateUserCampus: {
+                          __typename: 'Mutation',
+                          id: currentUser.id,
+                          campus,
+                        },
                       },
                     });
-                    await navigation.goBack();
-                    if (handleFinished) handleFinished();
+                    this.props.navigation.goBack();
                   }}
                 />
               )}
             </Mutation>
-          )
+          );
         }}
       </Query>
     );

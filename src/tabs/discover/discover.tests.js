@@ -1,24 +1,11 @@
 import React from 'react';
-<<<<<<< ours
-import renderer from 'react-test-renderer';
-import { createStackNavigator } from 'react-navigation';
-
-import Providers from 'ChristFellowship/src/Providers';
-
-import Discover from './Discover';
-import GET_CONTENT_CHANNELS from './getContentChannels';
-
-describe('Test the Discover Component Query', () => {
-  it('Should retrieve the Content Channel Feeds', () => {
-    const mock = {
-=======
 import { flatMap } from 'lodash';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-import Providers from 'ChristFellowship/src/Providers';
+import { GET_CONTENT_CARD } from '@apollosproject/ui-connected';
+import Providers from '../../Providers';
 
 import { renderWithApolloData } from '../../utils/testUtils';
-import GET_CONTENT_CARD from '../../ui/ContentCardConnected/query';
 
 import Discover from './Discover';
 import GET_CONTENT_CHANNELS from './DiscoverFeed/getContentChannels';
@@ -26,7 +13,6 @@ import GET_CONTENT_CHANNELS from './DiscoverFeed/getContentChannels';
 describe('The Discover tab component', () => {
   it('Should retrieve the Content Channel Feeds', async () => {
     const mockFeedData = {
->>>>>>> theirs
       request: {
         query: GET_CONTENT_CHANNELS,
       },
@@ -34,10 +20,6 @@ describe('The Discover tab component', () => {
         data: {
           contentChannels: [
             {
-<<<<<<< ours
-              id: 'ContentChannel:4f68015ba18662a7409d1219a4ce013e',
-              name: 'Editorial',
-=======
               id: 'ContentChannel:965b6e6d7046a885bea4e300b5c0400d',
               name: 'News',
               childContentItemsConnection: {
@@ -149,18 +131,11 @@ describe('The Discover tab component', () => {
             {
               id: 'ContentChannel:4f68015ba18662a7409d1219a4ce013e',
               name: 'Articles',
->>>>>>> theirs
               childContentItemsConnection: {
                 edges: [
                   {
                     node: {
                       id:
-<<<<<<< ours
-                        'UniversalContentItem:d57994350b9d213866b24dea3a97433d',
-                      title: 'Mea Animal Aperiam Ornatus Eu',
-                      coverImage: null,
-                    },
-=======
                         'UniversalContentItem:604a4a763a5fc0edfe386684ca6b3515',
                       title: 'Test Article',
                       hyphenatedTitle: 'Test Article',
@@ -179,17 +154,10 @@ describe('The Discover tab component', () => {
                       __typename: 'UniversalContentItem',
                     },
                     __typename: 'ContentItemsConnectionEdge',
->>>>>>> theirs
                   },
                   {
                     node: {
                       id:
-<<<<<<< ours
-                        'UniversalContentItem:b36e55d803443431e96bb4b5068147ec',
-                      title: 'Probo Senserit Id Mea, Ut Sed Malis Postea,',
-                      coverImage: null,
-                    },
-=======
                         'UniversalContentItem:c495ff18cd998ed516a798b6218907cd',
                       title: '10 ways to refresh your spirit every day',
                       hyphenatedTitle:
@@ -210,20 +178,10 @@ describe('The Discover tab component', () => {
                       __typename: 'UniversalContentItem',
                     },
                     __typename: 'ContentItemsConnectionEdge',
->>>>>>> theirs
                   },
                   {
                     node: {
                       id:
-<<<<<<< ours
-                        'UniversalContentItem:57c465ee3cd69524d729569b338607de',
-                      title: 'Ea Harum Albucius Mel',
-                      coverImage: null,
-                    },
-                  },
-                ],
-              },
-=======
                         'UniversalContentItem:95ff79f60a028b1b506aaeedf8b4c6ae',
                       title: 'Live for Freedom Toolkit',
                       hyphenatedTitle: 'Live for Freedom Toolkit',
@@ -248,7 +206,6 @@ describe('The Discover tab component', () => {
                 __typename: 'ContentItemsConnection',
               },
               __typename: 'ContentChannel',
->>>>>>> theirs
             },
             {
               id: 'ContentChannel:a0f64573eabf00a607bec911794d50fb',
@@ -258,19 +215,6 @@ describe('The Discover tab component', () => {
                   {
                     node: {
                       id:
-<<<<<<< ours
-                        'UniversalContentItem:1c627c20911791321f819125a65c3c9d',
-                      title: 'Money Wise',
-                      coverImage: {
-                        sources: [
-                          {
-                            uri:
-                              'https://apollosrock.newspring.cc/GetImage.ashx?guid=33e4c568-a456-4250-a8dc-6a4ceb548455',
-                          },
-                        ],
-                      },
-                    },
-=======
                         'ContentSeriesContentItem:6d8dc8e4bad017f815ae0cac8bf692bb',
                       title: 'The New Weekend Experience',
                       hyphenatedTitle: 'The New Weekend Experience',
@@ -303,24 +247,10 @@ describe('The Discover tab component', () => {
                       __typename: 'ContentSeriesContentItem',
                     },
                     __typename: 'ContentItemsConnectionEdge',
->>>>>>> theirs
                   },
                   {
                     node: {
                       id:
-<<<<<<< ours
-                        'UniversalContentItem:66a4d75b02b447556e4e3806430a9946',
-                      title: 'Momentum',
-                      coverImage: {
-                        sources: [
-                          {
-                            uri:
-                              'https://apollosrock.newspring.cc/GetImage.ashx?guid=F3F2E438-2AE8-4EF4-980B-709463691296',
-                          },
-                        ],
-                      },
-                    },
-=======
                         'ContentSeriesContentItem:08449058d438ebeaffe9adb7a8e633cc',
                       title: 'Gathering',
                       hyphenatedTitle: 'Gathering',
@@ -352,27 +282,10 @@ describe('The Discover tab component', () => {
                       __typename: 'ContentSeriesContentItem',
                     },
                     __typename: 'ContentItemsConnectionEdge',
->>>>>>> theirs
                   },
                   {
                     node: {
                       id:
-<<<<<<< ours
-                        'UniversalContentItem:22c861a5d54d09634018f7eb132c452e',
-                      title: 'Miracles in Luke',
-                      coverImage: {
-                        sources: [
-                          {
-                            uri:
-                              'https://apollosrock.newspring.cc/GetImage.ashx?guid=EDFDBD47-BBE8-4BE9-8D3F-CC0059BD4CCC',
-                          },
-                        ],
-                      },
-                    },
-                  },
-                ],
-              },
-=======
                         'ContentSeriesContentItem:b74c2d295a0cf1340232ffa8be856c00',
                       title: 'Gauntlet 2018',
                       hyphenatedTitle: 'Gauntlet 2018',
@@ -409,7 +322,6 @@ describe('The Discover tab component', () => {
                 __typename: 'ContentItemsConnection',
               },
               __typename: 'ContentChannel',
->>>>>>> theirs
             },
             {
               id: 'ContentChannel:7fba1b1ee253e0fd5f0795b4b8b1175e',
@@ -419,19 +331,6 @@ describe('The Discover tab component', () => {
                   {
                     node: {
                       id:
-<<<<<<< ours
-                        'UniversalContentItem:678b4a38968fc6004dd8b23e586c923e',
-                      title: 'Psalms: A 28-Day Devotional',
-                      coverImage: {
-                        sources: [
-                          {
-                            uri:
-                              'https://apollosrock.newspring.cc/GetImage.ashx?guid=ed857076-2623-4fdc-8476-50b3a60e0b68',
-                          },
-                        ],
-                      },
-                    },
-=======
                         'ContentSeriesContentItem:b085ec27d53006e9e6b95f3ac57da581',
                       title: 'Jeremiah: A 33-Day Devotional',
                       hyphenatedTitle: 'Jeremiah: A 33-Day Devotional',
@@ -460,24 +359,10 @@ describe('The Discover tab component', () => {
                       __typename: 'ContentSeriesContentItem',
                     },
                     __typename: 'ContentItemsConnectionEdge',
->>>>>>> theirs
                   },
                   {
                     node: {
                       id:
-<<<<<<< ours
-                        'UniversalContentItem:0f361c619b7e5dd511da181069498250',
-                      title: '2 Samuel: A 5-Week Devotional',
-                      coverImage: {
-                        sources: [
-                          {
-                            uri:
-                              'https://apollosrock.newspring.cc/GetImage.ashx?guid=aa68b674-9cf4-4f8a-8702-9564a4a9fa7b',
-                          },
-                        ],
-                      },
-                    },
-=======
                         'ContentSeriesContentItem:71bfdac0b98ea1b72a63ff4ea64e3c5a',
                       title: 'How To Be A Better Leader: A 7-Day Devotional',
                       hyphenatedTitle:
@@ -507,27 +392,10 @@ describe('The Discover tab component', () => {
                       __typename: 'ContentSeriesContentItem',
                     },
                     __typename: 'ContentItemsConnectionEdge',
->>>>>>> theirs
                   },
                   {
                     node: {
                       id:
-<<<<<<< ours
-                        'UniversalContentItem:bc1002007d482c412962ad6b1f24901a',
-                      title: '#MomLife: An 8-Day Devotional',
-                      coverImage: {
-                        sources: [
-                          {
-                            uri:
-                              'https://apollosrock.newspring.cc/GetImage.ashx?guid=65dfddf1-c146-4599-bdb7-a8f53bf8fed2',
-                          },
-                        ],
-                      },
-                    },
-                  },
-                ],
-              },
-=======
                         'ContentSeriesContentItem:44fd3b82373ea8f197bd1e1e77c4bed0',
                       title: '2 Thessalonians: A 5-Day Devotional',
                       hyphenatedTitle: '2 Thessalonians: A 5-Day Devotional',
@@ -673,18 +541,11 @@ describe('The Discover tab component', () => {
                 __typename: 'ContentItemsConnection',
               },
               __typename: 'ContentChannel',
->>>>>>> theirs
             },
           ],
         },
       },
     };
-<<<<<<< ours
-
-    const DiscoverWithNavigation = createStackNavigator({ Discover });
-    const tree = renderer.create(
-      <Providers mocks={[mock]}>
-=======
     const mockChannelCardData = flatMap(
       mockFeedData.result.data.contentChannels,
       (contentChannel) =>
@@ -705,7 +566,6 @@ describe('The Discover tab component', () => {
     const DiscoverWithNavigation = createAppContainer(DiscoverStack);
     const tree = await renderWithApolloData(
       <Providers mocks={[mockFeedData, ...mockChannelCardData]}>
->>>>>>> theirs
         <DiscoverWithNavigation />
       </Providers>
     );

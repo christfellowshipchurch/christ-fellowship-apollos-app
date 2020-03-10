@@ -1,33 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { styled, GradientOverlayImage } from '@apollosproject/ui-kit';
 
-import ApollosLandingScreen from './ui/LandingScreen';
-
-const FullScreenImage = styled({
-  resizeMode: 'cover',
-  position: 'absolute',
-})(GradientOverlayImage);
+import UILandingScreen from './ui/LandingScreen';
+import AuthBackgroundComponent from './ui/AuthBackground';
 
 const LandingScreen = ({ navigation }) => (
-  <ApollosLandingScreen
+  <UILandingScreen
     onPressPrimary={() => navigation.push('Auth')}
+    onPressSecondary={() => navigation.push('PrivacyPolicy')}
     textColor={'white'}
-    BackgroundComponent={
-      <FullScreenImage source={'https://picsum.photos/375/812/?random'} />
-    }
-    primaryNavText={"Let's go!"}
+    BackgroundComponent={<AuthBackgroundComponent />}
+    buttonTitle="Let's go!"
   />
 );
 
 LandingScreen.navigationOptions = {
   header: null,
-};
-
-LandingScreen.propTypes = {
-  navigation: PropTypes.shape({
-    push: PropTypes.func,
-  }),
 };
 
 export default LandingScreen;

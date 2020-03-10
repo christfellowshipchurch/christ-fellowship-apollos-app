@@ -16,7 +16,7 @@ import {
   withIsLoading,
 } from '@apollosproject/ui-kit';
 
-import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
+import ContentCardConnected from '../../../ui/ContentCardConnected';
 
 const RowHeader = styled(({ theme }) => ({
   flexDirection: 'row',

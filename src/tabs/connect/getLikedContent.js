@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-import { BASE_CARD_FRAGMENT } from 'ChristFellowship/src/ui/ContentCardConnected';
+import { BASE_CARD_FRAGMENT } from '../../ui/ContentCardConnected';
 
 export default gql`
   query getAllLikedContent($first: Int, $after: String) {

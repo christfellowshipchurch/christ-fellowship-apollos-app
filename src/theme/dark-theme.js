@@ -29,7 +29,6 @@ const dark = ({ colors: themeColors, alpha }) => ({
             inactive: themeColors.darkTertiary,
         },
         shadows: {
-            // default: Color(themeColors.darkPrimary).fade(0.05),
             default: themeColors.transparent,
         },
         action: {

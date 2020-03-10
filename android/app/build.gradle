@@ -152,6 +152,9 @@ android {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
         resValue "string", "build_config_package", "com.christfellowship"
+        // per react-native-community/blur documentation
+        renderscriptTargetApi 23
+        renderscriptSupportModeEnabled true
     }
     splits {
         abi {

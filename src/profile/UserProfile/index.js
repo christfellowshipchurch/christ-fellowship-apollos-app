@@ -14,13 +14,12 @@ const UserProfile = ({
     photo,
     campus,
     fields,
-    edit,
+    edit: editMode,
     onSave,
     onEdit,
     states,
     ...profileProps
 }) => {
-    const [editMode, setEditMode] = useState(edit);
     const [editValues, setEditValues] = useState({});
 
     return (

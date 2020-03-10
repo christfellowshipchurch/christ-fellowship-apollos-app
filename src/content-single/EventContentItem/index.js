@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, Animated } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
@@ -12,18 +12,24 @@ import {
   H4,
   BodyText,
   Button,
-  StretchyView,
+  // StretchyView,
 } from '@apollosproject/ui-kit';
-import { WebBrowserConsumer } from 'ChristFellowship/src/ui/WebBrowser';
-import MediaControls from '../MediaControls';
-import HTMLContent from '../HTMLContent';
-import HorizontalContentFeed from '../HorizontalContentFeed';
+import {
+  ContentHTMLViewConnected,
+  HorizontalContentSeriesFeedConnected,
+  MediaControlsConnected,
+} from '@apollosproject/ui-connected';
+import { UserWebBrowserConsumer } from '../../user-web-browser';
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
 
-const FlexedScrollView = styled({ flex: 1 })(ScrollView);
+const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
-const TitleContainer = styled(({ theme }) => ({
+const StyledMediaControlsConnected = styled(({ theme }) => ({
+  marginTop: -(theme.sizing.baseUnit * 2.5),
+}))(MediaControlsConnected);
+
+const TitleContainer = styled(() => ({
   position: 'absolute',
   bottom: 20,
   left: 0,
@@ -50,7 +56,11 @@ const Subtitle = withTheme(({ theme, extraSpacing }) => ({
   },
 }))(H4);
 
-const EventContentItem = ({ content, loading }) => {
+// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
+const StretchyView = ({ children, ...props }) =>
+  children({ Stretchy: View, ...props });
+
+const EventContentItem = ({ content, loading, navigation }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
 
@@ -88,7 +98,7 @@ const EventContentItem = ({ content, loading }) => {
               </TitleContainer>
             </View>
 
-            <MediaControls contentId={content.id} />
+            <StyledMediaControlsConnected contentId={content.id} />
             <PaddedView>
               <EventDateTimes
                 contentId={content.id}
@@ -97,27 +107,27 @@ const EventContentItem = ({ content, loading }) => {
               />
 
               {callsToAction.length > 0 && (
-                <WebBrowserConsumer>
+                <UserWebBrowserConsumer>
                   {(openUrl) =>
-                    callsToAction.map((n, i) => (
+                    callsToAction.map((n) => (
                       <StyledButton
-                        key={i}
+                        key={`${n.call}:${n.action}`}
                         title={n.call}
                         pill={false}
                         onPress={() => openUrl(n.action)}
                       />
                     ))
                   }
-                </WebBrowserConsumer>
+                </UserWebBrowserConsumer>
               )}
 
               <Subtitle extraSpacing={callsToAction.length > 0}>
                 Event Details
               </Subtitle>
-              <HTMLContent contentId={content.id} />
+              <ContentHTMLViewConnected contentId={content.id} />
               <Features contentId={content.id} />
             </PaddedView>
-            <HorizontalContentFeed
+            <HorizontalContentSeriesFeedConnected
               contentId={content.id}
               relatedTitle="Events"
             />
@@ -153,6 +163,8 @@ EventContentItem.propTypes = {
         action: PropTypes.string,
       })
     ),
+    events: PropTypes.array,
+    summary: PropTypes.string,
   }),
   loading: PropTypes.bool,
 };

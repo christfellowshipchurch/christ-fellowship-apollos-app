@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import {
-    styled,
-    BackgroundView,
-    H4,
-    BodyText,
-    PaddedView,
-} from '@apollosproject/ui-kit';
+import { styled, H4, BodyText } from '@apollosproject/ui-kit';
 
 // Container for the Fields under the
 export const ContentContainer = styled(({ theme }) => ({
@@ -32,8 +26,8 @@ export const ProfileField = ({ title, content }) => {
     return (
         <FieldContainer>
             <H4>{title}</H4>
-            {nonEmptyContentLine.map((n, i) => (
-                <StyledBodyText key={`FieldContainer:${title}:${i}`}>
+            {nonEmptyContentLine.map((n) => (
+                <StyledBodyText key={`FieldContainer:${title}:${n}`}>
                     {n}
                 </StyledBodyText>
             ))}

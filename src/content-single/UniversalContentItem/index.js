@@ -1,21 +1,32 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { Animated, View } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
+import {
+  ContentHTMLViewConnected,
+  HorizontalContentSeriesFeedConnected,
+  MediaControlsConnected,
+} from '@apollosproject/ui-connected';
 import {
   styled,
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
   H2,
-  StretchyView,
+  // StretchyView,
 } from '@apollosproject/ui-kit';
-import MediaControls from '../MediaControls';
-import HTMLContent from '../HTMLContent';
-import HorizontalContentFeed from '../HorizontalContentFeed';
+
 import Features from '../Features';
 
-const FlexedScrollView = styled({ flex: 1 })(ScrollView);
+const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
+
+// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
+const StretchyView = ({ children, ...props }) =>
+  children({ Stretchy: View, ...props });
+
+const StyledMediaControlsConnected = styled(({ theme }) => ({
+  marginTop: -(theme.sizing.baseUnit * 2.5),
+}))(MediaControlsConnected);
 
 const UniversalContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
@@ -29,22 +40,26 @@ const UniversalContentItem = ({ content, loading }) => {
                 <GradientOverlayImage
                   isLoading={!coverImageSources.length && loading}
                   source={coverImageSources}
+                  // Sets the ratio of the image
+                  minAspectRatio={1}
+                  maxAspectRatio={1}
+                  // Sets the ratio of the placeholder
+                  forceRatio={1}
+                  // No ratios are respected without this
+                  maintainAspectRatio
                 />
               </Stretchy>
             ) : null}
-            <MediaControls contentId={content.id} />
+            <StyledMediaControlsConnected contentId={content.id} />
             {/* fixes text/navigation spacing by adding vertical padding if we dont have an image */}
             <PaddedView vertical={!coverImageSources.length}>
               <H2 padded isLoading={!content.title && loading}>
                 {content.title}
               </H2>
-              <HTMLContent contentId={content.id} />
+              <ContentHTMLViewConnected contentId={content.id} />
             </PaddedView>
             <Features contentId={content.id} />
-            <HorizontalContentFeed
-              contentId={content.id}
-              relatedTitle="Content"
-            />
+            <HorizontalContentSeriesFeedConnected contentId={content.id} />
           </FlexedScrollView>
         )}
       </StretchyView>
