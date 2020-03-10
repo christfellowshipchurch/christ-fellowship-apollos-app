@@ -50,6 +50,7 @@ export const ACCESSORY_FRAGMENT = gql`
       icon
     }
     ... on EventContentItem {
+      hideLabel
       nextOccurrence
       events {
         start
