@@ -45,18 +45,6 @@ const Cell = styled(({ theme, inCardStack = false }) => ({
   alignItems: 'center',
 }))(View);
 
-const Icon = withTheme(({ theme, name }) => ({
-  icon: ['fal', name],
-  fill: theme.colors.white,
-  size: 16,
-  style: {
-    position: 'absolute',
-    right: 5,
-    top: 5,
-    ...Platform.select(theme.shadows.default),
-  },
-}))(FontAwesomeIcon);
-
 class TileRowCard extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
@@ -77,8 +65,6 @@ class TileRowCard extends PureComponent {
       <Cell inCardStack={this.props.inCardStack}>
         <CellImage>
           <ConnectedImage source={this.props.coverImage} isLoading />
-          {this.props.icon &&
-            this.props.icon !== '' && <Icon name={this.props.icon} />}
         </CellImage>
         <TextContainer>
           {this.props.label !== '' && <StyledH6>{this.props.label}</StyledH6>}
