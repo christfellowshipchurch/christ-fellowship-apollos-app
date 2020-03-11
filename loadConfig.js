@@ -9,19 +9,15 @@ ApollosConfig.loadJs({
       fragment accessoryFragment on ContentItem {
         ... on ContentSeriesContentItem {
           tags
-          icon
         }
         ... on UniversalContentItem {
           tags
-          icon
         }
         ... on DevotionalContentItem {
           tags
-          icon
         }
         ... on MediaContentItem {
           tags
-          icon
         }
         ... on EventContentItem {
           nextOccurrence
@@ -65,6 +61,7 @@ ApollosConfig.loadJs({
           call
           action
         }
+        hideLabel
       }
     `,
   },

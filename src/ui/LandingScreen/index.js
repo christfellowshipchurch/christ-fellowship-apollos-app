@@ -8,10 +8,12 @@ import {
   styled,
   H2,
   H4,
+  H6,
   PaddedView,
   BackgroundView,
   Button,
   ThemeMixin,
+  Touchable,
 } from '@apollosproject/ui-kit';
 
 const Content = styled({
@@ -41,12 +43,22 @@ const StyledButton = styled(({ color }) => ({
   textTransform: 'uppercase',
 }))(Button);
 
+const PrivacyPolicyText = styled(({ color }) => ({
+  ...(color ? { color } : {}),
+  fontWeight: 'normal',
+}))(H6);
+
+const PrivacyPolicyLink = styled(({ theme }) => ({
+  paddingVertical: theme.sizing.baseUnit,
+}))(Touchable);
+
 const LandingScreen = ({
   title,
   description,
   buttonTitle,
   textColor,
   onPressPrimary,
+  onPressSecondary,
   BackgroundComponent,
 }) => (
     <ThemeMixin mixin={{ type: 'auth-entry' }}>
@@ -69,6 +81,12 @@ const LandingScreen = ({
             onPress={onPressPrimary}
             type="primary"
           />
+          <PrivacyPolicyLink onPress={onPressSecondary}>
+            <PrivacyPolicyText color={textColor}>
+              By using this app, I understand and agree to the following policies
+              as laid out by Christ Fellowship Church seen here.
+          </PrivacyPolicyText>
+          </PrivacyPolicyLink>
         </Content>
       </BackgroundView>
     </ThemeMixin>
@@ -80,6 +98,7 @@ LandingScreen.propTypes = {
   buttonTitle: PropTypes.string,
   textColor: PropTypes.string, // Use for custom text and `BrandIcon` color when overlaying text on an image or video needs more clarity. Defaults to theme driven colors.
   onPressPrimary: PropTypes.func,
+  onPressSecondary: PropTypes.func,
   /* Recommended usage:
    * - `Image` (react-native)
    * - `GradientOverlayImage` (@apollosproject/ui-kit) for increased readability
@@ -97,6 +116,7 @@ LandingScreen.defaultProps = {
     'At Christ Fellowship we seek to connect with God in deeper ways and to grow in our relationships with Him and with one another.',
   buttonTitle: "Let's go!",
   onPressPrimary: () => null,
+  onPressSecondary: () => null,
 };
 
 LandingScreen.navigationOptions = {

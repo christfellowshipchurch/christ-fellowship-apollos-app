@@ -14,12 +14,13 @@ const feedItemLoadingState = {
 
 const StyledFeedView = styled(({ theme }) => ({
   paddingTop: theme.sizing.baseUnit,
+  paddingBottom: theme.sizing.baseUnit * 5,
 }))(FeedView);
 
 const CategoryList = ({ filterId }) => {
   const { loading, error, data, refetch } = useQuery(
     GET_CATEGORIES_FROM_FILTERS,
-    { variables: { id: filterId } }
+    { variables: { id: filterId }, fetchPolicy: 'cache-and-network' }
   );
 
   const renderItem = ({ item }) => <CategoryTileFeed id={item.id} />;

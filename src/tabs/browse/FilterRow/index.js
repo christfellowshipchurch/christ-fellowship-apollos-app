@@ -1,21 +1,9 @@
-import React, { useState } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { get, camelCase } from 'lodash';
+import { get } from 'lodash';
 
-import { View, FlatList, Animated, ScrollView } from 'react-native';
-import {
-  FeedView,
-  BackgroundView,
-  Button,
-  ButtonLink,
-  FlexedView,
-  Touchable,
-  H5,
-  styled,
-} from '@apollosproject/ui-kit';
-
-import { GET_FILTERS } from '../queries';
+import { View, ScrollView } from 'react-native';
+import { Touchable, H5, styled, withTheme } from '@apollosproject/ui-kit';
 
 const StyledH5 = styled(({ theme, active }) => ({
   color: active ? theme.colors.text.primary : theme.colors.text.secondary,
@@ -29,8 +17,14 @@ const FilterButton = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-const Container = styled(({ theme }) => ({
-  marginLeft: theme.sizing.baseUnit * 0.5,
+const Container = withTheme(({ theme }) => ({
+  style: {
+    paddingLeft: theme.sizing.baseUnit * 0.5,
+    width: '100%',
+  },
+  contentContainerStyle: {
+    alignItems: 'flex-end',
+  },
 }))(ScrollView);
 
 const FilterRow = ({ filters, selected, onChange }) => (

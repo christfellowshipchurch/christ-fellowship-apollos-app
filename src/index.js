@@ -1,31 +1,26 @@
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import React from 'react';
-import { StatusBar } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
-import {
-  DynamicValue,
-  useDynamicValue,
-  useDarkModeContext,
-} from 'react-native-dark-mode';
+import { useDarkModeContext } from 'react-native-dark-mode';
 
 import './icon-library';
 
-import { BackgroundView, withTheme, ThemeMixin } from '@apollosproject/ui-kit';
+import { BackgroundView, ThemeMixin } from '@apollosproject/ui-kit';
 import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { MediaPlayer } from '@apollosproject/ui-media-player';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
 import Auth from './auth';
+import StatusBar from './ui/StatusBar';
 
 import Providers from './Providers';
 import NavigationService from './NavigationService';
 import ContentSingle from './content-single';
 import { RowContentFeed } from './content-feed';
 import Tabs from './tabs';
-// import Location from './locations';
 import UserWebBrowser from './user-web-browser';
-import { PrivacyPolicy, TermsOfUse, ValueProp } from './app-information';
+import PrivacyPolicy from './privacy-policy';
 import {
   CurrentUserProfile as Connect,
   EditCurrentUserProfile,
@@ -61,19 +56,6 @@ const ProtectedRouteWithSplashScreen = (props) => {
   );
 };
 
-const dynamicBarStyle = new DynamicValue('dark-content', 'light-content');
-
-const AppStatusBar = withTheme(({ theme, barStyle }) => ({
-  barStyle,
-  backgroundColor: theme.colors.paper,
-}))(StatusBar);
-
-const DynamicAppStatusBar = () => {
-  const barStyle = useDynamicValue(dynamicBarStyle);
-
-  return <AppStatusBar barStyle={barStyle} />;
-};
-
 const AppContent = createStackNavigator(
   {
     Tabs,
@@ -105,6 +87,7 @@ const AppNavigator = createStackNavigator(
     EditCurrentUserProfile,
     Settings,
     Location,
+    PrivacyPolicy,
   },
   {
     initialRouteName: 'ProtectedRoute',
@@ -121,7 +104,7 @@ const App = () => {
   return (
     <Providers>
       <BackgroundView>
-        <DynamicAppStatusBar />
+        <StatusBar />
         <AppContainer
           ref={(navigatorRef) => {
             NavigationService.setTopLevelNavigator(navigatorRef);

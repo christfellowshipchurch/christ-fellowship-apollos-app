@@ -12,13 +12,14 @@ import {
   H4,
   BodyText,
   Button,
-  StretchyView,
+  // StretchyView,
 } from '@apollosproject/ui-kit';
 import {
   ContentHTMLViewConnected,
   HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
 } from '@apollosproject/ui-connected';
+import { connect } from 'formik';
 import { UserWebBrowserConsumer } from '../../user-web-browser';
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
@@ -56,9 +57,18 @@ const Subtitle = withTheme(({ theme, extraSpacing }) => ({
   },
 }))(H4);
 
-const EventContentItem = ({ content, loading, navigation }) => {
+// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
+const StretchyView = ({ children, ...props }) =>
+  children({ Stretchy: View, ...props });
+
+const EventContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
+  const hideLabel = get(content, 'hideLabel', false);
+  const buttonLabel = hideLabel
+    ? 'Get Started'
+    : 'Check Back Soon for More Information';
+  const events = get(content, 'events', []);
 
   return (
     <BackgroundView>
@@ -96,11 +106,21 @@ const EventContentItem = ({ content, loading, navigation }) => {
 
             <StyledMediaControlsConnected contentId={content.id} />
             <PaddedView>
-              <EventDateTimes
-                contentId={content.id}
-                events={content.events}
-                loading={loading}
-              />
+              {events.length < 1 &&
+                callsToAction.length > 0 && <H4>{buttonLabel}</H4>}
+
+              {events.length < 1 &&
+                callsToAction.length < 1 && (
+                  <H4>Check Back Soon for More Information</H4>
+                )}
+
+              {events.length > 0 && (
+                <EventDateTimes
+                  contentId={content.id}
+                  events={content.events}
+                  loading={loading}
+                />
+              )}
 
               {callsToAction.length > 0 && (
                 <UserWebBrowserConsumer>
@@ -118,7 +138,7 @@ const EventContentItem = ({ content, loading, navigation }) => {
               )}
 
               <Subtitle extraSpacing={callsToAction.length > 0}>
-                Event Details
+                Details
               </Subtitle>
               <ContentHTMLViewConnected contentId={content.id} />
               <Features contentId={content.id} />

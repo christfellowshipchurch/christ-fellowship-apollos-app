@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,11 +14,11 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="splash_bg" translatesAutoresizingMaskIntoConstraints="NO" id="iGM-E3-lqn">
-                    <rect key="frame" x="-12" y="0.0" width="437" height="723"/>
+                    <rect key="frame" x="-12" y="-24" width="437" height="747"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="splash-icon" translatesAutoresizingMaskIntoConstraints="NO" id="6Je-Yv-1Zj">
-                    <rect key="frame" x="132" y="286" width="150" height="146"/>
+                    <rect key="frame" x="131" y="276" width="150" height="146"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                 </imageView>
             </subviews>
@@ -28,7 +28,7 @@
         </view>
     </objects>
     <resources>
-        <image name="splash-icon" width="150" height="48"/>
-        <image name="splash_bg" width="782" height="625.66668701171875"/>
+        <image name="splash-icon" width="500" height="200.33332824707031"/>
+        <image name="splash_bg" width="2219.333251953125" height="1479.6666259765625"/>
     </resources>
 </document>

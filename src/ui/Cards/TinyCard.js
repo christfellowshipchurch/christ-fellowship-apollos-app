@@ -35,8 +35,10 @@ const Title = styled(({ theme }) => ({
 }))(BodyText);
 
 const StyledCard = styled(({ theme }) => ({
-  width: 155,
-  height: 175,
+  // width: 155,
+  // height: 175,
+  width: 232.5,
+  height: 262.5,
   marginHorizontal: theme.sizing.baseUnit * 0.3,
 }))(Card);
 
@@ -63,18 +65,6 @@ const Tag = styled(({ theme }) => ({
   lineHeight: 14,
 }))(Text);
 
-const Icon = withTheme(({ theme, name }) => ({
-  icon: ['fal', name],
-  fill: theme.colors.white,
-  size: 16,
-  style: {
-    position: 'absolute',
-    right: 5,
-    top: 5,
-    ...Platform.select(theme.shadows.default),
-  },
-}))(FontAwesomeIcon);
-
 class TinyCard extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
@@ -83,7 +73,6 @@ class TinyCard extends PureComponent {
     title: PropTypes.string,
     id: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.string),
-    icon: PropTypes.string,
   };
 
   render() {
@@ -94,8 +83,6 @@ class TinyCard extends PureComponent {
         <View>
           <Image source={this.props.coverImage} useGradient={tag !== ''} />
         </View>
-
-        <Icon name={this.props.icon || 'book-open'} />
 
         <Content>
           <TagPositioning>
