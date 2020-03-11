@@ -1,8 +1,6 @@
 import gql from 'graphql-tag';
 import ApollosConfig from '@apollosproject/config';
 
-console.log({ ApollosConfig });
-
 export const GET_FILTERS = gql`
   query getBrowseFilters {
     getBrowseFilters {

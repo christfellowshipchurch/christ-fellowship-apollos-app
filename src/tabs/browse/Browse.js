@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
-import { FlexedView } from '@apollosproject/ui-kit';
-
-import { HeaderSpacer, navigationOptions, BackgroundView } from '../navigation';
+import StatusBar from '../../ui/StatusBar';
+import { navigationOptions, BackgroundView } from '../navigation';
 
 import FilterRow from './FilterRow';
 import CategoryList from './CategoryList';
@@ -35,6 +34,7 @@ const Browse = ({ title }) => {
   return (
     <BackgroundView>
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar />
         <View style={{ flex: 1 }}>
           <FilterRow
             filters={get(
