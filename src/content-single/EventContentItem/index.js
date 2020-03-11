@@ -19,10 +19,10 @@ import {
   HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
 } from '@apollosproject/ui-connected';
+import { connect } from 'formik';
 import { UserWebBrowserConsumer } from '../../user-web-browser';
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
-import { connect } from 'formik';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -61,15 +61,15 @@ const Subtitle = withTheme(({ theme, extraSpacing }) => ({
 const StretchyView = ({ children, ...props }) =>
   children({ Stretchy: View, ...props });
 
-const EventContentItem = ({ content, loading, navigation }) => {
+const EventContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
-  const hideLabel = get(content, 'hideLabel', false)
+  const hideLabel = get(content, 'hideLabel', false);
   const buttonLabel = hideLabel
     ? 'Get Started'
-    : 'Check Back Soon for More Information'
+    : 'Check Back Soon for More Information';
+  const events = get(content, 'events', []);
 
-  console.log({content})
   return (
     <BackgroundView>
       <StretchyView>
@@ -106,23 +106,21 @@ const EventContentItem = ({ content, loading, navigation }) => {
 
             <StyledMediaControlsConnected contentId={content.id} />
             <PaddedView>
+              {events.length < 1 &&
+                callsToAction.length > 0 && <H4>{buttonLabel}</H4>}
 
-              {content.events.length < 1 && callsToAction.length > 0 &&
-                <H4>{buttonLabel}</H4>
-              }
+              {events.length < 1 &&
+                callsToAction.length < 1 && (
+                  <H4>Check Back Soon for More Information</H4>
+                )}
 
-              {content.events.length < 1 && callsToAction.length < 1 &&
-                <H4>Check Back Soon for More Information</H4>
-              }
-
-              {content.events.length > 0 &&
+              {events.length > 0 && (
                 <EventDateTimes
                   contentId={content.id}
                   events={content.events}
                   loading={loading}
                 />
-              }
-              
+              )}
 
               {callsToAction.length > 0 && (
                 <UserWebBrowserConsumer>
