@@ -15,9 +15,9 @@ import {
   TouchableScale,
   Touchable,
   withIsLoading,
+  HorizontalDefaultCard,
 } from '@apollosproject/ui-kit';
 
-import { TinyCard } from '../../../ui/Cards';
 import ContentCardConnected from '../../../ui/ContentCardConnected';
 import { GET_CATEGORY_PREVIEW } from '../queries';
 
@@ -68,6 +68,7 @@ const loadingStateObject = {
 const CategoryContentTileFeed = ({ id, navigation }) => {
   const { loading, error, data, refetch } = useQuery(GET_CATEGORY_PREVIEW, {
     variables: { id },
+    fetchPolicy: 'cache-and-network',
   });
 
   const title = get(data, 'node.title', '');
@@ -81,8 +82,7 @@ const CategoryContentTileFeed = ({ id, navigation }) => {
         <Name>
           <H4>{title}</H4>
         </Name>
-        {/* TODO : > 5 */}
-        {content.length > 5 && (
+        {content.length > 3 && (
           <AndroidTouchableFix
             onPress={() => {
               navigation.navigate('RowContentFeed', {
@@ -100,7 +100,7 @@ const CategoryContentTileFeed = ({ id, navigation }) => {
         )}
       </RowHeader>
       <StyledHorizontalTileFeed
-        content={take(content, 5)}
+        content={take(content, 3)}
         renderItem={({ item }) => (
           <TouchableScale
             onPress={() => {
@@ -110,7 +110,7 @@ const CategoryContentTileFeed = ({ id, navigation }) => {
             }}
           >
             <ContentCardConnected
-              card={TinyCard}
+              card={HorizontalDefaultCard}
               contentId={item.id}
               isLoading={loading}
               inHorizontalList

@@ -62,7 +62,8 @@ const ContentCardConnected = ({
           isLoading: loading,
           label,
           labelText: label, // for the Highlight Card
-        })
+          isLiked: null, // hide the heart icon
+        });
       }}
     </Query>
   )
