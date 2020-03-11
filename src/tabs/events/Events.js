@@ -113,7 +113,7 @@ const Events = ({ navigation }) => {
               color: 'primary',
             },
             {
-              title: 'All Events',
+              title: 'All Events and Opportunities',             
               events: allEventsSorted,
               color: 'warning',
             },
