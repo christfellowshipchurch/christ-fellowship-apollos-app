@@ -6,7 +6,7 @@ import { get } from 'lodash';
 import SafeAreaView from 'react-native-safe-area-view';
 import PropTypes from 'prop-types';
 
-import { FeedView, H1 } from '@apollosproject/ui-kit';
+import { FeedView } from '@apollosproject/ui-kit';
 
 import { TableView, Cell } from 'ChristFellowship/src/ui/TableView';
 import StatusBar from '../../ui/StatusBar';
@@ -66,8 +66,8 @@ const More = ({ navigation }) => {
       });
     }
   };
-  const renderItem = ({ item: { name, ...item } = {} }) => (
-    <TableWithLinks key={name} name={name} {...item} onPress={openLink} />
+  const renderItem = ({ item: { name, ...props } = {} }) => (
+    <TableWithLinks key={name} name={name} {...props} onPress={openLink} />
   );
 
   useEffect(() => setNavigationParam({ scrollY }), []);
