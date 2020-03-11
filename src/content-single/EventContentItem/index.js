@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated, Linking } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
@@ -19,8 +19,6 @@ import {
   HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
 } from '@apollosproject/ui-connected';
-import { connect } from 'formik';
-import { UserWebBrowserConsumer } from '../../user-web-browser';
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
 
@@ -122,20 +120,25 @@ const EventContentItem = ({ content, loading }) => {
                 />
               )}
 
-              {callsToAction.length > 0 && (
-                <UserWebBrowserConsumer>
-                  {(openUrl) =>
-                    callsToAction.map((n) => (
-                      <StyledButton
-                        key={`${n.call}:${n.action}`}
-                        title={n.call}
-                        pill={false}
-                        onPress={() => openUrl(n.action)}
-                      />
-                    ))
-                  }
-                </UserWebBrowserConsumer>
-              )}
+              {callsToAction.length > 0 &&
+                callsToAction.map((n) => (
+                  <StyledButton
+                    key={`${n.call}:${n.action}`}
+                    title={n.call}
+                    pill={false}
+                    onPress={() => {
+                      Linking.canOpenURL(n.action).then((supported) => {
+                        if (supported) {
+                          Linking.openURL(n.action);
+                        } else {
+                          console.log(
+                            `Don't know how to open URI: ${n.action}`
+                          );
+                        }
+                      });
+                    }}
+                  />
+                ))}
 
               <Subtitle extraSpacing={callsToAction.length > 0}>
                 Details
