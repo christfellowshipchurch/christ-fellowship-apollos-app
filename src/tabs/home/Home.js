@@ -15,6 +15,7 @@ import {
   HEADER_OFFSET,
 } from '../navigation';
 import { LiveButton } from '../../live';
+import StatusBar from '../../ui/StatusBar';
 
 import fetchMoreResolver from '../../utils/fetchMoreResolver';
 
@@ -65,6 +66,7 @@ const Home = ({ navigation }) => {
   return (
     <BackgroundView>
       <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
+        <StatusBar />
         <Query
           query={GET_FEED_FEATURES}
           variables={{

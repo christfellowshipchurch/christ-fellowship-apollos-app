@@ -30,8 +30,6 @@ const PrivacyPolicyConnected = () => (
 
       const { height, width } = Dimensions.get('window');
 
-      console.log({ privacyPolicyUrl });
-
       return (
         <BackgroundView>
           <SafeAreaView style={{ flex: 1, width: '100%', height: '100%' }}>

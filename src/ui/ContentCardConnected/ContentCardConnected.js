@@ -34,6 +34,7 @@ const ContentCardConnected = memo(
               {...otherProps}
               coverImage={coverImage}
               isLoading={loading}
+              isLiked={null} // hide the heart icon
             />
           );
         }}

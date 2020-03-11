@@ -10,6 +10,7 @@ import { FeedView, H3, TouchableScale, styled } from '@apollosproject/ui-kit';
 
 import { TileRowCard } from 'ChristFellowship/src/ui/Cards';
 import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
+import StatusBar from '../../ui/StatusBar';
 
 import {
   HEADER_OFFSET,
@@ -97,6 +98,7 @@ const Events = ({ navigation }) => {
         style={{ flex: 1 }}
         forceInset={{ bottom: 'never', top: 'always' }}
       >
+        <StatusBar />
         <FeedView
           ListFooterComponent={<View style={{ height: HEADER_OFFSET }} />}
           style={{
