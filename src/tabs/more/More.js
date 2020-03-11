@@ -76,7 +76,7 @@ const More = ({ navigation }) => {
     <BackgroundView>
       <SafeAreaView forceInset={{ bottom: 'never' }}>
         <StatusBar />
-        <Query query={GET_LINKS}>
+        <Query query={GET_LINKS} fetchPolicy="cache-and-network">
           {({ loading, error, data, refetch }) => (
             <FeedView
               content={get(data, 'moreLinks', [])}
