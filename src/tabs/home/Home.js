@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Query } from 'react-apollo';
-import { Image, Animated, View } from 'react-native';
+import { Image, Animated, View, Platform } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 import {
   navigationOptions,
   BackgroundView,
-  BlurView,
+  NavigationBackground,
   HEADER_OFFSET,
 } from '../navigation';
 import { LiveButton } from '../../live';
@@ -37,7 +37,14 @@ const LogoTitle = styled(({ theme }) => ({
 }))(Image);
 
 const HeaderSpacer = styled(({ theme }) => ({
-  height: HEADER_OFFSET - theme.sizing.baseUnit,
+  ...Platform.select({
+    ios: {
+      height: HEADER_OFFSET - theme.sizing.baseUnit,
+    },
+    android: {
+      height: 0,
+    },
+  }),
 }))(View);
 
 const Wordmark = () => {
@@ -93,7 +100,7 @@ const Home = ({ navigation }) => {
               ListHeaderComponent={
                 <View>
                   <HeaderSpacer />
-                  <LiveButton key="HomeFeedLiveButton" />
+                  {/* <LiveButton key="HomeFeedLiveButton" /> */}
                 </View>
               }
               renderItem={renderItem}
@@ -120,7 +127,7 @@ Home.navigationOptions = ({ navigation, theme }) => ({
     color: theme === 'dark' ? 'white' : 'black',
   },
   headerBackground: (
-    <BlurView
+    <NavigationBackground
       scrollY={get(navigation, 'state.params.scrollY', new Animated.Value(0))}
     />
   ),
