@@ -64,5 +64,57 @@ ApollosConfig.loadJs({
         hideLabel
       }
     `,
+    PUBLISH_FRAGMENT: gql`
+    fragment publishFragment on ContentItem {
+        ... on ContentSeriesContentItem {
+            author {
+                firstName
+                lastName
+                
+                photo {
+                    uri
+                }
+            }
+            estimatedTime
+            publishDate
+        }
+        ... on UniversalContentItem {
+            author {
+                firstName
+                lastName
+                
+                photo {
+                    uri
+                }
+            }
+            estimatedTime
+            publishDate
+        }
+        ... on DevotionalContentItem {
+            author {
+                firstName
+                lastName
+                
+                photo {
+                    uri
+                }
+            }
+            estimatedTime
+            publishDate
+        }
+        ... on MediaContentItem {
+            author {
+                firstName
+                lastName
+                
+                photo {
+                    uri
+                }
+            }
+            estimatedTime
+            publishDate
+        }
+    }
+`
   },
 });

@@ -8,9 +8,11 @@ export default gql`
       ... on ContentItem {
         ...contentItemFragment
         ...eventContentItemFragment
+        ...publishFragment
       }
     }
   }
   ${ApollosConfig.FRAGMENTS.CONTENT_ITEM_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.EVENT_ITEM_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.PUBLISH_FRAGMENT}
 `;
