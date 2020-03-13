@@ -6,13 +6,19 @@ buildscript {
         compileSdkVersion = 28
         targetSdkVersion = 28
         supportLibVersion = "28.0.0"
+        
+        // This approach was influenced by an issue as seen in the GitHub link below
+        // https://github.com/react-native-community/react-native-device-info/issues/802
+        // googlePlayServicesVersion = "16.1.0" // default: "+"
+        // googlePlayServicesIidVersion = "16.0.1"
+        // firebaseVersion = "15.0.2" // default: "+"
     }
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.4.0")
+        classpath('com.android.tools.build:gradle:3.6.1')
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -26,7 +32,11 @@ allprojects {
         jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
-            url "$rootDir/../node_modules/react-native/android"
+            url("$rootDir/../node_modules/react-native/android")
+        }
+        maven {
+            // Android JSC is installed from npm
+            url("$rootDir/../node_modules/jsc-android/dist")
         }
         maven { url "https://jitpack.io" }
     }

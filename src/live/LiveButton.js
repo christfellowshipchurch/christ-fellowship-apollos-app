@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Mutation } from 'react-apollo';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import {
@@ -9,7 +10,8 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { UserWebBrowserConsumer } from '../user-web-browser';
+
+import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
 
 import GET_LIVE_STREAM from './getLiveStream';
 
@@ -36,6 +38,14 @@ const CloseButton = withTheme(() => ({
   size: 24,
 }))(FontAwesomeIcon);
 
+const liveStreamUrl =
+  'https://christfellow2-lh.akamaihd.net/i/christfellow_1@144364/master.m3u8';
+
+const testUrl =
+  'http://christfellow2p-a.akamaihd.net/CHRISTFELLOW/291/191/Movement_Message_1708632131571_mp4_video_1280x720_2534000_primary_audio_eng_6.mp4';
+const testPoster =
+  'https://cloudfront.christfellowship.church/GetImage.ashx?guid=636e3151-9d74-455f-aa33-e37403fce4f6';
+
 const LiveNowButton = () => {
   const { loading, error, data } = useQuery(GET_LIVE_STREAM, {
     fetchPolicy: 'cache-and-network',
@@ -44,14 +54,32 @@ const LiveNowButton = () => {
 
   const [isLive, setIsLive] = useState(get(data, 'liveStream.isLive', false));
 
-  if (loading || error) return null;
+  if ((!data && loading) || error) return null;
 
-  return isLive ? (
-    <UserWebBrowserConsumer>
-      {(openUrl) => (
+  return isLive || true ? (
+    <Mutation mutation={PLAY_VIDEO}>
+      {(playVideo) => (
         <Banner>
           <TouchableScale
-            onPress={() => openUrl('https://apollos.churchonline.org/')}
+            onPress={() =>
+              playVideo({
+                variables: {
+                  mediaSource: {
+                    __typename: 'VideoMediaSource',
+                    uri: liveStreamUrl,
+                  },
+                  posterSources: [
+                    {
+                      __typename: 'ImageMediaSource',
+                      uri: testPoster,
+                    },
+                  ],
+                  title: 'Christ Fellowship Live',
+                  isVideo: true,
+                  artist: 'Christ Fellowship',
+                },
+              })
+            }
           >
             <Title>Join us for Church Online</Title>
           </TouchableScale>
@@ -60,7 +88,7 @@ const LiveNowButton = () => {
           </TouchableScale>
         </Banner>
       )}
-    </UserWebBrowserConsumer>
+    </Mutation>
   ) : null;
 };
 

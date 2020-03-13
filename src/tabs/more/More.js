@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Animated, Linking } from 'react-native';
+import { Animated, Linking, View } from 'react-native';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
 import SafeAreaView from 'react-native-safe-area-view';
 import PropTypes from 'prop-types';
 
-import { FeedView } from '@apollosproject/ui-kit';
+import { FeedView, styled } from '@apollosproject/ui-kit';
 
 import { TableView, Cell } from 'ChristFellowship/src/ui/TableView';
 import StatusBar from '../../ui/StatusBar';
 
 import {
-  HeaderSpacer,
+  HEADER_OFFSET,
   navigationOptions,
   BackgroundView,
-  BlurView,
+  NavigationBackground,
 } from '../navigation';
+
+const HeaderSpacer = styled(({ theme }) => ({
+  height: HEADER_OFFSET,
+}))(View);
 
 const GET_LINKS = gql`
   query moreLinks {
@@ -50,8 +54,8 @@ const More = ({ navigation }) => {
   const setNavigationParam = (params) => {
     navigation.setParams(params);
   };
-  const openLink = ({ uri, inApp, title }) => {
-    if (inApp) {
+  const openLink = ({ uri, openInApp, title }) => {
+    if (openInApp) {
       navigation.navigate('InlineWebView', {
         title,
         uri,
@@ -108,7 +112,7 @@ More.navigationOptions = ({ navigation, theme }) => ({
     color: theme === 'dark' ? 'white' : 'black',
   },
   headerBackground: (
-    <BlurView
+    <NavigationBackground
       scrollY={get(navigation, 'state.params.scrollY', new Animated.Value(0))}
     />
   ),

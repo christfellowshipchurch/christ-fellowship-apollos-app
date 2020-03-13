@@ -94,6 +94,8 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.js",
     enableHermes: false,  // clean and rebuild if changing
+    // bundleInDebug: true, // TODO : remove this line after testing
+    // devDisabledInDebug: true // TODO : remove this line after testing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -152,6 +154,7 @@ android {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
         resValue "string", "build_config_package", "com.christfellowship"
+        multiDexEnabled true
         // per react-native-community/blur documentation
         renderscriptTargetApi 23
         renderscriptSupportModeEnabled true
@@ -197,6 +200,18 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    // Failed to resolve play-services-location fix per the following issue:
+    //
+    // https://github.com/tipsi/tipsi-stripe/issues/502#issuecomment-512837207
+    // implementation(project(':react-native-maps')) {
+    //     exclude group: 'com.google.android.gms', module: 'play-services-base'
+    //     exclude group: 'com.google.android.gms', module: 'play-services-maps'
+    // }
+    // implementation 'com.google.android.gms:play-services-base:10.0.1'
+    // implementation 'com.google.android.gms:play-services-maps:10.0.1'
+    // implementation 'com.google.android.gms:play-services-wallet:16.0.1' // or some preferred version
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";
@@ -204,6 +219,19 @@ dependencies {
       releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
       implementation jscFlavor
+    }
+}
+
+// There was an issue that popped up with @react-native-community/blur that one
+// of its modules was using or overriding a deprecated module. The below GitHub
+// issue addresses the problem and provides an explanation for the fix below:
+//
+// https://github.com/react-native-community/react-native-blur/issues/346
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:deprecation"
+        }
     }
 }
 
