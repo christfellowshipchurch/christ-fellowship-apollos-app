@@ -7,7 +7,7 @@ import { withTheme } from '@apollosproject/ui-kit';
 
 const dynamicBarStyleValue = new DynamicValue('dark-content', 'light-content');
 
-const AppStatusBar = withTheme(({ theme, barStyle }) => ({
+const AppStatusBar = withTheme(({ theme, barStyle = 'dark-content' }) => ({
     barStyle,
     backgroundColor: theme.colors.paper,
 }))(StatusBar);
@@ -26,4 +26,5 @@ DynamicStatusBar.defaultProps = {
     barStyle: null,
 };
 
-export default DynamicStatusBar;
+// export default DynamicStatusBar;
+export default () => null;
