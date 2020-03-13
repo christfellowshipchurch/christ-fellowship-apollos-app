@@ -16,7 +16,7 @@ import {
   HEADER_OFFSET,
   navigationOptions,
   BackgroundView,
-  BlurView,
+  NavigationBackground,
 } from '../navigation';
 import { GET_EVENTS } from './queries';
 
@@ -153,7 +153,7 @@ Events.navigationOptions = ({ navigation, theme }) => ({
     color: theme === 'dark' ? 'white' : 'black',
   },
   headerBackground: (
-    <BlurView
+    <NavigationBackground
       scrollY={get(navigation, 'state.params.scrollY', new Animated.Value(0))}
     />
   ),

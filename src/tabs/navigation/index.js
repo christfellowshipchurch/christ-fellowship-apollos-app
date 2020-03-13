@@ -1,15 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Animated, View, StyleSheet } from 'react-native';
+import { Animated, View, StyleSheet, Platform } from 'react-native';
 import { BlurView as RNBlurView } from '@react-native-community/blur';
 import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
-import { BackgroundView as ApollosBackgroundView } from '@apollosproject/ui-kit';
+import {
+    BackgroundView as ApollosBackgroundView,
+    styled,
+} from '@apollosproject/ui-kit';
 import HeaderRight from './HeaderRight';
+
+export { default as NavigationBackground } from './NavigationBackground';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navigationOptions = {
-    // props
-    headerTransparent: true,
+    // In iOS, we use BlurView to dynamically blur
+    // content under the header on scroll.
+    // Android wasn't rendering anything, so we're going
+    // to use a static color for Android instead
+    ...Platform.select({
+        ios: {
+            headerTransparent: true,
+        },
+        android: {
+            headerTransparent: false,
+        },
+    }),
     // header components
     headerRight: <HeaderRight />,
     // styles
@@ -32,38 +47,5 @@ export const BackgroundView = ({ children }) => (
     <ApollosBackgroundView>{children}</ApollosBackgroundView>
 );
 
-const dynamicBlurType = new DynamicValue('xlight', 'extraDark');
-
-export const BlurView = ({ scrollY, scrollDistance }) => {
-    const barStyle = useDynamicValue(dynamicBlurType);
-    const opacity = scrollY.interpolate({
-        inputRange: [0, scrollDistance],
-        outputRange: [0, 1],
-    });
-
-    return (
-        <Animated.View style={{ opacity, ...StyleSheet.absoluteFill }}>
-            <RNBlurView
-                blurAmount={32}
-                style={StyleSheet.absoluteFill}
-                blurType={barStyle}
-            />
-        </Animated.View>
-    );
-};
-
-BlurView.propTypes = {
-    scrollDistance: PropTypes.number,
-    scrollY: PropTypes.shape({
-        interpolate: PropTypes.func,
-    }),
-};
-
-BlurView.defaultProps = {
-    scrollDistance: 20,
-    scrollY: new Animated.Value(0),
-};
-
-export const HeaderSpacer = () => <View style={{ height: 64 }} />;
-export const HEADER_OFFSET = 64;
+export const HEADER_OFFSET = Platform.select({ ios: 64, android: 0 });
 export const SCROLL_DISTANCE = 20;
