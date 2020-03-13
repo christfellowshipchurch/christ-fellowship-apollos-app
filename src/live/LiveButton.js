@@ -9,11 +9,12 @@ import {
   FlexedView,
   withTheme,
 } from '@apollosproject/ui-kit';
+import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
-
 import GET_LIVE_STREAM from './getLiveStream';
+
+const poster = require('../ui/AuthBackground/auth_background.jpg');
 
 const Banner = styled(({ theme }) => ({
   backgroundColor: theme.colors.primary,
@@ -38,13 +39,8 @@ const CloseButton = withTheme(() => ({
   size: 24,
 }))(FontAwesomeIcon);
 
-const liveStreamUrl =
-  'https://christfellow2-lh.akamaihd.net/i/christfellow_1@144364/master.m3u8';
-
-const testUrl =
-  'http://christfellow2p-a.akamaihd.net/CHRISTFELLOW/291/191/Movement_Message_1708632131571_mp4_video_1280x720_2534000_primary_audio_eng_6.mp4';
-const testPoster =
-  'https://cloudfront.christfellowship.church/GetImage.ashx?guid=636e3151-9d74-455f-aa33-e37403fce4f6';
+// TODO : please follow this PR for instructions on how to patch the WHITE SCREEN OF DEATH
+//        https://github.com/ApollosProject/apollos-apps/pull/1387
 
 const LiveNowButton = () => {
   const { loading, error, data } = useQuery(GET_LIVE_STREAM, {
@@ -53,10 +49,12 @@ const LiveNowButton = () => {
   });
 
   const [isLive, setIsLive] = useState(get(data, 'liveStream.isLive', false));
+  const liveStreamUrl = get(data, 'liveStream.media.sources[0].uri', null);
 
-  if ((!data && loading) || error) return null;
+  if ((!data && loading) || error || !liveStreamUrl || liveStreamUrl === '')
+    return null;
 
-  return isLive || true ? (
+  return isLive ? (
     <Mutation mutation={PLAY_VIDEO}>
       {(playVideo) => (
         <Banner>
@@ -68,12 +66,7 @@ const LiveNowButton = () => {
                     __typename: 'VideoMediaSource',
                     uri: liveStreamUrl,
                   },
-                  posterSources: [
-                    {
-                      __typename: 'ImageMediaSource',
-                      uri: testPoster,
-                    },
-                  ],
+                  posterSources: [],
                   title: 'Christ Fellowship Live',
                   isVideo: true,
                   artist: 'Christ Fellowship',
