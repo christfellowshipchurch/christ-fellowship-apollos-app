@@ -21,10 +21,17 @@ import {
   // StretchyView,
 } from '@apollosproject/ui-kit'
 
-import { StackedImageCard } from '../../ui/Cards'
 import Features from '../Features'
 
 const DATE_FORMAT = 'MMMM D, YYYY'
+
+const calculateReadTime = (string) => {
+  const wordCount = string.split(' ').length
+  const time = Math.round(wordCount / 225)
+   return time < 1
+    ? '1'
+    : time
+}
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView)
 
@@ -45,7 +52,7 @@ const StyledH6 = styled(({ theme }) => ({
   color: theme.colors.text.tertiary,
 }))(H6);
 
-const Title = styled(({ theme }) => ({
+const AuthorText = styled(({ theme }) => ({
   fontWeight: 'bold',
 }))(H5);
 
@@ -63,7 +70,10 @@ const UniversalContentItem = ({ content, loading }) => {
   const firstName = get(content, 'author.firstName', '')
   const lastName = get(content, 'author.lastName', '')
   const authorName = `${firstName} ${lastName}`
-  const publishDate = moment(get(content, 'publishDate', '')).format(DATE_FORMAT)
+  const publishDate = get(content, 'publishDate', '') !== ''
+    ? moment(content.publishDate).format(DATE_FORMAT)
+    : moment().format(DATE_FORMAT)
+
 
   console.log({content})
   return (
@@ -98,12 +108,12 @@ const UniversalContentItem = ({ content, loading }) => {
                     size="medium"
                 />
                 <TextContainer>
-                    <Title numberOfLines={2} ellipsizeMode="tail">
+                    <AuthorText numberOfLines={2} ellipsizeMode="tail">
                       {authorName}
-                    </Title>
+                    </AuthorText>
 
                     <StyledH6 numberOfLines={2} ellipsizeMode="tail">
-                      {publishDate}
+                      {`${publishDate} • ${calculateReadTime(get(content, 'htmlContent', ''))} min`}
                     </StyledH6>
                 </TextContainer>
               </AuthorContainer>
