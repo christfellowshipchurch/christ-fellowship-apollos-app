@@ -105,11 +105,15 @@ const EventContentItem = ({ content, loading }) => {
             <StyledMediaControlsConnected contentId={content.id} />
             <PaddedView>
               {events.length < 1 &&
-                callsToAction.length > 0 && <H4>{buttonLabel}</H4>}
+                callsToAction.length > 0 && (
+                  <H4 isLoading={loading}>{buttonLabel}</H4>
+                )}
 
               {events.length < 1 &&
                 callsToAction.length < 1 && (
-                  <H4>Check Back Soon for More Information</H4>
+                  <H4 isLoading={loading}>
+                    Check Back Soon for More Information
+                  </H4>
                 )}
 
               {events.length > 0 && (
@@ -124,6 +128,7 @@ const EventContentItem = ({ content, loading }) => {
                 callsToAction.map((n) => (
                   <StyledButton
                     key={`${n.call}:${n.action}`}
+                    isLoading={loading}
                     title={n.call}
                     pill={false}
                     onPress={() => {
@@ -140,7 +145,10 @@ const EventContentItem = ({ content, loading }) => {
                   />
                 ))}
 
-              <Subtitle extraSpacing={callsToAction.length > 0}>
+              <Subtitle
+                extraSpacing={callsToAction.length > 0}
+                isLoading={loading}
+              >
                 Details
               </Subtitle>
               <ContentHTMLViewConnected contentId={content.id} />

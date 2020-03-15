@@ -16,6 +16,7 @@ import {
   FlexedView,
   Avatar,
   H2,
+  H3,
   H5,
   H6,
   // StretchyView,
@@ -95,9 +96,9 @@ const UniversalContentItem = ({ content, loading }) => {
             <StyledMediaControlsConnected contentId={content.id} />
             {/* fixes text/navigation spacing by adding vertical padding if we dont have an image */}
             <PaddedView vertical={!coverImageSources.length}>
-              <H2 padded isLoading={!content.title && loading}>
+              <H3 padded isLoading={!content.title && loading}>
                 {content.title}
-              </H2>
+              </H3>
               <AuthorContainer>
                 <StyledAvatar source={authorImageSources} size="small" />
                 <TextContainer>
