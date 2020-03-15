@@ -1,13 +1,13 @@
-import React from 'react'
-import { Animated, View, Image } from 'react-native'
-import { get } from 'lodash'
-import moment from 'moment'
-import PropTypes from 'prop-types'
+import React from 'react';
+import { Animated, View, Platform } from 'react-native';
+import { get } from 'lodash';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 import {
   ContentHTMLViewConnected,
   HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
-} from '@apollosproject/ui-connected'
+} from '@apollosproject/ui-connected';
 import {
   styled,
   GradientOverlayImage,
@@ -19,63 +19,59 @@ import {
   H5,
   H6,
   // StretchyView,
-} from '@apollosproject/ui-kit'
+} from '@apollosproject/ui-kit';
 
-import Features from '../Features'
+import Features from '../Features';
 
-const DATE_FORMAT = 'MMMM D, YYYY'
+const DATE_FORMAT = 'MMMM D, YYYY';
 
 const calculateReadTime = (string) => {
-  const wordCount = string.split(' ').length
-  const time = Math.round(wordCount / 225)
-   return time < 1
-    ? '1'
-    : time
-}
+  const wordCount = string.split(' ').length;
+  const time = Math.round(wordCount / 225);
+  return time < 1 ? '1' : time;
+};
 
-const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView)
+const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
 const AuthorContainer = styled(({ theme }) => ({
   flexDirection: 'row',
   flexWrap: 'wrap',
-  alignContent: 'center', 
-  paddingBottom: 20,
+  alignItems: 'center',
+  marginBottom: 20,
 }))(FlexedView);
 
 const TextContainer = styled(({ theme }) => ({
-  marginTop: theme.sizing.baseUnit * 0.5,
   justifyContent: 'center',
-  paddingLeft: 15,
+  paddingLeft: theme.sizing.baseUnit * 0.5,
 }))(FlexedView);
 
-const StyledH6 = styled(({ theme }) => ({
-  color: theme.colors.text.tertiary,
+const StyledH6 = styled(({ theme, color = 'primary' }) => ({
+  color: theme.colors.text[color],
 }))(H6);
 
-const AuthorText = styled(({ theme }) => ({
-  fontWeight: 'bold',
-}))(H5);
+const StyledAvatar = styled(({ theme }) => ({
+  ...Platform.select(theme.shadows.default),
+}))(Avatar);
 
 // TODO : temp fix until Core resolves the bug where images would disappear when pulling down
 const StretchyView = ({ children, ...props }) =>
-  children({ Stretchy: View, ...props })
+  children({ Stretchy: View, ...props });
 
 const StyledMediaControlsConnected = styled(({ theme }) => ({
   marginTop: -(theme.sizing.baseUnit * 2.5),
-}))(MediaControlsConnected)
+}))(MediaControlsConnected);
 
 const UniversalContentItem = ({ content, loading }) => {
-  const coverImageSources = get(content, 'coverImage.sources', [])
-  const authorImageSources = get(content, 'author.photo', [])
-  const firstName = get(content, 'author.firstName', '')
-  const lastName = get(content, 'author.lastName', '')
-  const authorName = `${firstName} ${lastName}`
-  const publishDate = get(content, 'publishDate', '') !== ''
-    ? moment(content.publishDate).format(DATE_FORMAT)
-    : moment().format(DATE_FORMAT)
+  const coverImageSources = get(content, 'coverImage.sources', []);
+  const authorImageSources = get(content, 'author.photo', []);
+  const firstName = get(content, 'author.firstName', '');
+  const lastName = get(content, 'author.lastName', '');
+  const authorName = `${firstName} ${lastName}`;
+  const publishDate =
+    get(content, 'publishDate', '') !== ''
+      ? moment(content.publishDate).format(DATE_FORMAT)
+      : moment().format(DATE_FORMAT);
 
-
-  console.log({content})
   return (
     <BackgroundView>
       <StretchyView>
@@ -103,18 +99,26 @@ const UniversalContentItem = ({ content, loading }) => {
                 {content.title}
               </H2>
               <AuthorContainer>
-                <Avatar
-                    source={authorImageSources}
-                    size="medium"
-                />
+                <StyledAvatar source={authorImageSources} size="small" />
                 <TextContainer>
-                    <AuthorText numberOfLines={2} ellipsizeMode="tail">
-                      {authorName}
-                    </AuthorText>
+                  <StyledH6
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                    isLoading={loading}
+                  >
+                    {authorName}
+                  </StyledH6>
 
-                    <StyledH6 numberOfLines={2} ellipsizeMode="tail">
-                      {`${publishDate} • ${calculateReadTime(get(content, 'htmlContent', ''))} min`}
-                    </StyledH6>
+                  <StyledH6
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                    isLoading={loading}
+                    color="tertiary"
+                  >
+                    {`${publishDate} • ${calculateReadTime(
+                      get(content, 'htmlContent', '')
+                    )} min`}
+                  </StyledH6>
                 </TextContainer>
               </AuthorContainer>
               <ContentHTMLViewConnected contentId={content.id} />
@@ -125,8 +129,8 @@ const UniversalContentItem = ({ content, loading }) => {
         )}
       </StretchyView>
     </BackgroundView>
-  )
-}
+  );
+};
 
 UniversalContentItem.propTypes = {
   content: PropTypes.shape({
@@ -149,6 +153,6 @@ UniversalContentItem.propTypes = {
     ),
   }),
   loading: PropTypes.bool,
-}
+};
 
-export default UniversalContentItem
+export default UniversalContentItem;
