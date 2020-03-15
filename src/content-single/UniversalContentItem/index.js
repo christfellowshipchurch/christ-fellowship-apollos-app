@@ -12,11 +12,12 @@ import {
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  H2,
+  H3,
   // StretchyView,
 } from '@apollosproject/ui-kit';
 
 import Features from '../Features';
+import Author from '../Author';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -30,6 +31,7 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
 
 const UniversalContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
+
   return (
     <BackgroundView>
       <StretchyView>
@@ -53,9 +55,13 @@ const UniversalContentItem = ({ content, loading }) => {
             <StyledMediaControlsConnected contentId={content.id} />
             {/* fixes text/navigation spacing by adding vertical padding if we dont have an image */}
             <PaddedView vertical={!coverImageSources.length}>
-              <H2 padded isLoading={!content.title && loading}>
+              {/* title */}
+              <H3 padded isLoading={!content.title && loading}>
                 {content.title}
-              </H2>
+              </H3>
+              {/* author */}
+              <Author contentId={content.id} />
+              {/* body content */}
               <ContentHTMLViewConnected contentId={content.id} />
             </PaddedView>
             <Features contentId={content.id} />
