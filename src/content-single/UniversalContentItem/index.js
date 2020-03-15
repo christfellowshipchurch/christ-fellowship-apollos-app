@@ -1,7 +1,6 @@
 import React from 'react';
-import { Animated, View, Platform } from 'react-native';
+import { Animated, View } from 'react-native';
 import { get } from 'lodash';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import {
   ContentHTMLViewConnected,
@@ -13,46 +12,14 @@ import {
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  FlexedView,
-  Avatar,
-  H2,
   H3,
-  H5,
-  H6,
   // StretchyView,
 } from '@apollosproject/ui-kit';
 
 import Features from '../Features';
-
-const DATE_FORMAT = 'MMMM D, YYYY';
-
-const calculateReadTime = (string) => {
-  const wordCount = string.split(' ').length;
-  const time = Math.round(wordCount / 225);
-  return time < 1 ? '1' : time;
-};
+import Author from '../Author';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
-
-const AuthorContainer = styled(({ theme }) => ({
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  alignItems: 'center',
-  marginBottom: 20,
-}))(FlexedView);
-
-const TextContainer = styled(({ theme }) => ({
-  justifyContent: 'center',
-  paddingLeft: theme.sizing.baseUnit * 0.5,
-}))(FlexedView);
-
-const StyledH6 = styled(({ theme, color = 'primary' }) => ({
-  color: theme.colors.text[color],
-}))(H6);
-
-const StyledAvatar = styled(({ theme }) => ({
-  ...Platform.select(theme.shadows.default),
-}))(Avatar);
 
 // TODO : temp fix until Core resolves the bug where images would disappear when pulling down
 const StretchyView = ({ children, ...props }) =>
@@ -64,14 +31,6 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
 
 const UniversalContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
-  const authorImageSources = get(content, 'author.photo', []);
-  const firstName = get(content, 'author.firstName', '');
-  const lastName = get(content, 'author.lastName', '');
-  const authorName = `${firstName} ${lastName}`;
-  const publishDate =
-    get(content, 'publishDate', '') !== ''
-      ? moment(content.publishDate).format(DATE_FORMAT)
-      : moment().format(DATE_FORMAT);
 
   return (
     <BackgroundView>
@@ -96,32 +55,13 @@ const UniversalContentItem = ({ content, loading }) => {
             <StyledMediaControlsConnected contentId={content.id} />
             {/* fixes text/navigation spacing by adding vertical padding if we dont have an image */}
             <PaddedView vertical={!coverImageSources.length}>
+              {/* title */}
               <H3 padded isLoading={!content.title && loading}>
                 {content.title}
               </H3>
-              <AuthorContainer>
-                <StyledAvatar source={authorImageSources} size="small" />
-                <TextContainer>
-                  <StyledH6
-                    numberOfLines={2}
-                    ellipsizeMode="tail"
-                    isLoading={loading}
-                  >
-                    {authorName}
-                  </StyledH6>
-
-                  <StyledH6
-                    numberOfLines={2}
-                    ellipsizeMode="tail"
-                    isLoading={loading}
-                    color="tertiary"
-                  >
-                    {`${publishDate} • ${calculateReadTime(
-                      get(content, 'htmlContent', '')
-                    )} min`}
-                  </StyledH6>
-                </TextContainer>
-              </AuthorContainer>
+              {/* author */}
+              <Author contentId={content.id} />
+              {/* body content */}
               <ContentHTMLViewConnected contentId={content.id} />
             </PaddedView>
             <Features contentId={content.id} />
