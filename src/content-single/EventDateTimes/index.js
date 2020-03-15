@@ -156,13 +156,6 @@ const EventOcurrences = ({ defaultCampus, events, loading }) => {
               />
             ))}
 
-            {!!location &&
-              location !== '' && (
-                <DirectionsTouchable location={location}>
-                  <H5>{location}</H5>
-                </DirectionsTouchable>
-              )}
-
             <HorizontalLine />
           </FlexedView>
         );
