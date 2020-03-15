@@ -14,8 +14,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import GET_LIVE_STREAM from './getLiveStream';
 
-const poster = require('../ui/AuthBackground/auth_background.jpg');
-
 const Banner = styled(({ theme }) => ({
   backgroundColor: theme.colors.primary,
   paddingVertical: theme.sizing.baseUnit * 0.7,
