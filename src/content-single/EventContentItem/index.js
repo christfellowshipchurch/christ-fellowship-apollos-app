@@ -30,7 +30,7 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
 
 const TitleContainer = styled(() => ({
   position: 'absolute',
-  bottom: 20,
+  bottom: 0,
   left: 0,
   width: '100%',
 }))(PaddedView);
