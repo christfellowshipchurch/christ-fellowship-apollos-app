@@ -1,15 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Animated, View, StyleSheet, Platform } from 'react-native';
-import { BlurView as RNBlurView } from '@react-native-community/blur';
-import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
-import {
-    BackgroundView as ApollosBackgroundView,
-    styled,
-} from '@apollosproject/ui-kit';
+import { Platform } from 'react-native';
+import { BackgroundView as ApollosBackgroundView } from '@apollosproject/ui-kit';
 import HeaderRight from './HeaderRight';
 
 export { default as NavigationBackground } from './NavigationBackground';
+export { default as NavigationSpacer } from './NavigationSpacer';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navigationOptions = {
