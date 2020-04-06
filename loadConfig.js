@@ -25,6 +25,9 @@ ApollosConfig.loadJs({
             start
           }
         }
+        ... on InformationalContentItem {
+          redirectUrl
+        }
       }
     `,
     CAMPUS_PARTS_FRAGMENT: gql`
@@ -62,6 +65,15 @@ ApollosConfig.loadJs({
           action
         }
         hideLabel
+      }
+    `,
+    INFORMATIONAL_ITEM_FRAGMENT: gql`
+      fragment informationalContentItemFragment on InformationalContentItem {
+        callsToAction {
+          call
+          action
+        }
+        redirectUrl
       }
     `,
     PUBLISH_FRAGMENT: gql`
