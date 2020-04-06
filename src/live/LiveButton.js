@@ -39,7 +39,7 @@ const CloseButton = withTheme(() => ({
 }))(FontAwesomeIcon);
 
 const liveStreamUrl =
-  'https://christfellow2-lh.akamaihd.net/i/christfellow_1@144364/master.m3u8';
+  'http://link.theplatform.com/s/IfSiAC/bD1fN9vCet4B?mbr=true@144364/master.m3u8';
 
 const testUrl =
   'http://christfellow2p-a.akamaihd.net/CHRISTFELLOW/291/191/Movement_Message_1708632131571_mp4_video_1280x720_2534000_primary_audio_eng_6.mp4';

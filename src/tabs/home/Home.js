@@ -12,6 +12,7 @@ import {
   navigationOptions,
   BackgroundView,
   NavigationBackground,
+  NavigationSpacer,
   HEADER_OFFSET,
 } from '../navigation';
 import { LiveButton } from '../../live';
@@ -74,6 +75,7 @@ const Home = ({ navigation }) => {
     <BackgroundView>
       <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
         <StatusBar />
+        <NavigationSpacer scrollY={scrollY} />
         <Query
           query={GET_FEED_FEATURES}
           variables={{
@@ -99,7 +101,6 @@ const Home = ({ navigation }) => {
               refetch={refetch}
               ListHeaderComponent={
                 <View>
-                  <HeaderSpacer />
                   <LiveButton key="HomeFeedLiveButton" />
                 </View>
               }

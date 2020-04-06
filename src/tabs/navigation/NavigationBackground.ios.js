@@ -32,7 +32,7 @@ NavigationBackground.propTypes = {
 };
 
 NavigationBackground.defaultProps = {
-  scrollDistance: 20,
+  scrollDistance: 20, // needs to match the NavigationSpacer
   scrollY: new Animated.Value(0),
 };
 
