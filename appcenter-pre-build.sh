@@ -8,6 +8,8 @@ cd ios
 pod install
 cd ..
 
+echo AppCenter pre build script is running
+
 # You can comment this out if your app doesn't have an existing build number.
 VERSION_CODE=$((VERSION_CODE_SHIFT + APPCENTER_BUILD_ID))
 
