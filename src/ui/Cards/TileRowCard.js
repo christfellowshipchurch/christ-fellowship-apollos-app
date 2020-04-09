@@ -11,7 +11,7 @@ import {
   ConnectedImage,
   FlexedView,
 } from '@apollosproject/ui-kit';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import ThemeMixin from '../DynamicThemeMixin';
 
 const { ImageSourceType } = ConnectedImage;
 
@@ -62,26 +62,28 @@ class TileRowCard extends PureComponent {
 
   render() {
     return (
-      <Cell inCardStack={this.props.inCardStack}>
-        <CellImage>
-          <ConnectedImage source={this.props.coverImage} isLoading />
-        </CellImage>
-        <TextContainer>
-          {this.props.label !== '' && <StyledH6>{this.props.label}</StyledH6>}
+      <ThemeMixin>
+        <Cell inCardStack={this.props.inCardStack}>
+          <CellImage>
+            <ConnectedImage source={this.props.coverImage} isLoading />
+          </CellImage>
+          <TextContainer>
+            {this.props.label !== '' && <StyledH6>{this.props.label}</StyledH6>}
 
-          {this.props.title !== '' && (
-            <Title numberOfLines={2} ellipsizeMode="tail">
-              {this.props.title}
-            </Title>
-          )}
+            {this.props.title !== '' && (
+              <Title numberOfLines={2} ellipsizeMode="tail">
+                {this.props.title}
+              </Title>
+            )}
 
-          {this.props.summary !== '' && (
-            <StyledH6 numberOfLines={2} ellipsizeMode="tail">
-              {this.props.summary}
-            </StyledH6>
-          )}
-        </TextContainer>
-      </Cell>
+            {this.props.summary !== '' && (
+              <StyledH6 numberOfLines={2} ellipsizeMode="tail">
+                {this.props.summary}
+              </StyledH6>
+            )}
+          </TextContainer>
+        </Cell>
+      </ThemeMixin>
     );
   }
 }

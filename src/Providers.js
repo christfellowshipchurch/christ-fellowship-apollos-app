@@ -9,6 +9,7 @@ import { AuthProvider } from '@apollosproject/ui-auth';
 
 import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 
+import { track, identify } from './amplitude';
 import NavigationService from './NavigationService';
 import ClientProvider from './client';
 import customTheme, { customIcons } from './theme';
@@ -30,7 +31,10 @@ const AppProviders = (props) => {
                     closeAuth={() => NavigationService.navigate('Onboarding')}
                 >
                     <MediaPlayerProvider>
-                        <AnalyticsProvider>
+                        <AnalyticsProvider
+                            trackFunctions={[track]}
+                            identifyFunctions={[identify]}
+                        >
                             <LiveProvider>
                                 <Providers
                                     themeInput={{ ...customTheme, type: theme }}

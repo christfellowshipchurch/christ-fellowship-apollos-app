@@ -37,14 +37,16 @@ const CurrentUserProfile = ({ navigation }) => {
         );
     if (error) return null;
 
+    const city =
+        get(profile, 'address.city', '') !== '' ? `${profile.address.city},` : '';
     const address = [
         get(profile, 'address.street1', ''),
         get(profile, 'address.street2', ''),
-        `${get(profile, 'address.city', '')}, ${get(
+        `${city} ${get(profile, 'address.state', '')} ${get(
             profile,
-            'address.state',
+            'address.postalCode',
             ''
-        )} ${get(profile, 'address.postalCode', '').substring(0, 5)}`,
+        ).substring(0, 5)}`,
     ];
 
     const profileFields = [

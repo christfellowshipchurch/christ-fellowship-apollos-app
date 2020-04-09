@@ -6,6 +6,7 @@ import InAppBrowser from 'react-native-inappbrowser-reborn';
 import HTMLView from '@apollosproject/ui-htmlview';
 import { ErrorCard } from '@apollosproject/ui-kit';
 
+import ThemeMixin from '../../ui/DynamicThemeMixin';
 import GET_CONTENT_ITEM_CONTENT from './getContentItemContent';
 
 function handlePressAnchor(url) {
@@ -24,12 +25,14 @@ const HTMLContent = ({ contentId }) => {
       {({ data: { node: { htmlContent } = {} } = {}, loading, error }) => {
         if (!htmlContent && error) return <ErrorCard error={error} />;
         return (
-          <HTMLView
-            isLoading={!htmlContent && loading}
-            onPressAnchor={handlePressAnchor}
-          >
-            {htmlContent}
-          </HTMLView>
+          <ThemeMixin>
+            <HTMLView
+              isLoading={!htmlContent && loading}
+              onPressAnchor={handlePressAnchor}
+            >
+              {htmlContent}
+            </HTMLView>
+          </ThemeMixin>
         );
       }}
     </Query>

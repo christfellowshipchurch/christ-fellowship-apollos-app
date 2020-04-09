@@ -103,7 +103,7 @@ const ProfileHeader = ({
                 <FlexedScrollView {...scrollViewProps}>
                     {!!avatar && (
                         <Stretchy>
-                            <FeaturedImage source={featuredImage} />
+                            <FeaturedImage source={featuredImage} isLoading={isLoading} />
                         </Stretchy>
                     )}
                     <ThemeMixin mixin={{ type: 'dark' }}>

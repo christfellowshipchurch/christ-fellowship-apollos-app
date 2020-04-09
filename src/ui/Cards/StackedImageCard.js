@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
@@ -10,8 +10,10 @@ import {
   withIsLoading,
   ConnectedImage,
   FlexedView,
+  CardLabel,
+  CardImage,
 } from '@apollosproject/ui-kit';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import ThemeMixin from '../DynamicThemeMixin';
 
 const { ImageSourceType } = ConnectedImage;
 
@@ -22,18 +24,38 @@ const CellImage = styled(({ theme }) => ({
   marginRight: theme.sizing.baseUnit,
 }))(View);
 
+const Image = withTheme(({ theme, isLoading, label }) => ({
+  overlayColor:
+    !!label && label !== '' ? theme.colors.black : theme.colors.transparent,
+  minAspectRatio: 1,
+  maxAspectRatio: 1,
+}))(CardImage);
+
 const StyledH6 = styled(({ theme }) => ({
   color: theme.colors.text.tertiary,
 }))(H6);
 
 const Title = styled(({ theme }) => ({
   fontWeight: 'bold',
-}))(H5);
+  color: theme.colors.text.primary,
+}))(Text);
 
 const TextContainer = styled(({ theme }) => ({
   marginTop: theme.sizing.baseUnit * 0.5,
   justifyContent: 'center',
 }))(FlexedView);
+
+const StyledCardLabel = styled(({ theme }) => ({
+  position: 'absolute',
+  bottom: 12,
+  left: 10,
+}))(CardLabel);
+
+const ImageOverlay = styled(({ theme }) => ({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+}))(View);
 
 const Cell = styled(({ theme, placement }) => ({
   paddingLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.75 : 1),
@@ -41,45 +63,42 @@ const Cell = styled(({ theme, placement }) => ({
   marginVertical: theme.sizing.baseUnit * 0.75,
 }))(View);
 
-class StackedImageCard extends PureComponent {
-  static propTypes = {
-    onPress: PropTypes.func,
-    coverImage: PropTypes.oneOfType([
-      PropTypes.arrayOf(ImageSourceType),
-      ImageSourceType,
-    ]),
-    label: PropTypes.string,
-    summary: PropTypes.string,
-    title: PropTypes.string,
-    id: PropTypes.string,
-    name: PropTypes.string,
-    placement: PropTypes.oneOf(['', 'left', 'right']),
-  };
+const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
+  <ThemeMixin>
+    <Cell placement={placement}>
+      <CellImage>
+        <Image source={coverImage} isLoading label={label} />
+        <StyledCardLabel title={label} />
+      </CellImage>
+      <TextContainer>
+        {title !== '' && (
+          <Title numberOfLines={2} ellipsizeMode="tail">
+            {title}
+          </Title>
+        )}
 
-  render() {
-    return (
-      <Cell placement={this.props.placement}>
-        <CellImage>
-          <ConnectedImage source={this.props.coverImage} isLoading />
-        </CellImage>
-        <TextContainer>
-          {this.props.label !== '' && <StyledH6>{this.props.label}</StyledH6>}
+        {summary !== '' && (
+          <StyledH6 numberOfLines={2} ellipsizeMode="tail">
+            {summary}
+          </StyledH6>
+        )}
+      </TextContainer>
+    </Cell>
+  </ThemeMixin>
+);
 
-          {this.props.title !== '' && (
-            <Title numberOfLines={2} ellipsizeMode="tail">
-              {this.props.title}
-            </Title>
-          )}
-
-          {this.props.summary !== '' && (
-            <StyledH6 numberOfLines={2} ellipsizeMode="tail">
-              {this.props.summary}
-            </StyledH6>
-          )}
-        </TextContainer>
-      </Cell>
-    );
-  }
-}
+StackedImageCard.propTypes = {
+  onPress: PropTypes.func,
+  coverImage: PropTypes.oneOfType([
+    PropTypes.arrayOf(ImageSourceType),
+    ImageSourceType,
+  ]),
+  label: PropTypes.string,
+  summary: PropTypes.string,
+  title: PropTypes.string,
+  id: PropTypes.string,
+  name: PropTypes.string,
+  placement: PropTypes.oneOf(['', 'left', 'right']),
+};
 
 export default withIsLoading(StackedImageCard);

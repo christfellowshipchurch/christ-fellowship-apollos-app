@@ -8,8 +8,9 @@ import PropTypes from 'prop-types';
 
 import { FeedView, styled } from '@apollosproject/ui-kit';
 
-import { TableView, Cell } from 'ChristFellowship/src/ui/TableView';
+import { TableView, Cell } from '../../ui/TableView';
 import StatusBar from '../../ui/StatusBar';
+import ThemeMixin from '../../ui/DynamicThemeMixin';
 
 import {
   HEADER_OFFSET,
@@ -77,31 +78,33 @@ const More = ({ navigation }) => {
   useEffect(() => setNavigationParam({ scrollY }), []);
 
   return (
-    <BackgroundView>
-      <SafeAreaView forceInset={{ bottom: 'never' }}>
-        <StatusBar />
-        <Query query={GET_LINKS} fetchPolicy="cache-and-network">
-          {({ loading, error, data, refetch }) => (
-            <FeedView
-              content={get(data, 'moreLinks', [])}
-              isLoading={loading}
-              error={error}
-              refetch={refetch}
-              renderItem={renderItem}
-              ListHeaderComponent={<HeaderSpacer />}
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {
-                    contentOffset: { y: scrollY },
+    <ThemeMixin>
+      <BackgroundView>
+        <SafeAreaView forceInset={{ bottom: 'never' }}>
+          <StatusBar />
+          <Query query={GET_LINKS} fetchPolicy="cache-and-network">
+            {({ loading, error, data, refetch }) => (
+              <FeedView
+                content={get(data, 'moreLinks', [])}
+                isLoading={loading}
+                error={error}
+                refetch={refetch}
+                renderItem={renderItem}
+                ListHeaderComponent={<HeaderSpacer />}
+                scrollEventThrottle={16}
+                onScroll={Animated.event([
+                  {
+                    nativeEvent: {
+                      contentOffset: { y: scrollY },
+                    },
                   },
-                },
-              ])}
-            />
-          )}
-        </Query>
-      </SafeAreaView>
-    </BackgroundView>
+                ])}
+              />
+            )}
+          </Query>
+        </SafeAreaView>
+      </BackgroundView>
+    </ThemeMixin>
   );
 };
 
