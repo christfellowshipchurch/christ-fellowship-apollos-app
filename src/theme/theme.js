@@ -53,6 +53,9 @@ const colors = {
     alert: '#d52158',
     success: '#1ec27f',
     warning: '#e09541',
+    text: {
+        link: '#00aeef',
+    },
 };
 
 /* Base Typography sizing and fonts.
