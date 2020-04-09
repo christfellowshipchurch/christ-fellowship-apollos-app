@@ -8,6 +8,7 @@ import {
     TouchableScale,
     FlexedView,
     HighlightCard,
+    FeaturedCard,
 } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from '../../../ui/ContentCardConnected';
