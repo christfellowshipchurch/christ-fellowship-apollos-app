@@ -31,12 +31,6 @@ const dark = ({ colors: themeColors, alpha }) => ({
         shadows: {
             default: themeColors.transparent,
         },
-        action: {
-            default: themeColors.primary,
-            primary: themeColors.primary,
-            secondary: themeColors.secondary,
-            tertiary: themeColors.tertiary,
-        },
     },
 });
 

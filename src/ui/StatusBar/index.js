@@ -26,5 +26,4 @@ DynamicStatusBar.defaultProps = {
     barStyle: null,
 };
 
-// export default DynamicStatusBar;
-export default () => null;
+export default DynamicStatusBar;

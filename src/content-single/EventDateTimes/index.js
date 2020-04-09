@@ -11,6 +11,7 @@ import {
   indexOf,
 } from 'lodash';
 import PropTypes from 'prop-types';
+import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 import moment from 'moment';
 
 import {
@@ -32,6 +33,8 @@ import {
   DirectionsTouchable,
 } from './components';
 import { CURRENT_USER_CAMPUS } from './queries';
+
+const dynamicPickerColorValue = new DynamicValue('black', 'white');
 
 const EventTimes = ({ date, times }) => {
   const mDate = moment(date);
@@ -65,6 +68,9 @@ const CampusSelection = ({ loading, campuses, onChange, defaultCampus }) => {
   const [selected, setSelected] = useState(
     options.includes(defaultCampus) ? defaultCampus : options[0]
   );
+  const dynamicPickerItemStyle = {
+    color: useDynamicValue(dynamicPickerColorValue),
+  };
 
   // when the selection changes, call the onChange method
   useEffect(() => onChange(selected), [selected]);
@@ -98,6 +104,7 @@ const CampusSelection = ({ loading, campuses, onChange, defaultCampus }) => {
             onChange(selected);
           }}
           focused={focused}
+          itemStyle={dynamicPickerItemStyle}
         >
           {options.map((o, i) => (
             <NativePicker.Item key={i} label={o} value={i} />

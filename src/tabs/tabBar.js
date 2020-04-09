@@ -13,7 +13,8 @@ const ThemedBottomTabBar = compose(
   styled(({ theme }) => ({
     borderTopWidth: 0,
     backgroundColor: theme.colors.background.paper,
-    paddingTop: theme.sizing.baseUnit * 0.8
+    paddingTop: theme.sizing.baseUnit * 0.8,
+    paddingHorizontal: theme.sizing.baseUnit,
   })),
   withTabBarMediaSpacer
 )(BottomTabBar);

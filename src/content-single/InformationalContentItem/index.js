@@ -3,6 +3,7 @@ import { View, Animated, Linking } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
+import ApollosConfig from '@apollosproject/config';
 import {
   styled,
   withTheme,
@@ -66,9 +67,15 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
   const redirectUrl = get(content, 'redirectUrl', '');
 
   if (redirectUrl && redirectUrl !== '') {
-    const url = redirectUrl.startsWith('/')
-      ? `https://christfellowship.church${redirectUrl}`
-      : redirectUrl;
+    let url = redirectUrl;
+
+    if (!url.startsWith('http')) {
+      url = `${ApollosConfig.APP_CONTENT_URL}${
+        url.startsWith('/') ? '' : '/'
+        }${redirectUrl}`;
+    }
+
+    console.log({ url });
 
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
