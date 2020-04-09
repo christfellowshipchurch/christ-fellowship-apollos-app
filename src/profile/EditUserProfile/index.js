@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Color from 'color';
 
 import {
     styled,
@@ -24,13 +25,13 @@ import { FieldContainer, ContentContainer } from '../components';
 
 import { GET_STATES } from '../queries';
 
-const Overlay = styled(() => ({
+const Overlay = styled(({ theme }) => ({
     alignContent: 'center',
     justifyContent: 'center',
     position: 'absolute',
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, .75)',
+    backgroundColor: Color(theme.colors.background.screen).fade(0.75),
     top: 0,
     left: 0,
     zIndex: 1,
