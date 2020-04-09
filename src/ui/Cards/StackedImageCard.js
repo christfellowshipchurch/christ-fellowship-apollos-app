@@ -10,6 +10,8 @@ import {
   withIsLoading,
   ConnectedImage,
   FlexedView,
+  CardLabel,
+  CardImage,
 } from '@apollosproject/ui-kit';
 import ThemeMixin from '../DynamicThemeMixin';
 
@@ -21,6 +23,13 @@ const CellImage = styled(({ theme }) => ({
   overflow: 'hidden',
   marginRight: theme.sizing.baseUnit,
 }))(View);
+
+const Image = withTheme(({ theme, isLoading, label }) => ({
+  overlayColor:
+    !!label && label !== '' ? theme.colors.black : theme.colors.transparent,
+  minAspectRatio: 1,
+  maxAspectRatio: 1,
+}))(CardImage);
 
 const StyledH6 = styled(({ theme }) => ({
   color: theme.colors.text.tertiary,
@@ -36,6 +45,18 @@ const TextContainer = styled(({ theme }) => ({
   justifyContent: 'center',
 }))(FlexedView);
 
+const StyledCardLabel = styled(({ theme }) => ({
+  position: 'absolute',
+  bottom: 12,
+  left: 10,
+}))(CardLabel);
+
+const ImageOverlay = styled(({ theme }) => ({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+}))(View);
+
 const Cell = styled(({ theme, placement }) => ({
   paddingLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.75 : 1),
   paddingRight: theme.sizing.baseUnit * (placement === 'left' ? 0.75 : 1),
@@ -46,11 +67,10 @@ const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
   <ThemeMixin>
     <Cell placement={placement}>
       <CellImage>
-        <ConnectedImage source={coverImage} isLoading />
+        <Image source={coverImage} isLoading label={label} />
+        <StyledCardLabel title={label} />
       </CellImage>
       <TextContainer>
-        {label !== '' && <StyledH6>{label}</StyledH6>}
-
         {title !== '' && (
           <Title numberOfLines={2} ellipsizeMode="tail">
             {title}
