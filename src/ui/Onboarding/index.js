@@ -28,7 +28,7 @@ function Onboarding({ navigation }) {
               onNavigate={() => {
                 navigation.navigate('Location');
               }}
-              primaryNavText={'Finish'}
+              primaryNavText={'Next'}
             />
             <AskNotificationsConnected
               onRequestPushPermissions={(update) => {
