@@ -42,7 +42,7 @@ const Title = styled(({ theme }) => ({
 }))(Text);
 
 const Content = styled(({ theme }) => ({
-  padding: theme.sizing.baseUnit * 0.5,
+  padding: theme.sizing.baseUnit * 0.75,
   justifyContent: 'center',
   backgroundColor: theme.colors.background.paper,
 }))(FlexedView);
