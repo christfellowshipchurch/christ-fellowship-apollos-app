@@ -50,10 +50,6 @@ const BackgroundImage = styled(({ theme }) => ({
   bottom: 0,
 }))(CardImage);
 
-const DynamicBlurView = withTheme(({ theme }) => ({
-  blurType: theme.type === 'dark' ? 'materialDark' : 'material',
-}))(BlurView);
-
 const DefaultCard = withIsLoading(
   ({ coverImage, title, isLiked, isLoading, labelText, summary }) => (
     <Card isLoading={isLoading}>
@@ -63,7 +59,7 @@ const DefaultCard = withIsLoading(
 
       <View style={{ overflow: 'hidden' }}>
         <BackgroundImage source={coverImage} />
-        <DynamicBlurView style={StyleSheet.absoluteFill} />
+        <BlurView style={StyleSheet.absoluteFill} blurType="chromeMaterial" />
         <Content>
           {labelText ? <Label numberOfLines={2}>{labelText}</Label> : null}
           {title || isLoading ? (

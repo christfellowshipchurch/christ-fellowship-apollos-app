@@ -7,7 +7,11 @@ import { NotificationsProvider } from '@apollosproject/ui-notifications';
 import { LiveProvider } from '@apollosproject/ui-connected';
 import { AuthProvider } from '@apollosproject/ui-auth';
 
-import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
+import {
+    DynamicValue,
+    useDynamicValue,
+    DarkModeProvider,
+} from 'react-native-dark-mode';
 
 import { track, identify } from './amplitude';
 import NavigationService from './NavigationService';
@@ -36,11 +40,13 @@ const AppProviders = (props) => {
                             identifyFunctions={[identify]}
                         >
                             <LiveProvider>
-                                <Providers
-                                    themeInput={{ ...customTheme, type: theme }}
-                                    iconInput={customIcons}
-                                    {...props}
-                                />
+                                <DarkModeProvider>
+                                    <Providers
+                                        themeInput={{ ...customTheme, type: theme }}
+                                        iconInput={customIcons}
+                                        {...props}
+                                    />
+                                </DarkModeProvider>
                             </LiveProvider>
                         </AnalyticsProvider>
                     </MediaPlayerProvider>
