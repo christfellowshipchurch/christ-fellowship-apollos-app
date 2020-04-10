@@ -51,7 +51,7 @@ const BackgroundImage = styled(({ theme }) => ({
 }))(CardImage);
 
 const DynamicBlurView = withTheme(({ theme }) => ({
-  blurType: theme.type === 'dark' ? 'thinMaterialDark' : 'thinMaterial',
+  blurType: theme.type === 'dark' ? 'materialDark' : 'material',
 }))(BlurView);
 
 const DefaultCard = withIsLoading(
@@ -66,8 +66,16 @@ const DefaultCard = withIsLoading(
         <DynamicBlurView style={StyleSheet.absoluteFill} />
         <Content>
           {labelText ? <Label numberOfLines={2}>{labelText}</Label> : null}
-          {title ? <Title numberOfLines={2}>{title}</Title> : null}
-          {summary ? <Summary numberOfLines={2}>{summary}</Summary> : null}
+          {title || isLoading ? (
+            <Title numberOfLines={2} isLoading={isLoading}>
+              {title}
+            </Title>
+          ) : null}
+          {summary || isLoading ? (
+            <Summary numberOfLines={2} isLoading={isLoading}>
+              {summary}
+            </Summary>
+          ) : null}
         </Content>
       </View>
 
