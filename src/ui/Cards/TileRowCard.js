@@ -24,7 +24,7 @@ const CellImage = styled(({ theme }) => ({
 }))(View);
 
 const StyledH6 = styled(({ theme }) => ({
-  color: theme.colors.text.tertiary,
+  color: theme.colors.text.secondary,
 }))(H6);
 
 const Title = styled(({ theme }) => ({

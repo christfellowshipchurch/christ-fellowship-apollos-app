@@ -7,13 +7,17 @@ import {
     styled,
     TouchableScale,
     FlexedView,
-    HighlightCard,
+    // HighlightCard,
     FeaturedCard,
 } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from '../../../ui/ContentCardConnected';
 
-import { TileRowCard, StackedImageCard } from '../../../ui/Cards';
+import {
+    TileRowCard,
+    StackedImageCard,
+    HighlightCard,
+} from '../../../ui/Cards';
 
 import GET_CONTENT_FEED from '../../../content-feed/getContentFeed';
 

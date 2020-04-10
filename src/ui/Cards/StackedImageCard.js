@@ -32,7 +32,7 @@ const Image = withTheme(({ theme, isLoading, label }) => ({
 }))(CardImage);
 
 const StyledH6 = styled(({ theme }) => ({
-  color: theme.colors.text.tertiary,
+  color: theme.colors.text.secondary,
 }))(H6);
 
 const Title = styled(({ theme }) => ({
@@ -50,12 +50,6 @@ const StyledCardLabel = styled(({ theme }) => ({
   bottom: 12,
   left: 10,
 }))(CardLabel);
-
-const ImageOverlay = styled(({ theme }) => ({
-  position: 'absolute',
-  width: '100%',
-  height: '100%',
-}))(View);
 
 const Cell = styled(({ theme, placement }) => ({
   paddingLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.75 : 1),

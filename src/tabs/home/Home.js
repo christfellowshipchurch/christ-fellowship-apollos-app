@@ -75,7 +75,6 @@ const Home = ({ navigation }) => {
     <BackgroundView>
       <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
         <StatusBar />
-        <NavigationSpacer scrollY={scrollY} />
         <Query
           query={GET_FEED_FEATURES}
           variables={{
@@ -101,6 +100,7 @@ const Home = ({ navigation }) => {
               refetch={refetch}
               ListHeaderComponent={
                 <View>
+                  <NavigationSpacer />
                   <LiveButton key="HomeFeedLiveButton" />
                 </View>
               }
