@@ -12,6 +12,7 @@ import {
   FlexedView,
   CardLabel,
   CardImage,
+  Card,
 } from '@apollosproject/ui-kit';
 import ThemeMixin from '../DynamicThemeMixin';
 
@@ -43,6 +44,7 @@ const Title = styled(({ theme }) => ({
 const TextContainer = styled(({ theme }) => ({
   marginTop: theme.sizing.baseUnit * 0.5,
   justifyContent: 'center',
+  backgroundColor: theme.colors.background.paper,
 }))(FlexedView);
 
 const StyledCardLabel = styled(({ theme }) => ({
@@ -60,23 +62,25 @@ const Cell = styled(({ theme, placement }) => ({
 const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
   <ThemeMixin>
     <Cell placement={placement}>
-      <CellImage>
-        <Image source={coverImage} isLoading label={label} />
-        <StyledCardLabel title={label} />
-      </CellImage>
-      <TextContainer>
-        {title !== '' && (
-          <Title numberOfLines={2} ellipsizeMode="tail">
-            {title}
-          </Title>
-        )}
+      <Card>
+        <CellImage>
+          <Image source={coverImage} isLoading label={label} />
+          <StyledCardLabel title={label} />
+        </CellImage>
+        <TextContainer>
+          {title !== '' && (
+            <Title numberOfLines={2} ellipsizeMode="tail">
+              {title}
+            </Title>
+          )}
 
-        {summary !== '' && (
-          <StyledH6 numberOfLines={2} ellipsizeMode="tail">
-            {summary}
-          </StyledH6>
-        )}
-      </TextContainer>
+          {summary !== '' && (
+            <StyledH6 numberOfLines={2} ellipsizeMode="tail">
+              {summary}
+            </StyledH6>
+          )}
+        </TextContainer>
+      </Card>
     </Cell>
   </ThemeMixin>
 );
