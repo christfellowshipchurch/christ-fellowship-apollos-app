@@ -14,13 +14,13 @@ import {
   CardImage,
   Card,
 } from '@apollosproject/ui-kit';
+import { BlurView } from '@react-native-community/blur';
 import ThemeMixin from '../DynamicThemeMixin';
 
 const { ImageSourceType } = ConnectedImage;
 
-const CellImage = styled(({ theme }) => ({
+const ImageContainer = styled(({ theme }) => ({
   width: '100%',
-  borderRadius: theme.sizing.baseBorderRadius,
   overflow: 'hidden',
   marginRight: theme.sizing.baseUnit,
 }))(View);
@@ -32,7 +32,7 @@ const Image = withTheme(({ theme, isLoading, label }) => ({
   maxAspectRatio: 1,
 }))(CardImage);
 
-const StyledH6 = styled(({ theme }) => ({
+const Summary = styled(({ theme }) => ({
   color: theme.colors.text.secondary,
 }))(H6);
 
@@ -41,8 +41,8 @@ const Title = styled(({ theme }) => ({
   color: theme.colors.text.primary,
 }))(Text);
 
-const TextContainer = styled(({ theme }) => ({
-  marginTop: theme.sizing.baseUnit * 0.5,
+const Content = styled(({ theme }) => ({
+  padding: theme.sizing.baseUnit * 0.5,
   justifyContent: 'center',
   backgroundColor: theme.colors.background.paper,
 }))(FlexedView);
@@ -53,33 +53,50 @@ const StyledCardLabel = styled(({ theme }) => ({
   left: 10,
 }))(CardLabel);
 
-const Cell = styled(({ theme, placement }) => ({
-  paddingLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.75 : 1),
-  paddingRight: theme.sizing.baseUnit * (placement === 'left' ? 0.75 : 1),
-  marginVertical: theme.sizing.baseUnit * 0.75,
+const BlurLabel = styled(({ theme }) => ({
+  position: 'absolute',
+  bottom: 12,
+  left: 10,
+  padding: theme.sizing.baseUnit * 0.5,
+  borderRadius: theme.sizing.baseBorderRadius,
+}))(BlurView);
+
+const Label = styled(({ theme }) => ({
+  color: theme.colors.white,
+}))(H6);
+
+const Layout = styled(({ theme, placement }) => ({
+  marginLeft: -theme.sizing.baseUnit * (placement === 'right' ? 0.25 : 0),
+  marginRight: -theme.sizing.baseUnit * (placement === 'left' ? 0.25 : 0),
+  marginVertical: theme.sizing.baseUnit * 0.25,
 }))(View);
 
 const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
   <ThemeMixin>
-    <Cell placement={placement}>
-      <CellImage>
-        <Image source={coverImage} isLoading label={label} />
-        <StyledCardLabel title={label} />
-      </CellImage>
-      <TextContainer>
-        {title !== '' && (
-          <Title numberOfLines={2} ellipsizeMode="tail">
-            {title}
-          </Title>
-        )}
+    <Layout placement={placement}>
+      <Card>
+        <ImageContainer>
+          <Image source={coverImage} isLoading label={label} />
+          {/* <StyledCardLabel title={label} /> */}
+          <BlurLabel blurType="ultraThinMaterial">
+            <Label>{label}</Label>
+          </BlurLabel>
+        </ImageContainer>
+        <Content>
+          {title !== '' && (
+            <Title numberOfLines={2} ellipsizeMode="tail">
+              {title}
+            </Title>
+          )}
 
-        {summary !== '' && (
-          <StyledH6 numberOfLines={2} ellipsizeMode="tail">
-            {summary}
-          </StyledH6>
-        )}
-      </TextContainer>
-    </Cell>
+          {summary !== '' && (
+            <Summary numberOfLines={2} ellipsizeMode="tail">
+              {summary}
+            </Summary>
+          )}
+        </Content>
+      </Card>
+    </Layout>
   </ThemeMixin>
 );
 

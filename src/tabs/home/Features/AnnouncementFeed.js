@@ -17,6 +17,7 @@ import {
     TileRowCard,
     StackedImageCard,
     HighlightCard,
+    ColumnCard,
 } from '../../../ui/Cards';
 
 import GET_CONTENT_FEED from '../../../content-feed/getContentFeed';
@@ -62,7 +63,7 @@ const AnnoumcementFeed = ({ itemId, navigation }) => {
                     if (isRow) {
                         card = TileRowCard;
                     } else {
-                        card = StackedImageCard;
+                        card = ColumnCard;
                         placement = i % 2 === 0 ? 'right' : 'left';
                     }
                 }
