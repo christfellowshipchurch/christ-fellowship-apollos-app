@@ -25,11 +25,20 @@ const ImageContainer = styled(({ theme }) => ({
   marginRight: theme.sizing.baseUnit,
 }))(View);
 
-const Image = withTheme(({ theme, isLoading, label }) => ({
-  overlayColor:
-    !!label && label !== '' ? theme.colors.black : theme.colors.transparent,
-  minAspectRatio: 1,
-  maxAspectRatio: 1,
+const Image = withTheme(({ theme, label }) => ({
+  ...(!!label && label !== ''
+    ? {
+      overlayColor: theme.colors.black,
+      overlayType: 'gradient-bottom-short',
+    }
+    : {}),
+  // Sets the ratio of the image
+  minAspectRatio: 1.33,
+  maxAspectRatio: 1.33,
+  // Sets the ratio of the placeholder
+  forceRatio: 1.33,
+  // No ratios are respected without this
+  maintainAspectRatio: true,
 }))(CardImage);
 
 const Summary = styled(({ theme }) => ({
@@ -65,38 +74,38 @@ const Label = styled(({ theme }) => ({
   color: theme.colors.white,
 }))(H6);
 
-const Layout = styled(({ theme, placement }) => ({
-  marginLeft: -theme.sizing.baseUnit * (placement === 'right' ? 0.25 : 0),
-  marginRight: -theme.sizing.baseUnit * (placement === 'left' ? 0.25 : 0),
+const CardWithLayout = styled(({ theme, placement }) => ({
+  marginLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.5 : 1),
+  marginRight: theme.sizing.baseUnit * (placement === 'left' ? 0.5 : 1),
   marginVertical: theme.sizing.baseUnit * 0.25,
-}))(View);
+}))(Card);
 
 const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
   <ThemeMixin>
-    <Layout placement={placement}>
-      <Card>
-        <ImageContainer>
-          <Image source={coverImage} isLoading label={label} />
-          {/* <StyledCardLabel title={label} /> */}
+    <CardWithLayout placement={placement}>
+      <ImageContainer>
+        <Image source={coverImage} isLoading label={label} />
+        {/* <StyledCardLabel title={label} /> */}
+        {label !== '' && (
           <BlurLabel blurType="ultraThinMaterial">
             <Label>{label}</Label>
           </BlurLabel>
-        </ImageContainer>
-        <Content>
-          {title !== '' && (
-            <Title numberOfLines={2} ellipsizeMode="tail">
-              {title}
-            </Title>
-          )}
+        )}
+      </ImageContainer>
+      <Content>
+        {title !== '' && (
+          <Title numberOfLines={2} ellipsizeMode="tail">
+            {title}
+          </Title>
+        )}
 
-          {summary !== '' && (
-            <Summary numberOfLines={2} ellipsizeMode="tail">
-              {summary}
-            </Summary>
-          )}
-        </Content>
-      </Card>
-    </Layout>
+        {summary !== '' && (
+          <Summary numberOfLines={2} ellipsizeMode="tail">
+            {summary}
+          </Summary>
+        )}
+      </Content>
+    </CardWithLayout>
   </ThemeMixin>
 );
 
