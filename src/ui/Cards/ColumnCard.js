@@ -16,6 +16,7 @@ import {
 } from '@apollosproject/ui-kit';
 import { BlurView } from '@react-native-community/blur';
 import ThemeMixin from '../DynamicThemeMixin';
+import { textStyles } from '.';
 
 const { ImageSourceType } = ConnectedImage;
 
@@ -42,13 +43,14 @@ const Image = withTheme(({ theme, label }) => ({
 }))(CardImage);
 
 const Summary = styled(({ theme }) => ({
-  color: theme.colors.text.secondary,
+  fontWeight: textStyles.summary.fontWeight,
+  color: theme[textStyles.summary.color],
 }))(H6);
 
 const Title = styled(({ theme }) => ({
-  fontWeight: 'bold',
-  color: theme.colors.text.primary,
-}))(Text);
+  fontWeight: textStyles.title.fontWeight,
+  color: theme[textStyles.title.color],
+}))(H5);
 
 const Content = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit * 0.75,

@@ -11,41 +11,49 @@ import {
   ConnectedImage,
   FlexedView,
   Card,
+  CardImage,
 } from '@apollosproject/ui-kit';
 import ThemeMixin from '../DynamicThemeMixin';
+import { textStyles } from '.';
 
 const { ImageSourceType } = ConnectedImage;
 
-const CellImage = styled(({ theme }) => ({
-  width: theme.sizing.baseUnit * 5.5,
-  height: theme.sizing.baseUnit * 5.5,
+const Image = styled(({ theme }) => ({
+  width: '100%',
+  height: '100%',
+}))(CardImage);
+
+const ImageContainer = styled(({ theme }) => ({
+  width: '25%',
+  overflow: 'hidden',
   borderTopLeftRadius: theme.sizing.baseBorderRadius,
   borderBottomLeftRadius: theme.sizing.baseBorderRadius,
-  overflow: 'hidden',
-  marginRight: theme.sizing.baseUnit,
 }))(View);
 
-const StyledH6 = styled(({ theme }) => ({
-  color: theme.colors.text.secondary,
+const Summary = styled(({ theme }) => ({
+  fontWeight: textStyles.summary.fontWeight,
+  color: theme[textStyles.summary.color],
 }))(H6);
 
 const Title = styled(({ theme }) => ({
-  fontWeight: 'bold',
-  color: theme.colors.text.primary,
+  fontWeight: textStyles.title.fontWeight,
+  color: theme[textStyles.title.color],
 }))(H5);
 
-const TextContainer = styled(({ theme }) => ({
-  height: theme.sizing.baseUnit * 4.25,
+const Content = styled(({ theme }) => ({
+  // height: theme.sizing.baseUnit * 4.25,
   justifyContent: 'center',
+  padding: theme.sizing.baseUnit,
 }))(FlexedView);
 
 const Cell = styled(({ theme, inCardStack = false }) => ({
+  flex: 1,
   flexDirection: 'row',
   justifyContent: 'flex-start',
   alignItems: 'center',
 }))(View);
 
-const StyledCard = styled(({ theme, inCardStack = false }) => ({
+const StyledCard = styled(({ theme }) => ({
   padding: 0,
 }))(Card);
 
@@ -69,13 +77,11 @@ class RowCard extends PureComponent {
       <ThemeMixin>
         <StyledCard>
           <Cell inCardStack={this.props.inCardStack}>
-            <CellImage>
-              <ConnectedImage source={this.props.coverImage} isLoading />
-            </CellImage>
-            <TextContainer>
-              {this.props.label !== '' && (
-                <StyledH6>{this.props.label}</StyledH6>
-              )}
+            <ImageContainer>
+              <Image source={this.props.coverImage} isLoading />
+            </ImageContainer>
+            <Content>
+              {this.props.label !== '' && <Summary>{this.props.label}</Summary>}
 
               {this.props.title !== '' && (
                 <Title numberOfLines={2} ellipsizeMode="tail">
@@ -84,11 +90,11 @@ class RowCard extends PureComponent {
               )}
 
               {this.props.summary !== '' && (
-                <StyledH6 numberOfLines={2} ellipsizeMode="tail">
+                <Summary numberOfLines={2} ellipsizeMode="tail">
                   {this.props.summary}
-                </StyledH6>
+                </Summary>
               )}
-            </TextContainer>
+            </Content>
           </Cell>
         </StyledCard>
       </ThemeMixin>
