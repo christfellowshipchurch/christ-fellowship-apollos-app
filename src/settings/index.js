@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/react-hooks';
 import { SafeAreaView, ScrollView, withNavigation } from 'react-navigation';
@@ -41,8 +41,38 @@ const CrossIcon = withTheme(({ theme }) => ({
   size: 24,
 }))(FontAwesomeIcon);
 
-const Settings = () => {
+const TableWithLinks = ({ name, links = [], onPress }) => (
+  <TableView title={name} padded>
+    {links.map(({ name: linkName, icon, openInApp, uri }) => (
+      <Cell
+        key={linkName}
+        icon={icon}
+        title={linkName}
+        onPress={() => onPress({ uri, openInApp, title: linkName })}
+      />
+    ))}
+  </TableView>
+);
+
+const Settings = ({ navigation }) => {
   const [handleLogout] = useMutation(LOGOUT);
+
+  const openLink = ({ uri, openInApp, title }) => {
+    if (openInApp) {
+      navigation.navigate('InlineWebView', {
+        title,
+        uri,
+      });
+    } else {
+      Linking.canopenLink(uri).then((supported) => {
+        if (supported) {
+          Linking.openLink(uri);
+        } else {
+          console.log(`Don't know how to open URI: ${uri}`);
+        }
+      });
+    }
+  };
 
   return (
     <BackgroundView>
@@ -51,33 +81,31 @@ const Settings = () => {
           <PersonalInformation />
 
           <UserWebBrowserConsumer>
-            {(openUrl) => (
-              <TableView title="App Information">
-                <Cell
-                  icon="list"
-                  title="Terms & Conditions"
-                  onPress={() =>
-                    openUrl('https://beta.christfellowship.church/terms-of-use')
-                  }
-                />
-                <Cell
-                  icon="lock"
-                  title="Privacy Policy"
-                  onPress={() =>
-                    openUrl(
-                      'https://beta.christfellowship.church/privacy-policy'
-                    )
-                  }
-                />
-                <Cell
-                  icon="envelope"
-                  title="Send Feedback"
-                  onPress={() =>
-                    openUrl('https://beta.christfellowship.church')
-                  }
-                />
-              </TableView>
-            )}
+           {() => ( 
+           <TableWithLinks
+              name='App Information'
+              onPress={openLink}
+              links={[
+                {
+                  name: 'Terms and Conditions',
+                  icon:'',
+                  uri: 'https://christfellowship.church/terms-of-use',
+                  openInApp: true
+                },
+                {
+                  name: 'Privacy Policy',
+                  icon:'',
+                  uri: 'https://christfellowship.church/privacy-policy',
+                  openInApp: true
+                },
+                {
+                  name: 'Send Feedback',
+                  icon:'',
+                  uri: 'https://rock.gocf.org/contactus',
+                  openInApp: true
+                },
+              ]}
+            />)}
           </UserWebBrowserConsumer>
 
           <FlexedView
@@ -106,7 +134,12 @@ const Settings = () => {
 
 Settings.defaultProps = {};
 
-Settings.propTypes = {};
+Settings.propTypes = {
+  navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+    navigate: PropTypes.func,
+  }),
+};
 
 Settings.navigationOptions = ({ navigation, theme }) => ({
   headerStyle: navigationOptions.headerStyle,
