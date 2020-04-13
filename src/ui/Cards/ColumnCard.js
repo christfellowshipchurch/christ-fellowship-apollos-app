@@ -77,7 +77,7 @@ const Label = styled(({ theme }) => ({
 const CardWithLayout = styled(({ theme, placement }) => ({
   marginLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.5 : 1),
   marginRight: theme.sizing.baseUnit * (placement === 'left' ? 0.5 : 1),
-  marginVertical: theme.sizing.baseUnit * 0.25,
+  flex: 1,
 }))(Card);
 
 const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
