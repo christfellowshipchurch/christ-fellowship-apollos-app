@@ -98,7 +98,7 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
         end: { x: 0, y: 1 },
         locations: [0, 0.6],
     }),
-    'gradient-none': ({ overlayColor }) => ({
+    'gradient-none': () => ({
         colors: ['transparent'],
         start: { x: 0, y: 1 },
         end: { x: 0, y: 1 },
