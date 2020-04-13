@@ -12,7 +12,7 @@ import {
 } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from '../../../ui/ContentCardConnected';
-import { TileRowCard } from '../../../ui/Cards';
+import { TileRowCard, HighlightCard, RowCard } from '../../../ui/Cards';
 import GET_CONTENT_FEED from '../../../content-feed/getContentFeed';
 
 import { SectionHeader } from '../components';
@@ -56,7 +56,7 @@ const ChildrenFeed = ({ title, itemId, navigation, titleColor }) => {
                             <ContentCardConnected
                                 isLoading={loading}
                                 contentId={node.id}
-                                card={i === 0 ? DefaultCard : TileRowCard}
+                                card={i === 0 ? HighlightCard : RowCard}
                             />
                         </StyledTouchableScale>
                     )

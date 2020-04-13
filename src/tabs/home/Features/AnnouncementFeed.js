@@ -1,6 +1,7 @@
 import React from 'react';
+import { View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { get } from 'lodash';
+import { get, first, chunk, drop } from 'lodash';
 import { withNavigation } from 'react-navigation';
 
 import {
@@ -18,20 +19,26 @@ import {
     StackedImageCard,
     HighlightCard,
     ColumnCard,
+    RowCard,
 } from '../../../ui/Cards';
 
 import GET_CONTENT_FEED from '../../../content-feed/getContentFeed';
 
-const StyledFlexedView = styled(({ theme }) => ({
+const StyledHighlightCard = styled(({ theme }) => ({
+    // paddingVertical: theme.sizing.baseUnit * 0.5,
+}))(HighlightCard);
+
+const StyledRowCard = styled(({ theme }) => ({
+    paddingVertical: theme.sizing.baseUnit * 0.5,
+}))(RowCard);
+
+const CardColumnRow = styled(({ theme }) => ({
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    marginVertical: -theme.sizing.baseUnit * 0.25,
 }))(FlexedView);
 
-const StyledTouchableScale = styled(({ theme, isRow, extraSpacing }) => ({
-    width: isRow ? '100%' : '50%',
-    ...(extraSpacing && {
-        marginVertical: theme.sizing.baseUnit * 0.25,
-    }),
+const ColumnTouchableScale = styled(({ }) => ({
+    width: '50%',
 }))(TouchableScale);
 
 const cardLoadingObject = {
@@ -40,52 +47,79 @@ const cardLoadingObject = {
     coverImage: [],
 };
 
+const CardColumns = ({ cards, navigation }) => (
+    <CardColumnRow>
+        {cards.map(({ node }, i) => (
+            <ColumnTouchableScale
+                key={`AnnoucementFeed:${node.id}${i}`}
+                onPress={() =>
+                    navigation.navigate('ContentSingle', { itemId: node.id })
+                }
+            >
+                <ContentCardConnected
+                    contentId={node.id}
+                    card={ColumnCard}
+                    placement={i % 2 === 0 ? 'left' : 'right'}
+                />
+            </ColumnTouchableScale>
+        ))}
+    </CardColumnRow>
+);
+const CardRow = ({ node, navigation }) => (
+    <TouchableScale
+        key={`AnnoucementFeed:${node.id}`}
+        onPress={() => navigation.navigate('ContentSingle', { itemId: node.id })}
+    >
+        <ContentCardConnected contentId={node.id} card={RowCard} />
+    </TouchableScale>
+);
+
 const AnnoumcementFeed = ({ itemId, navigation }) => {
     const { loading, error, data } = useQuery(GET_CONTENT_FEED, {
         fetchPolicy: 'cache-and-network',
-        variables: { itemId, first: 4 },
+        variables: { itemId },
     });
 
     if (loading)
-        return <HighlightCard isLoading={loading} {...cardLoadingObject} />;
+        return <StyledHighlightCard isLoading={loading} {...cardLoadingObject} />;
 
     const content = get(data, 'node.childContentItemsConnection.edges', []);
+    const { node: topCard } = first(content);
+    const groupedCards = chunk(drop(content), 2);
 
     return (
-        <StyledFlexedView>
-            {content.map(({ node }, i) => {
-                const isRow =
-                    (content.length - 2) % 2 === 0 && i === content.length - 1;
-                let card = HighlightCard;
-                let placement = '';
-
-                if (i > 0) {
-                    if (isRow) {
-                        card = TileRowCard;
-                    } else {
-                        card = ColumnCard;
-                        placement = i % 2 === 0 ? 'right' : 'left';
+        <FlexedView>
+            {topCard && (
+                <TouchableScale
+                    key={`AnnoucementFeed:${topCard.id}`}
+                    onPress={() =>
+                        navigation.navigate('ContentSingle', { itemId: topCard.id })
                     }
-                }
+                >
+                    <ContentCardConnected
+                        contentId={topCard.id}
+                        card={StyledHighlightCard}
+                    />
+                </TouchableScale>
+            )}
 
-                return (
-                    <StyledTouchableScale
-                        key={`AnnoucementFeed:${itemId}${i}`}
-                        onPress={() =>
-                            navigation.navigate('ContentSingle', { itemId: node.id })
-                        }
-                        isRow={isRow || i === 0}
-                        extraSpacing={isRow && i > 0}
-                    >
-                        <ContentCardConnected
-                            contentId={node.id}
-                            card={card}
-                            placement={placement}
+            {groupedCards.map(
+                (group, i) =>
+                    group.length > 1 ? (
+                        <CardColumns
+                            cards={group}
+                            navigation={navigation}
+                            key={`AnnouncementFeed:Group:${i}`}
                         />
-                    </StyledTouchableScale>
-                );
-            })}
-        </StyledFlexedView>
+                    ) : (
+                            <CardRow
+                                {...group[0]}
+                                navigation={navigation}
+                                key={`AnnouncementFeed:Group:${i}`}
+                            />
+                        )
+            )}
+        </FlexedView>
     );
 };
 
