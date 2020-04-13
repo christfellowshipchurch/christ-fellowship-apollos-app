@@ -16,6 +16,7 @@ import {
   Icon,
   withIsLoading,
   ConnectedImage,
+  ThemeMixin,
 } from '@apollosproject/ui-kit';
 import { BlurView } from '@react-native-community/blur';
 
@@ -50,7 +51,7 @@ const BackgroundImage = styled(({ theme }) => ({
   bottom: 0,
 }))(CardImage);
 
-const DefaultCard = withIsLoading(
+const HighlightCard = withIsLoading(
   ({ coverImage, title, isLiked, isLoading, labelText, summary }) => (
     <Card isLoading={isLoading}>
       <View>
@@ -84,7 +85,7 @@ const DefaultCard = withIsLoading(
   )
 );
 
-DefaultCard.propTypes = {
+HighlightCard.propTypes = {
   coverImage: PropTypes.oneOfType([
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
@@ -101,6 +102,6 @@ DefaultCard.propTypes = {
   }),
 };
 
-DefaultCard.displayName = 'DefaultCard';
+HighlightCard.displayName = 'HighlightCard';
 
-export default DefaultCard;
+export default HighlightCard;
