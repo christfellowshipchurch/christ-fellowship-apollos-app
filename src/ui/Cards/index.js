@@ -4,3 +4,4 @@ export TinyCard from './TinyCard';
 export StackedImageCard from './StackedImageCard';
 export HighlightCard from './HighlightCard';
 export ColumnCard from './ColumnCard';
+export RowCard from './RowCard';
