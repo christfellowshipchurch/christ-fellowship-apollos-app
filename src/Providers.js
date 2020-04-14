@@ -6,12 +6,12 @@ import { MediaPlayerProvider } from '@apollosproject/ui-media-player';
 import { NotificationsProvider } from '@apollosproject/ui-notifications';
 import { LiveProvider } from '@apollosproject/ui-connected';
 import { AuthProvider } from '@apollosproject/ui-auth';
-
 import {
     DynamicValue,
     useDynamicValue,
     DarkModeProvider,
 } from 'react-native-dark-mode';
+import { SideMenuProvider } from './sidemenu';
 
 import { track, identify } from './amplitude';
 import NavigationService from './NavigationService';
@@ -45,7 +45,9 @@ const AppProviders = (props) => {
                                         themeInput={{ ...customTheme, type: theme }}
                                         iconInput={customIcons}
                                         {...props}
-                                    />
+                                    >
+                                        <SideMenuProvider {...props} />
+                                    </Providers>
                                 </DarkModeProvider>
                             </LiveProvider>
                         </AnalyticsProvider>
