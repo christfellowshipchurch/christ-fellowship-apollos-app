@@ -94,12 +94,13 @@ const Menu = () => {
 };
 
 const SideMenu = ({ children }) => {
-    const { sideMenuIsOpen } = useSideMenu();
+    const { sideMenuIsOpen, setSideMenuIsOpen } = useSideMenu();
 
     return (
         <ReactNativeSideMenu
             menu={<Menu />}
             isOpen={sideMenuIsOpen}
+            onChange={(inOpen) => setSideMenuIsOpen(inOpen)}
             menuPosition="right"
             disableGestures
         >

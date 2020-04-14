@@ -17,7 +17,7 @@ const VersionText = styled(({ theme }) => ({
 }))(BodyText);
 
 const Logout = () => {
-    const { setSideMenuIsOpen } = useSideMenu();
+    const { closeSideMenu } = useSideMenu();
     const [handleLogout] = useMutation(LOGOUT);
 
     return (
@@ -34,7 +34,7 @@ const Logout = () => {
                         // This resets the navigation stack, and the navigates to the first auth screen.
                         // This ensures that user isn't navigated to a subscreen of Auth, like the pin entry screen.
                         await NavigationService.resetToAuth();
-                        setSideMenuIsOpen(false);
+                        closeSideMenu();
                     }}
                 />
             </TableView>

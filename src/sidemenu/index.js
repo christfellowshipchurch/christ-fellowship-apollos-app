@@ -17,6 +17,8 @@ const SideMenuProvider = (props) => {
                 sideMenuIsOpen,
                 setSideMenuIsOpen,
                 toggleSideMenu,
+                openSideMenu: () => setSideMenuIsOpen(true),
+                closeSideMenu: () => setSideMenuIsOpen(false),
             }}
         >
             <SideMenu>{props.children}</SideMenu>

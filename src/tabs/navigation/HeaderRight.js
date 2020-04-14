@@ -25,12 +25,12 @@ const Bars = withTheme(({ theme }) => ({
 }))(Icon);
 
 const AvatarConnected = () => {
-  const { toggleSideMenu } = useSideMenu();
+  const { openSideMenu } = useSideMenu();
 
   // return null;
 
   return (
-    <TouchableScale onPress={toggleSideMenu}>
+    <TouchableScale onPress={openSideMenu}>
       <Bars />
     </TouchableScale>
   );
