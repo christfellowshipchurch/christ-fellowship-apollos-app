@@ -101,6 +101,7 @@ const SideMenu = ({ children }) => {
             menu={<Menu />}
             isOpen={sideMenuIsOpen}
             menuPosition="right"
+            disableGestures
         >
             {children}
         </ReactNativeSideMenu>
