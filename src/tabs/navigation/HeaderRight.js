@@ -2,23 +2,37 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
-import { styled, TouchableScale, Avatar } from '@apollosproject/ui-kit';
+import {
+  styled,
+  TouchableScale,
+  Avatar,
+  Icon,
+  withTheme,
+} from '@apollosproject/ui-kit';
 
+import { useSideMenu } from '../../sidemenu';
 import NavigationService from '../../NavigationService';
 import { getCurrentUser } from './queries';
 
-const AvatarTouchable = styled(({ theme }) => ({
-  padding: theme.sizing.baseUnit,
-}))(TouchableScale);
+const Bars = withTheme(({ theme }) => ({
+  name: 'bars',
+  size: 24,
+  color: theme.colors.text.primary,
+  style: {
+    margin: theme.sizing.baseUnit,
+    opacity: 0.5,
+  },
+}))(Icon);
 
 const AvatarConnected = () => {
-  const { data, loading, error } = useQuery(getCurrentUser);
-  const photo = get(data, 'currentUser.profile.photo', { uri: '' });
+  const { toggleSideMenu } = useSideMenu();
+
+  // return null;
 
   return (
-    <AvatarTouchable onPress={() => NavigationService.navigate('Connect')}>
-      <Avatar themeSize="sm" source={photo} isLoading={loading} />
-    </AvatarTouchable>
+    <TouchableScale onPress={toggleSideMenu}>
+      <Bars />
+    </TouchableScale>
   );
 };
 

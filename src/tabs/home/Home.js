@@ -13,7 +13,6 @@ import {
   BackgroundView,
   NavigationBackground,
   NavigationSpacer,
-  HEADER_OFFSET,
 } from '../navigation';
 import { LiveButton } from '../../live';
 import StatusBar from '../../ui/StatusBar';
@@ -36,17 +35,6 @@ const LogoTitle = styled(({ theme }) => ({
   resizeMode: 'contain',
   width: '50%',
 }))(Image);
-
-const HeaderSpacer = styled(({ theme }) => ({
-  ...Platform.select({
-    ios: {
-      height: HEADER_OFFSET - theme.sizing.baseUnit,
-    },
-    android: {
-      height: 0,
-    },
-  }),
-}))(View);
 
 const Wordmark = () => {
   const source = useDynamicValue(DynamicWordmark);
