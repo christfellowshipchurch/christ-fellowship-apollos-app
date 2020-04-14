@@ -145,12 +145,6 @@ const EventContentItem = ({ content, loading }) => {
                   />
                 ))}
 
-              <Subtitle
-                extraSpacing={callsToAction.length > 0}
-                isLoading={loading}
-              >
-                Details
-              </Subtitle>
               <ContentHTMLViewConnected contentId={content.id} />
               <Features contentId={content.id} />
             </PaddedView>
