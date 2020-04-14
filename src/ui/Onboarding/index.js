@@ -22,13 +22,17 @@ function Onboarding({ navigation }) {
       <OnboardingSwiper>
         {({ swipeForward }) => (
           <>
-            <FeaturesConnected onPressPrimary={swipeForward} />
+            <FeaturesConnected
+              onPressPrimary={swipeForward}
+              description="We'd like to help you personalize your profile to make the most of your Christ Fellowship mobile app experience."
+            />
             <LocationFinderConnected
               onPressPrimary={swipeForward}
               onNavigate={() => {
                 navigation.navigate('Location');
               }}
               primaryNavText={'Next'}
+              description="We'll use your location to connect you with your nearby campus and community."
             />
             <AskNotificationsConnected
               onRequestPushPermissions={(update) => {
@@ -46,6 +50,7 @@ function Onboarding({ navigation }) {
               }}
               onPressPrimary={() => navigation.replace('Tabs')}
               primaryNavText={'Finish'}
+              description="We'll let you know when important things are happening and keep you in the loop."
             />
           </>
         )}

@@ -42,15 +42,30 @@ const StyledProfileDetailsEntry = (props) => (
 const AuthNavigator = createStackNavigator(
   {
     AuthSMSPhoneEntryConnected: (props) => (
-      <AuthSMSPhoneEntryConnected {...props} Component={StyledEntry} />
+      <AuthSMSPhoneEntryConnected
+        {...props}
+        Component={StyledEntry}
+        policyInfo="We'll text you a code to make logging in super easy!"
+      />
     ),
-    AuthSMSVerificationConnected,
+    AuthSMSVerificationConnected: (props) => (
+      <AuthSMSVerificationConnected
+        {...props}
+        confirmationPromptText="We just sent you a code. Enter it below when it arrives."
+      />
+    ),
     AuthEmailEntryConnected: (props) => (
       <AuthEmailEntryConnected {...props} Component={StyledEntry} />
     ),
     AuthPasswordEntryConnected,
     AuthProfileEntryConnected,
-    AuthProfileDetailsEntryConnected,
+    AuthProfileDetailsEntryConnected: (props) => (
+      <AuthProfileDetailsEntryConnected
+        {...props}
+        Component={StyledEntry}
+        prompt="Help us learn a little more about you so we can connect you with the best ministries and events."
+      />
+    ),
   },
   {
     initialRouteName: 'AuthSMSPhoneEntryConnected',
