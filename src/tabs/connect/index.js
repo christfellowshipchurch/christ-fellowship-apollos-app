@@ -4,18 +4,18 @@ import tabBarIcon from '../tabBarIcon';
 import Connect from './Connect';
 
 const ConnectNavigator = createStackNavigator(
-  {
-    Connect,
-  },
-  {
-    initialRouteName: 'Connect',
-    headerMode: 'screen',
-  }
+    {
+        Connect,
+    },
+    {
+        initialRouteName: 'Connect',
+        headerMode: 'screen',
+    }
 );
 
 ConnectNavigator.navigationOptions = {
-  tabBarIcon: tabBarIcon('user-circle'),
-  title: 'Profile',
+    tabBarIcon: tabBarIcon('home'),
+    title: 'Profile',
 };
 
 export default ConnectNavigator;
