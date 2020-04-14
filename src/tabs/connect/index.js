@@ -1,6 +1,7 @@
+import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 
-import tabBarIcon from '../tabBarIcon';
+import AvatarIcon from './AvatarIcon';
 import Connect from './Connect';
 
 const ConnectNavigator = createStackNavigator(
@@ -10,11 +11,12 @@ const ConnectNavigator = createStackNavigator(
     {
         initialRouteName: 'Connect',
         headerMode: 'screen',
+        headerLayoutPreset: 'left',
     }
 );
 
 ConnectNavigator.navigationOptions = {
-    tabBarIcon: tabBarIcon('home'),
+    tabBarIcon: ({ focused }) => <AvatarIcon focused={focused} />,
     title: 'Profile',
 };
 

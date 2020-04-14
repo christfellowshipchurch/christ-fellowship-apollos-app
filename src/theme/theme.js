@@ -107,13 +107,13 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
     'gradient-user-profile': ({ overlayColor }) => ({
         colors: [
             `${Color(overlayColor)
+                .alpha(0.1)
+                .string()}`,
+            `${Color(overlayColor)
                 .alpha(0.25)
                 .string()}`,
             `${Color(overlayColor)
-                .alpha(0.6)
-                .string()}`,
-            `${Color(overlayColor)
-                .alpha(0.87)
+                .alpha(0.65)
                 .string()}`,
         ],
         start: { x: 0, y: 0 },
@@ -125,7 +125,7 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
 const sizing = {
     baseBorderRadius: 8,
     avatar: {
-        small: 32,
+        small: 26,
         medium: 80,
         large: 150,
     },
