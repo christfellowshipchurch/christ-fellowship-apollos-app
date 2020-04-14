@@ -16,8 +16,10 @@ import {
   Icon,
   withIsLoading,
   ConnectedImage,
+  ThemeMixin,
 } from '@apollosproject/ui-kit';
 import { BlurView } from '@react-native-community/blur';
+import { textStyles } from '.';
 
 const { ImageSourceType } = ConnectedImage;
 
@@ -37,12 +39,13 @@ const Label = styled(({ theme }) => ({
 }))(H6);
 
 const Summary = styled(({ theme }) => ({
-  color: theme.colors.text.secondary,
+  fontWeight: textStyles.summary.fontWeight,
+  color: theme[textStyles.summary.color],
 }))(H6);
 
 const Title = styled(({ theme }) => ({
-  fontWeight: 'bold',
-  color: theme.colors.text.primary,
+  fontWeight: textStyles.title.fontWeight,
+  color: theme[textStyles.title.color],
 }))(H4);
 
 const BackgroundImage = styled(({ theme }) => ({
@@ -50,9 +53,11 @@ const BackgroundImage = styled(({ theme }) => ({
   bottom: 0,
 }))(CardImage);
 
-const DefaultCard = withIsLoading(
+const StyledCard = styled(({ theme }) => ({}))(Card);
+
+const HighlightCard = withIsLoading(
   ({ coverImage, title, isLiked, isLoading, labelText, summary }) => (
-    <Card isLoading={isLoading}>
+    <StyledCard isLoading={isLoading}>
       <View>
         <Image source={coverImage} label={labelText} />
       </View>
@@ -80,11 +85,11 @@ const DefaultCard = withIsLoading(
             <LikeIcon isLiked={isLiked} />
           </LikeIconPositioning>
         ) : null} */}
-    </Card>
+    </StyledCard>
   )
 );
 
-DefaultCard.propTypes = {
+HighlightCard.propTypes = {
   coverImage: PropTypes.oneOfType([
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
@@ -101,6 +106,6 @@ DefaultCard.propTypes = {
   }),
 };
 
-DefaultCard.displayName = 'DefaultCard';
+HighlightCard.displayName = 'HighlightCard';
 
-export default DefaultCard;
+export default HighlightCard;

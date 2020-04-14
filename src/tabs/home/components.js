@@ -73,30 +73,23 @@ SectionHeader.defaultProps = {
     callToAction: 'See All',
 };
 
-const ActionContainer = ({ theme, children }) => (
+const ActionDivider = styled(({ theme }) => ({
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: Color(
+        Color(theme.colors.screen).isLight()
+            ? theme.colors.black
+            : theme.colors.white
+    ).fade(0.1),
+    opacity: 0.5,
+    width: '70%',
+    marginVertical: theme.sizing.baseUnit * 2,
+}))(View);
+
+const ActionContainer = ({ children }) => (
     <FlexedView style={{ alignItems: 'center' }}>
-        <View
-            style={{
-                marginVertical: theme.sizing.baseUnit * 2,
-                // borderBottomColor: theme.colors.lightSecondary,
-                // borderBottomWidth: StyleSheet.hairlineWidth,
-            }}
-        >
-            {children}
-        </View>
-        <View
-            style={{
-                height: StyleSheet.hairlineWidth,
-                backgroundColor: Color(
-                    Color(theme.colors.screen).isLight()
-                        ? theme.colors.black
-                        : theme.colors.white
-                ).fade(0.1),
-                opacity: 0.5,
-                width: '70%',
-            }}
-        />
+        <View style={{ flex: 1 }}>{children}</View>
+        <ActionDivider />
     </FlexedView>
 );
 
-export const ActionWrapper = withTheme()(ActionContainer);
+export const ActionWrapper = ActionContainer;
