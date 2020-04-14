@@ -77,7 +77,9 @@ const Events = ({ navigation }) => {
 
   // eslint-disable-next-line react/prop-types
   const renderItem = ({ item, isLoading }) => (
-    <EventCollection {...item} onPress={handleOnPress} isLoading={isLoading} />
+    <TouchableScale key={item.id} onPress={() => onPress({ id })}>
+      <EventContentItemRow id={item.id} />
+    </TouchableScale>
   );
 
   const setNavigationParam = (params) => {
@@ -104,20 +106,7 @@ const Events = ({ navigation }) => {
           style={{
             paddingTop: HEADER_OFFSET,
           }}
-          content={[
-            {
-              title: 'Featured Events',
-              events: get(data, 'featuredEvents.edges', []).map(
-                ({ node }) => node
-              ),
-              color: 'primary',
-            },
-            {
-              title: 'All Events and Opportunities',
-              events: allEventsSorted,
-              color: 'warning',
-            },
-          ]}
+          content={allEventsSorted}
           isLoading={loading}
           error={error}
           refetch={refetch}
