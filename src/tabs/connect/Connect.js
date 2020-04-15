@@ -28,6 +28,7 @@ import {
   NavigationBackground,
   HEADER_OFFSET,
 } from '../navigation';
+import StatusBar from '../../ui/StatusBar';
 import { CURRENT_USER } from './queries';
 import ProfileActionBar from './ProfileActionBar';
 
@@ -119,6 +120,7 @@ const Connect = ({ navigation }) => {
 
   return (
     <BackgroundView>
+      <StatusBar />
       <ThemeMixin mixin={{ type: 'dark' }}>
         <Layout>
           <FeaturedImage

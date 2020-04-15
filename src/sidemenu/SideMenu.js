@@ -1,12 +1,13 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, Linking } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView, withNavigation } from 'react-navigation';
 import ReactNativeSideMenu from 'react-native-side-menu';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
+import { openLink } from '../utils/linking';
 
 import { TableView, Cell } from '../ui/TableView';
 import ThemeMixin from '../ui/DynamicThemeMixin';
@@ -45,7 +46,7 @@ const TableWithLinks = ({ name, links = [], onPress }) => (
     </TableView>
 );
 
-const Menu = () => {
+const Menu = ({ onPress }) => {
     const { loading, error, data } = useQuery(GET_MORE_LINKS, {
         fetchPolicy: 'cache-and-network',
     });
@@ -57,21 +58,9 @@ const Menu = () => {
             </BackgroundView>
         );
 
-    const openLink = ({ uri, openInApp, title }) => {
-        // if (openInApp) {
-        //     navigation.navigate('InlineWebView', {
-        //         title,
-        //         uri,
-        //     });
-        // } else {
-        //     Linking.canOpenURL(uri).then((supported) => {
-        //         if (supported) {
-        //             Linking.openURL(uri);
-        //         } else {
-        //             console.log(`Don't know how to open URI: ${uri}`);
-        //         }
-        //     });
-        // }
+    const openMenuLink = (props) => {
+        openLink(props);
+        onPress();
     };
 
     return (
@@ -83,7 +72,7 @@ const Menu = () => {
                             key={name}
                             name={name}
                             {...props}
-                            onPress={openLink}
+                            onPress={openMenuLink}
                         />
                     ))}
 
@@ -94,12 +83,12 @@ const Menu = () => {
     );
 };
 
-const SideMenu = ({ children }) => {
-    const { sideMenuIsOpen, setSideMenuIsOpen } = useSideMenu();
+const SideMenu = ({ children, navigation }) => {
+    const { sideMenuIsOpen, setSideMenuIsOpen, closeSideMenu } = useSideMenu();
 
     return (
         <ReactNativeSideMenu
-            menu={<Menu />}
+            menu={<Menu navigation={navigation} onPress={closeSideMenu} />}
             isOpen={sideMenuIsOpen}
             onChange={(inOpen) => setSideMenuIsOpen(inOpen)}
             menuPosition="right"

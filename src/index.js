@@ -27,6 +27,7 @@ import {
 } from './profile';
 import Settings from './settings';
 
+import InlineWebView from './inline-web-view';
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
 import AuthBackground from './ui/AuthBackground';
@@ -88,6 +89,7 @@ const AppNavigator = createStackNavigator(
     Settings,
     Location,
     PrivacyPolicy,
+    InlineWebView,
   },
   {
     initialRouteName: 'ProtectedRoute',

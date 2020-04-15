@@ -6,6 +6,7 @@ import { withTheme, styled, ActivityIndicator } from '@apollosproject/ui-kit';
 
 import ActionBar, { ActionBarItem } from '../../ui/ActionBar';
 
+import { openLink } from '../../utils/linking';
 import { GET_PROFILE_ACTIONS } from './queries';
 
 const StyledActionBar = styled(({ theme }) => ({
@@ -37,9 +38,9 @@ const ProfileActionBar = () => {
       {loading ? (
         <ActivityIndicator />
       ) : (
-          actions.map(({ icon, name }, i) => (
+          actions.map(({ icon, name, uri, openInApp }, i) => (
             <StyledActionBarItem
-              onPress={() => null}
+              onPress={() => openLink({ uri, openInApp, title: name })}
               icon={icon}
               label={name}
               tint={tints[i]}
