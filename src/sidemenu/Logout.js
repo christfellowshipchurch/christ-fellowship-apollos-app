@@ -27,7 +27,7 @@ const Logout = () => {
             </FlexedView>
             <TableView>
                 <Cell
-                    icon="share-square"
+                    // icon="share-square"
                     title="Log Out"
                     onPress={async () => {
                         await handleLogout();

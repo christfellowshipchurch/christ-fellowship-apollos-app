@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
@@ -86,6 +86,7 @@ const Menu = () => {
                             onPress={openLink}
                         />
                     ))}
+
                     <Logout />
                 </ScrollView>
             </BackgroundView>

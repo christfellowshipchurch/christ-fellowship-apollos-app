@@ -6,6 +6,7 @@ import {
     H5,
     styled,
     withTheme,
+    Icon,
 } from '@apollosproject/ui-kit';
 
 const PaddedRow = styled(({ theme }) => ({
@@ -20,19 +21,16 @@ const Title = styled(({ theme }) => ({
     fontWeight: 'normal',
 }))(H5);
 
-const Icon = withTheme(({ theme }) => ({
-    color: theme.colors.darkSecondary,
-    style: {
-        marginRight: theme.sizing.baseUnit * 0.5,
-    },
-}))(FontAwesomeIcon);
+const CellIcon = styled(({ theme }) => ({
+    marginRight: theme.sizing.baseUnit * 0.5,
+}))(Icon);
 
 const Cell = ({ title, icon, onPress }) => (
     <Touchable onPress={onPress}>
         <PaddedRow>
-            {!!icon && icon !== '' && <Icon icon={['fal', icon]} size={16} />}
+            {!!icon && icon !== '' && <CellIcon name={icon} size={16} />}
             <Title>{title}</Title>
-            <Icon icon={['fal', 'angle-right']} size={24} />
+            <Icon name="angle-right" size={24} />
         </PaddedRow>
     </Touchable>
 );
@@ -40,7 +38,7 @@ const Cell = ({ title, icon, onPress }) => (
 Cell.defaultProps = {
     icon: null,
     title: 'Cell Title',
-    onPress: () => { },
+    onPress: () => null,
 };
 
 export default Cell;
