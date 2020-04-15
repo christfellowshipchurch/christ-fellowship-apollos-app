@@ -62,7 +62,6 @@ const AuthNavigator = createStackNavigator(
     AuthProfileDetailsEntryConnected: (props) => (
       <AuthProfileDetailsEntryConnected
         {...props}
-        Component={StyledEntry}
         prompt="Help us learn a little more about you so we can connect you with the best ministries and events."
       />
     ),
