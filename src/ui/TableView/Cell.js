@@ -40,7 +40,7 @@ const Cell = ({ title, icon, onPress }) => (
         <PaddedRow>
             {!!icon && icon !== '' && <CellIcon name={icon} />}
             <Title>{title}</Title>
-            <AngleRight />
+            {/* <AngleRight /> */}
         </PaddedRow>
     </Touchable>
 );
