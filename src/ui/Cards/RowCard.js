@@ -40,21 +40,9 @@ const Title = styled(({ theme }) => ({
 }))(H5);
 
 const Content = styled(({ theme }) => ({
-  // height: theme.sizing.baseUnit * 4.25,
   justifyContent: 'center',
   padding: theme.sizing.baseUnit,
 }))(FlexedView);
-
-const Cell = styled(({ theme, inCardStack = false }) => ({
-  flex: 1,
-  flexDirection: 'row',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
-}))(View);
-
-const StyledCard = styled(({ theme }) => ({
-  padding: 0,
-}))(Card);
 
 const HorizontalLayout = styled(({ theme }) => ({
   alignItems: 'center',
