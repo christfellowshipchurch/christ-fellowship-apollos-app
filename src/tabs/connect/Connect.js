@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Animated,
-  View,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-} from 'react-native';
+import { View, StyleSheet, ScrollView, Platform } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -55,6 +49,10 @@ const AvatarContainer = styled(({ theme }) => ({
   justifyContent: 'center',
 }))(View);
 
+const StyledAvatar = styled(({ theme }) => ({
+  ...Platform.select(theme.shadows.default),
+}))(Avatar);
+
 const StyledBodyText = styled(({ theme }) => ({
   color: theme.colors.text.secondary,
 }))(BodyText);
@@ -76,6 +74,10 @@ const CardTitle = styled(({ theme }) => ({
   color: theme.colors.text.tertiary,
   marginBottom: theme.sizing.baseUnit * 0.5,
 }))(H6);
+
+const Name = styled(({ theme }) => ({
+  marginTop: theme.sizing.baseUnit * 0.5,
+}))(H4);
 
 const EditButton = styled(({ theme, editMode, disabled }) => ({
   borderColor: editMode ? theme.colors.primary : theme.colors.white,
@@ -124,8 +126,8 @@ const Connect = ({ navigation }) => {
             source={[{ uri: featuredImage }]}
           />
           <AvatarContainer>
-            <Avatar size="large" source={get(profile, 'photo', null)} />
-            <H4>{`${profile.firstName} ${profile.lastName}`}</H4>
+            <StyledAvatar size="large" source={get(profile, 'photo', null)} />
+            <Name>{`${profile.firstName} ${profile.lastName}`}</Name>
             {campus && campus !== '' && <H6>{campus}</H6>}
             <TouchableScale onPress={() => null} disabled={loading}>
               <EditButton disabled={loading}>Edit</EditButton>

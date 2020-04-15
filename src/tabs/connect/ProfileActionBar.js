@@ -2,13 +2,9 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
-import {
-  withTheme,
-  styled,
-  ActionBar,
-  ActionBarItem,
-  ActivityIndicator,
-} from '@apollosproject/ui-kit';
+import { withTheme, styled, ActivityIndicator } from '@apollosproject/ui-kit';
+
+import ActionBar, { ActionBarItem } from '../../ui/ActionBar';
 
 import { GET_PROFILE_ACTIONS } from './queries';
 

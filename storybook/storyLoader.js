@@ -7,6 +7,7 @@
 function loadStories() {
   require('../src/content-single/DevotionalContentItem/Devotional.stories');
   require('../src/tabs/browse/FilterRow/FilterRow.stories');
+  require('../src/ui/ActionBar/ActionBar.stories');
   require('../src/ui/Cards/Cards.stories');
   require('../src/ui/LandingScreen/LandingScreen.stories');
   require('../src/ui/Onboarding/Onboarding.stories');
@@ -17,6 +18,7 @@ function loadStories() {
 const stories = [
   '../src/content-single/DevotionalContentItem/Devotional.stories',
   '../src/tabs/browse/FilterRow/FilterRow.stories',
+  '../src/ui/ActionBar/ActionBar.stories',
   '../src/ui/Cards/Cards.stories',
   '../src/ui/LandingScreen/LandingScreen.stories',
   '../src/ui/Onboarding/Onboarding.stories',
