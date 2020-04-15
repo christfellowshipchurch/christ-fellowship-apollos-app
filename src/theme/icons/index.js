@@ -3,6 +3,7 @@
  * For organization, please keep exports in alphabetical order
  */
 export AngleRight from './AngleRight';
+export BarsAlt from './BarsAlt';
 export Bars from './Bars';
 export Calendar from './Calendar';
 export EnvelopeOpenDollar from './EnvelopeOpenDollar';

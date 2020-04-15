@@ -28,7 +28,7 @@ const CellIcon = styled(({ theme }) => ({
 const Cell = ({ title, icon, onPress }) => (
     <Touchable onPress={onPress}>
         <PaddedRow>
-            {!!icon && icon !== '' && <CellIcon name={icon} size={16} />}
+            {!!icon && icon !== '' && <CellIcon name={icon} size={18} />}
             <Title>{title}</Title>
             <Icon name="angle-right" size={24} />
         </PaddedRow>

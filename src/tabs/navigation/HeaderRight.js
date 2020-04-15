@@ -15,7 +15,7 @@ import NavigationService from '../../NavigationService';
 import { getCurrentUser } from './queries';
 
 const Bars = withTheme(({ theme }) => ({
-  name: 'bars',
+  name: 'bars-alt',
   size: 24,
   color: theme.colors.text.primary,
   style: {
