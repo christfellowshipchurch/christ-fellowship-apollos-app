@@ -1,143 +1,265 @@
-import React from 'react';
-import { StatusBar } from 'react-native';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { withNavigation } from 'react-navigation';
-import { get, keys, upperFirst } from 'lodash';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
+import { get } from 'lodash';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import Color from 'color';
 
-import { ActivityIndicator, BackgroundView } from '@apollosproject/ui-kit';
-import { useForm } from '../hooks';
+import { SafeAreaView } from 'react-navigation';
+import {
+  GradientOverlayImage,
+  styled,
+  BodyText,
+  ActivityIndicator,
+  ErrorCard,
+  H4,
+  H6,
+  withTheme,
+  ThemeMixin,
+  TouchableScale,
+  BackgroundView,
+  FlexedView,
+} from '@apollosproject/ui-kit';
+import {
+  TextInput,
+  DateInput,
+  Picker,
+  PickerItem,
+  Radio,
+  RadioButton,
+  InputWrapper,
+} from '../ui/inputs';
+import { useCurrentUser, useForm } from '../hooks';
+import NavigationHeader from '../content-single/NavigationHeader';
+import ChangeAvatar from './ChangeAvatar';
 
-import ProfileHeader from './ProfileHeader';
-import EditUserProfile from './EditUserProfile';
+const FeaturedImage = withTheme(({ theme }) => ({
+  overlayColor: theme.colors.black,
+  overlayType: 'gradient-user-profile',
+  style: StyleSheet.absoluteFill,
+}))(GradientOverlayImage);
 
-import { CURRENT_USER } from './queries';
-import { UPDATE_CURRENT_USER } from './mutations';
+const Layout = styled(({ theme }) => ({
+  overflow: 'hidden',
+}))(View);
 
-const EditCurrentUserProfile = ({
-  navigation,
-  firstName,
-  lastName,
-  photo,
-  campus,
-  address: { street1, street2, city, state, postalCode } = {},
-  gender,
-  birthDate,
-}) => {
-  const { values, setValue } = useForm({
-    defaultValues: {
-      street1,
-      street2,
-      city,
-      state,
-      postalCode,
-      gender,
-      birthDate,
-    },
-  });
-  const [updateProfile, { loading, error }] = useMutation(UPDATE_CURRENT_USER, {
-    update: async (cache, { data: { updateProfileFields, updateAddress } }) => {
-      // read the CURRENT_USER query
-      const { currentUser } = cache.readQuery({ query: CURRENT_USER });
-      const { birthDate, gender } = updateProfileFields;
-      // write to the cache the results of the current cache
-      //  and append any new fields that have been returned from the mutation
-      await cache.writeQuery({
-        query: CURRENT_USER,
-        data: {
-          currentUser: {
-            ...currentUser,
-            profile: {
-              ...currentUser.profile,
-              birthDate,
-              gender,
-              address: updateAddress,
-            },
-          },
-        },
-      });
+const AvatarContainer = styled(({ theme }) => ({
+  padding: theme.sizing.baseUnit,
+  alignItems: 'center',
+  justifyContent: 'center',
+}))(View);
 
-      navigation.goBack();
-    },
-  });
+const SaveButton = styled(({ theme, disabled }) => ({
+  backgroundColor: theme.colors.primary,
+  borderRadius: 3,
+  fontSize: 12,
+  paddingHorizontal: 25,
+  fontWeight: 'bold',
+  marginVertical: theme.sizing.baseUnit,
+  opacity: disabled ? 0.5 : 1,
+}))(BodyText);
+
+// Container for the Fields under the
+export const ContentContainer = styled(({ theme }) => ({
+  marginVertical: theme.sizing.baseUnit * 1.5,
+  backgroundColor: theme.colors.transparent,
+}))(View);
+
+// Read Only Fields that show on the Profile
+export const FieldContainer = styled(({ theme }) => ({
+  paddingHorizontal: theme.sizing.baseUnit * 1.5,
+  marginVertical: theme.sizing.baseUnit * 0.75,
+}))(View);
+
+const Overlay = styled(({ theme }) => ({
+  alignContent: 'center',
+  justifyContent: 'center',
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  backgroundColor: Color(theme.colors.background.screen).fade(0.75),
+  top: 0,
+  left: 0,
+  zIndex: 1,
+}))(FlexedView);
+
+const EditCurrentUser = ({ navigation }) => {
+  const { values, setValues } = useForm();
+  const {
+    loading,
+    error,
+    address,
+    campus,
+    birthDate,
+    phoneNumber,
+    email,
+    firstName,
+    lastName,
+    gender,
+    updateProfile, // TODO : enable editing
+  } = useCurrentUser();
+
+  const setValue = () => null;
+
+  useEffect(
+    () =>
+      setValues({
+        campus: get(campus, 'name', ''),
+        birthDate,
+        phoneNumber,
+        email,
+        firstName,
+        lastName,
+        gender,
+        ...address,
+      }),
+    [loading]
+  );
+
+  const featuredImage = get(campus, 'featuredImage.uri', null);
+
+  if (loading)
+    return (
+      <BackgroundView>
+        <StatusBar hidden />
+        <ActivityIndicator />
+      </BackgroundView>
+    );
+
+  if (error) return <ErrorCard />;
+
+  const disabled = false;
+  const states = [];
+  const genderList = [];
 
   return (
     <BackgroundView>
-      <StatusBar barStyle="light-content" />
+      <StatusBar hidden />
+      <ThemeMixin mixin={{ type: 'dark' }}>
+        <Layout>
+          <FeaturedImage
+            isLoading={!featuredImage && loading}
+            source={[{ uri: featuredImage }]}
+          />
+          <SafeAreaView>
+            <AvatarContainer>
+              <ChangeAvatar />
+              <H4>{`${firstName} ${lastName}`}</H4>
+              <TouchableScale onPress={() => null} disabled={loading}>
+                <SaveButton disabled={loading}>Save</SaveButton>
+              </TouchableScale>
+            </AvatarContainer>
+          </SafeAreaView>
+        </Layout>
+      </ThemeMixin>
+      <ScrollView>
+        <ContentContainer>
+          {disabled && (
+            <Overlay>
+              <ActivityIndicator />
+            </Overlay>
+          )}
 
-      <ProfileHeader
-        firstName={firstName}
-        lastName={lastName}
-        avatar={photo}
-        featuredImage={campus.featuredImage}
-        campus={campus.name}
-        edit
-        onCancel={() => navigation.goBack()}
-        onSave={() => {
-          const address = {
-            street1: get(values, 'street1', ''),
-            street2: get(values, 'street2', ''),
-            city: get(values, 'city', ''),
-            state: get(values, 'state', ''),
-            postalCode: get(values, 'postalCode', ''),
-          };
-          const valueKeys = keys(values).filter(
-            (n) => !keys(address).includes(n)
-          );
-          const profileFields = valueKeys.map((n) => ({
-            field: upperFirst(n),
-            value: values[n],
-          }));
+          <FieldContainer>
+            <H4>Campus</H4>
+            <InputWrapper
+              displayValue={values.campus}
+              icon="church"
+              actionIcon="angle-right"
+              handleOnPress={() => navigation.navigate('Location')}
+              disabled={disabled}
+            />
+          </FieldContainer>
 
-          updateProfile({ variables: { address, profileFields } });
-        }}
-        isLoading={loading}
-      >
-        <EditUserProfile
-          birthDate={get(values, 'birthDate', '')}
-          street1={get(values, 'street1', '')}
-          street2={get(values, 'street2', '')}
-          city={get(values, 'city', '')}
-          state={get(values, 'state', '')}
-          postalCode={get(values, 'postalCode', '')}
-          gender={get(values, 'gender', '')}
-          campus={campus.name}
-          onChange={(key, value) => setValue(key, value)}
-          isLoading={loading}
-        />
-      </ProfileHeader>
+          <FieldContainer>
+            <H4>Home Address</H4>
+            <TextInput
+              label="Street Address"
+              value={values.street1}
+              setValueText={(text) => setValue('street1', text)}
+              icon="home"
+              disabled={disabled}
+            />
+            <TextInput
+              label="City"
+              value={values.city}
+              setValueText={(text) => setValue('city', text)}
+              hideIcon
+              disabled={disabled}
+            />
+            <Picker
+              label="State"
+              value={values.state}
+              displayValue={values.state}
+              onValueChange={(newState) => setValue('state', newState)}
+              hideIcon
+              disabled={disabled}
+            >
+              {states.map((n, i) => (
+                <PickerItem label={n.value} value={n.value} key={i} />
+              ))}
+            </Picker>
+            <TextInput
+              label="Zip Code"
+              value={get(values, 'postalCode', '').substring(0, 5)}
+              setValueText={(text) => setValue('postalCode', text)}
+              hideIcon
+              disabled={disabled}
+            />
+          </FieldContainer>
+
+          <FieldContainer>
+            <H4>Gender</H4>
+            <Radio
+              label=""
+              type="radio"
+              value={values.gender}
+              setValue={(newGender) => setValue('gender', newGender)}
+              disabled={disabled}
+            >
+              {genderList.map((g) => (
+                <RadioButton key={g} value={g} label={g} underline={false} />
+              ))}
+            </Radio>
+          </FieldContainer>
+
+          <FieldContainer>
+            <H4>Birthday</H4>
+            <DateInput
+              label=""
+              value={
+                moment(values.birthDate).isValid()
+                  ? moment(values.birthDate).format('MMM D, YYYY')
+                  : ''
+              }
+              displayValue={
+                moment(values.birthDate).isValid()
+                  ? moment(values.birthDate).format('MMM D, YYYY')
+                  : ''
+              }
+              onConfirm={(newBirthDate) => setValue('birthDate', newBirthDate)}
+              disabled={disabled}
+            />
+          </FieldContainer>
+        </ContentContainer>
+      </ScrollView>
     </BackgroundView>
   );
 };
 
-const EditCurrentUserProfileConnected = ({ navigation }) => {
-  const {
-    loading,
-    error,
-    data: { currentUser: { profile } = {} } = {},
-  } = useQuery(CURRENT_USER, {
-    fetchPolicy: 'cache-and-network',
-  });
-
-  if (loading) return <ActivityIndicator />;
-  if (error) return null;
-
-  return (
-    <EditCurrentUserProfile
-      {...profile}
-      navigation={navigation}
-      address={{
-        street1: get(profile, 'address.street1', ''),
-        street2: get(profile, 'address.street2', ''),
-        city: get(profile, 'address.city', ''),
-        state: get(profile, 'address.state', ''),
-        postalCode: get(profile, 'address.postalCode', ''),
-      }}
-    />
-  );
+// TODO : Fix the navigation
+EditCurrentUser.navigationOptions = {
+  headerMode: 'float',
+  headerTransitionPreset: 'fade-in-place',
+  headerTransparent: true,
+  header: NavigationHeader,
 };
 
-EditCurrentUserProfileConnected.navigationOptions = {
-  header: null,
+EditCurrentUser.propTypes = {
+  navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+    navigate: PropTypes.func,
+  }),
 };
 
-export default withNavigation(EditCurrentUserProfileConnected);
+export default EditCurrentUser;

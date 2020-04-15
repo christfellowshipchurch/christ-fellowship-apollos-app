@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, Platform } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -29,7 +28,7 @@ import {
   HEADER_OFFSET,
 } from '../navigation';
 import StatusBar from '../../ui/StatusBar';
-import { CURRENT_USER } from './queries';
+import { useCurrentUser } from '../../hooks';
 import ProfileActionBar from './ProfileActionBar';
 
 const FeaturedImage = withTheme(({ theme }) => ({
@@ -80,9 +79,9 @@ const Name = styled(({ theme }) => ({
   marginTop: theme.sizing.baseUnit * 0.5,
 }))(H4);
 
-const EditButton = styled(({ theme, editMode, disabled }) => ({
-  borderColor: editMode ? theme.colors.primary : theme.colors.white,
-  backgroundColor: editMode ? theme.colors.primary : theme.colors.transparent,
+const EditButton = styled(({ theme, disabled }) => ({
+  borderColor: theme.colors.white,
+  backgroundColor: theme.colors.transparent,
   borderRadius: 3,
   borderWidth: 1,
   fontSize: 12,
@@ -93,12 +92,20 @@ const EditButton = styled(({ theme, editMode, disabled }) => ({
 }))(BodyText);
 
 const Connect = ({ navigation }) => {
-  const { loading, error, data } = useQuery(CURRENT_USER, {
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const profile = get(data, 'currentUser.profile', null);
-  const featuredImage = get(profile, 'campus.featuredImage.uri', null);
+  const {
+    loading,
+    error,
+    address,
+    campus,
+    birthDate,
+    phoneNumber,
+    email,
+    firstName,
+    lastName,
+    gender,
+    photo,
+  } = useCurrentUser();
+  const featuredImage = get(campus, 'featuredImage.uri', null);
 
   if (loading)
     return (
@@ -109,14 +116,12 @@ const Connect = ({ navigation }) => {
 
   if (error) return <ErrorCard />;
 
-  const city =
-    get(profile, 'address.city', '') !== '' ? `${profile.address.city},` : '';
-  const address = `${get(profile, 'address.street1', '')} ${city} ${get(
-    profile,
-    'address.state',
+  const city = get(address, 'city', '') !== '' ? `${address.city},` : '';
+  const formattedAddress = `${get(address, 'street1', '')} ${city} ${get(
+    address,
+    'state',
     ''
-  )} ${get(profile, 'address.postalCode', '').substring(0, 5)}`;
-  const campus = get(profile, 'campus.name', '');
+  )} ${get(address, 'postalCode', '').substring(0, 5)}`;
 
   return (
     <BackgroundView>
@@ -128,10 +133,13 @@ const Connect = ({ navigation }) => {
             source={[{ uri: featuredImage }]}
           />
           <AvatarContainer>
-            <StyledAvatar size="large" source={get(profile, 'photo', null)} />
-            <Name>{`${profile.firstName} ${profile.lastName}`}</Name>
-            {campus && campus !== '' && <H6>{campus}</H6>}
-            <TouchableScale onPress={() => null} disabled={loading}>
+            <StyledAvatar size="large" source={photo} />
+            <Name>{`${firstName} ${lastName}`}</Name>
+            {campus && campus.name !== '' && <H6>{campus.name}</H6>}
+            <TouchableScale
+              onPress={() => navigation.navigate('EditCurrentUser')}
+              disabled={loading}
+            >
               <EditButton disabled={loading}>Edit</EditButton>
             </TouchableScale>
           </AvatarContainer>
@@ -143,17 +151,17 @@ const Connect = ({ navigation }) => {
           <CardContent>
             <CardTitle>My Info</CardTitle>
             <H4>Home Address</H4>
-            <StyledBodyText>{address}</StyledBodyText>
+            <StyledBodyText>{formattedAddress}</StyledBodyText>
             <Divider />
 
             <H4>Birthday</H4>
             <StyledBodyText>
-              {moment(profile.birthDate).format('MMM D, YYYY')}
+              {moment(birthDate).format('MMM D, YYYY')}
             </StyledBodyText>
             <Divider />
 
             <H4>Gender</H4>
-            <StyledBodyText>{profile.gender}</StyledBodyText>
+            <StyledBodyText>{gender}</StyledBodyText>
           </CardContent>
         </Card>
 
@@ -161,11 +169,11 @@ const Connect = ({ navigation }) => {
           <CardContent>
             <CardTitle>Contact Info</CardTitle>
             <H4>Phone Number</H4>
-            <StyledBodyText>{profile.phoneNumber}</StyledBodyText>
+            <StyledBodyText>{phoneNumber}</StyledBodyText>
             <Divider />
 
             <H4>Email</H4>
-            <StyledBodyText>{profile.email}</StyledBodyText>
+            <StyledBodyText>{email}</StyledBodyText>
           </CardContent>
         </Card>
       </ScrollView>
