@@ -16,10 +16,10 @@ import {
   Icon,
   withIsLoading,
   ConnectedImage,
-  ThemeMixin,
 } from '@apollosproject/ui-kit';
 import { BlurView } from '@react-native-community/blur';
-import { textStyles } from '.';
+import ThemeMixin from '../DynamicThemeMixin';
+import { Title, Summary } from './components';
 
 const { ImageSourceType } = ConnectedImage;
 
@@ -38,16 +38,6 @@ const Label = styled(({ theme }) => ({
   color: theme.colors.text.secondary,
 }))(H6);
 
-const Summary = styled(({ theme }) => ({
-  fontWeight: textStyles.summary.fontWeight,
-  color: theme[textStyles.summary.color],
-}))(H6);
-
-const Title = styled(({ theme }) => ({
-  fontWeight: textStyles.title.fontWeight,
-  color: theme[textStyles.title.color],
-}))(H4);
-
 const BackgroundImage = styled(({ theme }) => ({
   position: 'absolute',
   bottom: 0,
@@ -57,35 +47,33 @@ const StyledCard = styled(({ theme }) => ({}))(Card);
 
 const HighlightCard = withIsLoading(
   ({ coverImage, title, isLiked, isLoading, labelText, summary }) => (
-    <StyledCard isLoading={isLoading}>
-      <View>
-        <Image source={coverImage} label={labelText} />
-      </View>
+    <ThemeMixin>
+      <StyledCard isLoading={isLoading}>
+        <View>
+          <Image source={coverImage} label={labelText} />
+        </View>
 
-      <View style={{ overflow: 'hidden' }}>
-        <BackgroundImage source={coverImage} />
-        <BlurView style={StyleSheet.absoluteFill} blurType="chromeMaterial" />
-        <Content>
-          {labelText ? <Label numberOfLines={2}>{labelText}</Label> : null}
-          {title || isLoading ? (
-            <Title numberOfLines={2} isLoading={isLoading}>
-              {title}
-            </Title>
-          ) : null}
-          {summary || isLoading ? (
-            <Summary numberOfLines={2} isLoading={isLoading}>
-              {summary}
-            </Summary>
-          ) : null}
-        </Content>
-      </View>
+        <View style={{ overflow: 'hidden' }}>
+          <BackgroundImage source={coverImage} />
+          <BlurView style={StyleSheet.absoluteFill} blurType="material" />
+          <Content>
+            {labelText ? <Label numberOfLines={2}>{labelText}</Label> : null}
+            {title || isLoading ? (
+              <Title isLoading={isLoading}>{title}</Title>
+            ) : null}
+            {summary || isLoading ? (
+              <Summary isLoading={isLoading}>{summary}</Summary>
+            ) : null}
+          </Content>
+        </View>
 
-      {/* {isLiked != null ? (
+        {/* {isLiked != null ? (
           <LikeIconPositioning>
             <LikeIcon isLiked={isLiked} />
           </LikeIconPositioning>
         ) : null} */}
-    </StyledCard>
+      </StyledCard>
+    </ThemeMixin>
   )
 );
 

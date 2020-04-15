@@ -14,6 +14,7 @@ import { useSideMenu } from '.';
 const VersionText = styled(({ theme }) => ({
     fontSize: 14,
     marginTop: theme.sizing.baseUnit * 0.5,
+    color: theme.colors.text.tertiary,
 }))(BodyText);
 
 const Logout = () => {

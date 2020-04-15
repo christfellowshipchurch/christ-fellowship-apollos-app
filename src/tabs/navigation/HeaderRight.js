@@ -1,18 +1,8 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { get } from 'lodash';
 
-import {
-  styled,
-  TouchableScale,
-  Avatar,
-  Icon,
-  withTheme,
-} from '@apollosproject/ui-kit';
+import { TouchableScale, Icon, withTheme } from '@apollosproject/ui-kit';
 
 import { useSideMenu } from '../../sidemenu';
-import NavigationService from '../../NavigationService';
-import { getCurrentUser } from './queries';
 
 const Bars = withTheme(({ theme }) => ({
   name: 'bars-alt',
@@ -26,8 +16,6 @@ const Bars = withTheme(({ theme }) => ({
 
 const AvatarConnected = () => {
   const { openSideMenu } = useSideMenu();
-
-  // return null;
 
   return (
     <TouchableScale onPress={openSideMenu}>

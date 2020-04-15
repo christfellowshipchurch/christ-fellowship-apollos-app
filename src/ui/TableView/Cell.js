@@ -11,7 +11,7 @@ import {
 
 const PaddedRow = styled(({ theme }) => ({
     flexDirection: 'row',
-    justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: theme.sizing.baseUnit * 0.75,
     paddingHorizontal: theme.sizing.baseUnit,
 }))(FlexedView);
@@ -21,16 +21,26 @@ const Title = styled(({ theme }) => ({
     fontWeight: 'normal',
 }))(H5);
 
-const CellIcon = styled(({ theme }) => ({
-    marginRight: theme.sizing.baseUnit * 0.5,
+const CellIcon = withTheme(({ theme }) => ({
+    size: 18,
+    fill: theme.colors.text.tertiary,
+    style: {
+        marginRight: theme.sizing.baseUnit * 0.5,
+    },
+}))(Icon);
+
+const AngleRight = withTheme(({ theme }) => ({
+    name: 'angle-right',
+    size: 24,
+    fill: theme.colors.text.tertiary,
 }))(Icon);
 
 const Cell = ({ title, icon, onPress }) => (
     <Touchable onPress={onPress}>
         <PaddedRow>
-            {!!icon && icon !== '' && <CellIcon name={icon} size={18} />}
+            {!!icon && icon !== '' && <CellIcon name={icon} />}
             <Title>{title}</Title>
-            <Icon name="angle-right" size={24} />
+            <AngleRight />
         </PaddedRow>
     </Touchable>
 );

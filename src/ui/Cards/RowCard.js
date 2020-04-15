@@ -12,32 +12,31 @@ import {
   FlexedView,
   Card,
   CardImage,
+  SideBySideView,
 } from '@apollosproject/ui-kit';
 import ThemeMixin from '../DynamicThemeMixin';
-import { textStyles } from '.';
+import { Summary } from './components';
 
 const { ImageSourceType } = ConnectedImage;
 
-const Image = styled(({ theme }) => ({
-  width: '100%',
+const Image = styled({
+  aspectRatio: 1,
   height: '100%',
-}))(CardImage);
+  resizeMode: 'cover',
+})(ConnectedImage);
 
 const ImageContainer = styled(({ theme }) => ({
   width: '25%',
   overflow: 'hidden',
   borderTopLeftRadius: theme.sizing.baseBorderRadius,
   borderBottomLeftRadius: theme.sizing.baseBorderRadius,
+  alignItems: 'center',
+  justifyContent: 'center',
 }))(View);
 
-const Summary = styled(({ theme }) => ({
-  fontWeight: textStyles.summary.fontWeight,
-  color: theme[textStyles.summary.color],
-}))(H6);
-
 const Title = styled(({ theme }) => ({
-  fontWeight: textStyles.title.fontWeight,
-  color: theme[textStyles.title.color],
+  fontWeight: 'bold',
+  color: theme.colors.text.primary,
 }))(H5);
 
 const Content = styled(({ theme }) => ({
@@ -57,50 +56,51 @@ const StyledCard = styled(({ theme }) => ({
   padding: 0,
 }))(Card);
 
-class RowCard extends PureComponent {
-  static propTypes = {
-    onPress: PropTypes.func,
-    coverImage: PropTypes.oneOfType([
-      PropTypes.arrayOf(ImageSourceType),
-      ImageSourceType,
-    ]),
-    label: PropTypes.string,
-    summary: PropTypes.string,
-    title: PropTypes.string,
-    id: PropTypes.string,
-    name: PropTypes.string,
-    inCardStack: PropTypes.bool,
-  };
+const HorizontalLayout = styled(({ theme }) => ({
+  alignItems: 'center',
+  height: theme.sizing.baseUnit * 6,
+}))(SideBySideView);
 
-  render() {
-    return (
-      <ThemeMixin>
-        <StyledCard>
-          <Cell inCardStack={this.props.inCardStack}>
-            <ImageContainer>
-              <Image source={this.props.coverImage} isLoading />
-            </ImageContainer>
-            <Content>
-              {this.props.label !== '' && <Summary>{this.props.label}</Summary>}
+const RowCard = ({ coverImage, label, title, summary }) => (
+  <ThemeMixin>
+    <Card>
+      <HorizontalLayout>
+        <ImageContainer>
+          <Image source={coverImage} isLoading />
+        </ImageContainer>
+        <Content>
+          {label !== '' && <Summary>{label}</Summary>}
 
-              {this.props.title !== '' && (
-                <Title numberOfLines={2} ellipsizeMode="tail">
-                  {this.props.title}
-                </Title>
-              )}
+          {title !== '' && (
+            <Title numberOfLines={2} ellipsizeMode="tail">
+              {title}
+            </Title>
+          )}
 
-              {this.props.summary !== '' && (
-                <Summary numberOfLines={2} ellipsizeMode="tail">
-                  {this.props.summary}
-                </Summary>
-              )}
-            </Content>
-          </Cell>
-        </StyledCard>
-      </ThemeMixin>
-    );
-  }
-}
+          {summary !== '' && (
+            <Summary numberOfLines={2} ellipsizeMode="tail">
+              {summary}
+            </Summary>
+          )}
+        </Content>
+      </HorizontalLayout>
+    </Card>
+  </ThemeMixin>
+);
+
+RowCard.propTypes = {
+  onPress: PropTypes.func,
+  coverImage: PropTypes.oneOfType([
+    PropTypes.arrayOf(ImageSourceType),
+    ImageSourceType,
+  ]),
+  label: PropTypes.string,
+  summary: PropTypes.string,
+  title: PropTypes.string,
+  id: PropTypes.string,
+  name: PropTypes.string,
+  inCardStack: PropTypes.bool,
+};
 
 RowCard.displayName = 'RowCard';
 
