@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
@@ -7,19 +7,14 @@ import {
   styled,
   Card,
   CardImage,
-  CardLabel,
   CardContent,
-  H4,
-  H5,
   H6,
-  BodyText,
-  Icon,
   withIsLoading,
   ConnectedImage,
 } from '@apollosproject/ui-kit';
-import { BlurView } from '@react-native-community/blur';
-import ThemeMixin from '../DynamicThemeMixin';
-import { Title, Summary } from './components';
+import ThemeMixin from '../../DynamicThemeMixin';
+import { Title, Summary } from '../components';
+import CardContentWrapper from './CardContentWrapper';
 
 const { ImageSourceType } = ConnectedImage;
 
@@ -38,24 +33,13 @@ const Label = styled(({ theme }) => ({
   color: theme.colors.text.secondary,
 }))(H6);
 
-const BackgroundImage = styled(({ theme }) => ({
-  position: 'absolute',
-  bottom: 0,
-}))(CardImage);
-
-const StyledCard = styled(({ theme }) => ({}))(Card);
-
 const HighlightCard = withIsLoading(
   ({ coverImage, title, isLiked, isLoading, labelText, summary }) => (
     <ThemeMixin>
-      <StyledCard isLoading={isLoading}>
-        <View>
-          <Image source={coverImage} label={labelText} />
-        </View>
+      <Card isLoading={isLoading}>
+        <Image source={coverImage} label={labelText} />
 
-        <View style={{ overflow: 'hidden' }}>
-          <BackgroundImage source={coverImage} />
-          <BlurView style={StyleSheet.absoluteFill} blurType="material" />
+        <CardContentWrapper coverImage={coverImage}>
           <Content>
             {labelText ? <Label numberOfLines={2}>{labelText}</Label> : null}
             {title || isLoading ? (
@@ -65,14 +49,14 @@ const HighlightCard = withIsLoading(
               <Summary isLoading={isLoading}>{summary}</Summary>
             ) : null}
           </Content>
-        </View>
+        </CardContentWrapper>
 
         {/* {isLiked != null ? (
           <LikeIconPositioning>
             <LikeIcon isLiked={isLiked} />
           </LikeIconPositioning>
         ) : null} */}
-      </StyledCard>
+      </Card>
     </ThemeMixin>
   )
 );

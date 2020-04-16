@@ -2940,7 +2940,7 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/masked-view/-/masked-view-0.1.6.tgz#c7f2ac187c1f25aa8c30d11baa8f4398eca3bb84"
   integrity sha512-PpMoeXwPUoldCRKDuSi+zK5rT+sJTW6ri6RdGPkSKRzU77Q1d9IaR0O5IKvBj0XSdL3p+dcOa05gk35aGDffBQ==
 
-"@react-native-community/push-notification-ios@^1.0.1", "@react-native-community/push-notification-ios@^1.0.3":
+"@react-native-community/push-notification-ios@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@react-native-community/push-notification-ios/-/push-notification-ios-1.0.3.tgz#cd2c7f29aeeb431942eda0bd729738fd2b444ae9"
   integrity sha512-f+Y3lFLt5OBWHDtGHE+PiZH4aLeS8w2D47c0G/S5XpzeGoEeggOiALtou/r6raiVLP+D5CrLkIBMs2U2+LGJhw==
@@ -14055,17 +14055,10 @@ react-native-passkit-wallet@^0.1.4:
   resolved "https://registry.yarnpkg.com/react-native-passkit-wallet/-/react-native-passkit-wallet-0.1.4.tgz#246476c8163813a4b054d06215a9d06042757ec3"
   integrity sha512-H1EQ1NyRVPRujivOZrUkcn7OWGAtsAqGVYghxOLBFHpFLpyGyCvGnfpGjcu4UVej8X50SJsh9d9ysZtVTct23Q==
 
-react-native-permissions@^2.0.5:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-2.0.8.tgz#e6d20a7b6e3df5333a3d80cc83024686fa2f49e3"
-  integrity sha512-qK8Thp+9PTl/YjhKkRr8LPHfX5Evv5Zj/3CmAiqE45qCTB5UbWTKBWUfg3iqfMrjv9nE2rcS1PrIjZCDh6s/gQ==
-
-react-native-push-notification@^3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-3.1.9.tgz#760ee06e743fef74fc9fcb672dac40794fdc4c47"
-  integrity sha512-YpEg9AYBjNgJtHRgHKR0xPB7kk3Gj0uSjUxd0feOIvd7wrfR+zeiBM4NZonGmjlAG6thaE37dfAG5qcsONFM7w==
-  dependencies:
-    "@react-native-community/push-notification-ios" "^1.0.1"
+react-native-permissions@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-2.1.2.tgz#14f30a6cfa0851ecb210d7eadcc590f8823c8585"
+  integrity sha512-uDJ57IpkRgY3WmPEAa/226gjBvsAbHXjuEe1pEeaw/RYKP/LtUoMsZr/GAgudbl7nHH1kgLxlagnvqyuMjy9DQ==
 
 react-native-safari-view@2.1.0:
   version "2.1.0"
