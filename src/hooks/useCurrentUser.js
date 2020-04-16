@@ -68,13 +68,15 @@ export const UPDATE_CURRENT_USER = gql`
   }
 `;
 
-const useCurrentUser = () => {
-    const { loading: queryLoading, error: queryError, data, ...props } = useQuery(
-        CURRENT_USER,
-        {
-            fetchPolicy: 'cache-and-network',
-        }
-    );
+const useCurrentUser = (props) => {
+    const {
+        loading: queryLoading,
+        error: queryError,
+        data,
+        ...queryProps
+    } = useQuery(CURRENT_USER, {
+        fetchPolicy: 'cache-and-network',
+    });
 
     const id = get(data, 'currentUser.id', null);
     const profile = get(data, 'currentUser.profile', {});
@@ -87,6 +89,7 @@ const useCurrentUser = () => {
             // read the CURRENT_USER query
             const { currentUser } = cache.readQuery({ query: CURRENT_USER });
             const { birthDate, gender } = updateProfileFields;
+
             // write to the cache the results of the current cache
             //  and append any new fields that have been returned from the mutation
             await cache.writeQuery({
@@ -104,16 +107,16 @@ const useCurrentUser = () => {
                 },
             });
 
-            // onUpdate();
+            const onUpdate = get(props, 'onUpdate', () => null);
+            onUpdate();
         },
     });
 
     return {
         loading: queryLoading || mutationLoading,
         error: queryError || mutationError,
-        props,
         data,
-        ...props,
+        ...queryProps,
         id,
         ...profile,
         updateProfile,

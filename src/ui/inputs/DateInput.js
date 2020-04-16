@@ -8,21 +8,20 @@ import DropdownWrapper from './DropdownWrapper';
 
 const DateInput = (props) => {
     const [focused, setFocused] = useState(false);
-    const { value, onConfirm, label, ...dateInputProps } = props;
+    const { value, onConfirm, label, displayValue, ...dateInputProps } = props;
     const isDarkMode = useDarkMode();
-
-    const date = moment.utc(value).toDate();
 
     return (
         <DropdownWrapper
             {...props}
+            displayValue={displayValue}
             label={label}
             handleOnPress={() => setFocused(!focused)}
             focused={focused}
         >
             <DateTimePicker
                 {...dateInputProps}
-                // date={date}
+                date={moment(displayValue).toDate()}
                 isVisible={focused}
                 onConfirm={(date) => {
                     setFocused(false);
@@ -38,12 +37,15 @@ const DateInput = (props) => {
 DateInput.propTypes = {
     value: PropTypes.string,
     onConfirm: PropTypes.func,
+    label: PropTypes.string,
+    displayValue: PropTypes.string,
 };
 
 DateInput.defaultProps = {
     value: moment().toString(),
     icon: 'calendar-alt',
-    label: moment().format('MMM DD, YYYY'),
+    label: '',
+    initialDate: moment(),
 };
 
 export default DateInput;

@@ -10,12 +10,9 @@ const useForm = (props) => {
     const validation = get(props, 'validation', {});
 
     // States
-    // const [values, setValue] = useReducer(valuesReducer, defaultValues);
     const [values, setValues] = useState(defaultValues);
     const [errors, setError] = useReducer(valuesReducer, {});
     const [submitting, setSubmitting] = useState(false);
-
-    // Effects
 
     // Methods
     const validateValue = async (key, value) => {
@@ -41,7 +38,7 @@ const useForm = (props) => {
         keyValue[key] = value;
         errorObj[key] = errorMsg;
 
-        setValues({ ...values, keyValue });
+        setValues({ ...values, ...keyValue });
         setError(errorObj);
     };
 

@@ -21,7 +21,8 @@ import { RowContentFeed } from './content-feed';
 import Tabs from './tabs';
 import UserWebBrowser from './user-web-browser';
 import PrivacyPolicy from './privacy-policy';
-import { CurrentUserProfile as Connect, EditCurrentUser } from './profile';
+import { CurrentUserProfile as Connect } from './profile';
+import EditUser from './edit-user';
 import Settings from './settings';
 
 import InlineWebView from './inline-web-view';
@@ -82,7 +83,7 @@ const AppNavigator = createStackNavigator(
     Onboarding,
     LandingScreen,
     Connect,
-    EditCurrentUser,
+    EditUser,
     Settings,
     Location,
     PrivacyPolicy,
