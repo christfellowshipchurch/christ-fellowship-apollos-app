@@ -7,13 +7,17 @@ const Title = styled(({ theme, marginTop }) => ({
     marginTop: marginTop ? theme.sizing.baseUnit : 0,
 }))(H4);
 
+const StyledTableView = styled(({ theme, marginTop }) => ({
+    backgroundColor: 'transparent',
+}))(TableView);
+
 export default ({ title, children, padded }) => [
     title !== '' && (
         <Title key="TableViewTitle" marginTop={padded}>
             {title}
         </Title>
     ),
-    <TableView key="TableViewBody">
+    <StyledTableView key="TableViewBody">
         {children.length
             ? children.map((n, i) => (
                 <React.Fragment key={i}>
@@ -22,5 +26,5 @@ export default ({ title, children, padded }) => [
                 </React.Fragment>
             ))
             : children}
-    </TableView>,
+    </StyledTableView>,
 ];

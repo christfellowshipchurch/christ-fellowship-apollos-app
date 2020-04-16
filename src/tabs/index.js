@@ -14,7 +14,7 @@ const TabNavigator = createBottomTabNavigator(
     Home,
     Browse,
     Events,
-    More,
+    Connect,
   },
   {
     tabBarComponent: TabBar,

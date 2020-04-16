@@ -1,8 +1,7 @@
 import gql from 'graphql-tag';
 import ApollosConfig from '@apollosproject/config';
 
-// eslint-disable-next-line import/prefer-default-export
-export const GET_USER_PROFILE = gql`
+export const CURRENT_USER = gql`
   query getCurrentUserProfile {
     currentUser {
       id
@@ -10,10 +9,8 @@ export const GET_USER_PROFILE = gql`
         id
         firstName
         lastName
-        nickName
         gender
         birthDate
-        ethnicity
 
         email
         phoneNumber
@@ -34,9 +31,6 @@ export const GET_USER_PROFILE = gql`
           postalCode
         }
 
-        salvationDate
-        baptismDate
-
         communicationPreferences {
           allowSMS
           allowEmail
@@ -44,5 +38,43 @@ export const GET_USER_PROFILE = gql`
       }
     }
   }
+
   ${ApollosConfig.FRAGMENTS.CAMPUS_PARTS_FRAGMENT}
+`;
+
+export const GET_STATES = gql`
+  query getStates {
+    getStatesList {
+      id
+      values {
+        id
+        value
+      }
+    }
+  }
+`;
+
+export const GET_USER_PHOTO = gql`
+  query CurrentUserPhoto {
+    currentUser {
+      id
+      profile {
+        id
+        photo {
+          uri
+        }
+      }
+    }
+  }
+`;
+
+export const GET_PROFILE_ACTIONS = gql`
+  query profileActions {
+    profileLinks {
+      name
+      uri
+      icon
+      openInApp
+    }
+  }
 `;

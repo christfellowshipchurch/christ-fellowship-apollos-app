@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { View, Platform, Text } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
@@ -10,13 +10,12 @@ import {
   withIsLoading,
   ConnectedImage,
   FlexedView,
-  CardLabel,
   CardImage,
   Card,
 } from '@apollosproject/ui-kit';
 import { BlurView } from '@react-native-community/blur';
 import ThemeMixin from '../DynamicThemeMixin';
-import { textStyles } from '.';
+import { Summary } from './components';
 
 const { ImageSourceType } = ConnectedImage;
 
@@ -42,14 +41,9 @@ const Image = withTheme(({ theme, label }) => ({
   maintainAspectRatio: true,
 }))(CardImage);
 
-const Summary = styled(({ theme }) => ({
-  fontWeight: textStyles.summary.fontWeight,
-  color: theme[textStyles.summary.color],
-}))(H6);
-
 const Title = styled(({ theme }) => ({
-  fontWeight: textStyles.title.fontWeight,
-  color: theme[textStyles.title.color],
+  fontWeight: 'bold',
+  color: theme.colors.text.primary,
 }))(H5);
 
 const Content = styled(({ theme }) => ({
@@ -57,12 +51,6 @@ const Content = styled(({ theme }) => ({
   justifyContent: 'center',
   backgroundColor: theme.colors.background.paper,
 }))(FlexedView);
-
-const StyledCardLabel = styled(({ theme }) => ({
-  position: 'absolute',
-  bottom: 12,
-  left: 10,
-}))(CardLabel);
 
 const BlurLabel = styled(({ theme }) => ({
   position: 'absolute',
@@ -87,7 +75,6 @@ const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
     <CardWithLayout placement={placement}>
       <ImageContainer>
         <Image source={coverImage} isLoading label={label} />
-        {/* <StyledCardLabel title={label} /> */}
         {label !== '' && (
           <BlurLabel blurType="ultraThinMaterial">
             <Label>{label}</Label>
@@ -100,12 +87,7 @@ const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
             {title}
           </Title>
         )}
-
-        {summary !== '' && (
-          <Summary numberOfLines={2} ellipsizeMode="tail">
-            {summary}
-          </Summary>
-        )}
+        {summary !== '' && <Summary>{summary}</Summary>}
       </Content>
     </CardWithLayout>
   </ThemeMixin>
