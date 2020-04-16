@@ -12,7 +12,6 @@
 #import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
-#import <RNCPushNotificationIOS.h>
 
 @implementation AppDelegate
 

@@ -29,6 +29,7 @@ target 'ChristFellowship' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
 
   target 'ChristFellowshipTests' do
     inherit! :search_paths
