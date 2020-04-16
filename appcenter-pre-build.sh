@@ -16,7 +16,7 @@ VERSION_CODE=$((VERSION_CODE_SHIFT + APPCENTER_BUILD_ID))
 echo Using "$VERSION_CODE" as build number
 
 echo $VERSION_CODE
-plutil -replace CFBundleVersion -string "$VERSION_CODE" $(pwd)/ios/apolloschurchapp/Info.plist
+plutil -replace CFBundleVersion -string "$VERSION_CODE" $(pwd)/ios/ChristFellowship/Info.plist
 sed -i "" 's/versionCode [^"]*/versionCode '$VERSION_CODE'/' $(pwd)/android/app/build.gradle
 
 yarn generate-stories

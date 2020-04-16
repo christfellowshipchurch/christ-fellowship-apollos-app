@@ -1,4 +1,3 @@
-import PushNotification from 'react-native-push-notification';
 import gql from 'graphql-tag';
 import { schema as mediaPlayerSchema } from '@apollosproject/ui-media-player';
 import { CACHE_LOADED } from '../client/cache' // eslint-disable-line
@@ -49,13 +48,13 @@ export const resolvers = {
       //    and then check to see if Push Notifications are already enabled
       // If they are, we want to request permission to get the Device Id
       //    to update our records
-      if (isLoggedIn) {
-        PushNotification.checkPermissions(({ alert, badge, sound }) => {
-          if (alert || badge || sound) {
-            PushNotification.requestPermissions();
-          }
-        });
-      }
+      // if (isLoggedIn) {
+      //   PushNotification.checkPermissions(({ alert, badge, sound }) => {
+      //     if (alert || badge || sound) {
+      //       PushNotification.requestPermissions();
+      //     }
+      //   });
+      // }
 
       return null;
     },

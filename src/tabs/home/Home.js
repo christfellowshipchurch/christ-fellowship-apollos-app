@@ -101,6 +101,7 @@ const Home = ({ navigation }) => {
                   },
                 },
               ])}
+              removeClippedSubviews={false}
             />
           )}
         </Query>
