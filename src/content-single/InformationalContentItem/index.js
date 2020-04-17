@@ -75,8 +75,6 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
         }${redirectUrl}`;
     }
 
-    console.log({ url });
-
     Linking.canOpenURL(url).then((supported) => {
       if (supported) {
         Linking.openURL(url);
