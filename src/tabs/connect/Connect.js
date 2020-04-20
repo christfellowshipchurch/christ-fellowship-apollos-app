@@ -19,6 +19,8 @@ import {
   withTheme,
   ThemeMixin,
   TouchableScale,
+  Icon,
+  UIText,
 } from '@apollosproject/ui-kit';
 
 import {
@@ -91,6 +93,39 @@ const EditButton = styled(({ theme, disabled }) => ({
   opacity: disabled ? 0.5 : 1,
 }))(BodyText);
 
+const CheckBoxRowContainer = styled(({ theme }) => ({
+  marginVertical: theme.sizing.baseUnit * 0.25,
+  flexDirection: 'row',
+  alignItems: 'center',
+  opacity: 0.35,
+}))(View);
+
+const CheckBoxIcon = withTheme(({ theme, active }) => ({
+  name: active ? 'checkbox-checked' : 'checkbox-unchecked',
+  size: 16,
+  fill: theme.colors.text.primary,
+  style: {
+    marginRight: theme.sizing.baseUnit * 0.25,
+    opacity: 0.75,
+  },
+}))(Icon);
+
+const CheckBoxRow = ({ active, type }) => (
+  <CheckBoxRowContainer>
+    <CheckBoxIcon active={active} />
+    <UIText>{`${type} is ${active ? 'enabled' : 'disabled'}`}</UIText>
+  </CheckBoxRowContainer>
+);
+
+CheckBoxRow.propTypes = {
+  active: PropTypes.bool,
+  type: PropTypes.string.isRequired,
+};
+
+CheckBoxRow.defaultProps = {
+  active: false,
+};
+
 const Connect = ({ navigation }) => {
   const {
     loading,
@@ -104,6 +139,7 @@ const Connect = ({ navigation }) => {
     lastName,
     gender,
     photo,
+    communicationPreferences: { allowSMS, allowEmail } = {},
   } = useCurrentUser();
   const featuredImage = get(campus, 'featuredImage.uri', null);
 
@@ -170,10 +206,12 @@ const Connect = ({ navigation }) => {
             <CardTitle>Contact Info</CardTitle>
             <H4>Phone Number</H4>
             <StyledBodyText>{phoneNumber}</StyledBodyText>
+            <CheckBoxRow active={allowSMS} type="Text messaging" />
             <Divider />
 
             <H4>Email</H4>
             <StyledBodyText>{email}</StyledBodyText>
+            <CheckBoxRow active={allowEmail} type="Email" />
           </CardContent>
         </Card>
       </ScrollView>

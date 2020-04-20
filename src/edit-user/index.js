@@ -16,7 +16,10 @@ const EditCurrentUser = ({ navigation }) => {
         city,
         state,
         postalCode,
+        allowSMS,
+        allowEmail,
     }) => {
+        console.log({ allowSMS, allowEmail });
         updateProfile({
             variables: {
                 profileFields: [
@@ -29,6 +32,10 @@ const EditCurrentUser = ({ navigation }) => {
                     state,
                     postalCode,
                 },
+                communicationPreferences: [
+                    { type: 'SMS', allow: allowSMS },
+                    { type: 'Email', allow: allowEmail },
+                ],
             },
         });
     };

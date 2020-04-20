@@ -49,6 +49,7 @@ export const UPDATE_CURRENT_USER = gql`
   mutation updateCurrentUserProfile(
     $profileFields: [UpdateProfileInput]!
     $address: AddressInput!
+    $communicationPreferences: [UpdateCommunicationPreferenceInput]!
   ) {
     updateProfileFields(input: $profileFields) {
       id
@@ -65,62 +66,81 @@ export const UPDATE_CURRENT_USER = gql`
       state
       postalCode
     }
+
+    updateCommunicationPreferences(input: $communicationPreferences) {
+      communicationPreferences {
+        allowEmail
+        allowSMS
+      }
+    }
   }
 `;
 
 const useCurrentUser = (props) => {
-    const {
-        loading: queryLoading,
-        error: queryError,
-        data,
-        ...queryProps
-    } = useQuery(CURRENT_USER, {
-        fetchPolicy: 'cache-and-network',
-    });
+  const {
+    loading: queryLoading,
+    error: queryError,
+    data,
+    ...queryProps
+  } = useQuery(CURRENT_USER, {
+    fetchPolicy: 'cache-and-network',
+  });
 
-    const id = get(data, 'currentUser.id', null);
-    const profile = get(data, 'currentUser.profile', {});
+  const id = get(data, 'currentUser.id', null);
+  const profile = get(data, 'currentUser.profile', {});
 
-    const [
-        updateProfile,
-        { loading: mutationLoading, error: mutationError },
-    ] = useMutation(UPDATE_CURRENT_USER, {
-        update: async (cache, { data: { updateProfileFields, updateAddress } }) => {
-            // read the CURRENT_USER query
-            const { currentUser } = cache.readQuery({ query: CURRENT_USER });
-            const { birthDate, gender } = updateProfileFields;
-
-            // write to the cache the results of the current cache
-            //  and append any new fields that have been returned from the mutation
-            await cache.writeQuery({
-                query: CURRENT_USER,
-                data: {
-                    currentUser: {
-                        ...currentUser,
-                        profile: {
-                            ...currentUser.profile,
-                            birthDate,
-                            gender,
-                            address: updateAddress,
-                        },
-                    },
-                },
-            });
-
-            const onUpdate = get(props, 'onUpdate', () => null);
-            onUpdate();
+  const [
+    updateProfile,
+    { loading: mutationLoading, error: mutationError },
+  ] = useMutation(UPDATE_CURRENT_USER, {
+    update: async (
+      cache,
+      {
+        data: {
+          updateProfileFields,
+          updateAddress,
+          updateCommunicationPreferences,
         },
-    });
+      }
+    ) => {
+      // read the CURRENT_USER query
+      const { currentUser } = cache.readQuery({ query: CURRENT_USER });
+      const { birthDate, gender } = updateProfileFields;
 
-    return {
-        loading: queryLoading || mutationLoading,
-        error: queryError || mutationError,
-        data,
-        ...queryProps,
-        id,
-        ...profile,
-        updateProfile,
-    };
+      console.log({ updateCommunicationPreferences });
+
+      // write to the cache the results of the current cache
+      //  and append any new fields that have been returned from the mutation
+      await cache.writeQuery({
+        query: CURRENT_USER,
+        data: {
+          currentUser: {
+            ...currentUser,
+            profile: {
+              ...currentUser.profile,
+              birthDate,
+              gender,
+              address: updateAddress,
+              ...updateCommunicationPreferences,
+            },
+          },
+        },
+      });
+
+      const onUpdate = get(props, 'onUpdate', () => null);
+      onUpdate();
+    },
+  });
+
+  return {
+    loading: queryLoading || mutationLoading,
+    error: queryError || mutationError,
+    data,
+    ...queryProps,
+    id,
+    ...profile,
+    updateProfile,
+  };
 };
 
 export default useCurrentUser;

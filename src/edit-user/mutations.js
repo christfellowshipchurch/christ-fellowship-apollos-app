@@ -4,6 +4,7 @@ export const UPDATE_CURRENT_USER = gql`
   mutation updateCurrentUserProfile(
     $profileFields: [UpdateProfileInput]!
     $address: AddressInput!
+    $communicationPreferences: [UpdateCommunicationPreferenceInput]!
   ) {
     updateProfileFields(input: $profileFields) {
       id
@@ -19,6 +20,13 @@ export const UPDATE_CURRENT_USER = gql`
       city
       state
       postalCode
+    }
+
+    updateCommunicationPreferences(input: $communicationPreferences) {
+      communicationPreferences {
+        allowEmail
+        allowSMS
+      }
     }
   }
 `;
