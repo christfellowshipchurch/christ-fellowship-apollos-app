@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TouchableScale, Icon, withTheme } from '@apollosproject/ui-kit';
 
-import { useSideMenu } from '../../sidemenu';
+// import { useSideMenu } from '../../sidemenu';
 
 const Bars = withTheme(({ theme }) => ({
   name: 'bars-alt',
@@ -15,7 +15,8 @@ const Bars = withTheme(({ theme }) => ({
 }))(Icon);
 
 const AvatarConnected = () => {
-  const { openSideMenu } = useSideMenu();
+  // const { openSideMenu } = useSideMenu();
+  const openSideMenu = () => null;
 
   return (
     <TouchableScale onPress={openSideMenu}>

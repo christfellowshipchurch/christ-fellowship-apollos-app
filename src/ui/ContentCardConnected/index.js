@@ -19,17 +19,20 @@ const ContentCardConnected = ({
   tile,
   card,
   ...otherProps
-}) => {
-  if (!contentId || isLoading)
-    return React.createElement(card, {
-      ...otherProps,
-      tile,
-      isLoading: true,
-      title: '',
-    });
+}) => (
+    // if (!contentId || isLoading)
+    //   return React.createElement(card, {
+    //     ...otherProps,
+    //     tile,
+    //     isLoading: true,
+    //     title: '',
+    //   });
 
-  return (
-    <Query query={GET_CONTENT_CARD} variables={{ contentId, tile: !!tile }}>
+    <Query
+      query={GET_CONTENT_CARD}
+      variables={{ contentId, tile: !!tile }}
+      fetchPolicy="cache-and-network"
+    >
       {({ data: { node = {} } = {}, loading, error }) => {
         if (error) return <ErrorCard error={error} />;
 
@@ -67,7 +70,6 @@ const ContentCardConnected = ({
       }}
     </Query>
   );
-};
 
 ContentCardConnected.propTypes = {
   isLoading: PropTypes.bool,

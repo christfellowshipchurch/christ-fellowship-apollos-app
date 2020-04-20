@@ -46,7 +46,7 @@ const AppProviders = (props) => {
                                         iconInput={customIcons}
                                         {...props}
                                     >
-                                        <SideMenuProvider {...props} />
+                                        {/* <SideMenuProvider {...props} /> */}
                                     </Providers>
                                 </DarkModeProvider>
                             </LiveProvider>

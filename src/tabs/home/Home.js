@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Query } from 'react-apollo';
-import { Image, Animated, View, Platform } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
+import { Image, Animated, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -17,9 +17,8 @@ import {
 import { LiveButton } from '../../live';
 import StatusBar from '../../ui/StatusBar';
 
-import fetchMoreResolver from '../../utils/fetchMoreResolver';
+import { FeatureCollection } from '../../feature';
 
-import ActionMapper from './ActionMapper';
 import GET_FEED_FEATURES from './getFeedFeatures';
 
 import WordmarkImg from './wordmark.png';
@@ -42,17 +41,11 @@ const Wordmark = () => {
   return <LogoTitle source={source} />;
 };
 
-export const COLOR_MAP = ['primary', 'success', 'alert', 'warning'];
-
 const Home = ({ navigation }) => {
+  const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
+    fetchPolicy: 'cache-and-network',
+  });
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
-  const renderItem = ({ item }) => (
-    <ActionMapper
-      titleColor={COLOR_MAP[item.colorIndex]}
-      navigation={navigation}
-      {...item}
-    />
-  );
   const setNavigationParam = (params) => {
     navigation.setParams(params);
   };
@@ -63,48 +56,29 @@ const Home = ({ navigation }) => {
     <BackgroundView>
       <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
         <StatusBar />
-        <Query
-          query={GET_FEED_FEATURES}
-          variables={{
-            first: 10,
-            after: null,
-          }}
-          fetchPolicy="cache-and-network"
-        >
-          {({ loading, error, data, refetch, fetchMore, variables }) => (
-            <FeedView
-              content={get(data, 'userFeedFeatures', []).map((n, i) => ({
-                ...n,
-                colorIndex: i % COLOR_MAP.length,
-              }))}
-              fetchMore={fetchMoreResolver({
-                collectionName: 'userFeedFeatures',
-                fetchMore,
-                variables,
-                data,
-              })}
-              isLoading={loading}
-              error={error}
-              refetch={refetch}
-              ListHeaderComponent={
-                <View>
-                  <NavigationSpacer />
-                  <LiveButton key="HomeFeedLiveButton" />
-                </View>
-              }
-              renderItem={renderItem}
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {
-                    contentOffset: { y: scrollY },
-                  },
-                },
-              ])}
-              removeClippedSubviews={false}
-            />
-          )}
-        </Query>
+        <FeedView
+          ListItemComponent={FeatureCollection}
+          content={get(data, 'userFeedFeatures', [])}
+          isLoading={loading && !get(data, 'userFeedFeatures', []).length}
+          error={error}
+          refetch={refetch}
+          ListHeaderComponent={
+            <View>
+              <NavigationSpacer />
+              <LiveButton key="HomeFeedLiveButton" />
+            </View>
+          }
+          scrollEventThrottle={16}
+          onScroll={Animated.event([
+            {
+              nativeEvent: {
+                contentOffset: { y: scrollY },
+              },
+            },
+          ])}
+          removeClippedSubviews={false}
+          numColumns={1}
+        />
       </SafeAreaView>
     </BackgroundView>
   );

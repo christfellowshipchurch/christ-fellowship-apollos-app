@@ -49,7 +49,7 @@ const PrivacyPolicyText = styled(({ color }) => ({
 }))(H6);
 
 const PrivacyPolicyLink = styled(({ theme }) => ({
-  paddingVertical: theme.sizing.baseUnit,
+  marginVertical: theme.sizing.baseUnit,
 }))(Touchable);
 
 const LandingScreen = ({
@@ -82,7 +82,7 @@ const LandingScreen = ({
             type="primary"
           />
           <PrivacyPolicyLink onPress={onPressSecondary}>
-            <PrivacyPolicyText color={textColor}>
+            <PrivacyPolicyText color={textColor} padded>
               By using this app, I understand and agree to the following policies
               as laid out by Christ Fellowship Church seen here.
           </PrivacyPolicyText>
