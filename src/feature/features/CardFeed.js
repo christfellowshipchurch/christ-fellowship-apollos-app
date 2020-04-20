@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { get } from 'lodash';
+import { get, filter } from 'lodash';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 
@@ -72,6 +72,7 @@ const renderItem = ({ item, index }) => (
         <ContentCardConnected
             contentId={item.id}
             card={index === 0 ? HighlightCard : RowCard}
+            Component={index === 0 ? HighlightCard : RowCard}
         />
     </TouchableScale>
 );
@@ -99,6 +100,8 @@ const CardFeed = ({ title, itemId, navigation }) => {
             data={mapData(data, navigation)}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
+            removeClippedSubviews={false}
+            numColumns={1}
         />
     );
 };

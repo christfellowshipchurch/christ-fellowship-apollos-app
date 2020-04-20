@@ -28,7 +28,11 @@ const ContentCardConnected = ({
     //     title: '',
     //   });
 
-    <Query query={GET_CONTENT_CARD} variables={{ contentId, tile: !!tile }}>
+    <Query
+      query={GET_CONTENT_CARD}
+      variables={{ contentId, tile: !!tile }}
+      fetchPolicy="cache-and-network"
+    >
       {({ data: { node = {} } = {}, loading, error }) => {
         if (error) return <ErrorCard error={error} />;
 

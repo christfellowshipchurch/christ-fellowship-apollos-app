@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { get, first, chunk, drop } from 'lodash';
+import { get, first, chunk, drop, uniqueId } from 'lodash';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 
@@ -38,10 +38,11 @@ const renderItem = ({ item, index }) => {
         return (
             <CardColumnRow>
                 {item.map(({ id }, i) => (
-                    <Touchable itemId={id} style={{ width: '50%' }}>
+                    <Touchable key={id} itemId={id} style={{ width: '50%' }}>
                         <ContentCardConnected
                             contentId={id}
                             card={ColumnCard}
+                            Component={ColumnCard}
                             placement={i % 2 === 0 ? 'left' : 'right'}
                         />
                     </Touchable>
@@ -56,6 +57,7 @@ const renderItem = ({ item, index }) => {
             <ContentCardConnected
                 contentId={itemId}
                 card={index === 0 ? HighlightCard : RowCard}
+                Component={index === 0 ? HighlightCard : RowCard}
             />
         </Touchable>
     );
@@ -73,7 +75,9 @@ const GridFeed = ({ title, itemId }) => {
         <FlatList
             data={mapData(data)}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => uniqueId(item.id)}
+            removeClippedSubviews={false}
+            numColumns={1}
         />
     );
 };

@@ -18,6 +18,7 @@ import { LiveButton } from '../../live';
 import StatusBar from '../../ui/StatusBar';
 
 import { FeatureCollection } from '../../feature';
+
 import GET_FEED_FEATURES from './getFeedFeatures';
 
 import WordmarkImg from './wordmark.png';
