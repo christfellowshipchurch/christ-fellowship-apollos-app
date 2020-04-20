@@ -28,6 +28,7 @@ import {
   Radio,
   RadioButton,
   InputWrapper,
+  Switch,
 } from '../ui/inputs';
 import { useForm } from '../hooks';
 import ChangeAvatar from './ChangeAvatar';
@@ -101,6 +102,7 @@ const EditUser = ({
   lastName,
   gender,
   updateProfile,
+  communicationPreferences: { allowSMS, allowEmail } = {},
 }) => {
   const {
     loading: optionsLoading,
@@ -117,6 +119,8 @@ const EditUser = ({
       firstName,
       lastName,
       gender,
+      allowSMS,
+      allowEmail,
     },
   });
 
@@ -248,6 +252,29 @@ const EditUser = ({
               }
               onConfirm={(newBirthDate) => setValue('birthDate', newBirthDate)}
               disabled={disabled}
+            />
+          </FieldContainer>
+
+          <FieldContainer>
+            <H4>Communication Preferences</H4>
+            <Switch
+              icon="comment-lines"
+              label={`Allow Text Notifications`}
+              value={values.allowSMS}
+              disabled={loading}
+              onValueChange={(value) => {
+                setValue('allowSMS', value);
+              }}
+            />
+
+            <Switch
+              icon="envelope-open-text"
+              label={`Allow Email Notifications`}
+              value={values.allowEmail}
+              disabled={loading}
+              onValueChange={(value) => {
+                setValue('allowEmail', value);
+              }}
             />
           </FieldContainer>
         </ContentContainer>

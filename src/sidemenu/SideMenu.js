@@ -55,6 +55,7 @@ const Menu = ({ onPress }) => {
         return (
             <BackgroundView>
                 <ActivityIndicator />
+                <Logout />
             </BackgroundView>
         );
 
@@ -67,6 +68,8 @@ const Menu = ({ onPress }) => {
         <ThemeMixin>
             <BackgroundView>
                 <ScrollView>
+                    {loading && <ActivityIndicator />}
+
                     {get(data, 'moreLinks', []).map(({ name, ...props }, i) => (
                         <TableWithLinks
                             key={name}
