@@ -78,7 +78,7 @@ const StackedImageCard = ({
   label,
   title,
   summary,
-  isLive = true,
+  isLive,
   isLoading,
 }) => (
     <ThemeMixin>

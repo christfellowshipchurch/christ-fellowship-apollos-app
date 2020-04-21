@@ -35,41 +35,33 @@ const Label = styled(({ theme }) => ({
 }))(H6);
 
 const HighlightCard = withIsLoading(
-  ({
-    coverImage,
-    title,
-    isLiked,
-    isLoading,
-    labelText,
-    summary,
-    isLive = true,
-  }) => (
-      <ThemeMixin>
-        <Card isLoading={isLoading}>
-          <Image source={coverImage} label={labelText} />
+  ({ coverImage, title, isLiked, isLoading, labelText, summary, isLive }) => (
+    <ThemeMixin>
+      <Card isLoading={isLoading}>
+        <Image source={coverImage} label={labelText} />
 
-          <CardContentWrapper coverImage={coverImage}>
-            <Content>
-              {isLive && !isLoading && <LiveLabel BackgroundComponent={View} />}
-              {!!labelText &&
-                !isLive && <Label numberOfLines={2}>{labelText}</Label>}
-              {title || isLoading ? (
-                <Title isLoading={isLoading}>{title}</Title>
-              ) : null}
-              {summary || isLoading ? (
-                <Summary isLoading={isLoading}>{summary}</Summary>
-              ) : null}
-            </Content>
-          </CardContentWrapper>
+        <CardContentWrapper coverImage={coverImage}>
+          <Content>
+            {isLive && !isLoading && <LiveLabel BackgroundComponent={View} />}
+            {!!labelText &&
+              !isLive && <Label numberOfLines={2}>{labelText}</Label>}
+            {title || isLoading ? (
+              <Title isLoading={isLoading}>{title}</Title>
+            ) : null}
+            {summary || isLoading ? (
+              <Summary isLoading={isLoading}>{summary}</Summary>
+            ) : null}
+          </Content>
+        </CardContentWrapper>
 
-          {/* {isLiked != null ? (
+        {/* {isLiked != null ? (
           <LikeIconPositioning>
             <LikeIcon isLiked={isLiked} />
           </LikeIconPositioning>
         ) : null} */}
-        </Card>
-      </ThemeMixin>
-    )
+      </Card>
+    </ThemeMixin>
+  )
 );
 
 HighlightCard.propTypes = {

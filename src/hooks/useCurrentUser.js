@@ -126,7 +126,11 @@ const useCurrentUser = (props) => {
       });
 
       const onUpdate = get(props, 'onUpdate', () => null);
-      onUpdate();
+      onUpdate({ success: true });
+    },
+    onError: () => {
+      const onUpdate = get(props, 'onUpdate', () => null);
+      onUpdate({ success: false });
     },
   });
 

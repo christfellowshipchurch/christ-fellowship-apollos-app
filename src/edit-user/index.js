@@ -18,8 +18,17 @@ const EditCurrentUser = ({ navigation }) => {
         postalCode,
         allowSMS,
         allowEmail,
+        phoneNumber,
+        email,
     }) => {
-        console.log({ allowSMS, allowEmail });
+        const communicationPreferences = [];
+
+        if (phoneNumber && phoneNumber !== '')
+            communicationPreferences.push({ type: 'SMS', allow: allowSMS });
+
+        if (email && email !== '')
+            communicationPreferences.push({ type: 'Email', allow: allowEmail });
+
         updateProfile({
             variables: {
                 profileFields: [
@@ -27,15 +36,12 @@ const EditCurrentUser = ({ navigation }) => {
                     { field: 'Gender', value: gender },
                 ],
                 address: {
-                    street1,
-                    city,
-                    state,
-                    postalCode,
+                    street1: street1 || '',
+                    city: city || '',
+                    state: state || '',
+                    postalCode: postalCode || '',
                 },
-                communicationPreferences: [
-                    { type: 'SMS', allow: allowSMS },
-                    { type: 'Email', allow: allowEmail },
-                ],
+                communicationPreferences,
             },
         });
     };

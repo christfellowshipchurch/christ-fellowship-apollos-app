@@ -257,25 +257,31 @@ const EditUser = ({
 
           <FieldContainer>
             <H4>Communication Preferences</H4>
-            <Switch
-              icon="comment-lines"
-              label={`Allow Text Notifications`}
-              value={values.allowSMS}
-              disabled={loading}
-              onValueChange={(value) => {
-                setValue('allowSMS', value);
-              }}
-            />
+            {!!phoneNumber &&
+              phoneNumber !== '' && (
+                <Switch
+                  icon="comment-lines"
+                  label={`Allow Text Notifications`}
+                  value={values.allowSMS}
+                  disabled={loading}
+                  onValueChange={(value) => {
+                    setValue('allowSMS', value);
+                  }}
+                />
+              )}
 
-            <Switch
-              icon="envelope-open-text"
-              label={`Allow Email Notifications`}
-              value={values.allowEmail}
-              disabled={loading}
-              onValueChange={(value) => {
-                setValue('allowEmail', value);
-              }}
-            />
+            {!!email &&
+              email !== '' && (
+                <Switch
+                  icon="envelope-open-text"
+                  label={`Allow Email Notifications`}
+                  value={values.allowEmail}
+                  disabled={loading}
+                  onValueChange={(value) => {
+                    setValue('allowEmail', value);
+                  }}
+                />
+              )}
           </FieldContainer>
         </ContentContainer>
       </ScrollView>

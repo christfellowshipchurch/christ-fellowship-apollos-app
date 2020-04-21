@@ -42,48 +42,41 @@ const Content = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit,
 }))(FlexedView);
 
-const RowCard = ({
-  coverImage,
-  label,
-  title,
-  summary,
-  isLoading,
-  isLive = true,
-}) => (
-    <ThemeMixin>
-      <Card>
-        <View style={{ flexDirection: 'row' }}>
-          <Image source={coverImage} isLoading={isLoading} />
+const RowCard = ({ coverImage, label, title, summary, isLoading, isLive }) => (
+  <ThemeMixin>
+    <Card>
+      <View style={{ flexDirection: 'row' }}>
+        <Image source={coverImage} isLoading={isLoading} />
 
-          <Content>
-            {isLive && <LiveLabel />}
-            {label !== '' &&
-              !isLive && (
-                <Summary numberOfLines={1} isLoading={isLoading}>
-                  {label}
-                </Summary>
-              )}
-
-            {title !== '' && (
-              <Title numberOfLines={1} ellipsizeMode="tail" isLoading={isLoading}>
-                {title}
-              </Title>
-            )}
-
-            {summary !== '' && (
-              <Summary
-                numberOfLines={1}
-                ellipsizeMode="tail"
-                isLoading={isLoading}
-              >
-                {summary}
+        <Content>
+          {isLive && <LiveLabel />}
+          {label !== '' &&
+            !isLive && (
+              <Summary numberOfLines={1} isLoading={isLoading}>
+                {label}
               </Summary>
             )}
-          </Content>
-        </View>
-      </Card>
-    </ThemeMixin>
-  );
+
+          {title !== '' && (
+            <Title numberOfLines={1} ellipsizeMode="tail" isLoading={isLoading}>
+              {title}
+            </Title>
+          )}
+
+          {summary !== '' && (
+            <Summary
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              isLoading={isLoading}
+            >
+              {summary}
+            </Summary>
+          )}
+        </Content>
+      </View>
+    </Card>
+  </ThemeMixin>
+);
 
 RowCard.propTypes = {
   coverImage: PropTypes.oneOfType([

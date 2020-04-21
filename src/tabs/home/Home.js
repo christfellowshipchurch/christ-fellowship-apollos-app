@@ -76,7 +76,7 @@ const Home = ({ navigation }) => {
           ListHeaderComponent={
             <View>
               <NavigationSpacer />
-              <LiveButton key="HomeFeedLiveButton" />
+              {/* <LiveButton key="HomeFeedLiveButton" /> */}
             </View>
           }
           scrollEventThrottle={16}
