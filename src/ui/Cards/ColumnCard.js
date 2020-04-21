@@ -13,17 +13,12 @@ import {
   CardImage,
   Card,
 } from '@apollosproject/ui-kit';
-import { BlurView } from '@react-native-community/blur';
+import BlurView from '../BlurView';
 import ThemeMixin from '../DynamicThemeMixin';
+import LiveLabel from '../LiveLabel';
 import { Summary } from './components';
 
 const { ImageSourceType } = ConnectedImage;
-
-const ImageContainer = styled(({ theme }) => ({
-  width: '100%',
-  overflow: 'hidden',
-  marginRight: theme.sizing.baseUnit,
-}))(View);
 
 const Image = withTheme(({ theme, label }) => ({
   ...(!!label && label !== ''
@@ -52,16 +47,23 @@ const Content = styled(({ theme }) => ({
   backgroundColor: theme.colors.background.paper,
 }))(FlexedView);
 
-const BlurLabel = styled(({ theme }) => ({
+const LiveLabelPositioning = styled(({ theme }) => ({
   position: 'absolute',
-  bottom: 12,
-  left: 10,
+  bottom: 0,
+  left: theme.sizing.baseUnit * 0.75,
+}))(LiveLabel);
+
+const BlurLabel = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit * 0.5,
   borderRadius: theme.sizing.baseBorderRadius,
+  position: 'absolute',
+  bottom: 0,
+  left: theme.sizing.baseUnit * 0.75 - theme.sizing.baseUnit * 0.5,
 }))(BlurView);
 
-const Label = styled(({ theme }) => ({
-  color: theme.colors.white,
+const Label = withTheme(({ theme }) => ({
+  numberOfLines: 1,
+  style: { color: theme.colors.white },
 }))(H6);
 
 const CardWithLayout = styled(({ theme, placement }) => ({
@@ -70,31 +72,42 @@ const CardWithLayout = styled(({ theme, placement }) => ({
   flex: 1,
 }))(Card);
 
-const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
-  <ThemeMixin>
-    <CardWithLayout placement={placement}>
-      <ImageContainer>
-        <Image source={coverImage} isLoading label={label} />
-        {label !== '' && (
-          <BlurLabel blurType="ultraThinMaterial">
-            <Label>{label}</Label>
-          </BlurLabel>
-        )}
-      </ImageContainer>
-      <Content>
-        {title !== '' && (
-          <Title numberOfLines={2} ellipsizeMode="tail">
-            {title}
-          </Title>
-        )}
-        {summary !== '' && <Summary>{summary}</Summary>}
-      </Content>
-    </CardWithLayout>
-  </ThemeMixin>
-);
+const StackedImageCard = ({
+  placement,
+  coverImage,
+  label,
+  title,
+  summary,
+  isLive = true,
+  isLoading,
+}) => (
+    <ThemeMixin>
+      <CardWithLayout placement={placement}>
+        <View>
+          <Image source={coverImage} isLoading label={label} />
+          {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
+
+          {label !== '' &&
+            !isLive &&
+            !isLoading && (
+              <BlurLabel blurType="ultraThinMaterial">
+                <Label isLoading={isLoading}>{label}</Label>
+              </BlurLabel>
+            )}
+        </View>
+        <Content>
+          {title !== '' && (
+            <Title numberOfLines={2} ellipsizeMode="tail">
+              {title}
+            </Title>
+          )}
+          {summary !== '' && <Summary>{summary}</Summary>}
+        </Content>
+      </CardWithLayout>
+    </ThemeMixin>
+  );
 
 StackedImageCard.propTypes = {
-  onPress: PropTypes.func,
   coverImage: PropTypes.oneOfType([
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
@@ -102,9 +115,9 @@ StackedImageCard.propTypes = {
   label: PropTypes.string,
   summary: PropTypes.string,
   title: PropTypes.string,
-  id: PropTypes.string,
-  name: PropTypes.string,
   placement: PropTypes.oneOf(['', 'left', 'right']),
+  isLive: PropTypes.bool,
+  isLoading: PropTypes.bool,
 };
 
 export default withIsLoading(StackedImageCard);

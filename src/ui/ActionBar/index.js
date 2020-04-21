@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import Color from 'color';
+import { uniqueId } from 'lodash';
 
 import { Card, styled } from '@apollosproject/ui-kit';
 
@@ -28,7 +29,7 @@ const ActionBar = ({ children, ...props }) => (
   <Card {...props}>
     <Row>
       {React.Children.map(children, (child, i) => (
-        <React.Fragment>
+        <React.Fragment key={uniqueId(`ActionBar:${i}`)}>
           {child}
           {i < children.length - 1 && <Divider />}
         </React.Fragment>
@@ -38,7 +39,12 @@ const ActionBar = ({ children, ...props }) => (
 );
 
 ActionBar.propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element),
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(
+      PropTypes.oneOfType([PropTypes.element, PropTypes.func, PropTypes.object])
+    ),
+    PropTypes.object,
+  ]),
 };
 
 export default ActionBar;

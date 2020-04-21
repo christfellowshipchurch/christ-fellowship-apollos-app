@@ -107,8 +107,6 @@ const useCurrentUser = (props) => {
       const { currentUser } = cache.readQuery({ query: CURRENT_USER });
       const { birthDate, gender } = updateProfileFields;
 
-      console.log({ updateCommunicationPreferences });
-
       // write to the cache the results of the current cache
       //  and append any new fields that have been returned from the mutation
       await cache.writeQuery({

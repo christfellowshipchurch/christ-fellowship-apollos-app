@@ -1,10 +1,9 @@
-import React, { PureComponent } from 'react';
-import { View, Platform } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
   H5,
-  H6,
   styled,
   withTheme,
   withIsLoading,
@@ -12,27 +11,25 @@ import {
   FlexedView,
   Card,
   CardImage,
-  SideBySideView,
 } from '@apollosproject/ui-kit';
 import ThemeMixin from '../DynamicThemeMixin';
+import LiveLabel from '../LiveLabel';
 import { Summary } from './components';
 
 const { ImageSourceType } = ConnectedImage;
 
-const Image = styled({
-  aspectRatio: 1,
-  height: '100%',
-  resizeMode: 'cover',
-})(ConnectedImage);
-
-const ImageContainer = styled(({ theme }) => ({
-  width: '25%',
-  overflow: 'hidden',
-  borderTopLeftRadius: theme.sizing.baseBorderRadius,
-  borderBottomLeftRadius: theme.sizing.baseBorderRadius,
-  alignItems: 'center',
-  justifyContent: 'center',
-}))(View);
+const Image = withTheme(() => ({
+  // Sets the ratio of the image
+  minAspectRatio: 1,
+  maxAspectRatio: 1,
+  // Sets the ratio of the placeholder
+  forceRatio: 1,
+  // No ratios are respected without this
+  maintainAspectRatio: true,
+  style: {
+    flex: 2,
+  },
+}))(CardImage);
 
 const Title = styled(({ theme }) => ({
   fontWeight: 'bold',
@@ -40,44 +37,55 @@ const Title = styled(({ theme }) => ({
 }))(H5);
 
 const Content = styled(({ theme }) => ({
+  flex: 5,
   justifyContent: 'center',
-  padding: theme.sizing.baseUnit,
+  paddingHorizontal: theme.sizing.baseUnit,
 }))(FlexedView);
 
-const HorizontalLayout = styled(({ theme }) => ({
-  alignItems: 'center',
-  height: theme.sizing.baseUnit * 6,
-}))(SideBySideView);
+const RowCard = ({
+  coverImage,
+  label,
+  title,
+  summary,
+  isLoading,
+  isLive = true,
+}) => (
+    <ThemeMixin>
+      <Card>
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={coverImage} isLoading={isLoading} />
 
-const RowCard = ({ coverImage, label, title, summary }) => (
-  <ThemeMixin>
-    <Card>
-      <HorizontalLayout>
-        <ImageContainer>
-          <Image source={coverImage} isLoading />
-        </ImageContainer>
-        <Content>
-          {label !== '' && <Summary>{label}</Summary>}
+          <Content>
+            {isLive && <LiveLabel />}
+            {label !== '' &&
+              !isLive && (
+                <Summary numberOfLines={1} isLoading={isLoading}>
+                  {label}
+                </Summary>
+              )}
 
-          {title !== '' && (
-            <Title numberOfLines={2} ellipsizeMode="tail">
-              {title}
-            </Title>
-          )}
+            {title !== '' && (
+              <Title numberOfLines={1} ellipsizeMode="tail" isLoading={isLoading}>
+                {title}
+              </Title>
+            )}
 
-          {summary !== '' && (
-            <Summary numberOfLines={2} ellipsizeMode="tail">
-              {summary}
-            </Summary>
-          )}
-        </Content>
-      </HorizontalLayout>
-    </Card>
-  </ThemeMixin>
-);
+            {summary !== '' && (
+              <Summary
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                isLoading={isLoading}
+              >
+                {summary}
+              </Summary>
+            )}
+          </Content>
+        </View>
+      </Card>
+    </ThemeMixin>
+  );
 
 RowCard.propTypes = {
-  onPress: PropTypes.func,
   coverImage: PropTypes.oneOfType([
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
@@ -85,9 +93,8 @@ RowCard.propTypes = {
   label: PropTypes.string,
   summary: PropTypes.string,
   title: PropTypes.string,
-  id: PropTypes.string,
-  name: PropTypes.string,
-  inCardStack: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  isLive: PropTypes.bool,
 };
 
 RowCard.displayName = 'RowCard';

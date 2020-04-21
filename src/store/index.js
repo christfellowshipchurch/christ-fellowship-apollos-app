@@ -10,7 +10,7 @@ export const schema = `
     devicePushId: String
     cacheLoaded: Boolean
     notificationsEnabled: Boolean
-  }
+}
 
   type Mutation {
     cacheMarkLoaded

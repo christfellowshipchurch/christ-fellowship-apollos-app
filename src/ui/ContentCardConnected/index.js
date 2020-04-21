@@ -19,15 +19,14 @@ const ContentCardConnected = ({
   tile,
   card,
   ...otherProps
-}) => (
-    // if (!contentId || isLoading)
-    //   return React.createElement(card, {
-    //     ...otherProps,
-    //     tile,
-    //     isLoading: true,
-    //     title: '',
-    //   });
+}) => {
+  if (!contentId || isLoading)
+    return React.createElement(card, {
+      isLoading: true,
+      title: '',
+    });
 
+  return (
     <Query
       query={GET_CONTENT_CARD}
       variables={{ contentId, tile: !!tile }}
@@ -70,6 +69,7 @@ const ContentCardConnected = ({
       }}
     </Query>
   );
+};
 
 ContentCardConnected.propTypes = {
   isLoading: PropTypes.bool,

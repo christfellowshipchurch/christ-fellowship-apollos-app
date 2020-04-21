@@ -14,6 +14,7 @@ import {
 } from '@apollosproject/ui-kit';
 import ThemeMixin from '../../DynamicThemeMixin';
 import { Title, Summary } from '../components';
+import LiveLabel from '../../LiveLabel';
 import CardContentWrapper from './CardContentWrapper';
 
 const { ImageSourceType } = ConnectedImage;
@@ -34,31 +35,41 @@ const Label = styled(({ theme }) => ({
 }))(H6);
 
 const HighlightCard = withIsLoading(
-  ({ coverImage, title, isLiked, isLoading, labelText, summary }) => (
-    <ThemeMixin>
-      <Card isLoading={isLoading}>
-        <Image source={coverImage} label={labelText} />
+  ({
+    coverImage,
+    title,
+    isLiked,
+    isLoading,
+    labelText,
+    summary,
+    isLive = true,
+  }) => (
+      <ThemeMixin>
+        <Card isLoading={isLoading}>
+          <Image source={coverImage} label={labelText} />
 
-        <CardContentWrapper coverImage={coverImage}>
-          <Content>
-            {labelText ? <Label numberOfLines={2}>{labelText}</Label> : null}
-            {title || isLoading ? (
-              <Title isLoading={isLoading}>{title}</Title>
-            ) : null}
-            {summary || isLoading ? (
-              <Summary isLoading={isLoading}>{summary}</Summary>
-            ) : null}
-          </Content>
-        </CardContentWrapper>
+          <CardContentWrapper coverImage={coverImage}>
+            <Content>
+              {isLive && !isLoading && <LiveLabel BackgroundComponent={View} />}
+              {!!labelText &&
+                !isLive && <Label numberOfLines={2}>{labelText}</Label>}
+              {title || isLoading ? (
+                <Title isLoading={isLoading}>{title}</Title>
+              ) : null}
+              {summary || isLoading ? (
+                <Summary isLoading={isLoading}>{summary}</Summary>
+              ) : null}
+            </Content>
+          </CardContentWrapper>
 
-        {/* {isLiked != null ? (
+          {/* {isLiked != null ? (
           <LikeIconPositioning>
             <LikeIcon isLiked={isLiked} />
           </LikeIconPositioning>
         ) : null} */}
-      </Card>
-    </ThemeMixin>
-  )
+        </Card>
+      </ThemeMixin>
+    )
 );
 
 HighlightCard.propTypes = {
@@ -66,7 +77,7 @@ HighlightCard.propTypes = {
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
   ]),
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   isLiked: PropTypes.bool,
   isLive: PropTypes.bool,
   LabelComponent: PropTypes.element,
