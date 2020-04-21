@@ -19,7 +19,7 @@ const LiveLabel = withTheme()(
                 borderRadius: theme.sizing.baseBorderRadius,
                 backgroundColor: theme.colors.background.screen,
                 padding: theme.sizing.baseUnit * 0.3,
-                marginLeft: -theme.sizing.baseUnit * 0.5,
+                marginLeft: -theme.sizing.baseUnit * 0.3,
                 marginBottom: theme.sizing.baseUnit * 0.5,
                 flexDirection: 'row',
                 alignItems: 'center',

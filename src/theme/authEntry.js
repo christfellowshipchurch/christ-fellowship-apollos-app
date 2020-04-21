@@ -31,8 +31,8 @@ const authEntry = ({ colors: themeColors, alpha }) => ({
     },
     buttons: {
         primary: {
-            fill: themeColors.white,
-            accent: themeColors.white,
+            fill: '#ffffff',
+            accent: '#ffffff',
         },
     },
 });

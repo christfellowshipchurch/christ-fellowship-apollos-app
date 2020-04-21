@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import Color from 'color';
 import dark from './dark-theme';
 import onboarding from './onboarding';
@@ -167,6 +168,13 @@ const overrides = {
     },
     'Card.Image': {
         resizeMode: 'cover',
+        ...Platform.select({
+            android: {
+                // fixes android borderRadius overflow display issue
+                borderTopRightRadius: sizing.baseUnit,
+                borderTopLeftRadius: sizing.baseUnit,
+            },
+        }),
     },
     'ui-kit.inputs.Search.InputWrapper': {
         backgroundColor: '#F4F4F5',
@@ -190,6 +198,10 @@ const overrides = {
 };
 
 const buttons = ({ colors: themeColors }) => ({
+    // primary: {
+    //     fill: '#ffffff',
+    //     accent: '#000000',
+    // },
     white: {
         fill: themeColors.white,
         accent: themeColors.black,
