@@ -15,6 +15,7 @@
     "generate-stories": "rnstl --searchDir ./src --pattern **/*.stories.js",
     "ios": "react-native run-ios --simulator=\"iPhone X\"",
     "lint": "eslint ./src --ext .js",
+    "postinstall": "jetify && yarn pods",
     "postversion": "react-native-version --never-amend --android android/app/build.gradle --ios ios/",
     "prepublish": "lerna run build && lerna run generate-stories",
     "prestart": "yarn generate-stories & node ./scripts/get-introspection-data.js",
