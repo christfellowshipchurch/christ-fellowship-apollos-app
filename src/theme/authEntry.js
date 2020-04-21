@@ -29,6 +29,12 @@ const authEntry = ({ colors: themeColors, alpha }) => ({
             tertiary: themeColors.tertiary,
         },
     },
+    buttons: {
+        primary: {
+            fill: '#ffffff',
+            accent: '#ffffff',
+        },
+    },
 });
 
 export default authEntry;

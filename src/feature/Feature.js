@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 
 import ContentCardConnected from '../ui/ContentCardConnected';
 import { CardFeed, GridFeed } from './features';
 
-const Feature = ({ title, action, relatedNode }) => {
+const Feature = ({ title, action, relatedNode, isLoading }) => {
+    const itemId = get(relatedNode, 'id');
     switch (action) {
         case 'READ_GLOBAL_CONTENT':
-            return <GridFeed itemId={relatedNode.id} />;
+            return <GridFeed itemId={itemId} isLoading={isLoading} />;
         case 'VIEW_CHILDREN':
-            return <CardFeed title={title} itemId={relatedNode.id} />;
+            return <CardFeed title={title} itemId={itemId} isLoading={isLoading} />;
         default:
-            return <ContentCardConnected contentId={relatedNode.id} />;
+            return <ContentCardConnected contentId={itemId} isLoading={isLoading} />;
     }
 };
 
@@ -21,6 +23,7 @@ Feature.propTypes = {
     relatedNode: PropTypes.shape({
         id: PropTypes.string.isRequired,
     }),
+    isLoading: PropTypes.bool,
 };
 
 Feature.defaultProps = {};

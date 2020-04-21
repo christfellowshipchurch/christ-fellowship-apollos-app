@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Image, Animated, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { get } from 'lodash';
+import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
 
 import { styled, FeedView } from '@apollosproject/ui-kit';
@@ -17,7 +17,8 @@ import {
 import { LiveButton } from '../../live';
 import StatusBar from '../../ui/StatusBar';
 
-import { FeatureCollection } from '../../feature';
+import { FeatureCollection, Feature } from '../../feature';
+import { HorizontalDivider } from '../../ui/Dividers';
 
 import GET_FEED_FEATURES from './getFeedFeatures';
 
@@ -41,6 +42,15 @@ const Wordmark = () => {
   return <LogoTitle source={source} />;
 };
 
+const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
+
+const renderItem = ({ item }) => (
+  <>
+    <Feature {...item} />
+    <HorizontalDivider />
+  </>
+);
+
 const Home = ({ navigation }) => {
   const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
     fetchPolicy: 'cache-and-network',
@@ -51,14 +61,15 @@ const Home = ({ navigation }) => {
   };
 
   useEffect(() => setNavigationParam({ scrollY }), []);
+  const content = mapDataToActions(get(data, 'userFeedFeatures', []));
 
   return (
     <BackgroundView>
       <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
         <StatusBar />
         <FeedView
-          ListItemComponent={FeatureCollection}
-          content={get(data, 'userFeedFeatures', [])}
+          renderItem={renderItem}
+          content={content}
           isLoading={loading && !get(data, 'userFeedFeatures', []).length}
           error={error}
           refetch={refetch}

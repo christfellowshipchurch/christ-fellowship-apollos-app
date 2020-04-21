@@ -63,13 +63,15 @@ const renderItem = ({ item, index }) => {
     );
 };
 
-const GridFeed = ({ title, itemId }) => {
+const GridFeed = ({ title, itemId, isLoading }) => {
     const { loading, error, data } = useQuery(GET_CONTENT_FEED, {
         fetchPolicy: 'cache-and-network',
         variables: {
             itemId,
         },
     });
+
+    if (isLoading || loading) return <HighlightCard isLoading />;
 
     return (
         <FlatList

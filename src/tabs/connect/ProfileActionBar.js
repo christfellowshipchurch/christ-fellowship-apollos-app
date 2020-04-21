@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { get } from 'lodash';
+import { get, uniqueId } from 'lodash';
 
 import { withTheme, styled, ActivityIndicator } from '@apollosproject/ui-kit';
 
@@ -44,6 +44,7 @@ const ProfileActionBar = () => {
               icon={icon}
               label={name}
               tint={tints[i]}
+              key={uniqueId(`ProfileActionBar:${i}`)}
             />
           ))
         )}

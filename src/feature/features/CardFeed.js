@@ -61,10 +61,11 @@ const SectionHeader = ({ title, onPress, callToAction }) => (
     </RowHeader>
 );
 
-const mapData = (data, navigation) =>
+const mapData = (data, navigation, isLoading) =>
     get(data, 'node.childContentItemsConnection.edges', []).map(({ node }) => ({
         ...node,
         onPress: () => navigation.navigate('ContentSingle', { itemId: node.id }),
+        isLoading,
     }));
 
 const renderItem = ({ item, index }) => (
@@ -77,11 +78,13 @@ const renderItem = ({ item, index }) => (
     </TouchableScale>
 );
 
-const CardFeed = ({ title, itemId, navigation }) => {
+const CardFeed = ({ title, itemId, navigation, isLoading }) => {
     const { loading, error, data } = useQuery(GET_CONTENT_FEED, {
         fetchPolicy: 'cache-and-network',
         variables: { itemId, first: 4 },
     });
+
+    if (isLoading || loading) return <HighlightCard isLoading />;
 
     return (
         <FlatList
@@ -97,7 +100,7 @@ const CardFeed = ({ title, itemId, navigation }) => {
                     }}
                 />
             )}
-            data={mapData(data, navigation)}
+            data={mapData(data, navigation, isLoading || loading)}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={false}

@@ -52,6 +52,12 @@ const onboarding = ({ colors: themeColors, alpha, sizing }) => ({
             tertiary: themeColors.tertiary,
         },
     },
+    buttons: {
+        primary: {
+            fill: '#ffffff',
+            accent: '#000000',
+        },
+    },
 });
 
 export default onboarding;

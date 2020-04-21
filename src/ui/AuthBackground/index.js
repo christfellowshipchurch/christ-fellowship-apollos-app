@@ -19,6 +19,6 @@ export default ({ children }) => (
             translucent
         />
         <Overlay />
-        {children}
+        <View>{children}</View>
     </ImageBackground>
 );
