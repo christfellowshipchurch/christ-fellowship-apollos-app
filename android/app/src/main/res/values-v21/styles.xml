@@ -3,16 +3,19 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
     <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
         <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
     <style name="SplashScreenTheme" parent="SplashScreen_SplashTheme">
         <item name="android:statusBarColor">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary</item>
+        <item name="android:windowTranslucentStatus">false</item>
     </style>
 
 </resources>
