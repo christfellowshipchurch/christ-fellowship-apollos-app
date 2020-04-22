@@ -21,8 +21,6 @@ const LiveLabel = withTheme()(
                 padding: theme.sizing.baseUnit * 0.3,
                 marginLeft: -theme.sizing.baseUnit * 0.3,
                 marginBottom: theme.sizing.baseUnit * 0.5,
-                flexDirection: 'row',
-                alignItems: 'center',
             }
             : {};
 

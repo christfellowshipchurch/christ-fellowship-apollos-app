@@ -4,14 +4,9 @@ import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import moment from 'moment';
 
+import { LiveConsumer } from '@apollosproject/ui-connected';
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
 import GET_CONTENT_CARD from './query';
-
-export { BASE_CARD_FRAGMENT } from './query';
-// TODO: Replace passing a Card as a prop with using the component mapper.
-// export contentCardComponentMapper from './contentCardComponentMapper'
-
-export { TILE_CARD_FRAGMENT, ACCESSORY_FRAGMENT } from './query';
 
 const ContentCardConnected = ({
   contentId,
@@ -27,47 +22,55 @@ const ContentCardConnected = ({
     });
 
   return (
-    <Query
-      query={GET_CONTENT_CARD}
-      variables={{ contentId, tile: !!tile }}
-      fetchPolicy="cache-and-network"
-    >
-      {({ data: { node = {} } = {}, loading, error }) => {
-        if (error) return <ErrorCard error={error} />;
+    <LiveConsumer contentId={contentId}>
+      {(liveStream) => (
+        <Query
+          query={GET_CONTENT_CARD}
+          variables={{ contentId, tile: !!tile }}
+          fetchPolicy="cache-and-network"
+        >
+          {({ data: { node = {} } = {}, loading, error }) => {
+            if (error) return <ErrorCard error={error} />;
 
-        // const metrics = [
-        //   {
-        //     icon: node.isLiked ? 'like-solid' : 'like',
-        //     value: node.likedCount,
-        //   },
-        // ]
+            // const metrics = [
+            //   {
+            //     icon: node.isLiked ? 'like-solid' : 'like',
+            //     value: node.likedCount,
+            //   },
+            // ]
 
-        const typename = get(node, '__typename', '');
-        const coverImage = get(node, 'coverImage.sources', undefined);
-        let label = get(otherProps, 'label', '');
+            const typename = get(node, '__typename', '');
+            const coverImage = get(node, 'coverImage.sources', undefined);
+            let label = get(otherProps, 'label', '');
+            const isLive = !!(liveStream && liveStream.isLive);
 
-        if (typename === 'EventContentItem') {
-          const hideLabel = get(node, 'hideLabel', false);
-          const comingSoon = hideLabel ? '' : 'Dates Coming Soon';
+            if (typename === 'EventContentItem') {
+              const hideLabel = get(node, 'hideLabel', false);
+              const comingSoon = hideLabel ? '' : 'Dates Coming Soon';
 
-          label = node.events.length
-            ? moment(get(node, 'nextOccurrence', new Date())).format('MMM D')
-            : comingSoon;
-        }
+              label = node.events.length
+                ? moment(get(node, 'nextOccurrence', new Date())).format(
+                  'MMM D'
+                )
+                : comingSoon;
+            }
 
-        return React.createElement(card, {
-          ...node,
-          ...otherProps,
-          coverImage,
-          // metrics,
-          tile,
-          isLoading: loading,
-          label,
-          labelText: label, // for the Highlight Card
-          isLiked: null, // hide the heart icon
-        });
-      }}
-    </Query>
+            return React.createElement(card, {
+              ...node,
+              ...otherProps,
+              coverImage,
+              // metrics,
+              tile,
+              isLoading: loading,
+              label,
+              labelText: label, // for the Highlight Card
+              isLiked: null, // hide the heart icon
+              isLive,
+            });
+          }}
+        </Query>
+      )}
+    </LiveConsumer>
   );
 };
 

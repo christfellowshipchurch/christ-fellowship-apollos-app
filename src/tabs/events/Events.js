@@ -8,7 +8,7 @@ import { withNavigation, SafeAreaView } from 'react-navigation';
 
 import { FeedView, H3, TouchableScale, styled } from '@apollosproject/ui-kit';
 
-import { TileRowCard } from 'ChristFellowship/src/ui/Cards';
+import ActionRow from 'ChristFellowship/src/ui/ActionRow';
 import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
 import StatusBar from '../../ui/StatusBar';
 
@@ -21,7 +21,7 @@ import {
 import { GET_EVENTS } from './queries';
 
 const EventContentItemRow = ({ id }) => (
-  <ContentCardConnected card={TileRowCard} contentId={id} />
+  <ContentCardConnected card={ActionRow} contentId={id} />
 );
 
 // Event Collection Component
@@ -77,7 +77,7 @@ const Events = ({ navigation }) => {
 
   // eslint-disable-next-line react/prop-types
   const renderItem = ({ item, isLoading }) => (
-    <TouchableScale key={item.id} onPress={() => onPress({ id })}>
+    <TouchableScale key={item.id} onPress={() => handleOnPress(item)}>
       <EventContentItemRow id={item.id} />
     </TouchableScale>
   );

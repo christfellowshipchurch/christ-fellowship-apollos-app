@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Picker as NativePicker } from 'react-native';
+import { Picker as NativePicker, View } from 'react-native';
 import {
   get,
   identity,
@@ -84,7 +84,7 @@ const CampusSelection = ({ loading, campuses, onChange, defaultCampus }) => {
 
   return (
     <Touchable onPress={() => setFocused(!focused)}>
-      <CampusContainer>
+      <View>
         <H4 isLoading={loading}>{selected}</H4>
 
         {!loading && <H6>{selected !== selectLocation && 'Change'}</H6>}
@@ -110,7 +110,7 @@ const CampusSelection = ({ loading, campuses, onChange, defaultCampus }) => {
             <NativePicker.Item key={i} label={o} value={i} />
           ))}
         </PickerList>
-      </CampusContainer>
+      </View>
     </Touchable>
   );
 };
