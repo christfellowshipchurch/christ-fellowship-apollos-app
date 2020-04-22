@@ -128,5 +128,19 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    LIVE_STREAM_FRAGMENT: gql`
+      fragment LiveStreamFragment on LiveStream {
+        isLive
+        media {
+          sources {
+            uri
+          }
+        }
+
+        contentItem {
+          id
+        }
+      }
+    `,
   },
 });
