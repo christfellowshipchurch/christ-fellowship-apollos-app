@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, StatusBar } from 'react-native';
 import { BackgroundView as ApollosBackgroundView } from '@apollosproject/ui-kit';
 import HeaderRight from './HeaderRight';
 
@@ -31,6 +31,7 @@ export const navigationOptions = {
         shadowColor: 'transparent',
         elevation: 0,
         borderBottomWidth: 0,
+        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
     },
     headerTitleStyle: {
         fontSize: 24,
