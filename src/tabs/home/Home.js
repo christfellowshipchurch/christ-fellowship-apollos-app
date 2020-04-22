@@ -14,10 +14,9 @@ import {
   NavigationBackground,
   NavigationSpacer,
 } from '../navigation';
-import { LiveButton } from '../../live';
 import StatusBar from '../../ui/StatusBar';
 
-import { FeatureCollection, Feature } from '../../feature';
+import { Feature } from '../../feature';
 import { HorizontalDivider } from '../../ui/Dividers';
 
 import GET_FEED_FEATURES from './getFeedFeatures';
