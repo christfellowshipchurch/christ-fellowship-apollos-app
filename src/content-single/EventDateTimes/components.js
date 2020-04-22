@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform, Linking } from 'react-native';
 import Color from 'color';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
@@ -50,7 +50,7 @@ export const ScheduleContainer = styled(({ theme }) => ({
 }))(View);
 
 export const CampusContainer = styled(({ theme }) => ({
-  marginBottom: theme.sizing.baseUnit,
+  // marginBottom: theme.sizing.baseUnit,
 }))(View);
 
 export const ContentContainer = styled(({ theme }) => ({

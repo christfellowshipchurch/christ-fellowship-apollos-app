@@ -18,9 +18,13 @@ import {
   ContentHTMLViewConnected,
   HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
+  LiveConsumer,
 } from '@apollosproject/ui-connected';
+
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
+import LiveLabel from '../../ui/LiveLabel';
+import BlurView from '../../ui/BlurView';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -28,32 +32,24 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
   marginTop: -(theme.sizing.baseUnit * 2.5),
 }))(MediaControlsConnected);
 
-const TitleContainer = styled(() => ({
+const TitleContainer = styled(({ theme, contentAware }) => ({
   position: 'absolute',
-  bottom: 0,
+  bottom: 0 + (contentAware ? theme.sizing.baseUnit * 2.5 : 0),
   left: 0,
-  width: '100%',
+  // width: '100%',
 }))(PaddedView);
 
 const Title = styled(({ theme }) => ({
-  color: theme.colors.white,
+  // color: theme.colors.white,
 }))(H2);
 
 const Summary = styled(({ theme }) => ({
-  color: theme.colors.white,
+  // color: theme.colors.white,
 }))(BodyText);
 
 const StyledButton = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
 }))(Button);
-
-const Subtitle = withTheme(({ theme, extraSpacing }) => ({
-  style: {
-    marginTop: extraSpacing
-      ? theme.sizing.baseUnit
-      : theme.sizing.baseUnit * 0.5,
-  },
-}))(H4);
 
 // TODO : temp fix until Core resolves the bug where images would disappear when pulling down
 const StretchyView = ({ children, ...props }) =>
@@ -69,93 +65,106 @@ const EventContentItem = ({ content, loading }) => {
   const events = get(content, 'events', []);
 
   return (
-    <BackgroundView>
-      <StretchyView>
-        {({ Stretchy, ...scrollViewProps }) => (
-          <FlexedScrollView {...scrollViewProps}>
-            <View>
-              {coverImageSources.length || loading ? (
-                <Stretchy>
-                  <GradientOverlayImage
-                    isLoading={!coverImageSources.length && loading}
-                    source={coverImageSources}
-                    overlayColor={'black'}
-                    overlayType="gradient-bottom"
-                    // Sets the ratio of the image
-                    minAspectRatio={1}
-                    maxAspectRatio={1}
-                    // Sets the ratio of the placeholder
-                    forceRatio={1}
-                    // No ratios are respected without this
-                    maintainAspectRatio
+    <LiveConsumer contentId={content.id}>
+      {(liveStream) => {
+        const isLive = !!(liveStream && liveStream.isLive);
+
+        return (
+          <BackgroundView>
+            <StretchyView>
+              {({ Stretchy, ...scrollViewProps }) => (
+                <FlexedScrollView {...scrollViewProps}>
+                  <View>
+                    {coverImageSources.length || loading ? (
+                      <Stretchy>
+                        <GradientOverlayImage
+                          isLoading={!coverImageSources.length && loading}
+                          source={coverImageSources}
+                          // overlayColor={'black'}
+                          // overlayType="gradient-bottom"
+                          // Sets the ratio of the image
+                          minAspectRatio={1}
+                          maxAspectRatio={1}
+                          // Sets the ratio of the placeholder
+                          forceRatio={1}
+                          // No ratios are respected without this
+                          maintainAspectRatio
+                        />
+                      </Stretchy>
+                    ) : null}
+                  </View>
+
+                  <StyledMediaControlsConnected contentId={content.id} />
+                  <PaddedView>
+                    {isLive && (
+                      <View style={{ position: 'relative' }}>
+                        <LiveLabel />
+                      </View>
+                    )}
+
+                    <Title isLoading={!content.title && loading}>
+                      {content.title}
+                    </Title>
+
+                    <Summary isLoading={!content.summary && loading}>
+                      {content.summary}
+                    </Summary>
+
+                    {events.length < 1 &&
+                      callsToAction.length > 0 && (
+                        <H4 isLoading={loading}>{buttonLabel}</H4>
+                      )}
+
+                    {events.length < 1 &&
+                      callsToAction.length < 1 && (
+                        <H4 isLoading={loading}>
+                          Check Back Soon for More Information
+                        </H4>
+                      )}
+
+                    {events.length > 0 && (
+                      <EventDateTimes
+                        contentId={content.id}
+                        events={content.events}
+                        loading={loading}
+                      />
+                    )}
+
+                    {callsToAction.length > 0 &&
+                      callsToAction.map((n) => (
+                        <StyledButton
+                          key={`${n.call}:${n.action}`}
+                          isLoading={loading}
+                          title={n.call}
+                          pill={false}
+                          onPress={() => {
+                            Linking.canOpenURL(n.action).then((supported) => {
+                              if (supported) {
+                                Linking.openURL(n.action);
+                              } else {
+                                console.log(
+                                  `Don't know how to open URI: ${n.action}`
+                                );
+                              }
+                            });
+                          }}
+                        />
+                      ))}
+
+                    <ContentHTMLViewConnected contentId={content.id} />
+                    <Features contentId={content.id} />
+                  </PaddedView>
+                  <HorizontalContentSeriesFeedConnected
+                    contentId={content.id}
+                    relatedTitle="Events"
                   />
-                </Stretchy>
-              ) : null}
-
-              <TitleContainer>
-                <Title isLoading={!content.title && loading}>
-                  {content.title}
-                </Title>
-                <Summary isLoading={!content.summary && loading}>
-                  {content.summary}
-                </Summary>
-              </TitleContainer>
-            </View>
-
-            <StyledMediaControlsConnected contentId={content.id} />
-            <PaddedView>
-              {events.length < 1 &&
-                callsToAction.length > 0 && (
-                  <H4 isLoading={loading}>{buttonLabel}</H4>
-                )}
-
-              {events.length < 1 &&
-                callsToAction.length < 1 && (
-                  <H4 isLoading={loading}>
-                    Check Back Soon for More Information
-                  </H4>
-                )}
-
-              {events.length > 0 && (
-                <EventDateTimes
-                  contentId={content.id}
-                  events={content.events}
-                  loading={loading}
-                />
+                </FlexedScrollView>
               )}
-
-              {callsToAction.length > 0 &&
-                callsToAction.map((n) => (
-                  <StyledButton
-                    key={`${n.call}:${n.action}`}
-                    isLoading={loading}
-                    title={n.call}
-                    pill={false}
-                    onPress={() => {
-                      Linking.canOpenURL(n.action).then((supported) => {
-                        if (supported) {
-                          Linking.openURL(n.action);
-                        } else {
-                          console.log(
-                            `Don't know how to open URI: ${n.action}`
-                          );
-                        }
-                      });
-                    }}
-                  />
-                ))}
-
-              <ContentHTMLViewConnected contentId={content.id} />
-              <Features contentId={content.id} />
-            </PaddedView>
-            <HorizontalContentSeriesFeedConnected
-              contentId={content.id}
-              relatedTitle="Events"
-            />
-          </FlexedScrollView>
-        )}
-      </StretchyView>
-    </BackgroundView>
+            </StretchyView>
+          </BackgroundView>
+        );
+      }}
+    </LiveConsumer>
   );
 };
 
