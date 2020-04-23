@@ -35,6 +35,7 @@ const CategoryList = ({ filterId }) => {
       refetch={refetch}
       renderItem={renderItem}
       loadingStateObject={feedItemLoadingState}
+      numColumns={1}
     />
   );
 };

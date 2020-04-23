@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Color from 'color';
+import { withProps } from 'recompose';
 
 import {
   GradientOverlayImage,
@@ -21,6 +22,8 @@ import {
   TouchableScale,
   Icon,
   UIText,
+  SideBySideView,
+  withMediaQuery,
 } from '@apollosproject/ui-kit';
 
 import {
@@ -32,6 +35,12 @@ import {
 import StatusBar from '../../ui/StatusBar';
 import { useCurrentUser } from '../../hooks';
 import ProfileActionBar from './ProfileActionBar';
+
+const CardLayout = withMediaQuery(
+  ({ md }) => ({ maxWidth: md }),
+  withProps({ Component: View }),
+  withProps({ Component: SideBySideView })
+)(({ Component, ...props }) => <Component {...props} />);
 
 const FeaturedImage = withTheme(({ theme }) => ({
   overlayColor: theme.colors.black,
@@ -158,6 +167,8 @@ const Connect = ({ navigation }) => {
     'state',
     ''
   )} ${get(address, 'postalCode', '').substring(0, 5)}`;
+  const hasPhoneNumber = !!phoneNumber && phoneNumber !== '';
+  const hasEmail = !!email && email !== '';
 
   return (
     <BackgroundView>
@@ -183,37 +194,48 @@ const Connect = ({ navigation }) => {
       </ThemeMixin>
       <ProfileActionBar />
       <ScrollView>
-        <Card>
-          <CardContent>
-            <CardTitle>My Info</CardTitle>
-            <H4>Home Address</H4>
-            <StyledBodyText>{formattedAddress}</StyledBodyText>
-            <Divider />
+        <CardLayout>
+          <Card style={{ flex: 1 }}>
+            <CardContent>
+              <CardTitle>My Info</CardTitle>
+              <H4>Home Address</H4>
+              <StyledBodyText>{formattedAddress}</StyledBodyText>
+              <Divider />
 
-            <H4>Birthday</H4>
-            <StyledBodyText>
-              {moment(birthDate).format('MMM D, YYYY')}
-            </StyledBodyText>
-            <Divider />
+              <H4>Birthday</H4>
+              <StyledBodyText>
+                {moment(birthDate).format('MMM D, YYYY')}
+              </StyledBodyText>
+              <Divider />
 
-            <H4>Gender</H4>
-            <StyledBodyText>{gender}</StyledBodyText>
-          </CardContent>
-        </Card>
+              <H4>Gender</H4>
+              <StyledBodyText>{gender}</StyledBodyText>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardContent>
-            <CardTitle>Contact Info</CardTitle>
-            <H4>Phone Number</H4>
-            <StyledBodyText>{phoneNumber}</StyledBodyText>
-            <CheckBoxRow active={allowSMS} type="Text messaging" />
-            <Divider />
+          <Card style={{ flex: 1 }}>
+            <CardContent>
+              <CardTitle>Contact Info</CardTitle>
+              {hasPhoneNumber && (
+                <>
+                  <H4>Phone Number</H4>
+                  <StyledBodyText>{phoneNumber}</StyledBodyText>
+                  <CheckBoxRow active={allowSMS} type="Text messaging" />
+                </>
+              )}
 
-            <H4>Email</H4>
-            <StyledBodyText>{email}</StyledBodyText>
-            <CheckBoxRow active={allowEmail} type="Email" />
-          </CardContent>
-        </Card>
+              {hasPhoneNumber && hasEmail && <Divider />}
+
+              {hasEmail && (
+                <>
+                  <H4>Email</H4>
+                  <StyledBodyText>{email}</StyledBodyText>
+                  <CheckBoxRow active={allowEmail} type="Email" />
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </CardLayout>
       </ScrollView>
     </BackgroundView>
   );
