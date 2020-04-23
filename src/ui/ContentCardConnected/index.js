@@ -24,13 +24,9 @@ const ContentCardConnected = ({
   return (
     <LiveConsumer contentId={contentId}>
       {(liveStream) => (
-        <Query
-          query={GET_CONTENT_CARD}
-          variables={{ contentId, tile: !!tile }}
-          fetchPolicy="cache-and-network"
-        >
+        <Query query={GET_CONTENT_CARD} variables={{ contentId, tile: !!tile }}>
           {({ data: { node = {} } = {}, loading, error }) => {
-            if (error) return <ErrorCard error={error} />;
+            if (error && !loading && !node) return <ErrorCard error={error} />;
 
             // const metrics = [
             //   {
