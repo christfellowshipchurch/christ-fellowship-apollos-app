@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView, Linking } from 'react-native';
+import React, { useEffect } from 'react';
+import { ScrollView } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
@@ -51,11 +51,13 @@ const Menu = ({ onPress }) => {
         fetchPolicy: 'cache-and-network',
     });
 
-    if (loading)
+    if (loading && !data)
         return (
             <BackgroundView>
-                <ActivityIndicator />
-                <Logout />
+                <ScrollView>
+                    <ActivityIndicator />
+                    <Logout />
+                </ScrollView>
             </BackgroundView>
         );
 
@@ -68,8 +70,6 @@ const Menu = ({ onPress }) => {
         <ThemeMixin>
             <BackgroundView>
                 <ScrollView>
-                    {loading && <ActivityIndicator />}
-
                     {get(data, 'moreLinks', []).map(({ name, ...props }, i) => (
                         <TableWithLinks
                             key={name}
