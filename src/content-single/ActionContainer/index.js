@@ -1,7 +1,12 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { SideBySideView, styled } from '@apollosproject/ui-kit';
+import {
+  SideBySideView,
+  styled,
+  withTheme,
+  ThemeMixin,
+} from '@apollosproject/ui-kit';
 import { MediaPlayerSpacer } from '@apollosproject/ui-media-player';
 import {
   LikeButtonConnected,
@@ -19,16 +24,22 @@ const Container = styled(({ theme }) => ({
   ...Platform.select(theme.shadows.default),
 }))(View);
 
-const ActionContainer = ({ itemId }) => (
-  <Container>
-    <MediaPlayerSpacer>
-      <PositioningView>
-        {/* <LikeButtonConnected itemId={itemId} /> */}
-        <ShareButtonConnected itemId={itemId} />
-      </PositioningView>
-    </MediaPlayerSpacer>
-  </Container>
-);
+const StyledShareButtonConnected = styled(({ theme }) => ({
+  color: theme.colors.primary,
+}))(ShareButtonConnected);
+
+const ActionContainer = withTheme()(({ itemId, theme }) => (
+  <ThemeMixin mixin={{ colors: { secondary: theme.colors.primary } }}>
+    <Container>
+      <MediaPlayerSpacer>
+        <PositioningView>
+          {/* <LikeButtonConnected itemId={itemId} /> */}
+          <StyledShareButtonConnected itemId={itemId} />
+        </PositioningView>
+      </MediaPlayerSpacer>
+    </Container>
+  </ThemeMixin>
+));
 
 ActionContainer.propTypes = {
   content: PropTypes.shape({}),

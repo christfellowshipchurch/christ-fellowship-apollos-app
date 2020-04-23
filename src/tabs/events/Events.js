@@ -5,8 +5,15 @@ import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import moment from 'moment';
 import { withNavigation, SafeAreaView } from 'react-navigation';
+import { withProps } from 'recompose';
 
-import { FeedView, H3, TouchableScale, styled } from '@apollosproject/ui-kit';
+import {
+  FeedView,
+  H3,
+  TouchableScale,
+  styled,
+  withMediaQuery,
+} from '@apollosproject/ui-kit';
 
 import ActionRow from 'ChristFellowship/src/ui/ActionRow';
 import ContentCardConnected from 'ChristFellowship/src/ui/ContentCardConnected';
@@ -58,6 +65,12 @@ EventCollection.propTypes = {
   onPress: PropTypes.func,
 };
 
+const FeedWithMediaQuery = withMediaQuery(
+  ({ md }) => ({ maxWidth: md }),
+  withProps({ numColumns: 1 }),
+  withProps({ numColumns: 2 })
+)(FeedView);
+
 // Events Component (default export)
 const Events = ({ navigation }) => {
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
@@ -77,7 +90,11 @@ const Events = ({ navigation }) => {
 
   // eslint-disable-next-line react/prop-types
   const renderItem = ({ item, isLoading }) => (
-    <TouchableScale key={item.id} onPress={() => handleOnPress(item)}>
+    <TouchableScale
+      key={item.id}
+      onPress={() => handleOnPress(item)}
+      style={{ flex: 1 }}
+    >
       <EventContentItemRow id={item.id} />
     </TouchableScale>
   );
@@ -101,7 +118,7 @@ const Events = ({ navigation }) => {
         forceInset={{ bottom: 'never', top: 'always' }}
       >
         <StatusBar />
-        <FeedView
+        <FeedWithMediaQuery
           ListFooterComponent={<View style={{ height: HEADER_OFFSET }} />}
           style={{
             paddingTop: HEADER_OFFSET,

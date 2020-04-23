@@ -5,7 +5,8 @@ import { SafeAreaView } from 'react-navigation';
 import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
 
-import { styled, FeedView } from '@apollosproject/ui-kit';
+import { styled, FeedView, withMediaQuery } from '@apollosproject/ui-kit';
+import { withProps } from 'recompose';
 
 import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 import {
@@ -41,14 +42,21 @@ const Wordmark = () => {
   return <LogoTitle source={source} />;
 };
 
+const FeedWithMediaQuery = withMediaQuery(
+  ({ md }) => ({ maxWidth: md }),
+  withProps({ numColumns: 1 }),
+  withProps({ numColumns: 2 })
+)(FeedView);
+
 const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
 
-const renderItem = ({ item }) => (
-  <>
-    <Feature {...item} />
-    <HorizontalDivider />
-  </>
-);
+const renderItem = ({ item }) =>
+  item.action ? (
+    <>
+      <Feature {...item} />
+      <HorizontalDivider />
+    </>
+  ) : null;
 
 const Home = ({ navigation }) => {
   const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
@@ -72,12 +80,7 @@ const Home = ({ navigation }) => {
           isLoading={loading && !get(data, 'userFeedFeatures', []).length}
           error={error}
           refetch={refetch}
-          ListHeaderComponent={
-            <View>
-              <NavigationSpacer />
-              {/* <LiveButton key="HomeFeedLiveButton" /> */}
-            </View>
-          }
+          ListHeaderComponent={<NavigationSpacer />}
           scrollEventThrottle={16}
           onScroll={Animated.event([
             {

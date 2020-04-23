@@ -75,6 +75,11 @@ export const GET_PROFILE_ACTIONS = gql`
       uri
       icon
       openInApp
+      theme {
+        colors {
+          primary
+        }
+      }
     }
   }
 `;

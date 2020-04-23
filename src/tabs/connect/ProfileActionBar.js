@@ -2,7 +2,8 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { get, uniqueId } from 'lodash';
 
-import { withTheme, styled, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, ActivityIndicator, ThemeMixin } from '@apollosproject/ui-kit';
+import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
 
 import ActionBar, { ActionBarItem } from '../../ui/ActionBar';
 
@@ -13,17 +14,6 @@ const StyledActionBar = styled(({ theme }) => ({
   marginTop: theme.sizing.baseUnit,
 }))(ActionBar);
 
-const StyledActionBarItem = withTheme(({ theme, tint }) => ({
-  tint: theme.colors[tint],
-
-  style: {
-    flex: 1,
-    alignItems: 'center',
-  },
-}))(ActionBarItem);
-
-const tints = ['alert', 'warning', 'success'];
-
 const ProfileActionBar = () => {
   const { loading, error, data } = useQuery(GET_PROFILE_ACTIONS, {
     fetchPolicy: 'cache-and-network',
@@ -33,23 +23,34 @@ const ProfileActionBar = () => {
 
   if ((error && !loading) || (!loading && data && !actions.length)) return null;
 
-  return (
+  return actions.length && !loading ? (
     <StyledActionBar>
       {loading ? (
         <ActivityIndicator />
       ) : (
-          actions.map(({ icon, name, uri, openInApp }, i) => (
-            <StyledActionBarItem
-              onPress={() => openLink({ uri, openInApp, title: name })}
-              icon={icon}
-              label={name}
-              tint={tints[i]}
-              key={uniqueId(`ProfileActionBar:${i}`)}
-            />
+          actions.map(({ icon, name, uri, openInApp, theme = {} }, i) => (
+            <AnalyticsConsumer>
+              {({ track }) => (
+                <ThemeMixin mixin={theme}>
+                  <ActionBarItem
+                    onPress={() => {
+                      track({
+                        eventName: 'Pressed Profile Action Bar Item',
+                        properties: { label: name },
+                      });
+                      openLink({ uri, openInApp, title: name });
+                    }}
+                    icon={icon}
+                    label={name}
+                    key={uniqueId(`ProfileActionBar:${i}`)}
+                  />
+                </ThemeMixin>
+              )}
+            </AnalyticsConsumer>
           ))
         )}
     </StyledActionBar>
-  );
+  ) : null;
 };
 
 ProfileActionBar.propTypes = {};
