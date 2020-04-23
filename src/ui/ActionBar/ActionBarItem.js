@@ -2,14 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
-import {
-  styled,
-  Touchable,
-  UIText,
-  H6,
-  Icon,
-  withTheme,
-} from '@apollosproject/ui-kit';
+import { styled, Touchable, H6, Icon, withTheme } from '@apollosproject/ui-kit';
 
 const ActionBarItemWrapper = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit,
@@ -17,21 +10,34 @@ const ActionBarItemWrapper = styled(({ theme }) => ({
   justifyContent: 'center',
 }))(View);
 
+const StyledIcon = withTheme(({ theme }) => ({
+  fill: theme.colors.primary,
+}))(Icon);
+
+const StyledLabel = styled(({ theme }) => ({
+  textAlign: 'center',
+  color: theme.colors.primary,
+}))(H6);
+
+const StyledTouchable = styled(({ theme }) => ({
+  flex: 1,
+  alignItems: 'center',
+}))(Touchable);
+
 const ActionBarItem = ({
   icon = 'empty',
-  tint,
   size,
   label = '',
   ...touchableProps
 }) => (
-    <Touchable {...touchableProps}>
+    <StyledTouchable {...touchableProps}>
       <ActionBarItemWrapper>
-        <Icon fill={tint} size={size} name={icon} />
+        <StyledIcon size={size} name={icon} />
 
         {/* using stlye object here is just as efficient as creating a new styled component with prop, since UIText is already a styled component */}
-        <H6 style={{ color: tint, textAlign: 'center' }}>{label}</H6>
+        <StyledLabel>{label}</StyledLabel>
       </ActionBarItemWrapper>
-    </Touchable>
+    </StyledTouchable>
   );
 
 ActionBarItem.propTypes = {
