@@ -63,6 +63,8 @@ const Dropdown = ({
     if (focused) onFocus();
     else onBlur();
 
+    console.log({ error });
+
     return (
         <InputWrapper style={wrapperStyle}>
             <TouchableOpacity onPress={handleOnPress}>
