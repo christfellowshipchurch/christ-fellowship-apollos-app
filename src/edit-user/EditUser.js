@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { get } from 'lodash';
+import { get, has } from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Color from 'color';
@@ -109,7 +109,7 @@ const EditUser = ({
     error: optionsError,
     data: optionData,
   } = useQuery(GET_FIELD_OPTIONS, { fetchPolicy: 'cache-and-network' });
-  const { values, setValue } = useForm({
+  const { values, setValue, errors } = useForm({
     defaultValues: {
       ...address,
       campus,
@@ -122,7 +122,18 @@ const EditUser = ({
       allowSMS,
       allowEmail,
     },
+    validation: {
+      birthDate: (newBirthDate) => {
+        if (moment(newBirthDate).isAfter(moment().subtract(13, 'years'))) {
+          return 'You must be at least 13 to create an account';
+        }
+
+        return false;
+      },
+    },
   });
+
+  console.log({ errors });
 
   const loading = userLoading || optionsLoading;
   const error = userError || optionsError;
@@ -155,9 +166,11 @@ const EditUser = ({
               <H4>{`${firstName} ${lastName}`}</H4>
               <TouchableScale
                 onPress={() => updateProfile(values)}
-                disabled={loading}
+                disabled={loading || get(errors, 'birthDate')}
               >
-                <SaveButton disabled={loading}>Save</SaveButton>
+                <SaveButton disabled={loading || get(errors, 'birthDate')}>
+                  Save
+                </SaveButton>
               </TouchableScale>
             </AvatarContainer>
           </SafeAreaView>
@@ -252,6 +265,7 @@ const EditUser = ({
               }
               onConfirm={(newBirthDate) => setValue('birthDate', newBirthDate)}
               disabled={disabled}
+              error={get(errors, 'birthDate')}
             />
           </FieldContainer>
 
@@ -315,6 +329,10 @@ EditUser.propTypes = {
   lastName: PropTypes.string,
   gender: PropTypes.string,
   updateProfile: PropTypes.func.isRequired,
+  communicationPreferences: PropTypes.shape({
+    allowSMS: PropTypes.bool,
+    allowEmail: PropTypes.bool,
+  }),
 };
 
 EditUser.defaultProps = {
@@ -336,6 +354,10 @@ EditUser.defaultProps = {
   firstName: '',
   lastName: '',
   gender: '',
+  communicationPreferences: {
+    allowSMS: false,
+    allowEmail: false,
+  },
 };
 
 export default EditUser;
