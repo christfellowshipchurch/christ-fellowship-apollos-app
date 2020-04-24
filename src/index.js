@@ -1,6 +1,5 @@
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import React from 'react';
-import { StatusBar as CoreStatusBar } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { useDarkModeContext } from 'react-native-dark-mode';
@@ -21,12 +20,10 @@ import ContentSingle from './content-single';
 import { RowContentFeed } from './content-feed';
 import Tabs from './tabs';
 import UserWebBrowser from './user-web-browser';
-import PrivacyPolicy from './privacy-policy';
 import { CurrentUserProfile as Connect } from './profile';
 import EditUser from './edit-user';
 import Settings from './settings';
 
-import InlineWebView from './inline-web-view';
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
 import AuthBackground from './ui/AuthBackground';
@@ -87,8 +84,6 @@ const AppNavigator = createStackNavigator(
     EditUser,
     Settings,
     Location,
-    PrivacyPolicy,
-    InlineWebView,
   },
   {
     initialRouteName: 'ProtectedRoute',
