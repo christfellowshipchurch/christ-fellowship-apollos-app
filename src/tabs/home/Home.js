@@ -31,9 +31,7 @@ const LogoTitle = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
   marginHorizontal: theme.sizing.baseUnit,
   height: 24,
-  alignSelf: 'center',
   resizeMode: 'contain',
-  width: '50%',
 }))(Image);
 
 const Wordmark = () => {
@@ -108,7 +106,11 @@ Home.navigationOptions = ({ navigation, theme }) => ({
       scrollY={get(navigation, 'state.params.scrollY', new Animated.Value(0))}
     />
   ),
-  headerTitle: <Wordmark />,
+  headerTitle: (
+    <View>
+      <Wordmark />
+    </View>
+  ),
   title: 'Home',
 });
 
