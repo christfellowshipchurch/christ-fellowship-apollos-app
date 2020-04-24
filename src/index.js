@@ -18,7 +18,7 @@ import StatusBar from './ui/StatusBar';
 import Providers from './Providers';
 import NavigationService from './NavigationService';
 import ContentSingle from './content-single';
-import { RowContentFeed } from './content-feed';
+import ContentFeed from './content-feed';
 import Tabs from './tabs';
 import UserWebBrowser from './user-web-browser';
 import PrivacyPolicy from './privacy-policy';
@@ -59,7 +59,7 @@ const ProtectedRouteWithSplashScreen = (props) => {
 const AppContent = createStackNavigator(
   {
     Tabs,
-    RowContentFeed,
+    ContentFeed,
     UserWebBrowser,
   },
   {
