@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Animated } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { Query } from 'react-apollo';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -17,10 +16,15 @@ import {
 } from '@apollosproject/ui-kit';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import ActionRow from '../../ui/ActionRow';
-import { navigationOptions, NavigationSpacer } from '../../navigation';
+import ActionRow from '../ui/ActionRow';
+import ContentCardConnected from '../ui/ContentCardConnected';
+import {
+  navigationOptions,
+  NavigationSpacer,
+  useHeaderScrollEffect,
+} from '../navigation';
 
-import GET_CONTENT_FEED from '../getContentFeed';
+import GET_CONTENT_FEED from './getContentFeed';
 
 const HeaderTitle = styled(() => ({
   flex: 4,
@@ -88,7 +92,7 @@ const mapData = (data) =>
  * This is where the component description lives
  * A FeedView wrapped in a query to pull content data.
  */
-const ContentRowFeed = ({ navigation }) => {
+const ContentFeed = ({ navigation, Component, card }) => {
   const itemId = navigation.getParam('itemId', []);
   const { loading, error, data, refetch } = useQuery(GET_CONTENT_FEED, {
     fetchPolicy: 'cache-and-network',
@@ -96,7 +100,7 @@ const ContentRowFeed = ({ navigation }) => {
       itemId,
     },
   });
-  const [scrollY, setScrollY] = useState(new Animated.Value(0));
+  const { scrollY } = useHeaderScrollEffect({ navigation });
   /** Function that is called when a card in the feed is pressed.
    * Takes the user to the ContentSingle
    */
@@ -107,15 +111,18 @@ const ContentRowFeed = ({ navigation }) => {
     });
   };
 
+  const ContentCard = (props) => (
+    <ContentCardConnected card={card} {...props} />
+  );
+
   return (
     <BackgroundView>
       <SafeAreaView>
         <FeedView
-          ListItemComponent={ActionRow}
+          ListItemComponent={Component || ContentCard}
           content={mapData(data)}
           isLoading={loading}
           error={error}
-          refetch={refetch}
           onPressItem={handleOnPress}
           ListHeaderComponent={<NavigationSpacer />}
           scrollEventThrottle={16}
@@ -132,15 +139,14 @@ const ContentRowFeed = ({ navigation }) => {
   );
 };
 
-ContentRowFeed.navigationOptions = ({ navigation, ...props }) =>
+ContentFeed.navigationOptions = ({ navigation, ...props }) =>
   navigationOptions({
     navigation,
     ...props,
-    // title: navigation.getParam('itemTitle', 'Content Channel'),
-    title: 'Title',
+    title: navigation.getParam('itemTitle', 'Content Channel'),
   });
 
-ContentRowFeed.propTypes = {
+ContentFeed.propTypes = {
   /** Functions passed down from React Navigation to use in navigating to/from
    * items in the feed.
    */
@@ -148,6 +154,13 @@ ContentRowFeed.propTypes = {
     getParam: PropTypes.func,
     navigate: PropTypes.func,
   }),
+  Component: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+  card: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
 };
 
-export default ContentRowFeed;
+ContentFeed.defaultProps = {
+  Component: null,
+  card: ActionRow,
+};
+
+export default ContentFeed;

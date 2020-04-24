@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
 import StatusBar from '../../ui/StatusBar';
-import { navigationOptions, BackgroundView } from '../navigation';
+import { navigationOptions, BackgroundView } from '../../navigation';
 
 import FilterRow from './FilterRow';
 import CategoryList from './CategoryList';
@@ -56,14 +56,8 @@ const Browse = ({ title }) => {
   );
 };
 
-Browse.navigationOptions = ({ theme }) => ({
-  ...navigationOptions,
-  headerTitleStyle: {
-    ...navigationOptions.headerTitleStyle,
-    color: theme === 'dark' ? 'white' : 'black',
-  },
-  title: 'Browse',
-});
+Browse.navigationOptions = (props) =>
+  navigationOptions({ ...props, title: 'Browse' });
 
 Browse.propTypes = {
   title: PropTypes.string,

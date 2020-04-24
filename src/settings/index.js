@@ -18,7 +18,7 @@ import {
 import { LOGOUT } from '@apollosproject/ui-auth';
 import NavigationService from '../NavigationService';
 
-import { navigationOptions } from '../tabs/navigation';
+import { navigationOptions } from '../navigation';
 
 import { TableView, Cell } from '../ui/TableView';
 import { UserWebBrowserConsumer } from '../user-web-browser';

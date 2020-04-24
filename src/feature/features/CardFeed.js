@@ -93,9 +93,10 @@ const CardFeed = ({ title, itemId, navigation, isLoading }) => {
                     title={title}
                     callToAction="See All"
                     onPress={() => {
-                        navigation.navigate('RowContentFeed', {
+                        navigation.navigate('ContentFeed', {
                             itemId,
                             itemTitle: title,
+                            nested: true,
                         });
                     }}
                 />
