@@ -12,9 +12,9 @@ import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 import {
   navigationOptions,
   BackgroundView,
-  NavigationBackground,
   NavigationSpacer,
-} from '../navigation';
+  useHeaderScrollEffect,
+} from '../../navigation';
 import StatusBar from '../../ui/StatusBar';
 
 import { Feature } from '../../feature';
@@ -62,12 +62,7 @@ const Home = ({ navigation }) => {
   const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
     fetchPolicy: 'cache-and-network',
   });
-  const [scrollY, setScrollY] = useState(new Animated.Value(0));
-  const setNavigationParam = (params) => {
-    navigation.setParams(params);
-  };
-
-  useEffect(() => setNavigationParam({ scrollY }), []);
+  const { scrollY } = useHeaderScrollEffect({ navigation });
   const content = mapDataToActions(get(data, 'userFeedFeatures', []));
 
   return (
@@ -97,20 +92,12 @@ const Home = ({ navigation }) => {
   );
 };
 
-Home.navigationOptions = ({ navigation, theme }) => ({
-  ...navigationOptions,
-  headerTitleStyle: {
-    ...navigationOptions.headerTitleStyle,
-    color: theme === 'dark' ? 'white' : 'black',
-  },
-  headerBackground: (
-    <NavigationBackground
-      scrollY={get(navigation, 'state.params.scrollY', new Animated.Value(0))}
-    />
-  ),
-  headerTitle: <Wordmark />,
-  title: 'Home',
-});
+Home.navigationOptions = (props) =>
+  navigationOptions({
+    ...props,
+    headerTitle: <Wordmark />,
+    title: 'Home',
+  });
 
 Home.propTypes = {
   navigation: PropTypes.shape({

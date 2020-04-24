@@ -23,8 +23,8 @@ import {
   HEADER_OFFSET,
   navigationOptions,
   BackgroundView,
-  NavigationBackground,
-} from '../navigation';
+  useHeaderScrollEffect,
+} from '../../navigation';
 import { GET_EVENTS } from './queries';
 
 const EventContentItemRow = ({ id }) => (
@@ -73,7 +73,7 @@ const FeedWithMediaQuery = withMediaQuery(
 
 // Events Component (default export)
 const Events = ({ navigation }) => {
-  const [scrollY, setScrollY] = useState(new Animated.Value(0));
+  const { scrollY } = useHeaderScrollEffect({ navigation });
   const { loading, error, data, refetch } = useQuery(GET_EVENTS, {
     fetchPolicy: 'cache-and-network',
   });
@@ -152,18 +152,7 @@ Events.defaultProps = {
   title: 'Events',
 };
 
-Events.navigationOptions = ({ navigation, theme }) => ({
-  ...navigationOptions,
-  headerTitleStyle: {
-    ...navigationOptions.headerTitleStyle,
-    color: theme === 'dark' ? 'white' : 'black',
-  },
-  headerBackground: (
-    <NavigationBackground
-      scrollY={get(navigation, 'state.params.scrollY', new Animated.Value(0))}
-    />
-  ),
-  title: 'Events',
-});
+Events.navigationOptions = (props) =>
+  navigationOptions({ ...props, title: 'Events' });
 
 export default withNavigation(Events);

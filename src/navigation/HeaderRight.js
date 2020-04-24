@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TouchableScale, Icon, withTheme } from '@apollosproject/ui-kit';
 
-import { useSideMenu } from '../../sidemenu';
+import { useSideMenu } from '../sidemenu';
 
 const Bars = withTheme(({ theme }) => ({
   name: 'bars-alt',
