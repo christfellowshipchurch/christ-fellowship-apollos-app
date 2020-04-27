@@ -9,12 +9,8 @@ import { withProps } from 'recompose';
 import {
   BackgroundView,
   FeedView,
-  FlexedView,
-  H3,
-  styled,
-  withTheme,
-  Touchable,
   withMediaQuery,
+  TouchableScale,
 } from '@apollosproject/ui-kit';
 
 import ActionRow from '../ui/ActionRow';
@@ -40,6 +36,12 @@ const FeedWithMediaQuery = withMediaQuery(
   withProps({ numColumns: 2 })
 )(FeedView);
 
+const renderItem = ({ item, onPress, Component }) => (
+  <TouchableScale onPress={() => onPress(item)} style={{ flex: 1 }}>
+    <Component {...item} />
+  </TouchableScale>
+);
+
 /**
  * This is where the component description lives
  * A FeedView wrapped in a query to pull content data.
@@ -63,15 +65,18 @@ const ContentFeed = ({ navigation, Component, card }) => {
     });
   };
 
-  const ContentCard = (props) => (
-    <ContentCardConnected card={card} {...props} />
-  );
+  const ContentCard = ({ id, ...props }) => {
+    console.log({ id, props });
+    return <ContentCardConnected card={card} {...props} contentId={id} />;
+  };
 
   return (
     <BackgroundView>
       <SafeAreaView>
         <FeedWithMediaQuery
-          ListItemComponent={Component || ContentCard}
+          renderItem={(props) =>
+            renderItem({ ...props, Component: Component || ContentCard })
+          }
           content={mapData(data)}
           isLoading={loading}
           error={error}
