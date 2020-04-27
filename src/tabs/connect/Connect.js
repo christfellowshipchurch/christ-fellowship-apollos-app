@@ -90,10 +90,8 @@ const Name = styled(({ theme }) => ({
 }))(H4);
 
 const EditButton = styled(({ theme, disabled }) => ({
-  borderColor: theme.colors.white,
-  backgroundColor: theme.colors.transparent,
+  backgroundColor: theme.colors.primary,
   borderRadius: 3,
-  borderWidth: 1,
   fontSize: 12,
   paddingHorizontal: 25,
   fontWeight: 'bold',
