@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Color from 'color';
+import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 
 import { SafeAreaView } from 'react-navigation';
 import {
@@ -85,6 +86,8 @@ const Overlay = styled(({ theme }) => ({
   zIndex: 1,
 }))(FlexedView);
 
+const pickerColorValue = new DynamicValue('black', 'white');
+
 // This component is made to be able to edit ANY user profile
 // Currently, we only have the need to edit Current User,
 //  but this component is prepared and ready to work with
@@ -133,6 +136,7 @@ const EditUser = ({
     },
   });
 
+  const pickerColor = useDynamicValue(pickerColorValue);
   const loading = userLoading || optionsLoading;
   const error = userError || optionsError;
   const featuredImage = get(campus, 'featuredImage.uri', null);
@@ -218,7 +222,7 @@ const EditUser = ({
               disabled={disabled}
             >
               {get(optionData, 'stateOptions', []).map((s) => (
-                <PickerItem label={s} value={s} key={s} />
+                <PickerItem label={s} value={s} key={s} color={pickerColor} />
               ))}
             </Picker>
             <TextInput
