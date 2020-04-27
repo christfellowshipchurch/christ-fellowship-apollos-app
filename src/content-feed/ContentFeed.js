@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-navigation';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
+import { withProps } from 'recompose';
 
 import {
   BackgroundView,
@@ -13,6 +14,7 @@ import {
   styled,
   withTheme,
   Touchable,
+  withMediaQuery,
 } from '@apollosproject/ui-kit';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
@@ -26,67 +28,18 @@ import {
 
 import GET_CONTENT_FEED from './getContentFeed';
 
-const HeaderTitle = styled(() => ({
-  flex: 4,
-  textAlign: 'center',
-}))(H3);
-
-const HeaderIconContainer = styled(() => ({
-  flex: 1,
-}))(Touchable);
-
-const HeaderContainer = styled(({ theme }) => ({
-  paddingTop: theme.sizing.baseUnit * 4,
-  paddingHorizontal: theme.sizing.baseUnit,
-  justifyContent: 'center',
-  alignItems: 'center',
-  flexDirection: 'row',
-}))(FlexedView);
-
-const BackIcon = withTheme(({ theme }) => ({
-  color: theme.colors.darkSecondary,
-  icon: ['fal', 'angle-left'],
-  size: 42,
-  style: {
-    flex: 1,
-    justifyContent: 'flex-start',
-  },
-}))(FontAwesomeIcon);
-
-export const RowFeedHeaderComponent = ({
-  navigation,
-  title,
-  navigationKey,
-}) => (
-    <HeaderContainer>
-      <HeaderIconContainer onPress={() => navigation.goBack(navigationKey)}>
-        <BackIcon />
-      </HeaderIconContainer>
-
-      <HeaderTitle>{title}</HeaderTitle>
-
-      <HeaderIconContainer>
-        {/* 3 flex containers to help with even spacing */}
-      </HeaderIconContainer>
-    </HeaderContainer>
-  );
-
-RowFeedHeaderComponent.defaultProps = {
-  title: '',
-  navigationKey: null,
-};
-
-RowFeedHeaderComponent.propTypes = {
-  title: PropTypes.string,
-  navigationKey: PropTypes.string,
-};
-
 const mapData = (data) =>
   get(data, 'node.childContentItemsConnection.edges', []).map(({ node }) => ({
     ...node,
     coverImage: get(node, 'coverImage.sources', []),
     label: get(node, 'tags[0]'),
   }));
+
+const FeedWithMediaQuery = withMediaQuery(
+  ({ md }) => ({ maxWidth: md }),
+  withProps({ numColumns: 1 }),
+  withProps({ numColumns: 2 })
+)(FeedView);
 
 /**
  * This is where the component description lives
@@ -118,7 +71,7 @@ const ContentFeed = ({ navigation, Component, card }) => {
   return (
     <BackgroundView>
       <SafeAreaView>
-        <FeedView
+        <FeedWithMediaQuery
           ListItemComponent={Component || ContentCard}
           content={mapData(data)}
           isLoading={loading}
