@@ -1,2 +1,15 @@
-export ContentFeed from './CardFeed';
-export RowContentFeed from './RowFeed';
+import { createStackNavigator } from 'react-navigation';
+
+import ContentFeed from './ContentFeed';
+
+export const ContentFeedNavigator = createStackNavigator(
+    {
+        ContentFeed,
+    },
+    {
+        initialRouteName: 'ContentFeed',
+        headerLayoutPreset: 'left',
+    }
+);
+
+export default ContentFeedNavigator;

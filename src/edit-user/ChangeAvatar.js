@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import { Query, ApolloConsumer } from 'react-apollo';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import Color from 'color';
 
 import {
@@ -12,6 +11,7 @@ import {
     Avatar,
     styled,
     BodyText,
+    Icon,
 } from '@apollosproject/ui-kit';
 import { GET_USER_PHOTO } from './queries';
 import uploadPhoto from './uploadPhoto';
@@ -91,11 +91,7 @@ export default class AvatarForm extends PureComponent {
                                             isLoading={isUploadingFile}
                                         />
                                         <Overlay>
-                                            <FontAwesomeIcon
-                                                icon={['fal', 'camera-alt']}
-                                                color={'white'}
-                                                size={24}
-                                            />
+                                            <Icon name="camera" fill="white" size={24} />
                                             <BodyText>Update</BodyText>
                                         </Overlay>
                                     </TouchableScale>

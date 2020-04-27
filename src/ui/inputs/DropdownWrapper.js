@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Animated, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import { H6, styled, withTheme } from '@apollosproject/ui-kit';
-
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { H6, styled } from '@apollosproject/ui-kit';
 
 import FloatingLabel from '@apollosproject/ui-kit/src/inputs/FloatingLabel';
 import ErrorText from '@apollosproject/ui-kit/src/inputs/ErrorText';
@@ -15,6 +13,8 @@ import InputAddon, {
 } from '@apollosproject/ui-kit/src/inputs/InputAddon';
 import withInputControlStyles from '@apollosproject/ui-kit/src/inputs/withInputControlStyles';
 
+import { InputIcon } from './styles';
+
 const StyledH6 = withInputControlStyles(H6);
 const Placeholder = styled(
     ({ theme }) => ({
@@ -22,17 +22,6 @@ const Placeholder = styled(
     }),
     'Inputs.Picker.Placeholder'
 )(H6);
-
-const StyledIcon = withTheme(({ theme, focused, icon, hideIcon }) => ({
-    size: 28,
-    icon: ['fal', icon],
-    color: hideIcon
-        ? 'transparent'
-        : focused
-            ? theme.colors.primary
-            : theme.colors.darkSecondary,
-    marginHorizontal: theme.sizing.baseUnit * 0.5,
-}))(FontAwesomeIcon);
 
 const Dropdown = ({
     displayValue,
@@ -68,7 +57,7 @@ const Dropdown = ({
             <TouchableOpacity onPress={handleOnPress}>
                 <AddonRow>
                     <InputAddon>
-                        <StyledIcon focused={focused} icon={icon} hideIcon={hideIcon} />
+                        <InputIcon focused={focused} icon={icon} hideIcon={hideIcon} />
                     </InputAddon>
                     <Animated.View style={animatedStyle}>
                         <StyledH6 style={{ ...style, paddingTop: 12 }}>
@@ -78,7 +67,7 @@ const Dropdown = ({
                     </Animated.View>
                     <InputAddon>
                         <Animated.View style={{ transform: [{ rotate }] }}>
-                            <StyledIcon focused={focused} icon={actionIcon} />
+                            <InputIcon focused={focused} icon={actionIcon} />
                         </Animated.View>
                     </InputAddon>
                 </AddonRow>
@@ -111,8 +100,8 @@ Dropdown.propTypes = {
 };
 
 Dropdown.defaultProps = {
-    icon: 'ellipsis-v',
-    actionIcon: 'angle-down',
+    icon: 'text',
+    actionIcon: 'arrow-down',
     hideIcon: false,
 };
 

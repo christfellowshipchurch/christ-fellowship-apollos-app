@@ -17,7 +17,6 @@ import moment from 'moment';
 import {
   FlexedView,
   H4,
-  H5,
   H6,
   BodyText,
   Touchable,
@@ -28,9 +27,7 @@ import {
   HorizontalLine,
   TextIconRow,
   ScheduleContainer,
-  CampusContainer,
   ContentContainer,
-  DirectionsTouchable,
 } from './components';
 import { CURRENT_USER_CAMPUS } from './queries';
 

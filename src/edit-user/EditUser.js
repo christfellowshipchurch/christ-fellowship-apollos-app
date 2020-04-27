@@ -109,7 +109,7 @@ const EditUser = ({
     error: optionsError,
     data: optionData,
   } = useQuery(GET_FIELD_OPTIONS, { fetchPolicy: 'cache-and-network' });
-  const { values, setValue } = useForm({
+  const { values, setValue, errors } = useForm({
     defaultValues: {
       ...address,
       campus,
@@ -121,6 +121,15 @@ const EditUser = ({
       gender,
       allowSMS,
       allowEmail,
+    },
+    validation: {
+      birthDate: (newBirthDate) => {
+        if (moment(newBirthDate).isAfter(moment().subtract(13, 'years'))) {
+          return 'You must be at least 13 to create an account';
+        }
+
+        return false;
+      },
     },
   });
 
@@ -155,9 +164,11 @@ const EditUser = ({
               <H4>{`${firstName} ${lastName}`}</H4>
               <TouchableScale
                 onPress={() => updateProfile(values)}
-                disabled={loading}
+                disabled={loading || get(errors, 'birthDate')}
               >
-                <SaveButton disabled={loading}>Save</SaveButton>
+                <SaveButton disabled={loading || get(errors, 'birthDate')}>
+                  Save
+                </SaveButton>
               </TouchableScale>
             </AvatarContainer>
           </SafeAreaView>
@@ -175,8 +186,8 @@ const EditUser = ({
             <H4>Campus</H4>
             <InputWrapper
               displayValue={values.campus.name}
-              icon="church"
-              actionIcon="angle-right"
+              icon="campus"
+              actionIcon="arrow-next"
               handleOnPress={() => navigation.navigate('Location')}
               disabled={disabled}
             />
@@ -252,6 +263,7 @@ const EditUser = ({
               }
               onConfirm={(newBirthDate) => setValue('birthDate', newBirthDate)}
               disabled={disabled}
+              error={get(errors, 'birthDate')}
             />
           </FieldContainer>
 
@@ -260,7 +272,7 @@ const EditUser = ({
             {!!phoneNumber &&
               phoneNumber !== '' && (
                 <Switch
-                  icon="comment-lines"
+                  icon="message-bubble"
                   label={`Allow Text Notifications`}
                   value={values.allowSMS}
                   disabled={loading}
@@ -273,7 +285,7 @@ const EditUser = ({
             {!!email &&
               email !== '' && (
                 <Switch
-                  icon="envelope-open-text"
+                  icon="envelope"
                   label={`Allow Email Notifications`}
                   value={values.allowEmail}
                   disabled={loading}
@@ -315,6 +327,10 @@ EditUser.propTypes = {
   lastName: PropTypes.string,
   gender: PropTypes.string,
   updateProfile: PropTypes.func.isRequired,
+  communicationPreferences: PropTypes.shape({
+    allowSMS: PropTypes.bool,
+    allowEmail: PropTypes.bool,
+  }),
 };
 
 EditUser.defaultProps = {
@@ -336,6 +352,10 @@ EditUser.defaultProps = {
   firstName: '',
   lastName: '',
   gender: '',
+  communicationPreferences: {
+    allowSMS: false,
+    allowEmail: false,
+  },
 };
 
 export default EditUser;

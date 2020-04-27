@@ -14,7 +14,7 @@ import {
   AuthProfileDetailsEntryConnected,
 } from '@apollosproject/ui-auth';
 
-// import AuthProfileDetailsEntry from './AuthProfileDetailsEntry';
+import AuthProfileDetailsEntry from './AuthProfileDetailsEntry';
 import Entry from './Entry';
 
 export {
@@ -62,7 +62,7 @@ const AuthNavigator = createStackNavigator(
     AuthProfileDetailsEntryConnected: (props) => (
       <AuthProfileDetailsEntryConnected
         {...props}
-        prompt="Help us learn a little more about you so we can connect you with the best ministries and events."
+        Component={AuthProfileDetailsEntry}
       />
     ),
   },

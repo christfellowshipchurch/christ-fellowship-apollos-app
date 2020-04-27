@@ -43,7 +43,7 @@ DateInput.propTypes = {
 
 DateInput.defaultProps = {
     value: moment().toString(),
-    icon: 'calendar-alt',
+    icon: 'birthday-cake',
     label: '',
     initialDate: moment(),
 };

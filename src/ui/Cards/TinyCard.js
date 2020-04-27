@@ -4,21 +4,14 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
 import {
-  H6,
-  H4,
   styled,
-  TouchableScale,
   withIsLoading,
-  GradientOverlayImage,
-  FlexedView,
   Card,
   CardContent,
   CardImage,
-  CardLabel,
   BodyText,
   withTheme,
 } from '@apollosproject/ui-kit';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 const Content = styled(({ theme }) => ({
   alignItems: 'flex-start', // needed to make `Label` display as an "inline" element

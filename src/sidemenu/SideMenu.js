@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
-import { SafeAreaView, withNavigation } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 import ReactNativeSideMenu from 'react-native-side-menu';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
-import { openLink } from '../utils/linking';
+import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
 import { TableView, Cell } from '../ui/TableView';
 import ThemeMixin from '../ui/DynamicThemeMixin';
@@ -40,7 +40,7 @@ const TableWithLinks = ({ name, links = [], onPress }) => (
                 key={linkName}
                 icon={icon}
                 title={linkName}
-                onPress={() => onPress({ uri, openInApp, title: linkName })}
+                onPress={() => onPress(uri)}
             />
         ))}
     </TableView>
@@ -61,28 +61,27 @@ const Menu = ({ onPress }) => {
             </BackgroundView>
         );
 
-    const openMenuLink = (props) => {
-        openLink(props);
-        onPress();
-    };
-
     return (
-        <ThemeMixin>
-            <BackgroundView>
-                <ScrollView>
-                    {get(data, 'moreLinks', []).map(({ name, ...props }, i) => (
-                        <TableWithLinks
-                            key={name}
-                            name={name}
-                            {...props}
-                            onPress={openMenuLink}
-                        />
-                    ))}
+        <RockAuthedWebBrowser>
+            {(openUrl) => (
+                <ThemeMixin>
+                    <BackgroundView>
+                        <ScrollView>
+                            {get(data, 'moreLinks', []).map(({ name, ...props }, i) => (
+                                <TableWithLinks
+                                    key={name}
+                                    name={name}
+                                    {...props}
+                                    onPress={(uri) => openUrl(uri) && onPress()}
+                                />
+                            ))}
 
-                    <Logout />
-                </ScrollView>
-            </BackgroundView>
-        </ThemeMixin>
+                            <Logout />
+                        </ScrollView>
+                    </BackgroundView>
+                </ThemeMixin>
+            )}
+        </RockAuthedWebBrowser>
     );
 };
 

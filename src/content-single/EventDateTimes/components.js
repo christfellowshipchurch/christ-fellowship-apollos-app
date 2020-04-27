@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, Platform, Linking } from 'react-native';
 import Color from 'color';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
   styled,
   withTheme,
   FlexedView,
   BodyText,
   Touchable,
+  Icon,
 } from '@apollosproject/ui-kit';
 
 export const HorizontalLine = styled(({ theme }) => ({
@@ -23,15 +23,6 @@ export const HorizontalLine = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-export const Icon = withTheme(({ theme, icon, size }) => ({
-  icon,
-  size,
-  color: theme.colors.text.tertiary,
-  style: {
-    marginRight: theme.sizing.baseUnit,
-  },
-}))(FontAwesomeIcon);
-
 export const TextIconRow = ({ icon, fontSize, fontWeight, children }) => (
   <FlexedView
     style={{
@@ -40,7 +31,7 @@ export const TextIconRow = ({ icon, fontSize, fontWeight, children }) => (
       alignItems: 'center',
     }}
   >
-    <Icon icon={['fal', icon]} size={fontSize} />
+    <Icon name={icon} size={fontSize} />
     <BodyText style={{ fontWeight, fontSize }}>{children}</BodyText>
   </FlexedView>
 );

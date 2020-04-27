@@ -29,9 +29,8 @@ import {
 import {
   navigationOptions,
   BackgroundView,
-  NavigationBackground,
   HEADER_OFFSET,
-} from '../navigation';
+} from '../../navigation';
 import StatusBar from '../../ui/StatusBar';
 import { useCurrentUser } from '../../hooks';
 import ProfileActionBar from './ProfileActionBar';
@@ -241,15 +240,8 @@ const Connect = ({ navigation }) => {
   );
 };
 
-Connect.navigationOptions = ({ navigation, theme }) => ({
-  ...navigationOptions,
-  headerTitleStyle: {
-    ...navigationOptions.headerTitleStyle,
-    color: theme === 'dark' ? 'white' : 'black',
-  },
-  headerBackground: <NavigationBackground blur />,
-  title: 'Profile',
-});
+Connect.navigationOptions = (props) =>
+  navigationOptions({ ...props, title: 'Profile', blur: true });
 
 Connect.propTypes = {
   navigation: PropTypes.shape({

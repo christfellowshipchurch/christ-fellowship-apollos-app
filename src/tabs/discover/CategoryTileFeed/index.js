@@ -85,9 +85,10 @@ const CategoryContentTileFeed = ({ id, navigation }) => {
         {content.length > 3 && (
           <AndroidTouchableFix
             onPress={() => {
-              navigation.navigate('RowContentFeed', {
+              navigation.navigate('ContentFeed', {
                 itemId: id,
                 itemTitle: title,
+                nested: true,
               });
             }}
           >

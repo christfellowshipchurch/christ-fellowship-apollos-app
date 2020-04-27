@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDarkMode } from 'react-native-dark-mode';
 import { CorePickerItem } from '@apollosproject/ui-kit';
 
 import PickerList from '@apollosproject/ui-kit/src/inputs/Picker/PickerList';

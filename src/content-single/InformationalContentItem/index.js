@@ -22,7 +22,6 @@ import {
   MediaControlsConnected,
 } from '@apollosproject/ui-connected';
 import Features from '../Features';
-import InlineWebView from '../../tabs/more/InlineWebView';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 

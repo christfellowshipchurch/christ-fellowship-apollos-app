@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, withProps, pure } from 'recompose';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { withTheme, Switch as CoreSwitch } from '@apollosproject/ui-kit';
+import { InputIcon } from './styles';
 
 const enhance = compose(
     withTheme(),
@@ -13,29 +13,14 @@ const enhance = compose(
     }))
 );
 
-const StyledIcon = withTheme(({ theme, error, disabled, color, icon }) => ({
-    icon: ['fal', icon],
-    size: 28,
-    color,
-    marginHorizontal: theme.sizing.baseUnit * 0.5,
-}))(FontAwesomeIcon);
-
-const Switch = enhance(({ icon, hideIcon, theme, disabled, ...props }) => {
-    const color = disabled
-        ? theme.colors.lightSecondary
-        : theme.colors.darkSecondary;
-
-    return (
-        <CoreSwitch
-            prefix={
-                icon && (
-                    <StyledIcon icon={icon} color={hideIcon ? 'transparent' : color} />
-                )
-            }
-            {...props}
-        />
-    );
-});
+const Switch = enhance(({ icon, hideIcon, theme, disabled, ...props }) => (
+    <CoreSwitch
+        prefix={
+            icon && <InputIcon icon={icon} disbled={disabled} hideIcon={hideIcon} />
+        }
+        {...props}
+    />
+));
 
 Switch.propTypes = {
     icon: PropTypes.string,
