@@ -20,9 +20,7 @@ import ContentSingle from './content-single';
 import ContentFeed from './content-feed';
 import Tabs from './tabs';
 import UserWebBrowser from './user-web-browser';
-import { CurrentUserProfile as Connect } from './profile';
 import EditUser from './edit-user';
-import Settings from './settings';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -80,9 +78,7 @@ const AppNavigator = createStackNavigator(
     UserWebBrowser,
     Onboarding,
     LandingScreen,
-    Connect,
     EditUser,
-    Settings,
     Location,
   },
   {
