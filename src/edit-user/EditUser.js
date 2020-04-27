@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { get, has } from 'lodash';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Color from 'color';
@@ -133,8 +133,6 @@ const EditUser = ({
     },
   });
 
-  console.log({ errors });
-
   const loading = userLoading || optionsLoading;
   const error = userError || optionsError;
   const featuredImage = get(campus, 'featuredImage.uri', null);
@@ -188,8 +186,8 @@ const EditUser = ({
             <H4>Campus</H4>
             <InputWrapper
               displayValue={values.campus.name}
-              icon="church"
-              actionIcon="angle-right"
+              icon="campus"
+              actionIcon="arrow-next"
               handleOnPress={() => navigation.navigate('Location')}
               disabled={disabled}
             />
@@ -274,7 +272,7 @@ const EditUser = ({
             {!!phoneNumber &&
               phoneNumber !== '' && (
                 <Switch
-                  icon="comment-lines"
+                  icon="message-bubble"
                   label={`Allow Text Notifications`}
                   value={values.allowSMS}
                   disabled={loading}
@@ -287,7 +285,7 @@ const EditUser = ({
             {!!email &&
               email !== '' && (
                 <Switch
-                  icon="envelope-open-text"
+                  icon="envelope"
                   label={`Allow Email Notifications`}
                   value={values.allowEmail}
                   disabled={loading}
