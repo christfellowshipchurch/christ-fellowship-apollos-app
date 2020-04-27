@@ -31,9 +31,7 @@ const LogoTitle = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
   marginHorizontal: theme.sizing.baseUnit,
   height: 24,
-  alignSelf: 'center',
   resizeMode: 'contain',
-  width: '50%',
 }))(Image);
 
 const Wordmark = () => {

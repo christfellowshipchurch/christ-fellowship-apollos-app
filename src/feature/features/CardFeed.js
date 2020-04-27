@@ -1,17 +1,18 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { get, filter } from 'lodash';
+import { get, first, chunk, drop } from 'lodash';
 import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
+import { withProps } from 'recompose';
 
 import {
     styled,
     TouchableScale,
-    FlexedView,
     withTheme,
     H3,
     ButtonLink,
+    withMediaQuery,
 } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from '../../ui/ContentCardConnected';
@@ -61,24 +62,15 @@ const SectionHeader = ({ title, onPress, callToAction }) => (
     </RowHeader>
 );
 
-const mapData = (data, navigation, isLoading) =>
-    get(data, 'node.childContentItemsConnection.edges', []).map(({ node }) => ({
-        ...node,
-        onPress: () => navigation.navigate('ContentSingle', { itemId: node.id }),
-        isLoading,
-    }));
-
-const renderItem = ({ item, index }) => (
-    <TouchableScale onPress={item.onPress}>
-        <ContentCardConnected
-            contentId={item.id}
-            card={index === 0 ? HighlightCard : RowCard}
-            Component={index === 0 ? HighlightCard : RowCard}
-        />
-    </TouchableScale>
-);
-
-const CardFeed = ({ title, itemId, navigation, isLoading }) => {
+const CardFeed = ({
+    title,
+    itemId,
+    navigation,
+    isLoading,
+    numColumns,
+    mapData,
+    renderItem,
+}) => {
     const { loading, error, data } = useQuery(GET_CONTENT_FEED, {
         fetchPolicy: 'cache-and-network',
         variables: { itemId, first: 4 },
@@ -101,11 +93,11 @@ const CardFeed = ({ title, itemId, navigation, isLoading }) => {
                     }}
                 />
             )}
-            data={mapData(data, navigation, isLoading || loading)}
+            data={mapData({ data, navigation, isLoading: isLoading || loading })}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             removeClippedSubviews={false}
-            numColumns={1}
+            numColumns={numColumns}
         />
     );
 };
@@ -118,4 +110,72 @@ CardFeed.propTypes = {
     }),
 };
 
-export default withNavigation(CardFeed);
+export default withMediaQuery(
+    ({ md }) => ({ maxWidth: md }),
+    withProps({
+        numColumns: 1,
+        mapData: ({ data, navigation, isLoading }) =>
+            get(data, 'node.childContentItemsConnection.edges', []).map(
+                ({ node }) => ({
+                    ...node,
+                    onPress: () =>
+                        navigation.navigate('ContentSingle', { itemId: node.id }),
+                    isLoading,
+                })
+            ),
+        renderItem: ({ item, index }) => (
+            <TouchableScale onPress={item.onPress}>
+                <ContentCardConnected
+                    contentId={item.id}
+                    card={index === 0 ? HighlightCard : RowCard}
+                    Component={index === 0 ? HighlightCard : RowCard}
+                />
+            </TouchableScale>
+        ),
+    }),
+    withProps({
+        numColumns: 2,
+        mapData: ({ data, navigation, isLoading }) => {
+            const allNodes = get(
+                data,
+                'node.childContentItemsConnection.edges',
+                []
+            ).map(({ node }) => ({
+                ...node,
+                onPress: () =>
+                    navigation.navigate('ContentSingle', { itemId: node.id }),
+                isLoading,
+            }));
+
+            return [[first(allNodes)], ...chunk(drop(allNodes), 3)];
+        },
+        renderItem: ({ item, index }) => {
+            if (item.length === 1)
+                return (
+                    <View style={{ flex: 1 }}>
+                        <TouchableScale onPress={first(item).onPress}>
+                            <ContentCardConnected
+                                contentId={first(item).id}
+                                card={HighlightCard}
+                                Component={HighlightCard}
+                            />
+                        </TouchableScale>
+                    </View>
+                );
+
+            return (
+                <View style={{ flex: 1 }}>
+                    {item.map(({ id, onPress }) => (
+                        <TouchableScale onPress={onPress}>
+                            <ContentCardConnected
+                                contentId={id}
+                                card={RowCard}
+                                Component={RowCard}
+                            />
+                        </TouchableScale>
+                    ))}
+                </View>
+            );
+        },
+    })
+)(withNavigation(CardFeed));
