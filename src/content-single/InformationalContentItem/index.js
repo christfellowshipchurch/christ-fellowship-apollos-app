@@ -6,12 +6,10 @@ import { withNavigation } from 'react-navigation';
 import ApollosConfig from '@apollosproject/config';
 import {
   styled,
-  withTheme,
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  H2,
-  H4,
+  H3,
   BodyText,
   Button,
   // StretchyView,
@@ -20,6 +18,7 @@ import {
   ContentHTMLViewConnected,
   HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
+  RockAuthedWebBrowser,
 } from '@apollosproject/ui-connected';
 import Features from '../Features';
 
@@ -29,32 +28,13 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
   marginTop: -(theme.sizing.baseUnit * 2.5),
 }))(MediaControlsConnected);
 
-const TitleContainer = styled(() => ({
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  width: '100%',
-}))(PaddedView);
-
-const Title = styled(({ theme }) => ({
-  color: theme.colors.white,
-}))(H2);
-
-const Summary = styled(({ theme }) => ({
-  color: theme.colors.white,
-}))(BodyText);
-
 const StyledButton = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
 }))(Button);
 
-const Subtitle = withTheme(({ theme, extraSpacing }) => ({
-  style: {
-    marginTop: extraSpacing
-      ? theme.sizing.baseUnit
-      : theme.sizing.baseUnit * 0.5,
-  },
-}))(H4);
+const ButtonContainer = styled(({ theme }) => ({
+  marginVertical: theme.sizing.baseUnit * 0.5,
+}))(View);
 
 // TODO : temp fix until Core resolves the bug where images would disappear when pulling down
 const StretchyView = ({ children, ...props }) =>
@@ -90,57 +70,48 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
       <StretchyView>
         {({ Stretchy, ...scrollViewProps }) => (
           <FlexedScrollView {...scrollViewProps}>
-            <View>
-              {coverImageSources.length || loading ? (
-                <Stretchy>
-                  <GradientOverlayImage
-                    isLoading={!coverImageSources.length && loading}
-                    source={coverImageSources}
-                    overlayColor={'black'}
-                    overlayType="gradient-bottom"
-                    // Sets the ratio of the image
-                    minAspectRatio={1}
-                    maxAspectRatio={1}
-                    // Sets the ratio of the placeholder
-                    forceRatio={1}
-                    // No ratios are respected without this
-                    maintainAspectRatio
-                  />
-                </Stretchy>
-              ) : null}
-
-              <TitleContainer>
-                <Title isLoading={!content.title && loading}>
-                  {content.title}
-                </Title>
-                <Summary isLoading={!content.summary && loading}>
-                  {content.summary}
-                </Summary>
-              </TitleContainer>
-            </View>
+            {coverImageSources.length || loading ? (
+              <Stretchy>
+                <GradientOverlayImage
+                  isLoading={!coverImageSources.length && loading}
+                  source={coverImageSources}
+                  // Sets the ratio of the image
+                  minAspectRatio={1}
+                  maxAspectRatio={1}
+                  // Sets the ratio of the placeholder
+                  forceRatio={1}
+                  // No ratios are respected without this
+                  maintainAspectRatio
+                />
+              </Stretchy>
+            ) : null}
 
             <StyledMediaControlsConnected contentId={content.id} />
             <PaddedView>
-              {callsToAction.length > 0 &&
-                callsToAction.map((n) => (
-                  <StyledButton
-                    key={`${n.call}:${n.action}`}
-                    isLoading={loading}
-                    title={n.call}
-                    pill={false}
-                    onPress={() => {
-                      Linking.canOpenURL(n.action).then((supported) => {
-                        if (supported) {
-                          Linking.openURL(n.action);
-                        } else {
-                          console.log(
-                            `Don't know how to open URI: ${n.action}`
-                          );
-                        }
-                      });
-                    }}
-                  />
-                ))}
+              <H3 isLoading={!content.title && loading}>{content.title}</H3>
+              <BodyText isLoading={!content.summary && loading}>
+                {content.summary}
+              </BodyText>
+
+              {callsToAction.length > 0 && (
+                <RockAuthedWebBrowser>
+                  {(openUrl) => (
+                    <ButtonContainer>
+                      {callsToAction.map((n) => (
+                        <StyledButton
+                          key={`${n.call}:${n.action}`}
+                          isLoading={loading}
+                          title={n.call}
+                          pill={false}
+                          onPress={() => {
+                            openUrl(n.action);
+                          }}
+                        />
+                      ))}
+                    </ButtonContainer>
+                  )}
+                </RockAuthedWebBrowser>
+              )}
 
               <ContentHTMLViewConnected contentId={content.id} />
               <Features contentId={content.id} />

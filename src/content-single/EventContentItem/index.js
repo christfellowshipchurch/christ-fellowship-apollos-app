@@ -9,6 +9,7 @@ import {
   BackgroundView,
   PaddedView,
   H2,
+  H3,
   H4,
   BodyText,
   Button,
@@ -24,7 +25,6 @@ import {
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
 import LiveLabel from '../../ui/LiveLabel';
-import BlurView from '../../ui/BlurView';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -32,16 +32,9 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
   marginTop: -(theme.sizing.baseUnit * 2.5),
 }))(MediaControlsConnected);
 
-const TitleContainer = styled(({ theme, contentAware }) => ({
-  position: 'absolute',
-  bottom: 0 + (contentAware ? theme.sizing.baseUnit * 2.5 : 0),
-  left: 0,
-  // width: '100%',
-}))(PaddedView);
-
 const Title = styled(({ theme }) => ({
   // color: theme.colors.white,
-}))(H2);
+}))(H3);
 
 const Summary = styled(({ theme }) => ({
   // color: theme.colors.white,
