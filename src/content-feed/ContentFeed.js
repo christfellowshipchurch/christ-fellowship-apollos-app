@@ -16,7 +16,6 @@ import {
   Touchable,
   withMediaQuery,
 } from '@apollosproject/ui-kit';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import ActionRow from '../ui/ActionRow';
 import ContentCardConnected from '../ui/ContentCardConnected';

@@ -1,5 +1,4 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
     FlexedView,
     Touchable,
@@ -29,18 +28,11 @@ const CellIcon = withTheme(({ theme }) => ({
     },
 }))(Icon);
 
-const AngleRight = withTheme(({ theme }) => ({
-    name: 'angle-right',
-    size: 24,
-    fill: theme.colors.text.tertiary,
-}))(Icon);
-
 const Cell = ({ title, icon, onPress }) => (
     <Touchable onPress={onPress}>
         <PaddedRow>
             {!!icon && icon !== '' && <CellIcon name={icon} />}
             <Title>{title}</Title>
-            {/* <AngleRight /> */}
         </PaddedRow>
     </Touchable>
 );
