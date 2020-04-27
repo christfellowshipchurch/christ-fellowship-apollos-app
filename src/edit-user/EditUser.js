@@ -21,6 +21,7 @@ import {
   BackgroundView,
   FlexedView,
 } from '@apollosproject/ui-kit';
+import { UserAvatarUpdate } from '@apollosproject/ui-connected';
 import {
   TextInput,
   DateInput,
@@ -32,7 +33,6 @@ import {
   Switch,
 } from '../ui/inputs';
 import { useForm } from '../hooks';
-import ChangeAvatar from './ChangeAvatar';
 
 import { GET_FIELD_OPTIONS } from './queries';
 
@@ -164,7 +164,10 @@ const EditUser = ({
           />
           <SafeAreaView>
             <AvatarContainer>
-              <ChangeAvatar />
+              <ThemeMixin mixin={{ type: 'light' }}>
+                <UserAvatarUpdate />
+              </ThemeMixin>
+
               <H4>{`${firstName} ${lastName}`}</H4>
               <TouchableScale
                 onPress={() => updateProfile(values)}
