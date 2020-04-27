@@ -4,8 +4,6 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { useDarkModeContext } from 'react-native-dark-mode';
 
-import './icon-library';
-
 import { BackgroundView, ThemeMixin } from '@apollosproject/ui-kit';
 import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
