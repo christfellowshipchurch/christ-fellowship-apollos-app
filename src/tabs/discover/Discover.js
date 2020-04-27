@@ -1,55 +1,70 @@
-import React, { PureComponent } from 'react';
-import { throttle } from 'lodash';
+import React, { useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
+import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/react-hooks';
+import { get } from 'lodash';
 
-import { BackgroundView } from '@apollosproject/ui-kit';
+import StatusBar from '../../ui/StatusBar';
+import { navigationOptions, BackgroundView } from '../../navigation';
 
-import SearchInputHeader, {
-  ReactNavigationStyleReset,
-} from '../../ui/SearchInputHeader';
+import FilterRow from './FilterRow';
+import CategoryList from './CategoryList';
+import { GET_FILTERS } from './queries';
 
-import SearchFeed from './SearchFeed';
-import DiscoverFeed from './DiscoverFeed';
+const Browse = ({ title }) => {
+  const [activeFilter, setActiveFilter] = useState(null);
+  const { loading, error, data } = useQuery(GET_FILTERS, {
+    fetchPolicy: 'cache-and-network',
+    onCompleted: (data) => {
+      if (!activeFilter) {
+        setActiveFilter(
+          get(
+            data,
+            'getBrowseFilters[0].childContentItemsConnection.edges[0].node.id',
+            null
+          )
+        );
+      }
+    },
+  });
 
-class Discover extends PureComponent {
-  state = {
-    searchText: '',
-    isFocused: false,
-  };
+  if (loading) return <ActivityIndicator />;
 
-  handleOnChangeText = throttle(
-    (value) =>
-      this.setState({
-        searchText: value,
-      }),
-    300
+  return (
+    <BackgroundView>
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar />
+        <View style={{ flex: 1 }}>
+          <FilterRow
+            filters={get(
+              data,
+              'getBrowseFilters[0].childContentItemsConnection.edges',
+              []
+            ).map((edge) => edge.node)}
+            onChange={({ id }) => {
+              setActiveFilter(id);
+            }}
+            selected={activeFilter}
+          />
+        </View>
+        <View style={{ flex: 5 }}>
+          {!!activeFilter && <CategoryList filterId={activeFilter} />}
+        </View>
+      </SafeAreaView>
+    </BackgroundView>
   );
-
-  handleOnFocus = (inputState) => {
-    this.setState({
-      isFocused: inputState,
-    });
-  };
-
-  render() {
-    return (
-      <BackgroundView>
-        <SearchInputHeader
-          onChangeText={this.handleOnChangeText}
-          onFocus={this.handleOnFocus}
-        />
-        {this.state.isFocused || this.state.searchText ? (
-          <SearchFeed searchText={this.state.searchText} />
-        ) : (
-          <DiscoverFeed />
-        )}
-      </BackgroundView>
-    );
-  }
-}
-
-Discover.navigationOptions = {
-  title: 'Discover',
-  headerStyle: ReactNavigationStyleReset.header,
 };
 
-export default Discover;
+Browse.navigationOptions = (props) =>
+  navigationOptions({ ...props, title: 'Browse' });
+
+Browse.propTypes = {
+  title: PropTypes.string,
+};
+
+Browse.defaultProps = {
+  title: 'Browse',
+};
+
+export default Browse;
