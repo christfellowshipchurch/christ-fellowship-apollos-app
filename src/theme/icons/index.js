@@ -6,6 +6,7 @@ export AngleRight from './AngleRight';
 export BarsAlt from './BarsAlt';
 export Bars from './Bars';
 export BirthdayCake from './BirthdayCake';
+export Brand from './Brand';
 export Calendar from './Calendar';
 export Campus from './Campus';
 export Envelope from './Envelope';
