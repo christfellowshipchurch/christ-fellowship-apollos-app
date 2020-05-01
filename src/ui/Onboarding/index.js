@@ -13,6 +13,7 @@ import {
   LocationFinderConnected,
   OnboardingSwiper,
 } from '@apollosproject/ui-onboarding';
+import { resetAction } from '../../NavigationService';
 
 import AuthBackground from '../AuthBackground';
 
@@ -48,7 +49,14 @@ function Onboarding({ navigation }) {
                   }
                 });
               }}
-              onPressPrimary={() => navigation.replace('Tabs')}
+              onPressPrimary={() =>
+                navigation.dispatch(
+                  resetAction({
+                    navigatorName: 'Tabs',
+                    routeName: 'Home',
+                  })
+                )
+              }
               primaryNavText={'Finish'}
               description="We'll let you know when important things are happening and keep you in the loop."
             />

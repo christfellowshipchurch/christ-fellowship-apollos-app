@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { Image, Animated, View } from 'react-native';
+import { Animated } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
 
-import { styled, FeedView, withMediaQuery } from '@apollosproject/ui-kit';
-import { withProps } from 'recompose';
+import { FeedView } from '@apollosproject/ui-kit';
 
-import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 import {
   navigationOptions,
   BackgroundView,
@@ -19,32 +17,9 @@ import StatusBar from '../../ui/StatusBar';
 
 import { Feature } from '../../feature';
 import { HorizontalDivider } from '../../ui/Dividers';
+import Wordmark from '../../ui/Wordmark';
 
 import GET_FEED_FEATURES from './getFeedFeatures';
-
-import WordmarkImg from './wordmark.png';
-import WordmarkVariantImg from './wordmark_variant.png';
-
-const DynamicWordmark = new DynamicValue(WordmarkImg, WordmarkVariantImg);
-
-const LogoTitle = styled(({ theme }) => ({
-  marginVertical: theme.sizing.baseUnit * 0.5,
-  marginHorizontal: theme.sizing.baseUnit,
-  height: 24,
-  resizeMode: 'contain',
-}))(Image);
-
-const Wordmark = () => {
-  const source = useDynamicValue(DynamicWordmark);
-
-  return <LogoTitle source={source} />;
-};
-
-const FeedWithMediaQuery = withMediaQuery(
-  ({ md }) => ({ maxWidth: md }),
-  withProps({ numColumns: 1 }),
-  withProps({ numColumns: 2 })
-)(FeedView);
 
 const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
 

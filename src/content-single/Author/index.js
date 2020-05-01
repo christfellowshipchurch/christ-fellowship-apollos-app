@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import moment from 'moment';
@@ -22,12 +22,13 @@ const calculateReadTime = (string) => {
   return time < 1 ? '1' : time;
 };
 
-const AuthorContainer = styled(() => ({
+const AuthorContainer = styled(({ theme }) => ({
   flexDirection: 'row',
   flexWrap: 'wrap',
   alignItems: 'center',
-  marginBottom: 20,
-}))(FlexedView);
+  marginTop: theme.sizing.baseUnit * 0.5,
+  marginBottom: theme.sizing.baseUnit,
+}))(View);
 
 const TextContainer = styled(({ theme }) => ({
   justifyContent: 'center',

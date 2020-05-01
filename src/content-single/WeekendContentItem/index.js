@@ -13,7 +13,6 @@ import {
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  H2,
   // StretchyView,
   ThemeMixin,
   ThemeConsumer,
@@ -21,6 +20,7 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 
+import Title from '../Title';
 import Features from '../Features';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
@@ -87,9 +87,7 @@ const WeekendContentItem = ({ content, loading }) => {
                         />
                       )}
                     </LiveConsumer>
-                    <H2 padded isLoading={!content.title && loading}>
-                      {content.title}
-                    </H2>
+                    <Title contentId={content.id} isLoading={loading} />
                     <ContentHTMLViewConnected contentId={content.id} />
                   </ThemeMixin>
                 </Header>

@@ -7,6 +7,7 @@ import {
 } from '@apollosproject/ui-connected';
 import { PaddedView, H2, styled, withIsLoading } from '@apollosproject/ui-kit';
 import { ScriptureList } from '@apollosproject/ui-scripture';
+import Title from '../Title';
 
 const ContentContainer = withIsLoading(
   styled({ paddingVertical: 0 })(PaddedView)
@@ -25,24 +26,24 @@ const ContentTab = ({
   navigationState,
   navigation,
 }) => (
-  <ScrollView>
-    <ContentContainer isLoading={isLoading}>
-      <H2 padded>{title}</H2>
-      {references && references.length ? (
-        <ScriptureList
-          references={references}
-          onPress={navigationState.route.jumpTo} // eslint-disable-line react/jsx-handler-names
-          tabDestination={'scripture'}
-        />
-      ) : null}
-      <ContentHTMLViewConnected contentId={id} />
-    </ContentContainer>
-    <HorizontalContentSeriesFeedConnected
-      contentId={id}
-      navigation={navigation}
-    />
-  </ScrollView>
-);
+    <ScrollView>
+      <ContentContainer isLoading={isLoading}>
+        <Title contentId={content.id} isLoading={isLoading} />
+        {references && references.length ? (
+          <ScriptureList
+            references={references}
+            onPress={navigationState.route.jumpTo} // eslint-disable-line react/jsx-handler-names
+            tabDestination={'scripture'}
+          />
+        ) : null}
+        <ContentHTMLViewConnected contentId={id} />
+      </ContentContainer>
+      <HorizontalContentSeriesFeedConnected
+        contentId={id}
+        navigation={navigation}
+      />
+    </ScrollView>
+  );
 
 ContentTab.propTypes = {
   /** The id of the devotional item */
