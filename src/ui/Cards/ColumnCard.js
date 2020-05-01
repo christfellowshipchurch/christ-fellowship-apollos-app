@@ -43,7 +43,7 @@ const Content = styled(({ theme }) => ({
 
 const LiveLabelPositioning = styled(({ theme }) => ({
   position: 'absolute',
-  bottom: 5,
+  bottom: 0,
   left: theme.sizing.baseUnit * 0.75,
 }))(LiveLabel);
 
