@@ -83,7 +83,6 @@ const ContentFeed = ({ navigation, Component, card }) => {
           content={mapData(data)}
           isLoading={loading}
           error={error}
-          // onPressItem={handleOnPress}
           ListHeaderComponent={<NavigationSpacer />}
           scrollEventThrottle={16}
           onScroll={Animated.event([
