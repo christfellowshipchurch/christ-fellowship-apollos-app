@@ -9,18 +9,16 @@ import {
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  H3,
-  BodyText,
   Button,
   // StretchyView,
 } from '@apollosproject/ui-kit';
 import {
   ContentHTMLViewConnected,
-  HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
   RockAuthedWebBrowser,
 } from '@apollosproject/ui-connected';
 import Features from '../Features';
+import Title from '../Title';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -88,11 +86,7 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
 
             <StyledMediaControlsConnected contentId={content.id} />
             <PaddedView>
-              <H3 isLoading={!content.title && loading}>{content.title}</H3>
-              <BodyText isLoading={!content.summary && loading}>
-                {content.summary}
-              </BodyText>
-
+              <Title contentId={content.id} isLoading={loading} />
               {callsToAction.length > 0 && (
                 <RockAuthedWebBrowser>
                   {(openUrl) => (
@@ -112,7 +106,6 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
                   )}
                 </RockAuthedWebBrowser>
               )}
-
               <ContentHTMLViewConnected contentId={content.id} />
               <Features contentId={content.id} />
             </PaddedView>

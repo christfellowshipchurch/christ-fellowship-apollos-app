@@ -4,14 +4,10 @@ import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
   styled,
-  withTheme,
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  H2,
-  H3,
   H4,
-  BodyText,
   Button,
   // StretchyView,
 } from '@apollosproject/ui-kit';
@@ -24,21 +20,15 @@ import {
 
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
+import Title from '../Title';
 import LiveLabel from '../../ui/LiveLabel';
+import { HorizontalDivider } from '../../ui/Dividers';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
 const StyledMediaControlsConnected = styled(({ theme }) => ({
   marginTop: -(theme.sizing.baseUnit * 2.5),
 }))(MediaControlsConnected);
-
-const Title = styled(({ theme }) => ({
-  // color: theme.colors.white,
-}))(H3);
-
-const Summary = styled(({ theme }) => ({
-  // color: theme.colors.white,
-}))(BodyText);
 
 const StyledButton = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
@@ -95,13 +85,7 @@ const EventContentItem = ({ content, loading }) => {
                       </View>
                     )}
 
-                    <Title isLoading={!content.title && loading}>
-                      {content.title}
-                    </Title>
-
-                    <Summary isLoading={!content.summary && loading}>
-                      {content.summary}
-                    </Summary>
+                    <Title contentId={content.id} isLoading={loading} />
 
                     {events.length < 1 &&
                       callsToAction.length > 0 && (
@@ -144,6 +128,7 @@ const EventContentItem = ({ content, loading }) => {
                         />
                       ))}
 
+                    <HorizontalDivider />
                     <ContentHTMLViewConnected contentId={content.id} />
                     <Features contentId={content.id} />
                   </PaddedView>

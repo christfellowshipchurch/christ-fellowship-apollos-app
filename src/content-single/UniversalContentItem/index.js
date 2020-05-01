@@ -16,6 +16,7 @@ import {
   // StretchyView,
 } from '@apollosproject/ui-kit';
 
+import Title from '../Title';
 import Features from '../Features';
 import Author from '../Author';
 
@@ -28,6 +29,10 @@ const StretchyView = ({ children, ...props }) =>
 const StyledMediaControlsConnected = styled(({ theme }) => ({
   marginTop: -(theme.sizing.baseUnit * 2.5),
 }))(MediaControlsConnected);
+
+const StyledContentHTMLViewConnected = styled(({ theme }) => ({
+  marginTop: theme.sizing.baseUnit * 0.5,
+}))(ContentHTMLViewConnected);
 
 const UniversalContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
@@ -56,13 +61,11 @@ const UniversalContentItem = ({ content, loading }) => {
             {/* fixes text/navigation spacing by adding vertical padding if we dont have an image */}
             <PaddedView vertical={!coverImageSources.length}>
               {/* title */}
-              <H3 padded isLoading={!content.title && loading}>
-                {content.title}
-              </H3>
+              <Title contentId={content.id} isLoading={loading} />
               {/* author */}
               <Author contentId={content.id} />
               {/* body content */}
-              <ContentHTMLViewConnected contentId={content.id} />
+              <StyledContentHTMLViewConnected contentId={content.id} />
             </PaddedView>
             <Features contentId={content.id} />
             <HorizontalContentSeriesFeedConnected contentId={content.id} />
