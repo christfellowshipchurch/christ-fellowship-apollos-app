@@ -12,7 +12,9 @@ const dark = ({ colors: themeColors, alpha }) => ({
     colors: {
         primary: themeColors.primary,
         screen: themeColors.black,
-        paper: Color(themeColors.darkPrimary).darken(0.5),
+        paper: Color(themeColors.darkPrimary)
+            .darken(0.5)
+            .hex(),
 
         text: {
             primary: themeColors.lightPrimary,
