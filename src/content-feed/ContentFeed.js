@@ -58,29 +58,32 @@ const ContentFeed = ({ navigation, Component, card }) => {
   /** Function that is called when a card in the feed is pressed.
    * Takes the user to the ContentSingle
    */
-  const handleOnPress = (item) => {
+  const onPress = (item) => {
     navigation.navigate('ContentSingle', {
       itemId: item.id,
       sharing: item.sharing,
     });
   };
 
-  const ContentCard = ({ id, ...props }) => {
-    console.log({ id, props });
-    return <ContentCardConnected card={card} {...props} contentId={id} />;
-  };
+  const ContentCard = ({ id, ...props }) => (
+    <ContentCardConnected card={card} {...props} contentId={id} />
+  );
 
   return (
     <BackgroundView>
       <SafeAreaView>
         <FeedWithMediaQuery
           renderItem={(props) =>
-            renderItem({ ...props, Component: Component || ContentCard })
+            renderItem({
+              ...props,
+              Component: Component || ContentCard,
+              onPress,
+            })
           }
           content={mapData(data)}
           isLoading={loading}
           error={error}
-          onPressItem={handleOnPress}
+          // onPressItem={handleOnPress}
           ListHeaderComponent={<NavigationSpacer />}
           scrollEventThrottle={16}
           onScroll={Animated.event([
