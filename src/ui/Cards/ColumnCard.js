@@ -21,12 +21,6 @@ import { Summary } from './components';
 const { ImageSourceType } = ConnectedImage;
 
 const Image = withTheme(({ theme, label }) => ({
-  ...(!!label && label !== ''
-    ? {
-      overlayColor: theme.colors.black,
-      overlayType: 'gradient-bottom-short',
-    }
-    : {}),
   // Sets the ratio of the image
   minAspectRatio: 1.33,
   maxAspectRatio: 1.33,
@@ -49,7 +43,7 @@ const Content = styled(({ theme }) => ({
 
 const LiveLabelPositioning = styled(({ theme }) => ({
   position: 'absolute',
-  bottom: 0,
+  bottom: 5,
   left: theme.sizing.baseUnit * 0.75,
 }))(LiveLabel);
 
@@ -57,7 +51,7 @@ const BlurLabel = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit * 0.5,
   borderRadius: theme.sizing.baseBorderRadius,
   position: 'absolute',
-  bottom: 3,
+  bottom: 5,
   left: theme.sizing.baseUnit * 0.75 - theme.sizing.baseUnit * 0.5,
 }))(BlurView);
 

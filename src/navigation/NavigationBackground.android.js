@@ -6,7 +6,8 @@ import { styled } from '@apollosproject/ui-kit';
 const dynamicBackgroundColor = new DynamicValue('white', 'black');
 
 const StyledBackground = styled(({ theme, type }) => ({
-  backgroundColor: theme.colors[type],
+  // backgroundColor: theme.colors[type],
+  backgroundColor: theme.colors.background.paper,
   ...StyleSheet.absoluteFill,
 }))(View);
 
