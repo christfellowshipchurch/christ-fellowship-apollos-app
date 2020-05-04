@@ -38,6 +38,8 @@ const ButtonContainer = styled(({ theme }) => ({
 const StretchyView = ({ children, ...props }) =>
   children({ Stretchy: View, ...props });
 
+const APP_CONTENT_URL = 'https://christfellowship.church';
+
 const InformationalContentItem = ({ content, loading, navigation }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
@@ -47,9 +49,7 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
     let url = redirectUrl;
 
     if (!url.startsWith('http')) {
-      url = `${ApollosConfig.APP_CONTENT_URL}${
-        url.startsWith('/') ? '' : '/'
-        }${redirectUrl}`;
+      url = `${APP_CONTENT_URL}${url.startsWith('/') ? '' : '/'}${redirectUrl}`;
     }
 
     Linking.canOpenURL(url).then((supported) => {
