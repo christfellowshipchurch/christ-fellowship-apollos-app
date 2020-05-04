@@ -13,10 +13,8 @@ import {
   MediaThumbnailItem,
   H6,
 } from '@apollosproject/ui-kit';
-import {
-  LiveConsumer,
-  RockAuthedWebBrowser,
-} from '@apollosproject/ui-connected';
+import { LiveConsumer } from '@apollosproject/ui-connected';
+import RockAuthedWebBrowser from '../../web-browser';
 
 import GET_CONTENT_MEDIA from './getContentMedia';
 

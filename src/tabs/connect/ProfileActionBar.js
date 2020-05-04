@@ -4,11 +4,9 @@ import { get, uniqueId } from 'lodash';
 
 import { styled, ActivityIndicator, ThemeMixin } from '@apollosproject/ui-kit';
 import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import RockAuthedWebBrowser from '../../web-browser';
 
 import ActionBar, { ActionBarItem } from '../../ui/ActionBar';
-
-import { openLink } from '../../utils/linking';
 import { GET_PROFILE_ACTIONS } from './queries';
 
 const StyledActionBar = styled(({ theme }) => ({
@@ -31,7 +29,7 @@ const ProfileActionBar = () => {
           {loading ? (
             <ActivityIndicator />
           ) : (
-              actions.map(({ icon, name, uri, openInApp, theme = {} }, i) => (
+              actions.map(({ icon, name, uri, theme = {} }, i) => (
                 <AnalyticsConsumer>
                   {({ track }) => (
                     <ThemeMixin mixin={theme}>
@@ -41,8 +39,7 @@ const ProfileActionBar = () => {
                             eventName: 'Pressed Profile Action Bar Item',
                             properties: { label: name },
                           });
-                          if (openInApp) openUrl(uri);
-                          else openLink({ uri, openInApp, title: name });
+                          openUrl(uri);
                         }}
                         icon={icon}
                         label={name}

@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-navigation';
 import ReactNativeSideMenu from 'react-native-side-menu';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import RockAuthedWebBrowser from '../web-browser';
 
 import { TableView, Cell } from '../ui/TableView';
 import ThemeMixin from '../ui/DynamicThemeMixin';

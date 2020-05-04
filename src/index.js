@@ -17,7 +17,6 @@ import NavigationService from './NavigationService';
 import ContentSingle from './content-single';
 import ContentFeed from './content-feed';
 import Tabs from './tabs';
-import UserWebBrowser from './user-web-browser';
 import EditUser from './edit-user';
 
 import LandingScreen from './LandingScreen';
@@ -53,7 +52,6 @@ const AppContent = createStackNavigator(
   {
     Tabs,
     ContentFeed,
-    UserWebBrowser,
   },
   {
     initialRouteName: 'Tabs',
@@ -73,7 +71,6 @@ const AppNavigator = createStackNavigator(
     ContentSingle,
     Auth: EnhancedAuth,
     Passes,
-    UserWebBrowser,
     Onboarding,
     LandingScreen,
     EditUser,

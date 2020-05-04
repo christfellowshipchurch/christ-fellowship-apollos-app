@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Animated, Linking } from 'react-native';
+import { View, Animated } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
@@ -17,6 +17,7 @@ import {
   MediaControlsConnected,
   LiveConsumer,
 } from '@apollosproject/ui-connected';
+import RockAuthedWebBrowser from '../../web-browser';
 
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
@@ -107,26 +108,23 @@ const EventContentItem = ({ content, loading }) => {
                       />
                     )}
 
-                    {callsToAction.length > 0 &&
-                      callsToAction.map((n) => (
-                        <StyledButton
-                          key={`${n.call}:${n.action}`}
-                          isLoading={loading}
-                          title={n.call}
-                          pill={false}
-                          onPress={() => {
-                            Linking.canOpenURL(n.action).then((supported) => {
-                              if (supported) {
-                                Linking.openURL(n.action);
-                              } else {
-                                console.log(
-                                  `Don't know how to open URI: ${n.action}`
-                                );
-                              }
-                            });
-                          }}
-                        />
-                      ))}
+                    {callsToAction.length > 0 && (
+                      <RockAuthedWebBrowser>
+                        {(openUrl) =>
+                          callsToAction.map((n) => (
+                            <StyledButton
+                              key={`${n.call}:${n.action}`}
+                              isLoading={loading}
+                              title={n.call}
+                              pill={false}
+                              onPress={() => {
+                                openUrl(n.action);
+                              }}
+                            />
+                          ))
+                        }
+                      </RockAuthedWebBrowser>
+                    )}
 
                     <HorizontalDivider />
                     <ContentHTMLViewConnected contentId={content.id} />

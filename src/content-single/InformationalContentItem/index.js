@@ -15,8 +15,8 @@ import {
 import {
   ContentHTMLViewConnected,
   MediaControlsConnected,
-  RockAuthedWebBrowser,
 } from '@apollosproject/ui-connected';
+import RockAuthedWebBrowser from '../../web-browser';
 import Features from '../Features';
 import Title from '../Title';
 
