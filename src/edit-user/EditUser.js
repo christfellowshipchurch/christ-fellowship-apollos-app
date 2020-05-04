@@ -20,6 +20,7 @@ import {
   TouchableScale,
   BackgroundView,
   FlexedView,
+  withMediaQuery,
 } from '@apollosproject/ui-kit';
 import { UserAvatarUpdate } from '@apollosproject/ui-connected';
 import {
@@ -63,10 +64,19 @@ const SaveButton = styled(({ theme, disabled }) => ({
 }))(BodyText);
 
 // Container for the Fields under the
-export const ContentContainer = styled(({ theme }) => ({
-  marginVertical: theme.sizing.baseUnit * 1.5,
-  backgroundColor: theme.colors.transparent,
-}))(View);
+export const ContentContainer = withMediaQuery(
+  ({ md }) => ({ maxWidth: md }),
+  styled(({ theme }) => ({
+    marginVertical: theme.sizing.baseUnit * 1.5,
+    backgroundColor: theme.colors.transparent,
+  })),
+  styled(({ theme }) => ({
+    marginVertical: theme.sizing.baseUnit * 1.5,
+    backgroundColor: theme.colors.transparent,
+    width: 500,
+    alignSelf: 'center',
+  }))
+)(View);
 
 // Read Only Fields that show on the Profile
 export const FieldContainer = styled(({ theme }) => ({
