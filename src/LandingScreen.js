@@ -2,7 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import RockAuthedWebBrowser from './web-browser';
 import UILandingScreen from './ui/LandingScreen';
 import AuthBackgroundComponent from './ui/AuthBackground';
 
