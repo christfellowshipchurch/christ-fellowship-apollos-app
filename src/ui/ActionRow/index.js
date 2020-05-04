@@ -42,6 +42,7 @@ const Content = styled(({ theme }) => ({
   marginLeft: theme.sizing.baseUnit,
   borderBottomColor: theme.colors.text.tertiary,
   borderBottomWidth: StyleSheet.hairlineWidth,
+  paddingVertical: theme.sizing.baseUnit,
 }))(FlexedView);
 
 const Container = styled(({ theme }) => ({
