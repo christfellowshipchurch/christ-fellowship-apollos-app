@@ -63,6 +63,7 @@
     "apollo-upload-client": "9.0.0",
     "awesome-phonenumber": "^2.20.0",
     "buffer": "^5.2.1",
+    "bugsnag-react-native": "^2.23.7",
     "color": "3.0.0",
     "core-js": "^2.6.11",
     "dotenv": "^6.2.0",
