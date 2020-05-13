@@ -18,6 +18,7 @@ import StatusBar from '../../ui/StatusBar';
 import { Feature } from '../../feature';
 import { HorizontalDivider } from '../../ui/Dividers';
 import Wordmark from '../../ui/Wordmark';
+import LiveStreamsFeed from './LiveStreamsFeed';
 
 import GET_FEED_FEATURES from './getFeedFeatures';
 
@@ -68,7 +69,7 @@ const Home = ({ navigation }) => {
 Home.navigationOptions = (props) =>
   navigationOptions({
     ...props,
-    headerTitle: <Wordmark />,
+    headerTitle: <LiveStreamsFeed />,
     title: 'Home',
   });
 
