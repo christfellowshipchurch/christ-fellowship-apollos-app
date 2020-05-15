@@ -21,13 +21,8 @@ import { Summary } from './components';
 const { ImageSourceType } = ConnectedImage;
 
 const Image = withTheme(({ theme, label }) => ({
-  // Sets the ratio of the image
-  minAspectRatio: 1.33,
-  maxAspectRatio: 1.33,
-  // Sets the ratio of the placeholder
   forceRatio: 1.33,
-  // No ratios are respected without this
-  maintainAspectRatio: true,
+  imageStyle: { aspectRatio: 1.33 },
 }))(CardImage);
 
 const Title = styled(({ theme }) => ({

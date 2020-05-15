@@ -18,6 +18,7 @@ import StatusBar from '../../ui/StatusBar';
 import { Feature } from '../../feature';
 import { HorizontalDivider } from '../../ui/Dividers';
 import Wordmark from '../../ui/Wordmark';
+import LiveStreamsFeed from './LiveStreamsFeed';
 
 import GET_FEED_FEATURES from './getFeedFeatures';
 
@@ -48,7 +49,12 @@ const Home = ({ navigation }) => {
           isLoading={loading && !get(data, 'userFeedFeatures', []).length}
           error={error}
           refetch={refetch}
-          ListHeaderComponent={<NavigationSpacer />}
+          ListHeaderComponent={
+            <React.Fragment>
+              <NavigationSpacer />
+              <LiveStreamsFeed />
+            </React.Fragment>
+          }
           scrollEventThrottle={16}
           onScroll={Animated.event([
             {
