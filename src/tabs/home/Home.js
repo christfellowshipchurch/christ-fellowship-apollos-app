@@ -49,7 +49,12 @@ const Home = ({ navigation }) => {
           isLoading={loading && !get(data, 'userFeedFeatures', []).length}
           error={error}
           refetch={refetch}
-          ListHeaderComponent={<NavigationSpacer />}
+          ListHeaderComponent={
+            <React.Fragment>
+              <NavigationSpacer />
+              <LiveStreamsFeed />
+            </React.Fragment>
+          }
           scrollEventThrottle={16}
           onScroll={Animated.event([
             {
@@ -69,7 +74,7 @@ const Home = ({ navigation }) => {
 Home.navigationOptions = (props) =>
   navigationOptions({
     ...props,
-    headerTitle: <LiveStreamsFeed />,
+    headerTitle: <Wordmark />,
     title: 'Home',
   });
 
