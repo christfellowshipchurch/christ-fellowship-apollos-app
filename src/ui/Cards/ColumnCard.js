@@ -21,8 +21,8 @@ import { Summary } from './components';
 const { ImageSourceType } = ConnectedImage;
 
 const Image = withTheme(({ theme, label }) => ({
-  forceRatio: 1.33,
-  imageStyle: { aspectRatio: 1.33 },
+  forceRatio: 1.5,
+  imageStyle: { aspectRatio: 1.5 },
 }))(CardImage);
 
 const Title = styled(({ theme }) => ({
