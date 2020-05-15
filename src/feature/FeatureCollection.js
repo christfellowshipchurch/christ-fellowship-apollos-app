@@ -26,7 +26,11 @@ const FeatureCollection = ({ actions, title }) => (
 );
 
 FeatureCollection.propTypes = {
-    actions: PropTypes.arrayOf(PropTypes.shape({})),
+    actions: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+        })
+    ),
 };
 
 FeatureCollection.defaultProps = {};

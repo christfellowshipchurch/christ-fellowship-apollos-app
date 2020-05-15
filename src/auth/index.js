@@ -1,4 +1,7 @@
 import React from 'react';
+import { Alert } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 import { createStackNavigator } from 'react-navigation';
 import PropTypes from 'prop-types';
 import hoistNonReactStatic from 'hoist-non-react-statics';
@@ -9,12 +12,12 @@ import {
   AuthSMSPhoneEntryConnected,
   AuthSMSVerificationConnected,
   AuthEmailEntryConnected,
-  AuthPasswordEntryConnected,
   AuthProfileEntryConnected,
   AuthProfileDetailsEntryConnected,
 } from '@apollosproject/ui-auth';
 
 import AuthProfileDetailsEntry from './AuthProfileDetailsEntry';
+import AuthPasswordEntryConnected from './AuthPasswordWithPasswordReset';
 import Entry from './Entry';
 
 export {
@@ -30,12 +33,6 @@ export {
 const StyledEntry = (props) => (
   <ThemeMixin mixin={{ type: 'auth-entry' }}>
     <Entry {...props} />
-  </ThemeMixin>
-);
-
-const StyledProfileDetailsEntry = (props) => (
-  <ThemeMixin mixin={{ type: 'onboarding' }}>
-    <AuthProfileDetailsEntry {...props} />
   </ThemeMixin>
 );
 
