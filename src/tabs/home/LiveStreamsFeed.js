@@ -1,25 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { FlatList, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-import { get, flatten } from 'lodash';
+import { Animated, FlatList, View, Text } from 'react-native';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
 import {
   ConnectedImage,
-  GradientOverlayImage,
-  UIText,
   TouchableScale,
   styled,
   withTheme,
+  Icon,
 } from '@apollosproject/ui-kit';
-import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
 
-import Wordmark from '../../ui/Wordmark';
+import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
+import { HorizontalDivider } from '../../ui/Dividers';
 
 const GET_LIVE_STREAMS = gql`
-  query getLiveContent {
+  query getLiveContent($key: String!) {
+    flagStatus(key: $key)
+
     liveStreams {
       isLive
       media {
@@ -42,15 +42,12 @@ const GET_LIVE_STREAMS = gql`
 
 const FlatListContainer = styled(({ theme }) => ({
   flex: 1,
-  paddingHorizontal: theme.sizing.baseUnit,
 }))(View);
 
 const LiveItemContainer = styled(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignContent: 'center',
-  height: 42,
-  width: 42,
 }))(TouchableScale);
 
 const CirclularImage = withTheme(({ theme }) => ({
@@ -59,28 +56,81 @@ const CirclularImage = withTheme(({ theme }) => ({
   maintainAspectRatio: true,
   overlayColor: theme.colors.darkPrimary,
   style: {
-    height: 40,
-    width: 40,
-    borderRadius: 20,
-    borderWidth: 2,
+    height: 42,
+    width: 42,
+    borderRadius: 21,
+    borderWidth: 3,
     borderColor: theme.colors.alert,
   },
 }))(ConnectedImage);
 
-const LivePosition = styled(({ theme }) => ({
-  marginTop: -10,
-  alignContent: 'center',
+const EndCapSpacer = styled(({ theme }) => ({
+  width: theme.sizing.baseUnit,
 }))(View);
 
 const LiveText = styled(({ theme }) => ({
-  color: theme.colors.white,
+  color: theme.colors.alert,
   fontWeight: 'bold',
   fontSize: 8,
-  borderRadius: 3,
-  paddingVertical: 1,
-  backgroundColor: theme.colors.alert,
   textAlign: 'center',
 }))(Text);
+
+const LiveDot = withTheme(({ theme }) => ({
+  name: 'live-dot',
+  fill: theme.colors.alert,
+  size: 3,
+  style: {
+    marginRight: 3,
+  },
+}))(Icon);
+
+const StyledHorizontalDivider = styled(({ theme }) => ({
+  marginTop: theme.sizing.baseUnit * 0.5,
+  marginBottom: theme.sizing.baseUnit * 0.25,
+  marginLeft: theme.sizing.baseUnit,
+  alignSelf: 'flex-start',
+}))(HorizontalDivider);
+
+const LivePosition = (props) => {
+  const MIN = 0.3;
+  const MAX = 1;
+  const duration = 1000;
+  const [opacity, setOpacity] = useState(new Animated.Value(MIN));
+  const fadeIn = () => {
+    Animated.timing(opacity, {
+      toValue: MAX,
+      duration,
+    }).start(() => {
+      fadeOut();
+    });
+  };
+  const fadeOut = () => {
+    Animated.timing(opacity, {
+      toValue: MIN,
+      duration,
+    }).start(() => {
+      fadeIn();
+    });
+  };
+
+  useEffect(() => {
+    fadeIn();
+  }, []);
+
+  return (
+    <Animated.View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 3,
+        marginLeft: -3,
+        opacity,
+      }}
+      {...props}
+    />
+  );
+};
 
 const LiveTouchable = ({ title, coverImage, media }) => {
   const [playVideo] = useMutation(PLAY_VIDEO);
@@ -101,6 +151,7 @@ const LiveTouchable = ({ title, coverImage, media }) => {
     >
       <CirclularImage source={get(coverImage, 'sources[0]')} />
       <LivePosition>
+        <LiveDot />
         <LiveText>LIVE</LiveText>
       </LivePosition>
     </LiveItemContainer>
@@ -116,18 +167,26 @@ const renderItem = ({ item }) => {
 const LiveStreamsFeed = ({ navigation }) => {
   const { loading, error, data } = useQuery(GET_LIVE_STREAMS, {
     pollInterval: 30000,
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      key: 'LIVE_STREAM_UI',
+    },
   });
   const liveStreams = get(data, 'liveStreams', []);
+  const flagStatus = get(data, 'flagStatus');
 
-  console.log({ liveStreams });
-
-  return liveStreams.length > 0 ? (
+  return liveStreams.length > 0 && flagStatus === 'LIVE' ? (
     <FlatListContainer>
-      <FlatList data={liveStreams} renderItem={renderItem} horizontal />
+      <FlatList
+        data={liveStreams}
+        renderItem={renderItem}
+        horizontal
+        ListHeaderComponent={<EndCapSpacer />}
+        ListFooterComponent={<EndCapSpacer />}
+      />
+      <StyledHorizontalDivider />
     </FlatListContainer>
-  ) : (
-      <Wordmark />
-    );
+  ) : null;
 };
 
 LiveStreamsFeed.propTypes = {
