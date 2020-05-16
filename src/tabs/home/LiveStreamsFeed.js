@@ -48,6 +48,7 @@ const LiveItemContainer = styled(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignContent: 'center',
+  paddingHorizontal: theme.sizing.baseUnit * 0.5,
 }))(TouchableScale);
 
 const CirclularImage = withTheme(({ theme }) => ({
@@ -56,29 +57,29 @@ const CirclularImage = withTheme(({ theme }) => ({
   maintainAspectRatio: true,
   overlayColor: theme.colors.darkPrimary,
   style: {
-    height: 42,
-    width: 42,
-    borderRadius: 21,
+    height: 48,
+    width: 48,
+    borderRadius: 24,
     borderWidth: 3,
-    borderColor: theme.colors.alert,
+    borderColor: theme.colors.primary,
   },
 }))(ConnectedImage);
 
 const EndCapSpacer = styled(({ theme }) => ({
-  width: theme.sizing.baseUnit,
+  width: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const LiveText = styled(({ theme }) => ({
   color: theme.colors.alert,
   fontWeight: 'bold',
-  fontSize: 8,
+  fontSize: 10,
   textAlign: 'center',
 }))(Text);
 
 const LiveDot = withTheme(({ theme }) => ({
   name: 'live-dot',
   fill: theme.colors.alert,
-  size: 3,
+  size: 4,
   style: {
     marginRight: 3,
   },
@@ -124,7 +125,7 @@ const LivePosition = (props) => {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 3,
-        marginLeft: -3,
+        marginLeft: -4,
         opacity,
       }}
       {...props}
