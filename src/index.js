@@ -26,7 +26,8 @@ import Onboarding from './ui/Onboarding';
 import AuthBackground from './ui/AuthBackground';
 
 // bugsnag configuration
-const bugsnag = new Client(ApollosConfig.BUGSNAG_KEY);
+// eslint-disable-next-line
+import bugsnag from './bugsnag';
 
 // Hack to avoid needing to pass emailRequired through the navigator.navigate
 const EnhancedAuth = (props) => (

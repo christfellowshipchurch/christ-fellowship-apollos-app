@@ -9,6 +9,7 @@ import { getVersion, getApplicationName } from 'react-native-device-info';
 import { authLink, buildErrorLink } from '@apollosproject/ui-auth';
 import { resolvers, schema, defaults } from '../store';
 import NavigationService from '../NavigationService';
+import { bugsnagLink, setUser } from '../bugsnag';
 import httpLink from './httpLink';
 import cache, { ensureCacheHydration, MARK_CACHE_LOADED } from './cache';
 
@@ -28,7 +29,7 @@ const onAuthError = async () => {
 
 const errorLink = buildErrorLink(onAuthError);
 
-const link = ApolloLink.from([authLink, errorLink, httpLink]);
+const link = ApolloLink.from([bugsnagLink, authLink, errorLink, httpLink]);
 
 export const client = new ApolloClient({
   link,
@@ -67,6 +68,7 @@ class ClientProvider extends PureComponent {
       throw e;
     } finally {
       client.mutate({ mutation: MARK_CACHE_LOADED });
+      setUser(client);
     }
   }
 
