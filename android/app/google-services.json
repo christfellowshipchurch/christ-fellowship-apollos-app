@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "898864910333",
+    "firebase_url": "https://christ-fellowship-app.firebaseio.com",
+    "project_id": "christ-fellowship-app",
+    "storage_bucket": "christ-fellowship-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:898864910333:android:bfa9167590af32e5a11394",
+        "android_client_info": {
+          "package_name": "com.subsplash.thechurchapp.s_BSVMPR"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "898864910333-8jkc7m4c5plk6agc3ke47r4pq48hlq20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA72oVBD4uP--ivAREwFh-Pgju8tLYNPdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "898864910333-8jkc7m4c5plk6agc3ke47r4pq48hlq20.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
