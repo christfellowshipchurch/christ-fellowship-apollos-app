@@ -62,6 +62,7 @@ const CirclularImage = withTheme(({ theme }) => ({
     borderRadius: 24,
     borderWidth: 3,
     borderColor: theme.colors.alert,
+    backgroundColor: theme.colors.transparent,
   },
 }))(ConnectedImage);
 
