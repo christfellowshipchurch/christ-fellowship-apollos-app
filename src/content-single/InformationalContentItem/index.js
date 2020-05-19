@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Animated, Linking } from 'react-native';
+import { View, Animated } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { withNavigation } from 'react-navigation';
-import ApollosConfig from '@apollosproject/config';
 import {
   styled,
   GradientOverlayImage,
@@ -16,9 +15,9 @@ import {
   ContentHTMLViewConnected,
   MediaControlsConnected,
 } from '@apollosproject/ui-connected';
-import RockAuthedWebBrowser from '../../web-browser';
 import Features from '../Features';
 import Title from '../Title';
+import { routeLink } from '../../utils/linking';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -38,29 +37,13 @@ const ButtonContainer = styled(({ theme }) => ({
 const StretchyView = ({ children, ...props }) =>
   children({ Stretchy: View, ...props });
 
-const APP_CONTENT_URL = 'https://christfellowship.church';
-
 const InformationalContentItem = ({ content, loading, navigation }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
   const redirectUrl = get(content, 'redirectUrl', '');
 
   if (redirectUrl && redirectUrl !== '') {
-    let url = redirectUrl;
-
-    if (!url.startsWith('http')) {
-      url = `${APP_CONTENT_URL}${url.startsWith('/') ? '' : '/'}${redirectUrl}`;
-    }
-
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        console.log(`Don't know how to open URI: ${url}`);
-      }
-    });
-
-    navigation.goBack(null);
+    routeLink(redirectUrl);
   }
 
   return (
@@ -88,25 +71,24 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
             <PaddedView>
               <Title contentId={content.id} isLoading={loading} />
               {callsToAction.length > 0 && (
-                <RockAuthedWebBrowser>
-                  {(openUrl) => (
-                    <ButtonContainer>
-                      {callsToAction.map((n) => (
-                        <StyledButton
-                          key={`${n.call}:${n.action}`}
-                          isLoading={loading}
-                          title={n.call}
-                          pill={false}
-                          onPress={() => {
-                            openUrl(n.action);
-                          }}
-                        />
-                      ))}
-                    </ButtonContainer>
-                  )}
-                </RockAuthedWebBrowser>
+                <ButtonContainer>
+                  {callsToAction.map((n) => (
+                    <StyledButton
+                      key={`${n.call}:${n.action}`}
+                      isLoading={loading}
+                      title={n.call}
+                      pill={false}
+                      onPress={() => {
+                        routeLink(n.action);
+                      }}
+                    />
+                  ))}
+                </ButtonContainer>
               )}
-              <ContentHTMLViewConnected contentId={content.id} />
+              <ContentHTMLViewConnected
+                contentId={content.id}
+                onPressAnchor={routeLink}
+              />
               <Features contentId={content.id} />
             </PaddedView>
             {/* <HorizontalContentSeriesFeedConnected contentId={content.id} /> */}

@@ -4,7 +4,7 @@ import { get, uniqueId } from 'lodash';
 
 import { styled, ActivityIndicator, ThemeMixin } from '@apollosproject/ui-kit';
 import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
-import RockAuthedWebBrowser from '../../web-browser';
+import { routeLink } from '../../utils/linking';
 
 import ActionBar, { ActionBarItem } from '../../ui/ActionBar';
 import { GET_PROFILE_ACTIONS } from './queries';
@@ -23,36 +23,32 @@ const ProfileActionBar = () => {
   if ((error && !loading) || (!loading && data && !actions.length)) return null;
 
   return actions.length && !loading ? (
-    <RockAuthedWebBrowser>
-      {(openUrl) => (
-        <StyledActionBar>
-          {loading ? (
-            <ActivityIndicator />
-          ) : (
-              actions.map(({ icon, name, uri, theme = {} }, i) => (
-                <AnalyticsConsumer>
-                  {({ track }) => (
-                    <ThemeMixin mixin={theme}>
-                      <ActionBarItem
-                        onPress={() => {
-                          track({
-                            eventName: 'Pressed Profile Action Bar Item',
-                            properties: { label: name },
-                          });
-                          openUrl(uri);
-                        }}
-                        icon={icon}
-                        label={name}
-                        key={uniqueId(`ProfileActionBar:${i}`)}
-                      />
-                    </ThemeMixin>
-                  )}
-                </AnalyticsConsumer>
-              ))
-            )}
-        </StyledActionBar>
-      )}
-    </RockAuthedWebBrowser>
+    <StyledActionBar>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+          actions.map(({ icon, name, uri, theme = {} }, i) => (
+            <AnalyticsConsumer>
+              {({ track }) => (
+                <ThemeMixin mixin={theme}>
+                  <ActionBarItem
+                    onPress={() => {
+                      track({
+                        eventName: 'Pressed Profile Action Bar Item',
+                        properties: { label: name },
+                      });
+                      routeLink(uri);
+                    }}
+                    icon={icon}
+                    label={name}
+                    key={uniqueId(`ProfileActionBar:${i}`)}
+                  />
+                </ThemeMixin>
+              )}
+            </AnalyticsConsumer>
+          ))
+        )}
+    </StyledActionBar>
   ) : null;
 };
 

@@ -20,6 +20,7 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 
+import { routeLink } from '../../utils/linking';
 import Title from '../Title';
 import Features from '../Features';
 
@@ -88,7 +89,10 @@ const WeekendContentItem = ({ content, loading }) => {
                       )}
                     </LiveConsumer>
                     <Title contentId={content.id} isLoading={loading} />
-                    <ContentHTMLViewConnected contentId={content.id} />
+                    <ContentHTMLViewConnected
+                      contentId={content.id}
+                      onPressAnchor={routeLink}
+                    />
                   </ThemeMixin>
                 </Header>
                 <StyledMediaControlsConnected contentId={content.id} />

@@ -14,7 +14,6 @@ import {
 } from '@apollosproject/ui-kit';
 
 import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
-import { HorizontalDivider } from '../../ui/Dividers';
 
 const GET_LIVE_STREAMS = gql`
   query getLiveContent($key: String!) {
@@ -62,6 +61,7 @@ const CirclularImage = withTheme(({ theme }) => ({
     borderRadius: 24,
     borderWidth: 3,
     borderColor: theme.colors.alert,
+    backgroundColor: theme.colors.transparent,
   },
 }))(ConnectedImage);
 
@@ -84,13 +84,6 @@ const LiveDot = withTheme(({ theme }) => ({
     marginRight: 3,
   },
 }))(Icon);
-
-const StyledHorizontalDivider = styled(({ theme }) => ({
-  marginTop: theme.sizing.baseUnit * 0.5,
-  marginBottom: theme.sizing.baseUnit * 0.25,
-  marginLeft: theme.sizing.baseUnit,
-  alignSelf: 'flex-start',
-}))(HorizontalDivider);
 
 const LivePosition = (props) => {
   const MIN = 0.3;
@@ -185,7 +178,6 @@ const LiveStreamsFeed = ({ navigation }) => {
         ListHeaderComponent={<EndCapSpacer />}
         ListFooterComponent={<EndCapSpacer />}
       />
-      <StyledHorizontalDivider />
     </FlatListContainer>
   ) : null;
 };

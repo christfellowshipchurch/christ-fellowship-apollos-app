@@ -1,3 +1,5 @@
+import URL from 'url';
+import querystring from 'querystring';
 import { StackActions, NavigationActions } from 'react-navigation';
 
 let _navigator;
@@ -49,10 +51,21 @@ const goBack = (from) => {
   _navigator.dispatch(NavigationActions.back({ key }));
 };
 
+const deepLink = (rawUrl) => {
+  if (!rawUrl) return;
+
+  const url = URL.parse(rawUrl);
+  const route = url.pathname.substring(1);
+  const args = querystring.parse(url.query);
+
+  navigate(route, args);
+};
+
 export default {
   setTopLevelNavigator,
   navigate,
   resetAction,
   goBack,
   resetToAuth,
+  deepLink,
 };

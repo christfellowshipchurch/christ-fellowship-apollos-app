@@ -17,7 +17,7 @@ import {
   MediaControlsConnected,
   LiveConsumer,
 } from '@apollosproject/ui-connected';
-import RockAuthedWebBrowser from '../../web-browser';
+import { routeLink } from '../../utils/linking';
 
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
@@ -108,26 +108,24 @@ const EventContentItem = ({ content, loading }) => {
                       />
                     )}
 
-                    {callsToAction.length > 0 && (
-                      <RockAuthedWebBrowser>
-                        {(openUrl) =>
-                          callsToAction.map((n) => (
-                            <StyledButton
-                              key={`${n.call}:${n.action}`}
-                              isLoading={loading}
-                              title={n.call}
-                              pill={false}
-                              onPress={() => {
-                                openUrl(n.action);
-                              }}
-                            />
-                          ))
-                        }
-                      </RockAuthedWebBrowser>
-                    )}
+                    {callsToAction.length > 0 &&
+                      callsToAction.map((n) => (
+                        <StyledButton
+                          key={`${n.call}:${n.action}`}
+                          isLoading={loading}
+                          title={n.call}
+                          pill={false}
+                          onPress={() => {
+                            routeLink(n.action);
+                          }}
+                        />
+                      ))}
 
                     <HorizontalDivider />
-                    <ContentHTMLViewConnected contentId={content.id} />
+                    <ContentHTMLViewConnected
+                      contentId={content.id}
+                      onPressAnchor={routeLink}
+                    />
                     <Features contentId={content.id} />
                   </PaddedView>
                   <HorizontalContentSeriesFeedConnected

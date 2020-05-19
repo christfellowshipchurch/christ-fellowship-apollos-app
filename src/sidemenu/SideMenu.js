@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-navigation';
 import ReactNativeSideMenu from 'react-native-side-menu';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
-import RockAuthedWebBrowser from '../web-browser';
+import { routeLink } from '../utils/linking';
 
 import { TableView, Cell } from '../ui/TableView';
 import ThemeMixin from '../ui/DynamicThemeMixin';
@@ -62,26 +62,22 @@ const Menu = ({ onPress }) => {
         );
 
     return (
-        <RockAuthedWebBrowser>
-            {(openUrl) => (
-                <ThemeMixin>
-                    <BackgroundView>
-                        <ScrollView>
-                            {get(data, 'moreLinks', []).map(({ name, ...props }, i) => (
-                                <TableWithLinks
-                                    key={name}
-                                    name={name}
-                                    {...props}
-                                    onPress={(uri) => openUrl(uri) && onPress()}
-                                />
-                            ))}
+        <ThemeMixin>
+            <BackgroundView>
+                <ScrollView>
+                    {get(data, 'moreLinks', []).map(({ name, ...props }, i) => (
+                        <TableWithLinks
+                            key={name}
+                            name={name}
+                            {...props}
+                            onPress={(uri) => routeLink(uri) && onPress()}
+                        />
+                    ))}
 
-                            <Logout />
-                        </ScrollView>
-                    </BackgroundView>
-                </ThemeMixin>
-            )}
-        </RockAuthedWebBrowser>
+                    <Logout />
+                </ScrollView>
+            </BackgroundView>
+        </ThemeMixin>
     );
 };
 
