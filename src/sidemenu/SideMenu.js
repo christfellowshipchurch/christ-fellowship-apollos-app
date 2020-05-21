@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-navigation';
 import ReactNativeSideMenu from 'react-native-side-menu';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
-import { routeLink } from '../utils/linking';
+import { useLinkRouter } from '../hooks';
 
 import { TableView, Cell } from '../ui/TableView';
 import ThemeMixin from '../ui/DynamicThemeMixin';
@@ -47,6 +47,7 @@ const TableWithLinks = ({ name, links = [], onPress }) => (
 );
 
 const Menu = ({ onPress }) => {
+    const { routeLink } = useLinkRouter();
     const { loading, error, data } = useQuery(GET_MORE_LINKS, {
         fetchPolicy: 'cache-and-network',
     });

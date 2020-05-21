@@ -8,22 +8,21 @@ import {
   BackgroundView,
   PaddedView,
   H4,
-  Button,
   // StretchyView,
 } from '@apollosproject/ui-kit';
 import {
-  ContentHTMLViewConnected,
   HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
   LiveConsumer,
 } from '@apollosproject/ui-connected';
-import { routeLink } from '../../utils/linking';
 
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
 import Title from '../Title';
 import LiveLabel from '../../ui/LiveLabel';
 import { HorizontalDivider } from '../../ui/Dividers';
+import HTMLContent from '../HTMLContent';
+import ButtonWithLinkRouting from '../../ui/ButtonWithLinkRouting';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -33,7 +32,7 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
 
 const StyledButton = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
-}))(Button);
+}))(ButtonWithLinkRouting);
 
 // TODO : temp fix until Core resolves the bug where images would disappear when pulling down
 const StretchyView = ({ children, ...props }) =>
@@ -115,17 +114,12 @@ const EventContentItem = ({ content, loading }) => {
                           isLoading={loading}
                           title={n.call}
                           pill={false}
-                          onPress={() => {
-                            routeLink(n.action);
-                          }}
+                          url={n.action}
                         />
                       ))}
 
                     <HorizontalDivider />
-                    <ContentHTMLViewConnected
-                      contentId={content.id}
-                      onPressAnchor={routeLink}
-                    />
+                    <HTMLContent contentId={content.id} />
                     <Features contentId={content.id} />
                   </PaddedView>
                   <HorizontalContentSeriesFeedConnected
