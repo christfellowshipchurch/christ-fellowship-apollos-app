@@ -4,7 +4,7 @@ import { get, uniqueId } from 'lodash';
 
 import { styled, ActivityIndicator, ThemeMixin } from '@apollosproject/ui-kit';
 import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
-import { routeLink } from '../../utils/linking';
+import { useLinkRouter } from '../../hooks';
 
 import ActionBar, { ActionBarItem } from '../../ui/ActionBar';
 import { GET_PROFILE_ACTIONS } from './queries';
@@ -17,6 +17,7 @@ const ProfileActionBar = () => {
   const { loading, error, data } = useQuery(GET_PROFILE_ACTIONS, {
     fetchPolicy: 'cache-and-network',
   });
+  const { routeLink } = useLinkRouter();
 
   const actions = get(data, 'profileLinks', []);
 
