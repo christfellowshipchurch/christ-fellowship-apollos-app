@@ -14,7 +14,6 @@ import {
   // StretchyView,
 } from '@apollosproject/ui-kit';
 
-import { routeLink } from '../../utils/linking';
 import Title from '../Title';
 import Features from '../Features';
 import Author from '../Author';
