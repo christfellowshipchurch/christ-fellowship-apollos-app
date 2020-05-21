@@ -16,12 +16,6 @@ import { GET_AUTHOR } from './queries';
 
 const DATE_FORMAT = 'MMMM D, YYYY';
 
-const calculateReadTime = (string) => {
-  const wordCount = string.split(' ').length;
-  const time = Math.round(wordCount / 225);
-  return time < 1 ? '1' : time;
-};
-
 const AuthorContainer = styled(({ theme }) => ({
   flexDirection: 'row',
   flexWrap: 'wrap',
@@ -79,9 +73,7 @@ const Author = ({ contentId }) => {
           isLoading={loading}
           color="tertiary"
         >
-          {`${publishDate} • ${calculateReadTime(
-            get(node, 'htmlContent', '')
-          )} min`}
+          {`${publishDate}`}
         </StyledH6>
       </TextContainer>
     </AuthorContainer>

@@ -14,6 +14,7 @@ import {
   // StretchyView,
 } from '@apollosproject/ui-kit';
 
+import { routeLink } from '../../utils/linking';
 import Title from '../Title';
 import Features from '../Features';
 import Author from '../Author';
@@ -64,7 +65,10 @@ const UniversalContentItem = ({ content, loading }) => {
               {/* author */}
               <Author contentId={content.id} />
               {/* body content */}
-              <StyledContentHTMLViewConnected contentId={content.id} />
+              <StyledContentHTMLViewConnected
+                contentId={content.id}
+                onPressAnchor={routeLink}
+              />
             </PaddedView>
             <Features contentId={content.id} />
             <HorizontalContentSeriesFeedConnected contentId={content.id} />
