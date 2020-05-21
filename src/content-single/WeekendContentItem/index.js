@@ -3,7 +3,6 @@ import { Animated, Dimensions, View } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
-  ContentHTMLViewConnected,
   HorizontalContentSeriesFeedConnected,
   LiveConsumer,
   MediaControlsConnected,
@@ -20,9 +19,9 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 
-import { routeLink } from '../../utils/linking';
 import Title from '../Title';
 import Features from '../Features';
+import HTMLContent from '../HTMLContent';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -89,10 +88,7 @@ const WeekendContentItem = ({ content, loading }) => {
                       )}
                     </LiveConsumer>
                     <Title contentId={content.id} isLoading={loading} />
-                    <ContentHTMLViewConnected
-                      contentId={content.id}
-                      onPressAnchor={routeLink}
-                    />
+                    <HTMLContent contentId={content.id} />
                   </ThemeMixin>
                 </Header>
                 <StyledMediaControlsConnected contentId={content.id} />

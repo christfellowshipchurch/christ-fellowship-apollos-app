@@ -3,7 +3,6 @@ import { Animated, View } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
-  ContentHTMLViewConnected,
   HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
 } from '@apollosproject/ui-connected';
@@ -12,14 +11,13 @@ import {
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  H3,
   // StretchyView,
 } from '@apollosproject/ui-kit';
 
-import { routeLink } from '../../utils/linking';
 import Title from '../Title';
 import Features from '../Features';
 import Author from '../Author';
+import HTMLContent from '../HTMLContent';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -33,7 +31,7 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
 
 const StyledContentHTMLViewConnected = styled(({ theme }) => ({
   marginTop: theme.sizing.baseUnit * 0.5,
-}))(ContentHTMLViewConnected);
+}))(HTMLContent);
 
 const UniversalContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
@@ -66,10 +64,7 @@ const UniversalContentItem = ({ content, loading }) => {
               {/* author */}
               <Author contentId={content.id} />
               {/* body content */}
-              <StyledContentHTMLViewConnected
-                contentId={content.id}
-                onPressAnchor={routeLink}
-              />
+              <StyledContentHTMLViewConnected contentId={content.id} />
             </PaddedView>
             <Features contentId={content.id} />
             <HorizontalContentSeriesFeedConnected contentId={content.id} />

@@ -1,14 +1,11 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
-import {
-  ContentHTMLViewConnected,
-  HorizontalContentSeriesFeedConnected,
-} from '@apollosproject/ui-connected';
+import { HorizontalContentSeriesFeedConnected } from '@apollosproject/ui-connected';
 import { PaddedView, H2, styled, withIsLoading } from '@apollosproject/ui-kit';
 import { ScriptureList } from '@apollosproject/ui-scripture';
-import { routeLink } from '../../utils/linking';
 import Title from '../Title';
+import HTMLContent from '../HTMLContent';
 
 const ContentContainer = withIsLoading(
   styled({ paddingVertical: 0 })(PaddedView)
@@ -37,7 +34,7 @@ const ContentTab = ({
             tabDestination={'scripture'}
           />
         ) : null}
-        <ContentHTMLViewConnected contentId={id} onPressAnchor={routeLink} />
+        <HTMLContent contentId={id} />
       </ContentContainer>
       <HorizontalContentSeriesFeedConnected
         contentId={id}

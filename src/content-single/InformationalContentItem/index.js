@@ -8,16 +8,14 @@ import {
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  Button,
   // StretchyView,
 } from '@apollosproject/ui-kit';
-import {
-  ContentHTMLViewConnected,
-  MediaControlsConnected,
-} from '@apollosproject/ui-connected';
+import { MediaControlsConnected } from '@apollosproject/ui-connected';
 import Features from '../Features';
 import Title from '../Title';
-import { routeLink } from '../../utils/linking';
+import HTMLContent from '../HTMLContent';
+import ButtonWithLinkRouting from '../../ui/ButtonWithLinkRouting';
+import { useLinkRouter } from '../../hooks';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -27,7 +25,7 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
 
 const StyledButton = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
-}))(Button);
+}))(ButtonWithLinkRouting);
 
 const ButtonContainer = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
@@ -41,6 +39,7 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
   const redirectUrl = get(content, 'redirectUrl', '');
+  const { routeLink } = useLinkRouter();
 
   if (redirectUrl && redirectUrl !== '') {
     routeLink(redirectUrl);
@@ -78,17 +77,12 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
                       isLoading={loading}
                       title={n.call}
                       pill={false}
-                      onPress={() => {
-                        routeLink(n.action);
-                      }}
+                      url={n.action}
                     />
                   ))}
                 </ButtonContainer>
               )}
-              <ContentHTMLViewConnected
-                contentId={content.id}
-                onPressAnchor={routeLink}
-              />
+              <HTMLContent contentId={content.id} />
               <Features contentId={content.id} />
             </PaddedView>
             {/* <HorizontalContentSeriesFeedConnected contentId={content.id} /> */}
