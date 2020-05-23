@@ -25,7 +25,7 @@ const getUser = async (client) => {
 };
 
 const configuration = new Configuration();
-configuration.apiKey = Config.BUGSNAG_API_KEY;
+configuration.apiKey = Config.BUGSNAG_KEY;
 const bugsnag = new Client(configuration);
 
 // set the user
