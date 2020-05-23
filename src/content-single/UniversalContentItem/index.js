@@ -64,10 +64,7 @@ const UniversalContentItem = ({ content, loading }) => {
               {/* author */}
               <Author contentId={content.id} />
               {/* body content */}
-              <StyledContentHTMLViewConnected
-                contentId={content.id}
-                onPressAnchor={routeLink}
-              />
+              <StyledContentHTMLViewConnected contentId={content.id} />
             </PaddedView>
             <Features contentId={content.id} />
             <HorizontalContentSeriesFeedConnected contentId={content.id} />
