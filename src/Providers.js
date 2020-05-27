@@ -12,6 +12,7 @@ import {
     DarkModeProvider,
 } from 'react-native-dark-mode';
 import { SideMenuProvider } from './sidemenu';
+import AppStateProvider from './AppStateProvider';
 
 import { track, identify } from './amplitude';
 import NavigationService from './NavigationService';
@@ -46,7 +47,9 @@ const AppProviders = (props) => {
                                         iconInput={customIcons}
                                         {...props}
                                     >
-                                        <SideMenuProvider {...props} />
+                                        <SideMenuProvider {...props}>
+                                            <AppStateProvider {...props} />
+                                        </SideMenuProvider>
                                     </Providers>
                                 </DarkModeProvider>
                             </LiveProvider>
