@@ -1,6 +1,6 @@
 {
   "name": "ChristFellowship",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "private": true,
   "engines": {
     "node": ">=8.11.x"
