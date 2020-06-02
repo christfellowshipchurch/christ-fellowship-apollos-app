@@ -79,7 +79,7 @@ const LiveText = styled(({ theme }) => ({
 const LiveDot = withTheme(({ theme }) => ({
   name: 'live-dot',
   fill: theme.colors.alert,
-  size: 4,
+  size: 3,
   style: {
     marginRight: 3,
   },
