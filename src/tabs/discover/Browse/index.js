@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { get, first } from 'lodash';
 
-import SearchInputHeader from '../../../ui/SearchInputHeader';
 import Categories from './Categories';
 import Filters from './Filters';
 import { GET_FILTERS } from './queries';
@@ -16,7 +15,6 @@ export const Browse = ({ filters, isLoading }) => {
 
     return (
         <View>
-            <SearchInputHeader />
             <Filters
                 data={filters}
                 active={active}

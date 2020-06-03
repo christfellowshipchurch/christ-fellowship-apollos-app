@@ -55,7 +55,7 @@ const StyledHorizontalTileFeed = styled(({ theme }) => ({
 }))(HorizontalTileFeed);
 
 const Container = styled(({ theme }) => ({
-  marginBottom: theme.sizing.baseUnit * 2,
+  marginBottom: theme.sizing.baseUnit,
 }))(View);
 
 const loadingStateObject = {

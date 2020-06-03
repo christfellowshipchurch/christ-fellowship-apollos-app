@@ -20,7 +20,7 @@ const StyledFeedView = styled(({ theme }) => ({
 // Hack to get around a weird issue where the tabbar
 // is cutting off the last row of cards
 const EndCapSpacer = styled(({ theme }) => ({
-  height: 200,
+  height: 250,
 }))(View);
 
 const mapData = (data) =>
@@ -30,11 +30,7 @@ const mapData = (data) =>
 
 const renderItem = ({ item }) => <TileContentFeed {...item} />;
 
-const Categories = ({
-  filterId,
-  FeedViewProps,
-  isLoading: parentIsLoading,
-}) => {
+const Categories = ({ filterId, isLoading: parentIsLoading }) => {
   const { loading, error, data, refetch } = useQuery(
     GET_CATEGORIES_FROM_FILTER,
     {
@@ -48,7 +44,6 @@ const Categories = ({
 
   return (
     <StyledFeedView
-      {...FeedViewProps}
       ListFooterComponent={<EndCapSpacer />}
       error={error}
       content={content}
@@ -63,15 +58,11 @@ const Categories = ({
 
 Categories.propTypes = {
   filterId: PropTypes.string,
-  FeedViewProps: PropTypes.shape({
-    ListHeaderComponent: PropTypes.any,
-  }),
   isLoading: PropTypes.bool,
 };
 
 Categories.defaultProps = {
   filterId: null,
-  FeedViewProps: {},
   isLoading: false,
 };
 

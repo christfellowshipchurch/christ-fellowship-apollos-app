@@ -11,13 +11,13 @@ const EndCapSpacer = styled(({ theme }) => ({
 const StyledH5 = styled(({ theme, active }) => ({
   color: active ? theme.colors.text.primary : theme.colors.text.secondary,
   fontWeight: active ? 'bold' : 'normal',
-  paddingVertical: theme.sizing.baseUnit,
 }))(H5);
 
 const FilterButton = styled(({ theme }) => ({
   justifyContent: 'center',
   alignItems: 'center',
   paddingHorizontal: theme.sizing.baseUnit * 0.5,
+  paddingVertical: theme.sizing.baseUnit,
 }))(View);
 
 const LoadingStateContainer = styled(({ theme }) => ({

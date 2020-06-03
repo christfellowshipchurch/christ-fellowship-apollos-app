@@ -56,6 +56,4 @@ const DiscoverFeed = memo(() => (
   </Query>
 ));
 
-DiscoverFeed.displayName = 'DiscoverFeed';
-
 export default DiscoverFeed;
