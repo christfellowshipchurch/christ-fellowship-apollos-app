@@ -11,6 +11,7 @@ import {
   styled,
   withMediaQuery,
   FlexedView,
+  TouchableScale,
 } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from '../../../ui/ContentCardConnected';
@@ -45,19 +46,31 @@ const EndCapSpacer = styled(({ theme }) => ({
   height: 150,
 }))(View);
 
-const handleOnPress = ({ navigation, item }) => {
-  const id = get(item, 'id', null);
-  return navigation.navigate('ContentSingle', {
+const handleOnPress = ({ navigation, id, transitionKey }) =>
+  navigation.navigate('ContentSingle', {
     itemId: id,
-    transitionKey: item.transitionKey,
+    transitionKey,
   });
-};
 
 const keyExtractor = (item) => item && get(item, 'id', null);
-const mapData = (data) => get(data, 'search.edges', []).map(({ node }) => node);
+const mapData = (data, navigation) =>
+  get(data, 'search.edges', []).map(({ node }) => ({
+    ...node,
+    navigation,
+  }));
 const renderItem = ({ item }) => (
   <FlexedView>
-    <SearchCardConnected contentId={item.id} {...item} />
+    <TouchableScale
+      onPress={() =>
+        handleOnPress({
+          id: item.id,
+          navigation: item.navigation,
+          transitionKey: item.transitionKey,
+        })
+      }
+    >
+      <SearchCardConnected contentId={item.id} {...item} />
+    </TouchableScale>
   </FlexedView>
 );
 
@@ -70,7 +83,7 @@ const SearchFeed = withNavigation(({ navigation, searchText }) => (
     {({ loading, error, data, refetch }) => (
       <StyledFeedView
         renderItem={renderItem}
-        content={mapData(data)}
+        content={mapData(data, navigation)}
         ListEmptyComponent={() => <NoResults searchText={searchText} />}
         ListFooterComponent={<EndCapSpacer />}
         hasContent={get(data, 'search.edges', []).length}
