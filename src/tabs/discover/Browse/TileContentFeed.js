@@ -14,12 +14,11 @@ import {
   ButtonLink,
   TouchableScale,
   Touchable,
-  withIsLoading,
   HorizontalDefaultCard,
 } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from '../../../ui/ContentCardConnected';
-import { GET_CATEGORY_PREVIEW } from '../queries';
+import { GET_CATEGORY_PREVIEW } from './queries';
 
 const RowHeader = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -56,7 +55,7 @@ const StyledHorizontalTileFeed = styled(({ theme }) => ({
 }))(HorizontalTileFeed);
 
 const Container = styled(({ theme }) => ({
-  marginBottom: theme.sizing.baseUnit * 2,
+  marginBottom: theme.sizing.baseUnit,
 }))(View);
 
 const loadingStateObject = {
@@ -65,78 +64,90 @@ const loadingStateObject = {
   coverImage: [],
 };
 
-const CategoryContentTileFeed = ({ id, navigation }) => {
-  const { loading, error, data, refetch } = useQuery(GET_CATEGORY_PREVIEW, {
-    variables: { id },
+const mapData = (data, additionalProps) =>
+  get(data, 'node.childContentItemsConnection.edges', []).map((edges) => ({
+    ...edges.node,
+    ...additionalProps,
+  }));
+
+const renderItem = ({ item }) => (
+  <TouchableScale onPress={() => item.onPress(item)}>
+    <ContentCardConnected
+      card={HorizontalDefaultCard}
+      contentId={item.id}
+      isLoading={item.isLoading && (!item.id || item.id === '')}
+      inHorizontalList
+    />
+  </TouchableScale>
+);
+
+const TileContentFeed = ({
+  id,
+  navigation,
+  isLoading: parentIsLoading,
+  feedLength,
+}) => {
+  const { loading, error, data } = useQuery(GET_CATEGORY_PREVIEW, {
+    variables: { id, first: feedLength + 1 },
     fetchPolicy: 'cache-and-network',
+    skip: !id || id === '' || parentIsLoading,
   });
 
   const title = get(data, 'node.title', '');
-  const content = get(data, 'node.childContentItemsConnection.edges', []).map(
-    (edges) => edges.node
-  );
+  const content = mapData(data, {
+    onPress: (item) =>
+      navigation.push('ContentSingle', {
+        itemId: item.id,
+      }),
+  });
+  const inLoadingState = (loading || parentIsLoading) && !content.length;
+  const onPressSeeMore = () => {
+    navigation.navigate('ContentFeed', {
+      itemId: id,
+      itemTitle: title,
+      nested: true,
+    });
+  };
 
   return content.length ? (
     <Container>
       <RowHeader>
         <Name>
-          <H4>{title}</H4>
+          <H4 isLoading={inLoadingState}>{title}</H4>
         </Name>
-        {content.length > 3 && (
-          <AndroidTouchableFix
-            onPress={() => {
-              navigation.navigate('ContentFeed', {
-                itemId: id,
-                itemTitle: title,
-                nested: true,
-              });
-            }}
-          >
-            <ButtonLinkSpacing>
-              <H6>
-                <ButtonLink>See More</ButtonLink>
-              </H6>
-            </ButtonLinkSpacing>
-          </AndroidTouchableFix>
-        )}
+        {content.length > feedLength &&
+          !inLoadingState && (
+            <AndroidTouchableFix onPress={onPressSeeMore}>
+              <ButtonLinkSpacing>
+                <H6>
+                  <ButtonLink>See More</ButtonLink>
+                </H6>
+              </ButtonLinkSpacing>
+            </AndroidTouchableFix>
+          )}
       </RowHeader>
       <StyledHorizontalTileFeed
-        content={take(content, 3)}
-        renderItem={({ item }) => (
-          <TouchableScale
-            onPress={() => {
-              navigation.push('ContentSingle', {
-                itemId: item.id,
-              });
-            }}
-          >
-            <ContentCardConnected
-              card={HorizontalDefaultCard}
-              contentId={item.id}
-              isLoading={loading}
-              inHorizontalList
-            />
-          </TouchableScale>
-        )}
+        content={take(content, feedLength)}
+        renderItem={renderItem}
         loadingStateObject={loadingStateObject}
-        isLoading={loading}
+        isLoading={inLoadingState}
       />
     </Container>
   ) : null;
 };
 
-CategoryContentTileFeed.propTypes = {
+TileContentFeed.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }),
-  isLoading: PropTypes.bool,
   id: PropTypes.string,
-  filter: PropTypes.string,
-  category: PropTypes.string,
-  name: PropTypes.string,
-  content: PropTypes.arrayOf(
-    PropTypes.any // this component doesn't care about the shape of `node`, just that it exists
-  ),
+  isLoading: PropTypes.bool,
+  feedLength: PropTypes.number,
 };
 
-export default withNavigation(withIsLoading(CategoryContentTileFeed));
+TileContentFeed.defaultProps = {
+  isLoading: false,
+  feedLength: 4,
+};
+
+export default withNavigation(TileContentFeed);

@@ -43,6 +43,7 @@ const BackArrow = withTheme(({ theme }) => ({
 
 export { default as NavigationSpacer } from './NavigationSpacer';
 export { default as useHeaderScrollEffect } from './useHeaderScrollEffect';
+export { default as NavigationBackground } from './NavigationBackground';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navigationOptions = ({
@@ -97,11 +98,6 @@ export const navigationOptions = ({
         borderBottomWidth: 0,
         paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
     },
-    // headerTitleStyle: {
-    //     fontSize: 24,
-    //     fontWeight: 'bold',
-    //     color: theme === 'dark' ? 'white' : 'black',
-    // },
     ...additionalProps,
 });
 
