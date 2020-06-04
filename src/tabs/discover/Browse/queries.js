@@ -31,13 +31,13 @@ export const GET_CATEGORIES_FROM_FILTER = gql`
 `;
 
 export const GET_CATEGORY_PREVIEW = gql`
-  query getFilterCategories($id: ID!) {
+  query getFilterCategories($id: ID!, $first: Int) {
     node(id: $id) {
       id
       ... on ContentItem {
         title
 
-        childContentItemsConnection(first: 4) {
+        childContentItemsConnection(first: $first) {
           edges {
             node {
               id

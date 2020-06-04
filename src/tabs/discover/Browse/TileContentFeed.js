@@ -81,9 +81,14 @@ const renderItem = ({ item }) => (
   </TouchableScale>
 );
 
-const TileContentFeed = ({ id, navigation, isLoading: parentIsLoading }) => {
+const TileContentFeed = ({
+  id,
+  navigation,
+  isLoading: parentIsLoading,
+  feedLength,
+}) => {
   const { loading, error, data } = useQuery(GET_CATEGORY_PREVIEW, {
-    variables: { id },
+    variables: { id, first: feedLength + 1 },
     fetchPolicy: 'cache-and-network',
     skip: !id || id === '' || parentIsLoading,
   });
@@ -110,7 +115,7 @@ const TileContentFeed = ({ id, navigation, isLoading: parentIsLoading }) => {
         <Name>
           <H4 isLoading={inLoadingState}>{title}</H4>
         </Name>
-        {content.length > 3 &&
+        {content.length > feedLength &&
           !inLoadingState && (
             <AndroidTouchableFix onPress={onPressSeeMore}>
               <ButtonLinkSpacing>
@@ -122,7 +127,7 @@ const TileContentFeed = ({ id, navigation, isLoading: parentIsLoading }) => {
           )}
       </RowHeader>
       <StyledHorizontalTileFeed
-        content={take(content, 3)}
+        content={take(content, feedLength)}
         renderItem={renderItem}
         loadingStateObject={loadingStateObject}
         isLoading={inLoadingState}
@@ -137,10 +142,12 @@ TileContentFeed.propTypes = {
   }),
   id: PropTypes.string,
   isLoading: PropTypes.bool,
+  feedLength: PropTypes.number,
 };
 
 TileContentFeed.defaultProps = {
   isLoading: false,
+  feedLength: 4,
 };
 
 export default withNavigation(TileContentFeed);
