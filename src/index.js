@@ -4,13 +4,11 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { useDarkModeContext } from 'react-native-dark-mode';
 
-import ApollosConfig from '@apollosproject/config';
 import { BackgroundView, ThemeMixin } from '@apollosproject/ui-kit';
 import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { MediaPlayer } from '@apollosproject/ui-media-player';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
-import { Client } from 'bugsnag-react-native';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 

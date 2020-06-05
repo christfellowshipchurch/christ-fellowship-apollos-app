@@ -54,4 +54,6 @@ NoResults.propTypes = {
   searchText: PropTypes.string,
 };
 
+NoResults.displayName = 'NoResults';
+
 export default NoResults;

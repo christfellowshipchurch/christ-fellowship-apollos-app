@@ -44,6 +44,7 @@ const BackArrow = withTheme(({ theme }) => ({
 export { default as NavigationSpacer } from './NavigationSpacer';
 export { default as useHeaderScrollEffect } from './useHeaderScrollEffect';
 export { default as NavigationBackground } from './NavigationBackground';
+export { default as HeaderRight } from './HeaderRight';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navigationOptions = ({
