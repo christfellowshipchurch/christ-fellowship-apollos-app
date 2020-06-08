@@ -66,13 +66,13 @@ const RowCard = ({ coverImage, label, title, summary, isLoading, isLive }) => (
             </H6>
           )}
 
-        {title !== '' && (
+        {(title !== '' || isLoading) && (
           <Title numberOfLines={1} ellipsizeMode="tail" isLoading={isLoading}>
             {title}
           </Title>
         )}
 
-        {summary !== '' && (
+        {(summary !== '' || isLoading) && (
           <H6 numberOfLines={1} ellipsizeMode="tail" isLoading={isLoading}>
             {summary}
           </H6>

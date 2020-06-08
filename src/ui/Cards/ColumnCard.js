@@ -85,12 +85,14 @@ const StackedImageCard = ({
             )}
         </View>
         <Content>
-          {title !== '' && (
-            <Title numberOfLines={2} ellipsizeMode="tail">
+          {(title !== '' || isLoading) && (
+            <Title numberOfLines={2} ellipsizeMode="tail" isLoading={isLoading}>
               {title}
             </Title>
           )}
-          {summary !== '' && <Summary>{summary}</Summary>}
+          {(summary !== '' || isLoading) && (
+            <Summary isLoading={isLoading}>{summary}</Summary>
+          )}
         </Content>
       </CardWithLayout>
     </ThemeMixin>

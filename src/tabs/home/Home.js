@@ -24,20 +24,19 @@ import GET_FEED_FEATURES from './getFeedFeatures';
 
 const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
 
-const renderItem = ({ item }) =>
-  item.action ? (
-    <>
-      <Feature {...item} />
-      <HorizontalDivider />
-    </>
-  ) : null;
-
 const Home = ({ navigation }) => {
   const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
     fetchPolicy: 'cache-and-network',
   });
   const { scrollY } = useHeaderScrollEffect({ navigation });
   const content = mapDataToActions(get(data, 'userFeedFeatures', []));
+  const renderItem = ({ item }) =>
+    item.action ? (
+      <>
+        <Feature {...item} isLoading={loading} />
+        <HorizontalDivider />
+      </>
+    ) : null;
 
   return (
     <BackgroundView>
