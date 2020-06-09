@@ -46,8 +46,17 @@ const ContentFeed = ({
                 </TouchableScale>
             );
 
+    /** If we are in a loading or error state and we don't have existing content,
+     *  we don't want to adjust the content to add an empty object
+     */
+    const dontAdjustContent = (isLoading || error) && content.length === 0;
+    /** If we have valid data, the number of columns is at least 2 (for large devices),
+     *  and the content length is odd, we want to add an empty item to the end of our
+     *  array so that we can render an empty View to keep the spacing consistent for
+     *  all elements. See stories for an example of "odd" content length
+     */
     const adjustedContent =
-        content.length % 2 === 0 && numColumns > 1
+        (content.length % 2 === 0 && numColumns > 1) || dontAdjustContent
             ? content
             : [...content, { emptyItem: true }];
 
