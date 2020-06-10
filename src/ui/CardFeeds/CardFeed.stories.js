@@ -15,7 +15,7 @@ storiesOf('cf-ui/CardFeed', module).add('default', () => (
     <BackgroundView>
         <SafeAreaView>
             <ScrollView>
-                <CardFeed content={mockContent} isLoading navigation={mockNavigation} />
+                <CardFeed content={mockContent} navigation={mockNavigation} />
             </ScrollView>
         </SafeAreaView>
     </BackgroundView>
