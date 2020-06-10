@@ -24,7 +24,7 @@ const ContentFeed = ({
     ...additionalProps
 }) => {
     /** Function that is called when a card in the feed is pressed.
-     * Takes the user to the ContentSingle
+     *  Takes the user to the ContentSingle
      */
     const onPress = (item) => {
         navigation.navigate('ContentSingle', {
@@ -107,4 +107,4 @@ const ContentFeedWithNumColumns = withMediaQuery(
     withProps({ numColumns: 2 })
 )(ContentFeed);
 
-export default withNavigation(ContentFeedWithNumColumns);
+export default ContentFeedWithNumColumns;

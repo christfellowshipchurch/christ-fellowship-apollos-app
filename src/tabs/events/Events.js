@@ -44,6 +44,7 @@ const Events = ({ navigation }) => {
       >
         <StatusBar />
         <CardFeed
+          navigation={navigation}
           ListFooterComponent={<View style={{ height: HEADER_OFFSET }} />}
           style={{
             paddingTop: HEADER_OFFSET,
