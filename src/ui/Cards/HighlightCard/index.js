@@ -19,10 +19,16 @@ import CardContentWrapper from './CardContentWrapper';
 
 const { ImageSourceType } = ConnectedImage;
 
-const Image = withTheme(({ theme, label }) => ({
+const Image = withTheme(({ theme, label, forceRatio }) => ({
   minAspectRatio: 1.2,
   maxAspectRatio: 1.78,
   maintainAspectRatio: true,
+  ...(forceRatio
+    ? {
+      forceRatio,
+      imageStyle: { aspectRatio: forceRatio },
+    }
+    : {}),
 }))(CardImage);
 
 const Content = styled(({ theme }) => ({
@@ -44,22 +50,25 @@ const HighlightCard = withIsLoading(
     summary,
     isLive,
     style,
+    forceRatio,
   }) => (
       <ThemeMixin>
         <Card isLoading={isLoading} style={style}>
-          <Image source={coverImage} label={labelText} />
+          <Image source={coverImage} label={labelText} forceRatio={forceRatio} />
 
           <CardContentWrapper coverImage={coverImage}>
             <Content>
               {isLive && !isLoading && <LiveLabel BackgroundComponent={View} />}
               {!!labelText &&
                 !isLive && <Label numberOfLines={2}>{labelText}</Label>}
-              {title || isLoading ? (
+
+              {(title !== '' || isLoading) && (
                 <Title isLoading={isLoading}>{title}</Title>
-              ) : null}
-              {summary || isLoading ? (
+              )}
+
+              {(summary !== '' || isLoading) && (
                 <Summary isLoading={isLoading}>{summary}</Summary>
-              ) : null}
+              )}
             </Content>
           </CardContentWrapper>
 
@@ -88,6 +97,7 @@ HighlightCard.propTypes = {
     type: PropTypes.string,
     colors: PropTypes.shape({}),
   }),
+  forceRatio: PropTypes.number,
 };
 
 HighlightCard.displayName = 'HighlightCard';
