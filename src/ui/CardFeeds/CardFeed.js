@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { withProps } from 'recompose';
 import { get } from 'lodash';
@@ -12,14 +13,18 @@ import {
 
 import ActionRow from '../ActionRow';
 import ContentCardConnected from '../ContentCardConnected';
+import FeedHeader from './FeedHeader';
 
-const ContentFeed = ({
+const CardFeed = ({
     card,
     content,
     navigation,
     error,
     isLoading,
     numColumns,
+    title,
+    seeMore,
+    ListHeaderComponent,
     ...additionalProps
 }) => {
     /** Function that is called when a card in the feed is pressed.
@@ -66,12 +71,26 @@ const ContentFeed = ({
             isLoading={isLoading}
             error={error}
             numColumns={numColumns}
+            ListHeaderComponent={
+                (ListHeaderComponent || title) && (
+                    <View>
+                        {title && (
+                            <FeedHeader
+                                title={title}
+                                seeMore={seeMore}
+                                isLoading={isLoading}
+                            />
+                        )}
+                        {ListHeaderComponent}
+                    </View>
+                )
+            }
             {...additionalProps}
         />
     );
 };
 
-ContentFeed.propTypes = {
+CardFeed.propTypes = {
     /** Functions passed down from React Navigation to use in navigating to/from
      * items in the feed.
      */
@@ -90,20 +109,25 @@ ContentFeed.propTypes = {
     isLoading: PropTypes.bool,
     error: PropTypes.any,
     numColumns: PropTypes.number,
+    title: PropTypes.string,
+    seeMore: PropTypes.bool,
+    ListHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
 };
 
-ContentFeed.defaultProps = {
-    Component: null,
+CardFeed.defaultProps = {
     card: ActionRow,
     isLoading: false,
     content: [],
     numColumns: 1,
+    title: null,
+    seeMore: true,
+    ListHeaderComponent: null,
 };
 
-const ContentFeedWithNumColumns = withMediaQuery(
+const CardFeedWithNumColumns = withMediaQuery(
     ({ md }) => ({ maxWidth: md }),
     withProps({ numColumns: 1 }),
     withProps({ numColumns: 2 })
-)(ContentFeed);
+)(CardFeed);
 
-export default ContentFeedWithNumColumns;
+export default CardFeedWithNumColumns;

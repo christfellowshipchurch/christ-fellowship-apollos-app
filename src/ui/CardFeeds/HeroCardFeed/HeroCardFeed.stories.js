@@ -91,3 +91,46 @@ storiesOf('cf-ui/HeroCardFeed', module).add('content of odd length', () => (
         </SafeAreaView>
     </BackgroundView>
 ));
+
+storiesOf('cf-ui/HeroCardFeed', module).add('title and see more', () => (
+    <BackgroundView>
+        <SafeAreaView>
+            <ScrollView>
+                <HeroCardFeed
+                    title="This is my title"
+                    content={drop(mockContent)}
+                    navigation={mockNavigation}
+                />
+            </ScrollView>
+        </SafeAreaView>
+    </BackgroundView>
+));
+
+storiesOf('cf-ui/HeroCardFeed', module).add('title without see more', () => (
+    <BackgroundView>
+        <SafeAreaView>
+            <ScrollView>
+                <HeroCardFeed
+                    title="This is my title"
+                    seeMore={false}
+                    content={drop(mockContent)}
+                    navigation={mockNavigation}
+                />
+            </ScrollView>
+        </SafeAreaView>
+    </BackgroundView>
+));
+
+storiesOf('cf-ui/HeroCardFeed', module).add('title loading', () => (
+    <BackgroundView>
+        <SafeAreaView>
+            <ScrollView>
+                <HeroCardFeed
+                    title="This is my title"
+                    isLoading
+                    navigation={mockNavigation}
+                />
+            </ScrollView>
+        </SafeAreaView>
+    </BackgroundView>
+));

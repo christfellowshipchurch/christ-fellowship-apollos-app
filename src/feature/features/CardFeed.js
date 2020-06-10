@@ -15,6 +15,7 @@ import {
     withMediaQuery,
 } from '@apollosproject/ui-kit';
 
+import { HeroCardFeed } from 'ui/CardFeeds';
 import ContentCardConnected from '../../ui/ContentCardConnected';
 import { HighlightCard, RowCard } from '../../ui/Cards';
 import GET_CONTENT_FEED from '../../content-feed/getContentFeed';
@@ -62,13 +63,17 @@ const SectionHeader = ({ title, onPress, callToAction }) => (
     </RowHeader>
 );
 
+const mapData = (data) =>
+    get(data, 'node.childContentItemsConnection.edges', []).map(
+        ({ node }) => node
+    );
+
 const CardFeed = ({
     title,
     itemId,
     navigation,
     isLoading,
     numColumns,
-    mapData,
     renderItem,
 }) => {
     const { loading, error, data } = useQuery(GET_CONTENT_FEED, {
@@ -76,28 +81,15 @@ const CardFeed = ({
         variables: { itemId, first: 4 },
     });
 
-    if (isLoading || loading) return <HighlightCard isLoading />;
-
     return (
-        <FlatList
-            ListHeaderComponent={() => (
-                <SectionHeader
-                    title={title}
-                    callToAction="See All"
-                    onPress={() => {
-                        navigation.navigate('ContentFeed', {
-                            itemId,
-                            itemTitle: title,
-                            nested: true,
-                        });
-                    }}
-                />
-            )}
-            data={mapData({ data, navigation, isLoading: isLoading || loading })}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+        <HeroCardFeed
+            navigation={navigation}
+            content={mapData(data)}
+            isLoading={loading}
+            error={error}
             removeClippedSubviews={false}
-            numColumns={numColumns}
+            card={RowCard}
+            title={title}
         />
     );
 };
