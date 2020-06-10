@@ -24,7 +24,9 @@ const CardFeed = ({
     numColumns,
     title,
     seeMore,
+    parentId,
     ListHeaderComponent,
+    onPressHeader,
     ...additionalProps
 }) => {
     /** Function that is called when a card in the feed is pressed.
@@ -79,6 +81,7 @@ const CardFeed = ({
                                 title={title}
                                 seeMore={seeMore}
                                 isLoading={isLoading}
+                                onPress={onPressHeader}
                             />
                         )}
                         {ListHeaderComponent}
@@ -112,6 +115,7 @@ CardFeed.propTypes = {
     title: PropTypes.string,
     seeMore: PropTypes.bool,
     ListHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+    onPressHeader: PropTypes.func,
 };
 
 CardFeed.defaultProps = {
@@ -122,6 +126,7 @@ CardFeed.defaultProps = {
     title: null,
     seeMore: true,
     ListHeaderComponent: null,
+    onPressHeader: () => null,
 };
 
 const CardFeedWithNumColumns = withMediaQuery(

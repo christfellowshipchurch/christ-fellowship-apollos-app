@@ -90,6 +90,14 @@ const CardFeed = ({
             removeClippedSubviews={false}
             card={RowCard}
             title={title}
+            parentId={itemId}
+            onPressHeader={() => {
+                navigation.navigate('ContentFeed', {
+                    itemId,
+                    itemTitle: title,
+                    nested: true,
+                });
+            }}
         />
     );
 };

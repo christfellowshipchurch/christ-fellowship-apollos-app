@@ -100,6 +100,7 @@ storiesOf('cf-ui/HeroCardFeed', module).add('title and see more', () => (
                     title="This is my title"
                     content={drop(mockContent)}
                     navigation={mockNavigation}
+                    onPressHeader={() => console.log('Hero Card Feed title and see more')}
                 />
             </ScrollView>
         </SafeAreaView>
