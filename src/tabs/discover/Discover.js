@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
-import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
 import { throttle } from 'lodash';
 
-import { styled, FlexedView, BackgroundView } from '@apollosproject/ui-kit';
+import { BackgroundView } from '@apollosproject/ui-kit';
 
 import StatusBar from '../../ui/StatusBar';
 import { navigationOptions, NavigationSpacer } from '../../navigation';

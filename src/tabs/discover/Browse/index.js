@@ -4,14 +4,18 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
 import { get, first } from 'lodash';
 
+import { ErrorCard } from '@apollosproject/ui-kit';
+
 import Categories from './Categories';
 import Filters from './Filters';
 import { GET_FILTERS } from './queries';
 
 const mapFilters = (data) => get(data, 'browseFilters', []);
 
-export const Browse = ({ filters, isLoading }) => {
+export const Browse = ({ filters, isLoading, error }) => {
     const [active, setActive] = useState(get(first(filters), 'id', null));
+
+    if (error) return <ErrorCard />;
 
     return (
         <View>
@@ -34,6 +38,11 @@ Browse.propTypes = {
         })
     ),
     isLoading: PropTypes.bool,
+    error: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.string,
+        PropTypes.object,
+    ]),
 };
 
 const BrowseConnected = () => {
@@ -41,7 +50,9 @@ const BrowseConnected = () => {
         fetchPolicy: 'cache-and-network',
     });
 
-    return <Browse filters={mapFilters(data)} isLoading={loading} />;
+    return (
+        <Browse filters={mapFilters(data)} isLoading={loading} error={error} />
+    );
 };
 
 export default BrowseConnected;
