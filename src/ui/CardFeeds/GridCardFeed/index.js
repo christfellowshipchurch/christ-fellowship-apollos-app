@@ -109,6 +109,8 @@ const GridCardFeed = ({
         }
     };
 
+    const showHero = (!error && hero) || isLoading;
+
     return (
         <StyledCardFeed
             card={ColumnCard}
@@ -117,8 +119,7 @@ const GridCardFeed = ({
             isLoading={isLoading}
             error={error}
             ListHeaderComponent={
-                !error &&
-                hero && (
+                showHero && (
                     <CapCard
                         onPress={() => onPressItem(hero)}
                         {...hero}
