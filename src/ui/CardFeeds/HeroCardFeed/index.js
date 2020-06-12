@@ -94,7 +94,6 @@ HeroCardFeed.propTypes = {
 HeroCardFeed.defaultProps = {
     isLoading: false,
     content: [],
-    numColumns: 1,
     withHeroCard: false,
 };
 

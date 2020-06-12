@@ -15,7 +15,11 @@ storiesOf('cf-ui/CardFeed', module).add('default', () => (
     <BackgroundView>
         <SafeAreaView>
             <ScrollView>
-                <CardFeed content={mockContent} navigation={mockNavigation} />
+                <CardFeed
+                    content={mockContent}
+                    navigation={mockNavigation}
+                    numColumns={3}
+                />
             </ScrollView>
         </SafeAreaView>
     </BackgroundView>

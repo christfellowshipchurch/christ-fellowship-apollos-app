@@ -89,6 +89,8 @@ PODS:
     - React
   - react-native-safe-area-context (0.3.6):
     - React
+  - react-native-slider (3.0.0):
+    - React
   - react-native-splash-screen (3.2.0):
     - React
   - react-native-video (5.0.2):
@@ -172,6 +174,7 @@ DEPENDENCIES:
   - react-native-passkit-wallet (from `../node_modules/react-native-passkit-wallet`)
   - react-native-safari-view (from `../node_modules/react-native-safari-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-video (from `../node_modules/react-native-video`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -253,6 +256,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safari-view"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-slider:
+    :path: "../node_modules/@react-native-community/slider"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
   react-native-video:
@@ -333,6 +338,7 @@ SPEC CHECKSUMS:
   react-native-passkit-wallet: 51e3babdaeec4c10b5736786ebd1bfb470fcaa36
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
   react-native-safe-area-context: e380a6f783ccaec848e2f3cc8eb205a62362950d
+  react-native-slider: 12bd76d3d568c9c5500825db54123d44b48e4ad4
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: d01ed7ff1e38fa7dcc6c15c94cf505e661b7bfd0
   react-native-webview: 8b2761a9bf84bbbbe7f90f49743b9b74c7cb11e7

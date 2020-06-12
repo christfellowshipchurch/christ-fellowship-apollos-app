@@ -1,14 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { withProps } from 'recompose';
+import { withProps, defaultProps } from 'recompose';
 import { get } from 'lodash';
 
 import {
     FeedView,
     withMediaQuery,
     TouchableScale,
-    FlexedView,
 } from '@apollosproject/ui-kit';
 
 import ActionRow from '../ActionRow';
@@ -24,7 +23,6 @@ const CardFeed = ({
     numColumns,
     title,
     seeMore,
-    parentId,
     ListHeaderComponent,
     onPressHeader,
     ...additionalProps
@@ -41,9 +39,12 @@ const CardFeed = ({
 
     const renderItem = ({ item }) =>
         get(item, 'emptyItem') ? (
-            <FlexedView />
+            <View {...item} />
         ) : (
-                <TouchableScale onPress={() => onPress(item)} style={{ flex: 1 }}>
+                <TouchableScale
+                    onPress={() => onPress(item)}
+                    style={{ flex: get(item, 'flex', 1) }}
+                >
                     <ContentCardConnected
                         card={card}
                         {...item}
@@ -62,9 +63,15 @@ const CardFeed = ({
      *  all elements. See stories for an example of "odd" content length
      */
     const adjustedContent =
-        (content.length % 2 === 0 && numColumns > 1) || dontAdjustContent
+        (content.length % numColumns === 0 && numColumns > 1) || dontAdjustContent
             ? content
-            : [...content, { emptyItem: true }];
+            : [
+                ...content,
+                {
+                    emptyItem: true,
+                    style: { flex: numColumns - (content.length % numColumns) },
+                },
+            ];
 
     return (
         <FeedView
@@ -122,7 +129,7 @@ CardFeed.defaultProps = {
     card: ActionRow,
     isLoading: false,
     content: [],
-    numColumns: 1,
+
     title: null,
     seeMore: true,
     ListHeaderComponent: null,
@@ -131,8 +138,8 @@ CardFeed.defaultProps = {
 
 const CardFeedWithNumColumns = withMediaQuery(
     ({ md }) => ({ maxWidth: md }),
-    withProps({ numColumns: 1 }),
-    withProps({ numColumns: 2 })
+    defaultProps({ numColumns: 1 }),
+    defaultProps({ numColumns: 2 })
 )(CardFeed);
 
 export default CardFeedWithNumColumns;
