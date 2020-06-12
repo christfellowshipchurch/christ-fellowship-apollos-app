@@ -140,6 +140,7 @@ const GridCardFeed = ({
                     />
                 )
             }
+            navigation={navigation}
             {...additionalProps}
         />
     );

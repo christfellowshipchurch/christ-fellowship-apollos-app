@@ -50,8 +50,6 @@ const HeroCardFeed = ({
         }
     };
 
-    console.log({ additionalProps });
-
     return (
         <CardFeed
             content={adjustedContent}
@@ -67,6 +65,7 @@ const HeroCardFeed = ({
                     />
                 )
             }
+            navigation={navigation}
             {...additionalProps}
         />
     );
