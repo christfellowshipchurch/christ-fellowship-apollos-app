@@ -20,8 +20,6 @@ const GridFeed = ({ itemId, navigation }) => {
         },
     });
 
-    console.log({ data });
-
     return (
         <GridCardFeed
             content={mapData(data)}
