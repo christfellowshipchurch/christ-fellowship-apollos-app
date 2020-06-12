@@ -73,8 +73,6 @@ const CardFeed = ({
                 },
             ];
 
-    console.log({ numColumns });
-
     return (
         <FeedView
             renderItem={renderItem}

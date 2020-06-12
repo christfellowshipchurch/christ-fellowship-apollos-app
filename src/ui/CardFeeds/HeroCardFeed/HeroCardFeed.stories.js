@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView } from 'react-native';
 import { storiesOf } from '@apollosproject/ui-storybook';
-import { drop, take } from 'lodash';
+import { take } from 'lodash';
 import Slider from '@react-native-community/slider';
 import { BackgroundView, UIText, PaddedView } from '@apollosproject/ui-kit';
 import mockContent from '../CardFeedDataMock';
