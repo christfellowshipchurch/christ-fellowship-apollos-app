@@ -73,6 +73,8 @@ const CardFeed = ({
                 },
             ];
 
+    console.log({ numColumns });
+
     return (
         <FeedView
             renderItem={renderItem}
@@ -129,7 +131,6 @@ CardFeed.defaultProps = {
     card: ActionRow,
     isLoading: false,
     content: [],
-
     title: null,
     seeMore: true,
     ListHeaderComponent: null,

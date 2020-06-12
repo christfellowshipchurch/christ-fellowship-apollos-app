@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, ScrollView } from 'react-native';
 import { storiesOf } from '@apollosproject/ui-storybook';
-import { drop } from 'lodash';
+import { drop, take } from 'lodash';
+import Slider from '@react-native-community/slider';
 import { BackgroundView, UIText, PaddedView } from '@apollosproject/ui-kit';
 import mockContent from '../CardFeedDataMock';
 import HeroCardFeed from '.';
@@ -10,15 +11,35 @@ const mockNavigation = {
     navigate: () => null,
 };
 
+const HeroCardFeedWithSlider = ({ FeedProps }) => {
+    const [numCards, setNumCards] = useState(mockContent.length);
+    return (
+        <ScrollView>
+            <PaddedView>
+                <UIText bold>Number of Cards</UIText>
+                <Slider
+                    minimumValue={1}
+                    maximumValue={mockContent.length}
+                    step={1}
+                    value={numCards}
+                    onValueChange={(newValue) => setNumCards(newValue)}
+                />
+            </PaddedView>
+            <HeroCardFeed
+                content={take(mockContent, numCards)}
+                navigation={mockNavigation}
+                {...FeedProps}
+                key={numCards}
+            />
+        </ScrollView>
+    );
+};
+
 storiesOf('cf-ui/HeroCardFeed', module).add('default', () => (
     <BackgroundView>
         <SafeAreaView>
             <ScrollView>
-                <HeroCardFeed
-                    content={mockContent}
-                    isLoading
-                    navigation={mockNavigation}
-                />
+                <HeroCardFeedWithSlider />
             </ScrollView>
         </SafeAreaView>
     </BackgroundView>
@@ -72,35 +93,16 @@ storiesOf('cf-ui/HeroCardFeed', module).add('content + isLoading', () => (
     </BackgroundView>
 ));
 
-storiesOf('cf-ui/HeroCardFeed', module).add('content of odd length', () => (
-    <BackgroundView>
-        <SafeAreaView>
-            <ScrollView>
-                <PaddedView>
-                    <UIText bold>
-                        For large displays, this displays what the component looks like with
-                        an odd length of content
-          </UIText>
-                </PaddedView>
-                <HeroCardFeed
-                    content={drop(mockContent)}
-                    isLoading
-                    navigation={mockNavigation}
-                />
-            </ScrollView>
-        </SafeAreaView>
-    </BackgroundView>
-));
-
 storiesOf('cf-ui/HeroCardFeed', module).add('title and see more', () => (
     <BackgroundView>
         <SafeAreaView>
             <ScrollView>
-                <HeroCardFeed
-                    title="This is my title"
-                    content={drop(mockContent)}
-                    navigation={mockNavigation}
-                    onPressHeader={() => console.log('Hero Card Feed title and see more')}
+                <HeroCardFeedWithSlider
+                    FeedProps={{
+                        title: 'This is my title',
+                        onPressHeader: () =>
+                            console.log('Hero Card Feed title and see more'),
+                    }}
                 />
             </ScrollView>
         </SafeAreaView>
@@ -111,11 +113,12 @@ storiesOf('cf-ui/HeroCardFeed', module).add('title without see more', () => (
     <BackgroundView>
         <SafeAreaView>
             <ScrollView>
-                <HeroCardFeed
-                    title="This is my title"
-                    seeMore={false}
-                    content={drop(mockContent)}
-                    navigation={mockNavigation}
+                <HeroCardFeedWithSlider
+                    FeedProps={{
+                        title: 'This is my title',
+                        onPressHeader: () =>
+                            console.log('Hero Card Feed title and see more'),
+                    }}
                 />
             </ScrollView>
         </SafeAreaView>

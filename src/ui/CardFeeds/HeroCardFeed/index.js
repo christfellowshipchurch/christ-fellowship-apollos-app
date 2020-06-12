@@ -50,6 +50,8 @@ const HeroCardFeed = ({
         }
     };
 
+    console.log({ additionalProps });
+
     return (
         <CardFeed
             content={adjustedContent}
@@ -94,7 +96,6 @@ HeroCardFeed.propTypes = {
 HeroCardFeed.defaultProps = {
     isLoading: false,
     content: [],
-    withHeroCard: false,
 };
 
 HeroCardFeed.displayName = 'HeroCardFeed';

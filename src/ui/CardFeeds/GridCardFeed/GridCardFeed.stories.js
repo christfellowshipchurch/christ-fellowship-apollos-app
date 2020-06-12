@@ -99,7 +99,7 @@ storiesOf('cf-ui/GridCardFeed', module).add('title and see more', () => (
                     FeedProps={{
                         title: 'This is my title',
                         onPressHeader: () =>
-                            console.log('Hero Card Feed title and see more'),
+                            console.log('Grid Card Feed title and see more'),
                     }}
                 />
             </ScrollView>
