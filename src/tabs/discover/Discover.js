@@ -12,9 +12,7 @@ import Browse from './Browse';
 import SearchFeed from './SearchFeed';
 
 const Discover = ({ navigation }) => {
-  const [isFocused, setIsFocused] = useState(
-    navigation.getParam('searchFocused')
-  );
+  const [isFocused, setIsFocused] = useState(navigation.getParam('showSearch'));
   const [searchText, setSearchText] = useState(
     navigation.getParam('searchText')
   );
@@ -41,13 +39,16 @@ const Discover = ({ navigation }) => {
   return (
     <DynamicThemeMixin>
       <BackgroundView>
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1 }}>
           <NavigationSpacer />
           <StatusBar />
           {isFocused ? (
             <SearchFeed searchText={searchText} />
           ) : (
-              <Browse navigation={navigation} />
+              <Browse
+                navigation={navigation}
+                selectedFilter={navigation.getParam('selectedFilter')}
+              />
             )}
         </SafeAreaView>
       </BackgroundView>

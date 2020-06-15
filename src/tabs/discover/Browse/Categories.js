@@ -25,9 +25,8 @@ const EndCapSpacer = styled(({ theme }) => ({
 
 const mapData = (data, path) => get(data, path, []).map((edges) => edges.node);
 
-const renderItem = ({ item }) => {
+const renderItem = ({ item, navigation, cardsToShow }) => {
   const content = mapData(item, 'childContentItemsConnection.edges');
-  const cardsToShow = get(item, 'cardsToShow', 4);
 
   return (
     <TileContentFeed
@@ -36,11 +35,17 @@ const renderItem = ({ item }) => {
       content={take(content, cardsToShow)}
       viewAll={content.length > cardsToShow}
       isLoading={item.isLoading}
+      navigation={navigation}
     />
   );
 };
 
-const Categories = ({ filterId, isLoading: parentIsLoading, cardsToShow }) => {
+const Categories = ({
+  filterId,
+  isLoading: parentIsLoading,
+  cardsToShow,
+  navigation,
+}) => {
   const { loading, error, data, refetch } = useQuery(
     GET_CATEGORIES_FROM_FILTER,
     {
@@ -54,13 +59,13 @@ const Categories = ({ filterId, isLoading: parentIsLoading, cardsToShow }) => {
 
   return (
     <StyledFeedView
-      extraData={{ cardsToShow }}
+      extraData={{ cardsToShow, navigation }}
       ListFooterComponent={<EndCapSpacer />}
       error={error}
       content={content}
       isLoading={loading || parentIsLoading}
       refetch={refetch}
-      renderItem={renderItem}
+      renderItem={(props) => renderItem({ ...props, navigation, cardsToShow })}
       loadingStateObject={feedItemLoadingState}
       numColumns={1}
     />

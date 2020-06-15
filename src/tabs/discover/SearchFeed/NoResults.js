@@ -34,21 +34,29 @@ const NoResultsText = styled(
 const StyledH4 = NoResultsText(H4);
 const StyledBodySmall = NoResultsText(BodySmall);
 
-const NoResults = ({ searchText }) => (
-  <CenteredView>
-    <Title vertical={false}>
-      <StyledIcon name={'umbrella'} />
-      <StyledH4 padded>Uh Oh!</StyledH4>
-    </Title>
-    <PaddedView vertical={false}>
-      <StyledBodySmall>
-        {"Looks like we couldn't find anything for "}
-        <StyledBodySmall bold>{`"${searchText}."`}</StyledBodySmall>
-        {' Try searching for something else!'}
-      </StyledBodySmall>
-    </PaddedView>
-  </CenteredView>
-);
+const NoResults = ({ searchText }) => {
+  const searched = searchText && searchText !== '';
+  return (
+    <CenteredView>
+      <Title vertical={false}>
+        <StyledH4 padded>{searched ? `Uh Oh!` : `Let's get started!`}</StyledH4>
+      </Title>
+      <PaddedView vertical={false}>
+        {searched ? (
+          <StyledBodySmall>
+            {"Looks like we couldn't find anything for "}
+            <StyledBodySmall bold>{`"${searchText}."`}</StyledBodySmall>
+            {' Try searching for something else!'}
+          </StyledBodySmall>
+        ) : (
+            <StyledBodySmall>
+              {"Start typing above to find exactly what you're looking for."}
+            </StyledBodySmall>
+          )}
+      </PaddedView>
+    </CenteredView>
+  );
+};
 
 NoResults.propTypes = {
   searchText: PropTypes.string,

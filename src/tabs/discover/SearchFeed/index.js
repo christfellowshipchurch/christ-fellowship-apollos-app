@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { withProps } from 'recompose';
-import { withNavigation } from 'react-navigation';
+import { useQuery } from '@apollo/react-hooks';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -74,28 +74,30 @@ const renderItem = ({ item }) => (
   </FlexedView>
 );
 
-const SearchFeed = withNavigation(({ navigation, searchText }) => (
-  <Query
-    query={GET_SEARCH_RESULTS}
-    variables={{ searchText }}
-    fetchPolicy="cache-and-network"
-  >
-    {({ loading, error, data, refetch }) => (
-      <StyledFeedView
-        renderItem={renderItem}
-        content={mapData(data, navigation)}
-        ListEmptyComponent={() => <NoResults searchText={searchText} />}
-        ListFooterComponent={<EndCapSpacer />}
-        hasContent={get(data, 'search.edges', []).length}
-        isLoading={loading}
-        error={error}
-        refetch={refetch}
-        onPressItem={(item) => handleOnPress({ navigation, item })}
-        keyExtractor={keyExtractor}
-      />
-    )}
-  </Query>
-));
+const SearchFeed = ({ navigation, searchText }) => {
+  const { data, loading, error, refetch } = useQuery(GET_SEARCH_RESULTS, {
+    variables: { searchText },
+    fetchPolicy: 'cache-and-network',
+    skip: !searchText || searchText === '',
+  });
+
+  const content = mapData(data, navigation);
+
+  return (
+    <StyledFeedView
+      renderItem={renderItem}
+      content={content}
+      ListEmptyComponent={() => <NoResults searchText={searchText} />}
+      ListFooterComponent={<EndCapSpacer />}
+      hasContent={get(data, 'search.edges', []).length}
+      isLoading={loading}
+      error={error}
+      refetch={refetch}
+      onPressItem={(item) => handleOnPress({ navigation, ...item })}
+      keyExtractor={keyExtractor}
+    />
+  );
+};
 
 SearchFeed.propTypes = {
   searchText: PropTypes.string,

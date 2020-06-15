@@ -139,4 +139,4 @@ TileContentFeed.propTypes = {
   viewAll: true,
 };
 
-export default withNavigation(withIsLoading(TileContentFeed));
+export default withIsLoading(TileContentFeed);

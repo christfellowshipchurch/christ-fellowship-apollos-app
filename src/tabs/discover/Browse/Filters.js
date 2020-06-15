@@ -30,7 +30,7 @@ const LoadingState = styled(({ theme }) => ({
   borderRadius: theme.sizing.baseBorderRadius,
   backgroundColor: theme.colors.background.inactive,
   height: theme.helpers.rem(0.5),
-  width: '15%',
+  width: '10%',
   marginHorizontal: 10,
 }))(View);
 

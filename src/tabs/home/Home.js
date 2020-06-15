@@ -5,19 +5,20 @@ import { SafeAreaView } from 'react-navigation';
 import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
 
-import { FeedView } from '@apollosproject/ui-kit';
+import { FeedView, DefaultCard } from '@apollosproject/ui-kit';
 
+import StatusBar from 'ui/StatusBar';
+
+import { HorizontalDivider } from 'ui/Dividers';
+import Wordmark from 'ui/Wordmark';
+import { HighlightCard } from 'ui/Cards';
+import { Feature } from '../../feature';
 import {
   navigationOptions,
   BackgroundView,
   NavigationSpacer,
   useHeaderScrollEffect,
 } from '../../navigation';
-import StatusBar from '../../ui/StatusBar';
-
-import { Feature } from '../../feature';
-import { HorizontalDivider } from '../../ui/Dividers';
-import Wordmark from '../../ui/Wordmark';
 import LiveStreamsFeed from './LiveStreamsFeed';
 
 import GET_FEED_FEATURES from './getFeedFeatures';
@@ -30,13 +31,22 @@ const Home = ({ navigation }) => {
   });
   const { scrollY } = useHeaderScrollEffect({ navigation });
   const content = mapDataToActions(get(data, 'userFeedFeatures', []));
-  const renderItem = ({ item }) =>
-    item.action ? (
+  const renderItem = ({ item }) => {
+    if (item.isLoading)
+      return (
+        <>
+          <HighlightCard title="" isLoading coverImage={[]} />
+          <HorizontalDivider />
+        </>
+      );
+
+    return item.action ? (
       <>
         <Feature {...item} isLoading={loading} />
         <HorizontalDivider />
       </>
     ) : null;
+  };
 
   return (
     <BackgroundView>
