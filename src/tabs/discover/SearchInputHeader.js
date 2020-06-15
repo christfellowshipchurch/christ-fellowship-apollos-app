@@ -89,7 +89,6 @@ const SearchInputHeader = ({
   const inputRef = useRef();
   const [isFocused, setIsFocused] = useState(initialIsFocused);
   const [value, setValue] = useState(initialValue);
-  const resetTextValue = () => setValue('');
   const handleOnFocus = (focus) => {
     setIsFocused(focus);
     onFocus(focus);
@@ -115,7 +114,7 @@ const SearchInputHeader = ({
           value={value}
         />
         <ClearSearchButton
-          onPress={resetTextValue}
+          onPress={() => handleOnTextChange('')}
           name={'close'}
           isVisible={!!value && value !== ''}
         />
