@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-unused-styles */
 import React, { useState, useRef } from 'react';
-import { Platform, View, TextInput, Keyboard } from 'react-native';
+import { Platform, View, TextInput, Keyboard, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import Color from 'color';
 
@@ -76,12 +76,16 @@ const CancelButton = ({ onPress }) => (
   </Touchable>
 );
 
+CancelButton.propTypes = {
+  onPress: PropTypes.func,
+};
+
 const Layout = styled(({ theme }) => ({
   flex: 1,
   flexDirection: 'row',
   alignItems: 'center',
   paddingLeft: theme.sizing.baseUnit, // we only need to worry about the left because the `HeaderRight` component has padding for the right
-  paddingBottom: theme.sizing.baseUnit * 0.5,
+  paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const SearchInputHeader = ({
