@@ -11,7 +11,10 @@ const Container = styled(({ theme }) => ({
 
 const Title = styled(({ theme }) => ({
     textTransform: 'uppercase',
-    fontWeight: '900',
+    fontWeight: Platform.select({
+        ios: '900',
+        android: 'bold',
+    }),
     marginLeft: 5,
     fontSize: 16,
     color: theme.colors.text.primary,

@@ -1,15 +1,24 @@
 import React from 'react';
+import { View } from 'react-native';
 
-import { TouchableScale, Icon, withTheme } from '@apollosproject/ui-kit';
+import {
+  TouchableScale,
+  Icon,
+  withTheme,
+  styled,
+} from '@apollosproject/ui-kit';
 
 import { useSideMenu } from '../sidemenu';
+
+const Spacer = styled(({ theme }) => ({
+  padding: theme.sizing.baseUnit,
+}))(View);
 
 const Bars = withTheme(({ theme }) => ({
   name: 'bars-alt',
   size: 24,
   color: theme.colors.text.primary,
   style: {
-    margin: theme.sizing.baseUnit,
     opacity: 0.5,
   },
 }))(Icon);
@@ -19,7 +28,9 @@ const AvatarConnected = () => {
 
   return (
     <TouchableScale onPress={openSideMenu}>
-      <Bars />
+      <Spacer>
+        <Bars />
+      </Spacer>
     </TouchableScale>
   );
 };

@@ -1,24 +1,43 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
+import Color from 'color';
 
-import { Touchable, H5, styled } from '@apollosproject/ui-kit';
+import { Touchable, H6, styled } from '@apollosproject/ui-kit';
 
 const EndCapSpacer = styled(({ theme }) => ({
   width: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-const StyledH5 = styled(({ theme, active }) => ({
-  color: active ? theme.colors.text.primary : theme.colors.text.secondary,
-  fontWeight: active ? 'bold' : 'normal',
-}))(H5);
-
-const FilterButton = styled(({ theme }) => ({
-  justifyContent: 'center',
-  alignItems: 'center',
-  paddingHorizontal: theme.sizing.baseUnit * 0.5,
-  paddingVertical: theme.sizing.baseUnit,
+const Container = styled(({ theme, active }) => ({
+  paddingTop: theme.sizing.baseUnit,
+  paddingBottom: theme.sizing.baseUnit * 0.5,
 }))(View);
+
+const StyledH5 = styled(({ theme, active }) => {
+  let borderColor = theme.colors.primary;
+
+  if (!active) {
+    const screen = Color(theme.colors.background.screen);
+    borderColor = screen.isLight ? screen.darken(0.05).hex() : screen.hex();
+  }
+
+  return {
+    color: active ? theme.colors.white : theme.colors.text.secondary,
+    fontWeight: active ? 'bold' : 'normal',
+    letterSpacing: 1,
+    lineHeight: theme.helpers.verticalRhythm(0.5),
+    marginHorizontal: theme.sizing.baseUnit * 0.25,
+    backgroundColor: active
+      ? theme.colors.primary
+      : theme.colors.background.screen,
+    paddingVertical: theme.sizing.baseUnit * 0.5,
+    paddingHorizontal: theme.sizing.baseUnit,
+    borderRadius: theme.sizing.baseBorderRadius,
+    borderWidth: 1,
+    borderColor,
+  };
+})(H6);
 
 const LoadingStateContainer = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -39,9 +58,7 @@ const renderItem = ({ item }) => {
 
   return (
     <Touchable onPress={() => onPress(item)}>
-      <FilterButton>
-        <StyledH5 active={active}>{title}</StyledH5>
-      </FilterButton>
+      <StyledH5 active={active}>{title}</StyledH5>
     </Touchable>
   );
 };
@@ -63,14 +80,16 @@ const Filters = ({ data, onPress, active, isLoading }) =>
       <LoadingState />
     </LoadingStateContainer>
   ) : (
-      <FlatList
-        data={mapPropsToData(data, { onPress, active })}
-        renderItem={renderItem}
-        horizontal
-        ListHeaderComponent={<EndCapSpacer />}
-        ListFooterComponent={<EndCapSpacer />}
-        showsHorizontalScrollIndicator={false}
-      />
+      <Container>
+        <FlatList
+          data={mapPropsToData(data, { onPress, active })}
+          renderItem={renderItem}
+          horizontal
+          ListHeaderComponent={<EndCapSpacer />}
+          ListFooterComponent={<EndCapSpacer />}
+          showsHorizontalScrollIndicator={false}
+        />
+      </Container>
     );
 
 Filters.propTypes = {

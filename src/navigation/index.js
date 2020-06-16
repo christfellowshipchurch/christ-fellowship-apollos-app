@@ -18,10 +18,13 @@ const TitleContainer = styled(({ theme }) => ({
 
 const Title = styled(({ theme }) => ({
     fontWeight: 'bold',
-    fontSize: 22,
     ...Platform.select({
         ios: {
             lineHeight: 0,
+            fontSize: 22,
+        },
+        android: {
+            fontSize: 20,
         },
     }),
 }))(UIText);
@@ -44,6 +47,7 @@ const BackArrow = withTheme(({ theme }) => ({
 export { default as NavigationSpacer } from './NavigationSpacer';
 export { default as useHeaderScrollEffect } from './useHeaderScrollEffect';
 export { default as NavigationBackground } from './NavigationBackground';
+export { default as HeaderRight } from './HeaderRight';
 
 // eslint-disable-next-line import/prefer-default-export
 export const navigationOptions = ({
@@ -96,7 +100,15 @@ export const navigationOptions = ({
         shadowColor: 'transparent',
         elevation: 0,
         borderBottomWidth: 0,
-        paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight,
+        ...Platform.select({
+            ios: {
+                paddingTop: 0,
+            },
+            android: {
+                paddingBottom: 8,
+                paddingTop: StatusBar.currentHeight,
+            },
+        }),
     },
     ...additionalProps,
 });

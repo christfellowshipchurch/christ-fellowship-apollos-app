@@ -1,20 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Animated } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { withProps } from 'recompose';
 
-import {
-  BackgroundView,
-  FeedView,
-  withMediaQuery,
-  TouchableScale,
-} from '@apollosproject/ui-kit';
+import { BackgroundView } from '@apollosproject/ui-kit';
 
-import ActionRow from '../ui/ActionRow';
-import ContentCardConnected from '../ui/ContentCardConnected';
+import { CardFeed } from 'ui/CardFeeds';
+import ActionRow from 'ui/ActionRow';
 import {
   navigationOptions,
   NavigationSpacer,
@@ -30,23 +24,11 @@ const mapData = (data) =>
     label: get(node, 'tags[0]'),
   }));
 
-const FeedWithMediaQuery = withMediaQuery(
-  ({ md }) => ({ maxWidth: md }),
-  withProps({ numColumns: 1 }),
-  withProps({ numColumns: 2 })
-)(FeedView);
-
-const renderItem = ({ item, onPress, Component }) => (
-  <TouchableScale onPress={() => onPress(item)} style={{ flex: 1 }}>
-    <Component {...item} />
-  </TouchableScale>
-);
-
 /**
  * This is where the component description lives
  * A FeedView wrapped in a query to pull content data.
  */
-const ContentFeed = ({ navigation, Component, card }) => {
+const ContentFeed = ({ navigation, card }) => {
   const itemId = navigation.getParam('itemId', []);
   const { loading, error, data, refetch } = useQuery(GET_CONTENT_FEED, {
     fetchPolicy: 'cache-and-network',
@@ -55,34 +37,16 @@ const ContentFeed = ({ navigation, Component, card }) => {
     },
   });
   const { scrollY } = useHeaderScrollEffect({ navigation });
-  /** Function that is called when a card in the feed is pressed.
-   * Takes the user to the ContentSingle
-   */
-  const onPress = (item) => {
-    navigation.navigate('ContentSingle', {
-      itemId: item.id,
-      sharing: item.sharing,
-    });
-  };
-
-  const ContentCard = ({ id, ...props }) => (
-    <ContentCardConnected card={card} {...props} contentId={id} />
-  );
 
   return (
     <BackgroundView>
       <SafeAreaView>
-        <FeedWithMediaQuery
-          renderItem={(props) =>
-            renderItem({
-              ...props,
-              Component: Component || ContentCard,
-              onPress,
-            })
-          }
+        <CardFeed
+          card={card}
           content={mapData(data)}
           isLoading={loading}
           error={error}
+          refetch={refetch}
           ListHeaderComponent={<NavigationSpacer />}
           scrollEventThrottle={16}
           onScroll={Animated.event([
@@ -113,12 +77,10 @@ ContentFeed.propTypes = {
     getParam: PropTypes.func,
     navigate: PropTypes.func,
   }),
-  Component: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
   card: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
 };
 
 ContentFeed.defaultProps = {
-  Component: null,
   card: ActionRow,
 };
 

@@ -18,13 +18,8 @@ import LiveLabel from '../LiveLabel';
 const { ImageSourceType } = ConnectedImage;
 
 const Image = withTheme(({ theme }) => ({
-  // Sets the ratio of the image
-  minAspectRatio: 1,
-  maxAspectRatio: 1,
-  // Sets the ratio of the placeholder
   forceRatio: 1,
-  // No ratios are respected without this
-  maintainAspectRatio: true,
+  imageStyle: { aspectRatio: 1 },
   style: {
     flex: 2,
     borderRadius: theme.sizing.baseBorderRadius,
@@ -66,13 +61,13 @@ const RowCard = ({ coverImage, label, title, summary, isLoading, isLive }) => (
             </H6>
           )}
 
-        {title !== '' && (
+        {(title !== '' || isLoading) && (
           <Title numberOfLines={1} ellipsizeMode="tail" isLoading={isLoading}>
             {title}
           </Title>
         )}
 
-        {summary !== '' && (
+        {(summary !== '' || isLoading) && (
           <H6 numberOfLines={1} ellipsizeMode="tail" isLoading={isLoading}>
             {summary}
           </H6>

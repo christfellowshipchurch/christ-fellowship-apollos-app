@@ -23,7 +23,7 @@ const DynamicThemeMixin = ({ children, theme }) => {
 };
 
 DynamicThemeMixin.propTypes = {
-  type: PropTypes.string,
+  theme: PropTypes.string,
 };
 
 export default DynamicThemeMixin;
