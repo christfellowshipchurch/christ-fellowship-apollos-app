@@ -9,19 +9,17 @@ const EndCapSpacer = styled(({ theme }) => ({
   width: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-const StyledFlatList = styled(({ theme, active }) => ({
-  marginTop: theme.sizing.baseUnit,
-  marginBottom: theme.sizing.baseUnit * 0.5,
-}))(FlatList);
+const Container = styled(({ theme, active }) => ({
+  paddingTop: theme.sizing.baseUnit,
+  paddingBottom: theme.sizing.baseUnit * 0.5,
+}))(View);
 
 const StyledH5 = styled(({ theme, active }) => {
   let borderColor = theme.colors.primary;
 
   if (!active) {
     const screen = Color(theme.colors.background.screen);
-    borderColor = screen.isLight
-      ? screen.darken(0.05).hex()
-      : screen.lighten(0.15).hex();
+    borderColor = screen.isLight ? screen.darken(0.05).hex() : screen.hex();
   }
 
   return {
@@ -82,14 +80,16 @@ const Filters = ({ data, onPress, active, isLoading }) =>
       <LoadingState />
     </LoadingStateContainer>
   ) : (
-      <StyledFlatList
-        data={mapPropsToData(data, { onPress, active })}
-        renderItem={renderItem}
-        horizontal
-        ListHeaderComponent={<EndCapSpacer />}
-        ListFooterComponent={<EndCapSpacer />}
-        showsHorizontalScrollIndicator={false}
-      />
+      <Container>
+        <FlatList
+          data={mapPropsToData(data, { onPress, active })}
+          renderItem={renderItem}
+          horizontal
+          ListHeaderComponent={<EndCapSpacer />}
+          ListFooterComponent={<EndCapSpacer />}
+          showsHorizontalScrollIndicator={false}
+        />
+      </Container>
     );
 
 Filters.propTypes = {

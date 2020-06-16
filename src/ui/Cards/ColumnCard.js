@@ -74,7 +74,7 @@ const StackedImageCard = ({
     <ThemeMixin>
       <CardWithLayout placement={placement}>
         <View>
-          <Image source={coverImage} isLoading label={label} />
+          <Image source={coverImage} label={label} />
           {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
 
           {label !== '' &&

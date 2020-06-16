@@ -51,9 +51,14 @@ const HighlightCard = withIsLoading(
     isLive,
     style,
     forceRatio,
+    inHorizontalList,
   }) => (
       <ThemeMixin>
-        <Card isLoading={isLoading} style={style}>
+        <Card
+          isLoading={isLoading}
+          style={style}
+          inHorizontalList={inHorizontalList}
+        >
           <Image source={coverImage} label={labelText} forceRatio={forceRatio} />
 
           <CardContentWrapper coverImage={coverImage}>
@@ -98,6 +103,7 @@ HighlightCard.propTypes = {
     colors: PropTypes.shape({}),
   }),
   forceRatio: PropTypes.number,
+  inHorizontalList: PropTypes.bool,
 };
 
 HighlightCard.displayName = 'HighlightCard';

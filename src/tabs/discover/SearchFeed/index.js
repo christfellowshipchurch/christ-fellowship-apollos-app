@@ -14,8 +14,9 @@ import {
   TouchableScale,
 } from '@apollosproject/ui-kit';
 
-import ContentCardConnected from '../../../ui/ContentCardConnected';
-import ActionRow from '../../../ui/ActionRow';
+import ContentCardConnected from 'ui/ContentCardConnected';
+import ActionRow from 'ui/ActionRow';
+import DynamicThemeMixin from 'ui/DynamicThemeMixin';
 import GET_SEARCH_RESULTS from './getSearchResults';
 import NoResults from './NoResults';
 
@@ -69,7 +70,9 @@ const renderItem = ({ item }) => (
         })
       }
     >
-      <SearchCardConnected contentId={item.id} {...item} />
+      <DynamicThemeMixin>
+        <SearchCardConnected contentId={item.id} {...item} />
+      </DynamicThemeMixin>
     </TouchableScale>
   </FlexedView>
 );

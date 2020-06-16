@@ -19,6 +19,9 @@ import {
 
 import { HorizontalContentCardConnected } from '@apollosproject/ui-connected';
 
+import ContentCardConnected from 'ui/ContentCardConnected';
+import { HorizontalHighlightCard } from 'ui/Cards';
+
 const RowHeader = styled(({ theme, viewAll }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -76,10 +79,10 @@ const TileContentFeed = ({
         });
       }}
     >
-      <HorizontalContentCardConnected
+      <ContentCardConnected
         contentId={item.id}
         isLoading={isLoading}
-        Component={HorizontalDefaultCard}
+        card={HorizontalHighlightCard}
       />
     </TouchableScale>
   );
