@@ -4,9 +4,9 @@ import { throttle } from 'lodash';
 
 import { BackgroundView } from '@apollosproject/ui-kit';
 
-import StatusBar from '../../ui/StatusBar';
+import DynamicThemeMixin from 'ui/DynamicThemeMixin';
+import StatusBar from 'ui/StatusBar';
 import { navigationOptions, NavigationSpacer } from '../../navigation';
-import DynamicThemeMixin from '../../ui/DynamicThemeMixin';
 import SearchInputHeader from './SearchInputHeader';
 import Browse from './Browse';
 import SearchFeed from './SearchFeed';

@@ -9,24 +9,37 @@ const EndCapSpacer = styled(({ theme }) => ({
   width: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-const StyledH5 = styled(({ theme, active }) => ({
-  color: active ? theme.colors.white : theme.colors.text.secondary,
-  fontWeight: active ? 'bold' : 'normal',
-  letterSpacing: 1,
-  lineHeight: theme.helpers.verticalRhythm(0.45),
-  marginHorizontal: theme.sizing.baseUnit * 0.25,
-  marginVertical: theme.sizing.baseUnit,
-  backgroundColor: active ? theme.colors.primary : theme.colors.lightSecondary,
-  paddingVertical: theme.sizing.baseUnit * 0.5,
-  paddingHorizontal: theme.sizing.baseUnit,
-  borderRadius: theme.sizing.baseBorderRadius,
-  borderWidth: 1,
-  borderColor: active
-    ? theme.colors.primary
-    : Color(theme.colors.lightSecondary)
-      .darken(0.15)
-      .hex(),
-}))(H6);
+const StyledFlatList = styled(({ theme, active }) => ({
+  marginTop: theme.sizing.baseUnit,
+  marginBottom: theme.sizing.baseUnit * 0.5,
+}))(FlatList);
+
+const StyledH5 = styled(({ theme, active }) => {
+  let borderColor = theme.colors.primary;
+
+  if (!active) {
+    const screen = Color(theme.colors.background.screen);
+    borderColor = screen.isLight
+      ? screen.darken(0.05).hex()
+      : screen.lighten(0.15).hex();
+  }
+
+  return {
+    color: active ? theme.colors.white : theme.colors.text.secondary,
+    fontWeight: active ? 'bold' : 'normal',
+    letterSpacing: 1,
+    lineHeight: theme.helpers.verticalRhythm(0.5),
+    marginHorizontal: theme.sizing.baseUnit * 0.25,
+    backgroundColor: active
+      ? theme.colors.primary
+      : theme.colors.background.screen,
+    paddingVertical: theme.sizing.baseUnit * 0.5,
+    paddingHorizontal: theme.sizing.baseUnit,
+    borderRadius: theme.sizing.baseBorderRadius,
+    borderWidth: 1,
+    borderColor,
+  };
+})(H6);
 
 const LoadingStateContainer = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -69,7 +82,7 @@ const Filters = ({ data, onPress, active, isLoading }) =>
       <LoadingState />
     </LoadingStateContainer>
   ) : (
-      <FlatList
+      <StyledFlatList
         data={mapPropsToData(data, { onPress, active })}
         renderItem={renderItem}
         horizontal

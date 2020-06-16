@@ -2,6 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { Platform, View, TextInput } from 'react-native';
 import PropTypes from 'prop-types';
+import Color from 'color';
 
 import {
   styled,
@@ -37,6 +38,10 @@ const TextInputWrapper = styled(({ theme }) => ({
   alignItems: 'center',
   borderRadius: theme.sizing.baseBorderRadius,
   backgroundColor: theme.colors.background.screen,
+  borderWidth: 1,
+  borderColor: Color(theme.colors.background.screen)
+    .darken(0.05)
+    .hex(),
   overflow: 'hidden',
 }))(View);
 
