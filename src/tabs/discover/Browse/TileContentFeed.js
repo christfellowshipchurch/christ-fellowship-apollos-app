@@ -1,9 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { useQuery } from '@apollo/react-hooks';
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
-import { get, take } from 'lodash';
 
 import {
   styled,
@@ -14,34 +13,33 @@ import {
   ButtonLink,
   TouchableScale,
   Touchable,
+  withIsLoading,
   HorizontalDefaultCard,
 } from '@apollosproject/ui-kit';
 
-import ContentCardConnected from '../../../ui/ContentCardConnected';
-import { GET_CATEGORY_PREVIEW } from './queries';
+import { HorizontalContentCardConnected } from '@apollosproject/ui-connected';
 
-const RowHeader = styled(({ theme }) => ({
+import ContentCardConnected from 'ui/ContentCardConnected';
+import { HorizontalHighlightCard } from 'ui/Cards';
+
+const RowHeader = styled(({ theme, viewAll }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
-  alignItems: 'flex-end',
+  alignItems: 'center',
   zIndex: 2, // UX hack to improve tapability. Positions RowHeader above StyledHorizontalTileFeed
-  // paddingTop: theme.sizing.baseUnit * 2,
   paddingLeft: theme.sizing.baseUnit,
+  ...(viewAll ? {} : { paddingBottom: theme.sizing.baseUnit }),
 }))(View);
 
-const Name = styled(({ theme }) => ({
-  width: '75%',
+const Name = styled({
   flexGrow: 2,
-  paddingBottom: theme.sizing.baseUnit, // should match the ButtonLinkSpacing in case that element doesn't show
-}))(View);
+})(View);
 
 const AndroidTouchableFix = withTheme(({ theme }) => ({
-  width: '25%',
-  borderRadius: theme.sizing.baseUnit / 2,
+  borderRadius: theme.sizing.baseBorderRadius / 2,
 }))(Touchable);
 
 const ButtonLinkSpacing = styled(({ theme }) => ({
-  color: theme.colors.primary,
   flexDirection: 'row', // correctly positions the loading state
   justifyContent: 'flex-end', // correctly positions the loading state
   padding: theme.sizing.baseUnit, // UX hack to improve tapability.
@@ -51,6 +49,7 @@ const StyledHorizontalTileFeed = styled(({ theme }) => ({
   /* UX hack to improve tapability. The magic number below happens to be the number of pixels that
    * aligns everything in the same place as if none of the UX hacks were there. */
   marginTop: theme.sizing.baseUnit * -1.25,
+  paddingBottom: theme.sizing.baseUnit,
   zIndex: 1,
 }))(HorizontalTileFeed);
 
@@ -64,90 +63,83 @@ const loadingStateObject = {
   coverImage: [],
 };
 
-const mapData = (data, additionalProps) =>
-  get(data, 'node.childContentItemsConnection.edges', []).map((edges) => ({
-    ...edges.node,
-    ...additionalProps,
-  }));
-
-const renderItem = ({ item }) => (
-  <TouchableScale onPress={() => item.onPress(item)}>
-    <ContentCardConnected
-      card={HorizontalDefaultCard}
-      contentId={item.id}
-      isLoading={item.isLoading && (!item.id || item.id === '')}
-      inHorizontalList
-    />
-  </TouchableScale>
-);
-
 const TileContentFeed = ({
+  isLoading,
   id,
+  name,
   navigation,
-  isLoading: parentIsLoading,
-  feedLength,
+  content,
+  viewAll,
 }) => {
-  const { loading, error, data } = useQuery(GET_CATEGORY_PREVIEW, {
-    variables: { id, first: feedLength + 1 },
-    fetchPolicy: 'cache-and-network',
-    skip: !id || id === '' || parentIsLoading,
-  });
+  const renderItem = ({ item }) => (
+    <TouchableScale
+      onPress={() => {
+        navigation.push('ContentSingle', {
+          itemId: item.id,
+        });
+      }}
+    >
+      <ContentCardConnected
+        contentId={item.id}
+        isLoading={isLoading}
+        card={HorizontalHighlightCard}
+      />
+    </TouchableScale>
+  );
 
-  const title = get(data, 'node.title', '');
-  const content = mapData(data, {
-    onPress: (item) =>
-      navigation.push('ContentSingle', {
-        itemId: item.id,
-      }),
-  });
-  const inLoadingState = (loading || parentIsLoading) && !content.length;
-  const onPressSeeMore = () => {
-    navigation.navigate('ContentFeed', {
-      itemId: id,
-      itemTitle: title,
-      nested: true,
-    });
-  };
-
-  return content.length ? (
-    <Container>
-      <RowHeader>
-        <Name>
-          <H4 isLoading={inLoadingState}>{title}</H4>
-        </Name>
-        {content.length > feedLength &&
-          !inLoadingState && (
-            <AndroidTouchableFix onPress={onPressSeeMore}>
+  return (
+    (isLoading || !isEmpty(content)) && (
+      <Container>
+        <RowHeader viewAll={viewAll}>
+          <Name>
+            <H4>{name}</H4>
+          </Name>
+          {viewAll && (
+            <AndroidTouchableFix
+              onPress={() => {
+                navigation.navigate('ContentFeed', {
+                  itemId: id,
+                  itemTitle: name,
+                  nested: true,
+                });
+              }}
+            >
               <ButtonLinkSpacing>
                 <H6>
-                  <ButtonLink>See More</ButtonLink>
+                  <ButtonLink>View All</ButtonLink>
                 </H6>
               </ButtonLinkSpacing>
             </AndroidTouchableFix>
           )}
-      </RowHeader>
-      <StyledHorizontalTileFeed
-        content={take(content, feedLength)}
-        renderItem={renderItem}
-        loadingStateObject={loadingStateObject}
-        isLoading={inLoadingState}
-      />
-    </Container>
-  ) : null;
+        </RowHeader>
+        <StyledHorizontalTileFeed
+          content={content}
+          renderItem={renderItem}
+          loadingStateObject={loadingStateObject}
+          isLoading={isLoading}
+        />
+      </Container>
+    )
+  );
 };
 
 TileContentFeed.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }),
-  id: PropTypes.string,
   isLoading: PropTypes.bool,
-  feedLength: PropTypes.number,
+  id: PropTypes.string,
+  name: PropTypes.string,
+  content: PropTypes.arrayOf(
+    PropTypes.any // this component doesn't care about the shape of `node`, just that it exists
+  ),
+  viewAll: PropTypes.bool,
 };
 
-TileContentFeed.defaultProps = {
-  isLoading: false,
-  feedLength: 4,
+TileContentFeed.propTypes = {
+  content: [],
+  cardsToShow: 0,
+  viewAll: true,
 };
 
-export default withNavigation(TileContentFeed);
+export default withIsLoading(TileContentFeed);

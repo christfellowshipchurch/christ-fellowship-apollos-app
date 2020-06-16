@@ -1,6 +1,6 @@
 import React from 'react';
 import ApollosConfig from '@apollosproject/config';
-import { Providers } from '@apollosproject/ui-kit';
+import { Providers, BackgroundView } from '@apollosproject/ui-kit';
 import { AnalyticsProvider } from '@apollosproject/ui-analytics';
 import { MediaPlayerProvider } from '@apollosproject/ui-media-player';
 import { NotificationsProvider } from '@apollosproject/ui-notifications';
@@ -47,9 +47,11 @@ const AppProviders = (props) => {
                                         iconInput={customIcons}
                                         {...props}
                                     >
-                                        <SideMenuProvider {...props}>
-                                            <AppStateProvider {...props} />
-                                        </SideMenuProvider>
+                                        <BackgroundView>
+                                            <SideMenuProvider {...props}>
+                                                <AppStateProvider {...props} />
+                                            </SideMenuProvider>
+                                        </BackgroundView>
                                     </Providers>
                                 </DarkModeProvider>
                             </LiveProvider>

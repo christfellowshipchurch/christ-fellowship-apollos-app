@@ -56,8 +56,9 @@ const Label = withTheme(({ theme }) => ({
 }))(H6);
 
 const CardWithLayout = styled(({ theme, placement }) => ({
-  marginLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.5 : 1),
-  marginRight: theme.sizing.baseUnit * (placement === 'left' ? 0.5 : 1),
+  // marginLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.5 : 1),
+  // marginRight: theme.sizing.baseUnit * (placement === 'left' ? 0.5 : 1),
+  marginHorizontal: theme.sizing.baseUnit * 0.5,
   flex: 1,
 }))(Card);
 
@@ -73,7 +74,7 @@ const StackedImageCard = ({
     <ThemeMixin>
       <CardWithLayout placement={placement}>
         <View>
-          <Image source={coverImage} isLoading label={label} />
+          <Image source={coverImage} label={label} />
           {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
 
           {label !== '' &&
@@ -85,12 +86,14 @@ const StackedImageCard = ({
             )}
         </View>
         <Content>
-          {title !== '' && (
-            <Title numberOfLines={2} ellipsizeMode="tail">
+          {(title !== '' || isLoading) && (
+            <Title numberOfLines={2} ellipsizeMode="tail" isLoading={isLoading}>
               {title}
             </Title>
           )}
-          {summary !== '' && <Summary>{summary}</Summary>}
+          {(summary !== '' || isLoading) && (
+            <Summary isLoading={isLoading}>{summary}</Summary>
+          )}
         </Content>
       </CardWithLayout>
     </ThemeMixin>

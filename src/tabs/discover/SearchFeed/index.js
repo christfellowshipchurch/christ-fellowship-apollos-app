@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { withProps } from 'recompose';
-import { withNavigation } from 'react-navigation';
+import { useQuery } from '@apollo/react-hooks';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -14,8 +14,9 @@ import {
   TouchableScale,
 } from '@apollosproject/ui-kit';
 
-import ContentCardConnected from '../../../ui/ContentCardConnected';
-import ActionRow from '../../../ui/ActionRow';
+import ContentCardConnected from 'ui/ContentCardConnected';
+import ActionRow from 'ui/ActionRow';
+import DynamicThemeMixin from 'ui/DynamicThemeMixin';
 import GET_SEARCH_RESULTS from './getSearchResults';
 import NoResults from './NoResults';
 
@@ -26,16 +27,16 @@ const SearchCardConnected = withProps(() => ({
 // this could be refactored into a custom effect hook 💥
 const StyledFeedView = withMediaQuery(
   ({ md }) => ({ maxWidth: md }),
-  withProps(({ hasContent }) => ({
+  withProps(({ hasContent, isLoading }) => ({
     numColumns: 1,
     contentContainerStyle: {
-      ...(hasContent ? {} : { flex: 1 }),
+      ...(hasContent || isLoading ? {} : { flex: 1 }),
     },
   })),
-  withProps(({ hasContent }) => ({
+  withProps(({ hasContent, isLoading }) => ({
     numColumns: 2,
     contentContainerStyle: {
-      ...(hasContent ? {} : { flex: 1 }),
+      ...(hasContent || isLoading ? {} : { flex: 1 }),
     },
   }))
 )(FeedView);
@@ -53,7 +54,7 @@ const handleOnPress = ({ navigation, id, transitionKey }) =>
   });
 
 const keyExtractor = (item) => item && get(item, 'id', null);
-const mapData = (data, navigation) =>
+const mapSearchData = (data, navigation) =>
   get(data, 'search.edges', []).map(({ node }) => ({
     ...node,
     navigation,
@@ -69,36 +70,78 @@ const renderItem = ({ item }) => (
         })
       }
     >
-      <SearchCardConnected contentId={item.id} {...item} />
+      <DynamicThemeMixin>
+        <SearchCardConnected contentId={item.id} {...item} />
+      </DynamicThemeMixin>
     </TouchableScale>
   </FlexedView>
 );
 
-const SearchFeed = withNavigation(({ navigation, searchText }) => (
-  <Query
-    query={GET_SEARCH_RESULTS}
-    variables={{ searchText }}
-    fetchPolicy="cache-and-network"
-  >
-    {({ loading, error, data, refetch }) => (
-      <StyledFeedView
-        renderItem={renderItem}
-        content={mapData(data, navigation)}
-        ListEmptyComponent={() => <NoResults searchText={searchText} />}
-        ListFooterComponent={<EndCapSpacer />}
-        hasContent={get(data, 'search.edges', []).length}
-        isLoading={loading}
-        error={error}
-        refetch={refetch}
-        onPressItem={(item) => handleOnPress({ navigation, item })}
-        keyExtractor={keyExtractor}
-      />
-    )}
-  </Query>
-));
+export const SearchFeed = ({
+  navigation,
+  searchText,
+  content,
+  isLoading,
+  error,
+  refetch,
+}) => (
+    <StyledFeedView
+      renderItem={renderItem}
+      content={content}
+      ListEmptyComponent={() => <NoResults searchText={searchText} />}
+      ListFooterComponent={<EndCapSpacer />}
+      hasContent={content.length}
+      isLoading={isLoading}
+      error={error}
+      refetch={refetch}
+      onPressItem={(item) => handleOnPress({ navigation, ...item })}
+      keyExtractor={keyExtractor}
+    />
+  );
 
 SearchFeed.propTypes = {
   searchText: PropTypes.string,
+  isLoading: PropTypes.bool,
+  error: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
+  content: PropTypes.array, // todo
+  refetch: PropTypes.func,
 };
 
-export default SearchFeed;
+SearchFeed.defaultProps = {
+  searchText: '',
+  isLoading: false,
+  content: [], // todo
+};
+
+const SearchFeedConnected = ({ navigation, searchText }) => {
+  const { data, loading, error, refetch } = useQuery(GET_SEARCH_RESULTS, {
+    variables: { searchText },
+    fetchPolicy: 'cache-and-network',
+    skip: !searchText || searchText === '',
+  });
+
+  const content = mapSearchData(data, navigation);
+
+  return (
+    <SearchFeed
+      content={content}
+      isLoading={loading}
+      error={error}
+      refetch={refetch}
+      searchText={searchText}
+    />
+  );
+};
+
+SearchFeedConnected.propTypes = {
+  searchText: PropTypes.string,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }),
+};
+
+export default SearchFeedConnected;

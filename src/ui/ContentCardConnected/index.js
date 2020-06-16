@@ -19,6 +19,7 @@ const ContentCardConnected = ({
     return React.createElement(card, {
       isLoading: true,
       title: '',
+      coverImage: [],
     });
 
   return (

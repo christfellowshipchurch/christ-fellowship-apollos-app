@@ -176,12 +176,6 @@ const overrides = {
             },
         }),
     },
-    'ui-kit.inputs.Search.InputWrapper': {
-        backgroundColor: '#F4F4F5',
-    },
-    'ui-kit.inputs.Search.ClearSearchButtonBackground': {
-        backgroundColor: '#F4F4F5',
-    },
     'ui-auth.TabCard': {
         backgroundColor: '#FFFFFF',
     },
@@ -198,10 +192,6 @@ const overrides = {
 };
 
 const buttons = ({ colors: themeColors }) => ({
-    // primary: {
-    //     fill: '#ffffff',
-    //     accent: '#000000',
-    // },
     white: {
         fill: themeColors.white,
         accent: themeColors.black,

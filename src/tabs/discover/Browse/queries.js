@@ -11,7 +11,7 @@ export const GET_FILTERS = gql`
 `;
 
 export const GET_CATEGORIES_FROM_FILTER = gql`
-  query getCategoriesByFilterId($id: ID!) {
+  query getCategoriesByFilterId($id: ID!, $cards: Int) {
     node(id: $id) {
       id
       ... on ContentItem {
@@ -22,12 +22,21 @@ export const GET_CATEGORIES_FROM_FILTER = gql`
             node {
               id
               title
+              childContentItemsConnection(first: $cards) {
+                edges {
+                  node {
+                    id
+                    ...contentCardFragment
+                  }
+                }
+              }
             }
           }
         }
       }
     }
   }
+  ${ApollosConfig.FRAGMENTS.CONTENT_CARD_FRAGMENT}
 `;
 
 export const GET_CATEGORY_PREVIEW = gql`
