@@ -13,6 +13,7 @@ import {
   Touchable,
 } from '@apollosproject/ui-kit';
 
+import { lightenBy, darkenBy } from 'utils/theme';
 import { HeaderRight } from '../../navigation';
 
 const LoopIcon = withTheme(({ theme, isFocused }) => ({
@@ -32,19 +33,23 @@ const ClearSearchButton = withTheme(({ theme, isVisible }) => ({
   },
 }))(ButtonIcon);
 
-const TextInputWrapper = styled(({ theme }) => ({
-  // flexGrow: 1,
-  flex: 1,
-  flexDirection: 'row',
-  alignItems: 'center',
-  borderRadius: theme.sizing.baseBorderRadius,
-  backgroundColor: theme.colors.background.screen,
-  borderWidth: 1,
-  borderColor: Color(theme.colors.background.screen)
-    .darken(0.05)
-    .hex(),
-  overflow: 'hidden',
-}))(View);
+const TextInputWrapper = styled(({ theme }) => {
+  const screen = theme.colors.background.screen;
+  const borderColor = Color(screen).isDark()
+    ? lightenBy(screen, 0.25)
+    : darkenBy(screen, 0.05);
+
+  return {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: theme.sizing.baseBorderRadius,
+    backgroundColor: theme.colors.background.screen,
+    borderWidth: 1,
+    borderColor: borderColor.hex(),
+    overflow: 'hidden',
+  };
+})(View);
 
 const Input = withTheme(({ theme }) => ({
   placeholderTextColor: theme.colors.text.tertiary,

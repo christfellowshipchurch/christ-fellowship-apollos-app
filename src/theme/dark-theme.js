@@ -1,14 +1,6 @@
 import Color from 'color';
 
 const dark = ({ colors: themeColors, alpha }) => ({
-    overrides: {
-        Card: {
-            Content: {
-                borderColor: themeColors.white,
-                borderWidth: 1,
-            },
-        },
-    },
     colors: {
         primary: themeColors.primary,
         screen: themeColors.black,

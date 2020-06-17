@@ -5,6 +5,8 @@ import Color from 'color';
 
 import { Touchable, H6, styled } from '@apollosproject/ui-kit';
 
+import { lightenBy, darkenBy } from 'utils/theme';
+
 const EndCapSpacer = styled(({ theme }) => ({
   width: theme.sizing.baseUnit * 0.5,
 }))(View);
@@ -18,8 +20,10 @@ const StyledH5 = styled(({ theme, active }) => {
   let borderColor = theme.colors.primary;
 
   if (!active) {
-    const screen = Color(theme.colors.background.screen);
-    borderColor = screen.isLight ? screen.darken(0.05).hex() : screen.hex();
+    const screen = theme.colors.background.screen;
+    borderColor = Color(screen).isDark()
+      ? lightenBy(screen, 0.25)
+      : darkenBy(screen, 0.05);
   }
 
   return {
