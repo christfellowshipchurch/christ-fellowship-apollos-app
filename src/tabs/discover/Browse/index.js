@@ -16,12 +16,12 @@ export const Browse = ({
     filters,
     isLoading,
     error,
-    defaultFilter,
+    activeFilter,
     navigation,
 }) => {
     const [active, setActive] = useState(null);
 
-    useEffect(() => setActive(defaultFilter), [defaultFilter]);
+    useEffect(() => setActive(activeFilter), [activeFilter]);
 
     if (error) return <ErrorCard />;
 
@@ -55,7 +55,7 @@ Browse.propTypes = {
         PropTypes.string,
         PropTypes.object,
     ]),
-    defaultFilter: PropTypes.string,
+    activeFilter: PropTypes.string,
 };
 
 const BrowseConnected = ({ selectedFilter, navigation }) => {
@@ -74,12 +74,10 @@ const BrowseConnected = ({ selectedFilter, navigation }) => {
         null
     );
 
-    console.log({ filters, firstFilter, passedFilter });
-
     return (
         <Browse
             filters={filters}
-            defaultFilter={passedFilter || firstFilter}
+            activeFilter={passedFilter || firstFilter}
             isLoading={loading}
             error={error}
             navigation={navigation}
