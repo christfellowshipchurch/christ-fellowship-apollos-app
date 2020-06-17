@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-unused-styles */
 import React, { useState, useRef } from 'react';
-import { Platform, View, TextInput, Keyboard, StatusBar } from 'react-native';
+import { Platform, View, TextInput, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import Color from 'color';
 
@@ -33,6 +33,7 @@ const ClearSearchButton = withTheme(({ theme, isVisible }) => ({
 }))(ButtonIcon);
 
 const TextInputWrapper = styled(({ theme }) => ({
+  // flexGrow: 1,
   flex: 1,
   flexDirection: 'row',
   alignItems: 'center',
@@ -81,12 +82,32 @@ CancelButton.propTypes = {
 };
 
 const Layout = styled(({ theme }) => ({
-  flex: 1,
+  // flex: 1,
   flexDirection: 'row',
   alignItems: 'center',
   paddingLeft: theme.sizing.baseUnit, // we only need to worry about the left because the `HeaderRight` component has padding for the right
   paddingVertical: theme.sizing.baseUnit * 0.5,
+  ...Platform.select({
+    android: {
+      paddingBottom: 4,
+      overflow: 'hidden',
+    },
+  }),
 }))(View);
+
+const SmokeAndMirrorsWrapper = styled(
+  ({ theme, screenBackgroundColor }) => ({
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: screenBackgroundColor || theme.colors.background.paper,
+    ...Platform.select({
+      android: {
+        elevation: 4,
+      },
+    }),
+  }),
+  'ui-kit.inputs.Search.SmokeAndMirrorsWrapper'
+)(View);
 
 const SearchInputHeader = ({
   placeholder,
@@ -129,16 +150,18 @@ const SearchInputHeader = ({
           isVisible={!!value && value !== ''}
         />
       </TextInputWrapper>
-      {isFocused ? (
-        <CancelButton
-          onPress={() => {
-            Keyboard.dismiss();
-            handleOnFocus(false);
-          }}
-        />
-      ) : (
-          <HeaderRight />
-        )}
+      <SmokeAndMirrorsWrapper>
+        {isFocused ? (
+          <CancelButton
+            onPress={() => {
+              Keyboard.dismiss();
+              handleOnFocus(false);
+            }}
+          />
+        ) : (
+            <HeaderRight />
+          )}
+      </SmokeAndMirrorsWrapper>
     </Layout>
   );
 };
