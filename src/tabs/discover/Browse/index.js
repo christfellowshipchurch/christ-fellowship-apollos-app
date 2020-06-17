@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/react-hooks';
@@ -19,7 +19,9 @@ export const Browse = ({
     defaultFilter,
     navigation,
 }) => {
-    const [active, setActive] = useState(defaultFilter);
+    const [active, setActive] = useState(null);
+
+    useEffect(() => setActive(defaultFilter), [defaultFilter]);
 
     if (error) return <ErrorCard />;
 
@@ -71,6 +73,8 @@ const BrowseConnected = ({ selectedFilter, navigation }) => {
         'id',
         null
     );
+
+    console.log({ filters, firstFilter, passedFilter });
 
     return (
         <Browse
