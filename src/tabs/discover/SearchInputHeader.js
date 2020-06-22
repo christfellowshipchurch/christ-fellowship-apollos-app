@@ -87,7 +87,6 @@ CancelButton.propTypes = {
 };
 
 const Layout = styled(({ theme }) => ({
-  // flex: 1,
   flexDirection: 'row',
   alignItems: 'center',
   paddingLeft: theme.sizing.baseUnit, // we only need to worry about the left because the `HeaderRight` component has padding for the right
@@ -107,7 +106,7 @@ const SmokeAndMirrorsWrapper = styled(
     backgroundColor: screenBackgroundColor || theme.colors.background.paper,
     ...Platform.select({
       android: {
-        elevation: 4,
+        elevation: 0,
       },
     }),
   }),
