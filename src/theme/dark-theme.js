@@ -16,10 +16,12 @@ const dark = ({ colors: themeColors, alpha }) => ({
         },
         background: {
             screen: themeColors.black,
-            paper: Color(themeColors.darkPrimary).darken(0.5),
+            paper: Color(themeColors.darkPrimary)
+                .darken(0.5)
+                .hex(),
             accent: Color(themeColors.darkTertiary)
                 .fade(alpha.medium)
-                .string(),
+                .hex(),
             inactive: themeColors.darkTertiary,
         },
         shadows: {
