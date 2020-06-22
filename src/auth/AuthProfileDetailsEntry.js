@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import moment from 'moment';
-import { RadioButton, ThemeMixin } from '@apollosproject/ui-kit';
+import {
+  RadioButton,
+  ThemeMixin,
+  styled,
+  UIText,
+} from '@apollosproject/ui-kit';
 
 import {
   ProfileEntryFieldContainer,
@@ -13,6 +18,13 @@ import {
 } from '@apollosproject/ui-auth/src/styles';
 
 import { DateInput } from '../ui/inputs';
+
+const Disclaimer = styled(({ theme }) => ({
+  fontWeight: 'bold',
+  fontStyle: 'italic',
+  fontSize: 12,
+  color: theme.colors.text.tertiary,
+}))(UIText);
 
 const ProfileDetailsEntry = (props) => (
   <ThemeMixin mixing={{ type: 'dark' }}>
@@ -57,7 +69,11 @@ const ProfileDetailsEntry = (props) => (
             props.setFieldValue('birthDate', value);
           }
         }}
+        maxYear={moment().year() - 13}
       />
+      <Disclaimer>
+        *You must be at least 13 years old to have an account.
+      </Disclaimer>
     </ProfileEntryFieldContainer>
   </ThemeMixin>
 );

@@ -1,7 +1,4 @@
 import React from 'react';
-import { Alert } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import { createStackNavigator } from 'react-navigation';
 import PropTypes from 'prop-types';
 import hoistNonReactStatic from 'hoist-non-react-statics';

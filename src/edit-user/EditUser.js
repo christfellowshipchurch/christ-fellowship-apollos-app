@@ -21,6 +21,7 @@ import {
   BackgroundView,
   FlexedView,
   withMediaQuery,
+  UIText,
 } from '@apollosproject/ui-kit';
 import { UserAvatarUpdate } from '@apollosproject/ui-connected';
 import {
@@ -96,6 +97,13 @@ const Overlay = styled(({ theme }) => ({
   zIndex: 1,
 }))(FlexedView);
 
+const Disclaimer = styled(({ theme }) => ({
+  fontWeight: 'bold',
+  fontStyle: 'italic',
+  fontSize: 12,
+  color: theme.colors.text.tertiary,
+}))(UIText);
+
 const pickerColorValue = new DynamicValue('black', 'white');
 
 // This component is made to be able to edit ANY user profile
@@ -162,8 +170,6 @@ const EditUser = ({
   if (error) return <ErrorCard />;
 
   const disabled = false;
-
-  console.log({ values });
 
   return (
     <BackgroundView>
@@ -276,7 +282,11 @@ const EditUser = ({
               }}
               disabled={disabled}
               error={get(errors, 'birthDate')}
+              maxYear={moment().year() - 13}
             />
+            <Disclaimer>
+              *You must be at least 13 years old to have an account.
+            </Disclaimer>
           </FieldContainer>
 
           <FieldContainer>
