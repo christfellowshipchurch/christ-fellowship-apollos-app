@@ -42,6 +42,7 @@ const ContentFeed = ({ navigation, card }) => {
     <BackgroundView>
       <SafeAreaView>
         <CardFeed
+          navigation={navigation}
           card={card}
           content={mapData(data)}
           isLoading={loading}
