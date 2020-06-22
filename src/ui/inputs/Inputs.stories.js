@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, SafeAreaView, View, ScrollView } from 'react-native';
 import { storiesOf } from '@apollosproject/ui-storybook';
-import { styled, H4 } from '@apollosproject/ui-kit';
+import { styled, H4, BackgroundView } from '@apollosproject/ui-kit';
+import moment from 'moment';
 
 import {
     TextInput,
@@ -84,13 +85,42 @@ storiesOf('cf-ui/inputs', module).add('Picker Inputs', () => (
     </SafeAreaView>
 ));
 
+const DateInputWithLabel = ({ label, ...props }) => {
+    const [date, setDate] = useState(moment().toString());
+
+    return (
+        <>
+            <PaddedH4>{`${label}: ${moment(date).format('MMMM D, YYYY')}`}</PaddedH4>
+            <DateInput
+                onConfirm={(dateStr) => setDate(dateStr)}
+                value={date}
+                {...props}
+            />
+        </>
+    );
+};
+
 storiesOf('cf-ui/inputs', module).add('Date Inputs', () => (
-    <SafeAreaView>
-        <PaddedView>
-            <ScrollView>
-                <PaddedH4>Date Input</PaddedH4>
-                <DateInput />
-            </ScrollView>
-        </PaddedView>
-    </SafeAreaView>
+    <BackgroundView>
+        <SafeAreaView>
+            <PaddedView>
+                <ScrollView>
+                    <DateInputWithLabel label="Default Input" />
+                    <DateInputWithLabel
+                        label="Max Year (13 years ago)"
+                        maxYear={moment().year() - 13}
+                    />
+                    <DateInputWithLabel
+                        label="Min Year (13 years from now)"
+                        minYear={moment().year() + 13}
+                    />
+                    <DateInputWithLabel
+                        label="Year Range"
+                        minYear={1990}
+                        maxYear={1999}
+                    />
+                </ScrollView>
+            </PaddedView>
+        </SafeAreaView>
+    </BackgroundView>
 ));

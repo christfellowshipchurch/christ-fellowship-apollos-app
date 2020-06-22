@@ -163,6 +163,8 @@ const EditUser = ({
 
   const disabled = false;
 
+  console.log({ values });
+
   return (
     <BackgroundView>
       <StatusBar hidden />
@@ -268,17 +270,10 @@ const EditUser = ({
             <H4>Birthday</H4>
             <DateInput
               label=""
-              value={
-                moment(values.birthDate).isValid()
-                  ? moment(values.birthDate).format('MMM D, YYYY')
-                  : ''
-              }
-              displayValue={
-                moment(values.birthDate).isValid()
-                  ? moment(values.birthDate).format('MMM D, YYYY')
-                  : ''
-              }
-              onConfirm={(newBirthDate) => setValue('birthDate', newBirthDate)}
+              value={values.birthDate}
+              onConfirm={(newBirthDate) => {
+                setValue('birthDate', newBirthDate);
+              }}
               disabled={disabled}
               error={get(errors, 'birthDate')}
             />

@@ -43,7 +43,7 @@ const Discover = ({ navigation }) => {
           <NavigationSpacer />
           <StatusBar />
           {isFocused ? (
-            <SearchFeed searchText={searchText} />
+            <SearchFeed searchText={searchText} navigation={navigation} />
           ) : (
               <Browse
                 navigation={navigation}

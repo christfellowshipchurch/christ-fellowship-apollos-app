@@ -94,7 +94,6 @@ export const SearchFeed = ({
       isLoading={isLoading}
       error={error}
       refetch={refetch}
-      onPressItem={(item) => handleOnPress({ navigation, ...item })}
       keyExtractor={keyExtractor}
     />
   );
