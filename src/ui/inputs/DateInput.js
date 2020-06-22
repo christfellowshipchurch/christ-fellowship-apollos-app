@@ -11,10 +11,10 @@ import Picker, { PickerItem } from './Picker';
 const pickerColorValue = new DynamicValue('black', 'white');
 
 const formatDefaultYear = (year, min, max) => {
-    if (year > max) return max;
-    if (year < min) return min;
+    if (year > max) return max.toString();
+    if (year < min) return min.toString();
 
-    return year;
+    return year.toString();
 };
 
 const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
@@ -22,11 +22,13 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
     const pickerColor = useDynamicValue(pickerColorValue);
     const months = moment.months();
     const monthIndex = (m) =>
-        months.indexOf(
-            moment()
-                .month(m)
-                .format('MMMM')
-        );
+        months
+            .indexOf(
+                moment()
+                    .month(m)
+                    .format('MMMM')
+            )
+            .toString();
     const daysInMonth = (m) =>
         moment()
             .month(m)
@@ -35,7 +37,7 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
     const { values, setValue } = useForm({
         defaultValues: {
             month: monthIndex(mValue.month()),
-            day: mValue.date(),
+            day: mValue.date().toString(),
             year: formatDefaultYear(mValue.year(), minYear, maxYear),
         },
     });
@@ -44,7 +46,8 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
     const { month, day, year } = values;
     const displayMonth = moment()
         .month(month)
-        .format('MMMM');
+        .format('MMMM')
+        .toString();
 
     // Check to make sure that we don't have
     // an invalid day for the given month
@@ -93,8 +96,8 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
             >
                 {range(0, maxDay + 1).map((d) => (
                     <PickerItem
-                        label={d}
-                        value={d}
+                        label={d.toString()}
+                        value={d.toString()}
                         key={`${month}${d}`}
                         color={pickerColor}
                     />
@@ -109,8 +112,8 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
             >
                 {range(yearRange[0], yearRange[1] + 1).map((y) => (
                     <PickerItem
-                        label={y}
-                        value={y}
+                        label={y.toString()}
+                        value={y.toString()}
                         key={`${month}${y}`}
                         color={pickerColor}
                     />
