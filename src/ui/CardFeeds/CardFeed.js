@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { withProps, defaultProps } from 'recompose';
+import { defaultProps } from 'recompose';
 import { get } from 'lodash';
 
 import {

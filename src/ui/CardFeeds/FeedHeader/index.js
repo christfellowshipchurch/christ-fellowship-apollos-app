@@ -1,53 +1,52 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Button } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
     Touchable,
     ButtonLink,
     H3,
+    H6,
     styled,
     withTheme,
 } from '@apollosproject/ui-kit';
 
-const RowHeader = styled(({ theme }) => ({
+const RowHeader = styled(({ theme, viewAll }) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     zIndex: 2, // UX hack to improve tapability. Positions RowHeader above StyledHorizontalTileFeed
-    paddingHorizontal: theme.sizing.baseUnit,
-    marginBottom: theme.sizing.baseUnit * 0.25,
+    paddingLeft: theme.sizing.baseUnit,
+    ...(viewAll ? {} : { paddingBottom: theme.sizing.baseUnit * 0.5 }),
 }))(View);
 
+const Name = styled({
+    flexGrow: 2,
+})(View);
+
 const AndroidTouchableFix = withTheme(({ theme }) => ({
-    width: '25%',
-    borderRadius: theme.sizing.baseUnit / 2,
+    borderRadius: theme.sizing.baseBorderRadius / 2,
 }))(Touchable);
 
 const ButtonLinkSpacing = styled(({ theme }) => ({
     flexDirection: 'row', // correctly positions the loading state
     justifyContent: 'flex-end', // correctly positions the loading state
-    padding: theme.sizing.baseUnit, // UX hack to improve tapability.
-    marginBottom: theme.sizing.baseUnit * -1 + 3,
-    marginRight: theme.sizing.baseUnit * -1,
+    paddingVertical: theme.sizing.baseUnit * 0.5, // UX hack to improve tapability.
+    paddingHorizontal: theme.sizing.baseUnit, // UX hack to improve tapability.
 }))(View);
 
-const StyledButtonLink = styled(({ theme }) => ({
-    fontWeight: 'bold',
-    color: theme.colors.lightTertiary,
-    fontSize: 12,
-}))(ButtonLink);
-
 const FeedHeader = ({ title, onPress, seeMoreText, seeMore, isLoading }) => (
-    <RowHeader>
-        <View style={{ width: seeMore ? '75%' : '100%' }}>
+    <RowHeader viewAll={seeMore}>
+        <Name>
             <H3 isLoading={isLoading}>{title}</H3>
-        </View>
+        </Name>
         {seeMore &&
             !isLoading && (
                 <AndroidTouchableFix onPress={onPress}>
                     <ButtonLinkSpacing>
-                        <StyledButtonLink>{seeMoreText}</StyledButtonLink>
+                        <H6>
+                            <ButtonLink>{seeMoreText}</ButtonLink>
+                        </H6>
                     </ButtonLinkSpacing>
                 </AndroidTouchableFix>
             )}
