@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
@@ -52,7 +52,12 @@ const BlurLabel = styled(({ theme }) => ({
 
 const Label = withTheme(({ theme }) => ({
   numberOfLines: 1,
-  style: { color: theme.colors.white },
+  style: {
+    color: Platform.select({
+      ios: theme.colors.white,
+      android: theme.colors.text.primary,
+    }),
+  },
 }))(H6);
 
 const CardWithLayout = styled(({ theme, placement }) => ({
