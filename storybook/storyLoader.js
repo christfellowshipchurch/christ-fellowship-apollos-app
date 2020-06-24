@@ -5,6 +5,7 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
+  require('../src/content-single/CheckInButton/CheckInButton.stories');
   require('../src/content-single/DevotionalContentItem/Devotional.stories');
   require('../src/tabs/discover/Discover.stories');
   require('../src/tabs/discover/SearchFeed/SearchFeed.stories');
@@ -20,6 +21,7 @@ function loadStories() {
 }
 
 const stories = [
+  '../src/content-single/CheckInButton/CheckInButton.stories',
   '../src/content-single/DevotionalContentItem/Devotional.stories',
   '../src/tabs/discover/Discover.stories',
   '../src/tabs/discover/SearchFeed/SearchFeed.stories',
