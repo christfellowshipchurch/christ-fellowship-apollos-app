@@ -74,6 +74,7 @@ const InteractiveCheckIn = () => {
         }
         onPress={simulateCheckIn}
         title={isCheckedIn ? 'Checked In' : 'Check In'}
+        isCheckedIn={isCheckedIn}
       />
     </View>
   );

@@ -65,6 +65,12 @@ ApollosConfig.loadJs({
           action
         }
         hideLabel
+        checkin {
+          id
+          title
+          message
+          isCheckedIn
+        }
       }
     `,
     INFORMATIONAL_ITEM_FRAGMENT: gql`
