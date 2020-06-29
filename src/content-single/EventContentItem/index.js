@@ -89,8 +89,6 @@ const EventContentItem = ({ content, loading }) => {
   const hasVideo = get(content, 'videos[0].sources[0]', []).length > 0;
   const checkin = get(content, 'checkin', {});
 
-  console.log({ checkin });
-
   return (
     <LiveConsumer contentId={content.id}>
       {(liveStream) => {
