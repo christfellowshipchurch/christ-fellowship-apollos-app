@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated, ImageBackground } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
   styled,
-  GradientOverlayImage,
+  withTheme,
   BackgroundView,
   PaddedView,
   H4,
+  UIText,
+  Icon,
   // StretchyView,
 } from '@apollosproject/ui-kit';
 import {
@@ -16,13 +18,15 @@ import {
   LiveConsumer,
 } from '@apollosproject/ui-connected';
 
+import LiveLabel from 'ui/LiveLabel';
+import { HorizontalDivider } from 'ui/Dividers';
+import ButtonWithLinkRouting from 'ui/ButtonWithLinkRouting';
+import Color from 'color';
 import Features from '../Features';
 import EventDateTimes from '../EventDateTimes';
 import Title from '../Title';
-import LiveLabel from '../../ui/LiveLabel';
-import { HorizontalDivider } from '../../ui/Dividers';
 import HTMLContent from '../HTMLContent';
-import ButtonWithLinkRouting from '../../ui/ButtonWithLinkRouting';
+import CheckInButton from '../CheckInButton';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -30,9 +34,45 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
   marginTop: -(theme.sizing.baseUnit * 2.5),
 }))(MediaControlsConnected);
 
+const StyledCheckInButton = styled(({ theme, mediaControlSpacing }) => ({
+  ...(mediaControlSpacing ? { paddingBottom: theme.sizing.baseUnit * 3 } : {}),
+}))(CheckInButton);
+
 const StyledButton = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
 }))(ButtonWithLinkRouting);
+
+const StyledImageBackground = styled(({ theme }) => ({
+  flex: 1,
+  width: '100%',
+  aspectRatio: 1,
+  resizeMode: 'cover',
+  flexDirection: 'column',
+  justifyContent: 'flex-end',
+  // using middle gray as the starting point, let's mix our paper color with it
+  // so that we can a gray tone that fits within the context of our theme
+  backgroundColor: Color('#7F7F7F')
+    .mix(Color(theme.colors.background.paper))
+    .hex(),
+}))(ImageBackground);
+
+const CheckedInText = styled(({ theme }) => ({
+  fontSize: 12,
+  color: theme.colors.primary,
+  paddingLeft: theme.sizing.baseUnit * 0.25,
+}))(UIText);
+
+const CheckIcon = withTheme(({ theme }) => ({
+  size: 16,
+  fill: theme.colors.primary,
+  style: { paddingRight: theme.sizing.baseUnit * 0.25 },
+}))(Icon);
+
+const CheckedInRow = styled(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: -1 * theme.sizing.baseUnit * 0.5,
+}))(View);
 
 // TODO : temp fix until Core resolves the bug where images would disappear when pulling down
 const StretchyView = ({ children, ...props }) =>
@@ -46,6 +86,8 @@ const EventContentItem = ({ content, loading }) => {
     ? 'Get Started'
     : 'Check Back Soon for More Information';
   const events = get(content, 'events', []);
+  const hasVideo = get(content, 'videos[0].sources[0]', []).length > 0;
+  const checkin = get(content, 'checkin', {});
 
   return (
     <LiveConsumer contentId={content.id}>
@@ -60,19 +102,26 @@ const EventContentItem = ({ content, loading }) => {
                   <View>
                     {coverImageSources.length || loading ? (
                       <Stretchy>
-                        <GradientOverlayImage
-                          isLoading={!coverImageSources.length && loading}
-                          source={coverImageSources}
-                          // overlayColor={'black'}
-                          // overlayType="gradient-bottom"
-                          // Sets the ratio of the image
-                          minAspectRatio={1}
-                          maxAspectRatio={1}
-                          // Sets the ratio of the placeholder
-                          forceRatio={1}
-                          // No ratios are respected without this
-                          maintainAspectRatio
-                        />
+                        <View
+                          style={{
+                            width: '100%',
+                            aspectRatio: 1,
+                          }}
+                        >
+                          <StyledImageBackground
+                            isLoading={!coverImageSources.length && loading}
+                            source={coverImageSources}
+                          >
+                            {!loading &&
+                              checkin &&
+                              !checkin.isCheckedIn && (
+                                <StyledCheckInButton
+                                  contentId={content.id}
+                                  mediaControlSpacing={isLive || hasVideo}
+                                />
+                              )}
+                          </StyledImageBackground>
+                        </View>
                       </Stretchy>
                     ) : null}
                   </View>
@@ -85,6 +134,14 @@ const EventContentItem = ({ content, loading }) => {
                       </View>
                     )}
 
+                    {!loading &&
+                      checkin &&
+                      checkin.isCheckedIn && (
+                        <CheckedInRow>
+                          <CheckIcon name="check" />
+                          <CheckedInText>{checkin.title}</CheckedInText>
+                        </CheckedInRow>
+                      )}
                     <Title contentId={content.id} isLoading={loading} />
 
                     {events.length < 1 &&
