@@ -14,6 +14,6 @@
 
 [![codecov](https://codecov.io/gh/ApollosProject/apollos-prototype/branch/master/graph/badge.svg)](https://codecov.io/gh/ApollosProject/apollos-prototype)
 
-This project was bootstrapped from [The Apollos Project](https://apollosapp.io/).
+This project was bootstrapped from [The Apollos Project](https://apollos.app/).
 
 Read through the Apollos Project [Documentation](https://apollosapp.io/docs/install) for how to get started with this project. Any updates or Christ Fellowship specific implementations will be documented here.
