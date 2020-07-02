@@ -190,9 +190,9 @@ const Connect = ({ navigation }) => {
           </AvatarContainer>
         </Layout>
       </ThemeMixin>
-      <Groups />
-      <ProfileActionBar />
       <ScrollView>
+        <Groups navigation={navigation} />
+        <ProfileActionBar />
         <CardLayout>
           <Card style={{ flex: 1 }}>
             <CardContent>

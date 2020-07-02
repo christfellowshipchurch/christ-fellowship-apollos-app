@@ -92,6 +92,8 @@ export const GET_USER_GROUPS = gql`
         groups {
           id
           name
+          title
+          summary
           members {
             id
             firstName
