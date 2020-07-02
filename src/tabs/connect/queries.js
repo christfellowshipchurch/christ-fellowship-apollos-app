@@ -83,3 +83,25 @@ export const GET_PROFILE_ACTIONS = gql`
     }
   }
 `;
+export const GET_USER_GROUPS = gql`
+  query CurrentUserGroups {
+    currentUser {
+      id
+      profile {
+        id
+        groups {
+          id
+          name
+          members {
+            id
+            firstName
+          }
+          leaders {
+            id
+            firstName
+          }
+        }
+      }
+    }
+  }
+`;

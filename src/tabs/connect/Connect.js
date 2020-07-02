@@ -34,6 +34,7 @@ import {
 import StatusBar from '../../ui/StatusBar';
 import { useCurrentUser } from '../../hooks';
 import ProfileActionBar from './ProfileActionBar';
+import Groups from './Groups';
 
 const CardLayout = withMediaQuery(
   ({ md }) => ({ maxWidth: md }),
@@ -189,6 +190,7 @@ const Connect = ({ navigation }) => {
           </AvatarContainer>
         </Layout>
       </ThemeMixin>
+      <Groups />
       <ProfileActionBar />
       <ScrollView>
         <CardLayout>
