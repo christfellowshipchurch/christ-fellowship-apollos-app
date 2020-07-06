@@ -4,11 +4,11 @@ import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import {
   styled,
-  HorizontalDefaultCard,
   HorizontalTileFeed,
-  ContentCardConnected,
   TouchableScale,
 } from '@apollosproject/ui-kit';
+
+import { HorizontalGroupCard } from '../../ui/Cards';
 
 import { GET_USER_GROUPS } from './queries';
 
@@ -29,7 +29,6 @@ const loadingStateObject = {
 const Groups = ({ navigation }) => {
   const { data, loading, error } = useQuery(GET_USER_GROUPS);
   const content = get(data, 'currentUser.profile.groups', []);
-  console.log('content', content);
 
   const renderItem = ({ item }) => {
     console.log('item***', item);
@@ -41,15 +40,14 @@ const Groups = ({ navigation }) => {
           });
         }}
       >
-        <HorizontalDefaultCard
+        <HorizontalGroupCard
           coverImage={[
             {
               uri: 'https://picsum.photos/800',
             },
           ]}
-          isLoading={item.isLoading}
-          title={item.title}
-          summary={item.summary}
+          isLoading={loading}
+          {...item}
         />
       </TouchableScale>
     );

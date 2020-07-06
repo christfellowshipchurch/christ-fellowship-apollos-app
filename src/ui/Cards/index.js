@@ -6,3 +6,4 @@ export HighlightCard from './HighlightCard';
 export ColumnCard from './ColumnCard';
 export RowCard from './RowCard';
 export HorizontalHighlightCard from './HorizontalHighlightCard';
+export HorizontalGroupCard from './HorizontalGroupCard';

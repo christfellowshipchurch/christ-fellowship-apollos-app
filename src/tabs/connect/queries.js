@@ -102,6 +102,7 @@ export const GET_USER_GROUPS = gql`
             id
             firstName
           }
+          schedule
         }
       }
     }
