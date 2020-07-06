@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { View } from 'react-native';
+import { get } from 'lodash';
 
 import {
   BodySmall,
@@ -7,51 +9,74 @@ import {
   CardContent,
   CardImage,
   H5,
-  H6,
   ImageSourceType,
   styled,
   withIsLoading,
   withTheme,
 } from '@apollosproject/ui-kit';
 
-const SquareCard = styled({
-  width: 240,
-  height: 240,
-})(Card);
+import AvatarCloud from '../../AvatarCloud';
 
-const Image = withTheme(({ theme, hasTitleAndSummary }) => ({
-  minAspectRatio: hasTitleAndSummary ? 2 : 1.5, // adjusts `Image` height to fill available `Card` whitespace if there is no `Title` or `Summary`
-  maxAspectRatio: hasTitleAndSummary ? 2 : 1.5, // adjusts `Image` height to fill available `Card` whitespace if there is no `Title` or `Summary`
-  forceRatio: hasTitleAndSummary ? 2 : 1.5, // forces the placeholder to use the same ratio as above.
+const SquareCard = styled(({ customTheme, theme }) => ({
+  width: 212,
+  flex: 1,
+  backgroundColor: get(customTheme, 'colors.primary', theme.colors.darkPrimary),
+}))(Card);
+
+const Image = withTheme(({ customTheme, theme }) => ({
+  minAspectRatio: 1.5,
+  maxAspectRatio: 1.5,
   maintainAspectRatio: true,
-  overlayColor: theme.colors.black,
-  overlayType: 'gradient-top',
+  forceRatio: 1.5, // fixes loading state
+  overlayColor: get(customTheme, 'colors.primary', theme.colors.darkPrimary), // else check for a custom theme (prop) or default to black.
+  overlayType: 'featured',
+  style: { flex: 1 },
 }))(CardImage);
 
 const Content = styled(({ theme }) => ({
-  alignItems: 'flex-start', // needed to make `Label` display as an "inline" element
-  paddingHorizontal: theme.sizing.baseUnit, // TODO: refactor CardContent to have this be the default
-  paddingBottom: theme.sizing.baseUnit * 1.5, // TODO: refactor CardContent to have this be the default
+  alignItems: 'center',
+  textAlign: 'center',
+  paddingHorizontal: theme.sizing.baseUnit,
+  paddingBottom: theme.sizing.baseUnit,
 }))(CardContent);
 
-const Summary = styled(({ theme, hasTitle }) => ({
-  color: theme.colors.text.tertiary,
-  ...(hasTitle ? { paddingTop: theme.sizing.baseUnit / 2 } : {}),
+const Schedule = styled(({ theme }) => ({
+  color: theme.colors.white,
+  paddingTop: theme.sizing.baseUnit,
 }))(BodySmall);
+
+const Title = styled(({ theme }) => ({
+  color: theme.colors.white,
+  textAlign: 'center',
+}))(H5);
+
+const StyledAvatarCloud = styled(({ theme }) => ({
+  position: 'absolute',
+  left: 0,
+  right: 0,
+  bottom: 0,
+  top: 0,
+}))(AvatarCloud);
+
+const avatars = [
+  'https://picsum.photos/200?1',
+  'https://picsum.photos/200?2',
+  'https://picsum.photos/200?3',
+];
 
 const HorizontalGroupCard = withIsLoading(
   ({ coverImage, isLoading, summary, title, schedule }) => (
     <SquareCard isLoading={isLoading} inHorizontalList>
-      <Image source={coverImage} hasTitleAndSummary={!!summary && !!title} />
-
+      <View>
+        <Image source={coverImage} hasTitleAndSummary={!!summary && !!title} />
+        <StyledAvatarCloud
+          avatars={avatars}
+          primaryAvatar={'https://picsum.photos/200'}
+        />
+      </View>
       <Content>
-        {title ? <H5 numberOfLines={2}>{title}</H5> : null}
-        {summary ? (
-          <Summary hasTitle={title} numberOfLines={2}>
-            {summary}
-          </Summary>
-        ) : null}
-        {schedule ? <H6 numberOfLines={2}>{schedule}</H6> : null}
+        {title ? <Title numberOfLines={2}>{title}</Title> : null}
+        {schedule ? <Schedule numberOfLines={1}>{schedule}</Schedule> : null}
       </Content>
     </SquareCard>
   )

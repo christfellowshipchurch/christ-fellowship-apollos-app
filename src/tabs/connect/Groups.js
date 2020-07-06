@@ -6,6 +6,8 @@ import {
   styled,
   HorizontalTileFeed,
   TouchableScale,
+  H4,
+  PaddedView,
 } from '@apollosproject/ui-kit';
 
 import { HorizontalGroupCard } from '../../ui/Cards';
@@ -31,7 +33,7 @@ const Groups = ({ navigation }) => {
   const content = get(data, 'currentUser.profile.groups', []);
 
   const renderItem = ({ item }) => {
-    console.log('item***', item);
+    console.log('item*****', item);
     return (
       <TouchableScale
         onPress={() => {
@@ -55,7 +57,10 @@ const Groups = ({ navigation }) => {
 
   return (
     <View>
-      <Text>TODO: Groups Tab Bar with Buttons Here</Text>
+      <PaddedView>
+        <H4>Groups</H4>
+      </PaddedView>
+
       <StyledHorizontalTileFeed
         content={content}
         renderItem={renderItem}
