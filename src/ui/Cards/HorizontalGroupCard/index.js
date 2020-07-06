@@ -13,6 +13,7 @@ import {
   styled,
   withIsLoading,
   withTheme,
+  Icon,
 } from '@apollosproject/ui-kit';
 
 import AvatarCloud from '../../AvatarCloud';
@@ -42,7 +43,6 @@ const Content = styled(({ theme }) => ({
 
 const Schedule = styled(({ theme }) => ({
   color: theme.colors.white,
-  paddingTop: theme.sizing.baseUnit,
 }))(BodySmall);
 
 const Title = styled(({ theme }) => ({
@@ -50,13 +50,13 @@ const Title = styled(({ theme }) => ({
   textAlign: 'center',
 }))(H5);
 
-const StyledAvatarCloud = styled(({ theme }) => ({
+const StyledAvatarCloud = styled({
   position: 'absolute',
   left: 0,
   right: 0,
   bottom: 0,
   top: 0,
-}))(AvatarCloud);
+})(AvatarCloud);
 
 const avatars = [
   'https://picsum.photos/200?1',
@@ -64,8 +64,19 @@ const avatars = [
   'https://picsum.photos/200?3',
 ];
 
+const IconView = styled({
+  paddingRight: 6,
+})(View);
+
+const ScheduleView = styled(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingTop: theme.sizing.baseUnit,
+}))(View);
+
 const HorizontalGroupCard = withIsLoading(
-  ({ coverImage, isLoading, summary, title, schedule }) => (
+  ({ fill, coverImage, isLoading, summary, title, schedule }) => (
     <SquareCard isLoading={isLoading} inHorizontalList>
       <View>
         <Image source={coverImage} hasTitleAndSummary={!!summary && !!title} />
@@ -76,7 +87,14 @@ const HorizontalGroupCard = withIsLoading(
       </View>
       <Content>
         {title ? <Title numberOfLines={2}>{title}</Title> : null}
-        {schedule ? <Schedule numberOfLines={1}>{schedule}</Schedule> : null}
+        {schedule ? (
+          <ScheduleView>
+            <IconView>
+              <Icon name="time" size={16} fill={fill} />
+            </IconView>
+            <Schedule numberOfLines={1}>{schedule}</Schedule>
+          </ScheduleView>
+        ) : null}
       </Content>
     </SquareCard>
   )
@@ -93,4 +111,7 @@ HorizontalGroupCard.propTypes = {
 
 HorizontalGroupCard.displayName = 'HorizontalGroupCard';
 
-export default HorizontalGroupCard;
+export default withTheme(({ theme, ...props }) => ({
+  fill: theme.colors.darkTertiary,
+  ...props,
+}))(HorizontalGroupCard);
