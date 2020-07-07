@@ -31,6 +31,8 @@ target 'ChristFellowship' do
   pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary.podspec"
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
 
+  pod 'react-native-google-cast/NoBluetooth', path: '../node_modules/react-native-google-cast/ios/'
+
   target 'ChristFellowshipTests' do
     inherit! :search_paths
     # Pods for testing
