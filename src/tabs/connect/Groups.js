@@ -41,8 +41,9 @@ const Groups = ({ navigation }) => {
     return (
       <TouchableScale
         onPress={() => {
-          navigation.push('ContentSingle', {
-            itemId: item.id,
+          navigation.push('GroupSingle', {
+            content: item,
+            avatars,
           });
         }}
       >

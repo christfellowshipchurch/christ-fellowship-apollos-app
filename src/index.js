@@ -18,6 +18,7 @@ import ContentSingle from './content-single';
 import ContentFeed from './content-feed';
 import Tabs from './tabs';
 import EditUser from './edit-user';
+import GroupSingle from './group-single';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -79,6 +80,7 @@ const AppNavigator = createStackNavigator(
     LandingScreen,
     EditUser,
     Location,
+    GroupSingle,
   },
   {
     initialRouteName: 'ProtectedRoute',
