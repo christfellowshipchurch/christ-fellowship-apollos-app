@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { Animated, FlatList, View, Text } from 'react-native';
+import { Animated, FlatList, View, Text, ScrollView } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -14,9 +14,10 @@ import {
 } from '@apollosproject/ui-kit';
 
 import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
+import PrayerListFeatureConnected from '@apollosproject/ui-connected/src/PrayerListFeatureConnected';
 
 const GET_LIVE_STREAMS = gql`
-  query getLiveContent($key: String!) {
+  query getTopFeatures($key: String!) {
     flagStatus(key: $key)
 
     liveStreams {
@@ -34,6 +35,18 @@ const GET_LIVE_STREAMS = gql`
             uri
           }
         }
+      }
+    }
+
+    dailyPrayers {
+      id
+      title
+      subtitle
+      isCard
+      prayers {
+        id
+        isPrayed
+        text
       }
     }
   }
@@ -168,16 +181,23 @@ const LiveStreamsFeed = ({ navigation }) => {
   });
   const liveStreams = get(data, 'liveStreams', []);
   const flagStatus = get(data, 'flagStatus');
+  const dailyPrayers = get(data, 'dailyPrayers', {});
 
   return liveStreams.length > 0 && flagStatus === 'LIVE' ? (
     <FlatListContainer>
-      <FlatList
-        data={liveStreams}
-        renderItem={renderItem}
-        horizontal
-        ListHeaderComponent={<EndCapSpacer />}
-        ListFooterComponent={<EndCapSpacer />}
-      />
+      <ScrollView horizontal>
+        <FlatList
+          data={liveStreams}
+          renderItem={renderItem}
+          horizontal
+          ListHeaderComponent={<EndCapSpacer />}
+          ListFooterComponent={<EndCapSpacer />}
+        />
+
+        <View>
+          <PrayerListFeatureConnected featureId={get(dailyPrayers, 'id')} />
+        </View>
+      </ScrollView>
     </FlatListContainer>
   ) : null;
 };
