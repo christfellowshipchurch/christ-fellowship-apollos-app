@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import {
@@ -33,7 +33,11 @@ const Groups = ({ navigation }) => {
   const content = get(data, 'currentUser.profile.groups', []);
 
   const renderItem = ({ item }) => {
-    console.log('item*****', item);
+    const members = get(item, 'members', []);
+    const avatars = [];
+    members.map(
+      (member) => (member.photo.uri ? avatars.push(member.photo.uri) : null)
+    );
     return (
       <TouchableScale
         onPress={() => {
@@ -48,6 +52,7 @@ const Groups = ({ navigation }) => {
               uri: 'https://picsum.photos/800',
             },
           ]}
+          avatars={avatars}
           isLoading={loading}
           {...item}
         />

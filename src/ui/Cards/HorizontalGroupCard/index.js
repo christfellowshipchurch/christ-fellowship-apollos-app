@@ -58,12 +58,6 @@ const StyledAvatarCloud = styled({
   top: 0,
 })(AvatarCloud);
 
-const avatars = [
-  'https://picsum.photos/200?1',
-  'https://picsum.photos/200?2',
-  'https://picsum.photos/200?3',
-];
-
 const IconView = styled({
   paddingRight: 6,
 })(View);
@@ -76,7 +70,7 @@ const ScheduleView = styled(({ theme }) => ({
 }))(View);
 
 const HorizontalGroupCard = withIsLoading(
-  ({ fill, coverImage, isLoading, summary, title, schedule }) => (
+  ({ fill, coverImage, isLoading, summary, title, schedule, avatars }) => (
     <SquareCard isLoading={isLoading} inHorizontalList>
       <View>
         <Image source={coverImage} hasTitleAndSummary={!!summary && !!title} />

@@ -97,10 +97,16 @@ export const GET_USER_GROUPS = gql`
           members {
             id
             firstName
+            photo {
+              uri
+            }
           }
           leaders {
             id
             firstName
+            photo {
+              uri
+            }
           }
           schedule
         }
