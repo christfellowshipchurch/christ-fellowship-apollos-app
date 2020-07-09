@@ -8,11 +8,12 @@ import {
   TouchableScale,
   H4,
   PaddedView,
+  ErrorCard,
 } from '@apollosproject/ui-kit';
 
-import { HorizontalGroupCard } from '../../ui/Cards';
+import { HorizontalGroupCard } from '../../../ui/Cards';
 
-import { GET_USER_GROUPS } from './queries';
+import GET_CURRENT_USER_GROUPS from './getCurrentUserGroups';
 
 const StyledHorizontalTileFeed = styled(({ theme }) => ({
   /* UX hack to improve tapability. The magic number below happens to be the number of pixels that
@@ -29,20 +30,23 @@ const loadingStateObject = {
 };
 
 const Groups = ({ navigation }) => {
-  const { data, loading, error } = useQuery(GET_USER_GROUPS);
+  const { data, loading, error } = useQuery(GET_CURRENT_USER_GROUPS);
   const content = get(data, 'currentUser.profile.groups', []);
+
+  if (error) return <ErrorCard error={error} />;
 
   const renderItem = ({ item }) => {
     const members = get(item, 'members', []);
     const avatars = [];
     members.map(
-      (member) => (member.photo.uri ? avatars.push(member.photo.uri) : null)
+      (member) => (member.photo.uri ? avatars.push(member.photo) : null)
     );
+
     return (
       <TouchableScale
         onPress={() => {
           navigation.push('GroupSingle', {
-            content: item,
+            itemId: item.id,
             avatars,
           });
         }}
@@ -55,6 +59,7 @@ const Groups = ({ navigation }) => {
           ]}
           avatars={avatars}
           isLoading={loading}
+          error={error}
           {...item}
         />
       </TouchableScale>
