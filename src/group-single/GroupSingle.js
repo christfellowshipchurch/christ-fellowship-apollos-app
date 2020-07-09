@@ -212,9 +212,4 @@ class GroupSingle extends PureComponent {
   }
 }
 
-GroupSingle.propTypes = {};
-
-export default withTheme(({ theme, ...props }) => ({
-  fill: theme.colors.darkTertiary,
-  ...props,
-}))(GroupSingle);
+export default GroupSingle;
