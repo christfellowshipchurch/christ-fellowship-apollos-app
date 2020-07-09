@@ -63,23 +63,25 @@ const LiveItemContainer = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit * 0.5,
 }))(TouchableScale);
 
+const circleSize = 64
+
 const CirclularImage = withTheme(({ theme }) => ({
   minAspectRatio: 1,
   maxAspectRatio: 1,
   maintainAspectRatio: true,
   overlayColor: theme.colors.darkPrimary,
   style: {
-    height: 48,
-    width: 48,
-    borderRadius: 24,
-    borderWidth: 3,
+    height: circleSize,
+    width: circleSize,
+    borderRadius: circleSize * 0.5,
+    borderWidth: 4,
     borderColor: theme.colors.alert,
     backgroundColor: theme.colors.transparent,
   },
 }))(ConnectedImage);
 
 const EndCapSpacer = styled(({ theme }) => ({
-  width: theme.sizing.baseUnit * 0.5,
+  width: theme.sizing.baseUnit * 0.1,
 }))(View);
 
 const LiveText = styled(({ theme }) => ({
@@ -186,16 +188,20 @@ const LiveStreamsFeed = ({ navigation }) => {
   return liveStreams.length > 0 && flagStatus === 'LIVE' ? (
     <FlatListContainer>
       <ScrollView horizontal>
-        <FlatList
-          data={liveStreams}
-          renderItem={renderItem}
-          horizontal
-          ListHeaderComponent={<EndCapSpacer />}
-          ListFooterComponent={<EndCapSpacer />}
-        />
+        <View>
+          <FlatList
+            data={liveStreams}
+            renderItem={renderItem}
+            horizontal
+            ListHeaderComponent={<EndCapSpacer />}
+            ListFooterComponent={<EndCapSpacer />}
+          />
+        </View>
 
         <View>
-          <PrayerListFeatureConnected featureId={get(dailyPrayers, 'id')} />
+          <PrayerListFeatureConnected 
+            featureId={get(dailyPrayers, 'id')} 
+          />
         </View>
       </ScrollView>
     </FlatListContainer>
