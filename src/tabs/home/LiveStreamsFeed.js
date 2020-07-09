@@ -14,7 +14,9 @@ import {
 } from '@apollosproject/ui-kit';
 
 import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
+
 import PrayerListFeatureConnected from '@apollosproject/ui-connected/src/PrayerListFeatureConnected';
+import PrayerFeature from './PrayerFeature'
 
 const GET_LIVE_STREAMS = gql`
   query getTopFeatures($key: String!) {
@@ -51,6 +53,24 @@ const GET_LIVE_STREAMS = gql`
     }
   }
 `;
+// const AddIcon = withTheme(
+//   ({ theme }) => ({
+//     fill: theme.colors.white,
+//     name: 'plus',
+//     size: theme.sizing.avatar.medium * 0.475,
+//   }),
+//   'ui-kit.AvatarList.AddIcon'
+// )(Icon);
+
+// const AddIconBackground = styled(
+//   ({ isLoading, theme }) => ({
+//     backgroundColor: isLoading
+//       ? theme.colors.background.inactive
+//       : theme.colors.action.primary,
+//     padding: theme.sizing.avatar.medium * 0.1625,
+//   }),
+//   'ui-kit.AvatarList.AddIconBackground'
+// )(View);
 
 const FlatListContainer = styled(({ theme }) => ({
   flex: 1,
@@ -62,6 +82,10 @@ const LiveItemContainer = styled(({ theme }) => ({
   alignContent: 'center',
   paddingHorizontal: theme.sizing.baseUnit * 0.5,
 }))(TouchableScale);
+
+const LiveView = styled(({ theme }) => ({
+  paddingTop: 20,
+}))(View);
 
 const circleSize = 64
 
@@ -188,7 +212,7 @@ const LiveStreamsFeed = ({ navigation }) => {
   return liveStreams.length > 0 && flagStatus === 'LIVE' ? (
     <FlatListContainer>
       <ScrollView horizontal>
-        <View>
+        <LiveView>
           <FlatList
             data={liveStreams}
             renderItem={renderItem}
@@ -196,13 +220,19 @@ const LiveStreamsFeed = ({ navigation }) => {
             ListHeaderComponent={<EndCapSpacer />}
             ListFooterComponent={<EndCapSpacer />}
           />
-        </View>
+        </LiveView>
 
         <View>
-          <PrayerListFeatureConnected 
-            featureId={get(dailyPrayers, 'id')} 
-          />
+            <PrayerListFeatureConnected 
+              featureId={get(dailyPrayers, 'id')} 
+              Component={PrayerFeature}
+            />
         </View>
+        {/* <View>
+          <AddIconBackground>
+            <AddIcon />
+          </AddIconBackground>
+        </View> */}
       </ScrollView>
     </FlatListContainer>
   ) : null;

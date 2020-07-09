@@ -191,7 +191,14 @@ const overrides = {
     },
     'ui-prayer.PrayerExperienceConnected': {
         themeType: 'light',
+        // showOnboarding: true,
     },
+    'ui-kit.AvatarList.AddIcon': {
+        name: 'pray'
+    },
+    'ui-prayer.PrayerInput.PromptIcon': {
+        name: 'pray'
+    }
 };
 
 const buttons = ({ colors: themeColors }) => ({

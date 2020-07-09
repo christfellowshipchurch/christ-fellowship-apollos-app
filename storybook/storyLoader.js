@@ -9,6 +9,7 @@ function loadStories() {
   require('../src/content-single/DevotionalContentItem/Devotional.stories');
   require('../src/tabs/discover/Discover.stories');
   require('../src/tabs/discover/SearchFeed/SearchFeed.stories');
+  require('../src/tabs/home/PrayerFeature/PrayerFeature.stories');
   require('../src/ui/ActionBar/ActionBar.stories');
   require('../src/ui/CardFeeds/CardFeed.stories');
   require('../src/ui/CardFeeds/GridCardFeed/GridCardFeed.stories');
@@ -25,6 +26,7 @@ const stories = [
   '../src/content-single/DevotionalContentItem/Devotional.stories',
   '../src/tabs/discover/Discover.stories',
   '../src/tabs/discover/SearchFeed/SearchFeed.stories',
+  '../src/tabs/home/PrayerFeature/PrayerFeature.stories',
   '../src/ui/ActionBar/ActionBar.stories',
   '../src/ui/CardFeeds/CardFeed.stories',
   '../src/ui/CardFeeds/GridCardFeed/GridCardFeed.stories',
