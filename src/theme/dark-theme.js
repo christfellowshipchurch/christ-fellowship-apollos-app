@@ -28,6 +28,11 @@ const dark = ({ colors: themeColors, alpha }) => ({
             default: themeColors.transparent,
         },
     },
+    overrides: {
+        'ui-prayer.PrayerExperienceConnected': {
+            themeType: 'dark',
+        },
+    }
 });
 
 export default dark;

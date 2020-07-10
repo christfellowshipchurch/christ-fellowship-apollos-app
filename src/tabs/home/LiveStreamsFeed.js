@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { Animated, FlatList, View, Text } from 'react-native';
+import { Animated, FlatList, View, Text, ScrollView } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -15,8 +15,11 @@ import {
 
 import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
 
+import PrayerListFeatureConnected from '@apollosproject/ui-connected/src/PrayerListFeatureConnected';
+import PrayerFeature from './PrayerFeature'
+
 const GET_LIVE_STREAMS = gql`
-  query getLiveContent($key: String!) {
+  query getTopFeatures($key: String!) {
     flagStatus(key: $key)
 
     liveStreams {
@@ -36,8 +39,38 @@ const GET_LIVE_STREAMS = gql`
         }
       }
     }
+
+    dailyPrayers {
+      id
+      title
+      subtitle
+      isCard
+      prayers {
+        id
+        isPrayed
+        text
+      }
+    }
   }
 `;
+// const AddIcon = withTheme(
+//   ({ theme }) => ({
+//     fill: theme.colors.white,
+//     name: 'plus',
+//     size: theme.sizing.avatar.medium * 0.475,
+//   }),
+//   'ui-kit.AvatarList.AddIcon'
+// )(Icon);
+
+// const AddIconBackground = styled(
+//   ({ isLoading, theme }) => ({
+//     backgroundColor: isLoading
+//       ? theme.colors.background.inactive
+//       : theme.colors.action.primary,
+//     padding: theme.sizing.avatar.medium * 0.1625,
+//   }),
+//   'ui-kit.AvatarList.AddIconBackground'
+// )(View);
 
 const FlatListContainer = styled(({ theme }) => ({
   flex: 1,
@@ -50,23 +83,29 @@ const LiveItemContainer = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit * 0.5,
 }))(TouchableScale);
 
+const LiveView = styled(({ theme }) => ({
+  paddingTop: 20,
+}))(View);
+
+const circleSize = 64
+
 const CirclularImage = withTheme(({ theme }) => ({
   minAspectRatio: 1,
   maxAspectRatio: 1,
   maintainAspectRatio: true,
   overlayColor: theme.colors.darkPrimary,
   style: {
-    height: 48,
-    width: 48,
-    borderRadius: 24,
-    borderWidth: 3,
+    height: circleSize,
+    width: circleSize,
+    borderRadius: circleSize * 0.5,
+    borderWidth: 4,
     borderColor: theme.colors.alert,
     backgroundColor: theme.colors.transparent,
   },
 }))(ConnectedImage);
 
 const EndCapSpacer = styled(({ theme }) => ({
-  width: theme.sizing.baseUnit * 0.5,
+  width: theme.sizing.baseUnit * 0.1,
 }))(View);
 
 const LiveText = styled(({ theme }) => ({
@@ -168,16 +207,33 @@ const LiveStreamsFeed = ({ navigation }) => {
   });
   const liveStreams = get(data, 'liveStreams', []);
   const flagStatus = get(data, 'flagStatus');
+  const dailyPrayers = get(data, 'dailyPrayers', {});
 
   return liveStreams.length > 0 && flagStatus === 'LIVE' ? (
     <FlatListContainer>
-      <FlatList
-        data={liveStreams}
-        renderItem={renderItem}
-        horizontal
-        ListHeaderComponent={<EndCapSpacer />}
-        ListFooterComponent={<EndCapSpacer />}
-      />
+      <ScrollView horizontal>
+        <LiveView>
+          <FlatList
+            data={liveStreams}
+            renderItem={renderItem}
+            horizontal
+            ListHeaderComponent={<EndCapSpacer />}
+            ListFooterComponent={<EndCapSpacer />}
+          />
+        </LiveView>
+
+        <View>
+            <PrayerListFeatureConnected 
+              featureId={get(dailyPrayers, 'id')} 
+              Component={PrayerFeature}
+            />
+        </View>
+        {/* <View>
+          <AddIconBackground>
+            <AddIcon />
+          </AddIconBackground>
+        </View> */}
+      </ScrollView>
     </FlatListContainer>
   ) : null;
 };
