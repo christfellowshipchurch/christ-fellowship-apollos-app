@@ -3,6 +3,7 @@ import { Animated, View } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { get, head } from 'lodash';
+import { compose } from 'recompose';
 import {
   styled,
   GradientOverlayImage,
@@ -15,6 +16,7 @@ import {
   HorizontalTileFeed,
   BodySmall,
   Icon,
+  ThemeConsumer,
   // StretchyView,
   withTheme,
   ThemeMixin,
@@ -34,7 +36,7 @@ const StretchyView = ({ children, ...props }) =>
   children({ Stretchy: View, ...props });
 
 const MemberCard = styled(({ theme, forceRatio }) => ({
-  width: 100,
+  width: 80,
   margin: theme.sizing.baseUnit / 2,
   marginBottom: theme.sizing.baseUnit * 0.75,
   ...(forceRatio ? { aspectRatio: forceRatio } : {}),
@@ -47,6 +49,13 @@ const MemberImage = styled({
   width: 80,
   height: 100,
 })(ConnectedImage);
+
+const MemberImageWrapper = styled({
+  borderRadius: 10,
+  width: 80,
+  height: 100,
+  overflow: 'hidden',
+})(View);
 
 const Schedule = styled(({ theme }) => ({
   color: theme.colors.darkPrimary,
@@ -65,9 +74,28 @@ const StyledAvatarCloud = styled({
   position: 'absolute',
   left: 0,
   right: 0,
-  bottom: 0,
-  top: 0,
+  bottom: 100,
+  top: 40,
 })(AvatarCloud);
+
+const StyledTitle = styled(({ theme }) => ({
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'absolute',
+  left: 20,
+  right: 20,
+  bottom: 20,
+  paddingHorizontal: theme.sizing.baseUnit * 2,
+}))(View);
+
+const StyledH3 = styled({
+  textAlign: 'center',
+})(H3);
+
+const StyledH5 = styled(({ theme }) => ({
+  color: theme.colors.darkTertiary,
+  textAlign: 'center',
+}))(H5);
 
 const StyledHorizontalTileFeed = styled(({ theme }) => ({
   /* UX hack to improve tapability. The magic number below happens to be the number of pixels that
@@ -76,6 +104,23 @@ const StyledHorizontalTileFeed = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit,
   zIndex: 1,
 }))(HorizontalTileFeed);
+
+const PlaceholderIcon = compose(
+  withTheme(({ theme: { colors, sizing } = {} }) => ({
+    fill: colors.paper,
+    name: 'avatarPlacholder',
+    size: 60,
+  }))
+)(Icon);
+
+const PlaceholderWrapper = styled(({ theme }) => ({
+  borderRadius: 10,
+  width: 80,
+  height: 100,
+  backgroundColor: theme.colors.lightSecondary,
+  justifyContent: 'center',
+  alignItems: 'center',
+}))(View);
 
 class GroupSingle extends PureComponent {
   static propTypes = {
@@ -115,20 +160,29 @@ class GroupSingle extends PureComponent {
     return { itemId: this.itemId };
   }
 
-  renderMember = ({ item }) => {
-    const photo = get(item, 'photo', { uri: 'https://picsum.photos/200' });
+  renderMember = ({ item, isLoading }) => {
+    const photo = get(item, 'photo', {});
     const name = get(item, 'firstName', '');
     return (
       <MemberCard forceRatio={1}>
-        <MemberImage // eslint-disable-line react-native/no-inline-styles
-          source={photo}
-          minAspectRatio={1}
-          maxAspectRatio={1}
-          // Sets the ratio of the placeholder
-          forceRatio={1}
-          // No ratios are respected without this
-          maintainAspectRatio
-        />
+        {!isLoading && photo && photo.uri ? (
+          <MemberImageWrapper>
+            <MemberImage // eslint-disable-line react-native/no-inline-styles
+              source={photo}
+              minAspectRatio={1}
+              maxAspectRatio={1}
+              // Sets the ratio of the placeholder
+              forceRatio={1}
+              // No ratios are respected without this
+              maintainAspectRatio
+            />
+          </MemberImageWrapper>
+        ) : (
+          <PlaceholderWrapper>
+            <PlaceholderIcon isLoading={false} />
+          </PlaceholderWrapper>
+        )}
+
         <BodyText>{name}</BodyText>
       </MemberCard>
     );
@@ -138,55 +192,68 @@ class GroupSingle extends PureComponent {
     const leader = head(get(content, 'leaders', []));
     const leaderPhoto = get(leader, 'photo', {});
     return (
-      <BackgroundView>
-        <StretchyView>
-          {({ Stretchy, ...scrollViewProps }) => (
-            <FlexedScrollView {...scrollViewProps}>
-              {this.coverImageSources.length ? (
-                <Stretchy>
-                  <GradientOverlayImage
-                    isLoading={!this.coverImageSources.length}
-                    source={this.coverImageSources}
-                    // Sets the ratio of the image
-                    minAspectRatio={1}
-                    maxAspectRatio={1}
-                    // Sets the ratio of the placeholder
-                    forceRatio={1}
-                    // No ratios are respected without this
-                    maintainAspectRatio
-                  />
-                  <StyledAvatarCloud
-                    avatars={this.avatars}
-                    primaryAvatar={leaderPhoto || 'https://picsum.photos/200'}
-                  />
-                </Stretchy>
-              ) : null}
-              <PaddedView>
-                <H3>{content.title}</H3>
-                {content.schedule ? (
-                  <ScheduleView>
-                    <IconView>
-                      <Icon name="time" size={16} />
-                    </IconView>
-                    <Schedule numberOfLines={1}>{content.schedule}</Schedule>
-                  </ScheduleView>
-                ) : null}
-                <PaddedView horizontal={false}>
-                  <BodyText>{content.summary}</BodyText>
-                </PaddedView>
+      <ThemeConsumer>
+        {(theme) => (
+          <BackgroundView>
+            <StretchyView>
+              {({ Stretchy, ...scrollViewProps }) => (
+                <FlexedScrollView {...scrollViewProps}>
+                  {this.coverImageSources.length ? (
+                    <Stretchy>
+                      <GradientOverlayImage
+                        isLoading={!this.coverImageSources.length}
+                        source={this.coverImageSources}
+                        // Sets the ratio of the image
+                        minAspectRatio={1}
+                        maxAspectRatio={1}
+                        // Sets the ratio of the placeholder
+                        forceRatio={1}
+                        // No ratios are respected without this
+                        maintainAspectRatio
+                        overlayColor={theme.colors.white}
+                        overlayType="featured"
+                      />
+                      <StyledAvatarCloud
+                        avatars={this.avatars}
+                        primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
+                      />
+                      <StyledTitle>
+                        <StyledH3 numberOfLines={2}>{content.title}</StyledH3>
+                        <StyledH5 numberOfLines={2}>
+                          {content.groupType}
+                        </StyledH5>
+                      </StyledTitle>
+                    </Stretchy>
+                  ) : null}
+                  <PaddedView>
+                    {content.schedule ? (
+                      <ScheduleView>
+                        <IconView>
+                          <Icon name="time" size={16} />
+                        </IconView>
+                        <Schedule numberOfLines={1}>
+                          {content.schedule}
+                        </Schedule>
+                      </ScheduleView>
+                    ) : null}
+                    <PaddedView horizontal={false}>
+                      <BodyText>{content.summary}</BodyText>
+                    </PaddedView>
 
-                <H5>{'Group Members'}</H5>
-              </PaddedView>
-              <StyledHorizontalTileFeed
-                content={content.members}
-                renderItem={this.renderMember}
-                loadingStateObject={this.loadingStateObject}
-                isLoading={loading}
-              />
-            </FlexedScrollView>
-          )}
-        </StretchyView>
-      </BackgroundView>
+                    <H5>{'Group Members'}</H5>
+                  </PaddedView>
+                  <StyledHorizontalTileFeed
+                    content={content.members}
+                    renderItem={this.renderMember}
+                    loadingStateObject={this.loadingStateObject}
+                    isLoading={loading}
+                  />
+                </FlexedScrollView>
+              )}
+            </StretchyView>
+          </BackgroundView>
+        )}
+      </ThemeConsumer>
     );
   };
 

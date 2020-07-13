@@ -1,12 +1,15 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import { compose } from 'recompose';
 
 import {
   CenteredView,
   ConnectedImage,
   ImageSourceType,
   styled,
+  withTheme,
+  Icon,
 } from '@apollosproject/ui-kit';
 
 const BlurWrapper = styled(
@@ -38,6 +41,24 @@ const RandomAvatar = styled(
   },
   'ui-kit.AvatarList.RandomAvatar'
 )(ConnectedImage);
+
+const PlaceholderIcon = compose(
+  withTheme(({ theme: { colors, sizing } = {} }) => ({
+    fill: colors.paper,
+    name: 'avatarPlacholder',
+    size: 60,
+  }))
+)(Icon);
+
+const PlaceholderWrapper = styled(({ size, theme }) => ({
+  width: size,
+  borderRadius: 1000,
+  backgroundColor: theme.colors.lightSecondary,
+  justifyContent: 'center',
+  alignItems: 'center',
+  zIndex: 100,
+  aspectRatio: 1,
+}))(View);
 
 class AvatarCloud extends PureComponent {
   static propTypes = {
@@ -142,7 +163,13 @@ class AvatarCloud extends PureComponent {
             source={primaryAvatar}
             isLoading={isLoading}
           />
-        ) : null}
+        ) : (
+          <PlaceholderWrapper
+            size={this.getAvatarPercentageWidth(maxAvatarWidth)}
+          >
+            <PlaceholderIcon isLoading={false} />
+          </PlaceholderWrapper>
+        )}
         {this.renderRandomAvatars()}
       </CenteredView>
     );

@@ -5,6 +5,7 @@ export const GROUP_FRAGMENT = gql`
     id
     name
     title
+    groupType
     summary
     members {
       id

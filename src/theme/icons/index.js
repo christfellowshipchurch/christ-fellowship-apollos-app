@@ -1,8 +1,9 @@
-/* 
- * Export your custom icon components here. 
+/*
+ * Export your custom icon components here.
  * For organization, please keep exports in alphabetical order
  */
 export AngleRight from './AngleRight';
+export AvatarPlacholder from './AvatarPlacholder';
 export BarsAlt from './BarsAlt';
 export Bars from './Bars';
 export BirthdayCake from './BirthdayCake';

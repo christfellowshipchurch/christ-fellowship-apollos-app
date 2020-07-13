@@ -21,7 +21,7 @@ import AvatarCloud from '../../AvatarCloud';
 const SquareCard = styled(({ customTheme, theme }) => ({
   width: 212,
   flex: 1,
-  backgroundColor: get(customTheme, 'colors.primary', theme.colors.darkPrimary),
+  backgroundColor: get(customTheme, 'colors.primary', theme.colors.white),
 }))(Card);
 
 const Image = withTheme(({ customTheme, theme }) => ({
@@ -29,7 +29,7 @@ const Image = withTheme(({ customTheme, theme }) => ({
   maxAspectRatio: 1.5,
   maintainAspectRatio: true,
   forceRatio: 1.5, // fixes loading state
-  overlayColor: get(customTheme, 'colors.primary', theme.colors.darkPrimary), // else check for a custom theme (prop) or default to black.
+  overlayColor: get(customTheme, 'colors.primary', theme.colors.white), // else check for a custom theme (prop) or default to black.
   overlayType: 'featured',
   style: { flex: 1 },
 }))(CardImage);
@@ -42,11 +42,11 @@ const Content = styled(({ theme }) => ({
 }))(CardContent);
 
 const Schedule = styled(({ theme }) => ({
-  color: theme.colors.white,
+  color: theme.colors.darkPrimary,
 }))(BodySmall);
 
 const Title = styled(({ theme }) => ({
-  color: theme.colors.white,
+  color: theme.colors.darkPrimary,
   textAlign: 'center',
 }))(H5);
 
