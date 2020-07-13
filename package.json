@@ -111,6 +111,7 @@
     "react-native-video": "^5.0.0",
     "react-native-video-controls": "2.2.3",
     "react-native-webview": "^5.2.0",
+    "react-native-zoom-bridge": "^1.0.17",
     "react-navigation": "^3.11.0",
     "react-navigation-stack": "^2.1.1",
     "react-navigation-tabs": "0.6.0",

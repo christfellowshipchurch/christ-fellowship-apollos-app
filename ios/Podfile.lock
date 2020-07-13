@@ -147,6 +147,8 @@ PODS:
     - React
   - RNSVG (9.5.1):
     - React
+  - RNZoomBridge (1.0.17):
+    - React
   - yoga (0.60.5.React)
 
 DEPENDENCIES:
@@ -200,6 +202,7 @@ DEPENDENCIES:
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNZoomBridge (from `../node_modules/react-native-zoom-bridge`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -308,6 +311,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNZoomBridge:
+    :path: "../node_modules/react-native-zoom-bridge"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -364,6 +369,7 @@ SPEC CHECKSUMS:
   RNPermissions: a96580116f7894146552e92b000ac30bf1661947
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
   RNSVG: 0eb087cfb5d7937be93c45b163b26352a647e681
+  RNZoomBridge: b78aeb3e54f30caacf868a62b8c31a52dd4eb744
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
 PODFILE CHECKSUM: 50501308495532a779921e6b3c743747cab08113

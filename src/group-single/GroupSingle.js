@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { get, head } from 'lodash';
 import { compose } from 'recompose';
+import ZoomBridge from 'react-native-zoom-bridge';
 import {
   styled,
   GradientOverlayImage,
@@ -21,6 +22,7 @@ import {
   withTheme,
   ThemeMixin,
   ErrorCard,
+  Button,
 } from '@apollosproject/ui-kit';
 
 import AvatarCloud from '../ui/AvatarCloud';
@@ -122,6 +124,14 @@ const PlaceholderWrapper = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
+const config = {
+  zoom: {
+    appKey: '', // TODO: appKey
+    appSecret: '', // TODO appSecret
+    domain: 'zoom.us',
+  },
+};
+
 class GroupSingle extends PureComponent {
   static propTypes = {
     navigation: PropTypes.shape({
@@ -148,6 +158,23 @@ class GroupSingle extends PureComponent {
     coverImage: [],
   };
 
+  meetingNo = ''; // TODO: meeting number
+
+  async componentDidMount() {
+    try {
+      const initializeResult = await ZoomBridge.initialize(
+        config.zoom.appKey,
+        config.zoom.appSecret,
+        'zoom.us'
+      );
+      console.log({ initializeResult });
+      console.warn({ initializeResult });
+    } catch (e) {
+      console.warn('initializeResult', { e });
+      console.log('initializeResult', { e });
+    }
+  }
+
   get itemId() {
     return this.props.navigation.getParam('itemId', []);
   }
@@ -159,6 +186,23 @@ class GroupSingle extends PureComponent {
   get queryVariables() {
     return { itemId: this.itemId };
   }
+
+  handleJoin = async () => {
+    const displayName = 'Test Person';
+    const password = ''; // TODO: meeting password
+    try {
+      const joinMeetingResult = await ZoomBridge.joinMeetingWithPassword(
+        displayName,
+        this.meetingNo,
+        password
+      );
+      console.log('Ran JoinMeeting');
+      console.warn({ joinMeetingResult });
+    } catch (e) {
+      console.warn({ e });
+      console.log({ e });
+    }
+  };
 
   renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
@@ -225,6 +269,15 @@ class GroupSingle extends PureComponent {
                       </StyledTitle>
                     </Stretchy>
                   ) : null}
+                  <PaddedView>
+                    <Button
+                      onPress={() => this.handleJoin()}
+                      loading={loading}
+                      title={'Join Video Call'}
+                      type={'primary'}
+                      pill={false}
+                    />
+                  </PaddedView>
                   <PaddedView>
                     {content.schedule ? (
                       <ScheduleView>

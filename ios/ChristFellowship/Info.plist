@@ -53,6 +53,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to enable your bluetooth services to connect you with your Bluetooth headphones.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your camera for uploading profile pictures</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
