@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 
 import { Providers } from '../testUtils';
 
-import PrayerFeature from '.';
+import PrayerFeature from './PrayerFeature';
 
 const prayers = [
   {

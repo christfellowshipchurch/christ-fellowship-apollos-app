@@ -15,9 +15,6 @@ import {
 
 import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
 
-import PrayerListFeatureConnected from '@apollosproject/ui-connected/src/PrayerListFeatureConnected';
-import PrayerFeature from './PrayerFeature'
-
 const GET_LIVE_STREAMS = gql`
   query getTopFeatures($key: String!) {
     flagStatus(key: $key)
@@ -87,7 +84,7 @@ const LiveView = styled(({ theme }) => ({
   paddingTop: 20,
 }))(View);
 
-const circleSize = 64
+const circleSize = 64;
 
 const CirclularImage = withTheme(({ theme }) => ({
   minAspectRatio: 1,
@@ -221,13 +218,6 @@ const LiveStreamsFeed = ({ navigation }) => {
             ListFooterComponent={<EndCapSpacer />}
           />
         </LiveView>
-
-        <View>
-            <PrayerListFeatureConnected 
-              featureId={get(dailyPrayers, 'id')} 
-              Component={PrayerFeature}
-            />
-        </View>
         {/* <View>
           <AddIconBackground>
             <AddIcon />

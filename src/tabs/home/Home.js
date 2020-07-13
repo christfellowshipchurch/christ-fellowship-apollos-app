@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-navigation';
 import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
 
+import { FeaturesHeaderConnected } from 'features';
+
 import { FeedView, DefaultCard } from '@apollosproject/ui-kit';
 
 import StatusBar from 'ui/StatusBar';
@@ -61,7 +63,7 @@ const Home = ({ navigation }) => {
           ListHeaderComponent={
             <React.Fragment>
               <NavigationSpacer />
-              <LiveStreamsFeed />
+              <FeaturesHeaderConnected />
             </React.Fragment>
           }
           scrollEventThrottle={16}

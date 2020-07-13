@@ -148,5 +148,28 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    LIVE_STREAM_LIST_FEATURE_FRAGMENT: gql`
+      fragment FeedFeaturesFragment on Feature {
+        id
+        liveStreams {
+          isLive
+          media {
+            sources {
+              uri
+            }
+          }
+
+          contentItem {
+            id
+            title
+            coverImage {
+              sources {
+                uri
+              }
+            }
+          }
+        }
+      }
+    `,
   },
 });

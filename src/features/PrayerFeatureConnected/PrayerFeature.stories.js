@@ -3,7 +3,7 @@ import React from 'react';
 import { storiesOf } from '@apollosproject/ui-storybook';
 import { CenteredView } from '@apollosproject/ui-kit';
 
-import PrayerFeature from '.';
+import PrayerFeature from './PrayerFeature';
 
 const prayers = [
   {
@@ -73,7 +73,7 @@ storiesOf('ui-prayer/PrayerFeature', module)
   .add('example', () => (
     <PrayerFeature
       prayers={prayers}
-      onPressAdd={() => {}}
+      onPressAdd={() => { }}
       title={'Example title'}
       subtitle={'Custom Subtitle'}
     />
@@ -127,7 +127,7 @@ storiesOf('ui-prayer/PrayerFeature', module)
     );
   })
   .add('onPressAdd', () => (
-    <PrayerFeature prayers={prayers} onPressAdd={() => {}} />
+    <PrayerFeature prayers={prayers} onPressAdd={() => { }} />
   ))
   .add('title', () => (
     <PrayerFeature prayers={prayers} title={'Example title'} />

@@ -11,14 +11,12 @@ import {
   styled,
   withIsLoading,
   withTheme,
-  ThemeMixin
+  ThemeMixin,
 } from '@apollosproject/ui-kit';
 
 const AvatarWrapper = styled(
   ({ theme }) => ({
     flexDirection: 'row',
-    paddingBottom: theme.sizing.baseUnit * 1, // TODO: refactor CardContent to have this be the default
-    // paddingHorizontal: theme.sizing.baseUnit * 1.5, // TODO: refactor CardContent to have this be the default
     paddingHorizontal: 0,
     /* Because `CardContent` is passing `paddingVertical` to `PaddedView` we can't set
      * `PaddedView`'s `vertical` prop to false. So we have to define out own padding value here. */
@@ -39,11 +37,11 @@ const Header = styled(
   ({ isCard, theme }) => ({
     ...(isCard
       ? {
-          paddingHorizontal: theme.sizing.baseUnit * 1.5, // TODO: refactor CardContent to have this be the default
-        }
+        paddingHorizontal: theme.sizing.baseUnit * 1.5, // TODO: refactor CardContent to have this be the default
+      }
       : {
-          paddingTop: theme.sizing.baseUnit * 0, // // TODO: refactor CardContent to have this be the default
-        }),
+        paddingTop: theme.sizing.baseUnit * 0, // // TODO: refactor CardContent to have this be the default
+      }),
     /* Because `CardContent` is passing `paddingVertical` to `PaddedView` we can't set
      * `PaddedView`'s `vertical` prop to false. So we have to define out own padding value here. */
     paddingBottom: 0,
@@ -75,8 +73,8 @@ const Title = styled(
 
 const Subtitle = styled({}, 'ui-prayer.PrayerFeature.Subtitle')(H3);
 
-const RenderAsCard = ({ children, isCard, isLoading }) => children
-  // isCard ? <Card isLoading={isLoading}>{children}</Card> : children;
+const RenderAsCard = ({ children, isCard, isLoading }) =>
+  isCard ? <Card isLoading={isLoading}>{children}</Card> : children;
 
 RenderAsCard.propTypes = {
   isCard: PropTypes.bool,
@@ -92,30 +90,30 @@ const PrayerFeature = ({
   onPressAvatar,
   title,
   subtitle,
-  theme
+  theme,
 }) => (
-  <ThemeMixin mixin={{colors: {secondary: theme.colors.primary}}}>
-    <RenderAsCard isCard={isCard} isLoading={isLoading}>
-      {isLoading || title || subtitle ? ( // only display the Header if we are loading or have a title/subtitle
-        <Header isCard={isCard}>
-          {!isLoading && title ? ( // we check for isloading here so that they are included in the loading state
-            <Title numberOfLines={1}>{title}</Title>
-          ) : null}
-          {/* {isLoading || subtitle ? <Subtitle>{subtitle}</Subtitle> : null} */}
-        </Header>
-      ) : null}
-      <AvatarWrapper>
-        <StyledAvatarList
-          avatars={getAvatars(prayers)}
-          isCard={isCard}
-          isLoading={isLoading}
-          onPressAdd={onPressAdd}
-          onPressAvatar={onPressAvatar} 
-        />
-      </AvatarWrapper>
-    </RenderAsCard>
-  </ThemeMixin>
-);
+    <ThemeMixin mixin={{ colors: { secondary: theme.colors.primary } }}>
+      <RenderAsCard isCard={isCard} isLoading={isLoading}>
+        {isLoading || title || subtitle ? ( // only display the Header if we are loading or have a title/subtitle
+          <Header isCard={isCard}>
+            {!isLoading && title ? ( // we check for isloading here so that they are included in the loading state
+              <Title numberOfLines={1}>{title}</Title>
+            ) : null}
+            {/* {isLoading || subtitle ? <Subtitle>{subtitle}</Subtitle> : null} */}
+          </Header>
+        ) : null}
+        <AvatarWrapper>
+          <StyledAvatarList
+            avatars={getAvatars(prayers)}
+            isCard={isCard}
+            isLoading={isLoading}
+            onPressAdd={onPressAdd}
+            onPressAvatar={onPressAvatar}
+          />
+        </AvatarWrapper>
+      </RenderAsCard>
+    </ThemeMixin>
+  );
 
 PrayerFeature.propTypes = {
   prayers: PropTypes.arrayOf(
