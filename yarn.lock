@@ -14505,10 +14505,10 @@ react-native-webview@^5.2.0:
     escape-string-regexp "1.0.5"
     invariant "2.2.4"
 
-react-native-zoom-bridge@^1.0.17:
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/react-native-zoom-bridge/-/react-native-zoom-bridge-1.0.17.tgz#98b85d517ff23357a5754b10c8c1c3bcef31e303"
-  integrity sha512-TC9WCb2ogVTZYRuNq1zGxa0VHdl1QY5Z62fb7Ogo5xA2AkYXWkva2W8h/xaoc+k0c6G7hTekAtXK5AVxrISGBw==
+react-native-zoom-bridge@1.0.18:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/react-native-zoom-bridge/-/react-native-zoom-bridge-1.0.18.tgz#ae8fbadfec7a16c5251a96bcfd870672e2e1c620"
+  integrity sha512-qrZLU/LfRyMTrFL5srnJuhG3YMeimLjZcA+qKlmKBxFpUxYqX2EAyrxM+oJLXB0ToKoRAPfxkWF0QUHIe5aOiQ==
   dependencies:
     xcode "^1.0.0"
 

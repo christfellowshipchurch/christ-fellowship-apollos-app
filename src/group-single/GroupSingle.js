@@ -124,6 +124,7 @@ const PlaceholderWrapper = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
+const ZoomBridgeerType = 2; // 2 - pro user
 const config = {
   zoom: {
     appKey: '', // TODO: appKey
@@ -158,6 +159,8 @@ class GroupSingle extends PureComponent {
     coverImage: [],
   };
 
+  zakTokenRaw = ''; // TODO: meeting zak
+
   meetingNo = ''; // TODO: meeting number
 
   async componentDidMount() {
@@ -165,13 +168,11 @@ class GroupSingle extends PureComponent {
       const initializeResult = await ZoomBridge.initialize(
         config.zoom.appKey,
         config.zoom.appSecret,
-        'zoom.us'
+        config.zoom.domain
       );
       console.log({ initializeResult });
-      console.warn({ initializeResult });
     } catch (e) {
-      console.warn('initializeResult', { e });
-      console.log('initializeResult', { e });
+      throw e;
     }
   }
 
@@ -187,22 +188,44 @@ class GroupSingle extends PureComponent {
     return { itemId: this.itemId };
   }
 
-  handleJoin = async () => {
+  async start() {
+    const zakToken = decodeURIComponent(this.zakTokenRaw);
+    const displayName = 'Test mentor';
+
+    // TODO recieve user's details from zoom API? WOUT: webinar user is different
+    const userId = 'null'; // NOTE: no need for userId when using zakToken
+    const userType = ZoomBridgeerType;
+    const zoomToken = 'null'; // NOTE: no need for userId when using zakToken
+
+    const zoomAccessToken = zakToken;
+
+    try {
+      await ZoomBridge.startMeeting(
+        displayName,
+        this.meetingNo,
+        userId,
+        userType,
+        zoomAccessToken,
+        zoomToken
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async join() {
     const displayName = 'Test Person';
     const password = ''; // TODO: meeting password
     try {
-      const joinMeetingResult = await ZoomBridge.joinMeetingWithPassword(
+      await ZoomBridge.joinMeetingWithPassword(
         displayName,
         this.meetingNo,
         password
       );
-      console.log('Ran JoinMeeting');
-      console.warn({ joinMeetingResult });
     } catch (e) {
-      console.warn({ e });
-      console.log({ e });
+      throw e;
     }
-  };
+  }
 
   renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
@@ -271,7 +294,7 @@ class GroupSingle extends PureComponent {
                   ) : null}
                   <PaddedView>
                     <Button
-                      onPress={() => this.handleJoin()}
+                      onPress={() => this.join()}
                       loading={loading}
                       title={'Join Video Call'}
                       type={'primary'}
