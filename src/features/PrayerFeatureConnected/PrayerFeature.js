@@ -77,5 +77,8 @@ const PrayerFeatureWrapper = ({ prayers, ...props }) => {
 };
 
 PrayerFeatureWrapper.propTypes = PrayerFeature.propTypes;
+PrayerFeatureWrapper.defaultProps = {
+  prayers: [],
+};
 
 export default withTheme()(withIsLoading(PrayerFeatureWrapper));

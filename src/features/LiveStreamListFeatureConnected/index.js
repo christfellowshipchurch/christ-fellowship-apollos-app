@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import { Animated, FlatList, View, Text, ScrollView } from 'react-native';
+import { Animated, FlatList, View } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
