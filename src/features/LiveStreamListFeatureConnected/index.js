@@ -142,6 +142,9 @@ const LiveStreamsFeedFeature = ({ liveStreams }) => (
 );
 
 const LiveStreamsFeedFeatureConnected = ({ featureId, isLoading }) => {
+    // Since we are refetching on a 30 second interval, we don't care
+    // about the refetchRef from the parents and don't need to worry
+    // about refetching on pull-down
     const { loading, data } = useQuery(GET_LIVE_STREAMS, {
         pollInterval: 30000,
         fetchPolicy: 'network-only',

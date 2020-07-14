@@ -2,13 +2,14 @@
 // from the @apollosproject/ui-connected package
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
-import { FlexedView, styled } from '@apollosproject/ui-kit';
+import { styled } from '@apollosproject/ui-kit';
 import { featuresFeedComponentMapper } from '@apollosproject/ui-connected';
 
+import HorizontalFeatureFeed from 'ui/HorizontalFeatureFeed';
 import PrayerFeatureConnected from '../PrayerFeatureConnected';
 import LiveStreamListFeatureConnected from '../LiveStreamListFeatureConnected';
 
@@ -54,54 +55,24 @@ const FeaturesHeaderConnected = ({
     Component,
     onPressActionItem,
     additionalFeatures,
+    refetchId,
+    refetchRef,
     ...props
 }) => {
     const { error, data, loading, refetch } = useQuery(GET_HEADER_FEATURES, {
         fetchPolicy: 'cache-and-network',
     });
 
-    const refetchFunctions = {};
-    const loadingStateObject = [
-        {
-            isLoading: true,
-            __typename: 'LiveStreamListFeature',
-            id: 'feature1',
-        },
-    ];
+    if (refetchId && refetch && refetchRef)
+        refetchRef({ refetch, id: refetchId });
 
-    // eslint-disable-next-line
-    const refetchRef = ({ refetch, id }) => (refetchFunctions[id] = refetch);
-
-    const refetchWithMapping = () => {
-        Promise.all(Object.values(refetchFunctions).map((rf) => rf()));
-    };
-
-    const renderFeatures = ({ item }) => (
-        <FlexedView style={{ flexDirection: 'row' }}>
-            {featuresFeedComponentMapper({
-                feature: item,
-                refetchRef,
-                onPressActionItem,
-                additionalFeatures: { ...MAPPINGS, ...additionalFeatures },
-            })}
-        </FlexedView>
-    );
+    if (error) return null;
+    if (loading && !data) return <HorizontalFeatureFeed isLoading />;
 
     const features = get(data, 'userHeaderFeatures', []);
-    refetchRef({ refetch, id: 'feed' });
 
     return (
-        <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            error={error}
-            content={features}
-            loadingStateData={loadingStateObject}
-            renderItem={renderFeatures}
-            loading={loading}
-            refetch={refetchWithMapping}
-            {...props}
-        >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} {...props}>
             <Container>{mapFeatures(features, { refetchRef })}</Container>
         </ScrollView>
     );
@@ -115,6 +86,8 @@ FeaturesHeaderConnected.propTypes = {
     ]),
     onPressActionItem: PropTypes.func,
     additionalFeatures: PropTypes.shape({}),
+    refetchRef: PropTypes.func,
+    refetchId: PropTypes.string,
 };
 
 export default FeaturesHeaderConnected;
