@@ -29,6 +29,7 @@ const PrayerFeature = ({
     colors: {
       primary: theme.colors.text.tertiary,
       secondary: theme.colors.primary,
+      white: theme.colors.background.screen,
     },
   };
   return (

@@ -5,9 +5,10 @@ import { SafeAreaView } from 'react-navigation';
 import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
 
-import { FeaturesHeaderConnected } from 'features';
+import { FeaturesFeedConnected, FeaturesHeaderConnected } from 'features';
 
 import { FeedView, DefaultCard } from '@apollosproject/ui-kit';
+import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
 import StatusBar from 'ui/StatusBar';
 
@@ -28,59 +29,116 @@ import GET_FEED_FEATURES from './getFeedFeatures';
 const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
 
 const Home = ({ navigation }) => {
-  const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
-    fetchPolicy: 'cache-and-network',
-  });
   const { scrollY } = useHeaderScrollEffect({ navigation });
-  const content = mapDataToActions(get(data, 'userFeedFeatures', []));
-  const renderItem = ({ item }) => {
-    if (item.isLoading)
-      return (
-        <>
-          <HighlightCard title="" isLoading coverImage={[]} />
-          <HorizontalDivider />
-        </>
-      );
+  const handleOnPress = ({ openUrl }) => ({
+    action,
+    relatedNode,
+    ...props
+  }) => {
+    console.log({ props });
 
-    return item.action ? (
-      <>
-        <Feature {...item} isLoading={loading} />
-        <HorizontalDivider />
-      </>
-    ) : null;
+    if (action === 'READ_CONTENT') {
+      navigation.navigate('ContentSingle', {
+        itemId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'READ_EVENT') {
+      navigation.navigate('Event', {
+        eventId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'OPEN_URL') {
+      openUrl(relatedNode.url);
+    }
   };
 
   return (
-    <BackgroundView>
-      <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
-        <StatusBar />
-        <FeedView
-          renderItem={renderItem}
-          content={content}
-          isLoading={loading && !get(data, 'userFeedFeatures', []).length}
-          error={error}
-          refetch={refetch}
-          ListHeaderComponent={
-            <React.Fragment>
-              <NavigationSpacer />
-              <FeaturesHeaderConnected />
-            </React.Fragment>
-          }
-          scrollEventThrottle={16}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: { y: scrollY },
-              },
-            },
-          ])}
-          removeClippedSubviews={false}
-          numColumns={1}
-        />
-      </SafeAreaView>
-    </BackgroundView>
+    <RockAuthedWebBrowser>
+      {(openUrl) => (
+        <BackgroundView>
+          <SafeAreaView>
+            <FeaturesFeedConnected
+              onPressActionItem={handleOnPress({ openUrl })}
+              ListHeaderComponent={
+                <React.Fragment>
+                  <NavigationSpacer />
+                  <FeaturesHeaderConnected />
+                </React.Fragment>
+              }
+              scrollEventThrottle={16}
+              onScroll={Animated.event([
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollY },
+                  },
+                },
+              ])}
+              removeClippedSubviews={false}
+              numColumns={1}
+            />
+          </SafeAreaView>
+        </BackgroundView>
+      )}
+    </RockAuthedWebBrowser>
   );
 };
+
+// const Home = ({ navigation }) => {
+//   const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
+//     fetchPolicy: 'cache-and-network',
+//   });
+//   const { scrollY } = useHeaderScrollEffect({ navigation });
+//   const content = mapDataToActions(get(data, 'userFeedFeatures', []));
+//   const renderItem = ({ item }) => {
+//     if (item.isLoading)
+//       return (
+//         <>
+//           <HighlightCard title="" isLoading coverImage={[]} />
+//           <HorizontalDivider />
+//         </>
+//       );
+
+//     return item.action ? (
+//       <>
+//         <Feature {...item} isLoading={loading} />
+//         <HorizontalDivider />
+//       </>
+//     ) : null;
+//   };
+
+//   return (
+//     <BackgroundView>
+//       <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
+//         <StatusBar />
+//         <FeedView
+//           renderItem={renderItem}
+//           content={content}
+//           isLoading={loading && !get(data, 'userFeedFeatures', []).length}
+//           error={error}
+//           refetch={refetch}
+//           ListHeaderComponent={
+//             <React.Fragment>
+//               <NavigationSpacer />
+//               <FeaturesHeaderConnected />
+//             </React.Fragment>
+//           }
+//           scrollEventThrottle={16}
+//           onScroll={Animated.event([
+//             {
+//               nativeEvent: {
+//                 contentOffset: { y: scrollY },
+//               },
+//             },
+//           ])}
+//           removeClippedSubviews={false}
+//           numColumns={1}
+//         />
+//       </SafeAreaView>
+//     </BackgroundView>
+//   );
+// };
 
 Home.navigationOptions = (props) =>
   navigationOptions({

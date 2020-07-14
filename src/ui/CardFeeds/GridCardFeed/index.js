@@ -92,22 +92,10 @@ const GridCardFeed = ({
     isLoading,
     forceRatio,
     mapContent,
+    onPressItem,
     ...additionalProps
 }) => {
     const { hero, body, footer, numColumns } = mapContent(content);
-
-    /** Function that is called when the first card is pressed.
-     *  This is the same as the rest of the cards, but it needs
-     *  be manually passed into the header.
-     */
-    const onPressItem = (item) => {
-        if (item.id) {
-            navigation.navigate('ContentSingle', {
-                itemId: item.id,
-                sharing: item.sharing,
-            });
-        }
-    };
 
     const showHero = (!error && hero) || isLoading;
 
@@ -121,7 +109,7 @@ const GridCardFeed = ({
             ListHeaderComponent={
                 showHero && (
                     <CapCard
-                        onPress={() => onPressItem(hero)}
+                        onPress={() => onPressItem(hero, navigation)}
                         {...hero}
                         forceRatio={forceRatio}
                         isLoading={isLoading && !content.length}
@@ -166,12 +154,21 @@ GridCardFeed.propTypes = {
     error: PropTypes.any,
     forceRatio: PropTypes.number,
     mapContent: PropTypes.func,
+    onPressItem: PropTypes.func,
 };
 
 GridCardFeed.defaultProps = {
     isLoading: false,
     content: [],
     withHeroCard: false,
+    onPressItem: (item, navigation) => {
+        if (item.id) {
+            navigation.navigate('ContentSingle', {
+                itemId: item.id,
+                sharing: item.sharing,
+            });
+        }
+    },
 };
 
 GridCardFeed.displayName = 'GridCardFeed';

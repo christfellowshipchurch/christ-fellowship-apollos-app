@@ -1,2 +1,9 @@
-export { default as FeaturesHeaderConnected } from './FeaturesHeaderConnected';
-export { default as PrayerFeatureConnected } from './PrayerFeatureConnected';
+export {
+    default as FeaturesHeaderConnected,
+} from './FeaturesHeader/FeaturesHeaderConnected';
+export {
+    default as PrayerFeatureConnected,
+} from './FeaturesHeader/PrayerFeatureConnected';
+export {
+    default as FeaturesFeedConnected,
+} from './FeaturesFeed/FeaturesFeedConnected';

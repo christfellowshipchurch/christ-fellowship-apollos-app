@@ -25,24 +25,15 @@ const CardFeed = ({
     seeMore,
     ListHeaderComponent,
     onPressHeader,
+    onPressItem,
     ...additionalProps
 }) => {
-    /** Function that is called when a card in the feed is pressed.
-     *  Takes the user to the ContentSingle
-     */
-    const onPress = (item) => {
-        navigation.navigate('ContentSingle', {
-            itemId: item.id,
-            sharing: item.sharing,
-        });
-    };
-
     const renderItem = ({ item }) =>
         get(item, 'emptyItem') ? (
             <View {...item} />
         ) : (
                 <TouchableScale
-                    onPress={() => onPress(item)}
+                    onPress={() => onPressItem(item, navigation)}
                     style={{ flex: get(item, 'flex', 1) }}
                 >
                     <ContentCardConnected
@@ -123,6 +114,7 @@ CardFeed.propTypes = {
     seeMore: PropTypes.bool,
     ListHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     onPressHeader: PropTypes.func,
+    onPressItem: PropTypes.func,
 };
 
 CardFeed.defaultProps = {
@@ -133,6 +125,14 @@ CardFeed.defaultProps = {
     seeMore: true,
     ListHeaderComponent: null,
     onPressHeader: () => null,
+    onPressItem: (item, navigation) => {
+        if (item.id) {
+            navigation.navigate('ContentSingle', {
+                itemId: item.id,
+                sharing: item.sharing,
+            });
+        }
+    },
 };
 
 const CardFeedWithNumColumns = withMediaQuery(
