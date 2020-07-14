@@ -2,13 +2,15 @@
 // from the @apollosproject/ui-connected package
 import React from 'react';
 import PropTypes from 'prop-types';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
-import { FeedView } from '@apollosproject/ui-kit';
+import { FlexedView, styled } from '@apollosproject/ui-kit';
 import { featuresFeedComponentMapper } from '@apollosproject/ui-connected';
 
 import PrayerFeatureConnected from '../PrayerFeatureConnected';
+import LiveStreamListFeatureConnected from '../LiveStreamListFeatureConnected';
 
 import GET_HEADER_FEATURES from './getHeaderFeatures';
 
@@ -24,9 +26,29 @@ const MAPPINGS = {
     HeroListFeature: () => null,
     HorizontalCardListFeature: () => null,
     VerticalCardListFeature: () => null,
-    LiveStreamListFeature: () => null,
     PrayerListFeature: PrayerFeatureConnected,
+    LiveStreamListFeature: LiveStreamListFeatureConnected,
 };
+
+const Container = styled(({ theme }) => ({
+    flexDirection: 'row',
+    paddingHorizontal: theme.sizing.baseUnit * 0.5,
+    paddingTop: theme.sizing.baseUnit * 0.5,
+    paddingBottom: theme.sizing.baseUnit,
+}))(View);
+
+const mapFeatures = (
+    features,
+    { additionalFeatures, refetchRef, onPressActionItem }
+) =>
+    features.map((item, i) =>
+        featuresFeedComponentMapper({
+            feature: item,
+            refetchRef,
+            onPressActionItem,
+            additionalFeatures: { ...MAPPINGS, ...additionalFeatures },
+        })
+    );
 
 const FeaturesHeaderConnected = ({
     Component,
@@ -54,19 +76,24 @@ const FeaturesHeaderConnected = ({
         Promise.all(Object.values(refetchFunctions).map((rf) => rf()));
     };
 
-    const renderFeatures = ({ item }) =>
-        featuresFeedComponentMapper({
-            feature: item,
-            refetchRef,
-            onPressActionItem,
-            additionalFeatures: MAPPINGS,
-        });
+    const renderFeatures = ({ item }) => (
+        <FlexedView style={{ flexDirection: 'row' }}>
+            {featuresFeedComponentMapper({
+                feature: item,
+                refetchRef,
+                onPressActionItem,
+                additionalFeatures: { ...MAPPINGS, ...additionalFeatures },
+            })}
+        </FlexedView>
+    );
 
     const features = get(data, 'userHeaderFeatures', []);
     refetchRef({ refetch, id: 'feed' });
 
     return (
-        <FeedView
+        <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
             error={error}
             content={features}
             loadingStateData={loadingStateObject}
@@ -74,7 +101,9 @@ const FeaturesHeaderConnected = ({
             loading={loading}
             refetch={refetchWithMapping}
             {...props}
-        />
+        >
+            <Container>{mapFeatures(features, { refetchRef })}</Container>
+        </ScrollView>
     );
 };
 

@@ -15,7 +15,7 @@ PrayerListFeatureConnectedWithComponent.propTypes = {
     ]),
 };
 
-PrayerListFeatureConnectedWithComponent.propTypes = {
+PrayerListFeatureConnectedWithComponent.defaultProps = {
     Component: PrayerFeature,
 };
 

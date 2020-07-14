@@ -149,8 +149,10 @@ ApollosConfig.loadJs({
       }
     `,
     LIVE_STREAM_LIST_FEATURE_FRAGMENT: gql`
-      fragment FeedFeaturesFragment on Feature {
+      fragment LiveStreamListFeatureFragment on LiveStreamListFeature {
         id
+        title
+        subtitle
         liveStreams {
           isLive
           media {

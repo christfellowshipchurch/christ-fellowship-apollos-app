@@ -194,11 +194,11 @@ const overrides = {
         // showOnboarding: true,
     },
     'ui-kit.AvatarList.AddIcon': {
-        name: 'pray'
+        name: 'pray',
     },
     'ui-prayer.PrayerInput.PromptIcon': {
-        name: 'pray'
-    }
+        name: 'pray',
+    },
 };
 
 const buttons = ({ colors: themeColors }) => ({
