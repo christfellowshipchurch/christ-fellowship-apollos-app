@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import { compose, pure } from 'recompose';
 
-import { H3, H6, styled } from '@apollosproject/ui-kit';
+import {
+    H6,
+    styled,
+    withPlaceholder,
+    Typography,
+} from '@apollosproject/ui-kit';
 
 const Header = styled(
     ({ theme }) => ({
@@ -11,19 +17,23 @@ const Header = styled(
     'HorizontalFeatureFeed.Header'
 )(View);
 
-/* TODO: Change to H5 and add appropriate padding. We are using H6 here to be consistant with other
- * "card titles" (`ActionListFeature`). */
-const Title = styled(
-    ({ theme }) => ({
-        color: theme.colors.text.tertiary,
-    }),
-    'HorizontalFeatureFeed.Title'
+const Title = compose(
+    styled(
+        ({ theme }) => ({
+            color: theme.colors.text.tertiary,
+        }),
+        'HorizontalFeatureFeed.Title'
+    ),
+    withPlaceholder(Typography, { width: 75 }),
+    pure
 )(H6);
 
 const Subtitle = styled({}, 'HorizontalFeatureFeed.Subtitle')(H6);
 const Container = styled(
-    ({ theme }) => ({
+    ({ theme, style }) => ({
         paddingHorizontal: theme.sizing.baseUnit * 0.5,
+        justifyContent: 'flex-end',
+        ...style,
     }),
     'HorizontalFeatureFeed.Container'
 )(View);
@@ -33,9 +43,10 @@ const HoriztonalFeatureFeed = ({
     title,
     subtitle,
     Component,
+    style,
     ...props
 }) => (
-        <Container>
+        <Container style={style}>
             {(isLoading || title || subtitle) && ( // only display the Header if we are loading or have a title/subtitle
                 <Header>
                     {(isLoading || title) && (

@@ -10,16 +10,13 @@ import {
     TouchableScale,
     styled,
     withTheme,
-    Icon,
 } from '@apollosproject/ui-kit';
 
 import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
 import HorizontalFeatureFeed from 'ui/HorizontalFeatureFeed';
 import GET_LIVE_STREAMS from './getLiveStreamFeature';
 
-const FlatListContainer = styled(({ theme }) => ({
-    flex: 1,
-}))(View);
+const AVATAR_MULTIPLIER = 0.8;
 
 const LiveItemContainer = styled(({ theme, withMargin }) => ({
     flexDirection: 'column',
@@ -27,12 +24,6 @@ const LiveItemContainer = styled(({ theme, withMargin }) => ({
     alignContent: 'center',
     marginRight: theme.sizing.baseUnit * (withMargin ? 0.5 : 0),
 }))(TouchableScale);
-
-const LiveView = styled(({ theme }) => ({
-    paddingTop: 20,
-}))(View);
-
-const AVATAR_MULTIPLIER = 0.8;
 
 const BorderWithPulse = withTheme()(({ theme, ...props }) => {
     const themeSize = theme.sizing.avatar.medium * AVATAR_MULTIPLIER;
@@ -101,67 +92,6 @@ const CircularImagePosition = styled(({ theme }) => ({
     alignItems: 'center',
 }))(View);
 
-const EndCapSpacer = styled(({ theme }) => ({
-    width: theme.sizing.baseUnit * 0.1,
-}))(View);
-
-const LiveText = styled(({ theme }) => ({
-    color: theme.colors.alert,
-    fontWeight: 'bold',
-    fontSize: 10,
-    textAlign: 'center',
-}))(Text);
-
-const LiveDot = withTheme(({ theme }) => ({
-    name: 'live-dot',
-    fill: theme.colors.alert,
-    size: 3,
-    style: {
-        marginRight: 3,
-    },
-}))(Icon);
-
-const LivePosition = (props) => {
-    const MIN = 0.3;
-    const MAX = 1;
-    const duration = 1000;
-    const [opacity, setOpacity] = useState(new Animated.Value(MIN));
-    const fadeIn = () => {
-        Animated.timing(opacity, {
-            toValue: MAX,
-            duration,
-        }).start(() => {
-            fadeOut();
-        });
-    };
-    const fadeOut = () => {
-        Animated.timing(opacity, {
-            toValue: MIN,
-            duration,
-        }).start(() => {
-            fadeIn();
-        });
-    };
-
-    useEffect(() => {
-        fadeIn();
-    }, []);
-
-    return (
-        <Animated.View
-            style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 3,
-                marginLeft: -4,
-                opacity,
-            }}
-            {...props}
-        />
-    );
-};
-
 const LiveTouchable = ({ title, coverImage, media, withMargin }) => {
     const [playVideo] = useMutation(PLAY_VIDEO);
 
@@ -208,8 +138,6 @@ const LiveStreamsFeedFeature = ({ liveStreams }) => (
             renderItem({ ...props, dataLength: liveStreams.length })
         }
         horizontal
-        ListHeaderComponent={<EndCapSpacer />}
-        ListFooterComponent={<EndCapSpacer />}
     />
 );
 
@@ -229,13 +157,16 @@ const LiveStreamsFeedFeatureConnected = ({ featureId, isLoading }) => {
         subtitle: null,
     });
 
-    // TODO : handle loading state
+    const style = liveStreams.length === 1 ? { alignItems: 'center' } : {};
+
     return liveStreams.length > 0 ? (
         <HorizontalFeatureFeed
             Component={LiveStreamsFeedFeature}
             liveStreams={liveStreams}
             title={title}
             subtitle={subtitle}
+            style={style}
+            isLoading={loading}
         />
     ) : null;
 };
@@ -243,6 +174,10 @@ const LiveStreamsFeedFeatureConnected = ({ featureId, isLoading }) => {
 LiveStreamsFeedFeatureConnected.propTypes = {
     featureId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
+};
+
+LiveStreamsFeedFeatureConnected.propTypes = {
+    isLoading: false,
 };
 
 export default LiveStreamsFeedFeatureConnected;

@@ -20,7 +20,6 @@ const getAvatars = (prayers) =>
 
 const PrayerFeature = ({
   prayers = [],
-  isCard,
   isLoading,
   onPressAdd,
   onPressAvatar,
@@ -36,7 +35,7 @@ const PrayerFeature = ({
     <ThemeMixin mixin={themeMixin}>
       <AvatarList
         avatars={getAvatars(prayers)}
-        isCard={isCard}
+        isCard={false}
         isLoading={isLoading}
         onPressAdd={onPressAdd}
         onPressAvatar={onPressAvatar}
@@ -55,12 +54,9 @@ PrayerFeature.propTypes = {
       }),
     })
   ).isRequired,
-  isCard: PropTypes.bool,
   isLoading: PropTypes.bool,
   onPressAdd: PropTypes.func,
   onPressAvatar: PropTypes.func,
-  title: PropTypes.string,
-  subtitle: PropTypes.string,
   theme: PropTypes.shape({
     colors: PropTypes.shape({
       primary: PropTypes.string,
@@ -68,12 +64,18 @@ PrayerFeature.propTypes = {
   }),
 };
 
-PrayerFeature.defaultProps = {
-  isCard: false,
+const PrayerFeatureWrapper = ({ prayers, ...props }) => {
+  const style = prayers.length === 0 ? { alignItems: 'center' } : {};
+  return (
+    <HorizontalFeatureFeed
+      Component={PrayerFeature}
+      style={style}
+      prayers={prayers}
+      {...props}
+    />
+  );
 };
 
-const PrayerFeatureWrapper = (props) => (
-  <HorizontalFeatureFeed Component={PrayerFeature} {...props} />
-);
+PrayerFeatureWrapper.propTypes = PrayerFeature.propTypes;
 
 export default withTheme()(withIsLoading(PrayerFeatureWrapper));
