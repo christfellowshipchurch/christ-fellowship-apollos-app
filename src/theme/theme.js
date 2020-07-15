@@ -192,11 +192,11 @@ const overrides = {
     'ui-prayer.PrayerExperienceConnected': {
         showOnboarding: true,
     },
-    'ui-kit.AvatarList.AddIcon': {
-        name: 'pray',
-    },
+    // 'ui-kit.AvatarList.AddIcon': {
+    //     name: 'pray',
+    // },
     'ui-prayer.PrayerInput.PromptIcon': {
-        name: 'pray',
+        name: 'plus',
     },
 };
 

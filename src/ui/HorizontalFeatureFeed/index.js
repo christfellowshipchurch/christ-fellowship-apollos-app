@@ -7,7 +7,7 @@ import {
     H6,
     styled,
     withPlaceholder,
-    Typography,
+    Placeholder,
 } from '@apollosproject/ui-kit';
 
 const Header = styled(
@@ -24,7 +24,7 @@ const Title = compose(
         }),
         'HorizontalFeatureFeed.Title'
     ),
-    withPlaceholder(Typography, { width: 75 }),
+    withPlaceholder(Placeholder.Typography, { width: 75 }),
     pure
 )(H6);
 

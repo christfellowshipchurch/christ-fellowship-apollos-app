@@ -9,7 +9,6 @@ const VerticalCardListFeature = ({
     isLoading,
     listKey,
     onPressItem,
-    subtitle,
     title,
 }) => (
         <GridCardFeed
@@ -19,6 +18,7 @@ const VerticalCardListFeature = ({
             onPressItem={onPressItem}
             isLoading={isLoading}
             listKey={listKey}
+            seeMore={false}
         />
     );
 
@@ -28,7 +28,6 @@ VerticalCardListFeature.propTypes = {
     listKey: PropTypes.string,
     loadingStateObject: PropTypes.shape({}),
     onPressItem: PropTypes.func,
-    subtitle: PropTypes.string,
     title: PropTypes.string,
 };
 

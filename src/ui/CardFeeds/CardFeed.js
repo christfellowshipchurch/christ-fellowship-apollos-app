@@ -74,14 +74,15 @@ const CardFeed = ({
             ListHeaderComponent={
                 (ListHeaderComponent || title) && (
                     <View>
-                        {title && (
-                            <FeedHeader
-                                title={title}
-                                seeMore={seeMore}
-                                isLoading={isLoading}
-                                onPress={onPressHeader}
-                            />
-                        )}
+                        {!!title &&
+                            title !== '' && (
+                                <FeedHeader
+                                    title={title}
+                                    seeMore={seeMore}
+                                    isLoading={isLoading}
+                                    onPress={onPressHeader}
+                                />
+                            )}
                         {ListHeaderComponent}
                     </View>
                 )

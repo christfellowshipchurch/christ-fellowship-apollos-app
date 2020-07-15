@@ -30,13 +30,7 @@ const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
 
 const Home = ({ navigation }) => {
   const { scrollY } = useHeaderScrollEffect({ navigation });
-  const handleOnPress = ({ openUrl }) => ({
-    action,
-    relatedNode,
-    ...props
-  }) => {
-    console.log({ props });
-
+  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
     if (action === 'READ_CONTENT') {
       navigation.navigate('ContentSingle', {
         itemId: relatedNode.id,
