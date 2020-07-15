@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { get, head } from 'lodash';
 import { compose } from 'recompose';
 import ZoomBridge from 'react-native-zoom-bridge';
+import Config from 'react-native-config';
 import {
   styled,
   GradientOverlayImage,
@@ -127,8 +128,8 @@ const PlaceholderWrapper = styled(({ theme }) => ({
 const ZoomBridgeerType = 2; // 2 - pro user
 const config = {
   zoom: {
-    appKey: '', // TODO: appKey
-    appSecret: '', // TODO appSecret
+    appKey: Config.ZOOM_SDK_KEY, // SDK key created in Zoom app marketplace
+    appSecret: Config.ZOOM_SDK_SECRET, // SDK secret created in Zoom app marketplace
     domain: 'zoom.us',
   },
 };
@@ -159,7 +160,7 @@ class GroupSingle extends PureComponent {
     coverImage: [],
   };
 
-  zakTokenRaw = ''; // TODO: meeting zak
+  zakTokenRaw = Config.ZOOM_ZAK_TOKEN; // Meeting zak token generated from using the jwt token as auth from jwt zoom app in postman and hitting the https://api.zoom.us/v2/users/{userId}/token?type=zak endpoint
 
   meetingNo = ''; // TODO: meeting number
 
@@ -297,6 +298,15 @@ class GroupSingle extends PureComponent {
                       onPress={() => this.join()}
                       loading={loading}
                       title={'Join Video Call'}
+                      type={'primary'}
+                      pill={false}
+                    />
+                  </PaddedView>
+                  <PaddedView>
+                    <Button
+                      onPress={() => this.start()}
+                      loading={loading}
+                      title={'Start Video Call'}
                       type={'primary'}
                       pill={false}
                     />
