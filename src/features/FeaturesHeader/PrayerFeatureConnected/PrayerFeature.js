@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Platform } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
@@ -13,8 +13,6 @@ import {
   Icon,
   Touchable,
 } from '@apollosproject/ui-kit';
-
-import TouchableAvatar from '@apollosproject/ui-kit/src/Avatar/AvatarList/TouchableAvatar';
 
 import HorizontalFeatureFeed from 'ui/HorizontalFeatureFeed';
 import { get } from 'lodash';
@@ -40,7 +38,6 @@ const AddIconBackground = styled(({ isLoading, theme, themeSize }) => ({
   backgroundColor: isLoading
     ? theme.colors.background.inactive
     : theme.colors.secondary,
-  // padding: theme.sizing.avatar.medium * 0.1625,
   borderRadius: themeSize * 0.5,
   width: themeSize,
   height: themeSize,
@@ -51,7 +48,6 @@ const AddIconBackground = styled(({ isLoading, theme, themeSize }) => ({
 }))(View);
 
 const AndroidTouchableRippleFix = styled(({ theme }) => ({
-  // borderRadius: theme.sizing.avatar.medium * 0.4,
   marginRight: theme.sizing.baseUnit * 0.5,
   overflow: 'hidden',
 }))(View);
