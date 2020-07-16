@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useEffect } from 'react';
 import { Animated, View } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
@@ -25,6 +25,8 @@ import {
   ErrorCard,
   Button,
 } from '@apollosproject/ui-kit';
+
+import { useCurrentUser } from '../hooks';
 
 import AvatarCloud from '../ui/AvatarCloud';
 
@@ -109,7 +111,7 @@ const StyledHorizontalTileFeed = styled(({ theme }) => ({
 }))(HorizontalTileFeed);
 
 const PlaceholderIcon = compose(
-  withTheme(({ theme: { colors, sizing } = {} }) => ({
+  withTheme(({ theme: { colors } = {} }) => ({
     fill: colors.paper,
     name: 'avatarPlacholder',
     size: 60,
@@ -134,64 +136,47 @@ const config = {
   },
 };
 
-class GroupSingle extends PureComponent {
-  static propTypes = {
-    navigation: PropTypes.shape({
-      getParam: PropTypes.func,
-      push: PropTypes.func,
-    }),
-  };
+const GroupSingle = ({ navigation }) => {
+  useEffect(() => {
+    async function initializeZoom() {
+      try {
+        const initializeResult = await ZoomBridge.initialize(
+          config.zoom.appKey,
+          config.zoom.appSecret,
+          config.zoom.domain
+        );
+        console.log({ initializeResult });
+      } catch (e) {
+        throw e;
+      }
+    }
+    initializeZoom();
+  }, []);
 
-  static navigationOptions = {
-    header: NavigationHeader,
-    headerTransparent: true,
-    headerMode: 'float',
-  };
-
-  coverImageSources = [
+  const coverImageSources = [
     {
       uri: 'https://picsum.photos/800',
     },
   ];
 
-  loadingStateObject = {
+  const loadingStateObject = {
     id: 'fake_id',
     title: '',
     coverImage: [],
   };
 
-  zakTokenRaw = Config.ZOOM_ZAK_TOKEN; // Meeting zak token generated from using the jwt token as auth from jwt zoom app in postman and hitting the https://api.zoom.us/v2/users/{userId}/token?type=zak endpoint
+  const zakTokenRaw = Config.ZOOM_ZAK_TOKEN; // Meeting zak token generated from using the jwt token as auth from jwt zoom app in postman and hitting the https://api.zoom.us/v2/users/{userId}/token?type=zak endpoint
+  const meetingNo = ''; // TODO: meeting number
 
-  meetingNo = ''; // TODO: meeting number
+  const itemId = navigation.getParam('itemId', []);
+  const avatars = navigation.getParam('avatars', []);
+  const queryVariables = { itemId };
 
-  async componentDidMount() {
-    try {
-      const initializeResult = await ZoomBridge.initialize(
-        config.zoom.appKey,
-        config.zoom.appSecret,
-        config.zoom.domain
-      );
-      console.log({ initializeResult });
-    } catch (e) {
-      throw e;
-    }
-  }
+  const { firstName, lastName } = useCurrentUser();
+  const fullName = `${firstName} ${lastName}`;
 
-  get itemId() {
-    return this.props.navigation.getParam('itemId', []);
-  }
-
-  get avatars() {
-    return this.props.navigation.getParam('avatars', []);
-  }
-
-  get queryVariables() {
-    return { itemId: this.itemId };
-  }
-
-  async start() {
-    const zakToken = decodeURIComponent(this.zakTokenRaw);
-    const displayName = 'Test mentor';
+  const start = async () => {
+    const zakToken = decodeURIComponent(zakTokenRaw);
 
     // TODO recieve user's details from zoom API? WOUT: webinar user is different
     const userId = 'null'; // NOTE: no need for userId when using zakToken
@@ -202,8 +187,8 @@ class GroupSingle extends PureComponent {
 
     try {
       await ZoomBridge.startMeeting(
-        displayName,
-        this.meetingNo,
+        fullName,
+        meetingNo,
         userId,
         userType,
         zoomAccessToken,
@@ -212,23 +197,18 @@ class GroupSingle extends PureComponent {
     } catch (e) {
       throw e;
     }
-  }
+  };
 
-  async join() {
-    const displayName = 'Test Person';
+  const join = async () => {
     const password = ''; // TODO: meeting password
     try {
-      await ZoomBridge.joinMeetingWithPassword(
-        displayName,
-        this.meetingNo,
-        password
-      );
+      await ZoomBridge.joinMeetingWithPassword(fullName, meetingNo, password);
     } catch (e) {
       throw e;
     }
-  }
+  };
 
-  renderMember = ({ item, isLoading }) => {
+  const renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
     const name = get(item, 'firstName', '');
     return (
@@ -256,7 +236,7 @@ class GroupSingle extends PureComponent {
     );
   };
 
-  renderContent = ({ content, loading, error }) => {
+  const renderContent = ({ content, loading, error }) => {
     const leader = head(get(content, 'leaders', []));
     const leaderPhoto = get(leader, 'photo', {});
     return (
@@ -266,11 +246,11 @@ class GroupSingle extends PureComponent {
             <StretchyView>
               {({ Stretchy, ...scrollViewProps }) => (
                 <FlexedScrollView {...scrollViewProps}>
-                  {this.coverImageSources.length ? (
+                  {coverImageSources.length ? (
                     <Stretchy>
                       <GradientOverlayImage
-                        isLoading={!this.coverImageSources.length}
-                        source={this.coverImageSources}
+                        isLoading={!coverImageSources.length}
+                        source={coverImageSources}
                         // Sets the ratio of the image
                         minAspectRatio={1}
                         maxAspectRatio={1}
@@ -282,7 +262,7 @@ class GroupSingle extends PureComponent {
                         overlayType="featured"
                       />
                       <StyledAvatarCloud
-                        avatars={this.avatars}
+                        avatars={avatars}
                         primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
                       />
                       <StyledTitle>
@@ -295,7 +275,7 @@ class GroupSingle extends PureComponent {
                   ) : null}
                   <PaddedView>
                     <Button
-                      onPress={() => this.join()}
+                      onPress={() => join()}
                       loading={loading}
                       title={'Join Video Call'}
                       type={'primary'}
@@ -304,7 +284,7 @@ class GroupSingle extends PureComponent {
                   </PaddedView>
                   <PaddedView>
                     <Button
-                      onPress={() => this.start()}
+                      onPress={() => start()}
                       loading={loading}
                       title={'Start Video Call'}
                       type={'primary'}
@@ -330,8 +310,8 @@ class GroupSingle extends PureComponent {
                   </PaddedView>
                   <StyledHorizontalTileFeed
                     content={content.members}
-                    renderItem={this.renderMember}
-                    loadingStateObject={this.loadingStateObject}
+                    renderItem={renderMember}
+                    loadingStateObject={loadingStateObject}
                     isLoading={loading}
                   />
                 </FlexedScrollView>
@@ -343,7 +323,7 @@ class GroupSingle extends PureComponent {
     );
   };
 
-  renderWithData = ({ loading, error, data }) => {
+  const renderWithData = ({ loading, error, data }) => {
     if (error) return <ErrorCard error={error} />;
 
     const content = get(data, 'node', {});
@@ -351,18 +331,29 @@ class GroupSingle extends PureComponent {
     console.log('content', content);
     return (
       <ThemeMixin theme={theme}>
-        {this.renderContent({ content, loading, error })}
+        {renderContent({ content, loading, error })}
       </ThemeMixin>
     );
   };
 
-  render() {
-    return (
-      <Query query={GET_GROUP} variables={this.queryVariables}>
-        {this.renderWithData}
-      </Query>
-    );
-  }
-}
+  return (
+    <Query query={GET_GROUP} variables={queryVariables}>
+      {renderWithData}
+    </Query>
+  );
+};
+
+GroupSingle.propTypes = {
+  navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+    push: PropTypes.func,
+  }),
+};
+
+GroupSingle.navigationOptions = {
+  header: NavigationHeader,
+  headerTransparent: true,
+  headerMode: 'float',
+};
 
 export default GroupSingle;
