@@ -73,15 +73,9 @@ HoriztonalFeatureFeed.propTypes = {
     isLoading: PropTypes.bool,
 };
 
-HoriztonalFeatureFeed.propTypes = {
-    Component: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.func,
-        PropTypes.object,
-    ]),
+HoriztonalFeatureFeed.defaultProps = {
+    Component: View,
     isLoading: false,
 };
-
-HoriztonalFeatureFeed.defaultProps = {};
 
 export default HoriztonalFeatureFeed;

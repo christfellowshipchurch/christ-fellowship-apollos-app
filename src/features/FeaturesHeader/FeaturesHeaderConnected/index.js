@@ -34,8 +34,7 @@ const MAPPINGS = {
 const Container = styled(({ theme }) => ({
     flexDirection: 'row',
     paddingHorizontal: theme.sizing.baseUnit * 0.5,
-    paddingTop: theme.sizing.baseUnit * 0.5,
-    paddingBottom: theme.sizing.baseUnit,
+    paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const mapFeatures = (
@@ -59,6 +58,8 @@ const FeaturesHeaderConnected = ({
     refetchRef,
     ...props
 }) => {
+    console.log({ refetchRef, refetchId, props });
+
     const { error, data, loading, refetch } = useQuery(GET_HEADER_FEATURES, {
         fetchPolicy: 'cache-and-network',
     });

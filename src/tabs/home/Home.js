@@ -1,32 +1,31 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { Animated } from 'react-native';
+import { Animated, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
+import Color from 'color';
+
+import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import { styled } from '@apollosproject/ui-kit';
 
 import { FeaturesFeedConnected, FeaturesHeaderConnected } from 'features';
 
-import { FeedView, DefaultCard } from '@apollosproject/ui-kit';
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
-
-import StatusBar from 'ui/StatusBar';
-
-import { HorizontalDivider } from 'ui/Dividers';
 import Wordmark from 'ui/Wordmark';
-import { HighlightCard } from 'ui/Cards';
-import { Feature } from '../../feature';
+import { HorizontalDivider } from 'ui/Dividers';
 import {
   navigationOptions,
   BackgroundView,
   NavigationSpacer,
   useHeaderScrollEffect,
 } from '../../navigation';
-import LiveStreamsFeed from './LiveStreamsFeed';
 
-import GET_FEED_FEATURES from './getFeedFeatures';
+const ListHeaderSpacer = styled(({ theme }) => ({
+  paddingBottom: theme.sizing.baseUnit * 0.5,
+}))(View);
 
-const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
+const StyledHorizontalDivider = styled(({ theme }) => ({
+  width: '100%',
+  marginVertical: theme.sizing.baseUnit,
+}))(HorizontalDivider);
 
 const Home = ({ navigation }) => {
   const { scrollY } = useHeaderScrollEffect({ navigation });
@@ -56,10 +55,11 @@ const Home = ({ navigation }) => {
             <FeaturesFeedConnected
               onPressActionItem={handleOnPress({ openUrl })}
               ListHeaderComponent={
-                <React.Fragment>
+                <ListHeaderSpacer>
                   <NavigationSpacer />
                   <FeaturesHeaderConnected />
-                </React.Fragment>
+                  <StyledHorizontalDivider />
+                </ListHeaderSpacer>
               }
               scrollEventThrottle={16}
               onScroll={Animated.event([

@@ -10,7 +10,9 @@ export const HorizontalDivider = styled(({ theme }) => ({
         Color(theme.colors.screen).isLight()
             ? theme.colors.black
             : theme.colors.white
-    ).fade(0.1),
+    )
+        .fade(0.1)
+        .hex(),
     opacity: 0.5,
     width: '70%',
     marginVertical: theme.sizing.baseUnit * 2,
@@ -24,7 +26,9 @@ export const VerticalDivider = styled(({ theme }) => ({
         Color(theme.colors.screen).isLight()
             ? theme.colors.black
             : theme.colors.white
-    ).fade(0.1),
+    )
+        .fade(0.1)
+        .hex(),
     opacity: 0.5,
     height: '70%',
     marginHorizontal: theme.sizing.baseUnit * 2,
