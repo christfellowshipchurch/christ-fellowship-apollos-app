@@ -70,10 +70,12 @@ const renderListHeader = (onPressAdd, isLoading, theme) => {
   return onPressAdd ? (
     <AndroidTouchableRippleFix>
       <Touchable onPress={() => onPressAdd()} disabled={isLoading}>
-        <AvatarConnected themeSize={themeSize} />
-        <AddIconBackground isLoading={isLoading} themeSize={iconSize}>
-          <AddIcon isLoading={isLoading} themeSize={iconSize} />
-        </AddIconBackground>
+        <View>
+          <AvatarConnected themeSize={themeSize} />
+          <AddIconBackground isLoading={isLoading} themeSize={iconSize}>
+            <AddIcon isLoading={isLoading} themeSize={iconSize} />
+          </AddIconBackground>
+        </View>
       </Touchable>
     </AndroidTouchableRippleFix>
   ) : null;

@@ -45,7 +45,8 @@ const StyledVerticalDivider = styled(({ theme }) => ({
 
 const StyledHorizontalDivider = styled(({ theme }) => ({
     width: '100%',
-    marginVertical: theme.sizing.baseUnit * 0.25,
+    marginTop: theme.sizing.baseUnit * 0.25,
+    marginBottom: theme.sizing.baseUnit,
     opacity: 0.25,
 }))(HorizontalDivider);
 
