@@ -1,18 +1,31 @@
+<<<<<<< Updated upstream
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { Animated } from 'react-native';
+=======
+import React, { useState, useEffect } from 'react';
+import { Animated, View } from 'react-native';
+>>>>>>> Stashed changes
 import { SafeAreaView } from 'react-navigation';
 import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
+<<<<<<< Updated upstream
+=======
+import { get } from 'lodash';
+>>>>>>> Stashed changes
 
 import { FeedView, DefaultCard } from '@apollosproject/ui-kit';
 
 import StatusBar from 'ui/StatusBar';
 
+<<<<<<< Updated upstream
 import { HorizontalDivider } from 'ui/Dividers';
 import Wordmark from 'ui/Wordmark';
 import { HighlightCard } from 'ui/Cards';
 import { Feature } from '../../feature';
+=======
+import Wordmark from 'ui/Wordmark';
+>>>>>>> Stashed changes
 import {
   navigationOptions,
   BackgroundView,
@@ -21,6 +34,7 @@ import {
 } from '../../navigation';
 import LiveStreamsFeed from './LiveStreamsFeed';
 
+<<<<<<< Updated upstream
 import GET_FEED_FEATURES from './getFeedFeatures';
 
 const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
@@ -29,6 +43,14 @@ const Home = ({ navigation }) => {
   const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
     fetchPolicy: 'cache-and-network',
   });
+=======
+const ListHeaderSpacer = styled(({ theme }) => ({
+  paddingBottom: theme.sizing.baseUnit,
+}))(View);
+
+const Home = ({ navigation }) => {
+  const [refetchRef, setRefetchRef] = useState(null);
+>>>>>>> Stashed changes
   const { scrollY } = useHeaderScrollEffect({ navigation });
   const content = mapDataToActions(get(data, 'userFeedFeatures', []));
   const renderItem = ({ item }) => {
@@ -49,6 +71,7 @@ const Home = ({ navigation }) => {
   };
 
   return (
+<<<<<<< Updated upstream
     <BackgroundView>
       <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
         <StatusBar />
@@ -77,6 +100,40 @@ const Home = ({ navigation }) => {
         />
       </SafeAreaView>
     </BackgroundView>
+=======
+    <RockAuthedWebBrowser>
+      {(openUrl) => (
+        <BackgroundView>
+          <SafeAreaView>
+            <FeaturesFeedConnected
+              onPressActionItem={handleOnPress({ openUrl })}
+              showDebug
+              ListHeaderComponent={
+                <ListHeaderSpacer>
+                  <NavigationSpacer />
+                  <FeaturesHeaderConnected
+                    refetchRef={get(refetchRef, 'refetchRef', () => null)}
+                    refetchId="HomeFeedFeaturesHeaderConnected"
+                  />
+                </ListHeaderSpacer>
+              }
+              scrollEventThrottle={16}
+              onScroll={Animated.event([
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollY },
+                  },
+                },
+              ])}
+              removeClippedSubviews={false}
+              numColumns={1}
+              onRef={(ref) => setRefetchRef(ref)}
+            />
+          </SafeAreaView>
+        </BackgroundView>
+      )}
+    </RockAuthedWebBrowser>
+>>>>>>> Stashed changes
   );
 };
 

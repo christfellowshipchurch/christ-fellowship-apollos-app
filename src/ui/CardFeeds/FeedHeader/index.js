@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import { compose, pure } from 'recompose';
 
 import {
     Touchable,
@@ -9,6 +10,8 @@ import {
     H6,
     styled,
     withTheme,
+    withPlaceholder,
+    Placeholder,
 } from '@apollosproject/ui-kit';
 
 const RowHeader = styled(({ theme, viewAll }) => ({
@@ -20,9 +23,14 @@ const RowHeader = styled(({ theme, viewAll }) => ({
     ...(viewAll ? {} : { paddingBottom: theme.sizing.baseUnit * 0.5 }),
 }))(View);
 
-const Name = styled({
+const TitlePosition = styled({
     flexGrow: 2,
 })(View);
+
+const Title = compose(
+    withPlaceholder(Placeholder.Typography, { width: 150 }),
+    pure
+)(H3);
 
 const AndroidTouchableFix = withTheme(({ theme }) => ({
     borderRadius: theme.sizing.baseBorderRadius / 2,
@@ -35,6 +43,7 @@ const ButtonLinkSpacing = styled(({ theme }) => ({
     paddingHorizontal: theme.sizing.baseUnit, // UX hack to improve tapability.
 }))(View);
 
+<<<<<<< Updated upstream
 const FeedHeader = ({ title, onPress, seeMoreText, seeMore, isLoading }) => (
     <RowHeader viewAll={seeMore}>
         <Name>
@@ -52,6 +61,26 @@ const FeedHeader = ({ title, onPress, seeMoreText, seeMore, isLoading }) => (
             )}
     </RowHeader>
 );
+=======
+const FeedHeader = ({ title, onPress, seeMoreText, seeMore, isLoading }) =>
+    title && title !== '' ? (
+        <RowHeader viewAll={seeMore}>
+            <TitlePosition>
+                <Title isLoading={isLoading}>{title}</Title>
+            </TitlePosition>
+            {seeMore &&
+                !isLoading && (
+                    <AndroidTouchableFix onPress={onPress}>
+                        <ButtonLinkSpacing>
+                            <H6>
+                                <ButtonLink>{seeMoreText}</ButtonLink>
+                            </H6>
+                        </ButtonLinkSpacing>
+                    </AndroidTouchableFix>
+                )}
+        </RowHeader>
+    ) : null;
+>>>>>>> Stashed changes
 
 FeedHeader.propTypes = {
     title: PropTypes.string,
