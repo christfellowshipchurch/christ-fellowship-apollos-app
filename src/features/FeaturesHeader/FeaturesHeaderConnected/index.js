@@ -10,6 +10,7 @@ import { styled } from '@apollosproject/ui-kit';
 import { featuresFeedComponentMapper } from '@apollosproject/ui-connected';
 
 import HorizontalFeatureFeed from 'ui/HorizontalFeatureFeed';
+import { VerticalDivider, HorizontalDivider } from 'ui/Dividers';
 import PrayerFeatureConnected from '../PrayerFeatureConnected';
 import LiveStreamListFeatureConnected from '../LiveStreamListFeatureConnected';
 
@@ -37,13 +38,28 @@ const Container = styled(({ theme }) => ({
     paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
+const StyledVerticalDivider = styled(({ theme }) => ({
+    alignSelf: 'flex-end',
+    marginHorizontal: theme.sizing.baseUnit * 0.5,
+}))(VerticalDivider);
+
+const StyledHorizontalDivider = styled(({ theme }) => ({
+    width: '100%',
+    marginVertical: theme.sizing.baseUnit * 0.25,
+    opacity: 0.25,
+}))(HorizontalDivider);
+
 const mapFeatures = (
     features,
     { additionalFeatures, refetchRef, onPressActionItem }
 ) =>
     features.map((item, i) =>
         featuresFeedComponentMapper({
-            feature: item,
+            feature: {
+                ...item,
+                ItemSeparatorComponent:
+                    i < features.length - 1 ? StyledVerticalDivider : null,
+            },
             refetchRef,
             onPressActionItem,
             additionalFeatures: { ...MAPPINGS, ...additionalFeatures },
@@ -58,8 +74,6 @@ const FeaturesHeaderConnected = ({
     refetchRef,
     ...props
 }) => {
-    console.log({ refetchRef, refetchId, props });
-
     const { error, data, loading, refetch } = useQuery(GET_HEADER_FEATURES, {
         fetchPolicy: 'cache-and-network',
     });
@@ -72,11 +86,14 @@ const FeaturesHeaderConnected = ({
 
     const features = get(data, 'userHeaderFeatures', []);
 
-    return (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} {...props}>
-            <Container>{mapFeatures(features, { refetchRef })}</Container>
-        </ScrollView>
-    );
+    return features.length > 0 ? (
+        <View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} {...props}>
+                <Container>{mapFeatures(features, { refetchRef })}</Container>
+            </ScrollView>
+            <StyledHorizontalDivider />
+        </View>
+    ) : null;
 };
 
 FeaturesHeaderConnected.propTypes = {
@@ -89,6 +106,10 @@ FeaturesHeaderConnected.propTypes = {
     additionalFeatures: PropTypes.shape({}),
     refetchRef: PropTypes.func,
     refetchId: PropTypes.string,
+};
+
+FeaturesHeaderConnected.propTypes = {
+    refetchId: 'FeaturesHeaderConnected',
 };
 
 export default FeaturesHeaderConnected;

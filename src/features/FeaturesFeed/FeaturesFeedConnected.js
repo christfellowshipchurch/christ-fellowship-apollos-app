@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 
 import { FeaturesFeedConnected as CoreFeaturesFeedConnected } from '@apollosproject/ui-connected';
 
@@ -12,12 +13,25 @@ const MAPPINGS = {
     HeroListFeature: HeroListFeatureConnected,
 };
 
-const FeaturesFeedConnected = (props) => (
-    <CoreFeaturesFeedConnected
-        {...props}
-        additionalFeatures={MAPPINGS}
-        ItemSeparatorComponent={HorizontalDivider}
-    />
-);
+const FeaturesFeedConnected = ({ onRef, ...props }) => {
+    const feedRef = useCallback((ref) => onRef(ref), []);
+
+    return (
+        <CoreFeaturesFeedConnected
+            {...props}
+            additionalFeatures={MAPPINGS}
+            ItemSeparatorComponent={HorizontalDivider}
+            ref={feedRef}
+        />
+    );
+};
+
+FeaturesFeedConnected.propTypes = {
+    onRef: PropTypes.func,
+};
+
+FeaturesFeedConnected.defaultProps = {
+    onRef: () => null,
+};
 
 export default FeaturesFeedConnected;

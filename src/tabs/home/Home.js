@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Animated, View, StyleSheet } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
 import { SafeAreaView } from 'react-navigation';
 import PropTypes from 'prop-types';
 import Color from 'color';
+import { get } from 'lodash';
 
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 import { styled } from '@apollosproject/ui-kit';
@@ -27,7 +29,12 @@ const StyledHorizontalDivider = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit,
 }))(HorizontalDivider);
 
+const ListHeaderSpacer = styled(({ theme }) => ({
+  paddingBottom: theme.sizing.baseUnit,
+}))(View);
+
 const Home = ({ navigation }) => {
+  const [refetchRef, setRefetchRef] = useState(null);
   const { scrollY } = useHeaderScrollEffect({ navigation });
   const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
     if (action === 'READ_CONTENT') {
@@ -57,8 +64,10 @@ const Home = ({ navigation }) => {
               ListHeaderComponent={
                 <ListHeaderSpacer>
                   <NavigationSpacer />
-                  <FeaturesHeaderConnected />
-                  <StyledHorizontalDivider />
+                  <FeaturesHeaderConnected
+                    refetchRef={get(refetchRef, 'refetchRef', () => null)}
+                    refetchId="HomeFeedFeaturesHeaderConnected"
+                  />
                 </ListHeaderSpacer>
               }
               scrollEventThrottle={16}
@@ -71,6 +80,7 @@ const Home = ({ navigation }) => {
               ])}
               removeClippedSubviews={false}
               numColumns={1}
+              onRef={(ref) => setRefetchRef(ref)}
             />
           </SafeAreaView>
         </BackgroundView>
@@ -78,61 +88,6 @@ const Home = ({ navigation }) => {
     </RockAuthedWebBrowser>
   );
 };
-
-// const Home = ({ navigation }) => {
-//   const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
-//     fetchPolicy: 'cache-and-network',
-//   });
-//   const { scrollY } = useHeaderScrollEffect({ navigation });
-//   const content = mapDataToActions(get(data, 'userFeedFeatures', []));
-//   const renderItem = ({ item }) => {
-//     if (item.isLoading)
-//       return (
-//         <>
-//           <HighlightCard title="" isLoading coverImage={[]} />
-//           <HorizontalDivider />
-//         </>
-//       );
-
-//     return item.action ? (
-//       <>
-//         <Feature {...item} isLoading={loading} />
-//         <HorizontalDivider />
-//       </>
-//     ) : null;
-//   };
-
-//   return (
-//     <BackgroundView>
-//       <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
-//         <StatusBar />
-//         <FeedView
-//           renderItem={renderItem}
-//           content={content}
-//           isLoading={loading && !get(data, 'userFeedFeatures', []).length}
-//           error={error}
-//           refetch={refetch}
-//           ListHeaderComponent={
-//             <React.Fragment>
-//               <NavigationSpacer />
-//               <FeaturesHeaderConnected />
-//             </React.Fragment>
-//           }
-//           scrollEventThrottle={16}
-//           onScroll={Animated.event([
-//             {
-//               nativeEvent: {
-//                 contentOffset: { y: scrollY },
-//               },
-//             },
-//           ])}
-//           removeClippedSubviews={false}
-//           numColumns={1}
-//         />
-//       </SafeAreaView>
-//     </BackgroundView>
-//   );
-// };
 
 Home.navigationOptions = (props) =>
   navigationOptions({

@@ -50,7 +50,11 @@ const HoriztonalFeatureFeed = ({
             {(isLoading || title || subtitle) && ( // only display the Header if we are loading or have a title/subtitle
                 <Header>
                     {(isLoading || title) && (
-                        <Title numberOfLines={1} bold>
+                        <Title
+                            isLoading={isLoading && (!title || title === '')}
+                            numberOfLines={1}
+                            bold
+                        >
                             {title}
                         </Title>
                     )}

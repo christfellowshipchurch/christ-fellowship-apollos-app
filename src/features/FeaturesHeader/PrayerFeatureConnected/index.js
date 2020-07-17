@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 
@@ -14,9 +15,15 @@ const DynamicPrayerExperienceConnected = (props) => {
     return <PrayerExperienceConnected {...props} themeType={theme} />;
 };
 
-const PrayerListFeatureConnectedWithComponent = (props) => (
-    <PrayerListFeatureConnected {...props} />
-);
+const PrayerListFeatureConnectedWithComponent = ({
+    ItemSeparatorComponent,
+    ...props
+}) => (
+        <View style={{ flexDirection: 'row' }}>
+            <PrayerListFeatureConnected {...props} />
+            {!!ItemSeparatorComponent && <ItemSeparatorComponent />}
+        </View>
+    );
 
 PrayerListFeatureConnectedWithComponent.propTypes = {
     Component: PropTypes.oneOfType([
@@ -29,11 +36,17 @@ PrayerListFeatureConnectedWithComponent.propTypes = {
         PropTypes.func,
         PropTypes.object,
     ]),
+    ItemSeparatorComponent: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.func,
+        PropTypes.object, // type check for React fragments
+    ]),
 };
 
 PrayerListFeatureConnectedWithComponent.defaultProps = {
     Component: PrayerFeature,
     PrayerExperienceComponent: DynamicPrayerExperienceConnected,
+    ItemSeparatorComponent: null,
 };
 
 export default PrayerListFeatureConnectedWithComponent;

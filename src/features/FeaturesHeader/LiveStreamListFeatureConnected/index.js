@@ -140,7 +140,11 @@ const LiveStreamsFeedFeature = ({ liveStreams }) => (
     />
 );
 
-const LiveStreamsFeedFeatureConnected = ({ featureId, isLoading }) => {
+const LiveStreamsFeedFeatureConnected = ({
+    featureId,
+    isLoading,
+    ItemSeparatorComponent,
+}) => {
     // Since we are refetching on a 30 second interval, we don't care
     // about the refetchRef from the parents and don't need to worry
     // about refetching on pull-down
@@ -162,24 +166,33 @@ const LiveStreamsFeedFeatureConnected = ({ featureId, isLoading }) => {
     const style = liveStreams.length === 1 ? { alignItems: 'center' } : {};
 
     return liveStreams.length > 0 ? (
-        <HorizontalFeatureFeed
-            Component={LiveStreamsFeedFeature}
-            liveStreams={liveStreams}
-            title={title}
-            subtitle={subtitle}
-            style={style}
-            isLoading={loading}
-        />
+        <View style={{ flexDirection: 'row' }}>
+            <HorizontalFeatureFeed
+                Component={LiveStreamsFeedFeature}
+                liveStreams={liveStreams}
+                title={title}
+                subtitle={subtitle}
+                style={style}
+                isLoading={loading}
+            />
+            {!!ItemSeparatorComponent && <ItemSeparatorComponent />}
+        </View>
     ) : null;
 };
 
 LiveStreamsFeedFeatureConnected.propTypes = {
     featureId: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
+    ItemSeparatorComponent: PropTypes.oneOfType([
+        PropTypes.node,
+        PropTypes.func,
+        PropTypes.object, // type check for React fragments
+    ]),
 };
 
 LiveStreamsFeedFeatureConnected.propTypes = {
     isLoading: false,
+    ItemSeparatorComponent: null,
 };
 
 export default LiveStreamsFeedFeatureConnected;
