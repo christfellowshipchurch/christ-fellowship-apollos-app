@@ -43,12 +43,11 @@ const ButtonLinkSpacing = styled(({ theme }) => ({
     paddingHorizontal: theme.sizing.baseUnit, // UX hack to improve tapability.
 }))(View);
 
-
 const FeedHeader = ({ title, onPress, seeMoreText, seeMore, isLoading }) =>
     title && title !== '' ? (
         <RowHeader viewAll={seeMore}>
             <TitlePosition>
-                <Title isLoading={isLoading}>{title}</Title>
+                <Title isLoading={isLoading && (!title || title === '')}>{title}</Title>
             </TitlePosition>
             {seeMore &&
                 !isLoading && (

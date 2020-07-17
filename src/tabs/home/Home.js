@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Animated, View, StyleSheet } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
+import React, { useState } from 'react';
+import { Animated, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import PropTypes from 'prop-types';
-import Color from 'color';
 import { get } from 'lodash';
 
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
@@ -12,7 +10,6 @@ import { styled } from '@apollosproject/ui-kit';
 import { FeaturesFeedConnected, FeaturesHeaderConnected } from 'features';
 
 import Wordmark from 'ui/Wordmark';
-import { HorizontalDivider } from 'ui/Dividers';
 import {
   navigationOptions,
   BackgroundView,
@@ -22,15 +19,6 @@ import {
 
 const ListHeaderSpacer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
-}))(View);
-
-const StyledHorizontalDivider = styled(({ theme }) => ({
-  width: '100%',
-  marginVertical: theme.sizing.baseUnit,
-}))(HorizontalDivider);
-
-const ListHeaderSpacer = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit,
 }))(View);
 
 const Home = ({ navigation }) => {
