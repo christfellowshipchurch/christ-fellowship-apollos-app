@@ -1,113 +1,66 @@
-<<<<<<< Updated upstream
-import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { Animated } from 'react-native';
-=======
 import React, { useState, useEffect } from 'react';
-import { Animated, View } from 'react-native';
->>>>>>> Stashed changes
+import { Animated, View, StyleSheet } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
 import { SafeAreaView } from 'react-navigation';
-import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
-<<<<<<< Updated upstream
-=======
+import Color from 'color';
 import { get } from 'lodash';
->>>>>>> Stashed changes
 
-import { FeedView, DefaultCard } from '@apollosproject/ui-kit';
+import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import { styled } from '@apollosproject/ui-kit';
 
-import StatusBar from 'ui/StatusBar';
+import { FeaturesFeedConnected, FeaturesHeaderConnected } from 'features';
 
-<<<<<<< Updated upstream
+import Wordmark from 'ui/Wordmark';
 import { HorizontalDivider } from 'ui/Dividers';
-import Wordmark from 'ui/Wordmark';
-import { HighlightCard } from 'ui/Cards';
-import { Feature } from '../../feature';
-=======
-import Wordmark from 'ui/Wordmark';
->>>>>>> Stashed changes
 import {
   navigationOptions,
   BackgroundView,
   NavigationSpacer,
   useHeaderScrollEffect,
 } from '../../navigation';
-import LiveStreamsFeed from './LiveStreamsFeed';
 
-<<<<<<< Updated upstream
-import GET_FEED_FEATURES from './getFeedFeatures';
+const ListHeaderSpacer = styled(({ theme }) => ({
+  paddingBottom: theme.sizing.baseUnit * 0.5,
+}))(View);
 
-const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
+const StyledHorizontalDivider = styled(({ theme }) => ({
+  width: '100%',
+  marginVertical: theme.sizing.baseUnit,
+}))(HorizontalDivider);
 
-const Home = ({ navigation }) => {
-  const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
-    fetchPolicy: 'cache-and-network',
-  });
-=======
 const ListHeaderSpacer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit,
 }))(View);
 
 const Home = ({ navigation }) => {
   const [refetchRef, setRefetchRef] = useState(null);
->>>>>>> Stashed changes
   const { scrollY } = useHeaderScrollEffect({ navigation });
-  const content = mapDataToActions(get(data, 'userFeedFeatures', []));
-  const renderItem = ({ item }) => {
-    if (item.isLoading)
-      return (
-        <>
-          <HighlightCard title="" isLoading coverImage={[]} />
-          <HorizontalDivider />
-        </>
-      );
-
-    return item.action ? (
-      <>
-        <Feature {...item} isLoading={loading} />
-        <HorizontalDivider />
-      </>
-    ) : null;
+  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
+    if (action === 'READ_CONTENT') {
+      navigation.navigate('ContentSingle', {
+        itemId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'READ_EVENT') {
+      navigation.navigate('Event', {
+        eventId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'OPEN_URL') {
+      openUrl(relatedNode.url);
+    }
   };
 
   return (
-<<<<<<< Updated upstream
-    <BackgroundView>
-      <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
-        <StatusBar />
-        <FeedView
-          renderItem={renderItem}
-          content={content}
-          isLoading={loading && !get(data, 'userFeedFeatures', []).length}
-          error={error}
-          refetch={refetch}
-          ListHeaderComponent={
-            <React.Fragment>
-              <NavigationSpacer />
-              <LiveStreamsFeed />
-            </React.Fragment>
-          }
-          scrollEventThrottle={16}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: { y: scrollY },
-              },
-            },
-          ])}
-          removeClippedSubviews={false}
-          numColumns={1}
-        />
-      </SafeAreaView>
-    </BackgroundView>
-=======
     <RockAuthedWebBrowser>
       {(openUrl) => (
         <BackgroundView>
           <SafeAreaView>
             <FeaturesFeedConnected
               onPressActionItem={handleOnPress({ openUrl })}
-              showDebug
               ListHeaderComponent={
                 <ListHeaderSpacer>
                   <NavigationSpacer />
@@ -133,7 +86,6 @@ const Home = ({ navigation }) => {
         </BackgroundView>
       )}
     </RockAuthedWebBrowser>
->>>>>>> Stashed changes
   );
 };
 

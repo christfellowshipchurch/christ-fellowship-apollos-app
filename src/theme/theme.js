@@ -190,15 +190,14 @@ const overrides = {
         color: '#FCFCFC',
     },
     'ui-prayer.PrayerExperienceConnected': {
-        themeType: 'light',
-        // showOnboarding: true,
+        showOnboarding: true,
     },
-    'ui-kit.AvatarList.AddIcon': {
-        name: 'pray'
-    },
+    // 'ui-kit.AvatarList.AddIcon': {
+    //     name: 'pray',
+    // },
     'ui-prayer.PrayerInput.PromptIcon': {
-        name: 'pray'
-    }
+        name: 'plus',
+    },
 };
 
 const buttons = ({ colors: themeColors }) => ({

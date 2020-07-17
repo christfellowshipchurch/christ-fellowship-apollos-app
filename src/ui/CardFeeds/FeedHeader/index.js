@@ -43,25 +43,7 @@ const ButtonLinkSpacing = styled(({ theme }) => ({
     paddingHorizontal: theme.sizing.baseUnit, // UX hack to improve tapability.
 }))(View);
 
-<<<<<<< Updated upstream
-const FeedHeader = ({ title, onPress, seeMoreText, seeMore, isLoading }) => (
-    <RowHeader viewAll={seeMore}>
-        <Name>
-            <H3 isLoading={isLoading}>{title}</H3>
-        </Name>
-        {seeMore &&
-            !isLoading && (
-                <AndroidTouchableFix onPress={onPress}>
-                    <ButtonLinkSpacing>
-                        <H6>
-                            <ButtonLink>{seeMoreText}</ButtonLink>
-                        </H6>
-                    </ButtonLinkSpacing>
-                </AndroidTouchableFix>
-            )}
-    </RowHeader>
-);
-=======
+
 const FeedHeader = ({ title, onPress, seeMoreText, seeMore, isLoading }) =>
     title && title !== '' ? (
         <RowHeader viewAll={seeMore}>
@@ -80,7 +62,6 @@ const FeedHeader = ({ title, onPress, seeMoreText, seeMore, isLoading }) =>
                 )}
         </RowHeader>
     ) : null;
->>>>>>> Stashed changes
 
 FeedHeader.propTypes = {
     title: PropTypes.string,
