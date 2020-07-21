@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Platform } from 'react-native';
+import { View, StyleSheet, ScrollView, Animated } from 'react-native';
 import { get } from 'lodash';
+import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Color from 'color';
 import { withProps } from 'recompose';
+import { UserAvatarConnected } from '@apollosproject/ui-connected';
 
 import {
-  GradientOverlayImage,
-  Avatar,
   styled,
   BodyText,
   Card,
@@ -18,51 +18,34 @@ import {
   H4,
   H6,
   withTheme,
-  ThemeMixin,
-  TouchableScale,
   Icon,
   UIText,
   SideBySideView,
   withMediaQuery,
+  PaddedView,
 } from '@apollosproject/ui-kit';
 
 import {
   navigationOptions,
   BackgroundView,
   HEADER_OFFSET,
+  useHeaderScrollEffect,
+  NavigationSpacer,
+  HeaderRight,
 } from '../../navigation';
+
 import StatusBar from '../../ui/StatusBar';
 import { useCurrentUser } from '../../hooks';
 import ProfileActionBar from './ProfileActionBar';
 import Groups from './Groups';
+
+import { CURRENT_USER } from './queries';
 
 const CardLayout = withMediaQuery(
   ({ md }) => ({ maxWidth: md }),
   withProps({ Component: View }),
   withProps({ Component: SideBySideView })
 )(({ Component, ...props }) => <Component {...props} />);
-
-const FeaturedImage = withTheme(({ theme }) => ({
-  overlayColor: theme.colors.black,
-  overlayType: 'gradient-user-profile',
-  style: StyleSheet.absoluteFill,
-}))(GradientOverlayImage);
-
-const Layout = styled(({ theme }) => ({
-  overflow: 'hidden',
-}))(View);
-
-const AvatarContainer = styled(({ theme }) => ({
-  paddingHorizontal: theme.sizing.baseUnit,
-  paddingBottom: theme.sizing.baseUnit,
-  paddingTop: HEADER_OFFSET + theme.sizing.baseUnit * 2,
-  alignItems: 'center',
-  justifyContent: 'center',
-}))(View);
-
-const StyledAvatar = styled(({ theme }) => ({
-  ...Platform.select(theme.shadows.default),
-}))(Avatar);
 
 const StyledBodyText = styled(({ theme }) => ({
   color: theme.colors.text.secondary,
@@ -90,15 +73,25 @@ const Name = styled(({ theme }) => ({
   marginTop: theme.sizing.baseUnit * 0.5,
 }))(H4);
 
-const EditButton = styled(({ theme, disabled }) => ({
-  backgroundColor: theme.colors.primary,
-  borderRadius: 3,
-  fontSize: 12,
-  paddingHorizontal: 25,
-  fontWeight: 'bold',
-  marginVertical: theme.sizing.baseUnit,
-  opacity: disabled ? 0.5 : 1,
-}))(BodyText);
+const Flag = styled({
+  flexDirection: 'row',
+})(View);
+
+const FlagMedia = styled(({ theme }) => ({
+  marginRight: theme.sizing.baseUnit * 1.5,
+}))(PaddedView);
+
+const FlagContent = styled({
+  justifyContent: 'center',
+})(View);
+
+const OffsetScrollView = styled({
+  paddingTop: HEADER_OFFSET * 1.5, // Offset content enough to account for large custom header.
+})(ScrollView);
+
+const StyledHeaderRight = styled({
+  height: '100%', // Pushes the bar icon to the top of header.
+})(View);
 
 const CheckBoxRowContainer = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.25,
@@ -138,17 +131,13 @@ const Connect = ({ navigation }) => {
     loading,
     error,
     address,
-    campus,
     birthDate,
     phoneNumber,
     email,
-    firstName,
-    lastName,
     gender,
-    photo,
     communicationPreferences: { allowSMS, allowEmail } = {},
   } = useCurrentUser();
-  const featuredImage = get(campus, 'featuredImage.uri', null);
+  const { scrollY } = useHeaderScrollEffect({ navigation });
 
   if (loading)
     return (
@@ -171,26 +160,16 @@ const Connect = ({ navigation }) => {
   return (
     <BackgroundView>
       <StatusBar />
-      <ThemeMixin mixin={{ type: 'dark' }}>
-        <Layout>
-          <FeaturedImage
-            isLoading={!featuredImage && loading}
-            source={[{ uri: featuredImage }]}
-          />
-          <AvatarContainer>
-            <StyledAvatar size="large" source={photo} />
-            <Name>{`${firstName} ${lastName}`}</Name>
-            {campus && campus.name !== '' && <H6>{campus.name}</H6>}
-            <TouchableScale
-              onPress={() => navigation.navigate('EditCurrentUser')}
-              disabled={loading}
-            >
-              <EditButton disabled={loading}>Edit</EditButton>
-            </TouchableScale>
-          </AvatarContainer>
-        </Layout>
-      </ThemeMixin>
-      <ScrollView>
+      <NavigationSpacer />
+      <OffsetScrollView
+        onScroll={Animated.event([
+          {
+            nativeEvent: {
+              contentOffset: { y: scrollY },
+            },
+          },
+        ])}
+      >
         <Groups navigation={navigation} />
         <ProfileActionBar />
         <CardLayout>
@@ -235,13 +214,50 @@ const Connect = ({ navigation }) => {
             </CardContent>
           </Card>
         </CardLayout>
-      </ScrollView>
+      </OffsetScrollView>
     </BackgroundView>
   );
 };
 
-Connect.navigationOptions = (props) =>
-  navigationOptions({ ...props, title: 'Profile', blur: true });
+Connect.navigationOptions = ({ navigation, ...props }) =>
+  navigationOptions({
+    navigation,
+    ...props,
+    title: 'Profile',
+    headerStyle: { height: 110 }, // Magic Number: Has to be big enough to contain the user avatar, name, and campus in header.
+    headerTitle: (
+      <Flag>
+        <FlagMedia>
+          <UserAvatarConnected
+            size={'medium'}
+            buttonIcon={'settings'}
+            onPressIcon={() => navigation.navigate('EditCurrentUser')}
+          />
+        </FlagMedia>
+        <FlagContent>
+          <Query query={CURRENT_USER}>
+            {({
+              data: {
+                currentUser: {
+                  profile: { firstName, lastName, campus } = {},
+                } = {},
+              } = {},
+            }) => (
+              <>
+                <Name>{`${firstName} ${lastName}`}</Name>
+                {campus && campus.name !== '' && <H6>{campus.name}</H6>}
+              </>
+            )}
+          </Query>
+        </FlagContent>
+      </Flag>
+    ),
+    headerRight: navigation.getParam('nested') ? null : (
+      <StyledHeaderRight>
+        <HeaderRight />
+      </StyledHeaderRight>
+    ),
+  });
 
 Connect.propTypes = {
   navigation: PropTypes.shape({
