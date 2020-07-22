@@ -69,17 +69,19 @@ const CardTitle = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit * 0.5,
 }))(H6);
 
-const Name = styled(({ theme }) => ({
+const Title = styled(({ theme }) => ({
   marginTop: theme.sizing.baseUnit * 0.5,
 }))(H4);
+
+const Subtitle = styled(({ theme }) => ({
+  fontWeight: '400',
+}))(H6);
 
 const Flag = styled({
   flexDirection: 'row',
 })(View);
 
-const FlagMedia = styled(({ theme }) => ({
-  marginRight: theme.sizing.baseUnit * 1.5,
-}))(PaddedView);
+const FlagMedia = styled(({ theme }) => ({}))(PaddedView);
 
 const FlagContent = styled({
   justifyContent: 'center',
@@ -244,8 +246,9 @@ Connect.navigationOptions = ({ navigation, ...props }) =>
               } = {},
             }) => (
               <>
-                <Name>{`${firstName} ${lastName}`}</Name>
-                {campus && campus.name !== '' && <H6>{campus.name}</H6>}
+                <Title>{`${firstName} ${lastName}`}</Title>
+                {campus &&
+                  campus.name !== '' && <Subtitle>{campus.name}</Subtitle>}
               </>
             )}
           </Query>
