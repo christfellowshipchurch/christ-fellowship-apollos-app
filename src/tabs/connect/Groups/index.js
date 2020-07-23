@@ -52,11 +52,6 @@ const Groups = ({ navigation }) => {
         }}
       >
         <HorizontalGroupCard
-          coverImage={[
-            {
-              uri: 'https://picsum.photos/800',
-            },
-          ]}
           avatars={avatars}
           isLoading={loading}
           error={error}

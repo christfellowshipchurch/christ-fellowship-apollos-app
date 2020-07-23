@@ -43,10 +43,10 @@ const RandomAvatar = styled(
 )(ConnectedImage);
 
 const PlaceholderIcon = compose(
-  withTheme(({ theme: { colors, sizing } = {} }) => ({
+  withTheme(({ theme: { colors } = {}, size }) => ({
     fill: colors.paper,
     name: 'avatarPlacholder',
-    size: 60,
+    size,
   }))
 )(Icon);
 
@@ -167,7 +167,10 @@ class AvatarCloud extends PureComponent {
           <PlaceholderWrapper
             size={this.getAvatarPercentageWidth(maxAvatarWidth)}
           >
-            <PlaceholderIcon isLoading={false} />
+            <PlaceholderIcon
+              isLoading={false}
+              size={this.getAvatarPercentageWidth(maxAvatarWidth * 2)} // Increase the size of the placeholder profile icon by multiplying by a magic number
+            />
           </PlaceholderWrapper>
         )}
         {this.renderRandomAvatars()}

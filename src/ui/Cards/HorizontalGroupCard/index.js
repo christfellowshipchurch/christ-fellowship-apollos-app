@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { get } from 'lodash';
+import { get, head } from 'lodash';
 
 import {
   BodySmall,
@@ -70,28 +70,44 @@ const ScheduleView = styled(({ theme }) => ({
 }))(View);
 
 const HorizontalGroupCard = withIsLoading(
-  ({ fill, coverImage, isLoading, summary, title, schedule, avatars }) => (
-    <SquareCard isLoading={isLoading} inHorizontalList>
-      <View>
-        <Image source={coverImage} hasTitleAndSummary={!!summary && !!title} />
-        <StyledAvatarCloud
-          avatars={avatars}
-          primaryAvatar={'https://picsum.photos/200'}
-        />
-      </View>
-      <Content>
-        {title ? <Title numberOfLines={2}>{title}</Title> : null}
-        {schedule ? (
-          <ScheduleView>
-            <IconView>
-              <Icon name="time" size={16} fill={fill} />
-            </IconView>
-            <Schedule numberOfLines={1}>{schedule}</Schedule>
-          </ScheduleView>
-        ) : null}
-      </Content>
-    </SquareCard>
-  )
+  ({
+    fill,
+    coverImage,
+    isLoading,
+    summary,
+    title,
+    schedule,
+    avatars,
+    leaders,
+  }) => {
+    const leader = head(leaders);
+    const leaderPhoto = get(leader, 'photo', {});
+    return (
+      <SquareCard isLoading={isLoading} inHorizontalList>
+        <View>
+          <Image
+            source={coverImage}
+            hasTitleAndSummary={!!summary && !!title}
+          />
+          <StyledAvatarCloud
+            avatars={avatars}
+            primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
+          />
+        </View>
+        <Content>
+          {title ? <Title numberOfLines={2}>{title}</Title> : null}
+          {schedule ? (
+            <ScheduleView>
+              <IconView>
+                <Icon name="time" size={16} fill={fill} />
+              </IconView>
+              <Schedule numberOfLines={1}>{schedule}</Schedule>
+            </ScheduleView>
+          ) : null}
+        </Content>
+      </SquareCard>
+    );
+  }
 );
 
 HorizontalGroupCard.propTypes = {
