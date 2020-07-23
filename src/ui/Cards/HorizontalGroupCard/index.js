@@ -18,7 +18,7 @@ import {
 
 import AvatarCloud from '../../AvatarCloud';
 
-const SquareCard = styled(({ customTheme, theme }) => ({
+const CardWrapper = styled(({ customTheme, theme }) => ({
   width: 212,
   flex: 1,
   backgroundColor: get(customTheme, 'colors.primary', theme.colors.white),
@@ -82,11 +82,12 @@ const HorizontalGroupCard = withIsLoading(
   }) => {
     const leader = head(leaders);
     const leaderPhoto = get(leader, 'photo', {});
+    const imageSource = get(coverImage, 'sources', {});
     return (
-      <SquareCard isLoading={isLoading} inHorizontalList>
+      <CardWrapper isLoading={isLoading} inHorizontalList>
         <View>
           <Image
-            source={coverImage}
+            source={imageSource}
             hasTitleAndSummary={!!summary && !!title}
           />
           <StyledAvatarCloud
@@ -105,7 +106,7 @@ const HorizontalGroupCard = withIsLoading(
             </ScheduleView>
           ) : null}
         </Content>
-      </SquareCard>
+      </CardWrapper>
     );
   }
 );
