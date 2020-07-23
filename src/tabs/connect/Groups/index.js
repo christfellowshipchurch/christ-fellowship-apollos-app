@@ -36,27 +36,15 @@ const Groups = ({ navigation }) => {
   if (error) return <ErrorCard error={error} />;
 
   const renderItem = ({ item }) => {
-    const members = get(item, 'members', []);
-    const avatars = [];
-    members.map(
-      (member) => (member.photo.uri ? avatars.push(member.photo) : null)
-    );
-
     return (
       <TouchableScale
         onPress={() => {
           navigation.push('GroupSingle', {
             itemId: item.id,
-            avatars,
           });
         }}
       >
-        <HorizontalGroupCard
-          avatars={avatars}
-          isLoading={loading}
-          error={error}
-          {...item}
-        />
+        <HorizontalGroupCard isLoading={loading} error={error} {...item} />
       </TouchableScale>
     );
   };

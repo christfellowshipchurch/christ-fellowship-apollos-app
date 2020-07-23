@@ -27,6 +27,7 @@ export const GROUP_FRAGMENT = gql`
         uri
       }
     }
+    avatars
   }
 `;
 

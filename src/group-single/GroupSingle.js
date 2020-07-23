@@ -162,7 +162,6 @@ const GroupSingle = ({ navigation }) => {
   const meetingNo = ''; // TODO: meeting number
 
   const itemId = navigation.getParam('itemId', []);
-  const avatars = navigation.getParam('avatars', []);
   const queryVariables = { itemId };
 
   const { firstName, lastName } = useCurrentUser();
@@ -256,7 +255,7 @@ const GroupSingle = ({ navigation }) => {
                         overlayType="featured"
                       />
                       <StyledAvatarCloud
-                        avatars={avatars}
+                        avatars={content.avatars}
                         primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
                       />
                       <StyledTitle>
