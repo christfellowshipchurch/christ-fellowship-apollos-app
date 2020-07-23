@@ -22,6 +22,11 @@ export const GROUP_FRAGMENT = gql`
       }
     }
     schedule
+    coverImage {
+      sources {
+        uri
+      }
+    }
   }
 `;
 
