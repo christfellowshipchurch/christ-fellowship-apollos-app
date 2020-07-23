@@ -46,7 +46,7 @@ const MemberCard = styled(({ theme, forceRatio }) => ({
   marginBottom: theme.sizing.baseUnit * 0.75,
   ...(forceRatio ? { aspectRatio: forceRatio } : {}),
   alignItems: 'center',
-  flex: 1,
+  height: 'auto',
 }))(View);
 
 const MemberImage = styled({
@@ -152,13 +152,6 @@ const GroupSingle = ({ navigation }) => {
     }
     initializeZoom();
   }, []);
-
-  const coverImageSources = [
-    {
-      uri: 'https://picsum.photos/800',
-    },
-  ];
-
   const loadingStateObject = {
     id: 'fake_id',
     title: '',
@@ -239,6 +232,7 @@ const GroupSingle = ({ navigation }) => {
   const renderContent = ({ content, loading, error }) => {
     const leader = head(get(content, 'leaders', []));
     const leaderPhoto = get(leader, 'photo', {});
+    const coverImageSources = get(content, 'coverImage.sources', []);
     return (
       <ThemeConsumer>
         {(theme) => (
