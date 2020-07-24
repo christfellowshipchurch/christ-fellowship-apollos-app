@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-import { withNavigation } from 'react-navigation';
 import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 
@@ -14,10 +13,7 @@ import {
   TouchableScale,
   Touchable,
   withIsLoading,
-  HorizontalDefaultCard,
 } from '@apollosproject/ui-kit';
-
-import { HorizontalContentCardConnected } from '@apollosproject/ui-connected';
 
 import ContentCardConnected from 'ui/ContentCardConnected';
 import { HorizontalHighlightCard } from 'ui/Cards';

@@ -4,7 +4,6 @@ import { drop, dropRight, head, last } from 'lodash';
 import { withProps } from 'recompose';
 
 import {
-    FeedView,
     TouchableScale,
     withMediaQuery,
     withTheme,
@@ -101,6 +100,7 @@ const GridCardFeed = ({
 
     return (
         <StyledCardFeed
+            onPressItem={(item) => onPressItem(item, navigation)}
             card={ColumnCard}
             numColumns={numColumns}
             content={body}
@@ -121,7 +121,7 @@ const GridCardFeed = ({
                 !error &&
                 footer && (
                     <CapCard
-                        onPress={() => onPressItem(footer)}
+                        onPress={() => onPressItem(footer, navigation)}
                         {...footer}
                         forceRatio={forceRatio}
                         isLoading={isLoading && !content.length}

@@ -16,10 +16,15 @@ const Title = ({ contentId, isLoading }) => {
         variables: { itemId: contentId },
     });
 
+    const title = get(data, 'node.title', '');
+    const somethingIsLoading = loading || isLoading;
+    const theTitleExists = title && title !== '';
+    const showLoadingIndicator = somethingIsLoading && !theTitleExists;
+
     return (
         <TitleSpacer>
-            <H3 isLoading={loading || isLoading}>{get(data, 'node.title', '')}</H3>
-            <BodyText isLoading={loading || isLoading}>
+            <H3 isLoading={showLoadingIndicator}>{get(data, 'node.title', '')}</H3>
+            <BodyText isLoading={showLoadingIndicator}>
                 {get(data, 'node.summary', '')}
             </BodyText>
         </TitleSpacer>

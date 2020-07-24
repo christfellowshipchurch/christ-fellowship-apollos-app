@@ -138,7 +138,7 @@ const alpha = {
     low: 0.4,
 };
 
-const overrides = {
+const overrides = ({ colors }) => ({
     'Onboarding.SlideContent.Title': {
         color: '#FFFFFF',
     },
@@ -192,13 +192,10 @@ const overrides = {
     'ui-prayer.PrayerExperienceConnected': {
         showOnboarding: true,
     },
-    // 'ui-kit.AvatarList.AddIcon': {
-    //     name: 'pray',
-    // },
     'ui-prayer.PrayerInput.PromptIcon': {
         name: 'plus',
     },
-};
+});
 
 const buttons = ({ colors: themeColors }) => ({
     white: {

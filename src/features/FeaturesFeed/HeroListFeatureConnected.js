@@ -4,6 +4,7 @@ import { get } from 'lodash';
 
 import { HeroListFeatureConnected as CoreHeroListFeatureConnected } from '@apollosproject/ui-connected';
 import { HeroCardFeed } from 'ui/CardFeeds';
+import NavigationService from '../../NavigationService';
 
 const HeroListFeature = ({
     actions = [],
@@ -19,6 +20,35 @@ const HeroListFeature = ({
 }) => {
     const onPressHero = onPressHeroProp || onPressItem;
     const onPressActionListButton = onPressHeroListButton || onPressItem;
+
+    const seeMore =
+        get(primaryAction, 'title', '') !== '' &&
+        get(primaryAction, 'action', '') !== '' &&
+        get(primaryAction, 'relatedNode.id', '') !== '';
+    const onPressHeader = () => {
+        const action = get(primaryAction, 'action', '');
+        const relatedNode = get(primaryAction, 'relatedNode', {});
+        if (action === 'READ_CONTENT') {
+            NavigationService.navigate('ContentSingle', {
+                itemId: relatedNode.id,
+                transitionKey: 2,
+            });
+        }
+        if (action === 'READ_EVENT') {
+            NavigationService.navigate('Event', {
+                eventId: relatedNode.id,
+                transitionKey: 2,
+            });
+        }
+        if (action === 'VIEW_FEED') {
+            NavigationService.navigate('ContentFeed', {
+                itemId: id,
+                itemTitle: title,
+                nested: true,
+                transitionKey: 2,
+            });
+        }
+    };
 
     /** The heroCard and actions need to be combined into a single array
      *  shaped in a way that ContentCardConnected can ingest it. Each of
@@ -41,6 +71,9 @@ const HeroListFeature = ({
             isLoading={isLoading}
             key={id}
             onPressHero={onPressHero}
+            seeMore={seeMore}
+            seeMoreText={get(primaryAction, 'title', '')}
+            onPressHeader={onPressHeader}
         />
     );
 };

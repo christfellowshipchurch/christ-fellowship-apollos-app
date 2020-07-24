@@ -45,13 +45,15 @@ const HoriztonalFeatureFeed = ({
     Component,
     style,
     ...props
-}) => (
+}) => {
+    const weHaveAValidTitle = title && title !== '';
+    return (
         <Container style={style}>
             {(isLoading || title || subtitle) && ( // only display the Header if we are loading or have a title/subtitle
                 <Header>
                     {(isLoading || title) && (
                         <Title
-                            isLoading={isLoading && (!title || title === '')}
+                            isLoading={isLoading && !weHaveAValidTitle}
                             numberOfLines={1}
                             bold
                         >
@@ -65,6 +67,7 @@ const HoriztonalFeatureFeed = ({
             <Component {...props} />
         </Container>
     );
+};
 
 HoriztonalFeatureFeed.propTypes = {
     Component: PropTypes.oneOfType([
