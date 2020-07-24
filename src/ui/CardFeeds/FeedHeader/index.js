@@ -20,7 +20,12 @@ const RowHeader = styled(({ theme, viewAll }) => ({
     alignItems: 'center',
     zIndex: 2, // UX hack to improve tapability. Positions RowHeader above StyledHorizontalTileFeed
     paddingLeft: theme.sizing.baseUnit,
-    ...(viewAll ? {} : { paddingBottom: theme.sizing.baseUnit * 0.5 }),
+    ...(viewAll
+        ? {}
+        : {
+            paddingBottom: theme.sizing.baseUnit * 0.5,
+            paddingRight: theme.sizing.baseUnit,
+        }),
 }))(View);
 
 const TitlePosition = styled({

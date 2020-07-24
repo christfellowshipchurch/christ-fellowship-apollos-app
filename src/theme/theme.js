@@ -195,6 +195,9 @@ const overrides = ({ colors }) => ({
     'ui-prayer.PrayerInput.PromptIcon': {
         name: 'plus',
     },
+    'ui-prayer.PrayerCard': {
+        title: 'Add your prayer request',
+    },
 });
 
 const buttons = ({ colors: themeColors }) => ({
