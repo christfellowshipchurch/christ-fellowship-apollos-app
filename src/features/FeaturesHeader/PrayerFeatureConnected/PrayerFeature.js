@@ -146,4 +146,4 @@ PrayerFeatureWrapper.defaultProps = {
   prayers: [],
 };
 
-export default withTheme()(withIsLoading(PrayerFeatureWrapper));
+export default withTheme()(PrayerFeatureWrapper);
