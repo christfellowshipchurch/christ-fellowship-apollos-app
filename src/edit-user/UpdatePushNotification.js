@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Linking } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import { NotificationsConsumer } from '@apollosproject/ui-notifications';
-import {
-  InputWrapper,
-} from '../ui/inputs';
+import { InputWrapper } from '../ui/inputs';
 
 const UpdatePushNotification = () => {
+  const [justTrustMe, setJustTrustMe] = useState(false);
 
   function defaultGetButtonText({ hasPushPermission, hasPrompted }) {
     if (hasPushPermission) {
@@ -20,31 +19,27 @@ const UpdatePushNotification = () => {
 
   return (
     <NotificationsConsumer>
-        {( value ) => ( 
-          <InputWrapper
-            displayValue={defaultGetButtonText({
-              hasPrompted: value.hasPrompted,
-              hasPushPermission: value.hasPushPermission,
-            })}
-            icon="bell"
-            actionIcon="arrow-next"
-            disabled={value.hasPushPermission}
-            handleOnPress={() => value.hasPrompted
+      {(value) => (
+        <InputWrapper
+          displayValue={defaultGetButtonText(value)}
+          icon="bell"
+          actionIcon="arrow-next"
+          handleOnPress={() =>
+            value.hasPrompted
               ? Linking.openURL('app-settings:')
-              : PushNotificationIOS.requestPermissions()
-            }
-          />
-        )}
+              : PushNotificationIOS.requestPermissions().then(() =>
+                setJustTrustMe(true)
+              )
+          }
+          justTrustMe={justTrustMe}
+        />
+      )}
     </NotificationsConsumer>
   );
 };
 
-UpdatePushNotification.propTypes = {
-  
-};
+UpdatePushNotification.propTypes = {};
 
-UpdatePushNotification.defaultProps = {
-  
-};
+UpdatePushNotification.defaultProps = {};
 
 export default UpdatePushNotification;
