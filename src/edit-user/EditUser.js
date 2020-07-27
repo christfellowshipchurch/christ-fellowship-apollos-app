@@ -37,6 +37,7 @@ import {
 import { useForm } from '../hooks';
 
 import { GET_FIELD_OPTIONS } from './queries';
+import UpdatePushNotification from './UpdatePushNotification'
 
 const FeaturedImage = withTheme(({ theme }) => ({
   overlayColor: theme.colors.black,
@@ -316,6 +317,7 @@ const EditUser = ({
                   }}
                 />
               )}
+            <UpdatePushNotification/>
           </FieldContainer>
         </ContentContainer>
       </ScrollView>
