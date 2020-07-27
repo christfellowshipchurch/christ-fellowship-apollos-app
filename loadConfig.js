@@ -5,6 +5,36 @@ import gql from 'graphql-tag';
 ApollosConfig.loadJs({
   FRAGMENTS: {
     ...FRAGMENTS,
+    USER_PROFILE_PARTS_FRAGMENT: gql`
+      fragment UserProfileParts on Person {
+        id
+        firstName
+        nickName
+        lastName
+        gender
+        birthDate
+
+        email
+        phoneNumber
+
+        photo {
+          uri
+        }
+
+        address {
+          street1
+          street2
+          city
+          state
+          postalCode
+        }
+
+        communicationPreferences {
+          allowSMS
+          allowEmail
+        }
+      }
+    `,
     ACCESSORY_FRAGMENT: gql`
       fragment accessoryFragment on ContentItem {
         ... on ContentSeriesContentItem {

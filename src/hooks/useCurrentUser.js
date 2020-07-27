@@ -1,48 +1,25 @@
-import { useState, useReducer } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import ApollosConfig from '@apollosproject/config';
 import gql from 'graphql-tag';
-import { get } from 'lodash';
+import { get, merge } from 'lodash';
+import moment from 'moment';
 
 export const CURRENT_USER = gql`
   query getCurrentUserProfile {
     currentUser {
       id
       profile {
-        id
-        firstName
-        lastName
-        gender
-        birthDate
-
-        email
-        phoneNumber
+        ...UserProfileParts
 
         campus {
           ...CampusParts
-        }
-
-        photo {
-          uri
-        }
-
-        address {
-          street1
-          street2
-          city
-          state
-          postalCode
-        }
-
-        communicationPreferences {
-          allowSMS
-          allowEmail
         }
       }
     }
   }
 
   ${ApollosConfig.FRAGMENTS.CAMPUS_PARTS_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.USER_PROFILE_PARTS_FRAGMENT}
 `;
 
 export const UPDATE_CURRENT_USER = gql`
@@ -76,6 +53,42 @@ export const UPDATE_CURRENT_USER = gql`
   }
 `;
 
+export const UPDATE_CURRENT_USER_PROFILE_FIELD = gql`
+  mutation updateCurrentUserProfileField($profileField: UpdateProfileInput!) {
+    updateProfileField(input: $profileField) {
+      ...UserProfileParts
+    }
+  }
+
+  ${ApollosConfig.FRAGMENTS.USER_PROFILE_PARTS_FRAGMENT}
+`;
+
+export const UPDATE_CURRENT_USER_ADDRESS = gql`
+  mutation updateCurrentUserProfileField($address: AddressInput!) {
+    updateAddress(address: $address) {
+      street1
+      street2
+      city
+      state
+      postalCode
+    }
+  }
+`;
+
+export const UPDATE_CURRENT_USER_COMMUNICATION_PREFERENCE = gql`
+  mutation updateCurrentUserProfileField(
+    $type: UPDATEABLE_COMMUNICATION_PREFERENCES!
+    $allow: Boolean!
+  ) {
+    updateCommunicationPreference(type: $type, allow: $allow) {
+      communicationPreferences {
+        allowEmail
+        allowSMS
+      }
+    }
+  }
+`;
+
 const useCurrentUser = (props) => {
   const {
     loading: queryLoading,
@@ -89,9 +102,36 @@ const useCurrentUser = (props) => {
   const id = get(data, 'currentUser.id', null);
   const profile = get(data, 'currentUser.profile', {});
 
+  const writeProfileUpdatesToQuery = async (cache, newProfile) => {
+    // read the CURRENT_USER query
+    const { currentUser } = await cache.readQuery({ query: CURRENT_USER });
+
+    // write to the cache the results of the current cache
+    //  and append any new fields that have been returned from the mutation
+    await cache.writeQuery({
+      query: CURRENT_USER,
+      data: {
+        currentUser: {
+          ...currentUser,
+          profile: { ...currentUser.profile, ...newProfile },
+        },
+      },
+    });
+  };
+
+  const onMutationError = () => {
+    const onUpdate = get(props, 'onUpdate', () => null);
+    onUpdate({ success: false });
+  };
+
+  const onMutationSuccess = () => {
+    const onUpdate = get(props, 'onUpdate', () => null);
+    onUpdate({ success: false });
+  };
+
   const [
     updateProfile,
-    { loading: mutationLoading, error: mutationError },
+    { loading: updateProfileLoading, error: updateProfileError },
   ] = useMutation(UPDATE_CURRENT_USER, {
     update: async (
       cache,
@@ -103,45 +143,78 @@ const useCurrentUser = (props) => {
         },
       }
     ) => {
-      // read the CURRENT_USER query
-      const { currentUser } = cache.readQuery({ query: CURRENT_USER });
-      const { birthDate, gender } = updateProfileFields;
+      const profileObjectShape = {
+        ...updateProfileFields,
+        address: updateAddress,
+        communicationPreferences: updateCommunicationPreferences,
+      };
 
-      // write to the cache the results of the current cache
-      //  and append any new fields that have been returned from the mutation
-      await cache.writeQuery({
-        query: CURRENT_USER,
-        data: {
-          currentUser: {
-            ...currentUser,
-            profile: {
-              ...currentUser.profile,
-              birthDate,
-              gender,
-              address: updateAddress,
-              ...updateCommunicationPreferences,
-            },
-          },
-        },
-      });
+      await writeProfileUpdatesToQuery(cache, profileObjectShape);
+      onMutationSuccess();
+    },
+    onError: onMutationError,
+  });
 
-      const onUpdate = get(props, 'onUpdate', () => null);
-      onUpdate({ success: true });
+  const [
+    updateProfileField,
+    { loading: updateProfileFieldLoading, error: updateProfileFieldError },
+  ] = useMutation(UPDATE_CURRENT_USER_PROFILE_FIELD, {
+    update: async (cache, { data: { updateProfileField: updatedProfile } }) => {
+      await writeProfileUpdatesToQuery(cache, updatedProfile);
+      onMutationSuccess();
     },
-    onError: () => {
-      const onUpdate = get(props, 'onUpdate', () => null);
-      onUpdate({ success: false });
+    onError: onMutationError,
+  });
+
+  const [
+    updateAddress,
+    { loading: updateAddressLoading, error: updateAddressError },
+  ] = useMutation(UPDATE_CURRENT_USER_ADDRESS, {
+    update: async (cache, { data: { updateAddress: address } }) => {
+      await writeProfileUpdatesToQuery(cache, { address });
+      onMutationSuccess();
     },
+    onError: onMutationError,
+  });
+
+  const [
+    updateCommunicationPreference,
+    {
+      loading: updateCommunicationPreferenceLoading,
+      error: updateCommunicationPreferenceError,
+    },
+  ] = useMutation(UPDATE_CURRENT_USER_COMMUNICATION_PREFERENCE, {
+    update: async (
+      cache,
+      { data: { updateCommunicationPreference: communicationPreferences } }
+    ) => {
+      await writeProfileUpdatesToQuery(cache, communicationPreferences);
+      onMutationSuccess();
+    },
+    onError: onMutationError,
   });
 
   return {
-    loading: queryLoading || mutationLoading,
-    error: queryError || mutationError,
+    loading:
+      queryLoading ||
+      updateProfileLoading ||
+      updateProfileFieldLoading ||
+      updateCommunicationPreferenceLoading ||
+      updateAddressLoading,
+    error:
+      queryError ||
+      updateProfileError ||
+      updateProfileFieldError ||
+      updateCommunicationPreferenceError ||
+      updateAddressError,
     data,
     ...queryProps,
     id,
     ...profile,
     updateProfile,
+    updateProfileField,
+    updateCommunicationPreference,
+    updateAddress,
   };
 };
 
