@@ -28,6 +28,11 @@ export const GROUP_FRAGMENT = gql`
       }
     }
     avatars
+    groupResources {
+      title
+      url
+      contentChannelItem
+    }
   }
 `;
 
