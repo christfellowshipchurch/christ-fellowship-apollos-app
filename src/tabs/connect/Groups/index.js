@@ -27,6 +27,7 @@ const loadingStateObject = {
   id: 'fake_id',
   title: '',
   coverImage: [],
+  avatars: [],
 };
 
 const Groups = ({ navigation }) => {
@@ -35,19 +36,17 @@ const Groups = ({ navigation }) => {
 
   if (error) return <ErrorCard error={error} />;
 
-  const renderItem = ({ item }) => {
-    return (
-      <TouchableScale
-        onPress={() => {
-          navigation.push('GroupSingle', {
-            itemId: item.id,
-          });
-        }}
-      >
-        <HorizontalGroupCard isLoading={loading} error={error} {...item} />
-      </TouchableScale>
-    );
-  };
+  const renderItem = ({ item }) => (
+    <TouchableScale
+      onPress={() => {
+        navigation.push('GroupSingle', {
+          itemId: item.id,
+        });
+      }}
+    >
+      <HorizontalGroupCard isLoading={loading} error={error} {...item} />
+    </TouchableScale>
+  );
 
   return (
     <View>

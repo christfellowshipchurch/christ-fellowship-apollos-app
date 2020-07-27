@@ -12,6 +12,7 @@ import {
   BackgroundView,
   PaddedView,
   H3,
+  H4,
   H5,
   BodyText,
   ConnectedImage,
@@ -26,7 +27,7 @@ import {
   Button,
 } from '@apollosproject/ui-kit';
 
-import { useCurrentUser } from '../hooks';
+import { useCurrentUser, useLinkRouter } from '../hooks';
 
 import AvatarCloud from '../ui/AvatarCloud';
 
@@ -42,11 +43,11 @@ const StretchyView = ({ children, ...props }) =>
 
 const MemberCard = styled(({ theme, forceRatio }) => ({
   width: 80,
+  flex: 1,
   margin: theme.sizing.baseUnit / 2,
   marginBottom: theme.sizing.baseUnit * 0.75,
   ...(forceRatio ? { aspectRatio: forceRatio } : {}),
   alignItems: 'center',
-  height: 'auto',
 }))(View);
 
 const MemberImage = styled({
@@ -97,10 +98,24 @@ const StyledH3 = styled({
   textAlign: 'center',
 })(H3);
 
+const StyledH4 = styled(({ theme }) => ({
+  paddingBottom: theme.sizing.baseUnit,
+}))(H4);
+
 const StyledH5 = styled(({ theme }) => ({
   color: theme.colors.darkTertiary,
   textAlign: 'center',
 }))(H5);
+
+const StyledButton = styled(({ theme }) => ({
+  marginBottom: theme.sizing.baseUnit * 0.5,
+  backgroundColor: 'rgba(120, 120, 128, 0.36)',
+  borderColor: 'rgba(120, 120, 128, 0)',
+}))(Button);
+
+const StyledButtonText = styled(({ theme }) => ({
+  color: '#FFF',
+}))(H4);
 
 const StyledHorizontalTileFeed = styled(({ theme }) => ({
   /* UX hack to improve tapability. The magic number below happens to be the number of pixels that
@@ -127,12 +142,24 @@ const PlaceholderWrapper = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
+const Cell = styled(({ theme }) => ({
+  paddingBottom: theme.sizing.baseUnit * 0.5,
+  paddingHorizontal: theme.sizing.baseUnit,
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+}))(View);
+
+const CellItem = styled(({ theme, first }) => ({
+  marginRight: first ? theme.sizing.baseUnit : 0,
+  flex: 1,
+}))(View);
+
 const ZoomBridgeerType = 2; // 2 - pro user
 const config = {
   zoom: {
-    appKey: Config.ZOOM_SDK_KEY, // SDK key created in Zoom app marketplace
-    appSecret: Config.ZOOM_SDK_SECRET, // SDK secret created in Zoom app marketplace
-    domain: 'zoom.us',
+    appKey: Config.ZOOM_SDK_APP_KEY, // SDK key created in Zoom app marketplace
+    appSecret: Config.ZOOM_SDK_APP_SECRET, // SDK secret created in Zoom app marketplace
+    appJwtToken: '',
   },
 };
 
@@ -142,8 +169,7 @@ const GroupSingle = ({ navigation }) => {
       try {
         const initializeResult = await ZoomBridge.initialize(
           config.zoom.appKey,
-          config.zoom.appSecret,
-          config.zoom.domain
+          config.zoom.appSecret
         );
         console.log({ initializeResult });
       } catch (e) {
@@ -152,6 +178,8 @@ const GroupSingle = ({ navigation }) => {
     }
     initializeZoom();
   }, []);
+
+  const { routeLink } = useLinkRouter();
   const loadingStateObject = {
     id: 'fake_id',
     title: '',
@@ -176,6 +204,7 @@ const GroupSingle = ({ navigation }) => {
     const zoomToken = 'null'; // NOTE: no need for userId when using zakToken
 
     const zoomAccessToken = zakToken;
+    // console.warn('zoomAccessToken', zoomAccessToken);
 
     try {
       await ZoomBridge.startMeeting(
@@ -204,7 +233,7 @@ const GroupSingle = ({ navigation }) => {
     const photo = get(item, 'photo', {});
     const name = get(item, 'firstName', '');
     return (
-      <MemberCard forceRatio={1}>
+      <MemberCard>
         {!isLoading && photo && photo.uri ? (
           <MemberImageWrapper>
             <MemberImage // eslint-disable-line react-native/no-inline-styles
@@ -232,6 +261,7 @@ const GroupSingle = ({ navigation }) => {
     const leader = head(get(content, 'leaders', []));
     const leaderPhoto = get(leader, 'photo', {});
     const coverImageSources = get(content, 'coverImage.sources', []);
+    const resources = get(content, 'groupResources', []);
     return (
       <ThemeConsumer>
         {(theme) => (
@@ -266,25 +296,8 @@ const GroupSingle = ({ navigation }) => {
                       </StyledTitle>
                     </Stretchy>
                   ) : null}
-                  <PaddedView>
-                    <Button
-                      onPress={() => join()}
-                      loading={loading}
-                      title={'Join Video Call'}
-                      type={'primary'}
-                      pill={false}
-                    />
-                  </PaddedView>
-                  <PaddedView>
-                    <Button
-                      onPress={() => start()}
-                      loading={loading}
-                      title={'Start Video Call'}
-                      type={'primary'}
-                      pill={false}
-                    />
-                  </PaddedView>
-                  <PaddedView>
+
+                  <PaddedView vertical={false}>
                     {content.schedule ? (
                       <ScheduleView>
                         <IconView>
@@ -299,14 +312,51 @@ const GroupSingle = ({ navigation }) => {
                       <BodyText>{content.summary}</BodyText>
                     </PaddedView>
 
-                    <H5>{'Group Members'}</H5>
+                    <StyledH4>{'Group Members'}</StyledH4>
+                    <StyledHorizontalTileFeed
+                      content={content.members}
+                      renderItem={renderMember}
+                      loadingStateObject={loadingStateObject}
+                      isLoading={loading}
+                    />
                   </PaddedView>
-                  <StyledHorizontalTileFeed
-                    content={content.members}
-                    renderItem={renderMember}
-                    loadingStateObject={loadingStateObject}
-                    isLoading={loading}
-                  />
+                  <Cell>
+                    <CellItem first>
+                      <Button
+                        onPress={() => join()}
+                        loading={loading}
+                        title={'Join Video Call'}
+                        type={'primary'}
+                        pill={false}
+                      />
+                    </CellItem>
+                    <CellItem>
+                      <Button
+                        onPress={() => start()}
+                        loading={loading}
+                        title={'Start Video Call'}
+                        type={'primary'}
+                        pill={false}
+                      />
+                    </CellItem>
+                  </Cell>
+                  {resources && (
+                    <PaddedView>
+                      <StyledH4>{'Resources'}</StyledH4>
+                      {resources.map((item) => (
+                        <StyledButton
+                          onPress={() => {
+                            routeLink(item.url);
+                          }}
+                          type={'default'}
+                          loading={loading}
+                          pill={false}
+                        >
+                          <StyledButtonText>{item.title}</StyledButtonText>
+                        </StyledButton>
+                      ))}
+                    </PaddedView>
+                  )}
                 </FlexedScrollView>
               )}
             </StretchyView>
