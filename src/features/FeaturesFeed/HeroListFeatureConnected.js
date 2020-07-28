@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
+import { NavigationService } from '@apollosproject/ui-kit';
 import { HeroListFeatureConnected as CoreHeroListFeatureConnected } from '@apollosproject/ui-connected';
 import { HeroCardFeed } from 'ui/CardFeeds';
-import NavigationService from '../../NavigationService';
 
 const HeroListFeature = ({
     actions = [],

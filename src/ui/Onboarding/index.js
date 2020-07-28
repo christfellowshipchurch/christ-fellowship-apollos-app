@@ -6,16 +6,17 @@ import {
   RESULTS,
 } from 'react-native-permissions';
 
-import { withThemeMixin } from '@apollosproject/ui-kit';
+import { withThemeMixin, NavigationService } from '@apollosproject/ui-kit';
 import {
   AskNotificationsConnected,
   FeaturesConnected,
   LocationFinderConnected,
   OnboardingSwiper,
 } from '@apollosproject/ui-onboarding';
-import { resetAction } from '../../NavigationService';
 
 import AuthBackground from '../AuthBackground';
+
+const { resetAction } = NavigationService;
 
 function Onboarding({ navigation }) {
   return (

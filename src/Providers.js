@@ -1,6 +1,10 @@
 import React from 'react';
 import ApollosConfig from '@apollosproject/config';
-import { Providers, BackgroundView } from '@apollosproject/ui-kit';
+import {
+    Providers,
+    BackgroundView,
+    NavigationService,
+} from '@apollosproject/ui-kit';
 import { AnalyticsProvider } from '@apollosproject/ui-analytics';
 import { MediaPlayerProvider } from '@apollosproject/ui-media-player';
 import { NotificationsProvider } from '@apollosproject/ui-notifications';
@@ -15,7 +19,6 @@ import { SideMenuProvider } from './sidemenu';
 import AppStateProvider from './AppStateProvider';
 
 import { track, identify } from './amplitude';
-import NavigationService from './NavigationService';
 import ClientProvider from './client';
 import customTheme, { customIcons } from './theme';
 
