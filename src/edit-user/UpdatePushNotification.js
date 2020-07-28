@@ -1,18 +1,43 @@
 import React, { useState } from 'react';
-import { Linking } from 'react-native';
-import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PropTypes from 'prop-types'
+import {
+  checkNotifications,
+  openSettings,
+  requestNotifications,
+  RESULTS,
+} from 'react-native-permissions';
 import { NotificationsConsumer } from '@apollosproject/ui-notifications';
 import { InputWrapper } from '../ui/inputs';
 
-const UpdatePushNotification = () => {
-  const [justTrustMe, setJustTrustMe] = useState(false);
+const updateNotficationSettings = (update) => {
+  checkNotifications().then((checkRes) => {
+    if (checkRes.status === RESULTS.DENIED) {
+      requestNotifications(['alert', 'badge', 'sound']).then(
+        () => {
+          update();
+        }
+      );
+    } else {
+      openSettings();
+    }
+  });
+}
+
+const UpdatePushNotification = ({
+  onRequestPushPermissions
+}) => {
+
+  // When updating notifications from the Settings app, it will not 
+  // update button text unless app is closed and reopened. 
+  // For now we used more generic text("Update") 
+  // in order to avoid confusion. We plan on updating this in the future.
 
   function defaultGetButtonText({ hasPushPermission, hasPrompted }) {
     if (hasPushPermission) {
-      return 'Disable Notifications in Settings';
+      return 'Update Notifications in Settings';
     }
     if (hasPrompted) {
-      return 'Enable Notifications in Settings';
+      return 'Update Notifications in Settings';
     }
     return 'Enable Notifications';
   }
@@ -24,22 +49,19 @@ const UpdatePushNotification = () => {
           displayValue={defaultGetButtonText(value)}
           icon="bell"
           actionIcon="arrow-next"
-          handleOnPress={() =>
-            value.hasPrompted
-              ? Linking.openURL('app-settings:')
-              : PushNotificationIOS.requestPermissions().then(() =>
-                setJustTrustMe(true)
-              )
-          }
-          justTrustMe={justTrustMe}
+          handleOnPress={() => onRequestPushPermissions(value.checkPermissions)}
         />
       )}
     </NotificationsConsumer>
   );
 };
 
-UpdatePushNotification.propTypes = {};
+UpdatePushNotification.PropTypes = {
+  onRequestPushPermissions: PropTypes.func
+};
 
-UpdatePushNotification.defaultProps = {};
+UpdatePushNotification.defaultProps = {
+  onRequestPushPermissions: updateNotficationSettings
+};
 
 export default UpdatePushNotification;
