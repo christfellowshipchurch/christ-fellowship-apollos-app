@@ -217,7 +217,7 @@ const EditUser = ({
               label="Street Address"
               value={values.street1}
               onChangeText={(newStreet1) => setValue('street1', newStreet1)}
-              onSubmitEditing={handleAddressUpdate}
+              onBlur={handleAddressUpdate}
               icon="home"
               disabled={disabled}
               returnKeyType="done"
@@ -226,7 +226,7 @@ const EditUser = ({
               label="City"
               value={values.city}
               onChangeText={(newCity) => setValue('city', newCity)}
-              onSubmitEditing={handleAddressUpdate}
+              onBlur={handleAddressUpdate}
               hideIcon
               disabled={disabled}
               returnKeyType="done"
@@ -235,10 +235,8 @@ const EditUser = ({
               label="State"
               value={values.state}
               displayValue={values.state}
-              onValueChange={(newState) => {
-                setValue('state', newState);
-                handleAddressUpdate();
-              }}
+              onValueChange={(newState) => setValue('state', newState)}
+              onBlur={() => handleAddressUpdate()}
               hideIcon
               disabled={disabled}
             >
@@ -252,7 +250,7 @@ const EditUser = ({
               onChangeText={(newPostalCode) =>
                 setValue('postalCode', newPostalCode)
               }
-              onSubmitEditing={handleAddressUpdate}
+              onBlur={handleAddressUpdate}
               hideIcon
               disabled={disabled}
               returnKeyType="done"

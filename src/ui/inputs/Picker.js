@@ -41,22 +41,16 @@ const Picker = ({
     style,
     icon,
     hideIcon,
-    onRequestClose,
     ...pickerProps
 }) => {
-    const [focused, setFocused] = useState(false);
     const backgroundColor = useDynamicValue(pickerBackgroundColorValue);
 
     return (
         <Row>
-            <InputIcon focused={focused} icon={icon} hideIcon={hideIcon} />
+            <InputIcon icon={icon} hideIcon={hideIcon} />
             <StyledPicker
                 {...pickerProps}
                 value={value}
-                focused={focused}
-                onRequestClose={() => {
-                    setFocused(false);
-                }}
                 backgroundColor={backgroundColor}
                 wrapperStyle={{ flex: 1 }}
             />
@@ -69,14 +63,12 @@ Picker.propTypes = {
     style: PropTypes.object,
     icon: PropTypes.string,
     hideIcon: PropTypes.bool,
-    onRequestClose: PropTypes.func,
 };
 
 Picker.defaultProps = {
     style: {},
     hideIcon: false,
     icon: 'text',
-    onRequestClose: () => null,
 };
 
 export default Picker;
