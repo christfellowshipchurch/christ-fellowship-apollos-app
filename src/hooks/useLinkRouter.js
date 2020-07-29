@@ -72,6 +72,8 @@ const useLinkRouter = (props) => {
       });
       const { inAppLink } = data;
 
+      console.log({ inAppLink });
+
       routeLink(inAppLink, { restrictedQueryParams });
     },
     loading: false,

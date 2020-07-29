@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Color from 'color';
 import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
-
 import { SafeAreaView } from 'react-navigation';
+
 import {
   GradientOverlayImage,
   styled,
@@ -37,7 +37,7 @@ import {
 import { useForm, useCurrentUser } from '../hooks';
 
 import { GET_FIELD_OPTIONS } from './queries';
-import UpdatePushNotification from './UpdatePushNotification'
+import UpdatePushNotification from './UpdatePushNotification';
 
 const FeaturedImage = withTheme(({ theme }) => ({
   overlayColor: theme.colors.black,
@@ -137,19 +137,31 @@ const EditUser = ({
   const [allowEmailToggle, setAllowEmailToggle] = useState(allowEmail);
   const { values, setValue } = useForm({
     defaultValues: {
-      street1: address.street1,
-      city: address.city,
-      state: address.state,
-      postalCode: address.postalCode,
+      street1: get(address, 'street1', ''),
+      city: get(address, 'city', ''),
+      state: get(address, 'state', ''),
+      postalCode: get(address, 'postalCode', ''),
     },
   });
 
   const handleAddressUpdate = () => {
-    updateAddress({
-      variables: {
-        address: values,
-      },
-    });
+    if (
+      values.street1 &&
+      values.street1 !== '' &&
+      values.city &&
+      values.city !== '' &&
+      values.state &&
+      values.state !== '' &&
+      values.postalCode &&
+      values.postalCode !== ''
+    ) {
+      console.log({ values });
+      updateAddress({
+        variables: {
+          address: values,
+        },
+      });
+    }
   };
   const pickerColor = useDynamicValue(pickerColorValue);
   const featuredImage = get(campus, 'featuredImage.uri', null);
@@ -332,7 +344,7 @@ const EditUser = ({
                   }}
                 />
               )}
-            <UpdatePushNotification/>
+            <UpdatePushNotification />
           </FieldContainer>
         </ContentContainer>
       </ScrollView>

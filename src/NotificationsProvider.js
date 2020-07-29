@@ -5,10 +5,8 @@
  *  We should track the issue and move this file back to the Core code once a change/fix
  *  has been approved and implemented.
  */
-import URL from 'url';
-import querystring from 'querystring';
 import React, { Component } from 'react';
-import { Linking } from 'react-native';
+import { Linking, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { withApollo } from 'react-apollo';
@@ -19,6 +17,8 @@ import {
     resolvers,
     defaults,
 } from '@apollosproject/ui-notifications/src/store';
+
+import { useLinkRouter } from 'hooks';
 
 const UPDATE_DEVICE_PUSH_ID = gql`
   mutation updateDevicePushId($pushId: String!) {
@@ -40,6 +40,7 @@ class NotificationsInit extends Component {
             writeData: PropTypes.func,
             onClearStore: PropTypes.func,
         }).isRequired,
+        routeLink: PropTypes.func,
     };
 
     static navigationOptions = {};
@@ -53,6 +54,8 @@ class NotificationsInit extends Component {
     }
 
     componentDidMount() {
+        console.log({ oneSignal: this.props.oneSignalKey });
+
         OneSignal.init(this.props.oneSignalKey, {
             kOSSettingsKeyAutoPrompt: false,
         });
@@ -74,9 +77,12 @@ class NotificationsInit extends Component {
     }
 
     navigate = (rawUrl) => {
+        console.log({ rawUrl });
+
         if (!rawUrl) return;
-        const url = URL.parse(rawUrl);
-        const route = url.pathname.substring(1);
+
+        this.props.routeLink(rawUrl);
+
         /** The bug that is fixed in the code below is one where routes are
          *  incorrectly being cleaned.
          *
@@ -89,20 +95,16 @@ class NotificationsInit extends Component {
          *  Current Url Deep Link: `cf://cf/Profile` gets cleaned to `undefined`
          *  New Url Deep Link: `cf://cf/app-link/Profile` gets cleaned to `/Profile`
          *
-         *  The given change updates the logic for cleaning to be compatible with all
-         *  versions of the app.
-         *
-         *  Current Url Deep Link: `cf://cf/Profile` gets cleaned to `/Profile`
-         *  New Url Deep Link: `cf://cf/app-link/Profile` gets cleaned to `/Profile`
+         *  The given change updates the logic to route the raw url to our useLinkRouter
+         *  hook as provided by `NotificationsInitHookProvider` in order to take advantage
+         *  of routing urls from the API instead of hardcoded values.
          */
+
+        // const url = URL.parse(rawUrl);
+        // const route = url.pathname.substring(1);
         // const cleanedRoute = route.includes('/app-link/')
         //   ? route
         //   : route.split('app-link/')[1];
-        const cleanedRoute = route.includes('/app-link/')
-            ? route.split('app-link/')[1]
-            : route;
-        const args = querystring.parse(url.query);
-        this.props.navigate(cleanedRoute, args);
     };
 
     onReceived = (notification) => {
@@ -118,7 +120,11 @@ class NotificationsInit extends Component {
         // apolloschurchapp://AppStackNavigator/Connect
         // apolloschurchapp://SomethingElse/Connect
         // apolloschurchapp://SomethingElse/ContentSingle?itemId=SomeItemId:blablalba
-        const url = get(openResult, 'notification.payload.additionalData.url');
+        const url = Platform.select({
+            ios: get(openResult, 'notification.payload.additionalData.url'),
+            android: get(openResult, 'notification.payload.launchURL'),
+        });
+
         if (url) {
             this.navigate(url);
         }
@@ -136,4 +142,12 @@ class NotificationsInit extends Component {
     }
 }
 
-export default withApollo(NotificationsInit);
+const NotificationsInitWithApollo = withApollo(NotificationsInit);
+
+const NotificationsInitHookProvider = (props) => {
+    const { routeLink } = useLinkRouter();
+
+    return <NotificationsInitWithApollo {...props} routeLink={routeLink} />;
+};
+
+export default NotificationsInitHookProvider;
