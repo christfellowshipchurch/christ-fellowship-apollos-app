@@ -102,7 +102,9 @@ const HorizontalGroupCard = withIsLoading(
               <IconView>
                 <Icon name="time" size={16} fill={fill} />
               </IconView>
-              <Schedule numberOfLines={1}>{schedule}</Schedule>
+              <Schedule numberOfLines={1}>
+                {schedule.friendlyScheduleText}
+              </Schedule>
             </ScheduleView>
           ) : null}
         </Content>

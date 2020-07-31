@@ -21,7 +21,9 @@ export const GROUP_FRAGMENT = gql`
         uri
       }
     }
-    schedule
+    schedule {
+      friendlyScheduleText
+    }
     coverImage {
       sources {
         uri
@@ -32,6 +34,10 @@ export const GROUP_FRAGMENT = gql`
       title
       url
       contentChannelItem
+    }
+    dateTime {
+      start
+      end
     }
   }
 `;

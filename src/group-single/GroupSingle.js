@@ -304,7 +304,7 @@ const GroupSingle = ({ navigation }) => {
                           <Icon name="time" size={16} />
                         </IconView>
                         <Schedule numberOfLines={1}>
-                          {content.schedule}
+                          {content.schedule.friendlyScheduleText}
                         </Schedule>
                       </ScheduleView>
                     ) : null}
