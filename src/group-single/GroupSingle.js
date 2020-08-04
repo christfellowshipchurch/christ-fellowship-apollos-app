@@ -32,6 +32,7 @@ import { useCurrentUser, useLinkRouter } from '../hooks';
 import AvatarCloud from '../ui/AvatarCloud';
 
 import NavigationHeader from '../content-single/NavigationHeader';
+import AddCalEventButton from '../content-single/AddCalEventButton';
 
 import GET_GROUP from './getGroup';
 
@@ -195,7 +196,7 @@ const GroupSingle = ({ navigation }) => {
   const { firstName, lastName } = useCurrentUser();
   const fullName = `${firstName} ${lastName}`;
 
-  const start = async () => {
+  const startMeeting = async () => {
     const zakToken = decodeURIComponent(zakTokenRaw);
 
     // TODO recieve user's details from zoom API? WOUT: webinar user is different
@@ -262,6 +263,9 @@ const GroupSingle = ({ navigation }) => {
     const leaderPhoto = get(leader, 'photo', {});
     const coverImageSources = get(content, 'coverImage.sources', []);
     const resources = get(content, 'groupResources', []);
+    const dateTime = get(content, 'dateTime', {});
+    const { start } = dateTime;
+    const zoomMeetingJoinUrl = '';
     return (
       <ThemeConsumer>
         {(theme) => (
@@ -298,6 +302,14 @@ const GroupSingle = ({ navigation }) => {
                   ) : null}
 
                   <PaddedView vertical={false}>
+                    {start ? (
+                      <AddCalEventButton
+                        eventTitle={content.title}
+                        eventStart={start}
+                        eventNotes={zoomMeetingJoinUrl}
+                        isLoading={loading}
+                      />
+                    ) : null}
                     {content.schedule ? (
                       <ScheduleView>
                         <IconView>
@@ -332,7 +344,7 @@ const GroupSingle = ({ navigation }) => {
                     </CellItem>
                     <CellItem>
                       <Button
-                        onPress={() => start()}
+                        onPress={() => startMeeting()}
                         loading={loading}
                         title={'Start Video Call'}
                         type={'primary'}
