@@ -160,7 +160,7 @@ const config = {
   zoom: {
     appKey: Config.ZOOM_SDK_APP_KEY, // SDK key created in Zoom app marketplace
     appSecret: Config.ZOOM_SDK_APP_SECRET, // SDK secret created in Zoom app marketplace
-    appJwtToken: '',
+    domain: 'zoom.us',
   },
 };
 
@@ -170,7 +170,8 @@ const GroupSingle = ({ navigation }) => {
       try {
         const initializeResult = await ZoomBridge.initialize(
           config.zoom.appKey,
-          config.zoom.appSecret
+          config.zoom.appSecret,
+          config.zoom.domain
         );
         console.log({ initializeResult });
       } catch (e) {
