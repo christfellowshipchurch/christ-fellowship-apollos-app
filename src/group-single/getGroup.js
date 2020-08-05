@@ -39,6 +39,11 @@ export const GROUP_FRAGMENT = gql`
       start
       end
     }
+    zoom {
+      link
+      meetingId
+      passcode
+    }
   }
 `;
 

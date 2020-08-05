@@ -189,7 +189,6 @@ const GroupSingle = ({ navigation }) => {
   };
 
   const zakTokenRaw = Config.ZOOM_ZAK_TOKEN; // Meeting zak token generated from using the jwt token as auth from jwt zoom app in postman and hitting the https://api.zoom.us/v2/users/{userId}/token?type=zak endpoint
-  const meetingNo = ''; // TODO: meeting number
 
   const itemId = navigation.getParam('itemId', []);
   const queryVariables = { itemId };
@@ -197,7 +196,7 @@ const GroupSingle = ({ navigation }) => {
   const { firstName, lastName } = useCurrentUser();
   const fullName = `${firstName} ${lastName}`;
 
-  const startMeeting = async () => {
+  const startMeeting = async (meetingId) => {
     const zakToken = decodeURIComponent(zakTokenRaw);
 
     // TODO recieve user's details from zoom API? WOUT: webinar user is different
@@ -211,7 +210,7 @@ const GroupSingle = ({ navigation }) => {
     try {
       await ZoomBridge.startMeeting(
         fullName,
-        meetingNo,
+        meetingId,
         userId,
         userType,
         zoomAccessToken,
@@ -222,10 +221,9 @@ const GroupSingle = ({ navigation }) => {
     }
   };
 
-  const join = async () => {
-    const password = ''; // TODO: meeting password
+  const join = async (meetingId, passcode) => {
     try {
-      await ZoomBridge.joinMeetingWithPassword(fullName, meetingNo, password);
+      await ZoomBridge.joinMeetingWithPassword(fullName, meetingId, passcode);
     } catch (e) {
       throw e;
     }
@@ -265,8 +263,8 @@ const GroupSingle = ({ navigation }) => {
     const coverImageSources = get(content, 'coverImage.sources', []);
     const resources = get(content, 'groupResources', []);
     const dateTime = get(content, 'dateTime', {});
+    const zoom = get(content, 'zoom', {});
     const { start } = dateTime;
-    const zoomMeetingJoinUrl = '';
     return (
       <ThemeConsumer>
         {(theme) => (
@@ -307,7 +305,7 @@ const GroupSingle = ({ navigation }) => {
                       <AddCalEventButton
                         eventTitle={content.title}
                         eventStart={start}
-                        eventNotes={zoomMeetingJoinUrl}
+                        eventNotes={!isEmpty(zoom) ? zoom.link : null}
                         isLoading={loading}
                       />
                     ) : null}
@@ -333,27 +331,29 @@ const GroupSingle = ({ navigation }) => {
                       isLoading={loading}
                     />
                   </PaddedView>
-                  <Cell>
-                    <CellItem first>
-                      <Button
-                        onPress={() => join()}
-                        loading={loading}
-                        title={'Join Video Call'}
-                        type={'primary'}
-                        pill={false}
-                      />
-                    </CellItem>
-                    <CellItem>
-                      <Button
-                        onPress={() => startMeeting()}
-                        loading={loading}
-                        title={'Start Video Call'}
-                        type={'primary'}
-                        pill={false}
-                      />
-                    </CellItem>
-                  </Cell>
-                  {resources && (
+                  {!isEmpty(zoom) ? (
+                    <Cell>
+                      <CellItem first>
+                        <Button
+                          onPress={() => join(zoom.meetingId, zoom.passcode)}
+                          loading={loading}
+                          title={'Join Video Call'}
+                          type={'primary'}
+                          pill={false}
+                        />
+                      </CellItem>
+                      <CellItem>
+                        <Button
+                          onPress={() => startMeeting(zoom.meetingId)}
+                          loading={loading}
+                          title={'Start Video Call'}
+                          type={'primary'}
+                          pill={false}
+                        />
+                      </CellItem>
+                    </Cell>
+                  ) : null}
+                  {!isEmpty(resources) ? (
                     <PaddedView>
                       <StyledH4>{'Resources'}</StyledH4>
                       {resources.map((item) => (
@@ -369,7 +369,7 @@ const GroupSingle = ({ navigation }) => {
                         </StyledButton>
                       ))}
                     </PaddedView>
-                  )}
+                  ) : null}
                 </FlexedScrollView>
               )}
             </StretchyView>
