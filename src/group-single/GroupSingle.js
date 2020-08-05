@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Animated, View } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
-import { get, head } from 'lodash';
+import { get, head, isEmpty } from 'lodash';
 import { compose } from 'recompose';
 import ZoomBridge from 'react-native-zoom-bridge';
 import Config from 'react-native-config';
