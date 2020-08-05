@@ -56,14 +56,15 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
     }
 
     useEffect(
-        () =>
+        () => {
             onConfirm(
                 moment()
                     .year(year)
                     .month(month)
                     .date(day)
                     .toString()
-            ),
+            );
+        },
         [values]
     );
 
@@ -133,7 +134,7 @@ DateInput.propTypes = {
 
 DateInput.defaultProps = {
     value: moment().toString(),
-    onConfirm: (date) => null,
+    onConfirm: (date) => date,
     icon: 'birthday-cake',
     maxYear: moment().year(),
     minYear: moment().year() - 100,

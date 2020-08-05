@@ -1,82 +1,79 @@
-import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { Animated } from 'react-native';
+import React, { useState } from 'react';
+import { Animated, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { get, flatten } from 'lodash';
 import PropTypes from 'prop-types';
+import { get } from 'lodash';
 
-import { FeedView, DefaultCard } from '@apollosproject/ui-kit';
+import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import { styled } from '@apollosproject/ui-kit';
 
-import StatusBar from 'ui/StatusBar';
+import { FeaturesFeedConnected, FeaturesHeaderConnected } from 'features';
 
-import { HorizontalDivider } from 'ui/Dividers';
 import Wordmark from 'ui/Wordmark';
-import { HighlightCard } from 'ui/Cards';
-import { Feature } from '../../feature';
 import {
   navigationOptions,
   BackgroundView,
   NavigationSpacer,
   useHeaderScrollEffect,
 } from '../../navigation';
-import LiveStreamsFeed from './LiveStreamsFeed';
 
-import GET_FEED_FEATURES from './getFeedFeatures';
-
-const mapDataToActions = (data) => flatten(data.map(({ actions }) => actions));
+const ListHeaderSpacer = styled(({ theme }) => ({
+  paddingBottom: theme.sizing.baseUnit * 0.5,
+}))(View);
 
 const Home = ({ navigation }) => {
-  const { loading, error, data, refetch } = useQuery(GET_FEED_FEATURES, {
-    fetchPolicy: 'cache-and-network',
-  });
+  const [refetchRef, setRefetchRef] = useState(null);
   const { scrollY } = useHeaderScrollEffect({ navigation });
-  const content = mapDataToActions(get(data, 'userFeedFeatures', []));
-  const renderItem = ({ item }) => {
-    if (item.isLoading)
-      return (
-        <>
-          <HighlightCard title="" isLoading coverImage={[]} />
-          <HorizontalDivider />
-        </>
-      );
-
-    return item.action ? (
-      <>
-        <Feature {...item} isLoading={loading} />
-        <HorizontalDivider />
-      </>
-    ) : null;
+  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
+    if (action === 'READ_CONTENT') {
+      navigation.navigate('ContentSingle', {
+        itemId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'READ_EVENT') {
+      navigation.navigate('Event', {
+        eventId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'OPEN_URL') {
+      openUrl(relatedNode.url);
+    }
   };
 
   return (
-    <BackgroundView>
-      <SafeAreaView forceInset={{ bottom: 'never', top: 'always' }}>
-        <StatusBar />
-        <FeedView
-          renderItem={renderItem}
-          content={content}
-          isLoading={loading && !get(data, 'userFeedFeatures', []).length}
-          error={error}
-          refetch={refetch}
-          ListHeaderComponent={
-            <React.Fragment>
-              <NavigationSpacer />
-              <LiveStreamsFeed />
-            </React.Fragment>
-          }
-          scrollEventThrottle={16}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: { y: scrollY },
-              },
-            },
-          ])}
-          removeClippedSubviews={false}
-          numColumns={1}
-        />
-      </SafeAreaView>
-    </BackgroundView>
+    <RockAuthedWebBrowser>
+      {(openUrl) => (
+        <BackgroundView>
+          <SafeAreaView>
+            <FeaturesFeedConnected
+              onPressActionItem={handleOnPress({ openUrl })}
+              ListHeaderComponent={
+                <ListHeaderSpacer>
+                  <NavigationSpacer />
+                  <FeaturesHeaderConnected
+                    refetchRef={get(refetchRef, 'refetchRef', () => null)}
+                    refetchId="HomeFeedFeaturesHeaderConnected"
+                  />
+                </ListHeaderSpacer>
+              }
+              scrollEventThrottle={16}
+              onScroll={Animated.event([
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollY },
+                  },
+                },
+              ])}
+              removeClippedSubviews={false}
+              numColumns={1}
+              onRef={(ref) => setRefetchRef(ref)}
+            />
+          </SafeAreaView>
+        </BackgroundView>
+      )}
+    </RockAuthedWebBrowser>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import gql from 'graphql-tag';
 import { useQuery, useMutation } from '@apollo/react-hooks';
@@ -14,6 +14,7 @@ import {
     TouchableScale,
     InlineActivityIndicator,
 } from '@apollosproject/ui-kit';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import BlurView from 'ui/BlurView';
 
 const CHECK_IN = gql`
@@ -28,9 +29,7 @@ const CHECK_IN = gql`
 `;
 
 const GET_CHECK_IN = gql`
-  query getCheckIn($itemId: ID!, $key: String!) {
-    flagStatus(key: $key)
-
+  query getCheckIn($itemId: ID!) {
     node(id: $itemId) {
       __typename
       id
@@ -39,6 +38,7 @@ const GET_CHECK_IN = gql`
           id
           title
           message
+          isCheckedIn
         }
       }
     }
@@ -98,6 +98,24 @@ const Message = withTheme(({ theme }) => ({
 const StyledActivityIndicator = withTheme(({ theme }) => ({
     color: theme.colors.background.screen,
 }))(InlineActivityIndicator);
+
+const ConfirmationAlert = withTheme(({ theme }) => ({
+    titleStyle: {
+        color: theme.colors.success,
+        fontSize: theme.helpers.rem(1.5),
+        lineHeight: theme.helpers.verticalRhythm(1.5, 1.15),
+        fontFamily: theme.typography.sans.black.default,
+        fontWeight: '900',
+        textAlign: 'center',
+    },
+    messageStyle: {
+        color: theme.colors.text.secondary,
+        fontWeight: '700',
+    },
+    contentContainerStyle: {
+        backgroundColor: theme.colors.background.screen,
+    },
+}))(AwesomeAlert);
 
 export const CheckInButton = ({
     title,
@@ -163,18 +181,17 @@ CheckInButton.defaultProps = {
 };
 
 const CheckInButtonConnected = ({ contentId, isLoading, style }) => {
-    const [
-        doCheckIn,
-        { loading: mutationLoading, data: mutationData },
-    ] = useMutation(CHECK_IN, {
+    const [showAlert, setShowAlert] = useState(false);
+    const [doCheckIn, { loading: mutationLoading }] = useMutation(CHECK_IN, {
         update: async (cache, { data }) => {
             const queryData = await cache.readQuery({
                 query: GET_CHECK_IN,
                 variables: {
                     itemId: contentId,
-                    key: 'CHECK_IN',
                 },
             });
+
+            setShowAlert(true);
 
             cache.writeQuery({
                 query: GET_CHECK_IN,
@@ -189,6 +206,7 @@ const CheckInButtonConnected = ({ contentId, isLoading, style }) => {
         },
     });
     const { loading, error, data } = useQuery(GET_CHECK_IN, {
+        fetchPolicy: 'network-only',
         skip: !contentId || contentId === '' || isLoading,
         variables: {
             itemId: contentId,
@@ -197,23 +215,32 @@ const CheckInButtonConnected = ({ contentId, isLoading, style }) => {
     });
 
     const checkin = get(data, 'node.checkin', null);
-    const flagStatus = get(data, 'flagStatus', null);
 
-    if (!flagStatus || flagStatus !== 'LIVE') return null;
+    const showConfirmationMessage = () => {
+        if (showAlert) setTimeout(() => setShowAlert(false), 2000);
+    };
+    useEffect(() => showConfirmationMessage(), [showAlert]);
 
     // If any error is thrown, we should just not show any ui
     if (error || !checkin || loading) return null;
 
-    const mutationCheckInData = get(mutationData, 'checkin', {});
-
     return (
-        <CheckInButton
-            {...checkin}
-            {...mutationCheckInData}
-            isLoading={mutationLoading}
-            style={style}
-            onPress={() => doCheckIn({ variables: { id: checkin.id } })}
-        />
+        <>
+            <CheckInButton
+                {...checkin}
+                isLoading={mutationLoading}
+                style={style}
+                onPress={() => doCheckIn({ variables: { id: checkin.id } })}
+            />
+            <ConfirmationAlert
+                show={showAlert}
+                showProgress={false}
+                title="You're all set!"
+                message="Thanks for checking in."
+                closeOnTouchOutside={false}
+                closeOnHardwareBackPress={false}
+            />
+        </>
     );
 };
 

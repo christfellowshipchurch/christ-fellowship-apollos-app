@@ -1,9 +1,13 @@
 import React from 'react';
 import ApollosConfig from '@apollosproject/config';
-import { Providers, BackgroundView } from '@apollosproject/ui-kit';
+import {
+    Providers,
+    BackgroundView,
+    NavigationService,
+} from '@apollosproject/ui-kit';
 import { AnalyticsProvider } from '@apollosproject/ui-analytics';
 import { MediaPlayerProvider } from '@apollosproject/ui-media-player';
-import { NotificationsProvider } from '@apollosproject/ui-notifications';
+// import { NotificationsProvider } from '@apollosproject/ui-notifications';
 import { LiveProvider } from '@apollosproject/ui-connected';
 import { AuthProvider } from '@apollosproject/ui-auth';
 import {
@@ -11,11 +15,11 @@ import {
     useDynamicValue,
     DarkModeProvider,
 } from 'react-native-dark-mode';
+import NotificationsProvider from './NotificationsProvider';
 import { SideMenuProvider } from './sidemenu';
 import AppStateProvider from './AppStateProvider';
 
 import { track, identify } from './amplitude';
-import NavigationService from './NavigationService';
 import ClientProvider from './client';
 import customTheme, { customIcons } from './theme';
 

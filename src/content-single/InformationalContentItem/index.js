@@ -8,7 +8,7 @@ import {
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  // StretchyView,
+  StretchyView,
 } from '@apollosproject/ui-kit';
 import { MediaControlsConnected } from '@apollosproject/ui-connected';
 import Features from '../Features';
@@ -30,10 +30,6 @@ const StyledButton = styled(({ theme }) => ({
 const ButtonContainer = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
-
-// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
-const StretchyView = ({ children, ...props }) =>
-  children({ Stretchy: View, ...props });
 
 const InformationalContentItem = ({ content, loading, navigation }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
@@ -74,7 +70,6 @@ const InformationalContentItem = ({ content, loading, navigation }) => {
                   {callsToAction.map((n) => (
                     <StyledButton
                       key={`${n.call}:${n.action}`}
-                      isLoading={loading}
                       title={n.call}
                       pill={false}
                       url={n.action}

@@ -29,6 +29,7 @@ const HeroCardFeed = ({
     error,
     isLoading,
     forceRatio,
+    onPressHero,
     ...additionalProps
 }) => {
     /** We want to send the CardFeed all but the first data item so we
@@ -36,19 +37,6 @@ const HeroCardFeed = ({
      */
     const heroItem = head(content);
     const adjustedContent = drop(content);
-
-    /** Function that is called when the first card is pressed.
-     *  This is the same as the rest of the cards, but it needs
-     *  be manually passed into the header.
-     */
-    const onPressHero = () => {
-        if (heroItem.id) {
-            navigation.navigate('ContentSingle', {
-                itemId: heroItem.id,
-                sharing: heroItem.sharing,
-            });
-        }
-    };
 
     return (
         <CardFeed
@@ -58,7 +46,7 @@ const HeroCardFeed = ({
             ListHeaderComponent={
                 !error && (
                     <HeroCard
-                        onPress={onPressHero}
+                        onPress={() => onPressHero(heroItem, navigation)}
                         {...heroItem}
                         forceRatio={forceRatio}
                         isLoading={isLoading && !content.length}
@@ -90,11 +78,21 @@ HeroCardFeed.propTypes = {
     error: PropTypes.any,
     numColumns: PropTypes.number,
     withHeroCard: PropTypes.bool,
+    onPressHero: PropTypes.func,
+    forceRatio: PropTypes.bool,
 };
 
 HeroCardFeed.defaultProps = {
     isLoading: false,
     content: [],
+    onPressHero: (heroItem, navigation) => {
+        if (heroItem.id) {
+            navigation.navigate('ContentSingle', {
+                itemId: heroItem.id,
+                sharing: heroItem.sharing,
+            });
+        }
+    },
 };
 
 HeroCardFeed.displayName = 'HeroCardFeed';

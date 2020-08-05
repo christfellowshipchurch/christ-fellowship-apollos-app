@@ -11,7 +11,7 @@ import {
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  // StretchyView,
+  StretchyView,
 } from '@apollosproject/ui-kit';
 
 import Title from '../Title';
@@ -20,10 +20,6 @@ import Author from '../Author';
 import HTMLContent from '../HTMLContent';
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
-
-// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
-const StretchyView = ({ children, ...props }) =>
-  children({ Stretchy: View, ...props });
 
 const StyledMediaControlsConnected = styled(({ theme }) => ({
   marginTop: -(theme.sizing.baseUnit * 2.5),

@@ -6,9 +6,10 @@ import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from 'apollo-link';
 import { getVersion, getApplicationName } from 'react-native-device-info';
 
+import { NavigationService } from '@apollosproject/ui-kit';
 import { authLink, buildErrorLink } from '@apollosproject/ui-auth';
+
 import { resolvers, schema, defaults } from '../store';
-import NavigationService from '../NavigationService';
 import { bugsnagLink, setUser } from '../bugsnag';
 import httpLink from './httpLink';
 import cache, { ensureCacheHydration, MARK_CACHE_LOADED } from './cache';
