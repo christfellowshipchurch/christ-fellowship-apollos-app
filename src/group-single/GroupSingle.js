@@ -223,7 +223,11 @@ const GroupSingle = ({ navigation }) => {
 
   const join = async (meetingId, passcode) => {
     try {
-      await ZoomBridge.joinMeetingWithPassword(fullName, meetingId, passcode);
+      if (passcode) {
+        await ZoomBridge.joinMeetingWithPassword(fullName, meetingId, passcode);
+      } else {
+        await ZoomBridge.joinMeeting(fullName, meetingId);
+      }
     } catch (e) {
       throw e;
     }
