@@ -26,7 +26,7 @@ const ContentTab = ({
 }) => (
     <ScrollView>
       <ContentContainer isLoading={isLoading}>
-        <Title contentId={content.id} isLoading={isLoading} />
+        <Title contentId={id} isLoading={isLoading} />
         {references && references.length ? (
           <ScriptureList
             references={references}

@@ -77,34 +77,8 @@ class NotificationsInit extends Component {
     }
 
     navigate = (rawUrl) => {
-        console.log({ rawUrl });
-
         if (!rawUrl) return;
-
         this.props.routeLink(rawUrl);
-
-        /** The bug that is fixed in the code below is one where routes are
-         *  incorrectly being cleaned.
-         *
-         *  Error:
-         *  The current structure of Push Notification urls do _not_ require
-         *  that `app-link` be in the url, so updating the urls to match the new
-         *  structure would mean that anyone running the app <5.2.0 would not be
-         *  able to open up deep links.
-         *
-         *  Current Url Deep Link: `cf://cf/Profile` gets cleaned to `undefined`
-         *  New Url Deep Link: `cf://cf/app-link/Profile` gets cleaned to `/Profile`
-         *
-         *  The given change updates the logic to route the raw url to our useLinkRouter
-         *  hook as provided by `NotificationsInitHookProvider` in order to take advantage
-         *  of routing urls from the API instead of hardcoded values.
-         */
-
-        // const url = URL.parse(rawUrl);
-        // const route = url.pathname.substring(1);
-        // const cleanedRoute = route.includes('/app-link/')
-        //   ? route
-        //   : route.split('app-link/')[1];
     };
 
     onReceived = (notification) => {

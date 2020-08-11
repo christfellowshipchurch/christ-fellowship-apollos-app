@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
-import { styled } from '@apollosproject/ui-kit';
+import { styled, TouchableScale } from '@apollosproject/ui-kit';
 
+import ContentCardConnected from 'ui/ContentCardConnected';
 import { FeaturesFeedConnected, FeaturesHeaderConnected } from 'features';
 
 import Wordmark from 'ui/Wordmark';
@@ -56,6 +57,17 @@ const Home = ({ navigation }) => {
                     refetchRef={get(refetchRef, 'refetchRef', () => null)}
                     refetchId="HomeFeedFeaturesHeaderConnected"
                   />
+
+                  <TouchableScale
+                    onPress={() =>
+                      navigation.navigate('ContentSingle', {
+                        itemId:
+                          'DevotionalContentItem:56f7ddb99ed8ebeb438197ebd015c8e1',
+                      })
+                    }
+                  >
+                    <ContentCardConnected contentId="DevotionalContentItem:56f7ddb99ed8ebeb438197ebd015c8e1" />
+                  </TouchableScale>
                 </ListHeaderSpacer>
               }
               scrollEventThrottle={16}

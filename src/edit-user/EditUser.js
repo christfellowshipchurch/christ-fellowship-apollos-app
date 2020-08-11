@@ -155,7 +155,6 @@ const EditUser = ({
       values.postalCode &&
       values.postalCode !== ''
     ) {
-      console.log({ values });
       updateAddress({
         variables: {
           address: values,
