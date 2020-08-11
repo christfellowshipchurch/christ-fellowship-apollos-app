@@ -360,18 +360,26 @@ const GroupSingle = ({ navigation }) => {
                   {!isEmpty(resources) ? (
                     <PaddedView>
                       <StyledH4>{'Resources'}</StyledH4>
-                      {resources.map((item) => (
-                        <StyledButton
-                          onPress={() => {
-                            routeLink(item.url);
-                          }}
-                          type={'default'}
-                          loading={loading}
-                          pill={false}
-                        >
-                          <StyledButtonText>{item.title}</StyledButtonText>
-                        </StyledButton>
-                      ))}
+                      {resources.map((item) => {
+                        const handleOnPress = () => {
+                          if (item.contentChannelItem) {
+                            navigation.navigate('ContentSingle', {
+                              itemId: item.contentChannelItem,
+                            });
+                          }
+                          return routeLink(item.url);
+                        };
+                        return (
+                          <StyledButton
+                            onPress={() => handleOnPress()}
+                            type={'default'}
+                            loading={loading}
+                            pill={false}
+                          >
+                            <StyledButtonText>{item.title}</StyledButtonText>
+                          </StyledButton>
+                        );
+                      })}
                     </PaddedView>
                   ) : null}
                 </FlexedScrollView>
