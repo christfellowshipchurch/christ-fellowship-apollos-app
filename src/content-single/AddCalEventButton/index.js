@@ -17,7 +17,7 @@ const addToCalendar = (title, notes, startDateUTC) => {
     startDate: utcDateToString(startDateUTC),
     endDate: utcDateToString(moment.utc(startDateUTC).add(1, 'hours')),
     notes,
-    alert: 2,
+    alert: 15,
   };
 
   presentEventCreatingDialog(eventConfig)
