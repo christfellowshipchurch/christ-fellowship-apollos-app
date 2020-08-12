@@ -7,8 +7,7 @@ index 0000000..0d259dd
 +o/classes
 diff --git a/node_modules/react-native-add-calendar-event/android/build/.transforms/a77604b769d93cb8ed84e541c131cdaa/classes/classes.dex b/node_modules/react-native-add-calendar-event/android/build/.transforms/a77604b769d93cb8ed84e541c131cdaa/classes/classes.dex
 new file mode 100644
-index 0000000..8ca8c9b
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/.transforms/a77604b769d93cb8ed84e541c131cdaa/classes/classes.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/generated/source/buildConfig/debug/com/vonovak/BuildConfig.java b/node_modules/react-native-add-calendar-event/android/build/generated/source/buildConfig/debug/com/vonovak/BuildConfig.java
 new file mode 100644
 index 0000000..b339da5
@@ -72,12 +71,10 @@ index 0000000..9e26dfe
 \ No newline at end of file
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/compile_library_classes/debug/classes.jar b/node_modules/react-native-add-calendar-event/android/build/intermediates/compile_library_classes/debug/classes.jar
 new file mode 100644
-index 0000000..a67c139
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/intermediates/compile_library_classes/debug/classes.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar b/node_modules/react-native-add-calendar-event/android/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar
 new file mode 100644
-index 0000000..75c42d1
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/react-native-add-calendar-event/android/build/intermediates/compile_symbol_list/debug/R.txt
 new file mode 100644
 index 0000000..e365600
@@ -1868,8 +1865,7 @@ index 0000000..e365600
 +int xml rn_dev_preferences 0x0
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/incremental/debug-mergeNativeLibs/merge-state b/node_modules/react-native-add-calendar-event/android/build/intermediates/incremental/debug-mergeNativeLibs/merge-state
 new file mode 100644
-index 0000000..9503b5f
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/intermediates/incremental/debug-mergeNativeLibs/merge-state differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/react-native-add-calendar-event/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
 new file mode 100644
 index 0000000..accecfc
@@ -1915,24 +1911,19 @@ index 0000000..45c5d90
 \ No newline at end of file
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/AddCalendarEventModule.class b/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/AddCalendarEventModule.class
 new file mode 100644
-index 0000000..e96baac
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/AddCalendarEventModule.class differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/AddCalendarEventPackage.class b/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/AddCalendarEventPackage.class
 new file mode 100644
-index 0000000..6de7149
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/AddCalendarEventPackage.class differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/BuildConfig.class b/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/BuildConfig.class
 new file mode 100644
-index 0000000..a439166
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/BuildConfig.class differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/Utils.class b/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/Utils.class
 new file mode 100644
-index 0000000..08e85c1
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/intermediates/javac/debug/classes/com/vonovak/Utils.class differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/library_java_res/debug/res.jar b/node_modules/react-native-add-calendar-event/android/build/intermediates/library_java_res/debug/res.jar
 new file mode 100644
-index 0000000..15cb0ec
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/intermediates/library_java_res/debug/res.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/library_manifest/debug/AndroidManifest.xml b/node_modules/react-native-add-calendar-event/android/build/intermediates/library_manifest/debug/AndroidManifest.xml
 new file mode 100644
 index 0000000..096ed21
@@ -2006,8 +1997,7 @@ index 0000000..0637a08
 \ No newline at end of file
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/runtime_library_classes/debug/classes.jar b/node_modules/react-native-add-calendar-event/android/build/intermediates/runtime_library_classes/debug/classes.jar
 new file mode 100644
-index 0000000..4f60644
-Binary files /dev/null and b/node_modules/react-native-add-calendar-event/android/build/intermediates/runtime_library_classes/debug/classes.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-add-calendar-event/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/react-native-add-calendar-event/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
 new file mode 100644
 index 0000000..d57ff4b
@@ -3374,7 +3364,7 @@ index 0000000..518bca9
 +		ADDED from /Users/jordanwade/code/di/christfellowship/apollos-app/node_modules/react-native-add-calendar-event/android/src/main/AndroidManifest.xml
 +		INJECTED from /Users/jordanwade/code/di/christfellowship/apollos-app/node_modules/react-native-add-calendar-event/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/react-native-add-calendar-event/ios/AddCalendarEvent.m b/node_modules/react-native-add-calendar-event/ios/AddCalendarEvent.m
-index d053473..c499099 100644
+index d053473..254ba79 100644
 --- a/node_modules/react-native-add-calendar-event/ios/AddCalendarEvent.m
 +++ b/node_modules/react-native-add-calendar-event/ios/AddCalendarEvent.m
 @@ -52,6 +52,7 @@ - (NSDictionary *)constantsToExport
@@ -3385,36 +3375,15 @@ index d053473..c499099 100644
  
  static NSString *const MODULE_NAME= @"AddCalendarEvent";
  
-@@ -264,6 +265,33 @@ - (EKEvent *)createNewEventInstance {
+@@ -264,6 +265,12 @@ - (EKEvent *)createNewEventInstance {
      if (options[_allDay]) {
          event.allDay = [RCTConvert BOOL:options[_allDay]];
      }
 +    if (options[_alert]) {
-+        NSDate *originalDate =  [RCTConvert NSDate:options[_startDate]];
-+
-+        if ([[RCTConvert NSString:options[_alert]] caseInsensitiveCompare:@"0"] == NSOrderedSame)
-+        {
-+            EKAlarm * alarm = [EKAlarm alarmWithRelativeOffset:originalDate];
-+            event.alarms = @[alarm];
-+        }
-+        if ([[RCTConvert NSString:options[_alert]] caseInsensitiveCompare:@"1"] == NSOrderedSame)
-+        {
-+            NSDate *alertReminder = [originalDate dateByAddingTimeInterval:-60*5];
-+            EKAlarm * alarm = [EKAlarm alarmWithRelativeOffset:alertReminder];
-+            event.alarms = @[alarm];
-+        }
-+        if ([[RCTConvert NSString:options[_alert]] caseInsensitiveCompare:@"2"] == NSOrderedSame)
-+        {
-+            NSDate *alertReminder = [originalDate dateByAddingTimeInterval:-60*30];
-+            EKAlarm * alarm = [EKAlarm alarmWithRelativeOffset:alertReminder];
-+            event.alarms = @[alarm];
-+        }
-+        if ([[RCTConvert NSString:options[_alert]] caseInsensitiveCompare:@"3"] == NSOrderedSame)
-+        {
-+            NSDate *alertReminder = [originalDate dateByAddingTimeInterval:-60*60];
-+            EKAlarm * alarm = [EKAlarm alarmWithRelativeOffset:alertReminder];
-+            event.alarms = @[alarm];
-+        }
++        int offset = [RCTConvert int:options[_alert]];
++        NSTimeInterval alarmOffset = offset*-60;
++        EKAlarm * alarm = [EKAlarm alarmWithRelativeOffset:alarmOffset];
++        event.alarms = @[alarm];
 +    }
      return event;
  }
