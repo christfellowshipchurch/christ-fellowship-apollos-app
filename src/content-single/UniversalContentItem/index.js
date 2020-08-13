@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {
   HorizontalContentSeriesFeedConnected,
   MediaControlsConnected,
+  UpNextButtonConnected,
 } from '@apollosproject/ui-connected';
 import {
   styled,
@@ -63,6 +64,7 @@ const UniversalContentItem = ({ content, loading }) => {
               <StyledContentHTMLViewConnected contentId={content.id} />
             </PaddedView>
             <Features contentId={content.id} />
+            <UpNextButtonConnected contentId={content.id} />
             <HorizontalContentSeriesFeedConnected contentId={content.id} />
           </FlexedScrollView>
         )}

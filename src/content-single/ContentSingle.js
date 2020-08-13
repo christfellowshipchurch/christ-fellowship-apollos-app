@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import { ErrorCard } from '@apollosproject/ui-kit';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
+import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
 import ThemeMixin from '../ui/DynamicThemeMixin';
 
 import ActionContainer from './ActionContainer';
@@ -104,8 +105,13 @@ class ContentSingle extends PureComponent {
 
     return (
       <ThemeMixin theme={theme}>
+        <InteractWhenLoadedConnected
+          isLoading={loading}
+          nodeId={this.itemId}
+          action={'COMPLETE'}
+        />
         <TrackEventWhenLoaded
-          loaded={!!(!loading && content.title)}
+          isLoading={loading}
           eventName={'View Content'}
           properties={{
             title: content.title,
