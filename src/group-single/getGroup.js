@@ -10,6 +10,7 @@ export const GROUP_FRAGMENT = gql`
     members {
       id
       firstName
+      phoneNumber
       photo {
         uri
       }
