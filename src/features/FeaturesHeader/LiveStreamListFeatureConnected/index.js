@@ -72,7 +72,6 @@ const CirclularImage = withTheme(({ theme }) => {
         minAspectRatio: 1,
         maxAspectRatio: 1,
         maintainAspectRatio: true,
-        overlayColor: theme.colors.darkPrimary,
         style: {
             height: themeSize,
             width: themeSize,
