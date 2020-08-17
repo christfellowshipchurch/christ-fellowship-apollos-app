@@ -39,7 +39,12 @@ export const GROUP_FRAGMENT = gql`
       start
       end
     }
-    zoom {
+    videoCall {
+      link
+      meetingId
+      passcode
+    }
+    parentVideoCall {
       link
       meetingId
       passcode

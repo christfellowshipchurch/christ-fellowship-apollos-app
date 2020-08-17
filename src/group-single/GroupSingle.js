@@ -267,7 +267,8 @@ const GroupSingle = ({ navigation }) => {
     const coverImageSources = get(content, 'coverImage.sources', []);
     const resources = get(content, 'groupResources', []);
     const dateTime = get(content, 'dateTime', {});
-    const zoom = get(content, 'zoom', {});
+    const videoCall = get(content, 'videoCall', {});
+    const parentVideoCall = get(content, 'parentVideoCall', {});
     const { start } = dateTime;
     return (
       <ThemeConsumer>
@@ -309,7 +310,7 @@ const GroupSingle = ({ navigation }) => {
                       <AddCalEventButton
                         eventTitle={content.title}
                         eventStart={start}
-                        eventNotes={!isEmpty(zoom) ? zoom.link : null}
+                        eventNotes={!isEmpty(videoCall) ? videoCall.link : null}
                         isLoading={loading}
                       />
                     ) : null}
@@ -335,28 +336,43 @@ const GroupSingle = ({ navigation }) => {
                       isLoading={loading}
                     />
                   </PaddedView>
-                  {!isEmpty(zoom) ? (
-                    <Cell>
+
+                  <Cell>
+                    {!isEmpty(parentVideoCall) ? (
                       <CellItem first>
                         <Button
-                          onPress={() => join(zoom.meetingId, zoom.passcode)}
+                          onPress={() =>
+                            join(
+                              parentVideoCall.meetingId,
+                              parentVideoCall.passcode
+                            )
+                          }
                           loading={loading}
-                          title={'Join Video Call'}
+                          title={'Video Call'}
                           type={'primary'}
                           pill={false}
                         />
                       </CellItem>
+                    ) : null}
+                    {!isEmpty(videoCall) ? (
                       <CellItem>
                         <Button
-                          onPress={() => startMeeting(zoom.meetingId)}
+                          onPress={() =>
+                            join(videoCall.meetingId, videoCall.passcode)
+                          }
                           loading={loading}
-                          title={'Start Video Call'}
+                          title={
+                            !isEmpty(parentVideoCall)
+                              ? 'Breakout Session'
+                              : 'Video Call'
+                          }
                           type={'primary'}
                           pill={false}
                         />
                       </CellItem>
-                    </Cell>
-                  ) : null}
+                    ) : null}
+                  </Cell>
+
                   {!isEmpty(resources) ? (
                     <PaddedView>
                       <StyledH4>{'Resources'}</StyledH4>
@@ -396,7 +412,6 @@ const GroupSingle = ({ navigation }) => {
 
     const content = get(data, 'node', {});
     const { theme = {} } = content;
-    console.log('content', content);
     return (
       <ThemeMixin theme={theme}>
         {renderContent({ content, loading, error })}
