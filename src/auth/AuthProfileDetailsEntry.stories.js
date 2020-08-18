@@ -9,6 +9,7 @@ storiesOf('cf-ui-onboarding/slides/AboutYou', module).add('default', () => (
   <ThemeMixin mixin={{ type: 'onboarding' }}>
     <AuthProfileDetailsEntry
       setFieldValue={() => { }}
+      setFieldError={() => { }}
       Component={AuthProfileDetailsEntry}
       BackgroundComponent={AuthBackground}
     />
