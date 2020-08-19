@@ -1,12 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
 
 import {
   TouchableScale,
   Icon,
   withTheme,
   styled,
+  NavigationService,
 } from '@apollosproject/ui-kit';
 
 import { useFeatureFlag } from 'hooks';
@@ -34,7 +34,13 @@ const NotificationCenterIconConnected = () => {
     key: 'NOTIFICATION_CENTER',
   });
 
-  return enabled ? <StyledIcon name="umbrella" /> : null;
+  return enabled ? (
+    <TouchableScale
+      onPress={() => NavigationService.navigate('NotificationCenter')}
+    >
+      <StyledIcon name="umbrella" />
+    </TouchableScale>
+  ) : null;
 };
 
 const HeaderRight = () => {
