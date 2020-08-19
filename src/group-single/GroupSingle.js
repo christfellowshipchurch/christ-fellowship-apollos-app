@@ -33,6 +33,7 @@ import AvatarCloud from '../ui/AvatarCloud';
 
 import NavigationHeader from '../content-single/NavigationHeader';
 import AddCalEventButton from '../content-single/AddCalEventButton';
+import MessagesButton from '../content-single/MessagesButton';
 
 import GET_GROUP from './getGroup';
 
@@ -269,6 +270,8 @@ const GroupSingle = ({ navigation }) => {
     const dateTime = get(content, 'dateTime', {});
     const videoCall = get(content, 'videoCall', {});
     const parentVideoCall = get(content, 'parentVideoCall', {});
+    const phoneNumbers = get(content, 'phoneNumbers', []);
+
     const { start } = dateTime;
     return (
       <ThemeConsumer>
@@ -311,6 +314,12 @@ const GroupSingle = ({ navigation }) => {
                         eventTitle={content.title}
                         eventStart={start}
                         eventNotes={!isEmpty(videoCall) ? videoCall.link : null}
+                        isLoading={loading}
+                      />
+                    ) : null}
+                    {phoneNumbers ? (
+                      <MessagesButton
+                        recipients={phoneNumbers}
                         isLoading={loading}
                       />
                     ) : null}
