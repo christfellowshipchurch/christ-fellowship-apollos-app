@@ -1,5 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
 
 import {
   TouchableScale,
@@ -8,14 +9,19 @@ import {
   styled,
 } from '@apollosproject/ui-kit';
 
+import { useFeatureFlag } from 'hooks';
 import { useSideMenu } from '../sidemenu';
+
+const IconsContainer = styled(({ theme }) => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+}))(View);
 
 const Spacer = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit,
 }))(View);
 
-const Bars = withTheme(({ theme }) => ({
-  name: 'bars-alt',
+const StyledIcon = withTheme(({ theme }) => ({
   size: 24,
   color: theme.colors.text.primary,
   style: {
@@ -23,16 +29,27 @@ const Bars = withTheme(({ theme }) => ({
   },
 }))(Icon);
 
-const AvatarConnected = () => {
+const NotificationCenterIconConnected = () => {
+  const { enabled } = useFeatureFlag({
+    key: 'NOTIFICATION_CENTER',
+  });
+
+  return enabled ? <StyledIcon name="umbrella" /> : null;
+};
+
+const HeaderRight = () => {
   const { openSideMenu } = useSideMenu();
 
   return (
-    <TouchableScale onPress={openSideMenu}>
-      <Spacer>
-        <Bars />
-      </Spacer>
-    </TouchableScale>
+    <IconsContainer>
+      <NotificationCenterIconConnected />
+      <TouchableScale onPress={openSideMenu}>
+        <Spacer>
+          <StyledIcon name="bars-alt" />
+        </Spacer>
+      </TouchableScale>
+    </IconsContainer>
   );
 };
 
-export default AvatarConnected;
+export default HeaderRight;
