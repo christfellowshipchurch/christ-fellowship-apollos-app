@@ -1,25 +1,16 @@
 import React from 'react';
-
-import { SafeAreaView } from 'react-navigation';
-import { BackgroundView, H3, PaddedView } from '@apollosproject/ui-kit';
-
-import ThemeMixin from 'ui/DynamicThemeMixin';
 import NavigationHeader from '../content-single/NavigationHeader';
-
-const Background = () => (
-    <BackgroundView>
-        <SafeAreaView forceInset={{ top: 'always', bottom: 'always' }}>
-            <PaddedView>
-                <H3>Updates</H3>
-            </PaddedView>
-        </SafeAreaView>
-    </BackgroundView>
-);
+import NotificationList from './NotificationList';
 
 const NotificationCenter = () => (
-    <ThemeMixin>
-        <Background />
-    </ThemeMixin>
+    <NotificationList
+        notifications={[0, 1, 2, 3, 4, 5].map(() => ({
+            title: 'Notification Title',
+            subtitle: '',
+            content:
+                'This is the content of my push notification that I just received from our Christ Fellowship Comms team with all kinds of good information.',
+        }))}
+    />
 );
 
 NotificationCenter.navigationOptions = {
