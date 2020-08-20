@@ -10,6 +10,7 @@ const NotificationCenterNavigator = createStackNavigator(
         initialRouteName: 'NotificationCenter',
         headerMode: 'float',
         headerTransitionPreset: 'fade-in-place',
+        headerLayoutPreset: 'left',
         navigationOptions: { header: null },
     }
 );

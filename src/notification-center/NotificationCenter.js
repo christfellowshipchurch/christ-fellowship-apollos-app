@@ -1,15 +1,25 @@
 import React from 'react';
 
-import { BackgroundView, H1 } from '@apollosproject/ui-kit';
+import { SafeAreaView } from 'react-navigation';
+import { BackgroundView, H3, PaddedView } from '@apollosproject/ui-kit';
 
+import ThemeMixin from 'ui/DynamicThemeMixin';
 import NavigationHeader from '../content-single/NavigationHeader';
 
-const NotificationCenter = () => (
-    <BackgroundView
-        style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}
-    >
-        <H1>Welcome to your fancy new Notification Center</H1>
+const Background = () => (
+    <BackgroundView>
+        <SafeAreaView forceInset={{ top: 'always', bottom: 'always' }}>
+            <PaddedView>
+                <H3>Updates</H3>
+            </PaddedView>
+        </SafeAreaView>
     </BackgroundView>
+);
+
+const NotificationCenter = () => (
+    <ThemeMixin>
+        <Background />
+    </ThemeMixin>
 );
 
 NotificationCenter.navigationOptions = {

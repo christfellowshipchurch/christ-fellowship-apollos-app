@@ -17,8 +17,14 @@ const IconsContainer = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
-const Spacer = styled(({ theme }) => ({
+const ItemRight = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit,
+  paddingLeft: theme.sizing.baseUnit * 0.5,
+}))(View);
+
+const ItemLeft = styled(({ theme }) => ({
+  padding: theme.sizing.baseUnit,
+  paddingRight: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const StyledIcon = withTheme(({ theme }) => ({
@@ -38,7 +44,9 @@ const NotificationCenterIconConnected = () => {
     <TouchableScale
       onPress={() => NavigationService.navigate('NotificationCenter')}
     >
-      <StyledIcon name="umbrella" />
+      <ItemLeft>
+        <StyledIcon name="bell" />
+      </ItemLeft>
     </TouchableScale>
   ) : null;
 };
@@ -50,9 +58,9 @@ const HeaderRight = () => {
     <IconsContainer>
       <NotificationCenterIconConnected />
       <TouchableScale onPress={openSideMenu}>
-        <Spacer>
+        <ItemRight>
           <StyledIcon name="bars-alt" />
-        </Spacer>
+        </ItemRight>
       </TouchableScale>
     </IconsContainer>
   );
