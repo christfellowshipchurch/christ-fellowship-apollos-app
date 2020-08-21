@@ -54,8 +54,6 @@ class NotificationsInit extends Component {
     }
 
     componentDidMount() {
-        console.log({ oneSignal: this.props.oneSignalKey });
-
         OneSignal.init(this.props.oneSignalKey, {
             kOSSettingsKeyAutoPrompt: false,
         });

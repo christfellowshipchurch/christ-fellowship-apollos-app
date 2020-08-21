@@ -1,17 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import NavigationHeader from '../content-single/NavigationHeader';
 import NotificationList from './NotificationList';
 
-const NotificationCenter = () => (
-    <NotificationList
-        notifications={[0, 1, 2, 3, 4, 5].map(() => ({
-            title: 'Notification Title',
-            subtitle: '',
-            content:
-                'This is the content of my push notification that I just received from our Christ Fellowship Comms team with all kinds of good information.',
-        }))}
-    />
-);
+const NotificationCenter = () => {
+    const [notifications, setNotifications] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const getNotificationsFromLocalStorage = async () => {
+            try {
+                const value = await AsyncStorage.getItem('notificationHistory');
+                if (value !== null) {
+                    setNotifications(value);
+                }
+
+                setLoading(false);
+            } catch (e) {
+                setLoading(false);
+            }
+        };
+
+        getNotificationsFromLocalStorage();
+    }, []);
+
+    return <NotificationList notifications={notifications} isLoading={loading} />;
+};
 
 NotificationCenter.navigationOptions = {
     header: NavigationHeader,

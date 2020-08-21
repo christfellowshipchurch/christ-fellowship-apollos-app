@@ -9,9 +9,9 @@ const DateText = styled(({ theme }) => ({
     color: theme.colors.text.tertiary,
 }))(H6);
 
-export const DateLabel = ({ date }) =>
+export const DateLabel = ({ date, isLoading }) =>
     moment(date).isValid() ? (
-        <DateText>
+        <DateText isLoading={isLoading}>
             {moment(date).format(
                 moment(date).year() < moment().year() ? 'MMM DD, YYYY' : 'dddd, MMM DD'
             )}
@@ -20,6 +20,12 @@ export const DateLabel = ({ date }) =>
 
 DateLabel.propTypes = {
     date: PropTypes.string,
+    isLoading: PropTypes.bool,
+};
+
+DateLabel.defaultProps = {
+    date: moment().format(),
+    isLoading: false,
 };
 
 export const BorderedView = styled(({ theme }) => ({

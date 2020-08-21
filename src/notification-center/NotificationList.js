@@ -1,38 +1,50 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
+import { View, Platform } from 'react-native';
+import { withProps } from 'recompose';
 import { SafeAreaView } from 'react-navigation';
 import {
     BackgroundView,
     H3,
-    PaddedView,
     FeedView,
     styled,
+    CenteredView,
+    withMediaQuery,
 } from '@apollosproject/ui-kit';
 
 import ThemeMixin from 'ui/DynamicThemeMixin';
+import { HorizontalDivider } from 'ui/Dividers';
 import NotificationAlert from './NotificationAlert';
 import { DateLabel, Title, Subtitle, Content } from './styles';
 
-const BorderedView = styled(({ theme }) => ({
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: theme.colors.text.tertiary,
-    paddingBottom: theme.sizing.baseUnit,
+const Spacer = styled(({ theme }) => ({
+    paddingHorizontal: theme.sizing.baseUnit,
 }))(View);
 
-const NotificationPreview = ({ title, subtitle, content, date }) => (
-    <PaddedView>
-        <BorderedView>
-            <DateLabel date={date} />
-            <Title>{title}</Title>
-            <Subtitle ellipsizeMode="tail" numberOfLines={1}>
-                {subtitle}
-            </Subtitle>
-            <Content ellipsizeMode="tail" numberOfLines={2}>
-                {content}
-            </Content>
-        </BorderedView>
-    </PaddedView>
+const StyledHorizontalDivider = styled(({ theme }) => ({
+    width: '100%',
+}))(HorizontalDivider);
+
+const StyledH3 = styled(({ theme }) => ({
+    paddingBottom: theme.sizing.baseUnit,
+    ...Platform.select({
+        android: {
+            paddingTop: theme.sizing.baseUnit,
+        },
+    }),
+}))(H3);
+
+const NotificationPreview = ({ title, subtitle, content, date, isLoading }) => (
+    <View>
+        <DateLabel date={date} isLoading={isLoading} />
+        <Title isLoading={isLoading}>{title}</Title>
+        <Subtitle ellipsizeMode="tail" numberOfLines={1} isLoading={isLoading}>
+            {subtitle}
+        </Subtitle>
+        <Content ellipsizeMode="tail" numberOfLines={2} isLoading={isLoading}>
+            {content}
+        </Content>
+    </View>
 );
 
 NotificationPreview.propTypes = {
@@ -40,10 +52,34 @@ NotificationPreview.propTypes = {
     subtitle: PropTypes.string,
     content: PropTypes.string,
     date: PropTypes.string,
+    isLoading: PropTypes.bool,
 };
 
-const NotificationList = ({ notifications }) => {
+const ListEmptyComponent = () => (
+    <CenteredView>
+        <Subtitle padded>You're all caught up!</Subtitle>
+    </CenteredView>
+);
+
+const StyledFeedView = withMediaQuery(
+    ({ md }) => ({ maxWidth: md }),
+    withProps(({ hasContent, isLoading }) => ({
+        numColumns: 1,
+        contentContainerStyle: {
+            ...(hasContent || isLoading ? {} : { flex: 1 }),
+        },
+    })),
+    withProps(({ hasContent, isLoading }) => ({
+        numColumns: 2,
+        contentContainerStyle: {
+            ...(hasContent || isLoading ? {} : { flex: 1 }),
+        },
+    }))
+)(FeedView);
+
+const NotificationList = ({ notifications, isLoading }) => {
     const [activeNotification, setActiveNotification] = useState(false);
+
     return (
         <ThemeMixin>
             <BackgroundView>
@@ -55,18 +91,22 @@ const NotificationList = ({ notifications }) => {
                         onPressClose={() => setActiveNotification(false)}
                         notification={activeNotification}
                     />
-                    <FeedView
-                        content={notifications}
-                        ListHeaderComponent={
-                            <PaddedView>
-                                <H3>Updates</H3>
-                            </PaddedView>
-                        }
-                        ListItemComponent={NotificationPreview}
-                        onPressItem={(item) => {
-                            setActiveNotification(item);
-                        }}
-                    />
+                    <Spacer>
+                        <StyledFeedView
+                            content={notifications}
+                            ListHeaderComponent={<StyledH3>Updates</StyledH3>}
+                            ListItemComponent={NotificationPreview}
+                            ItemSeparatorComponent={StyledHorizontalDivider}
+                            onPressItem={(item) => {
+                                if (!item.isLoading) {
+                                    setActiveNotification(item);
+                                }
+                            }}
+                            showsVerticalScrollIndicator={false}
+                            isLoading={isLoading}
+                            ListEmptyComponent={ListEmptyComponent}
+                        />
+                    </Spacer>
                 </SafeAreaView>
             </BackgroundView>
         </ThemeMixin>
@@ -82,10 +122,12 @@ NotificationList.propTypes = {
             date: PropTypes.string,
         })
     ),
+    isLoading: PropTypes.bool,
 };
 
 NotificationList.propTypes = {
     notifications: [],
+    isLoading: false,
 };
 
 export default NotificationList;
