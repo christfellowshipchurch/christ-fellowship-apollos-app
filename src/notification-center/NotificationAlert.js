@@ -14,37 +14,31 @@ import {
     Render,
 } from './styles';
 
-const NotificationDetails = ({
-    title,
-    subtitle,
-    content,
-    date,
-    onPressClose,
-}) => (
-        <View>
-            <Row>
-                <DateLabel date={date} />
-                <Touchable onPress={onPressClose}>
-                    <CloseIcon />
-                </Touchable>
-            </Row>
-            <Render condition={title && title !== ''}>
-                <Title>{title}</Title>
-            </Render>
-            <Render condition={subtitle && subtitle !== ''}>
-                <Subtitle>{subtitle}</Subtitle>
-            </Render>
-            <Render condition={content && content !== ''}>
-                <Content>{content}</Content>
-            </Render>
-        </View>
-    );
+const NotificationDetails = ({ title, subtitle, body, date, onPressClose }) => (
+    <View>
+        <Row>
+            <DateLabel date={date} />
+            <Touchable onPress={onPressClose}>
+                <CloseIcon />
+            </Touchable>
+        </Row>
+        <Render condition={title && title !== ''}>
+            <Title>{title}</Title>
+        </Render>
+        <Render condition={subtitle && subtitle !== ''}>
+            <Subtitle>{subtitle}</Subtitle>
+        </Render>
+        <Render condition={body && body !== ''}>
+            <Content>{body}</Content>
+        </Render>
+    </View>
+);
 
 NotificationDetails.propTypes = {
     onPressClose: PropTypes.func,
     title: PropTypes.string,
     subtitle: PropTypes.string,
-    content: PropTypes.string,
+    body: PropTypes.string,
     date: PropTypes.string,
 };
 

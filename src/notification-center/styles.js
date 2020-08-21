@@ -9,14 +9,25 @@ const DateText = styled(({ theme }) => ({
     color: theme.colors.text.tertiary,
 }))(H6);
 
-export const DateLabel = ({ date, isLoading }) =>
-    moment(date).isValid() ? (
+export const DateLabel = ({ date, isLoading }) => {
+    const mDate = moment(date);
+
+    if (!mDate.isValid()) return null;
+
+    const isToday = mDate.format('MMDDYYYY') === moment().format('MMDDYYYY');
+
+    return (
         <DateText isLoading={isLoading}>
-            {moment(date).format(
-                moment(date).year() < moment().year() ? 'MMM DD, YYYY' : 'dddd, MMM DD'
-            )}
+            {isToday
+                ? 'Today'
+                : moment(date).format(
+                    moment(date).year() < moment().year()
+                        ? 'MMM DD, YYYY'
+                        : 'dddd, MMM DD'
+                )}
         </DateText>
-    ) : null;
+    );
+};
 
 DateLabel.propTypes = {
     date: PropTypes.string,

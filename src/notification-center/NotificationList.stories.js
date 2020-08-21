@@ -24,7 +24,9 @@ storiesOf('cf-notification-center/NotificationList', module).add(
                     title: 'Just a Title',
                     subtitle: '',
                     content: '',
-                    date: moment().format(),
+                    date: moment()
+                        .subtract(24, 'hours')
+                        .format(),
                 },
                 {
                     title: 'Super Long Content',
@@ -32,7 +34,9 @@ storiesOf('cf-notification-center/NotificationList', module).add(
                         'This is a subtitle that totally got away from us when we were writing it.',
                     content:
                         'This is the content of my push notification that I just received from our Christ Fellowship Comms team with all kinds of good information.',
-                    date: moment().format(),
+                    date: moment()
+                        .subtract(48, 'hours')
+                        .format(),
                 },
                 {
                     title: 'Really Old',

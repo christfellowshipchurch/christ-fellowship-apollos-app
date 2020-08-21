@@ -34,7 +34,7 @@ const StyledH3 = styled(({ theme }) => ({
     }),
 }))(H3);
 
-const NotificationPreview = ({ title, subtitle, content, date, isLoading }) => (
+const NotificationPreview = ({ title, subtitle, body, date, isLoading }) => (
     <View>
         <DateLabel date={date} isLoading={isLoading} />
         <Title isLoading={isLoading}>{title}</Title>
@@ -42,7 +42,7 @@ const NotificationPreview = ({ title, subtitle, content, date, isLoading }) => (
             {subtitle}
         </Subtitle>
         <Content ellipsizeMode="tail" numberOfLines={2} isLoading={isLoading}>
-            {content}
+            {body}
         </Content>
     </View>
 );
@@ -50,7 +50,7 @@ const NotificationPreview = ({ title, subtitle, content, date, isLoading }) => (
 NotificationPreview.propTypes = {
     title: PropTypes.string,
     subtitle: PropTypes.string,
-    content: PropTypes.string,
+    body: PropTypes.string,
     date: PropTypes.string,
     isLoading: PropTypes.bool,
 };
@@ -65,15 +65,9 @@ const StyledFeedView = withMediaQuery(
     ({ md }) => ({ maxWidth: md }),
     withProps(({ hasContent, isLoading }) => ({
         numColumns: 1,
-        contentContainerStyle: {
-            ...(hasContent || isLoading ? {} : { flex: 1 }),
-        },
     })),
     withProps(({ hasContent, isLoading }) => ({
         numColumns: 2,
-        contentContainerStyle: {
-            ...(hasContent || isLoading ? {} : { flex: 1 }),
-        },
     }))
 )(FeedView);
 
@@ -85,7 +79,7 @@ const NotificationList = ({ notifications, isLoading }) => {
             <BackgroundView>
                 <SafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
                     <NotificationAlert
-                        show={activeNotification}
+                        show={!!activeNotification}
                         showProgress={false}
                         onDismiss={() => setActiveNotification(false)}
                         onPressClose={() => setActiveNotification(false)}
@@ -103,7 +97,7 @@ const NotificationList = ({ notifications, isLoading }) => {
                                 }
                             }}
                             showsVerticalScrollIndicator={false}
-                            isLoading={isLoading}
+                            hasContent={notifications.length > 1}
                             ListEmptyComponent={ListEmptyComponent}
                         />
                     </Spacer>
@@ -118,14 +112,14 @@ NotificationList.propTypes = {
         PropTypes.shape({
             title: PropTypes.string,
             subtitle: PropTypes.string,
-            content: PropTypes.string,
+            body: PropTypes.string,
             date: PropTypes.string,
         })
     ),
     isLoading: PropTypes.bool,
 };
 
-NotificationList.propTypes = {
+NotificationList.defaultProps = {
     notifications: [],
     isLoading: false,
 };
