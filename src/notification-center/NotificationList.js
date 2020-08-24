@@ -19,6 +19,7 @@ import { DateLabel, Title, Subtitle, Content } from './styles';
 
 const Spacer = styled(({ theme }) => ({
     paddingHorizontal: theme.sizing.baseUnit,
+    flex: 1,
 }))(View);
 
 const StyledHorizontalDivider = styled(({ theme }) => ({
@@ -71,13 +72,17 @@ const StyledFeedView = withMediaQuery(
     }))
 )(FeedView);
 
-const NotificationList = ({ notifications, isLoading }) => {
+const StyledSafeAreaView = styled(({ theme }) => ({
+    flex: 1,
+}))(SafeAreaView);
+
+const NotificationList = ({ notifications, isLoading, refetch, error }) => {
     const [activeNotification, setActiveNotification] = useState(false);
 
     return (
         <ThemeMixin>
             <BackgroundView>
-                <SafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
+                <StyledSafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
                     <NotificationAlert
                         show={!!activeNotification}
                         showProgress={false}
@@ -86,9 +91,9 @@ const NotificationList = ({ notifications, isLoading }) => {
                         notification={activeNotification}
                     />
                     <Spacer>
+                        <StyledH3>Updates</StyledH3>
                         <StyledFeedView
                             content={notifications}
-                            ListHeaderComponent={<StyledH3>Updates</StyledH3>}
                             ListItemComponent={NotificationPreview}
                             ItemSeparatorComponent={StyledHorizontalDivider}
                             onPressItem={(item) => {
@@ -99,9 +104,12 @@ const NotificationList = ({ notifications, isLoading }) => {
                             showsVerticalScrollIndicator={false}
                             hasContent={notifications.length > 1}
                             ListEmptyComponent={ListEmptyComponent}
+                            isLoading={isLoading}
+                            refetch={refetch}
+                            error={error}
                         />
                     </Spacer>
-                </SafeAreaView>
+                </StyledSafeAreaView>
             </BackgroundView>
         </ThemeMixin>
     );
@@ -117,11 +125,14 @@ NotificationList.propTypes = {
         })
     ),
     isLoading: PropTypes.bool,
+    error: PropTypes.oneOfType([PropTypes.shape({}), PropTypes.bool]),
+    refetch: PropTypes.func,
 };
 
 NotificationList.defaultProps = {
     notifications: [],
     isLoading: false,
+    refetch: () => true,
 };
 
 export default NotificationList;

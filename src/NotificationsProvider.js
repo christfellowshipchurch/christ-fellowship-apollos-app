@@ -11,12 +11,10 @@
  */
 import React, { Component } from 'react';
 import { Linking, Platform } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { withApollo } from 'react-apollo';
-import { get, isArray, take } from 'lodash';
+import { get } from 'lodash';
 import OneSignal from 'react-native-onesignal';
 import PushProvider from '@apollosproject/ui-notifications/src/pushProvider';
 import {
@@ -24,7 +22,7 @@ import {
     defaults,
 } from '@apollosproject/ui-notifications/src/store';
 
-import { useLinkRouter, useNotificationHistory } from 'hooks';
+import { useLinkRouter } from 'hooks';
 
 const UPDATE_DEVICE_PUSH_ID = gql`
   mutation updateDevicePushId($pushId: String!) {
@@ -88,30 +86,6 @@ class NotificationsInit extends Component {
 
     onReceived = async (notification) => {
         console.log('Notification received: ', notification);
-
-        /** TL;DR : store the 10 most recent push notifications in local storage
-         *
-         *  If we don't have any value in Async Storage, add the incoming notification
-         *  as an array of the single object.
-         *
-         *  If there is a value in Async Storage that is _not_ an array, add that object
-         *  to an array and, append the new notification, then save back to async
-         *
-         *  If there is an array in Async Storage, check the length. If the length >= 10,
-         *  sort by date and grab the 9 latest. Then append the new notification with timestamp
-         *  and save to Async Storage.
-         */
-
-        const payload = get(notification, 'payload', {});
-        this.props.onNotification({
-            title: payload.title,
-            subtitle: payload.subtitle,
-            body: payload.body,
-            id: payload.notificationID,
-            date: moment()
-                .utc()
-                .format(),
-        });
     };
 
     onOpened = (openResult) => {
@@ -149,15 +123,8 @@ const NotificationsInitWithApollo = withApollo(NotificationsInit);
 
 const NotificationsInitHookProvider = (props) => {
     const { routeLink } = useLinkRouter();
-    const { addNotification } = useNotificationHistory();
 
-    return (
-        <NotificationsInitWithApollo
-            {...props}
-            routeLink={routeLink}
-            onNotification={addNotification}
-        />
-    );
+    return <NotificationsInitWithApollo {...props} routeLink={routeLink} />;
 };
 
 export default NotificationsInitHookProvider;

@@ -1,6 +1,6 @@
 import { createStackNavigator } from 'react-navigation';
 
-import NotificationCenter from './NotificationCenter';
+import NotificationCenter from './NotificationListConnected';
 
 const NotificationCenterNavigator = createStackNavigator(
     {
