@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SendSMS from 'react-native-sms';
 
-import { styled, Button } from '@apollosproject/ui-kit';
+import { withTheme, Button, H4, Icon } from '@apollosproject/ui-kit';
 
 const handleSendMessage = (recipients) => {
   SendSMS.send(
@@ -24,20 +24,25 @@ const handleSendMessage = (recipients) => {
   );
 };
 
-const StyledButton = styled(({ theme }) => {})(Button);
+const StyledIcon = withTheme(({ theme }) => ({
+  style: { marginRight: theme.sizing.baseUnit * 0.5 },
+  fill: theme.colors.primary,
+}))(Icon);
 
 const MessagesButton = ({ buttonText, recipients, isLoading, disabled }) => {
   return (
-    <>
-      <StyledButton
-        disabled={disabled || isLoading}
-        isLoading={isLoading}
-        onPress={() => {
-          handleSendMessage(recipients);
-        }}
-        title={buttonText}
-      />
-    </>
+    <Button
+      disabled={disabled || isLoading}
+      isLoading={isLoading}
+      pill={false}
+      onPress={() => {
+        handleSendMessage(recipients);
+      }}
+      bordered
+    >
+      <StyledIcon name="message-bubble" size={16} />
+      <H4>{buttonText}</H4>
+    </Button>
   );
 };
 
@@ -49,7 +54,7 @@ MessagesButton.propTypes = {
 };
 
 MessagesButton.defaultProps = {
-  buttonText: 'Messages',
+  buttonText: 'Send Message',
 };
 
 export default MessagesButton;

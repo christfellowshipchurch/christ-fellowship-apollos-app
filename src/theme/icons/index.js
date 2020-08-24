@@ -9,6 +9,7 @@ export Bars from './Bars';
 export BirthdayCake from './BirthdayCake';
 export Brand from './Brand';
 export Calendar from './Calendar';
+export CalendarAdd from './CalendarAdd';
 export Campus from './Campus';
 export Clock from './Clock';
 export Envelope from './Envelope';

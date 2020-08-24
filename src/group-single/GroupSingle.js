@@ -71,7 +71,6 @@ const Schedule = styled(({ theme }) => ({
 
 const ScheduleView = styled(({ theme }) => ({
   flexDirection: 'row',
-  paddingTop: theme.sizing.baseUnit,
 }))(View);
 
 const IconView = styled({
@@ -146,13 +145,13 @@ const PlaceholderWrapper = styled(({ theme }) => ({
 
 const Cell = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
-  paddingHorizontal: theme.sizing.baseUnit,
   flexDirection: 'row',
   justifyContent: 'flex-start',
 }))(View);
 
 const CellItem = styled(({ theme, first }) => ({
   marginRight: first ? theme.sizing.baseUnit : 0,
+  justifyContent: 'center',
   flex: 1,
 }))(View);
 
@@ -309,33 +308,71 @@ const GroupSingle = ({ navigation }) => {
                   ) : null}
 
                   <PaddedView vertical={false}>
-                    {start ? (
-                      <AddCalEventButton
-                        eventTitle={content.title}
-                        eventStart={start}
-                        eventNotes={!isEmpty(videoCall) ? videoCall.link : null}
-                        isLoading={loading}
-                      />
-                    ) : null}
-                    {phoneNumbers ? (
-                      <MessagesButton
-                        recipients={phoneNumbers}
-                        isLoading={loading}
-                      />
-                    ) : null}
-                    {content.schedule ? (
-                      <ScheduleView>
-                        <IconView>
-                          <Icon name="time" size={16} />
-                        </IconView>
-                        <Schedule numberOfLines={1}>
-                          {content.schedule.friendlyScheduleText}
-                        </Schedule>
-                      </ScheduleView>
-                    ) : null}
+                    <Cell>
+                      {content.schedule ? (
+                        <CellItem first>
+                          <ScheduleView>
+                            <IconView>
+                              <Icon name="time" size={16} />
+                            </IconView>
+                            <Schedule numberOfLines={1}>
+                              {content.schedule.friendlyScheduleText}
+                            </Schedule>
+                          </ScheduleView>
+                        </CellItem>
+                      ) : null}
+                      {start ? (
+                        <CellItem>
+                          <AddCalEventButton
+                            eventTitle={content.title}
+                            eventStart={start}
+                            eventNotes={
+                              !isEmpty(videoCall) ? videoCall.link : null
+                            }
+                            isLoading={loading}
+                          />
+                        </CellItem>
+                      ) : null}
+                    </Cell>
                     <PaddedView horizontal={false}>
                       <BodyText>{content.summary}</BodyText>
                     </PaddedView>
+
+                    <Cell>
+                      {!isEmpty(parentVideoCall) ? (
+                        <CellItem first>
+                          <Button
+                            onPress={() =>
+                              join(
+                                parentVideoCall.meetingId,
+                                parentVideoCall.passcode
+                              )
+                            }
+                            loading={loading}
+                            title={'Join Meeting'}
+                            type={'primary'}
+                            pill={false}
+                          />
+                        </CellItem>
+                      ) : null}
+                      {!isEmpty(videoCall) ? (
+                        <CellItem>
+                          <Button
+                            onPress={() =>
+                              join(videoCall.meetingId, videoCall.passcode)
+                            }
+                            loading={loading}
+                            title={
+                              !isEmpty(parentVideoCall)
+                                ? 'Join Breakout'
+                                : 'Join Meeting'
+                            }
+                            type={'primary'}
+                            pill={false}
+                          />
+                        </CellItem>
+                      ) : null}
+                    </Cell>
 
                     <StyledH4>{'Group Members'}</StyledH4>
                     <StyledHorizontalTileFeed
@@ -346,41 +383,14 @@ const GroupSingle = ({ navigation }) => {
                     />
                   </PaddedView>
 
-                  <Cell>
-                    {!isEmpty(parentVideoCall) ? (
-                      <CellItem first>
-                        <Button
-                          onPress={() =>
-                            join(
-                              parentVideoCall.meetingId,
-                              parentVideoCall.passcode
-                            )
-                          }
-                          loading={loading}
-                          title={'Video Call'}
-                          type={'primary'}
-                          pill={false}
-                        />
-                      </CellItem>
-                    ) : null}
-                    {!isEmpty(videoCall) ? (
-                      <CellItem>
-                        <Button
-                          onPress={() =>
-                            join(videoCall.meetingId, videoCall.passcode)
-                          }
-                          loading={loading}
-                          title={
-                            !isEmpty(parentVideoCall)
-                              ? 'Breakout Session'
-                              : 'Video Call'
-                          }
-                          type={'primary'}
-                          pill={false}
-                        />
-                      </CellItem>
-                    ) : null}
-                  </Cell>
+                  {phoneNumbers ? (
+                    <PaddedView>
+                      <MessagesButton
+                        recipients={phoneNumbers}
+                        isLoading={loading}
+                      />
+                    </PaddedView>
+                  ) : null}
 
                   {!isEmpty(resources) ? (
                     <PaddedView>

@@ -3,7 +3,24 @@ import { presentEventCreatingDialog } from 'react-native-add-calendar-event';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import { styled, Button } from '@apollosproject/ui-kit';
+import {
+  Button,
+  BodySmall,
+  Icon,
+  withTheme,
+  styled,
+} from '@apollosproject/ui-kit';
+
+const StyledButton = withTheme(({ theme }) => ({
+  style: {
+    alignSelf: 'flex-end',
+    height: theme.sizing.baseUnit * 2,
+  },
+}))(Button);
+
+const StyledIcon = styled(({ theme }) => ({
+  marginRight: theme.sizing.baseUnit * 0.5,
+}))(Icon);
 
 const utcDateToString = (momentInUTC) => {
   const s = moment.utc(momentInUTC).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
@@ -34,96 +51,33 @@ const addToCalendar = (title, notes, startDateUTC) => {
     });
 };
 
-// const handleAddToCalNew = async () => {
-//   await RNCalendarEvents.checkPermissions();
-//   await RNCalendarEvents.requestPermissions();
-//   await RNCalendarEvents.saveEvent('Title of event', {
-//     startDate: '2020-08-19T19:26:00.000Z',
-//     endDate: '2020-08-19T19:35:00.000Z',
-//   });
-// };
-
-const StyledButton = styled(({ theme }) => {})(Button);
-
 const AddCalEventButton = ({
-  buttonText,
   eventTitle,
   eventStart,
   eventNotes,
   isLoading,
   disabled,
 }) => (
-  <>
-    <StyledButton
-      disabled={disabled || isLoading}
-      isLoading={isLoading}
-      onPress={() => {
-        addToCalendar(eventTitle, eventNotes, eventStart);
-      }}
-      title={buttonText}
-    />
-    {/* <StyledButton
-      disabled={disabled || isLoading}
-      isLoading={isLoading}
-      title={'Request auth'}
-      onPress={() => {
-        RNCalendarEvents.requestPermissions().then(
-          (result) => {
-            console.warn('Auth requested', result);
-          },
-          (result) => {
-            console.error(result);
-          }
-        );
-      }}
-    />
-    <StyledButton
-      disabled={disabled || isLoading}
-      isLoading={isLoading}
-      onPress={() => {
-        RNCalendarEvents.saveEvent('Title of event', {
-          startDate: '2020-08-03T19:26:00.000Z',
-          endDate: '2020-08-03T19:35:00.000Z',
-        }).then(
-          (result) => {
-            console.warn('saveEvent', result);
-          },
-          (result) => {
-            console.error(result);
-          }
-        );
-      }}
-      title={'saveEvent'}
-    />
-    <StyledButton
-      disabled={disabled || isLoading}
-      isLoading={isLoading}
-      onPress={() => {
-        RNCalendarEvents.checkPermissions().then(
-          (result) => {
-            console.warn('Auth check', result);
-          },
-          (result) => {
-            console.error(result);
-          }
-        );
-      }}
-      title={'Check auth'}
-    /> */}
-  </>
+  <StyledButton
+    disabled={disabled || isLoading}
+    isLoading={isLoading}
+    onPress={() => {
+      addToCalendar(eventTitle, eventNotes, eventStart);
+    }}
+    bordered
+    type={'primary'}
+  >
+    <StyledIcon name="calendar-add" size={14} />
+    <BodySmall>Add to Calendar</BodySmall>
+  </StyledButton>
 );
 
 AddCalEventButton.propTypes = {
-  buttonText: PropTypes.string,
   eventTitle: PropTypes.string,
   eventStart: PropTypes.string,
   eventNotes: PropTypes.string,
   isLoading: PropTypes.bool,
   disabled: PropTypes.bool,
-};
-
-AddCalEventButton.defaultProps = {
-  buttonText: 'Add to calendar',
 };
 
 export default AddCalEventButton;
