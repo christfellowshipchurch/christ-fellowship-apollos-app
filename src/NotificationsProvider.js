@@ -4,6 +4,10 @@
  *
  *  We should track the issue and move this file back to the Core code once a change/fix
  *  has been approved and implemented.
+ *
+ *  UPDATE : August 21, 2020
+ *  In preparation for the eventual arrival of a Notification Center, we also have some
+ *  temporary code inside of
  */
 import React, { Component } from 'react';
 import { Linking, Platform } from 'react-native';
@@ -41,6 +45,7 @@ class NotificationsInit extends Component {
             onClearStore: PropTypes.func,
         }).isRequired,
         routeLink: PropTypes.func,
+        onNotification: PropTypes.func,
     };
 
     static navigationOptions = {};
@@ -54,8 +59,6 @@ class NotificationsInit extends Component {
     }
 
     componentDidMount() {
-        console.log({ oneSignal: this.props.oneSignalKey });
-
         OneSignal.init(this.props.oneSignalKey, {
             kOSSettingsKeyAutoPrompt: false,
         });
@@ -81,7 +84,7 @@ class NotificationsInit extends Component {
         this.props.routeLink(rawUrl);
     };
 
-    onReceived = (notification) => {
+    onReceived = async (notification) => {
         console.log('Notification received: ', notification);
     };
 
