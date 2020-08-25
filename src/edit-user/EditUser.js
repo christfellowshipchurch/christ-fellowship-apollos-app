@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Color from 'color';
 import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
-
 import { SafeAreaView } from 'react-navigation';
+
 import {
   GradientOverlayImage,
   styled,
@@ -34,9 +34,10 @@ import {
   InputWrapper,
   Switch,
 } from '../ui/inputs';
-import { useForm } from '../hooks';
+import { useForm, useCurrentUser } from '../hooks';
 
 import { GET_FIELD_OPTIONS } from './queries';
+import UpdatePushNotification from './UpdatePushNotification';
 
 const FeaturedImage = withTheme(({ theme }) => ({
   overlayColor: theme.colors.black,
@@ -112,8 +113,8 @@ const pickerColorValue = new DynamicValue('black', 'white');
 //  editing other people's profiles as well.
 const EditUser = ({
   navigation,
-  loading: userLoading,
-  error: userError,
+  loading,
+  error,
   address,
   campus,
   birthDate,
@@ -122,41 +123,46 @@ const EditUser = ({
   firstName,
   lastName,
   gender,
-  updateProfile,
   communicationPreferences: { allowSMS, allowEmail } = {},
+  genderOptions,
+  stateOptions,
 }) => {
   const {
-    loading: optionsLoading,
-    error: optionsError,
-    data: optionData,
-  } = useQuery(GET_FIELD_OPTIONS, { fetchPolicy: 'cache-and-network' });
-  const { values, setValue, errors } = useForm({
+    updateProfileField,
+    updateCommunicationPreference,
+    updateAddress,
+    loading: disabled,
+  } = useCurrentUser();
+  const [allowSMSToggle, setAllowSMSToggle] = useState(allowSMS);
+  const [allowEmailToggle, setAllowEmailToggle] = useState(allowEmail);
+  const { values, setValue } = useForm({
     defaultValues: {
-      ...address,
-      campus,
-      birthDate,
-      phoneNumber,
-      email,
-      firstName,
-      lastName,
-      gender,
-      allowSMS,
-      allowEmail,
-    },
-    validation: {
-      birthDate: (newBirthDate) => {
-        if (moment(newBirthDate).isAfter(moment().subtract(13, 'years'))) {
-          return 'You must be at least 13 to create an account';
-        }
-
-        return false;
-      },
+      street1: get(address, 'street1', ''),
+      city: get(address, 'city', ''),
+      state: get(address, 'state', ''),
+      postalCode: get(address, 'postalCode', ''),
     },
   });
 
+  const handleAddressUpdate = () => {
+    if (
+      values.street1 &&
+      values.street1 !== '' &&
+      values.city &&
+      values.city !== '' &&
+      values.state &&
+      values.state !== '' &&
+      values.postalCode &&
+      values.postalCode !== ''
+    ) {
+      updateAddress({
+        variables: {
+          address: values,
+        },
+      });
+    }
+  };
   const pickerColor = useDynamicValue(pickerColorValue);
-  const loading = userLoading || optionsLoading;
-  const error = userError || optionsError;
   const featuredImage = get(campus, 'featuredImage.uri', null);
 
   if (loading)
@@ -168,8 +174,6 @@ const EditUser = ({
     );
 
   if (error) return <ErrorCard />;
-
-  const disabled = false;
 
   return (
     <BackgroundView>
@@ -188,12 +192,12 @@ const EditUser = ({
 
               <H4>{`${firstName} ${lastName}`}</H4>
               <TouchableScale
-                onPress={() => updateProfile(values)}
-                disabled={loading || get(errors, 'birthDate')}
+                onPress={() => {
+                  navigation.goBack(null);
+                }}
+                disabled={disabled}
               >
-                <SaveButton disabled={loading || get(errors, 'birthDate')}>
-                  Save
-                </SaveButton>
+                <SaveButton disabled={disabled}>Done</SaveButton>
               </TouchableScale>
             </AvatarContainer>
           </SafeAreaView>
@@ -210,7 +214,7 @@ const EditUser = ({
           <FieldContainer>
             <H4>Campus</H4>
             <InputWrapper
-              displayValue={values.campus.name}
+              displayValue={campus.name}
               icon="campus"
               actionIcon="arrow-next"
               handleOnPress={() => navigation.navigate('Location')}
@@ -224,25 +228,30 @@ const EditUser = ({
               label="Street Address"
               value={values.street1}
               onChangeText={(newStreet1) => setValue('street1', newStreet1)}
+              onBlur={handleAddressUpdate}
               icon="home"
               disabled={disabled}
+              returnKeyType="done"
             />
             <TextInput
               label="City"
               value={values.city}
               onChangeText={(newCity) => setValue('city', newCity)}
+              onBlur={handleAddressUpdate}
               hideIcon
               disabled={disabled}
+              returnKeyType="done"
             />
             <Picker
               label="State"
               value={values.state}
               displayValue={values.state}
               onValueChange={(newState) => setValue('state', newState)}
+              onBlur={() => handleAddressUpdate()}
               hideIcon
               disabled={disabled}
             >
-              {get(optionData, 'stateOptions', []).map((s) => (
+              {stateOptions.map((s) => (
                 <PickerItem label={s} value={s} key={s} color={pickerColor} />
               ))}
             </Picker>
@@ -252,8 +261,10 @@ const EditUser = ({
               onChangeText={(newPostalCode) =>
                 setValue('postalCode', newPostalCode)
               }
+              onBlur={handleAddressUpdate}
               hideIcon
               disabled={disabled}
+              returnKeyType="done"
             />
           </FieldContainer>
 
@@ -262,11 +273,17 @@ const EditUser = ({
             <Radio
               label=""
               type="radio"
-              value={values.gender}
-              onChange={(newGender) => setValue('gender', newGender)}
+              value={gender}
+              onChange={(newGender) => {
+                updateProfileField({
+                  variables: {
+                    profileField: { field: 'Gender', value: newGender },
+                  },
+                });
+              }}
               disabled={disabled}
             >
-              {get(optionData, 'genderOptions', []).map((g) => (
+              {genderOptions.map((g) => (
                 <RadioButton key={g} value={g} label={g} underline={false} />
               ))}
             </Radio>
@@ -274,16 +291,20 @@ const EditUser = ({
 
           <FieldContainer>
             <H4>Birthday</H4>
-            <DateInput
-              label=""
-              value={values.birthDate}
-              onConfirm={(newBirthDate) => {
-                setValue('birthDate', newBirthDate);
-              }}
-              disabled={disabled}
-              error={get(errors, 'birthDate')}
-              maxYear={moment().year() - 13}
-            />
+            {!!birthDate && (
+              <DateInput
+                value={birthDate}
+                onConfirm={(newBirthDate) => {
+                  updateProfileField({
+                    variables: {
+                      profileField: { field: 'BirthDate', value: newBirthDate },
+                    },
+                  });
+                }}
+                disabled={disabled}
+                maxYear={moment().year() - 13}
+              />
+            )}
             <Disclaimer>
               *You must be at least 13 years old to have an account.
             </Disclaimer>
@@ -296,10 +317,13 @@ const EditUser = ({
                 <Switch
                   icon="message-bubble"
                   label={`Allow Text Notifications`}
-                  value={values.allowSMS}
+                  value={allowSMSToggle}
                   disabled={loading}
                   onValueChange={(value) => {
-                    setValue('allowSMS', value);
+                    updateCommunicationPreference({
+                      variables: { type: 'SMS', allow: value },
+                    });
+                    setAllowSMSToggle(value);
                   }}
                 />
               )}
@@ -309,13 +333,17 @@ const EditUser = ({
                 <Switch
                   icon="envelope"
                   label={`Allow Email Notifications`}
-                  value={values.allowEmail}
+                  value={allowEmailToggle}
                   disabled={loading}
                   onValueChange={(value) => {
-                    setValue('allowEmail', value);
+                    updateCommunicationPreference({
+                      variables: { type: 'Email', allow: value },
+                    });
+                    setAllowEmailToggle(value);
                   }}
                 />
               )}
+            <UpdatePushNotification />
           </FieldContainer>
         </ContentContainer>
       </ScrollView>
@@ -353,6 +381,8 @@ EditUser.propTypes = {
     allowSMS: PropTypes.bool,
     allowEmail: PropTypes.bool,
   }),
+  genderOptions: PropTypes.arrayOf(PropTypes.string),
+  stateOptions: PropTypes.arrayOf(PropTypes.string),
 };
 
 EditUser.defaultProps = {
@@ -378,6 +408,22 @@ EditUser.defaultProps = {
     allowSMS: false,
     allowEmail: false,
   },
+  genderOptions: [],
+  stateOptions: [],
 };
 
-export default EditUser;
+const EditUserConnected = (props) => {
+  const { data } = useQuery(GET_FIELD_OPTIONS, {
+    fetchPolicy: 'cache-and-network',
+  });
+
+  return (
+    <EditUser
+      {...props}
+      stateOptions={get(data, 'stateOptions', [])}
+      genderOptions={get(data, 'genderOptions', [])}
+    />
+  );
+};
+
+export default EditUserConnected;

@@ -3,10 +3,14 @@ import { View } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { getVersion } from 'react-native-device-info';
 
-import { BodyText, FlexedView, styled } from '@apollosproject/ui-kit';
+import {
+    BodyText,
+    FlexedView,
+    styled,
+    NavigationService,
+} from '@apollosproject/ui-kit';
 
 import { LOGOUT } from '@apollosproject/ui-auth';
-import NavigationService from '../NavigationService';
 
 import { TableView, Cell } from '../ui/TableView';
 import { useSideMenu } from '.';

@@ -12,7 +12,7 @@ import {
   GradientOverlayImage,
   BackgroundView,
   PaddedView,
-  // StretchyView,
+  StretchyView,
   ThemeMixin,
   ThemeConsumer,
   CardLabel,
@@ -48,10 +48,6 @@ const LiveAwareLabel = withTheme(({ isLive, title, theme }) => ({
       title,
     }),
 }))(CardLabel);
-
-// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
-const StretchyView = ({ children, ...props }) =>
-  children({ Stretchy: View, ...props });
 
 const WeekendContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);

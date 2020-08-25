@@ -10,7 +10,7 @@ import {
   H4,
   UIText,
   Icon,
-  // StretchyView,
+  StretchyView,
 } from '@apollosproject/ui-kit';
 import {
   HorizontalContentSeriesFeedConnected,
@@ -50,33 +50,11 @@ const StyledImageBackground = styled(({ theme }) => ({
   flexDirection: 'column',
   justifyContent: 'flex-end',
   // using middle gray as the starting point, let's mix our paper color with it
-  // so that we can a gray tone that fits within the context of our theme
+  // so that we can use a gray tone that fits within the context of our theme
   backgroundColor: Color('#7F7F7F')
     .mix(Color(theme.colors.background.paper))
     .hex(),
 }))(ImageBackground);
-
-const CheckedInText = styled(({ theme }) => ({
-  fontSize: 12,
-  color: theme.colors.primary,
-  paddingLeft: theme.sizing.baseUnit * 0.25,
-}))(UIText);
-
-const CheckIcon = withTheme(({ theme }) => ({
-  size: 16,
-  fill: theme.colors.primary,
-  style: { paddingRight: theme.sizing.baseUnit * 0.25 },
-}))(Icon);
-
-const CheckedInRow = styled(({ theme }) => ({
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: -1 * theme.sizing.baseUnit * 0.5,
-}))(View);
-
-// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
-const StretchyView = ({ children, ...props }) =>
-  children({ Stretchy: View, ...props });
 
 const EventContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
@@ -113,8 +91,7 @@ const EventContentItem = ({ content, loading }) => {
                             source={coverImageSources}
                           >
                             {!loading &&
-                              checkin &&
-                              !checkin.isCheckedIn && (
+                              checkin && (
                                 <StyledCheckInButton
                                   contentId={content.id}
                                   mediaControlSpacing={isLive || hasVideo}
@@ -133,15 +110,6 @@ const EventContentItem = ({ content, loading }) => {
                         <LiveLabel />
                       </View>
                     )}
-
-                    {!loading &&
-                      checkin &&
-                      checkin.isCheckedIn && (
-                        <CheckedInRow>
-                          <CheckIcon name="check" />
-                          <CheckedInText>{checkin.title}</CheckedInText>
-                        </CheckedInRow>
-                      )}
                     <Title contentId={content.id} isLoading={loading} />
 
                     {events.length < 1 &&
@@ -168,7 +136,6 @@ const EventContentItem = ({ content, loading }) => {
                       callsToAction.map((n) => (
                         <StyledButton
                           key={`${n.call}:${n.action}`}
-                          isLoading={loading}
                           title={n.call}
                           pill={false}
                           url={n.action}

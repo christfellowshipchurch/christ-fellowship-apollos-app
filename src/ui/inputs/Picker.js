@@ -36,18 +36,21 @@ const StyledPicker = styled(({ theme }) => ({
     }),
 }))(CorePicker);
 
-const Picker = ({ value, style, icon, hideIcon, ...pickerProps }) => {
-    const [focused, setFocused] = useState(false);
+const Picker = ({
+    value,
+    style,
+    icon,
+    hideIcon,
+    ...pickerProps
+}) => {
     const backgroundColor = useDynamicValue(pickerBackgroundColorValue);
 
     return (
         <Row>
-            <InputIcon focused={focused} icon={icon} hideIcon={hideIcon} />
+            <InputIcon icon={icon} hideIcon={hideIcon} />
             <StyledPicker
                 {...pickerProps}
                 value={value}
-                focused={focused}
-                onRequestClose={() => setFocused(false)}
                 backgroundColor={backgroundColor}
                 wrapperStyle={{ flex: 1 }}
             />

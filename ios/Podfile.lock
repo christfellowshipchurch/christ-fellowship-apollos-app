@@ -18,11 +18,17 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - google-cast-sdk-no-bluetooth (4.4.7):
+    - google-cast-sdk-no-bluetooth/Core (= 4.4.7)
+    - Protobuf (~> 3.0)
+  - google-cast-sdk-no-bluetooth/Core (4.4.7):
+    - Protobuf (~> 3.0)
   - OneSignal (2.10.1)
   - Permission-Notifications (2.1.2):
     - RNPermissions
   - Permission-PhotoLibrary (2.1.2):
     - RNPermissions
+  - Protobuf (3.12.0)
   - React (0.60.5):
     - React-Core (= 0.60.5)
     - React-DevSupport (= 0.60.5)
@@ -76,11 +82,17 @@ PODS:
     - React
   - react-native-geolocation (2.0.2):
     - React
+  - react-native-google-cast/NoBluetooth (3.3.0):
+    - google-cast-sdk-no-bluetooth
+    - React
+    - react-native-google-cast/RNGoogleCast
+  - react-native-google-cast/RNGoogleCast (3.3.0):
+    - React
   - react-native-image-picker (0.28.0):
     - React
   - react-native-maps (0.26.1):
     - React
-  - react-native-music-control (0.10.6):
+  - react-native-music-control (0.10.8):
     - React
   - react-native-onesignal (3.3.2):
     - OneSignal (= 2.10.1)
@@ -139,6 +151,8 @@ PODS:
     - React
   - RNCPushNotificationIOS (1.0.3):
     - React
+  - RNDateTimePicker (2.5.0):
+    - React
   - RNDeviceInfo (4.0.1):
     - React
   - RNGestureHandler (1.4.1):
@@ -174,6 +188,7 @@ DEPENDENCIES:
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-config (from `../node_modules/react-native-config`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
+  - react-native-google-cast/NoBluetooth (from `../node_modules/react-native-google-cast/ios/`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-music-control (from `../node_modules/react-native-music-control`)
@@ -202,6 +217,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
+  - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNInAppBrowser (from `../node_modules/react-native-inappbrowser-reborn`)
@@ -213,8 +229,11 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - boost-for-react-native
     - OneSignal
+  trunk:
+    - boost-for-react-native
+    - google-cast-sdk-no-bluetooth
+    - Protobuf
 
 EXTERNAL SOURCES:
   BugsnagReactNative:
@@ -253,6 +272,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-config"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
+  react-native-google-cast:
+    :path: "../node_modules/react-native-google-cast/ios/"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
@@ -309,6 +330,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPushNotificationIOS:
     :path: "../node_modules/@react-native-community/push-notification-ios"
+  RNDateTimePicker:
+    :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
@@ -333,9 +356,11 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  google-cast-sdk-no-bluetooth: 197acace9d5a78380bdaef8d45439b2250fa050b
   OneSignal: 8fb749fa07f88006403c9b659a570fb7fb74519a
   Permission-Notifications: 2f2ff1d01fe7677c3858c8f0a0bd3f3accdbb6bb
   Permission-PhotoLibrary: e29736d903e867d278747eb30951528303425f64
+  Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
   React: 53c53c4d99097af47cf60594b8706b4e3321e722
   React-Core: ba421f6b4f4cbe2fb17c0b6fc675f87622e78a64
   React-cxxreact: 8384287780c4999351ad9b6e7a149d9ed10a2395
@@ -347,9 +372,10 @@ SPEC CHECKSUMS:
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-config: 55548054279d92e0e4566ea15a8b9b81028ec342
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
+  react-native-google-cast: 410619ef162b8b91815ecf7271502224998dee8e
   react-native-image-picker: e6e06d4315e3c85bad17e4b2002cd29f11d202c8
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
-  react-native-music-control: acf1bf348eee8231d0db9422f170fc752a904ce3
+  react-native-music-control: dcfe5b61e56a15898c4618579cb8ce612c9d21a8
   react-native-onesignal: 8958311abbd9125f26e600914e48833b57321cbf
   react-native-passkit-wallet: 51e3babdaeec4c10b5736786ebd1bfb470fcaa36
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
@@ -375,6 +401,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 2e2e3feb9bdadc752a026703d8c4065ca912e75a
   RNCMaskedView: a88953beefbd347a29072d9eba90e42945fe291e
   RNCPushNotificationIOS: 83ec11fe19d4ea9e32cc339d8e7d2cc3c88f543e
+  RNDateTimePicker: a8000390e7a4fe23d9f36492ded9282640721c82
   RNDeviceInfo: 687c1b2ab6d86ff1ca1208783320cd144138c7f2
   RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
   RNInAppBrowser: 0800f17fd7ed9fc503eb68e427befebb41ee719b
@@ -384,6 +411,6 @@ SPEC CHECKSUMS:
   RNZoomBridge: 1835796645f78d2902bf31895d0a3c25afad069f
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: 50501308495532a779921e6b3c743747cab08113
+PODFILE CHECKSUM: f6afe464622383d751ae87adbe415ef7a276219e
 
 COCOAPODS: 1.9.1

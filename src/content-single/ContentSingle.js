@@ -106,7 +106,7 @@ class ContentSingle extends PureComponent {
       <ThemeMixin theme={theme}>
         <TrackEventWhenLoaded
           loaded={!!(!loading && content.title)}
-          eventName={'View Contentx'}
+          eventName={'View Content'}
           properties={{
             title: content.title,
             itemId: this.itemId,
@@ -120,7 +120,11 @@ class ContentSingle extends PureComponent {
 
   render() {
     return (
-      <Query query={GET_CONTENT_ITEM} variables={this.queryVariables}>
+      <Query
+        query={GET_CONTENT_ITEM}
+        variables={this.queryVariables}
+        fetchPolicy="cache-and-network"
+      >
         {this.renderWithData}
       </Query>
     );

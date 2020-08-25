@@ -4,6 +4,8 @@ import dark from './dark-theme';
 import onboarding from './onboarding';
 import authEntry from './authEntry';
 
+import { UIPrayerOverrides } from './overrides';
+
 /* Add your custom theme definitions below. Anything that is supported in UI-Kit Theme can be
  overridden and/or customized here! */
 
@@ -138,7 +140,7 @@ const alpha = {
     low: 0.4,
 };
 
-const overrides = {
+const overrides = ({ colors }) => ({
     'Onboarding.SlideContent.Title': {
         color: '#FFFFFF',
     },
@@ -189,7 +191,8 @@ const overrides = {
     'ui-auth.FieldLabel': {
         color: '#FCFCFC',
     },
-};
+    ...UIPrayerOverrides,
+});
 
 const buttons = ({ colors: themeColors }) => ({
     white: {

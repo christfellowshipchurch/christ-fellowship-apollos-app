@@ -4,7 +4,11 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { useDarkModeContext } from 'react-native-dark-mode';
 
-import { BackgroundView, ThemeMixin } from '@apollosproject/ui-kit';
+import {
+  BackgroundView,
+  ThemeMixin,
+  NavigationService,
+} from '@apollosproject/ui-kit';
 import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { MediaPlayer } from '@apollosproject/ui-media-player';
@@ -13,12 +17,12 @@ import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 
 import Providers from './Providers';
-import NavigationService from './NavigationService';
 import ContentSingle from './content-single';
 import ContentFeed from './content-feed';
 import Tabs from './tabs';
 import EditUser from './edit-user';
 import GroupSingle from './group-single';
+import NotificationCenter from './notification-center';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -81,6 +85,7 @@ const AppNavigator = createStackNavigator(
     EditUser,
     Location,
     GroupSingle,
+    NotificationCenter,
   },
   {
     initialRouteName: 'ProtectedRoute',
