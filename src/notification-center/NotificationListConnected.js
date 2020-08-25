@@ -2,6 +2,8 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
+import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
+
 import NavigationHeader from '../content-single/NavigationHeader';
 import NotificationList from './NotificationList';
 
@@ -30,12 +32,21 @@ const NotificationListConnected = () => {
   });
 
   return (
-    <NotificationList
-      notifications={mapNotificationEdges(data)}
-      isLoading={loading}
-      error={error}
-      refetch={refetch}
-    />
+    <>
+      <TrackEventWhenLoaded
+        isLoading={loading}
+        eventName={'View Notification Center'}
+        properties={{
+          navigationPlacement: 'Header Navigation',
+        }}
+      />
+      <NotificationList
+        notifications={mapNotificationEdges(data)}
+        isLoading={loading}
+        error={error}
+        refetch={refetch}
+      />
+    </>
   );
 };
 
