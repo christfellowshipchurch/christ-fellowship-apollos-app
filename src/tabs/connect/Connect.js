@@ -35,7 +35,7 @@ import {
 } from '../../navigation';
 
 import StatusBar from '../../ui/StatusBar';
-import { useCurrentUser } from '../../hooks';
+import { useCurrentUser, useFeatureFlag } from '../../hooks';
 import ProfileActionBar from './ProfileActionBar';
 import Groups from './Groups';
 
@@ -139,6 +139,9 @@ const Connect = ({ navigation }) => {
     gender,
     communicationPreferences: { allowSMS, allowEmail } = {},
   } = useCurrentUser();
+  const { enabled } = useFeatureFlag({
+    key: 'GROUPS',
+  });
   const { scrollY } = useHeaderScrollEffect({ navigation });
 
   if (loading)
@@ -172,7 +175,7 @@ const Connect = ({ navigation }) => {
           },
         ])}
       >
-        <Groups navigation={navigation} />
+        {enabled ? <Groups navigation={navigation} /> : null}
         <ProfileActionBar />
         <CardLayout>
           <Card style={{ flex: 1 }}>
