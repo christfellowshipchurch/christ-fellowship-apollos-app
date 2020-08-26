@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Animated, View } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { get, head, isEmpty } from 'lodash';
 import { compose } from 'recompose';
-import ZoomBridge from 'react-native-zoom-bridge';
-import Config from 'react-native-config';
 import {
   styled,
   GradientOverlayImage,
@@ -27,13 +25,15 @@ import {
   Button,
 } from '@apollosproject/ui-kit';
 
-import { useCurrentUser, useLinkRouter } from '../hooks';
+import { useLinkRouter } from '../hooks';
 
 import AvatarCloud from '../ui/AvatarCloud';
 
 import NavigationHeader from '../content-single/NavigationHeader';
 import AddCalEventButton from '../content-single/AddCalEventButton';
 import MessagesButton from '../content-single/MessagesButton';
+
+import VideoCall from './VideoCall';
 
 import GET_GROUP from './getGroup';
 
@@ -155,32 +155,7 @@ const CellItem = styled(({ theme, first }) => ({
   flex: 1,
 }))(View);
 
-const ZoomBridgeerType = 2; // 2 - pro user
-const config = {
-  zoom: {
-    appKey: Config.ZOOM_SDK_APP_KEY, // SDK key created in Zoom app marketplace
-    appSecret: Config.ZOOM_SDK_APP_SECRET, // SDK secret created in Zoom app marketplace
-    domain: 'zoom.us',
-  },
-};
-
 const GroupSingle = ({ navigation }) => {
-  useEffect(() => {
-    async function initializeZoom() {
-      try {
-        const initializeResult = await ZoomBridge.initialize(
-          config.zoom.appKey,
-          config.zoom.appSecret,
-          config.zoom.domain
-        );
-        console.log({ initializeResult });
-      } catch (e) {
-        throw e;
-      }
-    }
-    initializeZoom();
-  }, []);
-
   const { routeLink } = useLinkRouter();
   const loadingStateObject = {
     id: 'fake_id',
@@ -188,50 +163,8 @@ const GroupSingle = ({ navigation }) => {
     coverImage: [],
   };
 
-  const zakTokenRaw = Config.ZOOM_ZAK_TOKEN; // Meeting zak token generated from using the jwt token as auth from jwt zoom app in postman and hitting the https://api.zoom.us/v2/users/{userId}/token?type=zak endpoint
-
   const itemId = navigation.getParam('itemId', []);
   const queryVariables = { itemId };
-
-  const { firstName, lastName } = useCurrentUser();
-  const fullName = `${firstName} ${lastName}`;
-
-  const startMeeting = async (meetingId) => {
-    const zakToken = decodeURIComponent(zakTokenRaw);
-
-    // TODO recieve user's details from zoom API? WOUT: webinar user is different
-    const userId = 'null'; // NOTE: no need for userId when using zakToken
-    const userType = ZoomBridgeerType;
-    const zoomToken = 'null'; // NOTE: no need for userId when using zakToken
-
-    const zoomAccessToken = zakToken;
-    // console.warn('zoomAccessToken', zoomAccessToken);
-
-    try {
-      await ZoomBridge.startMeeting(
-        fullName,
-        meetingId,
-        userId,
-        userType,
-        zoomAccessToken,
-        zoomToken
-      );
-    } catch (e) {
-      throw e;
-    }
-  };
-
-  const join = async (meetingId, passcode) => {
-    try {
-      if (passcode) {
-        await ZoomBridge.joinMeetingWithPassword(fullName, meetingId, passcode);
-      } else {
-        await ZoomBridge.joinMeeting(fullName, meetingId);
-      }
-    } catch (e) {
-      throw e;
-    }
-  };
 
   const renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
@@ -306,7 +239,6 @@ const GroupSingle = ({ navigation }) => {
                       </StyledTitle>
                     </Stretchy>
                   ) : null}
-
                   <PaddedView vertical={false}>
                     <Cell>
                       {content.schedule ? (
@@ -338,41 +270,12 @@ const GroupSingle = ({ navigation }) => {
                       <BodyText>{content.summary}</BodyText>
                     </PaddedView>
 
-                    <Cell>
-                      {!isEmpty(parentVideoCall) ? (
-                        <CellItem first>
-                          <Button
-                            onPress={() =>
-                              join(
-                                parentVideoCall.meetingId,
-                                parentVideoCall.passcode
-                              )
-                            }
-                            loading={loading}
-                            title={'Join Meeting'}
-                            type={'primary'}
-                            pill={false}
-                          />
-                        </CellItem>
-                      ) : null}
-                      {!isEmpty(videoCall) ? (
-                        <CellItem>
-                          <Button
-                            onPress={() =>
-                              join(videoCall.meetingId, videoCall.passcode)
-                            }
-                            loading={loading}
-                            title={
-                              !isEmpty(parentVideoCall)
-                                ? 'Join Breakout'
-                                : 'Join Meeting'
-                            }
-                            type={'primary'}
-                            pill={false}
-                          />
-                        </CellItem>
-                      ) : null}
-                    </Cell>
+                    <VideoCall
+                      parentVideoCall={parentVideoCall}
+                      videoCall={videoCall}
+                      isLoading={loading}
+                      groupId={content.id}
+                    />
 
                     <StyledH4>{'Group Members'}</StyledH4>
                     <StyledHorizontalTileFeed
