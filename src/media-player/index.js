@@ -13,6 +13,11 @@ const GET_MEDIA_PLAYER_VISIBILITY = gql`
   query mediaPlayerVisibility {
     mediaPlayer @client {
       isVisible
+      currentTrack {
+        mediaSource {
+          uri
+        }
+      }
     }
   }
 `;
