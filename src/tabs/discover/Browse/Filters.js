@@ -84,17 +84,17 @@ const Filters = ({ data, onPress, active, isLoading }) =>
       <LoadingState />
     </LoadingStateContainer>
   ) : (
-      <Container>
-        <FlatList
-          data={mapPropsToData(data, { onPress, active })}
-          renderItem={renderItem}
-          horizontal
-          ListHeaderComponent={<EndCapSpacer />}
-          ListFooterComponent={<EndCapSpacer />}
-          showsHorizontalScrollIndicator={false}
-        />
-      </Container>
-    );
+    <Container>
+      <FlatList
+        data={mapPropsToData(data, { onPress, active })}
+        renderItem={renderItem}
+        horizontal
+        ListHeaderComponent={<EndCapSpacer />}
+        ListFooterComponent={<EndCapSpacer />}
+        showsHorizontalScrollIndicator={false}
+      />
+    </Container>
+  );
 
 Filters.propTypes = {
   data: PropTypes.arrayOf(

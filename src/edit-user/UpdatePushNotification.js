@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import {
   checkNotifications,
   openSettings,
@@ -12,24 +12,19 @@ import { InputWrapper } from '../ui/inputs';
 const updateNotficationSettings = (update) => {
   checkNotifications().then((checkRes) => {
     if (checkRes.status === RESULTS.DENIED) {
-      requestNotifications(['alert', 'badge', 'sound']).then(
-        () => {
-          update();
-        }
-      );
+      requestNotifications(['alert', 'badge', 'sound']).then(() => {
+        update();
+      });
     } else {
       openSettings();
     }
   });
-}
+};
 
-const UpdatePushNotification = ({
-  onRequestPushPermissions
-}) => {
-
-  // When updating notifications from the Settings app, it will not 
-  // update button text unless app is closed and reopened. 
-  // For now we used more generic text("Update") 
+const UpdatePushNotification = ({ onRequestPushPermissions }) => {
+  // When updating notifications from the Settings app, it will not
+  // update button text unless app is closed and reopened.
+  // For now we used more generic text("Update")
   // in order to avoid confusion. We plan on updating this in the future.
 
   function defaultGetButtonText({ hasPushPermission, hasPrompted }) {
@@ -57,11 +52,11 @@ const UpdatePushNotification = ({
 };
 
 UpdatePushNotification.PropTypes = {
-  onRequestPushPermissions: PropTypes.func
+  onRequestPushPermissions: PropTypes.func,
 };
 
 UpdatePushNotification.defaultProps = {
-  onRequestPushPermissions: updateNotficationSettings
+  onRequestPushPermissions: updateNotficationSettings,
 };
 
 export default UpdatePushNotification;
