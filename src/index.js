@@ -11,8 +11,8 @@ import {
 } from '@apollosproject/ui-kit';
 import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
-import { MediaPlayer } from '@apollosproject/ui-media-player';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
+import { MediaPlayer } from './livestream';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 
