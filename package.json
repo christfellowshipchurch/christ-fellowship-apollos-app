@@ -123,6 +123,7 @@
     "rn-fetch-blob": "^0.10.16",
     "rn-placeholder": "1.2.0",
     "stream": "^0.0.2",
+    "stream-chat-react-native": "1.2.0",
     "url": "^0.11.0",
     "yup": "0.26.6"
   },
