@@ -7,22 +7,27 @@ import {
   PanResponder,
   Platform,
   StatusBar,
+  ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Query, withApollo } from 'react-apollo';
 import { get } from 'lodash';
 
-import { styled } from '@apollosproject/ui-kit';
+import { styled, H4 } from '@apollosproject/ui-kit';
 
-import MiniControls, { MINI_PLAYER_HEIGHT } from './MiniControls';
-import FullscreenControls from './FullscreenControls';
-import VideoWindow from './VideoWindow';
-import MusicControls from './MusicControls';
+import MiniControls, { MINI_PLAYER_HEIGHT } from './controls/MiniControls';
+import FullscreenControls from './controls/FullscreenControls';
+import VideoWindow from './controls/VideoWindow';
+import MusicControls from './controls/MusicControls';
 import { GET_FULL_VISIBILITY_STATE } from './queries';
 import { EXIT_FULLSCREEN, GO_FULLSCREEN } from './mutations';
-import { Provider, ControlsConsumer, PlayheadConsumer } from './PlayheadState';
-import MediaPlayerSafeLayout from './MediaPlayerSafeLayout';
-import GoogleCastController from './GoogleCastController';
+import {
+  Provider,
+  ControlsConsumer,
+  PlayheadConsumer,
+} from './controls/PlayheadState';
+import MediaPlayerSafeLayout from './controls/MediaPlayerSafeLayout';
+import GoogleCastController from './controls/GoogleCastController';
 
 const VideoSizer = styled(
   ({ isFullscreen, isVideo, theme }) =>
@@ -115,6 +120,7 @@ class FullscreenPlayer extends PureComponent {
   coverStyle = [
     StyleSheet.absoluteFill,
     {
+      backgroundColor: 'white',
       transform: [{ translateY: this.coverTranslateY }],
     },
   ];
@@ -199,7 +205,7 @@ class FullscreenPlayer extends PureComponent {
       <Animated.View
         key="cover"
         onLayout={this.handleCoverLayout}
-        style={StyleSheet.absoluteFill}
+        style={isFullscreen ? { height: '50%' } : StyleSheet.absoluteFill}
         {...(Platform.OS !== 'android' && isFullscreen
           ? this.panResponder.panHandlers
           : {})}
@@ -239,6 +245,18 @@ class FullscreenPlayer extends PureComponent {
           />
         </Animated.View>
       </Animated.View>,
+      isFullscreen ? (
+        <ScrollView
+          style={{ height: '100%' }}
+          contentContainerStyle={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <H4>{'Chat'}</H4>
+        </ScrollView>
+      ) : null,
       <MusicControls key="music-controls" />,
     ];
 

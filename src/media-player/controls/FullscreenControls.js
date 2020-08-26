@@ -26,7 +26,7 @@ import {
   ButtonIcon,
 } from '@apollosproject/ui-kit';
 
-import { GET_CONTROL_STATE } from './queries';
+import { GET_CONTROL_STATE } from '../queries';
 import {
   PLAY,
   PAUSE,
@@ -35,7 +35,7 @@ import {
   HIDE_VIDEO,
   MUTE,
   UNMUTE,
-} from './mutations';
+} from '../mutations';
 import { ControlsConsumer } from './PlayheadState';
 import Seeker from './Seeker';
 import AirPlayButton from './AirPlayButton';

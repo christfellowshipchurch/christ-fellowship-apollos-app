@@ -12,7 +12,7 @@ import {
 import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
-import { MediaPlayer } from './livestream';
+import { MediaPlayer } from './media-player';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 

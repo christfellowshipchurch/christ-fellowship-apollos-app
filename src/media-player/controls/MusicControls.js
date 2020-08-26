@@ -5,9 +5,9 @@ import MusicControl from 'react-native-music-control';
 import { withApollo, Query } from 'react-apollo';
 import { throttle, get } from 'lodash';
 
+import { GET_MUSIC_CONTROL_STATE } from '../queries';
+import { PLAY, PAUSE, UPDATE_PLAYHEAD } from '../mutations';
 import { PlayheadConsumer, ControlsConsumer } from './PlayheadState';
-import { GET_MUSIC_CONTROL_STATE } from './queries';
-import { PLAY, PAUSE, UPDATE_PLAYHEAD } from './mutations';
 
 class MusicControls extends Component {
   static propTypes = {
@@ -100,8 +100,9 @@ class MusicControls extends Component {
 
     // Remote (headphones) play/pause
     MusicControl.enableControl('togglePlayPause', true);
-    MusicControl.on('togglePlayPause', () =>
-      this.props.isPlaying ? this.handleOnPause() : this.handleOnPlay()
+    MusicControl.on(
+      'togglePlayPause',
+      () => (this.props.isPlaying ? this.handleOnPause() : this.handleOnPlay())
     );
 
     // Remote (headphones) fast forward/rewind (iOS only) (disabled)

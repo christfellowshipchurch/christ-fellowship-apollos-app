@@ -3,8 +3,8 @@ import { Animated } from 'react-native';
 import { Query, withApollo } from 'react-apollo';
 import PropTypes from 'prop-types';
 
-import { GET_MEDIA_PLAYER_IS_PLAYING } from './queries';
-import { UPDATE_PLAYHEAD } from './mutations';
+import { GET_MEDIA_PLAYER_IS_PLAYING } from '../queries';
+import { UPDATE_PLAYHEAD } from '../mutations';
 
 const defaultState = {
   duration: 1,

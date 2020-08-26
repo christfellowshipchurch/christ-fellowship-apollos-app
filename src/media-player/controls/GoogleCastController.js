@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import GoogleCast from 'react-native-google-cast';
 import { Query } from 'react-apollo';
-import { PLAY, PAUSE, CAST_CONNECTED, CAST_DISCONNECTED } from './mutations';
-import { GET_CAST_INFO } from './queries';
+import { PLAY, PAUSE, CAST_CONNECTED, CAST_DISCONNECTED } from '../mutations';
+import { GET_CAST_INFO } from '../queries';
 import { ControlsConsumer } from './PlayheadState';
 
 const styles = StyleSheet.create({

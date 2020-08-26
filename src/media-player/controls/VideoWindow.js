@@ -7,8 +7,8 @@ import { Animated, View, StyleSheet } from 'react-native';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 
-import { GET_VIDEO_STATE } from './queries';
-import { PAUSE, PAUSE_AND_RESTART } from './mutations';
+import { GET_VIDEO_STATE } from '../queries';
+import { PAUSE, PAUSE_AND_RESTART } from '../mutations';
 
 const styles = StyleSheet.create({
   animatedPosterImage: {

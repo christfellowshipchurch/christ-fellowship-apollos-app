@@ -72,4 +72,6 @@ class MediaPlayer extends Component {
   }
 }
 
-export default MediaPlayer;
+export { MediaPlayer };
+
+export default {};

@@ -12,11 +12,11 @@ import {
   FlexedView,
 } from '@apollosproject/ui-kit';
 
+import { GET_CONTROL_STATE } from '../queries';
+
+import { GO_FULLSCREEN, DISMISS, PLAY, PAUSE } from '../mutations';
+
 import Seeker from './Seeker';
-
-import { GET_CONTROL_STATE } from './queries';
-
-import { GO_FULLSCREEN, DISMISS, PLAY, PAUSE } from './mutations';
 
 const MINI_PLAYER_HEIGHT = 50;
 
