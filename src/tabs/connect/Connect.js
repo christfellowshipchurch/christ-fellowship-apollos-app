@@ -8,46 +8,17 @@ import { styled, withTheme, Icon, UIText } from '@apollosproject/ui-kit';
 import {
   navigationOptions,
   BackgroundView,
-  HEADER_OFFSET,
   NavigationSpacer,
   useHeaderScrollEffect,
 } from '../../navigation';
 import StatusBar from '../../ui/StatusBar';
 import ProfileActionBar from './ProfileActionBar';
 import ConnectHeader from './ConnectHeader';
+import { MyPrayersListConnected } from './MyPrayers';
 
-const CheckBoxRowContainer = styled(({ theme }) => ({
-  marginVertical: theme.sizing.baseUnit * 0.25,
-  flexDirection: 'row',
-  alignItems: 'center',
-  opacity: 0.35,
+const MyPrayersSpacing = styled(({ theme }) => ({
+  paddingVertical: theme.sizing.baseUnit,
 }))(View);
-
-const CheckBoxIcon = withTheme(({ theme, active }) => ({
-  name: active ? 'checkbox-checked' : 'checkbox-unchecked',
-  size: 16,
-  fill: theme.colors.text.primary,
-  style: {
-    marginRight: theme.sizing.baseUnit * 0.25,
-    opacity: 0.75,
-  },
-}))(Icon);
-
-const CheckBoxRow = ({ active, type }) => (
-  <CheckBoxRowContainer>
-    <CheckBoxIcon active={active} />
-    <UIText>{`${type} is ${active ? 'enabled' : 'disabled'}`}</UIText>
-  </CheckBoxRowContainer>
-);
-
-CheckBoxRow.propTypes = {
-  active: PropTypes.bool,
-  type: PropTypes.string.isRequired,
-};
-
-CheckBoxRow.defaultProps = {
-  active: false,
-};
 
 const Connect = ({ navigation }) => {
   const { scrollY } = useHeaderScrollEffect({ navigation });
@@ -74,6 +45,18 @@ const Connect = ({ navigation }) => {
             onPressIcon={() => navigation.navigate('EditCurrentUser')}
           />
           <ProfileActionBar />
+          <MyPrayersSpacing>
+            <MyPrayersListConnected
+              onSeeMore={() =>
+                navigation.navigate('MyPrayerRequestsFeed', { nested: true })
+              }
+              onPressItem={(item) =>
+                navigation.navigate('PrayerRequestSingle', {
+                  prayerRequestId: item.id,
+                })
+              }
+            />
+          </MyPrayersSpacing>
         </ScrollView>
       </SafeAreaView>
     </BackgroundView>
