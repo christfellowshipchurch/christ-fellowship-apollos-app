@@ -7,13 +7,12 @@ import {
   PanResponder,
   Platform,
   StatusBar,
-  ScrollView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Query, withApollo } from 'react-apollo';
 import { get } from 'lodash';
 
-import { styled, H4 } from '@apollosproject/ui-kit';
+import { styled } from '@apollosproject/ui-kit';
 
 import MiniControls, { MINI_PLAYER_HEIGHT } from './controls/MiniControls';
 import FullscreenControls from './controls/FullscreenControls';
@@ -28,6 +27,7 @@ import {
 } from './controls/PlayheadState';
 import MediaPlayerSafeLayout from './controls/MediaPlayerSafeLayout';
 import GoogleCastController from './controls/GoogleCastController';
+import LiveStreamChat from './chat';
 
 const VideoSizer = styled(
   ({ isFullscreen, isVideo, theme }) =>
@@ -43,6 +43,15 @@ const VideoSizer = styled(
   'ui-media.MediaPlayer.FullscreenPlayer.VideoSizer'
 )(View);
 
+const LiveStreamContainer = styled(
+  ({ isFullscreen }) =>
+    isFullscreen
+      ? {
+          height: '50%',
+        }
+      : StyleSheet.absoluteFill
+)(Animated.View);
+
 const FullscreenMediaPlayerSafeLayout = styled(
   ({ isFullscreen, theme }) => ({
     ...StyleSheet.absoluteFillObject,
@@ -57,7 +66,7 @@ const FullscreenMediaPlayerSafeLayout = styled(
  * It is capable of playing any type of media that react-native-video supports.
  * It reads from local graphql state, and so you must use graphql mutations to play tracks.
  */
-class FullscreenPlayer extends PureComponent {
+class LiveStreamPlayer extends PureComponent {
   static propTypes = {
     client: PropTypes.shape({ mutate: PropTypes.func }),
     VideoWindowComponent: PropTypes.oneOfType([
@@ -68,6 +77,7 @@ class FullscreenPlayer extends PureComponent {
     googleCastEnabled: PropTypes.bool,
     showAudioToggleControl: PropTypes.bool,
     showVideoToggleControl: PropTypes.bool,
+    contentId: PropTypes.string,
   };
 
   static defaultProps = {
@@ -120,7 +130,6 @@ class FullscreenPlayer extends PureComponent {
   coverStyle = [
     StyleSheet.absoluteFill,
     {
-      backgroundColor: 'white',
       transform: [{ translateY: this.coverTranslateY }],
     },
   ];
@@ -202,10 +211,10 @@ class FullscreenPlayer extends PureComponent {
     }).start();
 
     const coverFlow = [
-      <Animated.View
+      <LiveStreamContainer
         key="cover"
         onLayout={this.handleCoverLayout}
-        style={isFullscreen ? { height: '50%' } : StyleSheet.absoluteFill}
+        isFullscreen={isFullscreen}
         {...(Platform.OS !== 'android' && isFullscreen
           ? this.panResponder.panHandlers
           : {})}
@@ -244,19 +253,8 @@ class FullscreenPlayer extends PureComponent {
             isCasting={isCasting}
           />
         </Animated.View>
-      </Animated.View>,
-      isFullscreen ? (
-        <ScrollView
-          style={{ height: '100%' }}
-          contentContainerStyle={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <H4>{'Chat'}</H4>
-        </ScrollView>
-      ) : null,
+      </LiveStreamContainer>,
+      isFullscreen ? <LiveStreamChat contentId={this.props.contentId} /> : null,
       <MusicControls key="music-controls" />,
     ];
 
@@ -291,6 +289,6 @@ class FullscreenPlayer extends PureComponent {
   }
 }
 
-const FullscreenPlayerWithData = withApollo(FullscreenPlayer);
+const LiveStreamPlayerWithData = withApollo(LiveStreamPlayer);
 
-export { FullscreenPlayerWithData as default };
+export { LiveStreamPlayerWithData as default };

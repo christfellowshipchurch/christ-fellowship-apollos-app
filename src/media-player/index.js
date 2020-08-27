@@ -60,13 +60,18 @@ class MediaPlayer extends Component {
               {({ loading, data: liveData }) => {
                 if (loading) return null;
 
-                const id = get(liveData, 'livestreams.contentItem.id');
-                const liveUris = get(liveData, 'liveStreams', [])
-                  .filter((s) => s.isLive)
-                  .map((s) => get(s, 'media.sources[0].uri'));
-                const isLive = !!liveUris.find((u) => u === uri);
+                const liveStreams = get(liveData, 'liveStreams', []).filter(
+                  (s) => s.isLive
+                );
+                const liveStream = liveStreams.find(
+                  (l) => uri === get(l, 'media.sources[0].uri')
+                );
+                const contentId = get(liveStream, 'contentItem.id', '').split(
+                  ':'
+                )[1];
 
-                if (isLive) return <LiveStreamPlayer id={id} />;
+                if (liveStream)
+                  return <LiveStreamPlayer contentId={contentId} />;
                 return <FullscreenPlayer />;
               }}
             </Query>
