@@ -27,7 +27,7 @@ const Disclaimer = styled(({ theme }) => ({
 }))(UIText);
 
 const ProfileDetailsEntry = (props) => (
-  <ThemeMixin mixing={{ type: 'dark' }}>
+  <ThemeMixin mixin={{ type: 'dark' }}>
     <ProfileEntryFieldContainer {...props}>
       <FieldLabel padded>Gender</FieldLabel>
       <RadioInput

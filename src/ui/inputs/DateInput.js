@@ -3,12 +3,11 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { range } from 'lodash';
-import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
+
+import { withTheme } from '@apollosproject/ui-kit';
 
 import { useForm } from '../../hooks';
 import Picker, { PickerItem } from './Picker';
-
-const pickerColorValue = new DynamicValue('black', 'white');
 
 const formatDefaultYear = (year, min, max) => {
     if (year > max) return max.toString();
@@ -17,9 +16,8 @@ const formatDefaultYear = (year, min, max) => {
     return year.toString();
 };
 
-const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
+const DateInput = ({ value, icon, minYear, maxYear, onConfirm, theme }) => {
     const mValue = moment(value);
-    const pickerColor = useDynamicValue(pickerColorValue);
     const months = moment.months();
     const monthIndex = (m) =>
         months
@@ -70,6 +68,8 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
 
     const yearRange = [minYear, maxYear].sort((a, b) => a > b);
 
+    console.log({ theme });
+
     return (
         <View>
             <Picker
@@ -84,7 +84,7 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
                         label={m}
                         value={monthIndex(m).toString()}
                         key={m}
-                        color={pickerColor}
+                        color={theme.colors.text.primary}
                     />
                 ))}
             </Picker>
@@ -100,7 +100,7 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
                         label={d.toString()}
                         value={d.toString()}
                         key={`${month}${d}`}
-                        color={pickerColor}
+                        color={theme.colors.text.primary}
                     />
                 ))}
             </Picker>
@@ -116,7 +116,7 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm }) => {
                         label={y.toString()}
                         value={y.toString()}
                         key={`${month}${y}`}
-                        color={pickerColor}
+                        color={theme.colors.text.primary}
                     />
                 ))}
             </Picker>
@@ -140,4 +140,4 @@ DateInput.defaultProps = {
     minYear: moment().year() - 100,
 };
 
-export default DateInput;
+export default withTheme()(DateInput);

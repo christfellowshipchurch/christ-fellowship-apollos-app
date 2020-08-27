@@ -4,10 +4,10 @@ import { Icon, withTheme } from '@apollosproject/ui-kit';
 export const InputIcon = withTheme(
     ({ theme, error, disabled, icon, fill, focused, hideIcon }) => {
         const color = disabled
-            ? theme.colors.lightSecondary
+            ? theme.colors.text.tertiary
             : focused
                 ? theme.colors.primary
-                : theme.colors.darkSecondary;
+                : theme.colors.text.secondary;
 
         return {
             name: icon,
