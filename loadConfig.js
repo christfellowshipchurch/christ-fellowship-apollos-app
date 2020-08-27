@@ -203,5 +203,22 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    PRAYER_REQUEST_FRAGMENT: gql`
+      fragment PrayerRequestFragment on PrayerRequest {
+        id
+        text
+        requestedDate
+        requestor {
+          id
+          nickName
+          firstName
+          photo {
+            uri
+          }
+        }
+        isAnonymous
+        isPrayed
+      }
+    `,
   },
 });

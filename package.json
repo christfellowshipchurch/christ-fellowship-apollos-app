@@ -1,6 +1,6 @@
 {
   "name": "ChristFellowship",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "private": true,
   "engines": {
     "node": ">=8.11.x"
@@ -45,7 +45,7 @@
     "@apollosproject/ui-notifications": "^1.4.3",
     "@apollosproject/ui-onboarding": "^1.4.3",
     "@apollosproject/ui-passes": "^1.4.3",
-    "@apollosproject/ui-prayer": "1.4.3",
+    "@apollosproject/ui-prayer": "^1.4.4-alpha.14",
     "@apollosproject/ui-scripture": "^1.4.3",
     "@apollosproject/ui-storybook": "^1.4.3",
     "@react-native-community/async-storage": "^1.5.1",
@@ -142,7 +142,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.1",
     "babel-jest": "^24.7.1",
-    "codecov": "3.6.5",
+    "codecov": "3.7.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-config-prettier": "^2.9.0",

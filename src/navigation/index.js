@@ -38,7 +38,7 @@ const TitleWithArrow = styled(({ theme }) => ({
 const BackArrow = withTheme(({ theme }) => ({
     name: 'arrow-back',
     size: 18,
-    fill: theme.colors.text.teriary,
+    fill: theme.colors.text.secondary,
     style: {
         marginRight: theme.sizing.baseUnit * 0.25,
     },

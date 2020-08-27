@@ -21,6 +21,9 @@ import ContentSingle from './content-single';
 import ContentFeed from './content-feed';
 import Tabs from './tabs';
 import EditUser from './edit-user';
+import NotificationCenter from './notification-center';
+import PrayerRequestSingle from './prayer-request-single';
+import MyPrayerRequestsFeed from './my-prayer-requests-feed';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -59,6 +62,7 @@ const AppContent = createStackNavigator(
   {
     Tabs,
     ContentFeed,
+    MyPrayerRequestsFeed,
   },
   {
     initialRouteName: 'Tabs',
@@ -82,6 +86,8 @@ const AppNavigator = createStackNavigator(
     LandingScreen,
     EditUser,
     Location,
+    NotificationCenter,
+    PrayerRequestSingle,
   },
   {
     initialRouteName: 'ProtectedRoute',

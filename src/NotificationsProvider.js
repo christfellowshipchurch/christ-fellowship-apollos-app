@@ -4,6 +4,10 @@
  *
  *  We should track the issue and move this file back to the Core code once a change/fix
  *  has been approved and implemented.
+ *
+ *  UPDATE : August 21, 2020
+ *  In preparation for the eventual arrival of a Notification Center, we also have some
+ *  temporary code inside of
  */
 import React, { Component } from 'react';
 import { Linking, Platform } from 'react-native';
@@ -41,6 +45,7 @@ class NotificationsInit extends Component {
             onClearStore: PropTypes.func,
         }).isRequired,
         routeLink: PropTypes.func,
+        onNotification: PropTypes.func,
     };
 
     static navigationOptions = {};
@@ -54,8 +59,6 @@ class NotificationsInit extends Component {
     }
 
     componentDidMount() {
-        console.log({ oneSignal: this.props.oneSignalKey });
-
         OneSignal.init(this.props.oneSignalKey, {
             kOSSettingsKeyAutoPrompt: false,
         });
@@ -77,37 +80,11 @@ class NotificationsInit extends Component {
     }
 
     navigate = (rawUrl) => {
-        console.log({ rawUrl });
-
         if (!rawUrl) return;
-
         this.props.routeLink(rawUrl);
-
-        /** The bug that is fixed in the code below is one where routes are
-         *  incorrectly being cleaned.
-         *
-         *  Error:
-         *  The current structure of Push Notification urls do _not_ require
-         *  that `app-link` be in the url, so updating the urls to match the new
-         *  structure would mean that anyone running the app <5.2.0 would not be
-         *  able to open up deep links.
-         *
-         *  Current Url Deep Link: `cf://cf/Profile` gets cleaned to `undefined`
-         *  New Url Deep Link: `cf://cf/app-link/Profile` gets cleaned to `/Profile`
-         *
-         *  The given change updates the logic to route the raw url to our useLinkRouter
-         *  hook as provided by `NotificationsInitHookProvider` in order to take advantage
-         *  of routing urls from the API instead of hardcoded values.
-         */
-
-        // const url = URL.parse(rawUrl);
-        // const route = url.pathname.substring(1);
-        // const cleanedRoute = route.includes('/app-link/')
-        //   ? route
-        //   : route.split('app-link/')[1];
     };
 
-    onReceived = (notification) => {
+    onReceived = async (notification) => {
         console.log('Notification received: ', notification);
     };
 
