@@ -11,7 +11,7 @@ import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../../hooks';
 
 import MediaPlayerSafeLayout from '../controls/MediaPlayerSafeLayout';
-import chatClient from './client';
+import chatClient, { streami18n } from './client';
 
 const ChatContainer = styled(({ theme }) => ({
   flex: 1,
@@ -68,7 +68,7 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
   }
 
   return (
-    <Chat client={chatClient}>
+    <Chat client={chatClient} i18nInstance={streami18n}>
       <ChatContainer>
         <Channel channel={channel.current}>
           <MessageList />
