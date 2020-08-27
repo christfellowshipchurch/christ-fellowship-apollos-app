@@ -15,7 +15,7 @@ import { get } from 'lodash';
 import { styled } from '@apollosproject/ui-kit';
 
 import MiniControls, { MINI_PLAYER_HEIGHT } from './controls/MiniControls';
-import FullscreenControls from './controls/FullscreenControls';
+import LiveStreamControls from './controls/LiveStreamControls';
 import VideoWindow from './controls/VideoWindow';
 import MusicControls from './controls/MusicControls';
 import { GET_FULL_VISIBILITY_STATE } from './queries';
@@ -39,29 +39,25 @@ const VideoSizer = styled(
           borderBottomLeftRadius: theme.sizing.baseUnit / 2,
           overflow: 'hidden',
           aspectRatio: isVideo ? 16 / 9 : 1,
-        },
-  'ui-media.MediaPlayer.FullscreenPlayer.VideoSizer'
+        }
 )(View);
 
 const LiveStreamContainer = styled(
-  ({ isFullscreen }) =>
+  ({ isFullscreen, isPortrait }) =>
     isFullscreen
       ? {
-          height: '50%',
+          height: isPortrait ? '33%' : '100%',
         }
       : StyleSheet.absoluteFill
 )(Animated.View);
 
-const FullscreenMediaPlayerSafeLayout = styled(
-  ({ isFullscreen, theme }) => ({
-    ...StyleSheet.absoluteFillObject,
-    margin: isFullscreen ? 0 : theme.sizing.baseUnit,
-  }),
-  'ui-media.MediaPlayer.FullscreenPlayer.FullscreenMediaPlayerSafeLayout'
-)(MediaPlayerSafeLayout);
+const FullscreenMediaPlayerSafeLayout = styled(({ isFullscreen, theme }) => ({
+  ...StyleSheet.absoluteFillObject,
+  margin: isFullscreen ? 0 : theme.sizing.baseUnit,
+}))(MediaPlayerSafeLayout);
 
 /**
- * FullscreenPlayer is a animating media player that transitions between
+ * LiveStreamPlayer is a animating media player that transitions between
  * a mini state and a full screen state.
  * It is capable of playing any type of media that react-native-video supports.
  * It reads from local graphql state, and so you must use graphql mutations to play tracks.
@@ -69,21 +65,10 @@ const FullscreenMediaPlayerSafeLayout = styled(
 class LiveStreamPlayer extends PureComponent {
   static propTypes = {
     client: PropTypes.shape({ mutate: PropTypes.func }),
-    VideoWindowComponent: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.func,
-    ]),
-    airPlayEnabled: PropTypes.bool,
-    googleCastEnabled: PropTypes.bool,
-    showAudioToggleControl: PropTypes.bool,
-    showVideoToggleControl: PropTypes.bool,
     contentId: PropTypes.string,
   };
 
-  static defaultProps = {
-    airPlayEnabled: true,
-    googleCastEnabled: true,
-  };
+  state = { portrait: true };
 
   // Tracks the fullscreen animation
   fullscreen = new Animated.Value(0);
@@ -201,6 +186,18 @@ class LiveStreamPlayer extends PureComponent {
     { nativeEvent: { layout: { height: this.miniControlHeight } } },
   ]);
 
+  componentDidMount() {
+    Dimensions.addEventListener('change', this.handleOrientationChanged);
+  }
+
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change', this.handleOrientationChanged);
+  }
+
+  handleOrientationChanged = ({ window: { width, height } }) => {
+    this.setState({ portrait: height > width });
+  };
+
   renderCover = ({ data: { mediaPlayer = {} } = {} }) => {
     const { isFullscreen = false, isCasting = false } = mediaPlayer;
 
@@ -215,46 +212,39 @@ class LiveStreamPlayer extends PureComponent {
         key="cover"
         onLayout={this.handleCoverLayout}
         isFullscreen={isFullscreen}
+        isPortrait={this.state.portrait}
         {...(Platform.OS !== 'android' && isFullscreen
           ? this.panResponder.panHandlers
           : {})}
       >
-        {this.props.googleCastEnabled ? (
-          <PlayheadConsumer>
-            {({ currentTime }) => (
-              <GoogleCastController
-                client={this.props.client}
-                playerPositionAnimation={currentTime}
-              />
-            )}
-          </PlayheadConsumer>
-        ) : null}
+        <PlayheadConsumer>
+          {({ currentTime }) => (
+            <GoogleCastController
+              client={this.props.client}
+              playerPositionAnimation={currentTime}
+            />
+          )}
+        </PlayheadConsumer>
         {!isCasting ? (
           <VideoSizer
             isFullscreen={isFullscreen}
             isVideo={get(mediaPlayer, 'currentTrack.isVideo')}
           >
             <ControlsConsumer>
-              {(controlHandlers) => (
-                <VideoWindow
-                  VideoComponent={this.props.VideoWindowComponent}
-                  {...controlHandlers}
-                />
-              )}
+              {(controlHandlers) => <VideoWindow {...controlHandlers} />}
             </ControlsConsumer>
           </VideoSizer>
         ) : null}
         <Animated.View style={this.fullscreenControlsAnimation}>
-          <FullscreenControls
-            showAudioToggleControl={this.props.showAudioToggleControl}
-            showVideoToggleControl={this.props.showVideoToggleControl}
-            airPlayEnabled={this.props.airPlayEnabled}
-            googleCastEnabled={this.props.googleCastEnabled}
-            isCasting={isCasting}
-          />
+          <LiveStreamControls isCasting={isCasting} />
         </Animated.View>
       </LiveStreamContainer>,
-      isFullscreen ? <LiveStreamChat contentId={this.props.contentId} /> : null,
+      isFullscreen ? (
+        <LiveStreamChat
+          isPortrait={this.state.isPortrait}
+          contentId={this.props.contentId}
+        />
+      ) : null,
       <MusicControls key="music-controls" />,
     ];
 
