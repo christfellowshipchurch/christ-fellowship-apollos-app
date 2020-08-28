@@ -25,6 +25,16 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
 
   const channel = useRef(null);
 
+  // const handleChannelEvent = (e) => {
+  //   console.log({ e });
+  //   console.log('channel event recvd, showing state', { channel: channel.current.state });
+  // };
+  //
+  // const handleClientEvent = (e) => {
+  //   console.log({ e });
+  //   console.log('client event recvd, showing state', { channel: channel.current.state });
+  // };
+
   const connect = async () => {
     try {
       await chatClient.setUser(
@@ -39,6 +49,10 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
       );
       channel.current = chatClient.channel('livestream', contentId);
       await channel.current.watch();
+      // const res = await channel.current.watch({ presence: true });
+      // console.log(' just watched', { res });
+      // chatClient.on(handleClientEvent);
+      // channel.current.on(handleChannelEvent);
       setConnecting(false);
     } catch (e) {
       console.error(e.message); // eslint-disable-line no-console
@@ -50,7 +64,13 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
       if (!loading) {
         connect();
       }
-      return () => chatClient.disconnect();
+      return () => {
+        // if (channel.current) {
+        //   channel.current.off(handleChannelEvent);
+        //   chatClient.off(handleClientEvent);
+        // }
+        chatClient.disconnect();
+      };
     },
     [loading]
   );
