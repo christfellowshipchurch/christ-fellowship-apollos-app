@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
+import { useFeatureFlag } from 'hooks';
 import LiveStreamPlayer from './LiveStreamPlayer';
 import FullscreenPlayer from './FullscreenPlayer';
 
@@ -41,47 +42,34 @@ const GET_LIVE_CONTENT = gql`
   }
 `;
 
-/**
- * Selectively renders FullscreenPlayer component is MediaPlayer is visible
- */
-class MediaPlayer extends Component {
-  shouldComponentUpdate() {
-    return false; // 🚀
+const MediaPlayer = () => {
+  const { data } = useQuery(GET_MEDIA_PLAYER_VISIBILITY);
+
+  const { loading, data: liveData } = useQuery(GET_LIVE_CONTENT);
+
+  const { enabled } = useFeatureFlag({ key: 'LIVE_STREAM_CHAT' });
+
+  if (!data.mediaPlayer || !data.mediaPlayer.isVisible) return null;
+
+  const uri = get(data, 'mediaPlayer.currentTrack.mediaSource.uri');
+
+  if (loading) return null;
+
+  const livestreams = get(liveData, 'liveStreams', []).filter((s) => s.isLive);
+  const livestream = livestreams.find(
+    (l) => uri === get(l, 'media.sources[0].uri')
+  );
+  const contentId = get(livestream, 'contentItem.id', '').split(':')[1];
+
+  if (enabled && livestream) {
+    return <LiveStreamPlayer contentId={contentId} />;
   }
 
-  render() {
-    return (
-      <Query query={GET_MEDIA_PLAYER_VISIBILITY}>
-        {({ data = {} }) => {
-          if (!data.mediaPlayer || !data.mediaPlayer.isVisible) return null;
-          const uri = get(data, 'mediaPlayer.currentTrack.mediaSource.uri');
-          return (
-            <Query query={GET_LIVE_CONTENT}>
-              {({ loading, data: liveData }) => {
-                if (loading) return null;
+  return <FullscreenPlayer />;
+};
 
-                const liveStreams = get(liveData, 'liveStreams', []).filter(
-                  (s) => s.isLive
-                );
-                const liveStream = liveStreams.find(
-                  (l) => uri === get(l, 'media.sources[0].uri')
-                );
-                const contentId = get(liveStream, 'contentItem.id', '').split(
-                  ':'
-                )[1];
+const MemoizedMediaPlayer = React.memo(MediaPlayer, () => true); // never re-render
 
-                if (liveStream)
-                  return <LiveStreamPlayer contentId={contentId} />;
-                return <FullscreenPlayer />;
-              }}
-            </Query>
-          );
-        }}
-      </Query>
-    );
-  }
-}
-
-export { MediaPlayer };
+export { MemoizedMediaPlayer as MediaPlayer };
 
 export default {};
