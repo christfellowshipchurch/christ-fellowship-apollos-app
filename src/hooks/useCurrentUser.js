@@ -8,6 +8,7 @@ export const CURRENT_USER = gql`
   query getCurrentUserProfile {
     currentUser {
       id
+      streamChatToken
       profile {
         ...UserProfileParts
 
