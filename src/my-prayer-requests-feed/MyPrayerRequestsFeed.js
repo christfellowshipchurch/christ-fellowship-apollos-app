@@ -7,7 +7,14 @@ import { useQuery } from '@apollo/react-hooks';
 import moment from 'moment';
 
 import { fetchMoreResolver } from '@apollosproject/ui-connected';
-import { styled, H4, PaddedView, TouchableScale } from '@apollosproject/ui-kit';
+import {
+    styled,
+    H4,
+    PaddedView,
+    TouchableScale,
+    Card,
+    CardContent,
+} from '@apollosproject/ui-kit';
 
 import { CardFeed } from 'ui/CardFeeds';
 import DateLabel from 'ui/DateLabel';
@@ -25,19 +32,36 @@ const loadingStateObject = {
     date: moment().format(),
 };
 
-const PrayerPreview = ({ text, date, isLoading }) => (
-    <PaddedView>
-        <DateLabel date={date} isLoading={isLoading} />
-        <H4 isLoading={isLoading} numberOfLines={3}>
-            {text}
-        </H4>
-    </PaddedView>
-);
-
 const StyledHorizontalDivider = styled(({ theme }) => ({
     width: '100%',
     marginVertical: theme.sizing.baseUnit * 0.5,
 }))(HorizontalDivider);
+
+const PrayerPreview = ({ text, date, isLoading, asCard }) => {
+    const BodyContent = () => (
+        <View>
+            <DateLabel date={date} isLoading={isLoading} />
+            <H4 isLoading={isLoading} numberOfLines={3}>
+                {text}
+            </H4>
+        </View>
+    );
+
+    return asCard ? (
+        <Card style={{ flex: 1 }}>
+            <CardContent>
+                <BodyContent />
+            </CardContent>
+        </Card>
+    ) : (
+            <View>
+                <PaddedView>
+                    <BodyContent />
+                </PaddedView>
+                <StyledHorizontalDivider />
+            </View>
+        );
+};
 
 const mapEdges = (data) =>
     get(data, 'currentUserPrayerRequests.edges', []).map(({ node }) => ({
@@ -59,24 +83,26 @@ const MyPrayerRequestsFeed = ({ navigation }) => {
     );
 
     const prayers = mapEdges(data);
-    const renderItem = ({ item }) => (
-        <TouchableScale
-            onPress={() =>
-                navigation.navigate('PrayerRequestSingle', { prayerRequestId: item.id })
-            }
-        >
-            <PrayerPreview {...item} />
-        </TouchableScale>
-    );
+    const renderItem = ({ item, numColumns }) =>
+        get(item, 'emptyItem') ? (
+            <View {...item} />
+        ) : (
+                <TouchableScale
+                    onPress={() =>
+                        navigation.navigate('PrayerRequestSingle', {
+                            prayerRequestId: item.id,
+                        })
+                    }
+                    style={{ flex: 1 }}
+                >
+                    <PrayerPreview {...item} asCard={numColumns > 1} />
+                </TouchableScale>
+            );
 
     return (
-        <SafeAreaView
-            forceInset={{ top: 'always', bottom: 'never' }}
-            style={{ flex: 1 }}
-        >
+        <SafeAreaView forceInset style={{ flex: 1 }}>
             <CardFeed
                 ListHeaderComponent={<NavigationSpacer />}
-                ItemSeparatorComponent={StyledHorizontalDivider}
                 content={prayers.sort((a, b) =>
                     moment(b.requestedDate).diff(a.requestedDate)
                 )}
