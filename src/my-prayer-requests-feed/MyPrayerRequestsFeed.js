@@ -37,10 +37,14 @@ const StyledHorizontalDivider = styled(({ theme }) => ({
     marginVertical: theme.sizing.baseUnit * 0.5,
 }))(HorizontalDivider);
 
+const StyledDateLabel = styled(({ theme }) => ({
+    paddingBottom: theme.sizing.baseUnit * 0.5,
+}))(DateLabel);
+
 const PrayerPreview = ({ text, date, isLoading, asCard }) => {
     const BodyContent = () => (
         <View>
-            <DateLabel date={date} isLoading={isLoading} />
+            <StyledDateLabel date={date} isLoading={isLoading} />
             <H4 isLoading={isLoading} numberOfLines={3}>
                 {text}
             </H4>
