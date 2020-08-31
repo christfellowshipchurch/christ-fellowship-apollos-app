@@ -90,7 +90,7 @@ const CardFeed = ({
         content: adjustedContent,
         isLoading,
         error,
-        numColumns,
+        ...(horizontal ? {} : { numColumns }),
         ...additionalProps,
     };
 
@@ -132,6 +132,7 @@ const CardFeed = ({
                     )
                 }
                 {...feedProps}
+                renderItem={(props) => feedProps.renderItem({ ...props, numColumns })}
             />
         );
 };

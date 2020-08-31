@@ -9,7 +9,7 @@ const DefaultDateLabelComponent = styled(({ theme }) => ({
     color: theme.colors.text.tertiary,
 }))(H6);
 
-const DateLabel = ({ date, isTodayText, Component, isLoading }) => {
+const DateLabel = ({ date, isTodayText, Component, isLoading, ...props }) => {
     const mDate = moment(date);
     if (!mDate.isValid()) return null;
 
@@ -30,7 +30,11 @@ const DateLabel = ({ date, isTodayText, Component, isLoading }) => {
         displayText = mDate.format('MMMM DD');
     }
 
-    return <Component isLoading={isLoading}>{displayText}</Component>;
+    return (
+        <Component isLoading={isLoading} {...props}>
+            {displayText}
+        </Component>
+    );
 };
 
 DateLabel.propTypes = {

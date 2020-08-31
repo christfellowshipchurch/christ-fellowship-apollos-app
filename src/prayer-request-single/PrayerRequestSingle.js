@@ -1,18 +1,29 @@
 import React from 'react';
+import { View, Animated } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
-import PropTypes from 'prop-types';
 import { SafeAreaView } from 'react-navigation';
 
 import {
     ErrorCard,
-    H4,
     BackgroundView,
     PaddedView,
+    styled,
+    StretchyView,
 } from '@apollosproject/ui-kit';
 
 import NavigationHeader from '../content-single/NavigationHeader';
 import GET_PRAYER_REQUEST from './getPrayerRequest';
+
+import PrayerRequestText from './PrayerRequestText';
+import RequestedDate from './RequestedDate';
+import RequestorAvatar from './RequestorAvatar';
+
+const Spacer = styled(({ theme }) => ({
+    paddingBottom: theme.sizing.baseUnit,
+}))(View);
+
+const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
 const PrayerRequestSingle = ({ navigation }) => {
     const prayerRequestId = navigation.getParam('prayerRequestId', null);
@@ -24,17 +35,41 @@ const PrayerRequestSingle = ({ navigation }) => {
         },
     });
 
-    if (error) return <ErrorCard error={error} />;
+    if (error)
+        return (
+            <BackgroundView>
+                <SafeAreaView forceInset>
+                    <ErrorCard error={error} />
+                </SafeAreaView>
+            </BackgroundView>
+        );
 
     const prayer = get(data, 'node', {});
 
     return (
         <BackgroundView>
-            <SafeAreaView forceInset={{ top: 'always', bottom: 'always' }}>
-                <PaddedView>
-                    <H4 isLoading={loading}>{get(prayer, 'text', '')}</H4>
-                </PaddedView>
-            </SafeAreaView>
+            <StretchyView>
+                {({ Stretchy, ...scrollViewProps }) => (
+                    <FlexedScrollView {...scrollViewProps}>
+                        <Spacer>
+                            <RequestorAvatar
+                                prayerRequestId={prayer.id}
+                                isLoading={loading}
+                                StretchyComponent={Stretchy}
+                            />
+                        </Spacer>
+                        <PaddedView>
+                            <RequestedDate prayerRequestId={prayer.id} isLoading={loading} />
+                        </PaddedView>
+                        <PaddedView>
+                            <PrayerRequestText
+                                prayerRequestId={prayer.id}
+                                isLoading={loading}
+                            />
+                        </PaddedView>
+                    </FlexedScrollView>
+                )}
+            </StretchyView>
         </BackgroundView>
     );
 };

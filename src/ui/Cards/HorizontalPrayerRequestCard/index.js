@@ -28,11 +28,15 @@ const Text = styled(({ theme }) => ({
     color: theme.colors.darkPrimary,
 }))(H5);
 
+const StyledDateLabel = styled(({ theme }) => ({
+    paddingBottom: theme.sizing.baseUnit * 0.5,
+}))(DateLabel);
+
 const HorizontalPrayerRequestCard = withIsLoading(
     ({ text, date, isLoading }) => (
         <CardWrapper isLoading={isLoading} inHorizontalList>
             <Content>
-                {date ? <DateLabel date={date} isLoading={isLoading} /> : null}
+                {date ? <StyledDateLabel date={date} isLoading={isLoading} /> : null}
                 {text ? <Text isLoading={isLoading}>{text}</Text> : null}
             </Content>
         </CardWrapper>
