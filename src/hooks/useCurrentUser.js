@@ -1,8 +1,7 @@
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import ApollosConfig from '@apollosproject/config';
 import gql from 'graphql-tag';
-import { get, merge } from 'lodash';
-import moment from 'moment';
+import { get } from 'lodash';
 
 export const CURRENT_USER = gql`
   query getCurrentUserProfile {
