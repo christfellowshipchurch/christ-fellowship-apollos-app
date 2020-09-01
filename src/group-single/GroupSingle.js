@@ -69,7 +69,7 @@ const Schedule = styled(({ theme }) => ({
   color: theme.colors.darkPrimary,
 }))(BodySmall);
 
-const ScheduleView = styled(({ theme }) => ({
+const ScheduleView = styled(() => ({
   flexDirection: 'row',
 }))(View);
 
@@ -204,6 +204,7 @@ const GroupSingle = ({ navigation }) => {
     const parentVideoCall = get(content, 'parentVideoCall', {});
     const phoneNumbers = get(content, 'phoneNumbers', []);
     const allowMessages = get(content, 'allowMessages', '');
+    const avatars = get(content, 'avatars', []);
 
     const { start } = dateTime;
     return (
@@ -213,44 +214,51 @@ const GroupSingle = ({ navigation }) => {
             <StretchyView>
               {({ Stretchy, ...scrollViewProps }) => (
                 <FlexedScrollView {...scrollViewProps}>
-                  {coverImageSources.length ? (
-                    <Stretchy>
-                      <GradientOverlayImage
-                        isLoading={!coverImageSources.length}
-                        source={coverImageSources}
-                        // Sets the ratio of the image
-                        minAspectRatio={1}
-                        maxAspectRatio={1}
-                        // Sets the ratio of the placeholder
-                        forceRatio={1}
-                        // No ratios are respected without this
-                        maintainAspectRatio
-                        overlayColor={theme.colors.white}
-                        overlayType="featured"
-                      />
-                      <StyledAvatarCloud
-                        avatars={content.avatars}
-                        primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
-                      />
-                      <StyledTitle>
-                        <StyledH3 isLoading={loading} numberOfLines={2}>
-                          {content.title}
-                        </StyledH3>
-                        <StyledH5 isLoading={loading} numberOfLines={2}>
-                          {content.groupType}
-                        </StyledH5>
-                      </StyledTitle>
-                    </Stretchy>
-                  ) : null}
+                  <Stretchy>
+                    <GradientOverlayImage
+                      isLoading={!coverImageSources.length || loading}
+                      source={coverImageSources}
+                      // Sets the ratio of the image
+                      minAspectRatio={1}
+                      maxAspectRatio={1}
+                      // Sets the ratio of the placeholder
+                      forceRatio={1}
+                      // No ratios are respected without this
+                      maintainAspectRatio
+                      overlayColor={theme.colors.white}
+                      overlayType="featured"
+                    />
+
+                    <StyledAvatarCloud
+                      avatars={avatars}
+                      primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
+                      isLoading={!avatars && loading}
+                    />
+                    <StyledTitle>
+                      <StyledH3 isLoading={loading} numberOfLines={2}>
+                        {content.title}
+                      </StyledH3>
+                      <StyledH5 isLoading={loading} numberOfLines={2}>
+                        {content.groupType}
+                      </StyledH5>
+                    </StyledTitle>
+                  </Stretchy>
+
                   <PaddedView vertical={false}>
                     <Cell>
                       {content.schedule ? (
                         <CellItem first>
                           <ScheduleView>
                             <IconView>
-                              <Icon name="time" size={16} />
+                              <Icon isLoading={loading} name="time" size={16} />
                             </IconView>
-                            <Schedule numberOfLines={1}>
+                            <Schedule
+                              numberOfLines={1}
+                              isLoading={
+                                !content.schedule.friendlyScheduleText &&
+                                loading
+                              }
+                            >
                               {content.schedule.friendlyScheduleText}
                             </Schedule>
                           </ScheduleView>
@@ -270,7 +278,9 @@ const GroupSingle = ({ navigation }) => {
                       ) : null}
                     </Cell>
                     <PaddedView horizontal={false}>
-                      <BodyText>{content.summary}</BodyText>
+                      <BodyText isLoading={!content.summary && loading}>
+                        {content.summary}
+                      </BodyText>
                     </PaddedView>
 
                     <VideoCall
@@ -285,16 +295,13 @@ const GroupSingle = ({ navigation }) => {
                       content={content.members}
                       renderItem={renderMember}
                       loadingStateObject={loadingStateObject}
-                      isLoading={loading}
+                      isLoading={!content.members && loading}
                     />
                   </PaddedView>
 
                   {phoneNumbers && allowMessages === 'True' ? (
                     <PaddedView>
-                      <MessagesButton
-                        recipients={phoneNumbers}
-                        isLoading={loading}
-                      />
+                      <MessagesButton recipients={phoneNumbers} />
                     </PaddedView>
                   ) : null}
 
@@ -332,7 +339,7 @@ const GroupSingle = ({ navigation }) => {
     );
   };
 
-  const renderWithData = ({ loading, error, data }) => {
+  const renderWithData = ({ data, error, loading }) => {
     if (error) return <ErrorCard error={error} />;
 
     const content = get(data, 'node', {});
@@ -352,9 +359,20 @@ const GroupSingle = ({ navigation }) => {
 };
 
 GroupSingle.propTypes = {
+  content: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    summary: PropTypes.string,
+    members: PropTypes.shape({}),
+    schedule: PropTypes.shape({
+      friendlyScheduleText: PropTypes.string,
+    }),
+    avatars: PropTypes.arrayOf(PropTypes.string),
+    groupType: PropTypes.string,
+  }),
   navigation: PropTypes.shape({
     getParam: PropTypes.func,
-    push: PropTypes.func,
+    navigate: PropTypes.func,
   }),
 };
 

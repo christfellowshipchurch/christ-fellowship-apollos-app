@@ -81,16 +81,21 @@ const HorizontalGroupCard = withIsLoading(
           <StyledAvatarCloud
             avatars={avatars}
             primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
+            isLoading={isLoading}
           />
         </View>
         <Content>
-          {title ? <Title numberOfLines={2}>{title}</Title> : null}
+          {title ? (
+            <Title isLoading={isLoading} numberOfLines={2}>
+              {title}
+            </Title>
+          ) : null}
           {schedule ? (
             <ScheduleView>
               <IconView>
-                <Icon name="time" size={16} fill={fill} />
+                <Icon isLoading={isLoading} name="time" size={16} fill={fill} />
               </IconView>
-              <Schedule numberOfLines={1}>
+              <Schedule isLoading={isLoading} numberOfLines={1}>
                 {schedule.friendlyScheduleText}
               </Schedule>
             </ScheduleView>
