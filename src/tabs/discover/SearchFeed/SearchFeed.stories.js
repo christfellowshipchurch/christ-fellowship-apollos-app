@@ -6,54 +6,54 @@ import mockData from './SearchFeedDataMock';
 import { SearchFeed } from '.';
 
 const mockNavigation = {
-  navigate: () => null,
-  getParam: () => null,
-  setParams: () => null,
+    navigate: () => null,
+    getParam: () => null,
+    setParams: () => null,
 };
 
 storiesOf('cf-ui/Search', module).add('with valid results', () => (
-  <BackgroundView>
-    <SafeAreaView>
-      <SearchFeed navigation={mockNavigation} content={mockData} />
-    </SafeAreaView>
-  </BackgroundView>
+    <BackgroundView>
+        <SafeAreaView>
+            <SearchFeed navigation={mockNavigation} content={mockData} />
+        </SafeAreaView>
+    </BackgroundView>
 ));
 
 storiesOf('cf-ui/Search', module).add('no user input', () => (
-  <BackgroundView>
-    <SafeAreaView style={{ flex: 1 }}>
-      <SearchFeed navigation={mockNavigation} searchText="" content={[]} />
-    </SafeAreaView>
-  </BackgroundView>
+    <BackgroundView>
+        <SafeAreaView style={{ flex: 1 }}>
+            <SearchFeed navigation={mockNavigation} searchText="" content={[]} />
+        </SafeAreaView>
+    </BackgroundView>
 ));
 
 storiesOf('cf-ui/Search', module).add('no results', () => (
-  <BackgroundView>
-    <SafeAreaView style={{ flex: 1 }}>
-      <SearchFeed
-        navigation={mockNavigation}
-        searchText="Some Random Search"
-        content={[]}
-      />
-    </SafeAreaView>
-  </BackgroundView>
+    <BackgroundView>
+        <SafeAreaView style={{ flex: 1 }}>
+            <SearchFeed
+                navigation={mockNavigation}
+                searchText="Some Random Search"
+                content={[]}
+            />
+        </SafeAreaView>
+    </BackgroundView>
 ));
 
 storiesOf('cf-ui/Search', module).add('isLoading', () => (
-  <BackgroundView>
-    <SafeAreaView>
-      <SearchFeed navigation={mockNavigation} isLoading filters={[]} />
-    </SafeAreaView>
-  </BackgroundView>
+    <BackgroundView>
+        <SafeAreaView>
+            <SearchFeed navigation={mockNavigation} isLoading filters={[]} />
+        </SafeAreaView>
+    </BackgroundView>
 ));
 
 storiesOf('cf-ui/Search', module).add('error', () => (
-  <BackgroundView>
-    <SafeAreaView style={{ flex: 1 }}>
-      <SearchFeed
-        navigation={mockNavigation}
-        error={'Oops! Something went wrong'}
-      />
-    </SafeAreaView>
-  </BackgroundView>
+    <BackgroundView>
+        <SafeAreaView style={{ flex: 1 }}>
+            <SearchFeed
+                navigation={mockNavigation}
+                error={'Oops! Something went wrong'}
+            />
+        </SafeAreaView>
+    </BackgroundView>
 ));

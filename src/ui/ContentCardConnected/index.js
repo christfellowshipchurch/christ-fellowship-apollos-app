@@ -47,8 +47,8 @@ const ContentCardConnected = ({
 
               label = node.events.length
                 ? moment(get(node, 'nextOccurrence', new Date())).format(
-                    'MMM D'
-                  )
+                  'MMM D'
+                )
                 : comingSoon;
             }
 

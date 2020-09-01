@@ -28,27 +28,27 @@ const ProfileActionBar = () => {
       {loading ? (
         <ActivityIndicator />
       ) : (
-        actions.map(({ icon, name, uri, theme = {} }, i) => (
-          <AnalyticsConsumer>
-            {({ track }) => (
-              <ThemeMixin mixin={theme}>
-                <ActionBarItem
-                  onPress={() => {
-                    track({
-                      eventName: 'Pressed Profile Action Bar Item',
-                      properties: { label: name },
-                    });
-                    routeLink(uri);
-                  }}
-                  icon={icon}
-                  label={name}
-                  key={uniqueId(`ProfileActionBar:${i}`)}
-                />
-              </ThemeMixin>
-            )}
-          </AnalyticsConsumer>
-        ))
-      )}
+          actions.map(({ icon, name, uri, theme = {} }, i) => (
+            <AnalyticsConsumer>
+              {({ track }) => (
+                <ThemeMixin mixin={theme}>
+                  <ActionBarItem
+                    onPress={() => {
+                      track({
+                        eventName: 'Pressed Profile Action Bar Item',
+                        properties: { label: name },
+                      });
+                      routeLink(uri);
+                    }}
+                    icon={icon}
+                    label={name}
+                    key={uniqueId(`ProfileActionBar:${i}`)}
+                  />
+                </ThemeMixin>
+              )}
+            </AnalyticsConsumer>
+          ))
+        )}
     </StyledActionBar>
   ) : null;
 };

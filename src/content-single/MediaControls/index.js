@@ -53,24 +53,24 @@ class MediaControls extends PureComponent {
     title,
     parentChannelName,
   }) => (
-    <Mutation mutation={PLAY_VIDEO}>
-      {(play) =>
-        this.renderPlayButton({
-          action: () =>
-            play({
-              variables: {
-                mediaSource: videoSource,
-                posterSources: coverImageSources,
-                title,
-                isVideo: true,
-                artist: parentChannelName,
-              },
-            }),
-          coverImageSources,
-        })
-      }
-    </Mutation>
-  );
+      <Mutation mutation={PLAY_VIDEO}>
+        {(play) =>
+          this.renderPlayButton({
+            action: () =>
+              play({
+                variables: {
+                  mediaSource: videoSource,
+                  posterSources: coverImageSources,
+                  title,
+                  isVideo: true,
+                  artist: parentChannelName,
+                },
+              }),
+            coverImageSources,
+          })
+        }
+      </Mutation>
+    );
 
   renderWebView = ({ webViewUrl, coverImageSources }) => (
     <RockAuthedWebBrowser>

@@ -29,73 +29,73 @@ const GET_MORE_LINKS = gql`
 `;
 
 const BackgroundView = styled(({ theme }) => ({
-  backgroundColor: theme.colors.screen,
-  flex: 1,
+    backgroundColor: theme.colors.screen,
+    flex: 1,
 }))(SafeAreaView);
 
 const TableWithLinks = ({ name, links = [], onPress }) => (
-  <TableView title={name} padded>
-    {links.map(({ name: linkName, icon, openInApp, uri }) => (
-      <Cell
-        key={linkName}
-        icon={icon}
-        title={linkName}
-        onPress={() => onPress(uri)}
-      />
-    ))}
-  </TableView>
+    <TableView title={name} padded>
+        {links.map(({ name: linkName, icon, openInApp, uri }) => (
+            <Cell
+                key={linkName}
+                icon={icon}
+                title={linkName}
+                onPress={() => onPress(uri)}
+            />
+        ))}
+    </TableView>
 );
 
 const Menu = ({ onPress }) => {
-  const { routeLink } = useLinkRouter();
-  const { loading, error, data } = useQuery(GET_MORE_LINKS, {
-    fetchPolicy: 'cache-and-network',
-  });
+    const { routeLink } = useLinkRouter();
+    const { loading, error, data } = useQuery(GET_MORE_LINKS, {
+        fetchPolicy: 'cache-and-network',
+    });
 
-  if (loading && !data)
+    if (loading && !data)
+        return (
+            <BackgroundView>
+                <ScrollView>
+                    <ActivityIndicator />
+                    <Logout />
+                </ScrollView>
+            </BackgroundView>
+        );
+
     return (
-      <BackgroundView>
-        <ScrollView>
-          <ActivityIndicator />
-          <Logout />
-        </ScrollView>
-      </BackgroundView>
+        <ThemeMixin>
+            <BackgroundView>
+                <ScrollView>
+                    {get(data, 'moreLinks', []).map(({ name, ...props }, i) => (
+                        <TableWithLinks
+                            key={name}
+                            name={name}
+                            {...props}
+                            onPress={(uri) => routeLink(uri) && onPress()}
+                        />
+                    ))}
+
+                    <Logout />
+                </ScrollView>
+            </BackgroundView>
+        </ThemeMixin>
     );
-
-  return (
-    <ThemeMixin>
-      <BackgroundView>
-        <ScrollView>
-          {get(data, 'moreLinks', []).map(({ name, ...props }, i) => (
-            <TableWithLinks
-              key={name}
-              name={name}
-              {...props}
-              onPress={(uri) => routeLink(uri) && onPress()}
-            />
-          ))}
-
-          <Logout />
-        </ScrollView>
-      </BackgroundView>
-    </ThemeMixin>
-  );
 };
 
 const SideMenu = ({ children, navigation }) => {
-  const { sideMenuIsOpen, setSideMenuIsOpen, closeSideMenu } = useSideMenu();
+    const { sideMenuIsOpen, setSideMenuIsOpen, closeSideMenu } = useSideMenu();
 
-  return (
-    <ReactNativeSideMenu
-      menu={<Menu navigation={navigation} onPress={closeSideMenu} />}
-      isOpen={sideMenuIsOpen}
-      onChange={(inOpen) => setSideMenuIsOpen(inOpen)}
-      menuPosition="right"
-      disableGestures
-    >
-      {children}
-    </ReactNativeSideMenu>
-  );
+    return (
+        <ReactNativeSideMenu
+            menu={<Menu navigation={navigation} onPress={closeSideMenu} />}
+            isOpen={sideMenuIsOpen}
+            onChange={(inOpen) => setSideMenuIsOpen(inOpen)}
+            menuPosition="right"
+            disableGestures
+        >
+            {children}
+        </ReactNativeSideMenu>
+    );
 };
 
 SideMenu.propTypes = {};

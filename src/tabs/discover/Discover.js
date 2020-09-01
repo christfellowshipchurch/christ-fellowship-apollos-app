@@ -45,11 +45,11 @@ const Discover = ({ navigation }) => {
           {isFocused ? (
             <SearchFeed searchText={searchText} navigation={navigation} />
           ) : (
-            <Browse
-              navigation={navigation}
-              selectedFilter={navigation.getParam('selectedFilter')}
-            />
-          )}
+              <Browse
+                navigation={navigation}
+                selectedFilter={navigation.getParam('selectedFilter')}
+              />
+            )}
         </SafeAreaView>
       </BackgroundView>
     </DynamicThemeMixin>

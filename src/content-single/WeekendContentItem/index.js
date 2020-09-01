@@ -39,14 +39,14 @@ const StyledMediaControlsConnected = styled(({ theme }) => ({
 const LiveAwareLabel = withTheme(({ isLive, title, theme }) => ({
   ...(isLive
     ? {
-        title: 'Live',
-        type: 'secondary',
-        icon: 'live-dot',
-        iconSize: theme.helpers.rem(0.4375), // using our typographic size unit based on fontSize so that the icon scales correctly with font size changes.
-      }
+      title: 'Live',
+      type: 'secondary',
+      icon: 'live-dot',
+      iconSize: theme.helpers.rem(0.4375), // using our typographic size unit based on fontSize so that the icon scales correctly with font size changes.
+    }
     : {
-        title,
-      }),
+      title,
+    }),
 }))(CardLabel);
 
 const WeekendContentItem = ({ content, loading }) => {

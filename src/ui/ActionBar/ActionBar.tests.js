@@ -11,10 +11,10 @@ describe('the ActionBar component', () => {
     const tree = renderer.create(
       <Providers>
         <ActionBar>
-          <ActionBarItem onPress={() => {}} label="Settings" icon="settings" />
-          <ActionBarItem onPress={() => {}} label="Groups" icon="groups" />
-          <ActionBarItem onPress={() => {}} label="Like" icon="like" />
-          <ActionBarItem onPress={() => {}} />
+          <ActionBarItem onPress={() => { }} label="Settings" icon="settings" />
+          <ActionBarItem onPress={() => { }} label="Groups" icon="groups" />
+          <ActionBarItem onPress={() => { }} label="Like" icon="like" />
+          <ActionBarItem onPress={() => { }} />
         </ActionBar>
       </Providers>
     );

@@ -49,10 +49,10 @@ const NoResults = ({ searchText }) => {
             {' Try searching for something else!'}
           </StyledBodySmall>
         ) : (
-          <StyledBodySmall>
-            {"Start typing above to find exactly what you're looking for."}
-          </StyledBodySmall>
-        )}
+            <StyledBodySmall>
+              {"Start typing above to find exactly what you're looking for."}
+            </StyledBodySmall>
+          )}
       </PaddedView>
     </CenteredView>
   );

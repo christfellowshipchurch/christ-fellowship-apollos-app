@@ -85,18 +85,18 @@ export const SearchFeed = ({
   error,
   refetch,
 }) => (
-  <StyledFeedView
-    renderItem={renderItem}
-    content={content}
-    ListEmptyComponent={() => <NoResults searchText={searchText} />}
-    ListFooterComponent={<EndCapSpacer />}
-    hasContent={content.length}
-    isLoading={isLoading}
-    error={error}
-    refetch={refetch}
-    keyExtractor={keyExtractor}
-  />
-);
+    <StyledFeedView
+      renderItem={renderItem}
+      content={content}
+      ListEmptyComponent={() => <NoResults searchText={searchText} />}
+      ListFooterComponent={<EndCapSpacer />}
+      hasContent={content.length}
+      isLoading={isLoading}
+      error={error}
+      refetch={refetch}
+      keyExtractor={keyExtractor}
+    />
+  );
 
 SearchFeed.propTypes = {
   searchText: PropTypes.string,
