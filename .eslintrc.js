@@ -17,6 +17,17 @@ module.exports = {
     // 'graphql',
   ],
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        trailingComma: 'es5',
+        arrowParens: 'always',
+        bracketSpacing: true,
+        printWidth: 80,
+        semi: true,
+      },
+    ],
     'react/jsx-filename-extension': 0,
     'react/jsx-handler-names': 2,
     'react/jsx-curly-brace-presence': 0,

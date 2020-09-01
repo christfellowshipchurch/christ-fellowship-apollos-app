@@ -87,13 +87,13 @@ const Dropdown = ({
 Dropdown.propTypes = {
   placeholder: PropTypes.string,
   displayValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  focusAnimation: PropTypes.any, // eslint-disable-line
+    focusAnimation: PropTypes.any, // eslint-disable-line
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
   label: PropTypes.string,
-  value: PropTypes.any, // eslint-disable-line
-  wrapperStyle: PropTypes.any, // eslint-disable-line
-  style: PropTypes.any, // eslint-disable-line
+    value: PropTypes.any, // eslint-disable-line
+    wrapperStyle: PropTypes.any, // eslint-disable-line
+    style: PropTypes.any, // eslint-disable-line
   icon: PropTypes.string,
   actionIcon: PropTypes.string,
   hideIcon: PropTypes.bool,
