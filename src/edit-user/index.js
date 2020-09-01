@@ -6,28 +6,28 @@ import NavigationHeader from '../content-single/NavigationHeader';
 import EditUser from './EditUser';
 
 const EditCurrentUser = ({ navigation }) => {
-    const currentUser = useCurrentUser();
-    return <EditUser {...currentUser} navigation={navigation} />;
+  const currentUser = useCurrentUser();
+  return <EditUser {...currentUser} navigation={navigation} />;
 };
 
 EditCurrentUser.navigationOptions = {
-    headerMode: 'float',
-    headerTransparent: true,
-    header: NavigationHeader,
+  headerMode: 'float',
+  headerTransparent: true,
+  header: NavigationHeader,
 };
 
 const EditUserNavigator = createStackNavigator(
-    {
-        EditCurrentUser,
+  {
+    EditCurrentUser,
+  },
+  {
+    initialRouteName: 'EditCurrentUser',
+    headerMode: 'float',
+    headerTransitionPreset: 'fade-in-place',
+    navigationOptions: {
+      header: null,
     },
-    {
-        initialRouteName: 'EditCurrentUser',
-        headerMode: 'float',
-        headerTransitionPreset: 'fade-in-place',
-        navigationOptions: {
-            header: null,
-        },
-    }
+  }
 );
 
 export default EditUserNavigator;

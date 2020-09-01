@@ -30,15 +30,15 @@ const ActionBarItem = ({
   label = '',
   ...touchableProps
 }) => (
-    <StyledTouchable {...touchableProps}>
-      <ActionBarItemWrapper>
-        <StyledIcon size={size} name={icon} />
+  <StyledTouchable {...touchableProps}>
+    <ActionBarItemWrapper>
+      <StyledIcon size={size} name={icon} />
 
-        {/* using stlye object here is just as efficient as creating a new styled component with prop, since UIText is already a styled component */}
-        <StyledLabel>{label}</StyledLabel>
-      </ActionBarItemWrapper>
-    </StyledTouchable>
-  );
+      {/* using stlye object here is just as efficient as creating a new styled component with prop, since UIText is already a styled component */}
+      <StyledLabel>{label}</StyledLabel>
+    </ActionBarItemWrapper>
+  </StyledTouchable>
+);
 
 ActionBarItem.propTypes = {
   icon: PropTypes.string,

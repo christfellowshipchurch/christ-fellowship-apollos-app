@@ -107,8 +107,8 @@ class DevotionalContentItem extends PureComponent {
     return tabRoutes.length < 2 ? (
       map[tabRoutes[0].key]()
     ) : (
-        <TabView routes={tabRoutes} renderScene={SceneMap(map)} />
-      );
+      <TabView routes={tabRoutes} renderScene={SceneMap(map)} />
+    );
   };
 
   render() {

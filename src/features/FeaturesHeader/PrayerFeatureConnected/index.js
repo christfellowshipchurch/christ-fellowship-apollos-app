@@ -10,43 +10,43 @@ import PrayerFeature from './PrayerFeature';
 const dynamicTheme = new DynamicValue('light', 'dark');
 
 const DynamicPrayerExperienceConnected = (props) => {
-    const theme = useDynamicValue(dynamicTheme);
+  const theme = useDynamicValue(dynamicTheme);
 
-    return <PrayerExperienceConnected {...props} themeType={theme} />;
+  return <PrayerExperienceConnected {...props} themeType={theme} />;
 };
 
 const PrayerListFeatureConnectedWithComponent = ({
-    ItemSeparatorComponent,
-    ...props
+  ItemSeparatorComponent,
+  ...props
 }) => (
-        <View style={{ flexDirection: 'row' }}>
-            <PrayerListFeatureConnected {...props} />
-            {!!ItemSeparatorComponent && <ItemSeparatorComponent />}
-        </View>
-    );
+  <View style={{ flexDirection: 'row' }}>
+    <PrayerListFeatureConnected {...props} />
+    {!!ItemSeparatorComponent && <ItemSeparatorComponent />}
+  </View>
+);
 
 PrayerListFeatureConnectedWithComponent.propTypes = {
-    Component: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.func,
-        PropTypes.object,
-    ]),
-    PrayerExperienceComponent: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.func,
-        PropTypes.object,
-    ]),
-    ItemSeparatorComponent: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.func,
-        PropTypes.object, // type check for React fragments
-    ]),
+  Component: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.func,
+    PropTypes.object,
+  ]),
+  PrayerExperienceComponent: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.func,
+    PropTypes.object,
+  ]),
+  ItemSeparatorComponent: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.func,
+    PropTypes.object, // type check for React fragments
+  ]),
 };
 
 PrayerListFeatureConnectedWithComponent.defaultProps = {
-    Component: PrayerFeature,
-    PrayerExperienceComponent: DynamicPrayerExperienceConnected,
-    ItemSeparatorComponent: null,
+  Component: PrayerFeature,
+  PrayerExperienceComponent: DynamicPrayerExperienceConnected,
+  ItemSeparatorComponent: null,
 };
 
 export default PrayerListFeatureConnectedWithComponent;
