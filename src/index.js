@@ -11,8 +11,8 @@ import {
 } from '@apollosproject/ui-kit';
 import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
-import { MediaPlayer } from '@apollosproject/ui-media-player';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
+import { MediaPlayer } from './media-player';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 
@@ -22,6 +22,8 @@ import ContentFeed from './content-feed';
 import Tabs from './tabs';
 import EditUser from './edit-user';
 import NotificationCenter from './notification-center';
+import PrayerRequestSingle from './prayer-request-single';
+import MyPrayerRequestsFeed from './my-prayer-requests-feed';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -60,6 +62,7 @@ const AppContent = createStackNavigator(
   {
     Tabs,
     ContentFeed,
+    MyPrayerRequestsFeed,
   },
   {
     initialRouteName: 'Tabs',
@@ -84,6 +87,7 @@ const AppNavigator = createStackNavigator(
     EditUser,
     Location,
     NotificationCenter,
+    PrayerRequestSingle,
   },
   {
     initialRouteName: 'ProtectedRoute',

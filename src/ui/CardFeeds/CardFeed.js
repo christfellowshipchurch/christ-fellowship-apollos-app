@@ -8,11 +8,27 @@ import {
     FeedView,
     withMediaQuery,
     TouchableScale,
+    HorizontalTileFeed,
+    styled,
+    withTheme,
 } from '@apollosproject/ui-kit';
 
 import ActionRow from '../ActionRow';
 import ContentCardConnected from '../ContentCardConnected';
 import FeedHeader from './FeedHeader';
+
+const HorizontalFeedHeaderSpacing = styled(({ theme }) => ({
+    paddingBottom: theme.sizing.baseUnit,
+}))(View);
+
+const StyledHorizontalTileFeed = withTheme(({ theme, cardWidth }) => ({
+    style: {
+        marginTop: theme.sizing.baseUnit * -1.25,
+        paddingBottom: theme.sizing.baseUnit,
+        zIndex: 1,
+    },
+    snapToInterval: cardWidth + theme.sizing.baseUnit,
+}))(HorizontalTileFeed);
 
 const CardFeed = ({
     card,
@@ -24,8 +40,11 @@ const CardFeed = ({
     title,
     seeMore,
     ListHeaderComponent,
+    FeedHeaderComponent,
     onPressHeader,
     onPressItem,
+    horizontal,
+    cardWidth,
     ...additionalProps
 }) => {
     const renderItem = ({ item }) =>
@@ -45,16 +64,19 @@ const CardFeed = ({
             );
 
     /** If we are in a loading or error state and we don't have existing content,
-     *  we don't want to adjust the content to add an empty object
+     *  we don't want to adjust the content to add an empty object.
+     *
+     *  If we are using a Horizontal Feed, we also don't care to adjust the content
      */
-    const dontAdjustContent = (isLoading || error) && content.length === 0;
+    const dontAdjustContent =
+        ((isLoading || error) && content.length === 0) || horizontal;
     /** If we have valid data, the number of columns is at least 2 (for large devices),
      *  and the content length is odd, we want to add an empty item to the end of our
      *  array so that we can render an empty View to keep the spacing consistent for
      *  all elements. See stories for an example of "odd" content length
      */
     const adjustedContent =
-        (content.length % numColumns === 0 && numColumns > 1) || dontAdjustContent
+        content.length % numColumns === 0 || numColumns <= 1 || dontAdjustContent
             ? content
             : [
                 ...content,
@@ -63,33 +85,56 @@ const CardFeed = ({
                     style: { flex: numColumns - (content.length % numColumns) },
                 },
             ];
+    const feedProps = {
+        renderItem,
+        content: adjustedContent,
+        isLoading,
+        error,
+        ...(horizontal ? {} : { numColumns }),
+        ...additionalProps,
+    };
 
-    return (
-        <FeedView
-            renderItem={renderItem}
-            content={adjustedContent}
-            isLoading={isLoading}
-            error={error}
-            numColumns={numColumns}
-            ListHeaderComponent={
-                (ListHeaderComponent || title) && (
-                    <View>
-                        {!!title &&
-                            title !== '' && (
-                                <FeedHeader
-                                    title={title}
-                                    seeMore={seeMore}
-                                    isLoading={isLoading}
-                                    onPress={onPressHeader}
-                                />
-                            )}
-                        {ListHeaderComponent}
-                    </View>
-                )
-            }
-            {...additionalProps}
-        />
-    );
+    return horizontal ? (
+        <View>
+            {!!title &&
+                title !== '' && (
+                    <HorizontalFeedHeaderSpacing>
+                        <FeedHeaderComponent
+                            title={title}
+                            seeMore={seeMore}
+                            isLoading={isLoading}
+                            onPress={onPressHeader}
+                        />
+                    </HorizontalFeedHeaderSpacing>
+                )}
+            <StyledHorizontalTileFeed
+                {...feedProps}
+                cardWidth={cardWidth}
+                ListHeaderComponent={ListHeaderComponent}
+            />
+        </View>
+    ) : (
+            <FeedView
+                ListHeaderComponent={
+                    (ListHeaderComponent || title) && (
+                        <View>
+                            {!!title &&
+                                title !== '' && (
+                                    <FeedHeaderComponent
+                                        title={title}
+                                        seeMore={seeMore}
+                                        isLoading={isLoading}
+                                        onPress={onPressHeader}
+                                    />
+                                )}
+                            {ListHeaderComponent}
+                        </View>
+                    )
+                }
+                {...feedProps}
+                renderItem={(props) => feedProps.renderItem({ ...props, numColumns })}
+            />
+        );
 };
 
 CardFeed.propTypes = {
@@ -114,8 +159,11 @@ CardFeed.propTypes = {
     title: PropTypes.string,
     seeMore: PropTypes.bool,
     ListHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
+    FeedHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     onPressHeader: PropTypes.func,
     onPressItem: PropTypes.func,
+    horizontal: PropTypes.func,
+    cardWidth: PropTypes.number,
 };
 
 CardFeed.defaultProps = {
@@ -125,6 +173,7 @@ CardFeed.defaultProps = {
     title: null,
     seeMore: true,
     ListHeaderComponent: null,
+    FeedHeaderComponent: FeedHeader,
     onPressHeader: () => null,
     onPressItem: (item, navigation) => {
         if (item.id) {
@@ -134,6 +183,8 @@ CardFeed.defaultProps = {
             });
         }
     },
+    horizontal: false,
+    cardWidth: 240,
 };
 
 const CardFeedWithNumColumns = withMediaQuery(

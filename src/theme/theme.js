@@ -1,8 +1,19 @@
+import React from 'react'
 import { Platform } from 'react-native';
 import Color from 'color';
 import dark from './dark-theme';
 import onboarding from './onboarding';
 import authEntry from './authEntry';
+import { Text } from 'react-native';
+
+import { ScriptureText, VerseNumber } from '@apollosproject/ui-scripture';
+import { BodyText } from '@apollosproject/ui-kit';
+import { 
+    AddPrayerScreenConnected,
+    PrayerDialogScreen,
+    ConfirmationDialogScreen,
+ } from '@apollosproject/ui-prayer/src/screens'
+ import { PrayerCard } from '@apollosproject/ui-prayer'
 
 import { UIPrayerOverrides } from './overrides';
 
