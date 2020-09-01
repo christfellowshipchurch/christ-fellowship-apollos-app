@@ -6,7 +6,7 @@ export AngleRight from './AngleRight';
 export AvatarPlacholder from './AvatarPlacholder';
 export BarsAlt from './BarsAlt';
 export Bars from './Bars';
-export Bell from './Bell'
+export Bell from './Bell';
 export BirthdayCake from './BirthdayCake';
 export Brand from './Brand';
 export Calendar from './Calendar';

@@ -25,9 +25,9 @@ const Image = withTheme(({ theme, label, forceRatio }) => ({
   maintainAspectRatio: true,
   ...(forceRatio
     ? {
-      forceRatio,
-      imageStyle: { aspectRatio: forceRatio },
-    }
+        forceRatio,
+        imageStyle: { aspectRatio: forceRatio },
+      }
     : {}),
 }))(CardImage);
 
@@ -53,38 +53,38 @@ const HighlightCard = withIsLoading(
     forceRatio,
     inHorizontalList,
   }) => (
-      <ThemeMixin>
-        <Card
-          isLoading={isLoading}
-          style={style}
-          inHorizontalList={inHorizontalList}
-        >
-          <Image source={coverImage} label={labelText} forceRatio={forceRatio} />
+    <ThemeMixin>
+      <Card
+        isLoading={isLoading}
+        style={style}
+        inHorizontalList={inHorizontalList}
+      >
+        <Image source={coverImage} label={labelText} forceRatio={forceRatio} />
 
-          <CardContentWrapper coverImage={coverImage}>
-            <Content>
-              {isLive && !isLoading && <LiveLabel BackgroundComponent={View} />}
-              {!!labelText &&
-                !isLive && <Label numberOfLines={2}>{labelText}</Label>}
+        <CardContentWrapper coverImage={coverImage}>
+          <Content>
+            {isLive && !isLoading && <LiveLabel BackgroundComponent={View} />}
+            {!!labelText &&
+              !isLive && <Label numberOfLines={2}>{labelText}</Label>}
 
-              {(title !== '' || isLoading) && (
-                <Title isLoading={isLoading}>{title}</Title>
-              )}
+            {(title !== '' || isLoading) && (
+              <Title isLoading={isLoading}>{title}</Title>
+            )}
 
-              {(summary !== '' || isLoading) && (
-                <Summary isLoading={isLoading}>{summary}</Summary>
-              )}
-            </Content>
-          </CardContentWrapper>
+            {(summary !== '' || isLoading) && (
+              <Summary isLoading={isLoading}>{summary}</Summary>
+            )}
+          </Content>
+        </CardContentWrapper>
 
-          {/* {isLiked != null ? (
+        {/* {isLiked != null ? (
           <LikeIconPositioning>
             <LikeIcon isLiked={isLiked} />
           </LikeIconPositioning>
         ) : null} */}
-        </Card>
-      </ThemeMixin>
-    )
+      </Card>
+    </ThemeMixin>
+  )
 );
 
 HighlightCard.propTypes = {

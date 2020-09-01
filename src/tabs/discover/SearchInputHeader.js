@@ -163,8 +163,8 @@ const SearchInputHeader = ({
             }}
           />
         ) : (
-            <HeaderRight />
-          )}
+          <HeaderRight />
+        )}
       </SmokeAndMirrorsWrapper>
     </Layout>
   );

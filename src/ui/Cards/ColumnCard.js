@@ -76,33 +76,33 @@ const StackedImageCard = ({
   isLive,
   isLoading,
 }) => (
-    <ThemeMixin>
-      <CardWithLayout placement={placement}>
-        <View>
-          <Image source={coverImage} label={label} />
-          {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
+  <ThemeMixin>
+    <CardWithLayout placement={placement}>
+      <View>
+        <Image source={coverImage} label={label} />
+        {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
 
-          {label !== '' &&
-            !isLive &&
-            !isLoading && (
-              <BlurLabel blurType="ultraThinMaterial">
-                <Label isLoading={isLoading}>{label}</Label>
-              </BlurLabel>
-            )}
-        </View>
-        <Content>
-          {(title !== '' || isLoading) && (
-            <Title numberOfLines={2} ellipsizeMode="tail" isLoading={isLoading}>
-              {title}
-            </Title>
+        {label !== '' &&
+          !isLive &&
+          !isLoading && (
+            <BlurLabel blurType="ultraThinMaterial">
+              <Label isLoading={isLoading}>{label}</Label>
+            </BlurLabel>
           )}
-          {(summary !== '' || isLoading) && (
-            <Summary isLoading={isLoading}>{summary}</Summary>
-          )}
-        </Content>
-      </CardWithLayout>
-    </ThemeMixin>
-  );
+      </View>
+      <Content>
+        {(title !== '' || isLoading) && (
+          <Title numberOfLines={2} ellipsizeMode="tail" isLoading={isLoading}>
+            {title}
+          </Title>
+        )}
+        {(summary !== '' || isLoading) && (
+          <Summary isLoading={isLoading}>{summary}</Summary>
+        )}
+      </Content>
+    </CardWithLayout>
+  </ThemeMixin>
+);
 
 StackedImageCard.propTypes = {
   coverImage: PropTypes.oneOfType([

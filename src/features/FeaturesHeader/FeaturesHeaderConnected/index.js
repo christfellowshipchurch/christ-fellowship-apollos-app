@@ -24,93 +24,93 @@ import GET_HEADER_FEATURES from './getHeaderFeatures';
 // experiences for each of these Feature types that are unique to this visual
 // expression
 const MAPPINGS = {
-    ActionListFeature: () => null,
-    HeroListFeature: () => null,
-    HorizontalCardListFeature: () => null,
-    VerticalCardListFeature: () => null,
-    PrayerListFeature: PrayerFeatureConnected,
-    LiveStreamListFeature: LiveStreamListFeatureConnected,
+  ActionListFeature: () => null,
+  HeroListFeature: () => null,
+  HorizontalCardListFeature: () => null,
+  VerticalCardListFeature: () => null,
+  PrayerListFeature: PrayerFeatureConnected,
+  LiveStreamListFeature: LiveStreamListFeatureConnected,
 };
 
 const Container = styled(({ theme }) => ({
-    flexDirection: 'row',
-    paddingHorizontal: theme.sizing.baseUnit * 0.5,
-    paddingVertical: theme.sizing.baseUnit * 0.5,
+  flexDirection: 'row',
+  paddingHorizontal: theme.sizing.baseUnit * 0.5,
+  paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const StyledVerticalDivider = styled(({ theme }) => ({
-    alignSelf: 'flex-end',
-    marginHorizontal: theme.sizing.baseUnit * 0.5,
+  alignSelf: 'flex-end',
+  marginHorizontal: theme.sizing.baseUnit * 0.5,
 }))(VerticalDivider);
 
 const StyledHorizontalDivider = styled(({ theme }) => ({
-    width: '100%',
-    marginTop: theme.sizing.baseUnit * 0.25,
-    marginBottom: theme.sizing.baseUnit,
-    opacity: 0.25,
+  width: '100%',
+  marginTop: theme.sizing.baseUnit * 0.25,
+  marginBottom: theme.sizing.baseUnit,
+  opacity: 0.25,
 }))(HorizontalDivider);
 
 const mapFeatures = (
-    features,
-    { additionalFeatures, refetchRef, onPressActionItem }
+  features,
+  { additionalFeatures, refetchRef, onPressActionItem }
 ) =>
-    features.map((item, i) =>
-        featuresFeedComponentMapper({
-            feature: {
-                ...item,
-                ItemSeparatorComponent:
-                    i < features.length - 1 ? StyledVerticalDivider : null,
-            },
-            refetchRef,
-            onPressActionItem,
-            additionalFeatures: { ...MAPPINGS, ...additionalFeatures },
-        })
-    );
+  features.map((item, i) =>
+    featuresFeedComponentMapper({
+      feature: {
+        ...item,
+        ItemSeparatorComponent:
+          i < features.length - 1 ? StyledVerticalDivider : null,
+      },
+      refetchRef,
+      onPressActionItem,
+      additionalFeatures: { ...MAPPINGS, ...additionalFeatures },
+    })
+  );
 
 const FeaturesHeaderConnected = ({
-    Component,
-    onPressActionItem,
-    additionalFeatures,
-    refetchId,
-    refetchRef,
-    ...props
+  Component,
+  onPressActionItem,
+  additionalFeatures,
+  refetchId,
+  refetchRef,
+  ...props
 }) => {
-    const { error, data, loading, refetch } = useQuery(GET_HEADER_FEATURES, {
-        fetchPolicy: 'cache-and-network',
-    });
+  const { error, data, loading, refetch } = useQuery(GET_HEADER_FEATURES, {
+    fetchPolicy: 'cache-and-network',
+  });
 
-    if (refetchId && refetch && refetchRef)
-        refetchRef({ refetch, id: refetchId });
+  if (refetchId && refetch && refetchRef)
+    refetchRef({ refetch, id: refetchId });
 
-    if (error) return null;
-    if (loading && !data) return <HorizontalFeatureFeed isLoading />;
+  if (error) return null;
+  if (loading && !data) return <HorizontalFeatureFeed isLoading />;
 
-    const features = get(data, 'userHeaderFeatures', []);
+  const features = get(data, 'userHeaderFeatures', []);
 
-    return features.length > 0 ? (
-        <View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} {...props}>
-                <Container>{mapFeatures(features, { refetchRef })}</Container>
-            </ScrollView>
-            <StyledHorizontalDivider />
-        </View>
-    ) : null;
+  return features.length > 0 ? (
+    <View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} {...props}>
+        <Container>{mapFeatures(features, { refetchRef })}</Container>
+      </ScrollView>
+      <StyledHorizontalDivider />
+    </View>
+  ) : null;
 };
 
 FeaturesHeaderConnected.propTypes = {
-    Component: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.func,
-        PropTypes.object, // type check for React fragments
-    ]),
-    onPressActionItem: PropTypes.func,
-    additionalFeatures: PropTypes.shape({}),
-    refetchRef: PropTypes.func,
-    refetchId: PropTypes.string,
+  Component: PropTypes.oneOfType([
+    PropTypes.node,
+    PropTypes.func,
+    PropTypes.object, // type check for React fragments
+  ]),
+  onPressActionItem: PropTypes.func,
+  additionalFeatures: PropTypes.shape({}),
+  refetchRef: PropTypes.func,
+  refetchId: PropTypes.string,
 };
 
 FeaturesHeaderConnected.propTypes = {
-    refetchId: 'FeaturesHeaderConnected',
+  refetchId: 'FeaturesHeaderConnected',
 };
 
 export default FeaturesHeaderConnected;

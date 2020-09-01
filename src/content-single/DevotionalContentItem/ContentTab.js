@@ -24,24 +24,24 @@ const ContentTab = ({
   navigationState,
   navigation,
 }) => (
-    <ScrollView>
-      <ContentContainer isLoading={isLoading}>
-        <Title contentId={id} isLoading={isLoading} />
-        {references && references.length ? (
-          <ScriptureList
-            references={references}
-            onPress={navigationState.route.jumpTo} // eslint-disable-line react/jsx-handler-names
-            tabDestination={'scripture'}
-          />
-        ) : null}
-        <HTMLContent contentId={id} />
-      </ContentContainer>
-      <HorizontalContentSeriesFeedConnected
-        contentId={id}
-        navigation={navigation}
-      />
-    </ScrollView>
-  );
+  <ScrollView>
+    <ContentContainer isLoading={isLoading}>
+      <Title contentId={id} isLoading={isLoading} />
+      {references && references.length ? (
+        <ScriptureList
+          references={references}
+          onPress={navigationState.route.jumpTo} // eslint-disable-line react/jsx-handler-names
+          tabDestination={'scripture'}
+        />
+      ) : null}
+      <HTMLContent contentId={id} />
+    </ContentContainer>
+    <HorizontalContentSeriesFeedConnected
+      contentId={id}
+      navigation={navigation}
+    />
+  </ScrollView>
+);
 
 ContentTab.propTypes = {
   /** The id of the devotional item */
