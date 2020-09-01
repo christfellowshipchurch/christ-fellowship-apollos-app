@@ -12,17 +12,24 @@ import {
   useHeaderScrollEffect,
 } from '../../navigation';
 
+import { useFeatureFlag } from '../../hooks';
+
 import StatusBar from '../../ui/StatusBar';
 import ProfileActionBar from './ProfileActionBar';
 import ConnectHeader from './ConnectHeader';
 import { MyPrayersListConnected } from './MyPrayers';
+import GroupsListConnected from './Groups';
 
-const MyPrayersSpacing = styled(({ theme }) => ({
-  paddingVertical: theme.sizing.baseUnit,
+const FeatureSpacing = styled(({ theme }) => ({
+  paddingBottom: theme.sizing.baseUnit,
 }))(View);
 
 const Connect = ({ navigation }) => {
   const { scrollY } = useHeaderScrollEffect({ navigation });
+
+  const { enabled } = useFeatureFlag({
+    key: 'GROUPS',
+  });
 
   return (
     <BackgroundView>
@@ -45,8 +52,21 @@ const Connect = ({ navigation }) => {
           <ConnectHeader
             onPressIcon={() => navigation.navigate('EditCurrentUser')}
           />
-          <ProfileActionBar />
-          <MyPrayersSpacing>
+          <FeatureSpacing>
+            <ProfileActionBar />
+          </FeatureSpacing>
+
+          {enabled ? (
+            <FeatureSpacing>
+              <GroupsListConnected
+                navigation={navigation}
+                onSeeMore={() =>
+                  navigation.navigate('MyPrayerRequestsFeed', { nested: true })
+                }
+              />
+            </FeatureSpacing>
+          ) : null}
+          <FeatureSpacing>
             <MyPrayersListConnected
               onSeeMore={() =>
                 navigation.navigate('MyPrayerRequestsFeed', { nested: true })
@@ -57,7 +77,7 @@ const Connect = ({ navigation }) => {
                 })
               }
             />
-          </MyPrayersSpacing>
+          </FeatureSpacing>
         </ScrollView>
       </SafeAreaView>
     </BackgroundView>
