@@ -1,2 +1,2 @@
-export TableView from './TableView'
-export Cell from './Cell'
+export TableView from './TableView';
+export Cell from './Cell';

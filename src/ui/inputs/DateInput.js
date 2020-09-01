@@ -10,134 +10,134 @@ import { useForm } from '../../hooks';
 import Picker, { PickerItem } from './Picker';
 
 const formatDefaultYear = (year, min, max) => {
-    if (year > max) return max.toString();
-    if (year < min) return min.toString();
+  if (year > max) return max.toString();
+  if (year < min) return min.toString();
 
-    return year.toString();
+  return year.toString();
 };
 
 const DateInput = ({ value, icon, minYear, maxYear, onConfirm, theme }) => {
-    const mValue = moment(value);
-    const months = moment.months();
-    const monthIndex = (m) =>
-        months
-            .indexOf(
-                moment()
-                    .month(m)
-                    .format('MMMM')
-            )
-            .toString();
-    const daysInMonth = (m) =>
+  const mValue = moment(value);
+  const months = moment.months();
+  const monthIndex = (m) =>
+    months
+      .indexOf(
         moment()
-            .month(m)
-            .daysInMonth();
+          .month(m)
+          .format('MMMM')
+      )
+      .toString();
+  const daysInMonth = (m) =>
+    moment()
+      .month(m)
+      .daysInMonth();
 
-    const { values, setValue } = useForm({
-        defaultValues: {
-            month: monthIndex(mValue.month()),
-            day: mValue.date().toString(),
-            year: formatDefaultYear(mValue.year(), minYear, maxYear),
-        },
-    });
+  const { values, setValue } = useForm({
+    defaultValues: {
+      month: monthIndex(mValue.month()),
+      day: mValue.date().toString(),
+      year: formatDefaultYear(mValue.year(), minYear, maxYear),
+    },
+  });
 
-    const maxDay = daysInMonth(values.month);
-    const { month, day, year } = values;
-    const displayMonth = moment()
-        .month(month)
-        .format('MMMM')
-        .toString();
+  const maxDay = daysInMonth(values.month);
+  const { month, day, year } = values;
+  const displayMonth = moment()
+    .month(month)
+    .format('MMMM')
+    .toString();
 
-    // Check to make sure that we don't have
-    // an invalid day for the given month
-    if (values.day > daysInMonth(month)) {
-        setValue('day', 1);
-    }
+  // Check to make sure that we don't have
+  // an invalid day for the given month
+  if (values.day > daysInMonth(month)) {
+    setValue('day', 1);
+  }
 
-    useEffect(
-        () => {
-            onConfirm(
-                moment()
-                    .year(year)
-                    .month(month)
-                    .date(day)
-                    .toString()
-            );
-        },
-        [values]
-    );
+  useEffect(
+    () => {
+      onConfirm(
+        moment()
+          .year(year)
+          .month(month)
+          .date(day)
+          .toString()
+      );
+    },
+    [values]
+  );
 
-    const yearRange = [minYear, maxYear].sort((a, b) => a > b);
+  const yearRange = [minYear, maxYear].sort((a, b) => a > b);
 
-    console.log({ theme });
+  console.log({ theme });
 
-    return (
-        <View>
-            <Picker
-                label="Month"
-                value={month.toString()}
-                displayValue={displayMonth}
-                onValueChange={(newMonth) => setValue('month', monthIndex(newMonth))}
-                icon={icon}
-            >
-                {months.map((m) => (
-                    <PickerItem
-                        label={m}
-                        value={monthIndex(m).toString()}
-                        key={m}
-                        color={theme.colors.text.primary}
-                    />
-                ))}
-            </Picker>
-            <Picker
-                label="Day"
-                value={day}
-                displayValue={day}
-                onValueChange={(newDay) => setValue('day', newDay)}
-                hideIcon
-            >
-                {range(0, maxDay + 1).map((d) => (
-                    <PickerItem
-                        label={d.toString()}
-                        value={d.toString()}
-                        key={`${month}${d}`}
-                        color={theme.colors.text.primary}
-                    />
-                ))}
-            </Picker>
-            <Picker
-                label="Year"
-                value={year}
-                displayValue={year}
-                onValueChange={(newYear) => setValue('year', newYear)}
-                hideIcon
-            >
-                {range(yearRange[0], yearRange[1] + 1).map((y) => (
-                    <PickerItem
-                        label={y.toString()}
-                        value={y.toString()}
-                        key={`${month}${y}`}
-                        color={theme.colors.text.primary}
-                    />
-                ))}
-            </Picker>
-        </View>
-    );
+  return (
+    <View>
+      <Picker
+        label="Month"
+        value={month.toString()}
+        displayValue={displayMonth}
+        onValueChange={(newMonth) => setValue('month', monthIndex(newMonth))}
+        icon={icon}
+      >
+        {months.map((m) => (
+          <PickerItem
+            label={m}
+            value={monthIndex(m).toString()}
+            key={m}
+            color={theme.colors.text.primary}
+          />
+        ))}
+      </Picker>
+      <Picker
+        label="Day"
+        value={day}
+        displayValue={day}
+        onValueChange={(newDay) => setValue('day', newDay)}
+        hideIcon
+      >
+        {range(0, maxDay + 1).map((d) => (
+          <PickerItem
+            label={d.toString()}
+            value={d.toString()}
+            key={`${month}${d}`}
+            color={theme.colors.text.primary}
+          />
+        ))}
+      </Picker>
+      <Picker
+        label="Year"
+        value={year}
+        displayValue={year}
+        onValueChange={(newYear) => setValue('year', newYear)}
+        hideIcon
+      >
+        {range(yearRange[0], yearRange[1] + 1).map((y) => (
+          <PickerItem
+            label={y.toString()}
+            value={y.toString()}
+            key={`${month}${y}`}
+            color={theme.colors.text.primary}
+          />
+        ))}
+      </Picker>
+    </View>
+  );
 };
 
 DateInput.propTypes = {
-    value: PropTypes.string,
-    onConfirm: PropTypes.func,
-    icon: PropTypes.string,
-    maxYear: PropTypes.number,
-    minYear: PropTypes.number,
+  value: PropTypes.string,
+  onConfirm: PropTypes.func,
+  icon: PropTypes.string,
+  maxYear: PropTypes.number,
+  minYear: PropTypes.number,
 };
 
 DateInput.defaultProps = {
-    value: moment().toString(),
-    onConfirm: (date) => date,
-    icon: 'birthday-cake',
-    maxYear: moment().year(),
-    minYear: moment().year() - 100,
+  value: moment().toString(),
+  onConfirm: (date) => date,
+  icon: 'birthday-cake',
+  maxYear: moment().year(),
+  minYear: moment().year() - 100,
 };
 
 export default withTheme()(DateInput);

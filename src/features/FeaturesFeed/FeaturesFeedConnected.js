@@ -9,29 +9,29 @@ import VerticalCardListFeatureConnected from './VerticalCardListFeatureConnected
 import HeroListFeatureConnected from './HeroListFeatureConnected';
 
 const MAPPINGS = {
-    VerticalCardListFeature: VerticalCardListFeatureConnected,
-    HeroListFeature: HeroListFeatureConnected,
+  VerticalCardListFeature: VerticalCardListFeatureConnected,
+  HeroListFeature: HeroListFeatureConnected,
 };
 
 const FeaturesFeedConnected = ({ onRef, ...props }) => {
-    const feedRef = useCallback((ref) => onRef(ref), []);
+  const feedRef = useCallback((ref) => onRef(ref), []);
 
-    return (
-        <CoreFeaturesFeedConnected
-            {...props}
-            additionalFeatures={MAPPINGS}
-            ItemSeparatorComponent={HorizontalDivider}
-            ref={feedRef}
-        />
-    );
+  return (
+    <CoreFeaturesFeedConnected
+      {...props}
+      additionalFeatures={MAPPINGS}
+      ItemSeparatorComponent={HorizontalDivider}
+      ref={feedRef}
+    />
+  );
 };
 
 FeaturesFeedConnected.propTypes = {
-    onRef: PropTypes.func,
+  onRef: PropTypes.func,
 };
 
 FeaturesFeedConnected.defaultProps = {
-    onRef: () => null,
+  onRef: () => null,
 };
 
 export default FeaturesFeedConnected;
