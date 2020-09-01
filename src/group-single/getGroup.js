@@ -49,6 +49,7 @@ export const GROUP_FRAGMENT = gql`
       meetingId
       passcode
     }
+    allowMessages
   }
 `;
 

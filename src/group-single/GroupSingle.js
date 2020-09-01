@@ -203,6 +203,7 @@ const GroupSingle = ({ navigation }) => {
     const videoCall = get(content, 'videoCall', {});
     const parentVideoCall = get(content, 'parentVideoCall', {});
     const phoneNumbers = get(content, 'phoneNumbers', []);
+    const allowMessages = get(content, 'allowMessages', '');
 
     const { start } = dateTime;
     return (
@@ -232,8 +233,10 @@ const GroupSingle = ({ navigation }) => {
                         primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
                       />
                       <StyledTitle>
-                        <StyledH3 numberOfLines={2}>{content.title}</StyledH3>
-                        <StyledH5 numberOfLines={2}>
+                        <StyledH3 isLoading={loading} numberOfLines={2}>
+                          {content.title}
+                        </StyledH3>
+                        <StyledH5 isLoading={loading} numberOfLines={2}>
                           {content.groupType}
                         </StyledH5>
                       </StyledTitle>
@@ -286,7 +289,7 @@ const GroupSingle = ({ navigation }) => {
                     />
                   </PaddedView>
 
-                  {phoneNumbers ? (
+                  {phoneNumbers && allowMessages === 'True' ? (
                     <PaddedView>
                       <MessagesButton
                         recipients={phoneNumbers}
