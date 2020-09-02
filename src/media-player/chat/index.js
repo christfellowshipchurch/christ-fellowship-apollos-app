@@ -67,7 +67,7 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
         chatClient.disconnect();
       };
     },
-    [loading]
+    [data?.currentUser]
   );
 
   if (loading || connecting) {
