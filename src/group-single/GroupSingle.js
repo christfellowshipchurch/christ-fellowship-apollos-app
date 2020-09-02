@@ -206,6 +206,26 @@ const GroupSingle = ({ navigation }) => {
     const allowMessages = get(content, 'allowMessages', '');
     const avatars = get(content, 'avatars', []);
 
+    const getNotes = () => {
+      const hasParentVideoCall = parentVideoCall && parentVideoCall.link;
+      const hasVideoCall = videoCall && videoCall.link;
+
+      if (!hasParentVideoCall && !hasVideoCall) return null;
+
+      const videoCallNote = hasVideoCall ? videoCall.link : '';
+      const parentVideoCallNote = hasParentVideoCall
+        ? parentVideoCall.link
+        : '';
+      const notes = `${
+        hasParentVideoCall
+          ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n`
+          : ''
+      }Join Zoom ${
+        hasParentVideoCall ? 'Breakout' : ''
+      }Meeting:\n${videoCallNote}`;
+      return notes.trim();
+    };
+
     const { start } = dateTime;
     return (
       <ThemeConsumer>
@@ -269,9 +289,7 @@ const GroupSingle = ({ navigation }) => {
                           <AddCalEventButton
                             eventTitle={content.title}
                             eventStart={start}
-                            eventNotes={
-                              !isEmpty(videoCall) ? videoCall.link : null
-                            }
+                            eventNotes={getNotes()}
                             isLoading={loading}
                           />
                         </CellItem>
