@@ -12,6 +12,7 @@ import {
 import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
+import { CoreNavigationAnalytics } from '@apollosproject/ui-analytics';
 import { MediaPlayer } from './media-player';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
@@ -105,12 +106,17 @@ const App = () => {
     <Providers>
       <BackgroundView>
         <StatusBar />
-        <AppContainer
-          ref={(navigatorRef) => {
-            NavigationService.setTopLevelNavigator(navigatorRef);
-          }}
-          theme={mode}
-        />
+        <CoreNavigationAnalytics>
+          {(props) => (
+            <AppContainer
+              ref={(navigatorRef) => {
+                NavigationService.setTopLevelNavigator(navigatorRef);
+              }}
+              theme={mode}
+              {...props}
+            />
+          )}
+        </CoreNavigationAnalytics>
         <MediaPlayer />
       </BackgroundView>
     </Providers>
