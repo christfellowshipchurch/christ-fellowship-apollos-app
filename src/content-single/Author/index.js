@@ -43,6 +43,7 @@ const Author = ({ contentId }) => {
   const { data: { node } = {}, loading, error } = useQuery(GET_AUTHOR, {
     variables: { id: contentId },
     fetchPolicy: 'cache-and-network',
+    skip: !contentId || contentId === '',
   });
   const authorImageSources = get(node, 'author.photo', []);
   const firstName = get(node, 'author.firstName', '');
