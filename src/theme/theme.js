@@ -14,7 +14,12 @@ import authEntry from './authEntry';
 import onboarding from './onboarding';
 import dark from './dark-theme';
 
-import { UIPrayerOverrides } from './overrides';
+import {
+  UIAuthOverrides,
+  UIKitOverrides,
+  UIOnboardingOverrides,
+  UIPrayerOverrides,
+} from './overrides';
 
 /* Add your custom theme definitions below. Anything that is supported in UI-Kit Theme can be
  overridden and/or customized here! */
@@ -150,57 +155,14 @@ const alpha = {
   low: 0.4,
 };
 
-const overrides = ({ colors }) => ({
-  'Onboarding.SlideContent.Title': {
-    color: '#FFFFFF',
-  },
-  'Onboarding.SlideContent.Description': {
-    color: '#FFFFFF',
-  },
-  'Onboarding.Slide.PrimaryButton': {
-    backgroundColor: '#ffffff',
-    borderColor: '#ffffff',
-    flex: 1,
-  },
-  'Onboarding.Swiper.PaginationDot.Active': {
-    backgroundColor: '#ffffff',
-  },
-  'Onboarding.Swiper.PaginationDot': {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-  },
+const overrides = () => ({
   'DateInput.Chip': {
     backgroundColor: 'transparent',
     borderColor: 'white',
   },
-  'ui-auth.TitleText': {
-    color: '#FFFFFF',
-  },
-  'ui-auth.RadioLabel': {
-    color: '#FCFCFC',
-  },
-  'Card.Image': {
-    resizeMode: 'cover',
-    ...Platform.select({
-      android: {
-        // fixes android borderRadius overflow display issue
-        borderTopRightRadius: sizing.baseUnit,
-        borderTopLeftRadius: sizing.baseUnit,
-      },
-    }),
-  },
-  'ui-auth.TabCard': {
-    backgroundColor: '#FFFFFF',
-  },
-  'ui-auth.NextButton': {
-    backgroundColor: '#FCFCFC',
-    borderColor: '#FCFCFC',
-  },
-  'ui-auth.PromptText': {
-    color: '#FCFCFC',
-  },
-  'ui-auth.FieldLabel': {
-    color: '#FCFCFC',
-  },
+  ...UIAuthOverrides,
+  ...UIKitOverrides({ sizing }),
+  ...UIOnboardingOverrides,
   ...UIPrayerOverrides,
 });
 

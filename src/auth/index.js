@@ -11,11 +11,12 @@ import {
   AuthEmailEntryConnected,
   AuthProfileEntryConnected,
   AuthProfileDetailsEntryConnected,
+  Entry,
 } from '@apollosproject/ui-auth';
 
 import AuthProfileDetailsEntry from './AuthProfileDetailsEntry';
 import AuthPasswordEntryConnected from './AuthPasswordWithPasswordReset';
-import Entry from './Entry';
+// import Entry from './Entry';
 
 export {
   LoginButton,
