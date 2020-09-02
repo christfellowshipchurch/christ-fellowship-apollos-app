@@ -6,7 +6,6 @@ import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 // import { MessageSimple } from './MessageSimple';
-// import { Attachment } from './Attachment';
 import ChannelInner from './ChannelInner';
 import { KeyboardCompatibleView } from '../KeyboardCompatibleView';
 
@@ -69,12 +68,6 @@ class Channel extends PureComponent {
      *
      * */
     Message: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Attachment UI component to display attachment in individual message.
-     *
-     * Available built-in component (also accepts the same props as): [Attachment](https://getstream.github.io/stream-chat-react-native/#attachment)
-     * */
-    Attachment: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     /**
      * If true, KeyboardCompatibleView wrapper is disabled.
      *

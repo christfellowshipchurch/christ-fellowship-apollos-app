@@ -13,7 +13,6 @@ import {
   LoadingErrorIndicator,
   EmptyStateIndicator,
 } from '../Indicators';
-import { SuggestionsProvider } from '../SuggestionsProvider';
 
 import { ChannelContext, withTranslationContext } from '../../context';
 import { logChatPromiseExecution } from 'stream-chat';
@@ -36,16 +35,6 @@ class ChannelInner extends PureComponent {
       leading: true,
       trailing: true,
     });
-
-    // hard limit to prevent you from scrolling faster than 1 page per 2 seconds
-    this._loadMoreThreadFinishedDebounced = debounce(
-      this.loadMoreThreadFinished,
-      2000,
-      {
-        leading: true,
-        trailing: true,
-      },
-    );
 
     this._setStateThrottled = throttle(this.setState, 500, {
       leading: true,
@@ -89,7 +78,6 @@ class ChannelInner extends PureComponent {
     ]),
     isOnline: PropTypes.bool,
     Message: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    Attachment: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     /**
      * Override mark channel read request (Advanced usage only)
      *
@@ -154,10 +142,6 @@ class ChannelInner extends PureComponent {
       watchers: Immutable({}),
       members: Immutable({}),
       read: Immutable({}),
-      thread: props.thread,
-      threadMessages: [],
-      threadLoadingMore: false,
-      threadHasMore: true,
       /** We save the events in state so that we can display event message
        * next to the message after which it was received, in MessageList.
        *
@@ -218,7 +202,6 @@ class ChannelInner extends PureComponent {
     this.props.client.off('connection.recovered', this.handleEvent);
 
     this._loadMoreFinishedDebounced.cancel();
-    this._loadMoreThreadFinishedDebounced.cancel();
     this._setStateThrottled.cancel();
     this._unmounted = true;
   }
@@ -265,58 +248,6 @@ class ChannelInner extends PureComponent {
     channel.on(this.handleEvent);
   }
 
-  openThread = (message) => {
-    const channel = this.props.channel;
-    const threadMessages = channel.state.threads[message.id] || [];
-
-    if (this._unmounted) return;
-    this.setState({
-      thread: message,
-      threadMessages,
-    });
-  };
-
-  loadMoreThread = async () => {
-    // prevent duplicate loading events...
-    if (this.state.threadLoadingMore) return;
-    if (this._unmounted) return;
-    this.setState({
-      threadLoadingMore: true,
-    });
-    const channel = this.props.channel;
-    const parentID = this.state.thread.id;
-    const oldMessages = channel.state.threads[parentID] || [];
-    const oldestMessageID = oldMessages[0] ? oldMessages[0].id : null;
-    const limit = 50;
-    const queryResponse = await channel.getReplies(parentID, {
-      limit,
-      id_lt: oldestMessageID,
-    });
-    const hasMore = queryResponse.messages.length === limit;
-
-    const threadMessages = channel.state.threads[parentID] || [];
-
-    // next set loadingMore to false so we can start asking for more data...
-    this._loadMoreThreadFinishedDebounced(hasMore, threadMessages);
-  };
-
-  loadMoreThreadFinished = (threadHasMore, threadMessages) => {
-    if (this._unmounted) return;
-    this.setState({
-      threadLoadingMore: false,
-      threadHasMore,
-      threadMessages,
-    });
-  };
-
-  closeThread = () => {
-    if (this._unmounted) return;
-    this.setState({
-      thread: null,
-      threadMessages: [],
-    });
-  };
-
   setEditingState = (message) => {
     if (this._unmounted) return;
     this.setState({
@@ -334,10 +265,6 @@ class ChannelInner extends PureComponent {
     channel.state.addMessageSorted(updatedMessage);
 
     // update the Channel component state
-    if (this.state.thread && updatedMessage.parent_id) {
-      extraState.threadMessages =
-        channel.state.threads[updatedMessage.parent_id] || [];
-    }
     if (this._unmounted) return;
     this.setState({ messages: channel.state.messages, ...extraState });
   };
@@ -364,9 +291,7 @@ class ChannelInner extends PureComponent {
 
   createMessagePreview = (
     text,
-    attachments,
     parent,
-    mentioned_users,
     extraFields,
   ) => {
     // create a preview of the message
@@ -384,8 +309,6 @@ class ChannelInner extends PureComponent {
         ...this.props.client.user,
       },
       created_at: new Date(),
-      attachments,
-      mentioned_users,
       reactions: [],
       ...extraFields,
     };
@@ -414,10 +337,8 @@ class ChannelInner extends PureComponent {
     // Scrape the reserved fields if present.
     const {
       text,
-      attachments,
       id,
       parent_id,
-      mentioned_users,
       html,
       __html,
       type,
@@ -430,10 +351,8 @@ class ChannelInner extends PureComponent {
 
     const messageData = {
       text,
-      attachments,
       id,
       parent_id,
-      mentioned_users,
       ...extraFields,
     };
 
@@ -463,9 +382,7 @@ class ChannelInner extends PureComponent {
 
   sendMessage = async ({
     text,
-    attachments = [],
     parent,
-    mentioned_users,
     ...extraFields
   }) => {
     // remove error messages upon submit
@@ -474,9 +391,7 @@ class ChannelInner extends PureComponent {
     // create a local preview message to show in the UI
     const messagePreview = this.createMessagePreview(
       text,
-      attachments,
       parent,
-      mentioned_users,
       extraFields,
     );
 
@@ -501,29 +416,6 @@ class ChannelInner extends PureComponent {
 
   handleEvent = (e) => {
     const { channel } = this.props;
-    let threadMessages = [];
-    const threadState = {};
-    if (this.state.thread) {
-      threadMessages =
-        channel.state.threads[this.state.thread.id] ||
-        this.state.threadMessages;
-      threadState['threadMessages'] = threadMessages;
-    }
-
-    if (
-      this.state.thread &&
-      e.message &&
-      e.message.id === this.state.thread.id
-    ) {
-      threadState['thread'] = channel.state.messageToImmutable(e.message);
-    }
-
-    if (Object.keys(threadState).length > 0) {
-      // TODO: in theory we should do 1 setState call not 2,
-      // However the setStateThrottled doesn't support this
-      if (this._unmounted) return;
-      this.setState(threadState);
-    }
 
     if (e.type === 'member.added') {
       this.addToEventHistory(e);
@@ -631,7 +523,6 @@ class ChannelInner extends PureComponent {
     client: this.props.client,
     channel: this.props.channel,
     Message: this.props.Message,
-    Attachment: this.props.Attachment,
     updateMessage: this.updateMessage,
     removeMessage: this.removeMessage,
     sendMessage: this.sendMessage,
@@ -642,10 +533,6 @@ class ChannelInner extends PureComponent {
     EmptyStateIndicator: this.props.EmptyStateIndicator,
     markRead: this._markReadThrottled,
     loadMore: this._loadMoreThrottled,
-    // thread related
-    openThread: this.openThread,
-    closeThread: this.closeThread,
-    loadMoreThread: this.loadMoreThread,
     emojiData: this.props.emojiData,
     disabled:
       this.props.channel.data &&
@@ -693,7 +580,9 @@ class ChannelInner extends PureComponent {
           enabled={!this.props.disableKeyboardCompatibleView}
         >
           <ChannelContext.Provider value={this.getContext()}>
-            <SuggestionsProvider>{children}</SuggestionsProvider>
+            <View collapsable={false} style={{ height: '100%' }}>
+              {children}
+            </View>
           </ChannelContext.Provider>
         </KeyboardCompatibleView>
       );

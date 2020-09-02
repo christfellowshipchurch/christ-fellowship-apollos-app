@@ -3,7 +3,6 @@ import debounce from 'lodash/debounce';
 export { renderText } from './renderText';
 export { renderReactions } from './renderReactions';
 
-export { Streami18n } from './Streami18n';
 export const emojiData = [
   {
     id: 'like',

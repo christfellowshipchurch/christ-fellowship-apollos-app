@@ -10,16 +10,9 @@ import {
 } from '../../../context';
 import { themed } from '../../../styles/theme';
 
-import {
-  Attachment,
-  Gallery,
-  FileAttachment,
-  FileAttachmentGroup,
-} from '../../Attachment';
 import { ReactionList, ReactionPickerWrapper } from '../../Reaction';
 
 import MessageTextContainer from './MessageTextContainer';
-import MessageReplies from './MessageReplies';
 
 import { emojiData, MESSAGE_ACTIONS } from '../../../utils';
 
@@ -141,18 +134,8 @@ class MessageContent extends React.PureComponent {
   static themePath = 'message.content';
 
   static propTypes = {
-    /** @see See [channel context](#channelcontext) */
-    Attachment: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     /** enabled reactions, this is usually set by the parent component based on channel configs */
     reactionsEnabled: PropTypes.bool.isRequired,
-    /** enabled replies, this is usually set by the parent component based on channel configs */
-    repliesEnabled: PropTypes.bool.isRequired,
-    /**
-     * Handler to open the thread on message. This is callback for touch event for replies button.
-     *
-     * @param message A message object to open the thread upon.
-     * */
-    onThreadSelect: PropTypes.func,
     /**
      * Callback for onPress event on Message component
      *
@@ -262,10 +245,6 @@ class MessageContent extends React.PureComponent {
      * Supported styles: https://github.com/beefe/react-native-actionsheet/blob/master/lib/styles.js
      */
     actionSheetStyles: PropTypes.object,
-    MessageReplies: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
     MessageHeader: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     MessageFooter: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     /**
@@ -303,73 +282,6 @@ class MessageContent extends React.PureComponent {
     reactionPickerVisible: PropTypes.bool,
     /** Custom UI component for message text */
     MessageText: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component to display enriched url preview.
-     * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/Card.js
-     */
-    UrlPreview: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component to display Giphy image.
-     * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/Card.js
-     */
-    Giphy: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component to display group of File type attachments or multiple file attachments (in single message).
-     * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/FileAttachmentGroup.js
-     */
-    FileAttachmentGroup: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
-    /**
-     * Custom UI component to display File type attachment.
-     * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/FileAttachment.js
-     */
-    FileAttachment: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
-    /**
-     * Custom UI component for attachment icon for type 'file' attachment.
-     * Defaults to: https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/FileIcon.js
-     */
-    AttachmentFileIcon: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
-    /**
-     * Custom UI component to display image attachments.
-     * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/Gallery.js
-     */
-    Gallery: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component to display generic media type e.g. giphy, url preview etc
-     * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/Card.js
-     */
-    Card: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component to override default header of Card component.
-     * Accepts the same props as Card component.
-     */
-    CardHeader: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component to override default cover (between Header and Footer) of Card component.
-     * Accepts the same props as Card component.
-     */
-    CardCover: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component to override default Footer of Card component.
-     * Accepts the same props as Card component.
-     */
-    CardFooter: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component to display attachment actions. e.g., send, shuffle, cancel in case of giphy
-     * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/AttachmentActions.js
-     */
-    AttachmentActions: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
     formatDate: PropTypes.func,
     /**
      * @deprecated Please use `disabled` instead.
@@ -384,15 +296,9 @@ class MessageContent extends React.PureComponent {
   };
 
   static defaultProps = {
-    Attachment,
     reactionsEnabled: true,
-    repliesEnabled: true,
     MessageText: false,
     ReactionList,
-    MessageReplies,
-    Gallery,
-    FileAttachment,
-    FileAttachmentGroup,
     supportedReactions: emojiData,
     hideReactionCount: false,
     hideReactionOwners: false,
@@ -404,11 +310,6 @@ class MessageContent extends React.PureComponent {
     this.ActionSheet = false;
     this.state = {};
   }
-
-  openThread = () => {
-    if (this.props.onThreadSelect)
-      this.props.onThreadSelect(this.props.message);
-  };
 
   showActionSheet = async () => {
     await this.props.dismissKeyboard();
@@ -455,9 +356,6 @@ class MessageContent extends React.PureComponent {
       case MESSAGE_ACTIONS.delete:
         this.handleDelete();
         break;
-      case MESSAGE_ACTIONS.reply:
-        this.openThread();
-        break;
       case MESSAGE_ACTIONS.reactions:
         this.props.openReactionPicker();
         break;
@@ -478,14 +376,12 @@ class MessageContent extends React.PureComponent {
       handleReaction,
       hideReactionCount,
       hideReactionOwners,
-      threadList,
       retrySendMessage,
       messageActions,
       groupStyles,
       additionalTouchableProps,
       reactionsEnabled,
       getTotalReactionCount,
-      repliesEnabled,
       canEditMessage,
       canDeleteMessage,
       MessageHeader,
@@ -495,29 +391,12 @@ class MessageContent extends React.PureComponent {
       dismissReactionPicker,
       reactionPickerVisible,
       handleAction,
-      AttachmentFileIcon,
       MessageText,
       channel,
-      MessageReplies,
-      AttachmentActions,
-      Card,
-      CardHeader,
-      CardCover,
-      CardFooter,
-      UrlPreview,
-      Giphy,
-      Gallery,
-      FileAttachment,
-      FileAttachmentGroup,
       t,
       tDateTimeParser,
       markdownRules,
     } = this.props;
-
-    const Attachment = this.props.Attachment;
-    const hasAttachment = Boolean(
-      message && message.attachments && message.attachments.length,
-    );
 
     const showTime = groupStyles[0] === 'single' || groupStyles[0] === 'bottom';
 
@@ -527,16 +406,6 @@ class MessageContent extends React.PureComponent {
       message.latest_reactions.length > 0;
 
     const options = [{ id: 'cancel', title: 'Cancel' }];
-    const images =
-      hasAttachment &&
-      message.attachments.filter(
-        (item) =>
-          item.type === 'image' && !item.title_link && !item.og_scrape_url,
-      );
-
-    const files =
-      hasAttachment &&
-      message.attachments.filter((item) => item.type === 'file');
 
     if (
       messageActions &&
@@ -551,9 +420,7 @@ class MessageContent extends React.PureComponent {
 
     if (
       messageActions &&
-      repliesEnabled &&
-      messageActions.indexOf(MESSAGE_ACTIONS.reply) > -1 &&
-      !threadList
+      messageActions.indexOf(MESSAGE_ACTIONS.reply) > -1
     ) {
       options.splice(1, 0, { id: MESSAGE_ACTIONS.reply, title: t('Reply') });
     }
@@ -661,47 +528,6 @@ class MessageContent extends React.PureComponent {
             ref={(o) => (this.messageContainer = o)}
             collapsable={false}
           >
-            {hasAttachment &&
-              message.attachments.map((attachment, index) => {
-                // We handle files separately
-                if (attachment.type === 'file') return null;
-                if (
-                  attachment.type === 'image' &&
-                  !attachment.title_link &&
-                  !attachment.og_scrape_url
-                )
-                  return null;
-                return (
-                  <Attachment
-                    key={`${message.id}-${index}`}
-                    attachment={attachment}
-                    actionHandler={handleAction}
-                    alignment={alignment}
-                    UrlPreview={UrlPreview}
-                    Giphy={Giphy}
-                    Card={Card}
-                    FileAttachment={FileAttachment}
-                    AttachmentActions={AttachmentActions}
-                    CardHeader={CardHeader}
-                    CardCover={CardCover}
-                    CardFooter={CardFooter}
-                  />
-                );
-              })}
-            {files && files.length > 0 && (
-              <FileAttachmentGroup
-                messageId={message.id}
-                files={files}
-                handleAction={handleAction}
-                alignment={alignment}
-                AttachmentFileIcon={AttachmentFileIcon}
-                FileAttachment={FileAttachment}
-                AttachmentActions={AttachmentActions}
-              />
-            )}
-            {images && images.length > 0 && (
-              <Gallery alignment={alignment} images={images} />
-            )}
             <MessageTextContainer
               message={message}
               groupStyles={groupStyles}
@@ -710,20 +536,10 @@ class MessageContent extends React.PureComponent {
               disabled={message.status === 'failed' || message.type === 'error'}
               alignment={alignment}
               Message={Message}
-              openThread={this.openThread}
               handleReaction={handleReaction}
               markdownRules={markdownRules}
             />
           </ContainerInner>
-          {repliesEnabled ? (
-            <MessageReplies
-              message={message}
-              isThreadList={!!threadList}
-              openThread={this.openThread}
-              alignment={alignment}
-              channel={channel}
-            />
-          ) : null}
           {MessageFooter && <MessageFooter {...this.props} />}
           {!MessageFooter && showTime ? (
             <MetaContainer>

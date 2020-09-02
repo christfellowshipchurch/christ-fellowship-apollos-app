@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Streami18n } from '../../../utils/Streami18n';
+import { Streami18n } from 'stream-chat-react-native';
 
 export const useStreami18n = ({ i18nInstance, setTranslators }) => {
   useEffect(() => {

@@ -6,7 +6,7 @@ import { ChatContext, TranslationContext } from '../../context';
 import { useIsOnline } from './hooks/useIsOnline';
 import { useStreami18n } from './hooks/useStreami18n';
 import { themed } from '../../styles/theme';
-import { Streami18n } from '../../utils/Streami18n';
+import { Streami18n } from 'stream-chat-react-native';
 
 /**
  * Chat - Wrapper component for Chat. The needs to be placed around any other chat components.

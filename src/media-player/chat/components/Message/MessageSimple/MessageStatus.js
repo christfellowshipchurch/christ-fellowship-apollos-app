@@ -66,7 +66,6 @@ const MessageStatus = ({
   readBy,
   message,
   lastReceivedId,
-  threadList,
 }) => {
   const renderStatus = () => {
     const justReadByMe =
@@ -80,7 +79,6 @@ const MessageStatus = ({
       );
     } else if (
       readBy.length !== 0 &&
-      !threadList &&
       message.id === lastReceivedId &&
       !justReadByMe
     ) {
@@ -99,8 +97,7 @@ const MessageStatus = ({
     } else if (
       message.status === 'received' &&
       message.type !== 'ephemeral' &&
-      message.id === lastReceivedId &&
-      !threadList
+      message.id === lastReceivedId
     ) {
       return (
         <DeliveredContainer>
@@ -126,8 +123,6 @@ MessageStatus.propTypes = {
   message: PropTypes.object,
   /** Latest message id on current channel */
   lastReceivedId: PropTypes.string,
-  /** Boolean if current message is part of thread */
-  isThreadList: PropTypes.bool,
 };
 
 export default MessageStatus;

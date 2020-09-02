@@ -76,22 +76,8 @@ class MessageList extends PureComponent {
      * If all the actions need to be disabled, empty array or false should be provided as value of prop.
      * */
     messageActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
-    /**
-     * Boolean weather current message list is a thread.
-     */
-    threadList: PropTypes.bool,
     /** **Available from [chat context](https://getstream.github.io/stream-chat-react-native/#chatcontext)** */
     client: PropTypes.object,
-    /** **Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)** */
-    Attachment: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component for attachment icon for type 'file' attachment.
-     * Defaults to: https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/FileIcon.js
-     */
-    AttachmentFileIcon: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
     /** **Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)** */
     Message: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     /** **Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)** */
@@ -121,12 +107,6 @@ class MessageList extends PureComponent {
     eventHistory: PropTypes.object,
     /** Helper function to mark current channel as read. */
     markRead: PropTypes.func,
-    /**
-     * Handler to open the thread on message. This is callback for touch event for replies button.
-     *
-     * @param message A message object to open the thread upon.
-     * */
-    onThreadSelect: PropTypes.func,
     /**
      *  This method gets called when user selects edit action on some message. On code level it just sets `editing` property in state to message being edited
      *
@@ -400,8 +380,6 @@ class MessageList extends PureComponent {
         previousMessage.type === 'message.date' ||
         previousMessage.type === 'system' ||
         previousMessage.type === 'channel.event' ||
-        (previousMessage.attachments &&
-          previousMessage.attachments.length !== 0) ||
         userId !== previousMessage.user.id ||
         previousMessage.type === 'error' ||
         previousMessage.deleted_at;
@@ -411,7 +389,6 @@ class MessageList extends PureComponent {
         nextMessage.type === 'message.date' ||
         nextMessage.type === 'system' ||
         nextMessage.type === 'channel.event' ||
-        (nextMessage.attachments && nextMessage.attachments.length !== 0) ||
         userId !== nextMessage.user.id ||
         nextMessage.type === 'error' ||
         nextMessage.deleted_at;
@@ -439,11 +416,6 @@ class MessageList extends PureComponent {
         }
       }
 
-      if (message.attachments.length !== 0) {
-        groupStyles.splice(0, groupStyles.length);
-        groupStyles.push('single');
-      }
-
       if (this.props.noGroupByUser) {
         groupStyles.splice(0, groupStyles.length);
         groupStyles.push('single');
@@ -460,7 +432,7 @@ class MessageList extends PureComponent {
       newMessagesNotification: false,
     });
     this.flatList.scrollToIndex({ index: 0 });
-    if (!this.props.threadList) this.props.markRead();
+    this.props.markRead();
   };
 
   setLastReceived = (messages) => {
@@ -533,11 +505,9 @@ class MessageList extends PureComponent {
         <Message
           client={this.props.client}
           channel={this.props.channel}
-          onThreadSelect={this.props.onThreadSelect}
           message={message}
           groupStyles={groupStyles}
           Message={this.props.Message}
-          Attachment={this.props.Attachment}
           readBy={readBy}
           disabled={this.props.disabled}
           lastReceivedId={
@@ -551,15 +521,12 @@ class MessageList extends PureComponent {
           }
           setEditingState={this.props.setEditingState}
           editing={this.props.editing}
-          threadList={this.props.threadList}
           messageActions={this.props.messageActions}
           updateMessage={this.props.updateMessage}
           removeMessage={this.props.removeMessage}
           retrySendMessage={this.props.retrySendMessage}
-          openThread={this.props.openThread}
           emojiData={this.props.emojiData}
           actionSheetStyles={this.props.actionSheetStyles}
-          AttachmentFileIcon={this.props.AttachmentFileIcon}
         />
       );
     }
@@ -569,7 +536,6 @@ class MessageList extends PureComponent {
     const yOffset = event.nativeEvent.contentOffset.y;
     const removeNewMessageNotification = yOffset <= 0;
     if (
-      !this.props.threadList &&
       removeNewMessageNotification &&
       this.props.channel.countUnread() > 0
     )
@@ -599,8 +565,7 @@ class MessageList extends PureComponent {
     if (
       this.props.messages &&
       this.props.messages.length === 0 &&
-      !hasEventHistory &&
-      !this.props.threadList
+      !hasEventHistory
     ) {
       return <View style={{ flex: 1 }}>{this.renderEmptyState()}</View>;
     }

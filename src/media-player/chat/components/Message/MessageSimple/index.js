@@ -67,88 +67,13 @@ export const MessageSimple = themed(
       ]),
       /** Custom UI component for message text */
       MessageText: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Custom UI component to display enriched url preview.
-       * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/Card.js
-       */
-      UrlPreview: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Custom UI component to display Giphy image.
-       * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/Card.js
-       */
-      Giphy: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Custom UI component to display group of File type attachments or multiple file attachments (in single message).
-       * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/FileAttachmentGroup.js
-       */
-      FileAttachmentGroup: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.elementType,
-      ]),
-      /**
-       * Custom UI component to display File type attachment.
-       * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/FileAttachment.js
-       */
-      FileAttachment: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.elementType,
-      ]),
-      /**
-       * Custom UI component for attachment icon for type 'file' attachment.
-       * Defaults to: https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/FileIcon.js
-       */
-      AttachmentFileIcon: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.elementType,
-      ]),
-      /**
-       * Custom UI component to display image attachments.
-       * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/Gallery.js
-       */
-      Gallery: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Custom UI component to display generic media type e.g. giphy, url preview etc
-       * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/Card.js
-       */
-      Card: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Custom UI component to override default header of Card component.
-       * Accepts the same props as Card component.
-       */
-      CardHeader: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Custom UI component to override default cover (between Header and Footer) of Card component.
-       * Accepts the same props as Card component.
-       */
-      CardCover: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Custom UI component to override default Footer of Card component.
-       * Accepts the same props as Card component.
-       */
-      CardFooter: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Custom UI component to display attachment actions. e.g., send, shuffle, cancel in case of giphy
-       * Defaults to https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/AttachmentActions.js
-       */
-      AttachmentActions: PropTypes.oneOfType([
-        PropTypes.node,
-        PropTypes.elementType,
-      ]),
       /** enabled reactions, this is usually set by the parent component based on channel configs */
       reactionsEnabled: PropTypes.bool.isRequired,
-      /** enabled replies, this is usually set by the parent component based on channel configs */
-      repliesEnabled: PropTypes.bool.isRequired,
       /**
        * Array of allowed actions on message. e.g. ['edit', 'delete', 'reactions', 'reply']
        * If all the actions need to be disabled, empty array or false should be provided as value of prop.
        * */
       messageActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
-      /**
-       * Handler to open the thread on message. This is callback for touch event for replies button.
-       *
-       * @param message A message object to open the thread upon.
-       * */
-      onThreadSelect: PropTypes.func,
       /**
        * Callback for onPress event on Message component
        *
@@ -250,10 +175,6 @@ export const MessageSimple = themed(
        * e.g., user avatar (to which message belongs to) is only showed for last (bottom) message in group.
        */
       groupStyles: PropTypes.array,
-      /** Boolean if current message is part of thread */
-      isThreadList: PropTypes.bool,
-      /** @see See [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
-      openThread: PropTypes.func,
       /** @see See [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
       client: PropTypes.object,
       /** A list of users who have read the message */
@@ -314,7 +235,6 @@ export const MessageSimple = themed(
 
     static defaultProps = {
       reactionsEnabled: true,
-      repliesEnabled: true,
       forceAlign: false,
       showMessageStatus: true,
       MessageAvatar: DefaultMessageAvatar,

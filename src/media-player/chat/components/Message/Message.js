@@ -3,7 +3,6 @@ import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import deepequal from 'deep-equal';
 
-import { Attachment } from '../Attachment';
 import { MessageSimple } from './MessageSimple';
 
 import { withKeyboardContext } from '../../context';
@@ -45,11 +44,6 @@ const Message = withKeyboardContext(
        * Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)
        * */
       Message: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Attachment UI component to display attachment in individual message.
-       * Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)
-       * */
-      Attachment: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
       /**
        * Array of allowed actions on message. e.g. ['edit', 'delete', 'reactions', 'reply']
        * If all the actions need to be disabled, empty array or false should be provided as value of prop.
@@ -94,7 +88,6 @@ const Message = withKeyboardContext(
       messageActions: Object.keys(MESSAGE_ACTIONS),
       readBy: [],
       groupStyles: [],
-      Attachment,
       editing: false,
       dismissKeyboardOnMessageTouch: true,
     };
@@ -320,7 +313,6 @@ const Message = withKeyboardContext(
 
       if (this.props.channel && this.props.channel.getConfig()) {
         actionProps.reactionsEnabled = this.props.channel.getConfig().reactions;
-        actionProps.repliesEnabled = this.props.channel.getConfig().reactions;
       }
 
       return (

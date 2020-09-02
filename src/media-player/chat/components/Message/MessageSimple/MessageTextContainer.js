@@ -51,9 +51,7 @@ const MessageTextContainer = withTheme((props) => {
     MessageText = false,
   } = props;
 
-  const hasAttachment = message.attachments.length > 0 ? true : false;
-  const groupStyle =
-    alignment + capitalize(hasAttachment ? 'bottom' : groupStyles[0]);
+  const groupStyle = alignment + capitalize(groupStyles[0]);
 
   if (!message.text) return false;
   const markdownStyles = props.theme
