@@ -2,8 +2,9 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 import { TouchableScale, ErrorCard } from '@apollosproject/ui-kit';
+import moment from 'moment';
 
-import { CardFeed } from 'ui/CardFeeds';
+import { CardFeed } from '../../../ui/CardFeeds';
 import { HorizontalGroupCard } from '../../../ui/Cards';
 
 import GET_CURRENT_USER_GROUPS from './getCurrentUserGroups';
@@ -16,9 +17,7 @@ const loadingStateObject = {
 };
 
 const GroupsListConnected = ({ navigation }) => {
-  const { loading, error, data, refetch, fetchMore, variables } = useQuery(
-    GET_CURRENT_USER_GROUPS
-  );
+  const { loading, error, data } = useQuery(GET_CURRENT_USER_GROUPS);
   const groups = get(data, 'currentUser.profile.groups', []);
 
   if (error) return <ErrorCard error={error} />;
@@ -37,7 +36,9 @@ const GroupsListConnected = ({ navigation }) => {
 
   return (
     <CardFeed
-      content={groups}
+      content={groups.sort((a, b) =>
+        moment(a.dateTime.start).diff(b.dateTime.start)
+      )}
       renderItem={renderItem}
       loadingStateObject={loadingStateObject}
       isLoading={loading && groups.length === 0}

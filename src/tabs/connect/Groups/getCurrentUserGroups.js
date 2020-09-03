@@ -19,6 +19,10 @@ export default gql`
             schedule {
               friendlyScheduleText
             }
+            dateTime {
+              start
+              end
+            }
             leaders {
               id
               photo {
