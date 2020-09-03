@@ -97,8 +97,7 @@ export const defaultTheme = {
         rightBorderWidth: 0,
         rightBorderColor: 'transparent',
       },
-      // Available options for styling text: https://github.com/CharlesMangwa/react-native-simple-markdown/tree/next#styles-1
-      markdown: {},
+      text: {},
     },
     status: {
       spacer: {},

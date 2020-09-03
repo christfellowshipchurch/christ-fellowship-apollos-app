@@ -169,7 +169,6 @@ class MessageContent extends React.PureComponent {
     formatDate: PropTypes.func,
     readOnly: PropTypes.bool,
     disabled: PropTypes.bool,
-    markdownRules: PropTypes.object,
   };
 
   static defaultProps = {
@@ -261,7 +260,6 @@ class MessageContent extends React.PureComponent {
       channel,
       t,
       tDateTimeParser,
-      markdownRules,
     } = this.props;
 
     const showTime = groupStyles[0] === 'single' || groupStyles[0] === 'bottom';
@@ -395,7 +393,6 @@ class MessageContent extends React.PureComponent {
               alignment={alignment}
               Message={Message}
               handleReaction={handleReaction}
-              markdownRules={markdownRules}
             />
           </ContainerInner>
           {showTime ? (

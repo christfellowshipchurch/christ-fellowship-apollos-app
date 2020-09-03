@@ -4,8 +4,7 @@ import styled from '@stream-io/styled-components';
 import PropTypes from 'prop-types';
 
 import { themed } from '../../styles/theme';
-import { renderReactions } from '../../utils/renderReactions';
-import { emojiData } from '../../utils';
+import { renderReactions, emojiData } from '../../utils';
 
 import leftTail from '../../images/reactionlist/left-tail.png';
 import leftCenter from '../../images/reactionlist/left-center.png';

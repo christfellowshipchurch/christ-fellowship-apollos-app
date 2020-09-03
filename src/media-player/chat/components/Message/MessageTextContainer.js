@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Text } from 'react-native';
 
 import styled, { withTheme } from '@stream-io/styled-components';
 
-import { renderText, capitalize } from '../../utils';
+import { capitalize } from '../../utils';
 
 const TextContainer = styled.View`
   border-bottom-left-radius: ${({ theme, groupStyle }) =>
@@ -49,10 +50,7 @@ const MessageTextContainer = withTheme((props) => {
   const groupStyle = alignment + capitalize(groupStyles[0]);
 
   if (!message.text) return false;
-  const markdownStyles = props.theme
-    ? props.theme.message.content.markdown
-    : {};
-  const markdownRules = props.markdownRules || {};
+  const styles = props.theme ? props.theme.message.content.text : {};
   return (
     <React.Fragment>
       <TextContainer
@@ -61,7 +59,7 @@ const MessageTextContainer = withTheme((props) => {
         status={message.status}
         type={message.type}
       >
-        {renderText(message, markdownStyles, markdownRules)}
+        <Text style={styles}>{message.text}</Text>
       </TextContainer>
     </React.Fragment>
   );
@@ -71,7 +69,6 @@ MessageTextContainer.propTypes = {
   message: PropTypes.object,
   groupStyles: PropTypes.array,
   theme: PropTypes.object,
-  markdownRules: PropTypes.object,
 };
 
 export default MessageTextContainer;

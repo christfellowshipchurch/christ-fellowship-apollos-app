@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import styled from '@stream-io/styled-components';
 
 import { themed } from '../../styles/theme';
-import { Avatar } from '../Avatar';
+import Avatar from '../Avatar';
 import { emojiData } from '../../utils';
 
 const Container = styled.TouchableOpacity`

@@ -66,7 +66,6 @@ class MessageInner extends React.PureComponent {
     supportedReactions: PropTypes.array,
     readOnly: PropTypes.bool,
     disabled: PropTypes.bool,
-    markdownRules: PropTypes.object,
   };
 
   static defaultProps = {
