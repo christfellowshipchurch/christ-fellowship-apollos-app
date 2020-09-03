@@ -3,16 +3,14 @@ import PropTypes from 'prop-types';
 
 import { TouchableOpacity, Dimensions } from 'react-native';
 
-import ReactionPicker from './ReactionPicker';
 import { emojiData } from '../../utils';
+import ReactionPicker from './ReactionPicker';
 
 class ReactionPickerWrapper extends React.PureComponent {
   static propTypes = {
     isMyMessage: PropTypes.func,
     message: PropTypes.object,
     offset: PropTypes.object,
-    hideReactionCount: PropTypes.bool,
-    hideReactionOwners: PropTypes.bool,
     handleReaction: PropTypes.func,
     /**
      * e.g.,
@@ -43,10 +41,6 @@ class ReactionPickerWrapper extends React.PureComponent {
      * TODO: Remove following prop in 1.x.x
      */
     emojiData: PropTypes.array,
-    ReactionPicker: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
     dismissReactionPicker: PropTypes.func,
     reactionPickerVisible: PropTypes.bool,
     openReactionPicker: PropTypes.func,
@@ -59,11 +53,8 @@ class ReactionPickerWrapper extends React.PureComponent {
       left: 30,
       right: 10,
     },
-    ReactionPicker,
     supportedReactions: emojiData,
     emojiData,
-    hideReactionCount: false,
-    hideReactionOwners: false,
   };
 
   constructor(props) {
@@ -108,10 +99,7 @@ class ReactionPickerWrapper extends React.PureComponent {
       style,
       dismissReactionPicker,
       reactionPickerVisible,
-      ReactionPicker,
       openReactionPicker,
-      hideReactionCount,
-      hideReactionOwners,
     } = this.props;
     return (
       <TouchableOpacity
@@ -128,8 +116,6 @@ class ReactionPickerWrapper extends React.PureComponent {
           latestReactions={message.latest_reactions}
           reactionCounts={message.reaction_counts}
           handleDismiss={dismissReactionPicker}
-          hideReactionCount={hideReactionCount}
-          hideReactionOwners={hideReactionOwners}
           style={style}
           supportedReactions={supportedReactions || emojiData}
           rpLeft={this.state.rpLeft}

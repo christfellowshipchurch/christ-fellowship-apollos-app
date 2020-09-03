@@ -9,49 +9,54 @@ export const useIsOnline = ({
 }) => {
   const [unsubscribeNetInfo, setUnsubscribeNetInfo] = useState(null);
 
-  useEffect(() => {
-    const handleChangedEvent = (e) => {
-      setConnectionRecovering(!e.online);
-      setIsOnline(e.online);
-    };
+  useEffect(
+    () => {
+      const handleChangedEvent = (e) => {
+        setConnectionRecovering(!e.online);
+        setIsOnline(e.online);
+      };
 
-    const handleRecoveredEvent = () => setConnectionRecovering(false);
+      const handleRecoveredEvent = () => setConnectionRecovering(false);
 
-    const notifyChatClient = (isConnected) => {
-      if (client?.wsConnection) {
-        if (isConnected) {
-          client.wsConnection.onlineStatusChanged({
-            type: 'online',
-          });
-        } else {
-          client.wsConnection.onlineStatusChanged({
-            type: 'offline',
-          });
+      const notifyChatClient = (isConnected) => {
+        if (client?.wsConnection) {
+          if (isConnected) {
+            client.wsConnection.onlineStatusChanged({
+              type: 'online',
+            });
+          } else {
+            client.wsConnection.onlineStatusChanged({
+              type: 'offline',
+            });
+          }
         }
-      }
-    };
+      };
 
-    const setConnectionListener = () => {
-      NetInfo.fetch().then((isConnected) => {
-        notifyChatClient(isConnected);
-      });
-      setUnsubscribeNetInfo(
-        NetInfo.addEventListener((isConnected) => {
+      const setConnectionListener = () => {
+        NetInfo.fetch().then((isConnected) => {
           notifyChatClient(isConnected);
-        }),
-      );
-    };
+        });
+        setUnsubscribeNetInfo(
+          NetInfo.addEventListener((isConnected) => {
+            notifyChatClient(isConnected);
+          })
+        );
+      };
 
-    if (client) {
-      client.on('connection.changed', handleChangedEvent);
-      client.on('connection.recovered', handleRecoveredEvent);
-      setConnectionListener();
-    }
+      if (client) {
+        client.on('connection.changed', handleChangedEvent);
+        client.on('connection.recovered', handleRecoveredEvent);
+        setConnectionListener();
+      }
 
-    return () => {
-      client.off('connection.changed', handleChangedEvent);
-      client.off('connection.recovered', handleRecoveredEvent);
-      unsubscribeNetInfo?.();
-    };
-  }, [client]);
+      return () => {
+        client.off('connection.changed', handleChangedEvent);
+        client.off('connection.recovered', handleRecoveredEvent);
+        unsubscribeNetInfo?.();
+      };
+    },
+    [client]
+  );
 };
+
+export default {};

@@ -12,9 +12,8 @@ import { themed } from '../../../styles/theme';
 
 import { ReactionList, ReactionPickerWrapper } from '../../Reaction';
 
-import MessageTextContainer from './MessageTextContainer';
-
 import { emojiData, MESSAGE_ACTIONS } from '../../../utils';
+import MessageTextContainer from './MessageTextContainer';
 
 // Border radii are useful for the case of error message types only.
 // Otherwise background is transparent, so border radius is not really visible.
@@ -49,7 +48,7 @@ const Container = styled.TouchableOpacity`
 const ContainerInner = styled.View`
   align-items: ${({ alignment }) =>
     alignment === 'left' ? 'flex-start' : 'flex-end'};
-  ${({ theme }) => theme.message.content.containerInner.css}
+  ${({ theme }) => theme.message.content.containerInner.css};
 `;
 
 const MetaContainer = styled.View`
@@ -134,124 +133,17 @@ class MessageContent extends React.PureComponent {
   static themePath = 'message.content';
 
   static propTypes = {
-    /** enabled reactions, this is usually set by the parent component based on channel configs */
     reactionsEnabled: PropTypes.bool.isRequired,
-    /**
-     * Callback for onPress event on Message component
-     *
-     * @param e       Event object for onPress event
-     * @param message Message object which was pressed
-     *
-     * @deprecated Use onPress instead
-     * */
     onMessageTouch: PropTypes.func,
-    /**
-     * Function that overrides default behaviour when message is pressed/touched
-     * e.g. if you would like to open reaction picker on message press:
-     *
-     * ```
-     * import { MessageSimple } from 'stream-chat-react-native' // or 'stream-chat-expo'
-     * ...
-     * const MessageUIComponent = (props) => {
-     *  return (
-     *    <MessageSimple
-     *      {...props}
-     *      onPress={(thisArg, message, e) => {
-     *        props.openReactionPicker();
-     *        // Or if you want to open actionsheet
-     *        // thisArg.showActionSheet();
-     *      }}
-     *  )
-     * }
-     * ```
-     *
-     * Similarly, you can also call other methods available on MessageContent
-     * component such as handleEdit, handleDelete, showActionSheet etc.
-     *
-     * Source - [MessageContent](https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/MessageSimple/MessageContent.js)
-     *
-     * @param {Component} thisArg Reference to MessageContent component
-     * @param message Message object which was pressed
-     * @param e       Event object for onPress event
-     * */
     onPress: PropTypes.func,
-    /**
-     * Function that overrides default behaviour when message is long pressed
-     * e.g.
-     *
-     * if you would like to open reaction picker on message long press:
-     *
-     * ```
-     * import { MessageSimple } from 'stream-chat-react-native' // or 'stream-chat-expo'
-     * ...
-     * const MessageUIComponent = (props) => {
-     *  return (
-     *    <MessageSimple
-     *      {...props}
-     *      onLongPress={(thisArg, message, e) => {
-     *        props.openReactionPicker();
-     *        // Or if you want to open actionsheet
-     *        // thisArg.showActionSheet();
-     *      }}
-     *  )
-     * }
-     *
-     * Similarly, you can also call other methods available on MessageContent
-     * component such as handleEdit, handleDelete, showActionSheet etc.
-     *
-     * Source - [MessageContent](https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/MessageSimple/MessageContent.js)
-     *
-     * By default we show action sheet with all the message actions on long press.
-     * ```
-     *
-     * @param {Component} thisArg Reference to MessageContent component
-     * @param message Message object which was long pressed
-     * @param e       Event object for onLongPress event
-     * */
     onLongPress: PropTypes.func,
-    /**
-     * Handler to delete a current message.
-     */
     handleDelete: PropTypes.func,
-    /**
-     * Handler to edit a current message. This message simply sets current message as value of `editing` property of channel context.
-     * `editing` prop is then used by MessageInput component to switch to edit mode.
-     */
     handleEdit: PropTypes.func,
-    // enable hiding reaction count from reaction picker
-    hideReactionCount: PropTypes.bool,
-    // enable hiding reaction owners from reaction picker
-    hideReactionOwners: PropTypes.bool,
-    /** @see See [keyboard context](https://getstream.io/chat/docs/#keyboardcontext) */
     dismissKeyboard: PropTypes.func,
-    /** Handler for actions. Actions in combination with attachments can be used to build [commands](https://getstream.io/chat/docs/#channel_commands). */
     handleAction: PropTypes.func,
-    /** Position of message. 'right' | 'left' */
     alignment: PropTypes.oneOf(['right', 'left']),
-    /**
-     * Position of message in group - top, bottom, middle, single.
-     *
-     * Message group is a group of consecutive messages from same user. groupStyles can be used to style message as per their position in message group
-     * e.g., user avatar (to which message belongs to) is only showed for last (bottom) message in group.
-     */
     groupStyles: PropTypes.array,
-    /**
-     * Provide any additional props for `TouchableOpacity` which wraps `MessageContent` component here.
-     * Please check docs for TouchableOpacity for supported props - https://reactnative.dev/docs/touchableopacity#props
-     */
-    additionalTouchableProps: PropTypes.object,
-    /**
-     * Style object for actionsheet (used to message actions).
-     * Supported styles: https://github.com/beefe/react-native-actionsheet/blob/master/lib/styles.js
-     */
     actionSheetStyles: PropTypes.object,
-    MessageHeader: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    MessageFooter: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Custom UI component to display reaction list.
-     * Defaults to: https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/ReactionList.js
-     */
-    ReactionList: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     /**
      * e.g.,
      * [
@@ -274,34 +166,18 @@ class MessageContent extends React.PureComponent {
      * ]
      */
     supportedReactions: PropTypes.array,
-    /** Open the reaction picker */
     openReactionPicker: PropTypes.func,
-    /** Dismiss the reaction picker */
     dismissReactionPicker: PropTypes.func,
-    /** Boolean - if reaction picker is visible. Hides the reaction list in that case */
     reactionPickerVisible: PropTypes.bool,
-    /** Custom UI component for message text */
-    MessageText: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
     formatDate: PropTypes.func,
-    /**
-     * @deprecated Please use `disabled` instead.
-     *
-     * Disables the message UI. Which means, message actions, reactions won't work.
-     */
     readOnly: PropTypes.bool,
-    /** Disables the message UI. Which means, message actions, reactions won't work. */
     disabled: PropTypes.bool,
-    /** Object specifying rules defined within simple-markdown https://github.com/Khan/simple-markdown#adding-a-simple-extension */
     markdownRules: PropTypes.object,
   };
 
   static defaultProps = {
     reactionsEnabled: true,
-    MessageText: false,
-    ReactionList,
     supportedReactions: emojiData,
-    hideReactionCount: false,
-    hideReactionOwners: false,
   };
 
   constructor(props) {
@@ -333,7 +209,7 @@ class MessageContent extends React.PureComponent {
   _setReactionPickerPosition = async () => {
     console.warn(
       'openReactionSelector has been deprecared and will be removed in next major release.' +
-        'Please use this.props.openReactionPicker instead.',
+        'Please use this.props.openReactionPicker instead.'
     );
 
     await this.props.openReactionPicker();
@@ -342,7 +218,7 @@ class MessageContent extends React.PureComponent {
   openReactionSelector = async () => {
     console.warn(
       'openReactionSelector has been deprecared and will be removed in next major release.' +
-        'Please use this.props.openReactionPicker instead.',
+        'Please use this.props.openReactionPicker instead.'
     );
 
     await this.props.openReactionPicker();
@@ -372,26 +248,19 @@ class MessageContent extends React.PureComponent {
       readOnly,
       disabled,
       Message,
-      ReactionList,
       handleReaction,
-      hideReactionCount,
-      hideReactionOwners,
       retrySendMessage,
       messageActions,
       groupStyles,
-      additionalTouchableProps,
       reactionsEnabled,
       getTotalReactionCount,
       canEditMessage,
       canDeleteMessage,
-      MessageHeader,
-      MessageFooter,
       supportedReactions,
       openReactionPicker,
       dismissReactionPicker,
       reactionPickerVisible,
       handleAction,
-      MessageText,
       channel,
       t,
       tDateTimeParser,
@@ -418,10 +287,7 @@ class MessageContent extends React.PureComponent {
       });
     }
 
-    if (
-      messageActions &&
-      messageActions.indexOf(MESSAGE_ACTIONS.reply) > -1
-    ) {
+    if (messageActions && messageActions.indexOf(MESSAGE_ACTIONS.reply) > -1) {
       options.splice(1, 0, { id: MESSAGE_ACTIONS.reply, title: t('Reply') });
     }
     if (
@@ -462,12 +328,11 @@ class MessageContent extends React.PureComponent {
         onLongPress && !(disabled || readOnly)
           ? onLongPress.bind(this, this, message)
           : options.length > 1 && !(disabled || readOnly)
-          ? this.showActionSheet
-          : () => null,
+            ? this.showActionSheet
+            : () => null,
       activeOpacity: 0.7,
       disabled: disabled || readOnly,
       hasReactions,
-      ...additionalTouchableProps,
     };
 
     if (message.status === 'failed')
@@ -476,7 +341,6 @@ class MessageContent extends React.PureComponent {
     const context = {
       onLongPress: contentProps.onLongPress,
       disabled: disabled || readOnly,
-      additionalTouchableProps,
     };
 
     return (
@@ -491,37 +355,35 @@ class MessageContent extends React.PureComponent {
           {message.status === 'failed' ? (
             <FailedText>{t('Message failed - try again')}</FailedText>
           ) : null}
-          {reactionsEnabled && ReactionList && (
-            <ReactionPickerWrapper
-              reactionPickerVisible={reactionPickerVisible}
-              handleReaction={handleReaction}
-              hideReactionCount={hideReactionCount}
-              hideReactionOwners={hideReactionOwners}
-              openReactionPicker={openReactionPicker}
-              dismissReactionPicker={dismissReactionPicker}
-              message={message}
-              alignment={alignment}
-              offset={{
-                top: 25,
-                left: 10,
-                right: 10,
-              }}
-              supportedReactions={supportedReactions}
-            >
-              {message.latest_reactions &&
-                message.latest_reactions.length > 0 && (
-                  <ReactionList
-                    alignment={alignment}
-                    visible={!reactionPickerVisible}
-                    latestReactions={message.latest_reactions}
-                    getTotalReactionCount={getTotalReactionCount}
-                    reactionCounts={message.reaction_counts}
-                    supportedReactions={supportedReactions}
-                  />
-                )}
-            </ReactionPickerWrapper>
-          )}
-          {MessageHeader && <MessageHeader {...this.props} />}
+          {reactionsEnabled &&
+            ReactionList && (
+              <ReactionPickerWrapper
+                reactionPickerVisible={reactionPickerVisible}
+                handleReaction={handleReaction}
+                openReactionPicker={openReactionPicker}
+                dismissReactionPicker={dismissReactionPicker}
+                message={message}
+                alignment={alignment}
+                offset={{
+                  top: 25,
+                  left: 10,
+                  right: 10,
+                }}
+                supportedReactions={supportedReactions}
+              >
+                {message.latest_reactions &&
+                  message.latest_reactions.length > 0 && (
+                    <ReactionList
+                      alignment={alignment}
+                      visible={!reactionPickerVisible}
+                      latestReactions={message.latest_reactions}
+                      getTotalReactionCount={getTotalReactionCount}
+                      reactionCounts={message.reaction_counts}
+                      supportedReactions={supportedReactions}
+                    />
+                  )}
+              </ReactionPickerWrapper>
+            )}
           {/* Reason for collapsible: https://github.com/facebook/react-native/issues/12966 */}
           <ContainerInner
             alignment={alignment}
@@ -532,7 +394,6 @@ class MessageContent extends React.PureComponent {
               message={message}
               groupStyles={groupStyles}
               isMyMessage={isMyMessage}
-              MessageText={MessageText}
               disabled={message.status === 'failed' || message.type === 'error'}
               alignment={alignment}
               Message={Message}
@@ -540,8 +401,7 @@ class MessageContent extends React.PureComponent {
               markdownRules={markdownRules}
             />
           </ContainerInner>
-          {MessageFooter && <MessageFooter {...this.props} />}
-          {!MessageFooter && showTime ? (
+          {showTime ? (
             <MetaContainer>
               <MetaText alignment={alignment}>
                 {this.props.formatDate

@@ -1,9 +1,6 @@
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
-import { lookup } from 'mime-types';
-import Immutable from 'seamless-immutable';
 import PropTypes from 'prop-types';
-import uniq from 'lodash/uniq';
 import styled from '@stream-io/styled-components';
 
 import { logChatPromiseExecution } from 'stream-chat';
@@ -13,14 +10,13 @@ import {
   withKeyboardContext,
   withTranslationContext,
 } from '../../context';
-import { IconSquare } from './IconSquare';
 import iconEdit from '../../images/icons/icon_edit.png';
 import iconSendNewMessage from '../../images/icons/icon_new_message.png';
 
-import { ACITriggerSettings } from '../../utils';
 import { themed } from '../../styles/theme';
 
 import iconClose from '../../images/icons/icon_close.png';
+import { IconSquare } from './IconSquare';
 
 const Container = styled(({ padding, ...rest }) => <View {...rest} />)`
   display: flex;
@@ -31,7 +27,7 @@ const Container = styled(({ padding, ...rest }) => <View {...rest} />)`
     padding ? theme.messageInput.container.conditionalPadding : 0}px;
   margin-left: 10px;
   margin-right: 10px;
-  ${({ theme }) => theme.messageInput.container.css}
+  ${({ theme }) => theme.messageInput.container.css};
 `;
 
 const EditingBoxContainer = styled.View`
@@ -41,7 +37,7 @@ const EditingBoxContainer = styled.View`
   shadow-opacity: 0.5;
   z-index: 100;
   background-color: white;
-  ${({ theme }) => theme.messageInput.editingBoxContainer.css}
+  ${({ theme }) => theme.messageInput.editingBoxContainer.css};
 `;
 
 const EditingBoxHeader = styled.View`
@@ -49,12 +45,12 @@ const EditingBoxHeader = styled.View`
   align-items: center;
   justify-content: space-between;
   padding: 10px;
-  ${({ theme }) => theme.messageInput.editingBoxHeader.css}
+  ${({ theme }) => theme.messageInput.editingBoxHeader.css};
 `;
 
 const EditingBoxHeaderTitle = styled.Text`
   font-weight: bold;
-  ${({ theme }) => theme.messageInput.editingBoxHeaderTitle.css}
+  ${({ theme }) => theme.messageInput.editingBoxHeaderTitle.css};
 `;
 
 const InputBoxContainer = styled.View`
@@ -65,41 +61,53 @@ const InputBoxContainer = styled.View`
   min-height: 46;
   margin: 10px;
   align-items: center;
-  ${({ theme }) => theme.messageInput.inputBoxContainer.css}
+  ${({ theme }) => theme.messageInput.inputBoxContainer.css};
 `;
 
 const InputBox = styled.TextInput`
   flex: 1;
   margin: -5px;
   max-height: 60px;
-  ${({ theme }) => theme.messageInput.inputBox.css}
+  ${({ theme }) => theme.messageInput.inputBox.css};
 `;
 
 const SendButtonContainer = styled.TouchableOpacity`
   margin-left: 8;
-  ${({ theme }) => theme.messageInput.sendButton.css}
+  ${({ theme }) => theme.messageInput.sendButton.css};
 `;
 
 const SendButtonIcon = styled.Image`
   width: 15;
   height: 15;
-  ${({ theme }) => theme.messageInput.sendButtonIcon.css}
+  ${({ theme }) => theme.messageInput.sendButtonIcon.css};
 `;
 
-/**
- * UI Component for message input
- * Its a consumer of [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext)
- * and [Keyboard Context](https://getstream.github.io/stream-chat-react-native/#keyboardcontext)
- *
- * @example ../docs/MessageInput.md
- * @extends PureComponent
- */
 class MessageInput extends PureComponent {
+  static themePath = 'messageInput';
+
+  static propTypes = {
+    initialValue: PropTypes.string,
+    onChangeText: PropTypes.func,
+    dismissKeyboard: PropTypes.func,
+    members: PropTypes.object,
+    watchers: PropTypes.object,
+    editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    clearEditingState: PropTypes.func,
+    client: PropTypes.object,
+    sendMessage: PropTypes.func,
+    channel: PropTypes.object,
+    disabled: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    disabled: false,
+  };
+
   constructor(props) {
     super(props);
     const state = this.getMessageDetailsForState(
       props.editing,
-      props.initialValue,
+      props.initialValue
     );
     this.state = {
       ...state,
@@ -107,50 +115,48 @@ class MessageInput extends PureComponent {
     this.sending = false;
   }
 
-  static themePath = 'messageInput';
-  static propTypes = {
-    /** Initial value to set on input */
-    initialValue: PropTypes.string,
-    /**
-     * Callback that is called when the text input's text changes. Changed text is passed as a single string argument to the callback handler.
-     *
-     * @param newText
-     */
-    onChangeText: PropTypes.func,
-    /** @see See [keyboard context](https://getstream.github.io/stream-chat-react-native/#keyboardcontext) */
-    dismissKeyboard: PropTypes.func,
-    /** @see See [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
-    members: PropTypes.object,
-    /** @see See [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
-    watchers: PropTypes.object,
-    /** @see See [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
-    editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    /** @see See [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
-    clearEditingState: PropTypes.func,
-    /** @see See [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
-    client: PropTypes.object,
-    /** @see See [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
-    sendMessage: PropTypes.func,
-    /** @see See [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
-    channel: PropTypes.object,
-    /**
-     * Ref callback to set reference on input box container
-     * @see See [keyboard context](https://getstream.github.io/stream-chat-react-native/#keyboardcontext)
-     * */
-    setInputBoxContainerRef: PropTypes.func,
-    /**
-     * Additional props for underlying TextInput component. These props will be forwarded as it is to TextInput component.
-     *
-     * @see See https://facebook.github.io/react-native/docs/textinput#reference
-     */
-    additionalTextInputProps: PropTypes.object,
-    /** Disables the child MessageInput component */
-    disabled: PropTypes.bool,
-  };
+  componentDidMount() {
+    if (this.props.editing) this.inputBox.focus();
+  }
 
-  static defaultProps = {
-    disabled: false,
-  };
+  componentDidUpdate(prevProps) {
+    if (this.props.editing) this.inputBox.focus();
+    if (
+      this.props.editing &&
+      prevProps.editing &&
+      this.props.editing.id === prevProps.editing.id
+    ) {
+      return;
+    }
+
+    if (this.props.editing && !prevProps.editing) {
+      this.setState(
+        this.getMessageDetailsForState(
+          this.props.editing,
+          this.props.initialValue
+        )
+      );
+    }
+
+    if (
+      this.props.editing &&
+      prevProps.editing &&
+      this.props.editing.id !== prevProps.editing.id
+    ) {
+      this.setState(
+        this.getMessageDetailsForState(
+          this.props.editing,
+          this.props.initialValue
+        )
+      );
+    }
+
+    if (!this.props.editing && prevProps.editing) {
+      this.setState(
+        this.getMessageDetailsForState(null, this.props.initialValue)
+      );
+    }
+  }
 
   getMessageDetailsForState = (message, initialValue) => {
     let text = initialValue || '';
@@ -197,49 +203,6 @@ class MessageInput extends PureComponent {
 
     return usersArray;
   };
-
-  componentDidMount() {
-    if (this.props.editing) this.inputBox.focus();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.editing) this.inputBox.focus();
-    if (
-      this.props.editing &&
-      prevProps.editing &&
-      this.props.editing.id === prevProps.editing.id
-    ) {
-      return;
-    }
-
-    if (this.props.editing && !prevProps.editing) {
-      this.setState(
-        this.getMessageDetailsForState(
-          this.props.editing,
-          this.props.initialValue,
-        ),
-      );
-    }
-
-    if (
-      this.props.editing &&
-      prevProps.editing &&
-      this.props.editing.id !== prevProps.editing.id
-    ) {
-      this.setState(
-        this.getMessageDetailsForState(
-          this.props.editing,
-          this.props.initialValue,
-        ),
-      );
-    }
-
-    if (!this.props.editing && prevProps.editing) {
-      this.setState(
-        this.getMessageDetailsForState(null, this.props.initialValue),
-      );
-    }
-  }
 
   /** Checks if the message is valid or not. Accordingly we can enable/disable send button */
   isValidMessage = () => {
@@ -311,7 +274,7 @@ class MessageInput extends PureComponent {
     if (text) {
       logChatPromiseExecution(
         this.props.channel.keystroke(),
-        'start typing event',
+        'start typing event'
       );
     }
 
@@ -327,24 +290,19 @@ class MessageInput extends PureComponent {
   setInputBoxRef = (o) => (this.inputBox = o);
 
   renderInputContainer = () => {
-    const {
-      disabled,
-      Input,
-      t,
-    } = this.props;
+    const { disabled, Input, t } = this.props;
 
-    let additionalTextInputProps = this.props.additionalTextInputProps || {};
+    let additionalTextInputProps = {};
 
     if (disabled) {
       additionalTextInputProps = {
         editable: false,
-        ...additionalTextInputProps,
       };
     }
 
     return (
       <Container>
-        <InputBoxContainer ref={this.props.setInputBoxContainerRef}>
+        <InputBoxContainer>
           <InputBox
             multiline
             onChangeText={this.onChangeText}
@@ -398,7 +356,5 @@ class MessageInput extends PureComponent {
 }
 
 export default withTranslationContext(
-  withKeyboardContext(
-    withChannelContext(themed(MessageInput)),
-  ),
+  withKeyboardContext(withChannelContext(themed(MessageInput)))
 );

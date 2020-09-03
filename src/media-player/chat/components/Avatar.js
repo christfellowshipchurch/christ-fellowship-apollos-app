@@ -9,14 +9,14 @@ const BASE_AVATAR_SIZE = 32;
 
 const AvatarContainer = styled.View`
   align-items: center;
-  ${({ theme }) => theme.avatar.container.css}
+  ${({ theme }) => theme.avatar.container.css};
 `;
 
 const AvatarImage = styled.Image`
   border-radius: ${({ size }) => size / 2}px;
   height: ${({ size }) => size}px;
   width: ${({ size }) => size}px;
-  ${({ theme }) => theme.avatar.image.css}
+  ${({ theme }) => theme.avatar.image.css};
 `;
 
 const AvatarFallback = styled.View`
@@ -26,7 +26,7 @@ const AvatarFallback = styled.View`
   height: ${({ size }) => size}px;
   justify-content: center;
   width: ${({ size }) => size}px;
-  ${({ theme }) => theme.avatar.fallback.css}
+  ${({ theme }) => theme.avatar.fallback.css};
 `;
 
 const AvatarText = styled.Text`
@@ -34,7 +34,7 @@ const AvatarText = styled.Text`
   font-size: ${({ fontSize }) => fontSize}px;
   font-weight: bold;
   text-transform: uppercase;
-  ${({ theme }) => theme.avatar.text.css}
+  ${({ theme }) => theme.avatar.text.css};
 `;
 
 const getInitials = (fullName) =>
@@ -55,7 +55,7 @@ const Avatar = ({ image, name, size = BASE_AVATAR_SIZE }) => {
 
   const fontSize = useMemo(
     () => BASE_AVATAR_FALLBACK_TEXT_SIZE * (size / BASE_AVATAR_SIZE),
-    [size],
+    [size]
   );
   const initials = useMemo(() => getInitials(name), [name]);
 
@@ -63,16 +63,16 @@ const Avatar = ({ image, name, size = BASE_AVATAR_SIZE }) => {
     <AvatarContainer>
       {image && !imageError ? (
         <AvatarImage
-          accessibilityLabel='initials'
+          accessibilityLabel="initials"
           onError={() => setImageError(true)}
-          resizeMethod='resize'
+          resizeMethod="resize"
           size={size}
           source={{ uri: image }}
-          testID='avatar-image'
+          testID="avatar-image"
         />
       ) : (
         <AvatarFallback size={size}>
-          <AvatarText fontSize={fontSize} testID='avatar-text'>
+          <AvatarText fontSize={fontSize} testID="avatar-text">
             {initials}
           </AvatarText>
         </AvatarFallback>
@@ -82,11 +82,8 @@ const Avatar = ({ image, name, size = BASE_AVATAR_SIZE }) => {
 };
 
 Avatar.propTypes = {
-  /** image url */
   image: PropTypes.string,
-  /** name of the picture, used for title tag fallback */
   name: PropTypes.string,
-  /** size in pixels */
   size: PropTypes.number,
 };
 
@@ -96,3 +93,5 @@ Avatar.themePath = 'avatar';
 const ThemedAvatar = themed(Avatar);
 
 export { ThemedAvatar as Avatar };
+
+export default {};

@@ -53,40 +53,48 @@ export const useKeyboardCompatibleHeight = ({
         });
       }
     },
-    [enabled, hidingKeyboardInProgress, rootChannelView, setHeight],
+    [enabled, hidingKeyboardInProgress, rootChannelView, setHeight]
   );
 
-  const keyboardDidHide = useCallback(() => {
-    if (Platform.OS === 'ios') {
-      hidingKeyboardInProgress.current = true;
-    }
-    setHeight(initialHeight);
-    setKeyboardOpen(false);
-  }, [hidingKeyboardInProgress, initialHeight, setHeight]);
-
-  useEffect(() => {
-    if (appState === 'active') {
+  const keyboardDidHide = useCallback(
+    () => {
       if (Platform.OS === 'ios') {
-        Keyboard.addListener('keyboardWillShow', keyboardDidShow);
-      } else {
-        // Android doesn't support keyboardWillShow event.
-        Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+        hidingKeyboardInProgress.current = true;
+      }
+      setHeight(initialHeight);
+      setKeyboardOpen(false);
+    },
+    [hidingKeyboardInProgress, initialHeight, setHeight]
+  );
+
+  useEffect(
+    () => {
+      if (appState === 'active') {
+        if (Platform.OS === 'ios') {
+          Keyboard.addListener('keyboardWillShow', keyboardDidShow);
+        } else {
+          // Android doesn't support keyboardWillShow event.
+          Keyboard.addListener('keyboardDidShow', keyboardDidShow);
+        }
+
+        // We dismiss the keyboard manually (along with keyboardWillHide function) when message is touched.
+        // Following listener is just for a case when keyboard gets dismissed due to something besides message touch.
+        Keyboard.addListener('keyboardDidHide', keyboardDidHide);
       }
 
-      // We dismiss the keyboard manually (along with keyboardWillHide function) when message is touched.
-      // Following listener is just for a case when keyboard gets dismissed due to something besides message touch.
-      Keyboard.addListener('keyboardDidHide', keyboardDidHide);
-    }
-
-    return () => {
-      if (Platform.OS === 'ios') {
-        Keyboard.removeListener('keyboardWillShow', keyboardDidShow);
-      } else {
-        Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
-      }
-      Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
-    };
-  }, [appState, initialHeight, keyboardDidHide, keyboardDidShow]);
+      return () => {
+        if (Platform.OS === 'ios') {
+          Keyboard.removeListener('keyboardWillShow', keyboardDidShow);
+        } else {
+          Keyboard.removeListener('keyboardDidShow', keyboardDidShow);
+        }
+        Keyboard.removeListener('keyboardDidHide', keyboardDidHide);
+      };
+    },
+    [appState, initialHeight, keyboardDidHide, keyboardDidShow]
+  );
 
   return { height, keyboardOpen };
 };
+
+export default {};

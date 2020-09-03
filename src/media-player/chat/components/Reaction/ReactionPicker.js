@@ -11,7 +11,7 @@ import { emojiData } from '../../utils';
 const Container = styled.TouchableOpacity`
   flex: 1;
   align-items: ${({ leftAlign }) => (leftAlign ? 'flex-start' : 'flex-end')};
-  ${({ theme }) => theme.message.reactionPicker.container.css}
+  ${({ theme }) => theme.message.reactionPicker.container.css};
 `;
 
 const ContainerView = styled.View`
@@ -22,36 +22,34 @@ const ContainerView = styled.View`
   height: 60;
   padding-right: 20px;
   border-radius: 30;
-  ${({ theme }) => theme.message.reactionPicker.containerView.css}
+  ${({ theme }) => theme.message.reactionPicker.containerView.css};
 `;
 
 const Column = styled.View`
   flex-direction: column;
   align-items: center;
   margin-top: -5;
-  ${({ theme }) => theme.message.reactionPicker.column.css}
+  ${({ theme }) => theme.message.reactionPicker.column.css};
 `;
 
 const Emoji = styled.Text`
   font-size: 20;
   margin-bottom: 5;
   margin-top: 5;
-  ${({ theme }) => theme.message.reactionPicker.emoji.css}
+  ${({ theme }) => theme.message.reactionPicker.emoji.css};
 `;
 
 const ReactionCount = styled.Text`
   color: white;
   font-size: 10;
   font-weight: bold;
-  ${({ theme }) => theme.message.reactionPicker.text.css}
+  ${({ theme }) => theme.message.reactionPicker.text.css};
 `;
 
 class ReactionPicker extends React.PureComponent {
   static themePath = 'message.reactionPicker';
 
   static propTypes = {
-    hideReactionCount: PropTypes.bool,
-    hideReactionOwners: PropTypes.bool,
     reactionPickerVisible: PropTypes.bool,
     handleDismiss: PropTypes.func,
     handleReaction: PropTypes.func,
@@ -64,17 +62,11 @@ class ReactionPicker extends React.PureComponent {
   };
 
   static defaultProps = {
-    hideReactionCount: false,
-    hideReactionOwners: false,
     supportedReactions: emojiData,
     rpTop: 40,
     rpLeft: 30,
     rpRight: 10,
   };
-
-  constructor(props) {
-    super(props);
-  }
 
   getUsersPerReaction = (reactions, type) => {
     const filtered =
@@ -86,15 +78,12 @@ class ReactionPicker extends React.PureComponent {
     const filtered = this.getUsersPerReaction(reactions, type);
     if (filtered && filtered[0] && filtered[0].user) {
       return filtered[0].user;
-    } else {
-      return 'NotFound';
     }
+    return 'NotFound';
   };
 
   render() {
     const {
-      hideReactionCount,
-      hideReactionOwners,
       reactionPickerVisible,
       handleDismiss,
       handleReaction,
@@ -120,7 +109,7 @@ class ReactionPicker extends React.PureComponent {
       <Modal
         visible={reactionPickerVisible}
         transparent
-        animationType='fade'
+        animationType="fade"
         onShow={() => {}}
         onRequestClose={handleDismiss}
       >
@@ -140,7 +129,7 @@ class ReactionPicker extends React.PureComponent {
                 const count = reactionCounts && reactionCounts[id];
                 return (
                   <Column key={id}>
-                    {latestUser !== 'NotFound' && !hideReactionOwners ? (
+                    {latestUser !== 'NotFound' ? (
                       <Avatar
                         image={latestUser.image}
                         alt={latestUser.id}
@@ -154,9 +143,7 @@ class ReactionPicker extends React.PureComponent {
                         name={latestUser.name || latestUser.id}
                       />
                     ) : (
-                      !hideReactionOwners && (
-                        <View style={{ height: 18, width: 18 }} />
-                      )
+                      <View style={{ height: 18, width: 18 }} />
                     )}
                     <Emoji
                       onPress={() => {
@@ -165,9 +152,7 @@ class ReactionPicker extends React.PureComponent {
                     >
                       {icon}
                     </Emoji>
-                    {!hideReactionCount && (
-                      <ReactionCount>{count > 0 ? count : ''}</ReactionCount>
-                    )}
+                    <ReactionCount>{count > 0 ? count : ''}</ReactionCount>
                   </Column>
                 );
               })}

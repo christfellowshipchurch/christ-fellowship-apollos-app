@@ -3,94 +3,50 @@ import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import deepequal from 'deep-equal';
 
-import { MessageSimple } from './MessageSimple';
-
 import { withKeyboardContext } from '../../context';
 import { MESSAGE_ACTIONS } from '../../utils';
+import { MessageSimple } from './MessageSimple';
 
-/**
- * Message - A high level component which implements all the logic required for a message.
- * The actual rendering of the message is delegated via the "Message" property
- *
- * @example ../docs/Message.md
- * @extends Component
- */
 const Message = withKeyboardContext(
   class Message extends React.Component {
     static themePath = 'message';
+
     static extraThemePaths = ['avatar'];
-    constructor(props) {
-      super(props);
-      this.state = {
-        loading: false,
-      };
-    }
 
     static propTypes = {
-      /** The message object */
       message: PropTypes.object.isRequired,
-      /** The client connection object for connecting to Stream */
       client: PropTypes.object.isRequired,
-      /** The current channel this message is displayed in */
       channel: PropTypes.object.isRequired,
-      /** A list of users that have read this message **/
       readBy: PropTypes.array,
-      /** groupStyles, a list of styles to apply to this message. ie. top, bottom, single etc */
       groupStyles: PropTypes.array,
-      /** Editing, if the message is currently being edited */
       editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-      /**
-       * Message UI component to display a message in message list.
-       * Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)
-       * */
-      Message: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-      /**
-       * Array of allowed actions on message. e.g. ['edit', 'delete', 'reactions', 'reply']
-       * If all the actions need to be disabled, empty array or false should be provided as value of prop.
-       * */
       messageActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
-      /** Latest message id on current channel */
       lastReceivedId: PropTypes.string,
-      /** @see See [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
       setEditingState: PropTypes.func,
-      /** @see See [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
       updateMessage: PropTypes.func,
-      /** @see See [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
       removeMessage: PropTypes.func,
-      /** @see See [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
       retrySendMessage: PropTypes.func,
-      /** @see See [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
       openThread: PropTypes.func,
-      /** @see See [Keyboard Context](https://getstream.github.io/stream-chat-react-native/#keyboardcontext) */
       dismissKeyboard: PropTypes.func,
-      /**
-       * Callback for onPress event on Message component
-       *
-       * @param e       Event object for onPress event
-       * @param message Message object which was pressed
-       *
-       * */
       onMessageTouch: PropTypes.func,
-      /** Should keyboard be dismissed when messaged is touched */
       dismissKeyboardOnMessageTouch: PropTypes.bool,
-      /**
-       * @deprecated Please use `disabled` instead.
-       *
-       * Disables the message UI. Which means, message actions, reactions won't work.
-       */
-      readOnly: PropTypes.bool,
-      /** Disables the message UI. Which means, message actions, reactions won't work. */
       disabled: PropTypes.bool,
     };
 
     static defaultProps = {
-      Message: MessageSimple,
       messageActions: Object.keys(MESSAGE_ACTIONS),
       readBy: [],
       groupStyles: [],
       editing: false,
       dismissKeyboardOnMessageTouch: true,
     };
+
+    constructor(props) {
+      super(props);
+      this.state = {
+        loading: false,
+      };
+    }
 
     shouldComponentUpdate(nextProps) {
       // since there are many messages its important to only rerender messages when needed.
@@ -136,15 +92,18 @@ const Message = withKeyboardContext(
     }
 
     isMyMessage = (message) => this.props.client.user.id === message.user.id;
+
     isAdmin = () =>
       this.props.client.user.role === 'admin' ||
       (this.props.channel.state &&
         this.props.channel.state.membership &&
         this.props.channel.state.membership.role === 'admin');
+
     isOwner = () =>
       this.props.channel.state &&
       this.props.channel.state.membership &&
       this.props.channel.state.membership.role === 'owner';
+
     isModerator = () =>
       this.props.channel.state &&
       this.props.channel.state.membership &&
@@ -199,7 +158,7 @@ const Message = withKeyboardContext(
           userExistingReaction = reaction;
         } else if (currentUser !== reaction.user.id) {
           console.warn(
-            `message.own_reactions contained reactions from a different user, this indicates a bug`,
+            `message.own_reactions contained reactions from a different user, this indicates a bug`
           );
         }
       }
@@ -217,7 +176,7 @@ const Message = withKeyboardContext(
 
         reactionChangePromise = this.props.channel.deleteReaction(
           this.props.message.id,
-          userExistingReaction.type,
+          userExistingReaction.type
         );
       } else {
         // add the reaction
@@ -233,7 +192,7 @@ const Message = withKeyboardContext(
         this.props.channel.state.addReaction(tmpReaction);
         reactionChangePromise = this.props.channel.sendReaction(
           messageID,
-          reaction,
+          reaction
         );
       }
 
@@ -308,7 +267,6 @@ const Message = withKeyboardContext(
       const actionsEnabled =
         message.type === 'regular' && message.status === 'received';
 
-      const Component = this.props.Message;
       const actionProps = {};
 
       if (this.props.channel && this.props.channel.getConfig()) {
@@ -322,7 +280,7 @@ const Message = withKeyboardContext(
           }}
           activeOpacity={1}
         >
-          <Component
+          <MessageSimple
             {...this.props}
             {...actionProps}
             client={this.props.client}
@@ -352,7 +310,7 @@ const Message = withKeyboardContext(
         </TouchableOpacity>
       );
     }
-  },
+  }
 );
 
 export default Message;

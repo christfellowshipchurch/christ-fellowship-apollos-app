@@ -9,13 +9,13 @@ const Container = styled.View`
   align-items: center;
   height: 100%;
   justify-content: center;
-  ${({ theme }) => theme.loadingIndicator.container.css}
+  ${({ theme }) => theme.loadingIndicator.container.css};
 `;
 const LoadingText = styled.Text`
   font-size: 14px;
   font-weight: 600;
   margin-top: 20px;
-  ${({ theme }) => theme.loadingIndicator.loadingText.css}
+  ${({ theme }) => theme.loadingIndicator.loadingText.css};
 `;
 
 const LoadingIndicator = ({ listType = 'default', loadingText }) => {
@@ -24,14 +24,14 @@ const LoadingIndicator = ({ listType = 'default', loadingText }) => {
 
   switch (listType) {
     case 'channel':
-      indicatorText = loadingText ? loadingText : t('Loading channels ...');
+      indicatorText = loadingText || t('Loading channels ...');
       break;
     case 'message':
-      indicatorText = loadingText ? loadingText : t('Loading messages ...');
+      indicatorText = loadingText || t('Loading messages ...');
       break;
     case 'default':
     default:
-      indicatorText = loadingText ? loadingText : t('Loading ...');
+      indicatorText = loadingText || t('Loading ...');
   }
 
   return (

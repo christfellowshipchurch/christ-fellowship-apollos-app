@@ -26,17 +26,13 @@ const Container = styled.View`
 
 class TypingIndicator extends React.PureComponent {
   static themePath = 'typingIndicator';
+
   static propTypes = {
     typing: PropTypes.object,
     client: PropTypes.instanceOf(StreamChat),
-    /**
-     * Defaults to and accepts same props as: [Avatar](https://getstream.github.io/stream-chat-react-native/#avatar)
-     */
-    Avatar: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
   };
-  static defaultProps = {
-    Avatar,
-  };
+
+  static defaultProps = {};
 
   constructTypingString = (dict) => {
     const { client, t } = this.props;
@@ -54,15 +50,15 @@ class TypingIndicator extends React.PureComponent {
       outStr = t('{{ user }} is typing...', { user: arr3[0] });
       dict;
     } else if (arr3.length === 2) {
-      //joins all with "and" but =no commas
-      //example: "bob and sam"
+      // joins all with "and" but =no commas
+      // example: "bob and sam"
       outStr = t('{{ firstUser }} and {{ secondUser }} are typing...', {
         firstUser: arr3[0],
         secondUser: arr3[1],
       });
     } else if (arr3.length > 2) {
-      //joins all with commas, but last one gets ", and" (oxford comma!)
-      //example: "bob, joe, and sam"
+      // joins all with commas, but last one gets ", and" (oxford comma!)
+      // example: "bob, joe, and sam"
       outStr = t('{{ commaSeparatedUsers }} and {{ lastUser }} are typing...', {
         commaSeparatedUsers: arr3.slice(0, -1).join(', '),
         lastUser: arr3.slice(-1),
@@ -73,7 +69,7 @@ class TypingIndicator extends React.PureComponent {
   };
 
   render() {
-    const { typing, Avatar, client } = this.props;
+    const { typing, client } = this.props;
     const typingUsers = Object.values(typing);
 
     return (

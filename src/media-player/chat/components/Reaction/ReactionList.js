@@ -18,8 +18,7 @@ import rightEnd from '../../images/reactionlist/right-end.png';
 const TouchableWrapper = styled.View`
   position: relative;
   ${({ alignment }) =>
-    alignment === 'left' ? 'left: -10px;' : 'right: -10px;'}
-  height: 28px;
+    alignment === 'left' ? 'left: -10px;' : 'right: -10px;'} height: 28px;
   z-index: 10;
   align-self: ${({ alignment }) =>
     alignment === 'left' ? 'flex-start' : 'flex-end'};
@@ -34,7 +33,7 @@ const Container = styled.View`
   align-items: center;
   padding-left: 5px;
   padding-right: 5px;
-  ${({ theme }) => theme.message.reactionList.container.css}
+  ${({ theme }) => theme.message.reactionList.container.css};
 `;
 
 const ReactionCount = styled(({ reactionCounts, ...rest }) => (
@@ -42,8 +41,9 @@ const ReactionCount = styled(({ reactionCounts, ...rest }) => (
 ))`
   color: white;
   font-size: 12;
-  ${({ reactionCounts }) => (reactionCounts < 10 ? null : 'min-width: 20px;')}
-  ${({ theme }) => theme.message.reactionList.reactionCount.css}
+  ${({ reactionCounts }) =>
+    reactionCounts < 10 ? null : 'min-width: 20px;'} ${({ theme }) =>
+    theme.message.reactionList.reactionCount.css};
 `;
 
 const ImageWrapper = styled.View`
@@ -95,16 +95,10 @@ const Reactions = styled.View`
 class ReactionList extends React.PureComponent {
   static themePath = 'message.reactionList';
 
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
     latestReactions: PropTypes.array,
-    openReactionSelector: PropTypes.func,
     getTotalReactionCount: PropTypes.func,
     visible: PropTypes.bool,
-    position: PropTypes.string,
     /**
      * e.g.,
      * [
@@ -157,13 +151,13 @@ class ReactionList extends React.PureComponent {
           {alignment === 'left' ? (
             <React.Fragment>
               <LeftTail source={leftTail} />
-              <LeftCenter source={leftCenter} resizeMode='stretch' />
+              <LeftCenter source={leftCenter} resizeMode="stretch" />
               <LeftEnd source={leftEnd} />
             </React.Fragment>
           ) : (
             <React.Fragment>
               <RightEnd source={rightEnd} />
-              <RightCenter source={rightCenter} resizeMode='stretch' />
+              <RightCenter source={rightCenter} resizeMode="stretch" />
               <RightTail source={rightTail} />
             </React.Fragment>
           )}

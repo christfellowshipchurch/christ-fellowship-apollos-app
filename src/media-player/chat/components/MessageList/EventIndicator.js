@@ -8,7 +8,7 @@ import { Avatar } from '../Avatar';
 const Date = styled.Text`
   font-size: 10;
   color: rgba(0, 0, 0, 0.5);
-  ${({ theme }) => theme.messageList.eventIndicator.date.css}
+  ${({ theme }) => theme.messageList.eventIndicator.date.css};
 `;
 
 const MemberUpdateContainer = styled.View`
@@ -17,7 +17,7 @@ const MemberUpdateContainer = styled.View`
   align-items: center;
   justify-content: center;
   padding: 10px;
-  ${({ theme }) => theme.messageList.eventIndicator.memberUpdateContainer.css}
+  ${({ theme }) => theme.messageList.eventIndicator.memberUpdateContainer.css};
 `;
 
 const MemberUpdateTextContainer = styled.View`
@@ -25,20 +25,16 @@ const MemberUpdateTextContainer = styled.View`
   flex-direction: column;
   margin-left: 10px;
   ${({ theme }) =>
-    theme.messageList.eventIndicator.memberUpdateTextContainer.css}
+    theme.messageList.eventIndicator.memberUpdateTextContainer.css};
 `;
 
 const MemberUpdateText = styled.Text`
   font-size: 13px;
   font-style: italic;
   color: rgba(0, 0, 0, 0.5);
-  ${({ theme }) => theme.messageList.eventIndicator.memberUpdateText.css}
+  ${({ theme }) => theme.messageList.eventIndicator.memberUpdateText.css};
 `;
 
-/**
- * A component to display a message regarding channel notifications such as
- * 'member.added', 'member.removed' etc.
- */
 const EventIndicator = ({ event, t, tDateTimeParser }) => {
   if (event.type === 'member.added' || event.type === 'member.removed') {
     return (

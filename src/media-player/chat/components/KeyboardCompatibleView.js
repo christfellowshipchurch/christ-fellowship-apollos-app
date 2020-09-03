@@ -1,30 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Animated, Keyboard, View } from 'react-native';
 
+import { KeyboardContext } from '../context';
 import { useKeyboardCompatibleHeight } from './hooks/useKeyboardCompatibleHeight';
 
-import { KeyboardContext } from '../context';
-
-/**
- * KeyboardCompatibleView is HOC component similar to [KeyboardAvoidingView](https://facebook.github.io/react-native/docs/keyboardavoidingview),
- * designed to work with MessageInput and MessageList component.
- *
- * Main motivation of writing this our own component was to get rid of issues that come with KeyboardAvoidingView from react-native
- * when used with components of fixed height. [Channel](https://github.com/GetStream/stream-chat-react-native/blob/master/src/components/ChannelInner.js) component
- * uses `KeyboardCompatibleView` internally, so you don't need to explicitly add it.
- *
- * ```json
- * <KeyboardCompatibleView>
- *  <MessageList />
- *  <MessageInput />
- * </KeyboardCompatibleView>
- * ```
- */
 export const KeyboardCompatibleView = ({
   children,
   enabled = true,
-  keyboardDismissAnimationDuration = 500,
-  keyboardOpenAnimationDuration = 500,
+  keyboardDismissAnimationDuration = 250,
+  keyboardOpenAnimationDuration = 250,
 }) => {
   const heightAnim = useRef(new Animated.Value(0)).current;
   const rootChannelView = useRef();
@@ -36,47 +20,53 @@ export const KeyboardCompatibleView = ({
       enabled,
       initialHeight,
       rootChannelView,
-    },
+    }
   );
 
-  useEffect(() => {
-    Animated.timing(heightAnim, {
-      duration: isKeyboardOpen
-        ? keyboardDismissAnimationDuration
-        : keyboardOpenAnimationDuration,
-      toValue: channelHeight,
-      useNativeDriver: false,
-    }).start();
-  }, [
-    channelHeight,
-    heightAnim,
-    keyboardDismissAnimationDuration,
-    keyboardOpenAnimationDuration,
-  ]);
+  useEffect(
+    () => {
+      Animated.timing(heightAnim, {
+        duration: isKeyboardOpen
+          ? keyboardDismissAnimationDuration
+          : keyboardOpenAnimationDuration,
+        toValue: channelHeight,
+        useNativeDriver: false,
+      }).start();
+    },
+    [
+      channelHeight,
+      heightAnim,
+      keyboardDismissAnimationDuration,
+      keyboardOpenAnimationDuration,
+    ]
+  );
 
-  const dismissKeyboard = useCallback(() => {
-    Keyboard.dismiss();
+  const dismissKeyboard = useCallback(
+    () => {
+      Keyboard.dismiss();
 
-    return new Promise((resolve) => {
-      if (!isKeyboardOpen) {
-        // If channel height is already at full length, then don't do anything.
-        resolve();
-      } else {
-        // Bring the channel height to its full length state.
-        Animated.timing(heightAnim, {
-          duration: keyboardDismissAnimationDuration,
-          toValue: initialHeight,
-          useNativeDriver: false,
-        }).start(resolve);
-      }
-    });
-  }, [
-    channelHeight,
-    heightAnim,
-    initialHeight,
-    isKeyboardOpen,
-    keyboardDismissAnimationDuration,
-  ]);
+      return new Promise((resolve) => {
+        if (!isKeyboardOpen) {
+          // If channel height is already at full length, then don't do anything.
+          resolve();
+        } else {
+          // Bring the channel height to its full length state.
+          Animated.timing(heightAnim, {
+            duration: keyboardDismissAnimationDuration,
+            toValue: initialHeight,
+            useNativeDriver: false,
+          }).start(resolve);
+        }
+      });
+    },
+    [
+      channelHeight,
+      heightAnim,
+      initialHeight,
+      isKeyboardOpen,
+      keyboardDismissAnimationDuration,
+    ]
+  );
 
   const onLayout = useCallback(
     ({
@@ -98,7 +88,7 @@ export const KeyboardCompatibleView = ({
         }).start();
       }
     },
-    [enabled, heightAnim, initialHeight],
+    [enabled, heightAnim, initialHeight]
   );
 
   if (!enabled) {
@@ -128,3 +118,5 @@ export const KeyboardCompatibleView = ({
     </Animated.View>
   );
 };
+
+export default {};

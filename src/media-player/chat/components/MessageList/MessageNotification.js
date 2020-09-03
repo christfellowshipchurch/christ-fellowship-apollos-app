@@ -18,37 +18,34 @@ const Container = styled.TouchableOpacity`
   border-radius: 13px;
   background-color: ${({ theme }) => theme.colors.primary};
   transform: translateY(9px);
-  ${({ theme }) => theme.messageList.messageNotification.container.css}
+  ${({ theme }) => theme.messageList.messageNotification.container.css};
 `;
 
 const MessageNotificationText = styled.Text`
   color: white;
   font-size: 12px;
   font-weight: 600;
-  ${({ theme }) => theme.messageList.messageNotification.text.css}
+  ${({ theme }) => theme.messageList.messageNotification.text.css};
 `;
-/**
- * @example ../docs/MessageNotification.md
- * @extends PureComponent
- */
+
 class MessageNotification extends PureComponent {
   static themePath = 'messageList.messageNotification';
-  constructor(props) {
-    super(props);
-    this.state = {
-      notificationOpacity: new Animated.Value(0),
-    };
-  }
+
   static propTypes = {
-    /** If we should show the notification or not */
     showNotification: PropTypes.bool,
-    /** Onclick handler */
     onPress: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     showNotification: true,
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      notificationOpacity: new Animated.Value(0),
+    };
+  }
 
   componentDidMount() {
     Animated.timing(this.state.notificationOpacity, {
@@ -73,23 +70,20 @@ class MessageNotification extends PureComponent {
 
     if (!this.props.showNotification) {
       return null;
-    } else {
-      return (
-        <Animated.View
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            opacity: this.state.notificationOpacity,
-          }}
-        >
-          <Container onPress={this.props.onPress}>
-            <MessageNotificationText>
-              {t('New Messages')}
-            </MessageNotificationText>
-          </Container>
-        </Animated.View>
-      );
     }
+    return (
+      <Animated.View
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          opacity: this.state.notificationOpacity,
+        }}
+      >
+        <Container onPress={this.props.onPress}>
+          <MessageNotificationText>{t('New Messages')}</MessageNotificationText>
+        </Container>
+      </Animated.View>
+    );
   }
 }
 

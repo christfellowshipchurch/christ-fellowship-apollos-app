@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
 
 import { withChannelContext, withTranslationContext } from '../../context';
+import { EmptyStateIndicator } from '../Indicators';
 import { Message } from '../Message';
 
 import EventIndicator from './EventIndicator';
@@ -18,13 +19,13 @@ const ListContainer = styled.FlatList`
   width: 100%;
   padding-left: 10px;
   padding-right: 10px;
-  ${({ theme }) => theme.messageList.listContainer.css}
+  ${({ theme }) => theme.messageList.listContainer.css};
 `;
 
 const ErrorNotificationText = styled.Text`
   color: red;
   background-color: #fae6e8;
-  ${({ theme }) => theme.messageList.errorNotificationText.css}
+  ${({ theme }) => theme.messageList.errorNotificationText.css};
 `;
 
 const ErrorNotification = styled.View`
@@ -36,7 +37,7 @@ const ErrorNotification = styled.View`
   padding: 5px;
   color: red;
   background-color: #fae6e8;
-  ${({ theme }) => theme.messageList.errorNotification.css}
+  ${({ theme }) => theme.messageList.errorNotification.css};
 `;
 
 const TypingIndicatorContainer = styled.View`
@@ -47,17 +48,41 @@ const TypingIndicatorContainer = styled.View`
   padding-left: 16px;
   padding-top: 3px;
   padding-bottom: 3px;
-  ${({ theme }) => theme.messageList.typingIndicatorContainer.css}
+  ${({ theme }) => theme.messageList.typingIndicatorContainer.css};
 `;
 
-/**
- * MessageList - The message list component renders a list of messages.
- * Its a consumer of [Channel Context](https://getstream.github.io/stream-chat-react-native/#channel)
- *
- * @example ../docs/MessageList.md
- * @extends PureComponent
- */
 class MessageList extends PureComponent {
+  static propTypes = {
+    noGroupByUser: PropTypes.bool,
+    messageActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
+    client: PropTypes.object,
+    messages: PropTypes.array.isRequired,
+    read: PropTypes.object,
+    typing: PropTypes.object,
+    online: PropTypes.bool,
+    disableWhileEditing: PropTypes.bool,
+    loadMoreThreshold: PropTypes.number,
+    onMessageTouch: PropTypes.func,
+    dismissKeyboardOnMessageTouch: PropTypes.bool,
+    eventHistory: PropTypes.object,
+    markRead: PropTypes.func,
+    setEditingState: PropTypes.func,
+    clearEditingState: PropTypes.func,
+    editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
+    loadMore: PropTypes.func,
+    actionSheetStyles: PropTypes.object,
+    disabled: PropTypes.bool,
+    setFlatListRef: PropTypes.func,
+  };
+
+  static defaultProps = {
+    disableWhileEditing: true,
+    // https://github.com/facebook/react-native/blob/a7a7970e543959e9db5281914d5f132beb01db8d/Libraries/Lists/VirtualizedList.js#L466
+    loadMoreThreshold: 2,
+    noGroupByUser: false,
+    dismissKeyboardOnMessageTouch: true,
+  };
+
   constructor(props) {
     super(props);
 
@@ -67,179 +92,6 @@ class MessageList extends PureComponent {
     };
     this.yOffset = 0;
   }
-
-  static propTypes = {
-    /** Turn off grouping of messages by user */
-    noGroupByUser: PropTypes.bool,
-    /**
-     * Array of allowed actions on message. e.g. ['edit', 'delete', 'reactions', 'reply']
-     * If all the actions need to be disabled, empty array or false should be provided as value of prop.
-     * */
-    messageActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
-    /** **Available from [chat context](https://getstream.github.io/stream-chat-react-native/#chatcontext)** */
-    client: PropTypes.object,
-    /** **Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)** */
-    Message: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /** **Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)** */
-    messages: PropTypes.array.isRequired,
-    /** **Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)** */
-    read: PropTypes.object,
-    /** **Available from [channel context](https://getstream.github.io/stream-chat-react-native/#channelcontext)** */
-    typing: PropTypes.object,
-    /** Network status */
-    online: PropTypes.bool,
-    disableWhileEditing: PropTypes.bool,
-    /**
-     * For flatlist
-     * @see See loeadMoreThreshold [doc](https://facebook.github.io/react-native/docs/flatlist#onendreachedthreshold)
-     * */
-    loadMoreThreshold: PropTypes.number,
-    /**
-     * Callback for onPress event on Message component
-     *
-     * @param e       Event object for onPress event
-     * @param message Message object which was pressed
-     *
-     * */
-    onMessageTouch: PropTypes.func,
-    /** Should keyboard be dismissed when messaged is touched */
-    dismissKeyboardOnMessageTouch: PropTypes.bool,
-    eventHistory: PropTypes.object,
-    /** Helper function to mark current channel as read. */
-    markRead: PropTypes.func,
-    /**
-     *  This method gets called when user selects edit action on some message. On code level it just sets `editing` property in state to message being edited
-     *
-     * @param message A [message object](https://getstream.io/chat/docs/#message_format) which is being edited
-     */
-    setEditingState: PropTypes.func,
-    /** Function to clear the editing state. */
-    clearEditingState: PropTypes.func,
-    /**
-     * A message object which is currently in edit state.
-     */
-    editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    loadMore: PropTypes.func,
-    /**
-     * Typing indicator UI component to render
-     *
-     * Defaults to and accepts same props as: [TypingIndicator](https://getstream.github.io/stream-chat-react-native/#typingindicator)
-     * */
-    TypingIndicator: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
-    /**
-     * @deprecated User DateSeperator instead.
-     * Date separator UI component to render
-     *
-     * Defaults to and accepts same props as: [DateSeparator](https://getstream.github.io/stream-chat-react-native/#dateseparator)
-     * */
-    dateSeparator: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * Date separator UI component to render
-     *
-     * Defaults to and accepts same props as: [DateSeparator](https://getstream.github.io/stream-chat-react-native/#dateseparator)
-     * */
-    DateSeparator: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
-     * @deprecated User EventIndicator instead.
-     *
-     * UI Component to display following events in messagelist
-     *
-     * 1. member.added
-     * 2. member.removed
-     *
-     * Defaults to and accepts same props as: [EventIndicator](https://getstream.github.io/stream-chat-react-native/#eventindicator)
-     * */
-    eventIndicator: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
-    /**
-     * UI Component to display following events in messagelist
-     *
-     * 1. member.added
-     * 2. member.removed
-     *
-     * Defaults to and accepts same props as: [EventIndicator](https://getstream.github.io/stream-chat-react-native/#eventindicator)
-     * */
-    EventIndicator: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
-
-    /** UI component for empty message list */
-    EmptyStateIndicator: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
-    /**
-     * @deprecated Use HeaderComponent instead.
-     *
-     * UI component for header of message list.
-     */
-    headerComponent: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
-    /**
-     * UI component for header of message list. By default message list doesn't have any header.
-     * This is basically a [ListFooterComponent](https://facebook.github.io/react-native/docs/flatlist#listheadercomponent) of FlatList
-     * used in MessageList. Its footer instead of header, since message list is inverted.
-     *
-     */
-    HeaderComponent: PropTypes.oneOfType([
-      PropTypes.node,
-      PropTypes.elementType,
-    ]),
-    /**
-     * Style object for actionsheet (used to message actions).
-     * Supported styles: https://github.com/beefe/react-native-actionsheet/blob/master/lib/styles.js
-     */
-    actionSheetStyles: PropTypes.object,
-    /** Disables the MessageList UI. Which means, message actions, reactions won't work. */
-    disabled: PropTypes.bool,
-    /**
-     * Besides existing (default) UX behaviour of underlying flatlist of MessageList component, if you want
-     * to attach some additional props to un derlying flatlist, you can add it to following prop.
-     *
-     * You can find list of all the available FlatList props here - https://facebook.github.io/react-native/docs/flatlist#props
-     *
-     * **NOTE** Don't use `additionalFlatListProps` to get access to ref of flatlist. Use `setFlatListRef` instead.
-     *
-     * e.g.
-     * ```js
-     * <MessageList
-     *  additionalFlatListProps={{ bounces: true, keyboardDismissMode: true }} />
-     * ```
-     */
-    additionalFlatListProps: PropTypes.object,
-    /**
-     * Use `setFlatListRef` to get access to ref to inner FlatList.
-     *
-     * e.g.
-     * ```js
-     * <MessageList
-     *  setFlatListRef={(ref) => {
-     *    // Use ref for your own good
-     *  }}
-     * ```
-     */
-    setFlatListRef: PropTypes.func,
-  };
-
-  static defaultProps = {
-    DateSeparator,
-    EventIndicator,
-    disableWhileEditing: true,
-    // https://github.com/facebook/react-native/blob/a7a7970e543959e9db5281914d5f132beb01db8d/Libraries/Lists/VirtualizedList.js#L466
-    loadMoreThreshold: 2,
-    messageGrouping: true,
-    additionalFlatListProps: {},
-    dismissKeyboardOnMessageTouch: true,
-    TypingIndicator,
-  };
 
   componentDidMount() {
     this.setLastReceived(this.props.messages);
@@ -328,7 +180,7 @@ class MessageList extends PureComponent {
             type: 'message.date',
             date: message.created_at,
           },
-          message,
+          message
         );
       } else if (messageDate !== prevMessageDate) {
         newMessages.push(message, {
@@ -490,16 +342,15 @@ class MessageList extends PureComponent {
 
   renderItem = (message, groupStyles) => {
     if (message.type === 'message.date') {
-      const DateSeparator =
-        this.props.dateSeparator || this.props.DateSeparator;
       return <DateSeparator message={message} />;
-    } else if (message.type === 'channel.event') {
-      const EventIndicator =
-        this.props.eventIndicator || this.props.EventIndicator;
+    }
+    if (message.type === 'channel.event') {
       return <EventIndicator event={message.event} />;
-    } else if (message.type === 'system') {
+    }
+    if (message.type === 'system') {
       return <MessageSystem message={message} />;
-    } else if (message.type !== 'message.read') {
+    }
+    if (message.type !== 'message.read') {
       const readBy = this.readData[message.id] || [];
       return (
         <Message
@@ -535,10 +386,7 @@ class MessageList extends PureComponent {
   handleScroll = (event) => {
     const yOffset = event.nativeEvent.contentOffset.y;
     const removeNewMessageNotification = yOffset <= 0;
-    if (
-      removeNewMessageNotification &&
-      this.props.channel.countUnread() > 0
-    )
+    if (removeNewMessageNotification && this.props.channel.countUnread() > 0)
       this.props.markRead();
 
     this.yOffset = yOffset;
@@ -550,8 +398,8 @@ class MessageList extends PureComponent {
   };
 
   renderEmptyState = () => {
-    const Indicator = this.props.EmptyStateIndicator;
-    return <Indicator listType='message' />;
+    const Indicator = EmptyStateIndicator;
+    return <Indicator listType="message" />;
   };
 
   render() {
@@ -570,9 +418,6 @@ class MessageList extends PureComponent {
       return <View style={{ flex: 1 }}>{this.renderEmptyState()}</View>;
     }
 
-    const TypingIndicator = this.props.TypingIndicator;
-    const HeaderComponent =
-      this.props.headerComponent || this.props.HeaderComponent;
     const messagesWithDates = this.insertDates(this.props.messages);
     const messageGroupStyles = this.getGroupStyles(messagesWithDates);
     this.readData = this.getReadStates(messagesWithDates);
@@ -592,20 +437,21 @@ class MessageList extends PureComponent {
     return (
       <React.Fragment>
         {// Mask for edit state
-        this.props.editing && this.props.disableWhileEditing && (
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              backgroundColor: 'black',
-              opacity: 0.4,
-              height: '100%',
-              width: '100%',
-              zIndex: 100,
-            }}
-            collapsable={false}
-            onPress={this.props.clearEditingState}
-          />
-        )}
+        this.props.editing &&
+          this.props.disableWhileEditing && (
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                backgroundColor: 'black',
+                opacity: 0.4,
+                height: '100%',
+                width: '100%',
+                zIndex: 100,
+              }}
+              collapsable={false}
+              onPress={this.props.clearEditingState}
+            />
+          )}
         <View
           collapsable={false}
           style={{ flex: 1, alignItems: 'center', width: '100%' }}
@@ -617,10 +463,9 @@ class MessageList extends PureComponent {
             }}
             data={messagesWithDates}
             onScroll={this.handleScroll}
-            ListFooterComponent={HeaderComponent}
             onEndReached={this.props.loadMore}
             inverted
-            keyboardShouldPersistTaps='always'
+            keyboardShouldPersistTaps="always"
             keyExtractor={(item) =>
               item.id ||
               item.created_at ||
@@ -636,9 +481,8 @@ class MessageList extends PureComponent {
               minIndexForVisible: 1,
               autoscrollToTopThreshold: 10,
             }}
-            {...this.props.additionalFlatListProps}
           />
-          {this.props.TypingIndicator && showTypingIndicator && (
+          {showTypingIndicator && (
             <TypingIndicatorContainer>
               <TypingIndicator
                 typing={this.props.typing}

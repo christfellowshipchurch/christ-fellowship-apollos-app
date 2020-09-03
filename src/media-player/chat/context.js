@@ -1,11 +1,33 @@
 import React from 'react';
 import { Keyboard } from 'react-native';
+
 export const ChatContext = React.createContext({ client: null });
+
+const getContextAwareComponent = (context, originalComponent) => {
+  const Context = context;
+  const OriginalComponent = originalComponent;
+  const ContextAwareComponent = (props) => (
+    <Context.Consumer>
+      {(c) => <OriginalComponent {...c} {...props} />}
+    </Context.Consumer>
+  );
+
+  ContextAwareComponent.themePath = OriginalComponent.themePath;
+  ContextAwareComponent.extraThemePaths = OriginalComponent.extraThemePaths;
+  ContextAwareComponent.displayName =
+    OriginalComponent.displayName || OriginalComponent.name || 'Component';
+  ContextAwareComponent.displayName = ContextAwareComponent.displayName.replace(
+    'Base',
+    ''
+  );
+
+  return ContextAwareComponent;
+};
 
 export function withChatContext(OriginalComponent) {
   const ContextAwareComponent = getContextAwareComponent(
     ChatContext,
-    OriginalComponent,
+    OriginalComponent
   );
   return ContextAwareComponent;
 }
@@ -17,7 +39,7 @@ export const TranslationContext = React.createContext({
 export function withTranslationContext(OriginalComponent) {
   const ContextAwareComponent = getContextAwareComponent(
     TranslationContext,
-    OriginalComponent,
+    OriginalComponent
   );
   return ContextAwareComponent;
 }
@@ -27,7 +49,7 @@ export const ChannelContext = React.createContext({});
 export function withChannelContext(OriginalComponent) {
   const ContextAwareComponent = getContextAwareComponent(
     ChannelContext,
-    OriginalComponent,
+    OriginalComponent
   );
   return ContextAwareComponent;
 }
@@ -51,26 +73,3 @@ export const KeyboardContext = React.createContext({
 export function withKeyboardContext(OriginalComponent) {
   return getContextAwareComponent(KeyboardContext, OriginalComponent);
 }
-
-const getContextAwareComponent = function(context, originalComponent) {
-  const Context = context;
-  const OriginalComponent = originalComponent;
-  const ContextAwareComponent = function(props) {
-    return (
-      <Context.Consumer>
-        {(c) => <OriginalComponent {...c} {...props} />}
-      </Context.Consumer>
-    );
-  };
-
-  ContextAwareComponent.themePath = OriginalComponent.themePath;
-  ContextAwareComponent.extraThemePaths = OriginalComponent.extraThemePaths;
-  ContextAwareComponent.displayName =
-    OriginalComponent.displayName || OriginalComponent.name || 'Component';
-  ContextAwareComponent.displayName = ContextAwareComponent.displayName.replace(
-    'Base',
-    '',
-  );
-
-  return ContextAwareComponent;
-};

@@ -61,12 +61,7 @@ const ReadByContainer = styled.View`
   ${({ theme }) => theme.message.status.readByContainer.css};
 `;
 
-const MessageStatus = ({
-  client,
-  readBy,
-  message,
-  lastReceivedId,
-}) => {
+const MessageStatus = ({ client, readBy, message, lastReceivedId }) => {
   const renderStatus = () => {
     const justReadByMe =
       readBy.length === 1 && readBy[0] && readBy[0].id === client.user.id;
@@ -77,13 +72,10 @@ const MessageStatus = ({
           <SendingImage source={loadingGif} />
         </SendingContainer>
       );
-    } else if (
-      readBy.length !== 0 &&
-      message.id === lastReceivedId &&
-      !justReadByMe
-    ) {
+    }
+    if (readBy.length !== 0 && message.id === lastReceivedId && !justReadByMe) {
       const lastReadUser = readBy.filter(
-        (item) => item.id !== client.user.id,
+        (item) => item.id !== client.user.id
       )[0];
       return (
         <ReadByContainer>
@@ -94,7 +86,8 @@ const MessageStatus = ({
           />
         </ReadByContainer>
       );
-    } else if (
+    }
+    if (
       message.status === 'received' &&
       message.type !== 'ephemeral' &&
       message.id === lastReceivedId
@@ -106,22 +99,17 @@ const MessageStatus = ({
           </DeliveredCircle>
         </DeliveredContainer>
       );
-    } else {
-      return <Spacer />;
     }
+    return <Spacer />;
   };
 
   return <StatusContainer>{renderStatus()}</StatusContainer>;
 };
 
 MessageStatus.propTypes = {
-  /** @see See [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext) */
   client: PropTypes.object,
-  /** A list of users who have read the message */
   readBy: PropTypes.array,
-  /** Current [message object](https://getstream.io/chat/docs/#message_format) */
   message: PropTypes.object,
-  /** Latest message id on current channel */
   lastReceivedId: PropTypes.string,
 };
 
