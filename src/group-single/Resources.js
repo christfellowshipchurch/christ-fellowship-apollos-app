@@ -22,7 +22,7 @@ const Resources = ({ resources, isLoading, navigation }) => {
   return (
     <PaddedView>
       <StyledH4>{'Resources'}</StyledH4>
-      {resources.map(({ contentChannelItem, url, title }) => {
+      {resources.map(({ id, contentChannelItem, url, title }) => {
         const handleOnPress = () => {
           if (contentChannelItem) {
             navigation.navigate('ContentSingle', {
@@ -37,7 +37,7 @@ const Resources = ({ resources, isLoading, navigation }) => {
             type={'default'}
             loading={isLoading}
             pill={false}
-            key={i}
+            key={id}
           >
             <StyledButtonText>{title}</StyledButtonText>
           </StyledButton>
