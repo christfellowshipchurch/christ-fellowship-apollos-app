@@ -41,12 +41,11 @@ const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 const StretchyView = ({ children, ...props }) =>
   children({ Stretchy: View, ...props });
 
-const MemberCard = styled(({ theme, forceRatio }) => ({
+const MemberCard = styled(({ theme }) => ({
   width: 80,
   flex: 1,
   margin: theme.sizing.baseUnit / 2,
   marginBottom: theme.sizing.baseUnit * 0.75,
-  ...(forceRatio ? { aspectRatio: forceRatio } : {}),
   alignItems: 'center',
 }))(View);
 
@@ -106,12 +105,13 @@ const StyledH5 = styled(({ theme }) => ({
   textAlign: 'center',
 }))(H5);
 
-const StyledHorizontalTileFeed = styled(({ theme }) => ({
-  /* UX hack to improve tapability. The magic number below happens to be the number of pixels that
-   * aligns everything in the same place as if none of the UX hacks were there. */
-  marginTop: theme.sizing.baseUnit * -1.25,
-  paddingBottom: theme.sizing.baseUnit,
-  zIndex: 1,
+const StyledHorizontalTileFeed = withTheme(({ theme }) => ({
+  style: {
+    marginTop: theme.sizing.baseUnit * -1.25,
+    paddingBottom: theme.sizing.baseUnit,
+    zIndex: 1,
+  },
+  snapToInterval: 80 + theme.sizing.baseUnit,
 }))(HorizontalTileFeed);
 
 const PlaceholderIcon = compose(
