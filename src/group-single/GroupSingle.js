@@ -22,10 +22,7 @@ import {
   withTheme,
   ThemeMixin,
   ErrorCard,
-  Button,
 } from '@apollosproject/ui-kit';
-
-import { useLinkRouter } from '../hooks';
 
 import AvatarCloud from '../ui/AvatarCloud';
 
@@ -34,6 +31,7 @@ import AddCalEventButton from '../content-single/AddCalEventButton';
 import MessagesButton from '../content-single/MessagesButton';
 
 import VideoCall from './VideoCall';
+import Resources from './Resources';
 
 import GET_GROUP from './getGroup';
 
@@ -108,16 +106,6 @@ const StyledH5 = styled(({ theme }) => ({
   textAlign: 'center',
 }))(H5);
 
-const StyledButton = styled(({ theme }) => ({
-  marginBottom: theme.sizing.baseUnit * 0.5,
-  backgroundColor: 'rgba(120, 120, 128, 0.36)',
-  borderColor: 'rgba(120, 120, 128, 0)',
-}))(Button);
-
-const StyledButtonText = styled(({ theme }) => ({
-  color: '#FFF',
-}))(H4);
-
 const StyledHorizontalTileFeed = styled(({ theme }) => ({
   /* UX hack to improve tapability. The magic number below happens to be the number of pixels that
    * aligns everything in the same place as if none of the UX hacks were there. */
@@ -156,7 +144,6 @@ const CellItem = styled(({ theme, first }) => ({
 }))(View);
 
 const GroupSingle = ({ navigation }) => {
-  const { routeLink } = useLinkRouter();
   const loadingStateObject = {
     id: 'fake_id',
     title: '',
@@ -287,9 +274,9 @@ const GroupSingle = ({ navigation }) => {
                       {start ? (
                         <CellItem>
                           <AddCalEventButton
-                            eventTitle={content.title}
-                            eventStart={start}
                             eventNotes={getNotes()}
+                            eventStart={start}
+                            eventTitle={content.title}
                             isLoading={loading}
                           />
                         </CellItem>
@@ -302,18 +289,18 @@ const GroupSingle = ({ navigation }) => {
                     </PaddedView>
 
                     <VideoCall
+                      groupId={content.id}
+                      isLoading={loading}
                       parentVideoCall={parentVideoCall}
                       videoCall={videoCall}
-                      isLoading={loading}
-                      groupId={content.id}
                     />
 
                     <StyledH4>{'Group Members'}</StyledH4>
                     <StyledHorizontalTileFeed
                       content={content.members}
-                      renderItem={renderMember}
-                      loadingStateObject={loadingStateObject}
                       isLoading={!content.members && loading}
+                      loadingStateObject={loadingStateObject}
+                      renderItem={renderMember}
                     />
                   </PaddedView>
 
@@ -324,29 +311,11 @@ const GroupSingle = ({ navigation }) => {
                   ) : null}
 
                   {!isEmpty(resources) ? (
-                    <PaddedView>
-                      <StyledH4>{'Resources'}</StyledH4>
-                      {resources.map((item) => {
-                        const handleOnPress = () => {
-                          if (item.contentChannelItem) {
-                            navigation.navigate('ContentSingle', {
-                              itemId: item.contentChannelItem,
-                            });
-                          }
-                          return routeLink(item.url);
-                        };
-                        return (
-                          <StyledButton
-                            onPress={() => handleOnPress()}
-                            type={'default'}
-                            loading={loading}
-                            pill={false}
-                          >
-                            <StyledButtonText>{item.title}</StyledButtonText>
-                          </StyledButton>
-                        );
-                      })}
-                    </PaddedView>
+                    <Resources
+                      isLoading={loading}
+                      navigation={navigation}
+                      resources={resources}
+                    />
                   ) : null}
                 </FlexedScrollView>
               )}
