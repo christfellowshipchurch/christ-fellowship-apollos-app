@@ -5,13 +5,7 @@ import { FeaturesFeedConnected as CoreFeaturesFeedConnected } from '@apollosproj
 
 import { HorizontalDivider } from 'ui/Dividers';
 
-import VerticalCardListFeatureConnected from './VerticalCardListFeatureConnected';
-import HeroListFeatureConnected from './HeroListFeatureConnected';
-
-const MAPPINGS = {
-  VerticalCardListFeature: VerticalCardListFeatureConnected,
-  HeroListFeature: HeroListFeatureConnected,
-};
+import additionalFeatures from './additionalFeatures';
 
 const FeaturesFeedConnected = ({ onRef, ...props }) => {
   const feedRef = useCallback((ref) => onRef(ref), []);
@@ -19,7 +13,7 @@ const FeaturesFeedConnected = ({ onRef, ...props }) => {
   return (
     <CoreFeaturesFeedConnected
       {...props}
-      additionalFeatures={MAPPINGS}
+      additionalFeatures={additionalFeatures}
       ItemSeparatorComponent={HorizontalDivider}
       ref={feedRef}
     />

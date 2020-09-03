@@ -220,5 +220,35 @@ ApollosConfig.loadJs({
         isPrayed
       }
     `,
+    ACTION_BAR_FEATURE_FRAGMENT: gql`
+      fragment ActionBarFeatureFragment on ActionBarFeature {
+        id
+        order
+
+        actions {
+          title
+          action
+          icon
+          theme {
+            ...ThemeFragment
+          }
+          relatedNode {
+            ...RelatedFeatureNodeFragment
+          }
+        }
+      }
+    `,
+    THEME_FRAGMENT: gql`
+      fragment ThemeFragment on Theme {
+        type
+        colors {
+          primary
+          secondary
+          screen
+          paper
+          alert
+        }
+      }
+    `,
   },
 });

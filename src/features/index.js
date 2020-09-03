@@ -7,3 +7,6 @@ export {
 export {
   default as FeaturesFeedConnected,
 } from './FeaturesFeed/FeaturesFeedConnected';
+export {
+  default as GiveFeaturesFeedConnected,
+} from './FeaturesFeed/GiveFeaturesFeedConnected';

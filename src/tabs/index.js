@@ -4,15 +4,17 @@ import { withTheme } from '@apollosproject/ui-kit';
 import TabBar from './tabBar';
 
 import Connect from './connect';
-import Home from './home';
 import Discover from './discover';
 import Events from './events';
+import Give from './give';
+import Home from './home';
 
 const TabNavigator = createBottomTabNavigator(
   {
     Home,
     Discover,
     Events,
+    Give,
     Connect,
   },
   {
