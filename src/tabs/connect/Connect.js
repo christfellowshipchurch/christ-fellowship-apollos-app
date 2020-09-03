@@ -56,16 +56,6 @@ const Connect = ({ navigation }) => {
             <ProfileActionBar />
           </FeatureSpacing>
 
-          {enabled ? (
-            <FeatureSpacing>
-              <GroupsListConnected
-                navigation={navigation}
-                onSeeMore={() =>
-                  navigation.navigate('MyPrayerRequestsFeed', { nested: true })
-                }
-              />
-            </FeatureSpacing>
-          ) : null}
           <FeatureSpacing>
             <MyPrayersListConnected
               onSeeMore={() =>
@@ -78,6 +68,11 @@ const Connect = ({ navigation }) => {
               }
             />
           </FeatureSpacing>
+          {enabled ? (
+            <FeatureSpacing>
+              <GroupsListConnected navigation={navigation} />
+            </FeatureSpacing>
+          ) : null}
         </ScrollView>
       </SafeAreaView>
     </BackgroundView>
