@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import deepequal from 'deep-equal';
 
 import { withKeyboardContext } from '../../context';
-import { MESSAGE_ACTIONS } from '../../utils';
 import MessageInner from './MessageInner';
 
 class Message extends React.Component {
@@ -19,7 +18,6 @@ class Message extends React.Component {
     readBy: PropTypes.array,
     groupStyles: PropTypes.array,
     editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
-    messageActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
     lastReceivedId: PropTypes.string,
     setEditingState: PropTypes.func,
     updateMessage: PropTypes.func,
@@ -33,7 +31,6 @@ class Message extends React.Component {
   };
 
   static defaultProps = {
-    messageActions: Object.keys(MESSAGE_ACTIONS),
     readBy: [],
     groupStyles: [],
     editing: false,

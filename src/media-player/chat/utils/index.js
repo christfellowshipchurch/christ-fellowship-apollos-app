@@ -31,10 +31,3 @@ export const capitalize = (s) => {
   if (typeof s !== 'string') return '';
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
-
-export const MESSAGE_ACTIONS = {
-  edit: 'edit',
-  delete: 'delete',
-  reactions: 'reactions',
-  reply: 'reply',
-};

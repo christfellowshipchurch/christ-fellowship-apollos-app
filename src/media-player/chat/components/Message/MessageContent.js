@@ -2,15 +2,22 @@ import React from 'react';
 import styled from '@stream-io/styled-components';
 import Immutable from 'seamless-immutable';
 import PropTypes from 'prop-types';
-import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 import { MessageContentContext, withTranslationContext } from '../../context';
 import { themed } from '../../styles/theme';
 
 import { ReactionList, ReactionPickerWrapper } from '../Reaction';
 
-import { emojiData, MESSAGE_ACTIONS } from '../../utils';
+import { emojiData } from '../../utils';
 import MessageTextContainer from './MessageTextContainer';
+
+const MESSAGE_ACTIONS = {
+  edit: 'edit',
+  delete: 'delete',
+  reactions: 'reactions',
+  reply: 'reply',
+};
 
 // Border radii are useful for the case of error message types only.
 // Otherwise background is transparent, so border radius is not really visible.
@@ -84,48 +91,6 @@ const FailedText = styled.Text`
   margin-right: 5px;
 `;
 
-const ActionSheetTitleContainer = styled.View`
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  ${({ theme }) => theme.message.actionSheet.titleContainer.css};
-`;
-
-const ActionSheetTitleText = styled.Text`
-  color: #757575;
-  font-size: 14;
-  ${({ theme }) => theme.message.actionSheet.titleText.css};
-`;
-
-const ActionSheetButtonContainer = styled.View`
-  height: 50;
-  width: 100%;
-  align-items: center;
-  background-color: #fff;
-  justify-content: center;
-  ${({ theme }) => theme.message.actionSheet.buttonContainer.css};
-`;
-
-const ActionSheetButtonText = styled.Text`
-  font-size: 18;
-  color: #388cea;
-  ${({ theme }) => theme.message.actionSheet.buttonText.css};
-`;
-
-const ActionSheetCancelButtonContainer = styled.View`
-  height: 50;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  ${({ theme }) => theme.message.actionSheet.cancelButtonContainer.css};
-`;
-const ActionSheetCancelButtonText = styled.Text`
-  font-size: 18;
-  color: red;
-  ${({ theme }) => theme.message.actionSheet.cancelButtonText.css};
-`;
-
 class MessageContent extends React.PureComponent {
   static themePath = 'message.content';
 
@@ -140,7 +105,6 @@ class MessageContent extends React.PureComponent {
     handleAction: PropTypes.func,
     alignment: PropTypes.oneOf(['right', 'left']),
     groupStyles: PropTypes.array,
-    actionSheetStyles: PropTypes.object,
     /**
      * e.g.,
      * [
@@ -169,6 +133,10 @@ class MessageContent extends React.PureComponent {
     formatDate: PropTypes.func,
     readOnly: PropTypes.bool,
     disabled: PropTypes.bool,
+    showActionSheetWithOptions: PropTypes.func,
+    canEditMessage: PropTypes.func,
+    canDeleteMessage: PropTypes.func,
+    t: PropTypes.func,
   };
 
   static defaultProps = {
@@ -179,13 +147,53 @@ class MessageContent extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.ActionSheet = false;
     this.state = {};
   }
 
   showActionSheet = async () => {
     await this.props.dismissKeyboard();
-    this.ActionSheet.show();
+
+    const {
+      reactionsEnabled,
+      canEditMessage,
+      canDeleteMessage,
+      t,
+    } = this.props;
+
+    const options = [{ id: 'cancel', title: t('Cancel') }];
+
+    if (reactionsEnabled) {
+      options.splice(1, 0, {
+        id: MESSAGE_ACTIONS.reactions,
+        title: t('Add Reaction'),
+      });
+    }
+
+    if (canEditMessage()) {
+      options.splice(1, 0, {
+        id: MESSAGE_ACTIONS.edit,
+        title: t('Edit Message'),
+      });
+    }
+
+    if (canDeleteMessage()) {
+      options.splice(1, 0, {
+        id: MESSAGE_ACTIONS.delete,
+        title: t('Delete Message'),
+      });
+    }
+
+    this.props.showActionSheetWithOptions(
+      {
+        title: t('Choose an action'),
+        options: options.map((o) => o.title),
+        cancelButtonIndex: 0,
+        destructiveButtonIndex: options.findIndex(
+          (o) => o.id === MESSAGE_ACTIONS.delete
+        ),
+      },
+      (buttonIndex) => this.onActionPress(options[buttonIndex].id)
+    );
   };
 
   handleDelete = async () => {
@@ -246,12 +254,9 @@ class MessageContent extends React.PureComponent {
       Message,
       handleReaction,
       retrySendMessage,
-      messageActions,
       groupStyles,
       reactionsEnabled,
       getTotalReactionCount,
-      canEditMessage,
-      canDeleteMessage,
       supportedReactions,
       openReactionPicker,
       dismissReactionPicker,
@@ -268,42 +273,6 @@ class MessageContent extends React.PureComponent {
       reactionsEnabled &&
       message.latest_reactions &&
       message.latest_reactions.length > 0;
-
-    const options = [{ id: 'cancel', title: 'Cancel' }];
-
-    if (
-      messageActions &&
-      reactionsEnabled &&
-      messageActions.indexOf(MESSAGE_ACTIONS.reactions) > -1
-    ) {
-      options.splice(1, 0, {
-        id: MESSAGE_ACTIONS.reactions,
-        title: t('Add Reaction'),
-      });
-    }
-
-    if (messageActions && messageActions.indexOf(MESSAGE_ACTIONS.reply) > -1) {
-      options.splice(1, 0, { id: MESSAGE_ACTIONS.reply, title: t('Reply') });
-    }
-    if (
-      messageActions &&
-      messageActions.indexOf(MESSAGE_ACTIONS.edit) > -1 &&
-      canEditMessage()
-    )
-      options.splice(1, 0, {
-        id: MESSAGE_ACTIONS.edit,
-        title: t('Edit Message'),
-      });
-
-    if (
-      messageActions &&
-      messageActions.indexOf(MESSAGE_ACTIONS.delete) > -1 &&
-      canDeleteMessage()
-    )
-      options.splice(1, 0, {
-        id: MESSAGE_ACTIONS.delete,
-        title: t('Delete Message'),
-      });
 
     if (message.deleted_at)
       return (
@@ -322,7 +291,7 @@ class MessageContent extends React.PureComponent {
       onLongPress:
         onLongPress && !(disabled || readOnly)
           ? onLongPress.bind(this, this, message)
-          : options.length > 1 && !(disabled || readOnly)
+          : !(disabled || readOnly)
             ? this.showActionSheet
             : () => null,
       activeOpacity: 0.7,
@@ -404,44 +373,12 @@ class MessageContent extends React.PureComponent {
               </MetaText>
             </MetaContainer>
           ) : null}
-          <ActionSheet
-            ref={(o) => {
-              this.ActionSheet = o;
-            }}
-            title={
-              <ActionSheetTitleContainer>
-                <ActionSheetTitleText>
-                  {t('Choose an action')}
-                </ActionSheetTitleText>
-              </ActionSheetTitleContainer>
-            }
-            options={[
-              ...options.map((o, i) => {
-                if (i === 0) {
-                  return (
-                    <ActionSheetCancelButtonContainer>
-                      <ActionSheetCancelButtonText>
-                        {t('Cancel')}
-                      </ActionSheetCancelButtonText>
-                    </ActionSheetCancelButtonContainer>
-                  );
-                }
-                return (
-                  <ActionSheetButtonContainer key={o.title}>
-                    <ActionSheetButtonText>{o.title}</ActionSheetButtonText>
-                  </ActionSheetButtonContainer>
-                );
-              }),
-            ]}
-            cancelButtonIndex={0}
-            destructiveButtonIndex={0}
-            onPress={(index) => this.onActionPress(options[index].id)}
-            styles={this.props.actionSheetStyles}
-          />
         </Container>
       </MessageContentContext.Provider>
     );
   }
 }
 
-export default withTranslationContext(themed(MessageContent));
+export default connectActionSheet(
+  withTranslationContext(themed(MessageContent))
+);

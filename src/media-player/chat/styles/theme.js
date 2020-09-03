@@ -176,14 +176,6 @@ export const defaultTheme = {
       reactionCount: {},
       text: {},
     },
-    actionSheet: {
-      titleContainer: {},
-      titleText: {},
-      buttonContainer: {},
-      buttonText: {},
-      cancelButtonContainer: {},
-      cancelButtonText: {},
-    },
   },
   loadingIndicator: {
     container: {},
@@ -234,12 +226,6 @@ export const defaultTheme = {
         args: {},
         description: {},
       },
-    },
-    actionSheet: {
-      titleContainer: {},
-      titleText: {},
-      buttonContainer: {},
-      buttonText: {},
     },
   },
 

@@ -22,7 +22,6 @@ const Container = styled.View`
 class MessageInner extends React.PureComponent {
   static propTypes = {
     reactionsEnabled: PropTypes.bool.isRequired,
-    messageActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
     onMessageTouch: PropTypes.func,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
@@ -40,7 +39,6 @@ class MessageInner extends React.PureComponent {
     showMessageStatus: PropTypes.bool,
     showReactionsList: PropTypes.bool,
     lastReceivedId: PropTypes.string,
-    actionSheetStyles: PropTypes.object,
     formatDate: PropTypes.func,
     /**
      * e.g.,

@@ -54,7 +54,6 @@ const TypingIndicatorContainer = styled.View`
 class MessageList extends PureComponent {
   static propTypes = {
     noGroupByUser: PropTypes.bool,
-    messageActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
     client: PropTypes.object,
     messages: PropTypes.array.isRequired,
     read: PropTypes.object,
@@ -70,7 +69,6 @@ class MessageList extends PureComponent {
     clearEditingState: PropTypes.func,
     editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     loadMore: PropTypes.func,
-    actionSheetStyles: PropTypes.object,
     disabled: PropTypes.bool,
     setFlatListRef: PropTypes.func,
   };
@@ -372,12 +370,10 @@ class MessageList extends PureComponent {
           }
           setEditingState={this.props.setEditingState}
           editing={this.props.editing}
-          messageActions={this.props.messageActions}
           updateMessage={this.props.updateMessage}
           removeMessage={this.props.removeMessage}
           retrySendMessage={this.props.retrySendMessage}
           emojiData={this.props.emojiData}
-          actionSheetStyles={this.props.actionSheetStyles}
         />
       );
     }
