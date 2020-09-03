@@ -43,11 +43,13 @@ export const GROUP_FRAGMENT = gql`
       link
       meetingId
       passcode
+      labelText
     }
     parentVideoCall {
       link
       meetingId
       passcode
+      labelText
     }
     allowMessages
   }

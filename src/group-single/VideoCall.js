@@ -107,7 +107,7 @@ const VideoCall = ({ parentVideoCall, videoCall, isLoading, groupId }) => {
               join(parentVideoCall.meetingId, parentVideoCall.passcode, groupId)
             }
             loading={isLoading || mutationLoading}
-            title={'Join Meeting'}
+            title={parentVideoCall.labelText || 'Join Meeting'}
             type={'primary'}
             pill={false}
           />
@@ -120,7 +120,10 @@ const VideoCall = ({ parentVideoCall, videoCall, isLoading, groupId }) => {
               join(videoCall.meetingId, videoCall.passcode, groupId)
             }
             loading={isLoading}
-            title={!isEmpty(parentVideoCall) ? 'Join Breakout' : 'Join Meeting'}
+            title={
+              videoCall.labelText ||
+              (!isEmpty(parentVideoCall) ? 'Join Breakout' : 'Join Meeting')
+            }
             type={'primary'}
             pill={false}
           />
@@ -134,10 +137,12 @@ VideoCall.propTypes = {
   parentVideoCall: PropTypes.shape({
     meetingId: PropTypes.string,
     passcode: PropTypes.string,
+    labelText: PropTypes.string,
   }),
   videoCall: PropTypes.shape({
     meetingId: PropTypes.string,
     passcode: PropTypes.string,
+    labelText: PropTypes.string,
   }),
   groupId: PropTypes.string,
   isLoading: PropTypes.bool,
