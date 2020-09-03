@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Animated, View } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
@@ -143,17 +143,46 @@ const CellItem = styled(({ theme, first }) => ({
   flex: 1,
 }))(View);
 
-const GroupSingle = ({ navigation }) => {
-  const loadingStateObject = {
-    id: 'fake_id',
-    title: '',
-    coverImage: [],
+const loadingStateObject = {
+  id: 'fake_id',
+  title: '',
+  coverImage: [],
+};
+
+class GroupSingle extends PureComponent {
+  static propTypes = {
+    content: PropTypes.shape({
+      id: PropTypes.string,
+      title: PropTypes.string,
+      summary: PropTypes.string,
+      members: PropTypes.shape({}),
+      schedule: PropTypes.shape({
+        friendlyScheduleText: PropTypes.string,
+      }),
+      avatars: PropTypes.arrayOf(PropTypes.string),
+      groupType: PropTypes.string,
+    }),
+    navigation: PropTypes.shape({
+      getParam: PropTypes.func,
+      navigate: PropTypes.func,
+    }),
   };
 
-  const itemId = navigation.getParam('itemId', []);
-  const queryVariables = { itemId };
+  static navigationOptions = {
+    header: NavigationHeader,
+    headerTransparent: true,
+    headerMode: 'float',
+  };
 
-  const renderMember = ({ item, isLoading }) => {
+  get itemId() {
+    return this.props.navigation.getParam('itemId', []);
+  }
+
+  get queryVariables() {
+    return { itemId: this.itemId };
+  }
+
+  renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
     const name = get(item, 'firstName', '');
     return (
@@ -181,7 +210,7 @@ const GroupSingle = ({ navigation }) => {
     );
   };
 
-  const renderContent = ({ content, loading, error }) => {
+  renderContent = ({ content, loading }) => {
     const leader = head(get(content, 'leaders', []));
     const leaderPhoto = get(leader, 'photo', {});
     const coverImageSources = get(content, 'coverImage.sources', []);
@@ -300,7 +329,7 @@ const GroupSingle = ({ navigation }) => {
                       content={content.members}
                       isLoading={!content.members && loading}
                       loadingStateObject={loadingStateObject}
-                      renderItem={renderMember}
+                      renderItem={this.renderMember}
                     />
                   </PaddedView>
 
@@ -313,7 +342,7 @@ const GroupSingle = ({ navigation }) => {
                   {!isEmpty(resources) ? (
                     <Resources
                       isLoading={loading}
-                      navigation={navigation}
+                      navigation={this.navigation}
                       resources={resources}
                     />
                   ) : null}
@@ -326,47 +355,25 @@ const GroupSingle = ({ navigation }) => {
     );
   };
 
-  const renderWithData = ({ data, error, loading }) => {
+  renderWithData = ({ data, error, loading }) => {
     if (error) return <ErrorCard error={error} />;
 
     const content = get(data, 'node', {});
     const { theme = {} } = content;
     return (
       <ThemeMixin theme={theme}>
-        {renderContent({ content, loading, error })}
+        {this.renderContent({ content, loading, error })}
       </ThemeMixin>
     );
   };
 
-  return (
-    <Query query={GET_GROUP} variables={queryVariables}>
-      {renderWithData}
-    </Query>
-  );
-};
-
-GroupSingle.propTypes = {
-  content: PropTypes.shape({
-    id: PropTypes.string,
-    title: PropTypes.string,
-    summary: PropTypes.string,
-    members: PropTypes.shape({}),
-    schedule: PropTypes.shape({
-      friendlyScheduleText: PropTypes.string,
-    }),
-    avatars: PropTypes.arrayOf(PropTypes.string),
-    groupType: PropTypes.string,
-  }),
-  navigation: PropTypes.shape({
-    getParam: PropTypes.func,
-    navigate: PropTypes.func,
-  }),
-};
-
-GroupSingle.navigationOptions = {
-  header: NavigationHeader,
-  headerTransparent: true,
-  headerMode: 'float',
-};
+  render() {
+    return (
+      <Query query={GET_GROUP} variables={this.queryVariables}>
+        {this.renderWithData}
+      </Query>
+    );
+  }
+}
 
 export default GroupSingle;
