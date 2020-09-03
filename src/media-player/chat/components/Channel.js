@@ -17,7 +17,7 @@ import {
 import { LoadingIndicator, LoadingErrorIndicator } from './Indicators';
 import { KeyboardCompatibleView } from './KeyboardCompatibleView';
 
-class ChannelInner extends PureComponent {
+class Channel extends PureComponent {
   static propTypes = {
     channel: PropTypes.shape({
       watch: PropTypes.func,
@@ -473,8 +473,4 @@ class ChannelInner extends PureComponent {
   }
 }
 
-const Channel = withTranslationContext(withChatContext(ChannelInner));
-
-export { Channel };
-
-export default {};
+export default withTranslationContext(withChatContext(Channel));

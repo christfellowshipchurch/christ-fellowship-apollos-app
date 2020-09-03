@@ -58,8 +58,4 @@ Chat.propTypes = {
 
 Chat.themePath = '';
 
-const ThemedChat = themed(Chat);
-
-export { ThemedChat as Chat };
-
-export default {};
+export default themed(Chat);

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from '@stream-io/styled-components';
 
@@ -9,14 +9,13 @@ import {
   withChannelContext,
   withKeyboardContext,
   withTranslationContext,
-} from '../../context';
-import iconEdit from '../../images/icons/icon_edit.png';
-import iconSendNewMessage from '../../images/icons/icon_new_message.png';
+} from '../context';
+import iconEdit from '../images/icons/icon_edit.png';
+import iconSendNewMessage from '../images/icons/icon_new_message.png';
 
-import { themed } from '../../styles/theme';
+import { themed } from '../styles/theme';
 
-import iconClose from '../../images/icons/icon_close.png';
-import { IconSquare } from './IconSquare';
+import iconClose from '../images/icons/icon_close.png';
 
 const Container = styled(({ padding, ...rest }) => <View {...rest} />)`
   display: flex;
@@ -80,6 +79,13 @@ const SendButtonIcon = styled.Image`
   width: 15;
   height: 15;
   ${({ theme }) => theme.messageInput.sendButtonIcon.css};
+`;
+
+const IconSquareContainer = styled.TouchableOpacity`
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  padding: 5px;
+  ${({ theme }) => theme.iconSquare.container.css};
 `;
 
 class MessageInput extends PureComponent {
@@ -338,12 +344,11 @@ class MessageInput extends PureComponent {
               <EditingBoxHeaderTitle>
                 {t('Editing Message')}
               </EditingBoxHeaderTitle>
-              <IconSquare
-                onPress={() => {
-                  this.props.clearEditingState();
-                }}
-                icon={iconClose}
-              />
+              <IconSquareContainer
+                onPress={() => this.props.clearEditingState()}
+              >
+                <Image source={iconClose} style={{ height: 15, width: 15 }} />
+              </IconSquareContainer>
             </EditingBoxHeader>
             {this.renderInputContainer()}
           </EditingBoxContainer>

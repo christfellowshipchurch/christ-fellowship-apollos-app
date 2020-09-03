@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import styled, { withTheme } from '@stream-io/styled-components';
 
-import { renderText, capitalize } from '../../../utils';
+import { renderText, capitalize } from '../../utils';
 
 const TextContainer = styled.View`
   border-bottom-left-radius: ${({ theme, groupStyle }) =>
@@ -44,11 +44,7 @@ const TextContainer = styled.View`
 `;
 
 const MessageTextContainer = withTheme((props) => {
-  const {
-    message,
-    groupStyles = ['bottom'],
-    alignment,
-  } = props;
+  const { message, groupStyles = ['bottom'], alignment } = props;
 
   const groupStyle = alignment + capitalize(groupStyles[0]);
 
@@ -74,7 +70,6 @@ const MessageTextContainer = withTheme((props) => {
 MessageTextContainer.propTypes = {
   message: PropTypes.object,
   groupStyles: PropTypes.array,
-  isMyMessage: PropTypes.func,
   theme: PropTypes.object,
   markdownRules: PropTypes.object,
 };

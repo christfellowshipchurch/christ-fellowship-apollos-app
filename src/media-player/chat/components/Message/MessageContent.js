@@ -4,15 +4,12 @@ import Immutable from 'seamless-immutable';
 import PropTypes from 'prop-types';
 import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet';
 
-import {
-  MessageContentContext,
-  withTranslationContext,
-} from '../../../context';
-import { themed } from '../../../styles/theme';
+import { MessageContentContext, withTranslationContext } from '../../context';
+import { themed } from '../../styles/theme';
 
-import { ReactionList, ReactionPickerWrapper } from '../../Reaction';
+import { ReactionList, ReactionPickerWrapper } from '../Reaction';
 
-import { emojiData, MESSAGE_ACTIONS } from '../../../utils';
+import { emojiData, MESSAGE_ACTIONS } from '../../utils';
 import MessageTextContainer from './MessageTextContainer';
 
 // Border radii are useful for the case of error message types only.

@@ -90,8 +90,4 @@ Avatar.propTypes = {
 Avatar.themePath = 'avatar';
 
 // TODO: remove HOC and use a theme context provider
-const ThemedAvatar = themed(Avatar);
-
-export { ThemedAvatar as Avatar };
-
-export default {};
+export default themed(Avatar);
