@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { NetInfo } from '../../../native';
+import { NetInfo } from '../../native';
 
 export const useIsOnline = ({
   client,

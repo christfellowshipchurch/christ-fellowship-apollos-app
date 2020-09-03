@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import styled from '@stream-io/styled-components';
-import { themed } from '../../styles/theme';
+import { themed } from '../styles/theme';
 
 const BASE_AVATAR_FALLBACK_TEXT_SIZE = 14;
 const BASE_AVATAR_SIZE = 32;
@@ -93,4 +93,6 @@ Avatar.propTypes = {
 Avatar.themePath = 'avatar';
 
 // TODO: remove HOC and use a theme context provider
-export default themed(Avatar);
+const ThemedAvatar = themed(Avatar);
+
+export { ThemedAvatar as Avatar };

@@ -3,7 +3,7 @@ import { Animated, Keyboard, View } from 'react-native';
 
 import { useKeyboardCompatibleHeight } from './hooks/useKeyboardCompatibleHeight';
 
-import { KeyboardContext } from '../../context';
+import { KeyboardContext } from '../context';
 
 /**
  * KeyboardCompatibleView is HOC component similar to [KeyboardAvoidingView](https://facebook.github.io/react-native/docs/keyboardavoidingview),
@@ -128,5 +128,3 @@ export const KeyboardCompatibleView = ({
     </Animated.View>
   );
 };
-
-export default KeyboardCompatibleView;

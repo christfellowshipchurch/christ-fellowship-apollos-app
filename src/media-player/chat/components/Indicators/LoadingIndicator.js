@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import styled from '@stream-io/styled-components';
 import PropTypes from 'prop-types';
 
+import { ActivityIndicator } from '@apollosproject/ui-kit';
 import { TranslationContext } from '../../context';
-import { Spinner } from '../Spinner';
 
 const Container = styled.View`
   align-items: center;
@@ -36,7 +36,7 @@ const LoadingIndicator = ({ listType = 'default', loadingText }) => {
 
   return (
     <Container>
-      <Spinner />
+      <ActivityIndicator size={'large'} />
       <LoadingText>{indicatorText}</LoadingText>
     </Container>
   );

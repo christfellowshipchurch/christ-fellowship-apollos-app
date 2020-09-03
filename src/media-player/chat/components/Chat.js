@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import Dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 
-import { ChatContext, TranslationContext } from '../../context';
+import { ChatContext, TranslationContext } from '../context';
 import { useIsOnline } from './hooks/useIsOnline';
 import { useStreami18n } from './hooks/useStreami18n';
-import { themed } from '../../styles/theme';
+import { themed } from '../styles/theme';
 import { Streami18n } from 'stream-chat-react-native';
 
 /**
@@ -134,4 +134,6 @@ Chat.propTypes = {
 
 Chat.themePath = '';
 
-export default themed(Chat);
+const ThemedChat = themed(Chat);
+
+export { ThemedChat as Chat };

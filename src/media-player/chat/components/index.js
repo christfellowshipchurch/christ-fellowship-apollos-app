@@ -7,4 +7,3 @@ export * from './Message';
 export * from './MessageInput';
 export * from './MessageList';
 export * from './Reaction';
-export * from './Spinner';

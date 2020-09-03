@@ -13,12 +13,12 @@ import {
   withKeyboardContext,
   withTranslationContext,
 } from '../../context';
-import { IconSquare } from '../IconSquare';
+import { IconSquare } from './IconSquare';
+import iconEdit from '../../images/icons/icon_edit.png';
+import iconSendNewMessage from '../../images/icons/icon_new_message.png';
 
 import { ACITriggerSettings } from '../../utils';
 import { themed } from '../../styles/theme';
-
-import SendButton from './SendButton';
 
 import iconClose from '../../images/icons/icon_close.png';
 
@@ -75,6 +75,17 @@ const InputBox = styled.TextInput`
   ${({ theme }) => theme.messageInput.inputBox.css}
 `;
 
+const SendButtonContainer = styled.TouchableOpacity`
+  margin-left: 8;
+  ${({ theme }) => theme.messageInput.sendButton.css}
+`;
+
+const SendButtonIcon = styled.Image`
+  width: 15;
+  height: 15;
+  ${({ theme }) => theme.messageInput.sendButtonIcon.css}
+`;
+
 /**
  * UI Component for message input
  * Its a consumer of [Channel Context](https://getstream.github.io/stream-chat-react-native/#channelcontext)
@@ -128,12 +139,6 @@ class MessageInput extends PureComponent {
      * */
     setInputBoxContainerRef: PropTypes.func,
     /**
-     * Custom UI component for send button.
-     *
-     * Defaults to and accepts same props as: [SendButton](https://getstream.github.io/stream-chat-react-native/#sendbutton)
-     * */
-    SendButton: PropTypes.oneOfType([PropTypes.node, PropTypes.elementType]),
-    /**
      * Additional props for underlying TextInput component. These props will be forwarded as it is to TextInput component.
      *
      * @see See https://facebook.github.io/react-native/docs/textinput#reference
@@ -145,7 +150,6 @@ class MessageInput extends PureComponent {
 
   static defaultProps = {
     disabled: false,
-    SendButton,
   };
 
   getMessageDetailsForState = (message, initialValue) => {
@@ -324,7 +328,6 @@ class MessageInput extends PureComponent {
 
   renderInputContainer = () => {
     const {
-      SendButton,
       disabled,
       Input,
       t,
@@ -350,12 +353,17 @@ class MessageInput extends PureComponent {
             value={this.state.text}
             {...additionalTextInputProps}
           />
-          <SendButton
+          <SendButtonContainer
             title={t('Send message')}
-            sendMessage={this.sendMessage}
-            editing={this.props.editing}
+            onPress={this.sendMessage}
             disabled={disabled || this.sending || !this.isValidMessage()}
-          />
+          >
+            {this.props.editing ? (
+              <SendButtonIcon source={iconEdit} />
+            ) : (
+              <SendButtonIcon source={iconSendNewMessage} />
+            )}
+          </SendButtonContainer>
         </InputBoxContainer>
       </Container>
     );
