@@ -91,41 +91,56 @@ class Message extends React.Component {
 
   isAdmin = () =>
     this.props.client.user.role === 'admin' ||
-    (this.props.channel.state &&
-      this.props.channel.state.membership &&
-      this.props.channel.state.membership.role === 'admin');
+    this.props.channel?.state?.membership?.role === 'admin';
 
-  isOwner = () =>
-    this.props.channel.state &&
-    this.props.channel.state.membership &&
-    this.props.channel.state.membership.role === 'owner';
+  isOwner = () => this.props.channel?.state?.membership?.role === 'owner';
 
   isModerator = () =>
-    this.props.channel.state &&
-    this.props.channel.state.membership &&
-    (this.props.channel.state.membership.role === 'channel_moderator' ||
-      this.props.channel.state.membership.role === 'moderator');
+    this.props.channel?.state?.membership?.role === 'channel_moderator' ||
+    this.props.channel?.state?.membership?.role === 'moderator' ||
+    this.props.channel?.state?.membership?.is_moderator === true; // eslint-disable-line camelcase
 
-  canEditMessage = () =>
+  canEditMessage = () => this.isMyMessage(this.props.message);
+
+  canDeleteMessage = () =>
     this.isMyMessage(this.props.message) ||
     this.isModerator() ||
-    this.isOwner() ||
     this.isAdmin();
 
-  canDeleteMessage = () => this.canEditMessage();
+  canFlagMessage = () => !this.isMyMessage(this.props.message);
+
+  canMuteUser = () => !this.isMyMessage(this.props.message);
+
+  canBanUser = () =>
+    !this.isMyMessage(this.props.message) &&
+    (this.isModerator() || this.isAdmin());
+
+  // console.log('client', this.props.client.flagUser);
+  // console.log('client', this.props.client.flagMessage);
+  // console.log('client', this.props.client.muteUser);
+  // console.log('client', this.props.client.unmuteUser);
+  // console.log('channel', this.props.channel.banUser);
+  // console.log('channel', this.props.channel.unbanUser);
 
   handleFlag = async (event) => {
     event?.preventDefault?.();
 
-    const message = this.props.message;
+    const { message } = this.props;
     await this.props.client.flagMessage(message.id);
   };
 
   handleMute = async (event) => {
     event?.preventDefault?.();
 
-    const message = this.props.message;
-    await this.props.client.flagMessage(message.user.id);
+    const { message } = this.props;
+    await this.props.client.muteUser(message.user.id);
+  };
+
+  handleBan = async (event) => {
+    event?.preventDefault?.();
+
+    const { message } = this.props;
+    await this.props.channel.banUser(message.user.id);
   };
 
   handleEdit = () => {
@@ -133,7 +148,7 @@ class Message extends React.Component {
   };
 
   handleDelete = async () => {
-    const message = this.props.message;
+    const { message } = this.props;
     const data = await this.props.client.deleteMessage(message.id);
     this.props.updateMessage(data.message);
   };
@@ -147,10 +162,7 @@ class Message extends React.Component {
     for (const reaction of this.props.message.own_reactions) {
       // own user should only ever contain the current user id
       // just in case we check to prevent bugs with message updates from breaking reactions
-      if (
-        currentUser === reaction.user.id &&
-        reaction.type === reactionType
-      ) {
+      if (currentUser === reaction.user.id && reaction.type === reactionType) {
         userExistingReaction = reaction;
       } else if (currentUser !== reaction.user.id) {
         console.warn(
@@ -288,8 +300,6 @@ class Message extends React.Component {
           }}
           handleReaction={this.handleReaction}
           getTotalReactionCount={this.getTotalReactionCount}
-          handleFlag={this.handleFlag}
-          handleMute={this.handleMute}
           handleAction={this.handleAction}
           handleRetry={this.handleRetry}
           isMyMessage={this.isMyMessage}
@@ -297,8 +307,14 @@ class Message extends React.Component {
           isModerator={this.isModerator}
           canEditMessage={this.canEditMessage}
           canDeleteMessage={this.canDeleteMessage}
+          canFlagMessage={this.canFlagMessage}
+          canMuteUser={this.canMuteUser}
+          canBanUser={this.canBanUser}
           handleEdit={this.handleEdit}
           handleDelete={this.handleDelete}
+          handleFlag={this.handleFlag}
+          handleMute={this.handleMute}
+          handleBan={this.handleBan}
           openThread={
             this.props.openThread && this.props.openThread.bind(this, message)
           }

@@ -16,7 +16,9 @@ const MESSAGE_ACTIONS = {
   edit: 'edit',
   delete: 'delete',
   reactions: 'reactions',
-  reply: 'reply',
+  flag: 'flag',
+  mute: 'mute',
+  ban: 'ban',
 };
 
 // Border radii are useful for the case of error message types only.
@@ -99,8 +101,11 @@ class MessageContent extends React.PureComponent {
     onMessageTouch: PropTypes.func,
     onPress: PropTypes.func,
     onLongPress: PropTypes.func,
-    handleDelete: PropTypes.func,
     handleEdit: PropTypes.func,
+    handleDelete: PropTypes.func,
+    handleFlag: PropTypes.func,
+    handleMute: PropTypes.func,
+    handleBan: PropTypes.func,
     dismissKeyboard: PropTypes.func,
     handleAction: PropTypes.func,
     alignment: PropTypes.oneOf(['right', 'left']),
@@ -136,6 +141,9 @@ class MessageContent extends React.PureComponent {
     showActionSheetWithOptions: PropTypes.func,
     canEditMessage: PropTypes.func,
     canDeleteMessage: PropTypes.func,
+    canFlagMessage: PropTypes.func,
+    canMuteUser: PropTypes.func,
+    canBanUser: PropTypes.func,
     t: PropTypes.func,
   };
 
@@ -157,29 +165,53 @@ class MessageContent extends React.PureComponent {
       reactionsEnabled,
       canEditMessage,
       canDeleteMessage,
+      canFlagMessage,
+      canMuteUser,
+      canBanUser,
       t,
     } = this.props;
 
     const options = [{ id: 'cancel', title: t('Cancel') }];
 
     if (reactionsEnabled) {
-      options.splice(1, 0, {
+      options.push({
         id: MESSAGE_ACTIONS.reactions,
         title: t('Add Reaction'),
       });
     }
 
     if (canEditMessage()) {
-      options.splice(1, 0, {
+      options.push({
         id: MESSAGE_ACTIONS.edit,
         title: t('Edit Message'),
       });
     }
 
+    if (canFlagMessage()) {
+      options.push({
+        id: MESSAGE_ACTIONS.flag,
+        title: 'Report Message',
+      });
+    }
+
     if (canDeleteMessage()) {
-      options.splice(1, 0, {
+      options.push({
         id: MESSAGE_ACTIONS.delete,
         title: t('Delete Message'),
+      });
+    }
+
+    if (canMuteUser()) {
+      options.push({
+        id: MESSAGE_ACTIONS.mute,
+        title: 'Mute Person',
+      });
+    }
+
+    if (canBanUser()) {
+      options.push({
+        id: MESSAGE_ACTIONS.ban,
+        title: 'Ban Person',
       });
     }
 
@@ -194,14 +226,6 @@ class MessageContent extends React.PureComponent {
       },
       (buttonIndex) => this.onActionPress(options[buttonIndex].id)
     );
-  };
-
-  handleDelete = async () => {
-    await this.props.handleDelete();
-  };
-
-  handleEdit = () => {
-    this.props.handleEdit();
   };
 
   /**
@@ -230,14 +254,32 @@ class MessageContent extends React.PureComponent {
 
   onActionPress = (action) => {
     switch (action) {
-      case MESSAGE_ACTIONS.edit:
-        this.handleEdit();
-        break;
-      case MESSAGE_ACTIONS.delete:
-        this.handleDelete();
-        break;
       case MESSAGE_ACTIONS.reactions:
         this.props.openReactionPicker();
+        break;
+      case MESSAGE_ACTIONS.edit:
+        this.props.handleEdit();
+        break;
+      case MESSAGE_ACTIONS.delete:
+        this.props.handleDelete();
+        break;
+      case MESSAGE_ACTIONS.flag:
+        this.props.handleFlag();
+        break;
+      case MESSAGE_ACTIONS.mute:
+        this.props.handleMute();
+        break;
+      case MESSAGE_ACTIONS.ban:
+        this.props.showActionSheetWithOptions(
+          {
+            title: 'Ban person for remainder of event?',
+            options: ['Cancel', 'Ban Person'],
+            cancelButtonIndex: 0,
+          },
+          (buttonIndex) => {
+            if (buttonIndex) this.props.handleBan();
+          }
+        );
         break;
       default:
         break;
