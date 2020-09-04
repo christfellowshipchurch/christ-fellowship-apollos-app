@@ -1,11 +1,11 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
-import PropTypes from 'prop-types';
-import { HorizontalContentSeriesFeedConnected } from '@apollosproject/ui-connected';
-import { PaddedView, styled, withIsLoading } from '@apollosproject/ui-kit';
-import { ScriptureList } from '@apollosproject/ui-scripture';
-import Title from '../Title';
-import HTMLContent from '../HTMLContent';
+import React from "react";
+import { ScrollView } from "react-native";
+import PropTypes from "prop-types";
+import { HorizontalContentSeriesFeedConnected } from "@apollosproject/ui-connected";
+import { PaddedView, styled, withIsLoading } from "@apollosproject/ui-kit";
+import { ScriptureList } from "@apollosproject/ui-scripture";
+import Title from "../Title";
+import HTMLContent from "../HTMLContent";
 
 const ContentContainer = withIsLoading(
   styled({ paddingVertical: 0 })(PaddedView)
@@ -22,26 +22,26 @@ const ContentTab = ({
   references,
   isLoading,
   navigationState,
-  navigation,
+  navigation
 }) => (
-  <ScrollView>
-    <ContentContainer isLoading={isLoading}>
-      <Title contentId={id} isLoading={isLoading} />
-      {references && references.length ? (
-        <ScriptureList
-          references={references}
-          onPress={navigationState.route.jumpTo} // eslint-disable-line react/jsx-handler-names
-          tabDestination={'scripture'}
-        />
-      ) : null}
-      <HTMLContent contentId={id} />
-    </ContentContainer>
-    <HorizontalContentSeriesFeedConnected
-      contentId={id}
-      navigation={navigation}
-    />
-  </ScrollView>
-);
+    <ScrollView>
+      <ContentContainer isLoading={isLoading}>
+        <Title contentId={id} isLoading={isLoading} />
+        {references && references.length ? (
+          <ScriptureList
+            references={references}
+            onPress={navigationState.route.jumpTo} // eslint-disable-line react/jsx-handler-names
+            tabDestination={"scripture"}
+          />
+        ) : null}
+        <HTMLContent contentId={id} />
+      </ContentContainer>
+      <HorizontalContentSeriesFeedConnected
+        contentId={id}
+        navigation={navigation}
+      />
+    </ScrollView>
+  );
 
 ContentTab.propTypes = {
   /** The id of the devotional item */
@@ -58,7 +58,7 @@ ContentTab.propTypes = {
   references: PropTypes.arrayOf(PropTypes.string),
   /** The devotional title */
   title: PropTypes.string,
-  navigation: PropTypes.shape({ navigate: PropTypes.array }).isRequired,
+  navigation: PropTypes.shape({ navigate: PropTypes.func }).isRequired
 };
 
 export default ContentTab;

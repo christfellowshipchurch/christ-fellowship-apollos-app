@@ -16,9 +16,6 @@ export default {
   'ui-prayer.PrayerInput.PromptIcon': {
     name: 'plus',
   },
-  // 'ui-prayer.PrayerInput.Prompt': {
-
-  // },
   'ui-prayer.PrayerExperience': {
     AddPrayerComponent: (props) => (
       <AddPrayerScreenConnected
@@ -44,10 +41,7 @@ export default {
           />
         )}
         PrayerCardComponent={(props) => (
-          <PrayerCard
-            {...props}
-            // prayer="I'd like prayer for..."
-          />
+          <PrayerCard {...props} prompt="I'd like prayer for..." />
         )}
       />
     ),

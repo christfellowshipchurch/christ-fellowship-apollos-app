@@ -33,10 +33,12 @@ const StyledDateLabel = styled(({ theme }) => ({
 }))(DateLabel);
 
 const HorizontalPrayerRequestCard = withIsLoading(
-  ({ text, date, isLoading }) => (
+  ({ text, requestedDate, isLoading }) => (
     <CardWrapper isLoading={isLoading} inHorizontalList>
       <Content>
-        {date ? <StyledDateLabel date={date} isLoading={isLoading} /> : null}
+        {requestedDate ? (
+          <StyledDateLabel date={requestedDate} isLoading={isLoading} />
+        ) : null}
         {text ? <Text isLoading={isLoading}>{text}</Text> : null}
       </Content>
     </CardWrapper>
@@ -45,7 +47,7 @@ const HorizontalPrayerRequestCard = withIsLoading(
 
 HorizontalPrayerRequestCard.propTypes = {
   text: PropTypes.string,
-  date: PropTypes.string,
+  requestedDate: PropTypes.string,
 };
 
 HorizontalPrayerRequestCard.displayName = 'HorizontalPrayerRequestCard';

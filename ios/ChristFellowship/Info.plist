@@ -63,6 +63,8 @@
 	<string>$(PRODUCT_NAME) would like to use your camera for uploading profile pictures</string>
 	<key>NSFileProviderDomainUsageDescription</key>
 	<string></string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to enable your location services to connect you with your nearest campus location.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to enable your location services to connect you with your nearest campus location.</string>
 	<key>NSMicrophoneUsageDescription</key>

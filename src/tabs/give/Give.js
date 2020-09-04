@@ -6,23 +6,19 @@ import PropTypes from 'prop-types';
 import { styled } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
-import { EventsFeaturesFeedConnected } from 'features';
+import { GiveFeaturesFeedConnected } from 'features';
 import { useLinkRouter } from 'hooks';
+
 import {
   navigationOptions,
   BackgroundView,
   NavigationSpacer,
   useHeaderScrollEffect,
 } from '../../navigation';
-import VerticalCardListFeatureConnected from './VerticalCardListFeatureConnected';
-
-const additionalFeatures = {
-  VerticalCardListFeature: VerticalCardListFeatureConnected,
-};
 
 const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
 
-const Events = ({ navigation }) => {
+const Give = ({ navigation }) => {
   const { routeLink } = useLinkRouter();
   const [refetchRef, setRefetchRef] = useState(null);
   const { scrollY } = useHeaderScrollEffect({ navigation });
@@ -49,8 +45,7 @@ const Events = ({ navigation }) => {
       {(openUrl) => (
         <BackgroundView>
           <FlexedSafeAreaView>
-            <EventsFeaturesFeedConnected
-              additionalFeatures={additionalFeatures}
+            <GiveFeaturesFeedConnected
               onPressActionItem={handleOnPress({ openUrl })}
               ListHeaderComponent={<NavigationSpacer />}
               scrollEventThrottle={16}
@@ -72,13 +67,13 @@ const Events = ({ navigation }) => {
   );
 };
 
-Events.navigationOptions = (props) =>
+Give.navigationOptions = (props) =>
   navigationOptions({
     ...props,
-    title: 'Events',
+    title: 'Give',
   });
 
-Events.propTypes = {
+Give.propTypes = {
   navigation: PropTypes.shape({
     getParam: PropTypes.func,
     setParams: PropTypes.func,
@@ -86,4 +81,4 @@ Events.propTypes = {
   }),
 };
 
-export default Events;
+export default Give;

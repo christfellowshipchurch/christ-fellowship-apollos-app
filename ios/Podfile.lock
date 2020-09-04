@@ -1,4 +1,5 @@
 PODS:
+  - AstronomerAnalytics (3.6.9)
   - boost-for-react-native (1.63.0)
   - BugsnagReactNative (2.23.7):
     - BugsnagReactNative/Core (= 2.23.7)
@@ -149,6 +150,9 @@ PODS:
     - React-Core
   - RNAirplay (1.0.0):
     - React
+  - RNAnalytics (1.1.5):
+    - AstronomerAnalytics
+    - React
   - RNCAsyncStorage (1.6.1):
     - React
   - RNCMaskedView (0.1.6):
@@ -220,6 +224,7 @@ DEPENDENCIES:
   - ReactNativeDarkMode (from `../node_modules/react-native-dark-mode`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - "RNAirplay (from `../node_modules/@apollosproject/react-native-airplay-btn`)"
+  - "RNAnalytics (from `../node_modules/@metarouter/analytics-react-native`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
@@ -240,6 +245,9 @@ SPEC REPOS:
     - boost-for-react-native
     - google-cast-sdk-no-bluetooth
     - Protobuf
+  https://github.com/cocoapods/specs.git:
+    - AstronomerAnalytics
+    - OneSignal
 
 EXTERNAL SOURCES:
   BugsnagReactNative:
@@ -334,6 +342,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/rn-fetch-blob"
   RNAirplay:
     :path: "../node_modules/@apollosproject/react-native-airplay-btn"
+  RNAnalytics:
+    :path: "../node_modules/@metarouter/analytics-react-native"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
@@ -360,6 +370,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AstronomerAnalytics: 36f48678a387e41481650edd6247c6c95d994131
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BugsnagReactNative: 14c1b59cfbf34fd5591b734bfec65a277b677ef8
   BVLinearGradient: 8cbc5155c978f2e43098818c91d206d07aae6d30
@@ -410,6 +421,7 @@ SPEC CHECKSUMS:
   ReactNativeDarkMode: 0e6e7bdbd387eb949fa7ff238a48f6d6431a428d
   rn-fetch-blob: 651b8d076b43d0d7aa294a3d9ec16c00aab8bef9
   RNAirplay: 75777dd55dafbd3687703c3eb9c290ea6cc43248
+  RNAnalytics: 360b0680753d0e1d37152a25d47aa34a015cab72
   RNCAsyncStorage: 2e2e3feb9bdadc752a026703d8c4065ca912e75a
   RNCMaskedView: a88953beefbd347a29072d9eba90e42945fe291e
   RNCPushNotificationIOS: 83ec11fe19d4ea9e32cc339d8e7d2cc3c88f543e

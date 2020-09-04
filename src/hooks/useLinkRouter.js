@@ -13,14 +13,14 @@ const GENERATE_APP_LINK = gql`
   }
 `;
 
-const deepLink = (rawUrl) => {
+const deepLink = (rawUrl, navigationOptions) => {
   if (!rawUrl) return;
 
   const url = URL.parse(rawUrl);
   const route = url.pathname.substring(1);
   const args = querystring.parse(url.query);
 
-  NavigationService.navigate(route, args);
+  NavigationService.navigate(route, { ...args, ...navigationOptions });
 };
 
 const openLinkExternal = (url) =>
@@ -39,7 +39,7 @@ const openLinkInternal = (url) => {
   }
 };
 
-const routeLink = (url, { restrictedQueryParams }) => {
+const routeLink = (url, { restrictedQueryParams, navigationOptions }) => {
   const restrictedQueryParam = restrictedQueryParams.find((param) =>
     url.includes(param)
   );
@@ -49,7 +49,7 @@ const routeLink = (url, { restrictedQueryParams }) => {
   } else if (url.startsWith('http')) {
     openLinkInternal(url);
   } else {
-    deepLink(url);
+    deepLink(url, navigationOptions);
   }
 };
 
@@ -64,7 +64,7 @@ const useLinkRouter = (props) => {
     openLinkExternal,
     openLinkInternal,
     openDeepLink: deepLink,
-    routeLink: async (url) => {
+    routeLink: async (url, navigationOptions) => {
       const { data } = await client.query({
         query: GENERATE_APP_LINK,
         variables: { url },
@@ -72,7 +72,7 @@ const useLinkRouter = (props) => {
       });
       const { inAppLink } = data;
 
-      routeLink(inAppLink, { restrictedQueryParams });
+      routeLink(inAppLink, { restrictedQueryParams, navigationOptions });
     },
     loading: false,
     error: null,
