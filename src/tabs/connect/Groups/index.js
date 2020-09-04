@@ -5,7 +5,10 @@ import { TouchableScale, ErrorCard } from '@apollosproject/ui-kit';
 import moment from 'moment';
 
 import { CardFeed } from '../../../ui/CardFeeds';
-import { HorizontalGroupCard } from '../../../ui/Cards';
+import {
+  HorizontalGroupCard,
+  HorizontalPrayerRequestCard,
+} from '../../../ui/Cards';
 
 import GET_CURRENT_USER_GROUPS from './getCurrentUserGroups';
 
@@ -43,7 +46,7 @@ const GroupsListConnected = ({ navigation }) => {
       loadingStateObject={loadingStateObject}
       isLoading={loading && groups.length === 0}
       error={error}
-      cardWidth={212}
+      cardWidth={HorizontalPrayerRequestCard.cardWidth}
       seeMore={false}
       title="My Groups"
       horizontal

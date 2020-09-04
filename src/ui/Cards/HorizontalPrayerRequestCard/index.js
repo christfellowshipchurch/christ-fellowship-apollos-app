@@ -11,7 +11,7 @@ import {
 
 import DateLabel from '../../DateLabel';
 
-const CARD_WIDTH = 212;
+const CARD_WIDTH = 240;
 
 const CardWrapper = styled(({ customTheme, theme }) => ({
   width: CARD_WIDTH,

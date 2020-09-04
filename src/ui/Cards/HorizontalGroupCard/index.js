@@ -17,9 +17,10 @@ import {
 } from '@apollosproject/ui-kit';
 
 import AvatarCloud from '../../AvatarCloud';
+import { HorizontalPrayerRequestCard } from '../../../ui/Cards';
 
 const CardWrapper = styled(({ customTheme, theme }) => ({
-  width: 212,
+  width: HorizontalPrayerRequestCard.cardWidth,
   flex: 1,
   backgroundColor: get(customTheme, 'colors.primary', theme.colors.white),
 }))(Card);
