@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import { LiveConsumer } from '@apollosproject/ui-connected';
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
+import { HorizontalPrayerRequestCard } from '../Cards';
 import GET_CONTENT_CARD from './query';
 
 const ContentCardConnected = ({
@@ -36,6 +37,7 @@ const ContentCardConnected = ({
             //   },
             // ]
 
+            let cardComponent = card;
             const typename = get(node, '__typename', '');
             const coverImage = get(node, 'coverImage.sources', undefined);
             let label = get(otherProps, 'label', '');
@@ -47,12 +49,16 @@ const ContentCardConnected = ({
 
               label = node.events.length
                 ? moment(get(node, 'nextOccurrence', new Date())).format(
-                    'MMM D'
-                  )
+                  'MMM D'
+                )
                 : comingSoon;
             }
 
-            return React.createElement(card, {
+            if (typename === 'PrayerRequest') {
+              cardComponent = HorizontalPrayerRequestCard;
+            }
+
+            return React.createElement(cardComponent, {
               ...node,
               ...otherProps,
               coverImage,
