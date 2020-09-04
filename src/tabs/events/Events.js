@@ -1,81 +1,89 @@
-import React, { useEffect } from 'react';
-import { Animated, View } from 'react-native';
+import React, { useState } from 'react';
+import { Animated } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
-import { get } from 'lodash';
-import moment from 'moment';
-import { withNavigation, SafeAreaView } from 'react-navigation';
 
-import { CardFeed } from 'ui/CardFeeds';
-import StatusBar from 'ui/StatusBar';
+import { styled } from '@apollosproject/ui-kit';
+import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
+import { EventsFeaturesFeedConnected } from 'features';
+import { useLinkRouter } from 'hooks';
 import {
-  HEADER_OFFSET,
   navigationOptions,
   BackgroundView,
+  NavigationSpacer,
   useHeaderScrollEffect,
 } from '../../navigation';
-import { GET_EVENTS } from './queries';
+import VerticalCardListFeatureConnected from './VerticalCardListFeatureConnected';
 
-// Events Component (default export)
+const additionalFeatures = {
+  VerticalCardListFeature: VerticalCardListFeatureConnected,
+};
+
+const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
+
 const Events = ({ navigation }) => {
+  const { routeLink } = useLinkRouter();
+  const [refetchRef, setRefetchRef] = useState(null);
   const { scrollY } = useHeaderScrollEffect({ navigation });
-  const { loading, error, data, refetch } = useQuery(GET_EVENTS, {
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const setNavigationParam = (params) => {
-    navigation.setParams(params);
+  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
+    if (action === 'READ_CONTENT') {
+      navigation.navigate('ContentSingle', {
+        itemId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'READ_EVENT') {
+      navigation.navigate('Event', {
+        eventId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'OPEN_URL') {
+      routeLink(relatedNode.url);
+    }
   };
 
-  useEffect(() => setNavigationParam({ scrollY }), []);
-
-  const allEventsSorted = get(data, 'allEvents', []).sort(
-    (a, b) =>
-      b.events.length - a.events.length ||
-      moment(a.nextOccurrence).diff(b.nextOccurrence)
-  );
-
   return (
-    <BackgroundView>
-      <SafeAreaView
-        style={{ flex: 1 }}
-        forceInset={{ bottom: 'never', top: 'always' }}
-      >
-        <StatusBar />
-        <CardFeed
-          navigation={navigation}
-          ListFooterComponent={<View style={{ height: HEADER_OFFSET }} />}
-          style={{
-            paddingTop: HEADER_OFFSET,
-          }}
-          content={allEventsSorted}
-          isLoading={loading}
-          error={error}
-          refetch={refetch}
-          scrollEventThrottle={16}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: { y: scrollY },
-              },
-            },
-          ])}
-        />
-      </SafeAreaView>
-    </BackgroundView>
+    <RockAuthedWebBrowser>
+      {(openUrl) => (
+        <BackgroundView>
+          <FlexedSafeAreaView>
+            <EventsFeaturesFeedConnected
+              additionalFeatures={additionalFeatures}
+              onPressActionItem={handleOnPress({ openUrl })}
+              ListHeaderComponent={<NavigationSpacer />}
+              scrollEventThrottle={16}
+              onScroll={Animated.event([
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollY },
+                  },
+                },
+              ])}
+              removeClippedSubviews={false}
+              numColumns={1}
+              onRef={(ref) => setRefetchRef(ref)}
+            />
+          </FlexedSafeAreaView>
+        </BackgroundView>
+      )}
+    </RockAuthedWebBrowser>
   );
 };
 
+Events.navigationOptions = (props) =>
+  navigationOptions({
+    ...props,
+    title: 'Events',
+  });
+
 Events.propTypes = {
   navigation: PropTypes.shape({
+    getParam: PropTypes.func,
+    setParams: PropTypes.func,
     navigate: PropTypes.func,
   }),
 };
 
-Events.defaultProps = {};
-
-Events.navigationOptions = (props) =>
-  navigationOptions({ ...props, title: 'Events' });
-
-export default withNavigation(Events);
+export default Events;

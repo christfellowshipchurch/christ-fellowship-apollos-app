@@ -8,10 +8,12 @@ const GET_CONTENT_CARD = gql`
       __typename
       ...contentCardFragment
       ...accessoryFragment
+      ...PrayerRequestFragment
     }
   }
   ${ApollosConfig.FRAGMENTS.ACCESSORY_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.CONTENT_CARD_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.PRAYER_REQUEST_FRAGMENT}
 `;
 
 export default GET_CONTENT_CARD;

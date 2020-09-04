@@ -1,9 +1,13 @@
-import React from 'react';
-import { View, Animated, ScrollView } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { Animated } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+import PropTypes from 'prop-types';
 
-import { styled, withTheme, Icon, UIText } from '@apollosproject/ui-kit';
+import { styled } from '@apollosproject/ui-kit';
+import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+
+import { ConnectFeaturesFeedConnected } from 'features';
+import { useLinkRouter } from 'hooks';
 
 import {
   navigationOptions,
@@ -11,67 +15,74 @@ import {
   NavigationSpacer,
   useHeaderScrollEffect,
 } from '../../navigation';
-import StatusBar from '../../ui/StatusBar';
-import ProfileActionBar from './ProfileActionBar';
-import ConnectHeader from './ConnectHeader';
-import { MyPrayersListConnected } from './MyPrayers';
 
-const MyPrayersSpacing = styled(({ theme }) => ({
-  paddingVertical: theme.sizing.baseUnit,
-}))(View);
+const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
 
 const Connect = ({ navigation }) => {
+  const { routeLink } = useLinkRouter();
+  const [refetchRef, setRefetchRef] = useState(null);
   const { scrollY } = useHeaderScrollEffect({ navigation });
+  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
+    if (action === 'READ_CONTENT') {
+      navigation.navigate('ContentSingle', {
+        itemId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'READ_EVENT') {
+      navigation.navigate('Event', {
+        eventId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'READ_PRAYER') {
+      navigation.navigate('PrayerRequestSingle', {
+        prayerRequestId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'OPEN_URL') {
+      routeLink(relatedNode.url, { nested: true });
+    }
+  };
 
   return (
-    <BackgroundView>
-      <SafeAreaView
-        style={{ flex: 1 }}
-        forceInset={{ bottom: 'never', top: 'always' }}
-      >
-        <StatusBar />
-        <ScrollView
-          scrollEventThrottle={16}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: { y: scrollY },
-              },
-            },
-          ])}
-        >
-          <NavigationSpacer />
-          <ConnectHeader
-            onPressIcon={() => navigation.navigate('EditCurrentUser')}
-          />
-          <ProfileActionBar />
-          <MyPrayersSpacing>
-            <MyPrayersListConnected
-              onSeeMore={() =>
-                navigation.navigate('MyPrayerRequestsFeed', { nested: true })
-              }
-              onPressItem={(item) =>
-                navigation.navigate('PrayerRequestSingle', {
-                  prayerRequestId: item.id,
-                })
-              }
+    <RockAuthedWebBrowser>
+      {(openUrl) => (
+        <BackgroundView>
+          <FlexedSafeAreaView>
+            <ConnectFeaturesFeedConnected
+              onPressActionItem={handleOnPress({ openUrl })}
+              ListHeaderComponent={<NavigationSpacer />}
+              scrollEventThrottle={16}
+              onScroll={Animated.event([
+                {
+                  nativeEvent: {
+                    contentOffset: { y: scrollY },
+                  },
+                },
+              ])}
+              removeClippedSubviews={false}
+              numColumns={1}
+              onRef={(ref) => setRefetchRef(ref)}
             />
-          </MyPrayersSpacing>
-        </ScrollView>
-      </SafeAreaView>
-    </BackgroundView>
+          </FlexedSafeAreaView>
+        </BackgroundView>
+      )}
+    </RockAuthedWebBrowser>
   );
 };
 
 Connect.navigationOptions = (props) =>
   navigationOptions({
     ...props,
-    title: 'Profile',
+    title: 'Connect',
   });
 
 Connect.propTypes = {
   navigation: PropTypes.shape({
     getParam: PropTypes.func,
+    setParams: PropTypes.func,
     navigate: PropTypes.func,
   }),
 };
