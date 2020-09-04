@@ -3,7 +3,7 @@ import { Animated, View } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { get, head, isEmpty } from 'lodash';
-import { compose } from 'recompose';
+
 import {
   styled,
   GradientOverlayImage,
@@ -32,6 +32,7 @@ import MessagesButton from '../content-single/MessagesButton';
 
 import VideoCall from './VideoCall';
 import Resources from './Resources';
+import CheckInConnected from './CheckIn';
 
 import GET_GROUP from './getGroup';
 
@@ -114,13 +115,11 @@ const StyledHorizontalTileFeed = withTheme(({ theme }) => ({
   snapToInterval: 80 + theme.sizing.baseUnit,
 }))(HorizontalTileFeed);
 
-const PlaceholderIcon = compose(
-  withTheme(({ theme: { colors } = {} }) => ({
-    fill: colors.paper,
-    name: 'avatarPlacholder',
-    size: 60,
-  }))
-)(Icon);
+const PlaceholderIcon = withTheme(({ theme: { colors } = {} }) => ({
+  fill: colors.paper,
+  name: 'avatarPlacholder',
+  size: 60,
+}))(Icon);
 
 const PlaceholderWrapper = styled(({ theme }) => ({
   borderRadius: 10,
@@ -317,12 +316,20 @@ class GroupSingle extends PureComponent {
                       </BodyText>
                     </PaddedView>
 
-                    <VideoCall
-                      groupId={content.id}
-                      isLoading={loading}
-                      parentVideoCall={parentVideoCall}
-                      videoCall={videoCall}
-                    />
+                    {videoCall ? (
+                      <VideoCall
+                        groupId={content.id}
+                        isLoading={loading}
+                        parentVideoCall={parentVideoCall}
+                        videoCall={videoCall}
+                      />
+                    ) : (
+                      <CheckInConnected
+                        id={content.id}
+                        isLoading={loading}
+                        date={start}
+                      />
+                    )}
 
                     <StyledH4>{'Group Members'}</StyledH4>
                     <StyledHorizontalTileFeed
