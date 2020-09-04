@@ -1,6 +1,7 @@
 export ColumnCard from './ColumnCard';
 export FormCard from './FormCard';
 export HighlightCard from './HighlightCard';
+export HorizontalGroupCard from './HorizontalGroupCard';
 export HorizontalHighlightCard from './HorizontalHighlightCard';
 export HorizontalPrayerRequestCard from './HorizontalPrayerRequestCard';
 export RowCard from './RowCard';

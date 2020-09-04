@@ -55,6 +55,10 @@
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like access to bluetooth (for playing audio)</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to enable your bluetooth services to connect video meeting audio.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>$(PRODUCT_NAME) requires access to the calendar.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your camera for uploading profile pictures</string>
 	<key>NSFileProviderDomainUsageDescription</key>
