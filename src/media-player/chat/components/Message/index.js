@@ -15,6 +15,7 @@ class Message extends React.Component {
     message: PropTypes.object.isRequired,
     client: PropTypes.object.isRequired,
     channel: PropTypes.object.isRequired,
+    muted: PropTypes.array,
     readBy: PropTypes.array,
     groupStyles: PropTypes.array,
     editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
@@ -89,6 +90,8 @@ class Message extends React.Component {
 
   isMyMessage = (message) => this.props.client.user.id === message.user.id;
 
+  isMuted = (message) => this.props.muted.includes(message.user.id);
+
   isAdmin = () =>
     this.props.client.user.role === 'admin' ||
     this.props.channel?.state?.membership?.role === 'admin';
@@ -109,18 +112,22 @@ class Message extends React.Component {
 
   canFlagMessage = () => !this.isMyMessage(this.props.message);
 
-  canMuteUser = () => !this.isMyMessage(this.props.message);
+  canMuteUser = () =>
+    !this.isMuted(this.props.message) && !this.isMyMessage(this.props.message);
+
+  canUnmuteUser = () =>
+    this.isMuted(this.props.message) && !this.isMyMessage(this.props.message);
 
   canBanUser = () =>
     !this.isMyMessage(this.props.message) &&
     (this.isModerator() || this.isAdmin());
 
-  // console.log('client', this.props.client.flagUser);
-  // console.log('client', this.props.client.flagMessage);
-  // console.log('client', this.props.client.muteUser);
-  // console.log('client', this.props.client.unmuteUser);
-  // console.log('channel', this.props.channel.banUser);
-  // console.log('channel', this.props.channel.unbanUser);
+  // this.props.client.flagUser);
+  // this.props.client.flagMessage);
+  // this.props.client.muteUser);
+  // this.props.client.unmuteUser);
+  // this.props.channel.banUser);
+  // this.props.channel.unbanUser);
 
   handleFlag = async (event) => {
     event?.preventDefault?.();
@@ -134,6 +141,13 @@ class Message extends React.Component {
 
     const { message } = this.props;
     await this.props.client.muteUser(message.user.id);
+  };
+
+  handleUnmute = async (event) => {
+    event?.preventDefault?.();
+
+    const { message } = this.props;
+    await this.props.client.unmuteUser(message.user.id);
   };
 
   handleBan = async (event) => {
@@ -309,11 +323,13 @@ class Message extends React.Component {
           canDeleteMessage={this.canDeleteMessage}
           canFlagMessage={this.canFlagMessage}
           canMuteUser={this.canMuteUser}
+          canUnmuteUser={this.canUnmuteUser}
           canBanUser={this.canBanUser}
           handleEdit={this.handleEdit}
           handleDelete={this.handleDelete}
           handleFlag={this.handleFlag}
           handleMute={this.handleMute}
+          handleUnmute={this.handleUnmute}
           handleBan={this.handleBan}
           openThread={
             this.props.openThread && this.props.openThread.bind(this, message)

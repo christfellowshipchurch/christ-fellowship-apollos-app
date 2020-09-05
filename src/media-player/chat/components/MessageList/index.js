@@ -355,8 +355,8 @@ class MessageList extends PureComponent {
           client={this.props.client}
           channel={this.props.channel}
           message={message}
+          muted={this.props.muted}
           groupStyles={groupStyles}
-          Message={this.props.Message}
           readBy={readBy}
           disabled={this.props.disabled}
           lastReceivedId={

@@ -18,6 +18,7 @@ const MESSAGE_ACTIONS = {
   reactions: 'reactions',
   flag: 'flag',
   mute: 'mute',
+  unmute: 'unmute',
   ban: 'ban',
 };
 
@@ -105,6 +106,7 @@ class MessageContent extends React.PureComponent {
     handleDelete: PropTypes.func,
     handleFlag: PropTypes.func,
     handleMute: PropTypes.func,
+    handleUnmute: PropTypes.func,
     handleBan: PropTypes.func,
     dismissKeyboard: PropTypes.func,
     handleAction: PropTypes.func,
@@ -143,6 +145,7 @@ class MessageContent extends React.PureComponent {
     canDeleteMessage: PropTypes.func,
     canFlagMessage: PropTypes.func,
     canMuteUser: PropTypes.func,
+    canUnmuteUser: PropTypes.func,
     canBanUser: PropTypes.func,
     t: PropTypes.func,
   };
@@ -167,6 +170,7 @@ class MessageContent extends React.PureComponent {
       canDeleteMessage,
       canFlagMessage,
       canMuteUser,
+      canUnmuteUser,
       canBanUser,
       t,
     } = this.props;
@@ -205,6 +209,13 @@ class MessageContent extends React.PureComponent {
       options.push({
         id: MESSAGE_ACTIONS.mute,
         title: 'Mute Person',
+      });
+    }
+
+    if (canUnmuteUser()) {
+      options.push({
+        id: MESSAGE_ACTIONS.unmute,
+        title: 'Unmute Person',
       });
     }
 
@@ -268,6 +279,9 @@ class MessageContent extends React.PureComponent {
         break;
       case MESSAGE_ACTIONS.mute:
         this.props.handleMute();
+        break;
+      case MESSAGE_ACTIONS.unmute:
+        this.props.handleUnmute();
         break;
       case MESSAGE_ACTIONS.ban:
         this.props.showActionSheetWithOptions(
