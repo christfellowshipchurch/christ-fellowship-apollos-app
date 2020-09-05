@@ -70,7 +70,6 @@ class MessageList extends PureComponent {
     editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     loadMore: PropTypes.func,
     disabled: PropTypes.bool,
-    setFlatListRef: PropTypes.func,
   };
 
   static defaultProps = {
@@ -338,6 +337,14 @@ class MessageList extends PureComponent {
     return readData;
   };
 
+  isMuted = (message) =>
+    !!this.props.muted.find(
+      (target) =>
+        target.id === message.user.id &&
+        new Date(target.muted_at).toString() <
+          new Date(message.created_at).toString()
+    );
+
   renderItem = (message, groupStyles) => {
     if (message.type === 'message.date') {
       return <DateSeparator message={message} />;
@@ -347,6 +354,9 @@ class MessageList extends PureComponent {
     }
     if (message.type === 'system') {
       return <MessageSystem message={message} />;
+    }
+    if (this.isMuted(message)) {
+      return null;
     }
     if (message.type !== 'message.read') {
       const readBy = this.readData[message.id] || [];
@@ -455,7 +465,6 @@ class MessageList extends PureComponent {
           <ListContainer
             ref={(fl) => {
               this.flatList = fl;
-              this.props.setFlatListRef && this.props.setFlatListRef(fl);
             }}
             data={messagesWithDates}
             onScroll={this.handleScroll}

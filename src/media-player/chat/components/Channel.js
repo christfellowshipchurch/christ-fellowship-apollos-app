@@ -94,7 +94,10 @@ class Channel extends PureComponent {
     hasMore: true,
     messages: Immutable([]),
     muted: Immutable(
-      get(props, 'client.user.mutes', []).map((o) => o.target.id)
+      get(props, 'client.user.mutes', []).map((o) => ({
+        muted_at: o.created_at,
+        id: o.target.id,
+      }))
     ),
     online: props.isOnline,
     typing: Immutable({}),
@@ -280,7 +283,10 @@ class Channel extends PureComponent {
       watcher_count: channel.state.watcher_count,
     };
     if (e.type === 'notification.mutes_updated') {
-      newState.muted = get(e, 'me.mutes', []).map((o) => o.target.id);
+      newState.muted = get(e, 'me.mutes', []).map((o) => ({
+        muted_at: o.created_at,
+        id: o.target.id,
+      }));
     }
     this._setStateThrottled(newState);
   };

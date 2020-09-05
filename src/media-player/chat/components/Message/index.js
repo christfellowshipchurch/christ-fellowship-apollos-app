@@ -90,7 +90,8 @@ class Message extends React.Component {
 
   isMyMessage = (message) => this.props.client.user.id === message.user.id;
 
-  isMuted = (message) => this.props.muted.includes(message.user.id);
+  isMuted = (message) =>
+    !!this.props.muted.find((target) => target.id === message.user.id);
 
   isAdmin = () =>
     this.props.client.user.role === 'admin' ||
