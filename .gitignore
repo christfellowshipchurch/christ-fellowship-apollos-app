@@ -48,6 +48,7 @@ project.xcworkspace
 .env.development.local
 .env.test.local
 .env.production.local
+.bundle
 
 # CocoaPods
 /ios/Pods/
