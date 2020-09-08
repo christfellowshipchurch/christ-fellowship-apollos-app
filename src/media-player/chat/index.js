@@ -1,16 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
-import {
-  Chat,
-  Channel,
-  MessageList,
-  MessageInput,
-} from 'stream-chat-react-native';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../../hooks';
 
 import MediaPlayerSafeLayout from '../controls/MediaPlayerSafeLayout';
+import { Chat, Channel, MessageList, MessageInput } from './components';
 import chatClient, { streami18n } from './client';
 
 const ChatContainer = styled(({ theme }) => ({
