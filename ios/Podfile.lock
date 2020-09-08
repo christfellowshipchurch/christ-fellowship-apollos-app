@@ -240,14 +240,12 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - AstronomerAnalytics
     - OneSignal
   trunk:
     - boost-for-react-native
     - google-cast-sdk-no-bluetooth
     - Protobuf
-  https://github.com/cocoapods/specs.git:
-    - AstronomerAnalytics
-    - OneSignal
 
 EXTERNAL SOURCES:
   BugsnagReactNative:
@@ -437,4 +435,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: f6afe464622383d751ae87adbe415ef7a276219e
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4
