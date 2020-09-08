@@ -41,6 +41,13 @@ const Connect = ({ navigation }) => {
         transitionKey: 2,
       });
     }
+    if (action === 'READ_GROUP') {
+      console.log({ relatedNode });
+      navigation.navigate('GroupSingle', {
+        itemId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
     if (action === 'OPEN_URL') {
       routeLink(relatedNode.url, { nested: true });
     }

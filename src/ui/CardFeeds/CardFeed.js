@@ -21,13 +21,12 @@ const HorizontalFeedHeaderSpacing = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit,
 }))(View);
 
-const StyledHorizontalTileFeed = withTheme(({ theme, cardWidth }) => ({
+const StyledHorizontalTileFeed = withTheme(({ theme }) => ({
   style: {
     marginTop: theme.sizing.baseUnit * -1.25,
     paddingBottom: theme.sizing.baseUnit,
     zIndex: 1,
   },
-  snapToInterval: cardWidth + theme.sizing.baseUnit,
 }))(HorizontalTileFeed);
 
 const CardFeed = ({
@@ -44,24 +43,25 @@ const CardFeed = ({
   onPressHeader,
   onPressItem,
   horizontal,
-  cardWidth,
   ...additionalProps
 }) => {
+  console.log({ content });
+
   const renderItem = ({ item }) =>
     get(item, 'emptyItem') ? (
       <View {...item} />
     ) : (
-      <TouchableScale
-        onPress={() => onPressItem(item, navigation)}
-        style={{ flex: get(item, 'flex', 1) }}
-      >
-        <ContentCardConnected
-          card={card}
-          {...item}
-          contentId={get(item, 'id')}
-        />
-      </TouchableScale>
-    );
+        <TouchableScale
+          onPress={() => onPressItem(item, navigation)}
+          style={{ flex: get(item, 'flex', 1) }}
+        >
+          <ContentCardConnected
+            card={card}
+            {...item}
+            contentId={get(item, 'id')}
+          />
+        </TouchableScale>
+      );
 
   /** If we are in a loading or error state and we don't have existing content,
    *  we don't want to adjust the content to add an empty object.
@@ -79,12 +79,12 @@ const CardFeed = ({
     content.length % numColumns === 0 || numColumns <= 1 || dontAdjustContent
       ? content
       : [
-          ...content,
-          {
-            emptyItem: true,
-            style: { flex: numColumns - (content.length % numColumns) },
-          },
-        ];
+        ...content,
+        {
+          emptyItem: true,
+          style: { flex: numColumns - (content.length % numColumns) },
+        },
+      ];
   const feedProps = {
     renderItem,
     content: adjustedContent,
@@ -93,6 +93,8 @@ const CardFeed = ({
     ...(horizontal ? {} : { numColumns }),
     ...additionalProps,
   };
+
+  console.log({ feedProps, seeMore, ListHeaderComponent });
 
   return horizontal ? (
     <View>
@@ -109,32 +111,31 @@ const CardFeed = ({
         )}
       <StyledHorizontalTileFeed
         {...feedProps}
-        cardWidth={cardWidth}
         ListHeaderComponent={ListHeaderComponent}
       />
     </View>
   ) : (
-    <FeedView
-      ListHeaderComponent={
-        (ListHeaderComponent || title) && (
-          <View>
-            {!!title &&
-              title !== '' && (
-                <FeedHeaderComponent
-                  title={title}
-                  seeMore={seeMore}
-                  isLoading={isLoading}
-                  onPress={onPressHeader}
-                />
-              )}
-            {ListHeaderComponent}
-          </View>
-        )
-      }
-      {...feedProps}
-      renderItem={(props) => feedProps.renderItem({ ...props, numColumns })}
-    />
-  );
+      <FeedView
+        ListHeaderComponent={
+          (ListHeaderComponent || title) && (
+            <View>
+              {!!title &&
+                title !== '' && (
+                  <FeedHeaderComponent
+                    title={title}
+                    seeMore={seeMore}
+                    isLoading={isLoading}
+                    onPress={onPressHeader}
+                  />
+                )}
+              {ListHeaderComponent}
+            </View>
+          )
+        }
+        {...feedProps}
+        renderItem={(props) => feedProps.renderItem({ ...props, numColumns })}
+      />
+    );
 };
 
 CardFeed.propTypes = {
@@ -163,7 +164,6 @@ CardFeed.propTypes = {
   onPressHeader: PropTypes.func,
   onPressItem: PropTypes.func,
   horizontal: PropTypes.func,
-  cardWidth: PropTypes.number,
 };
 
 CardFeed.defaultProps = {
@@ -184,7 +184,7 @@ CardFeed.defaultProps = {
     }
   },
   horizontal: false,
-  cardWidth: 240,
+  error: null,
 };
 
 const CardFeedWithNumColumns = withMediaQuery(

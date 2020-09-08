@@ -17,7 +17,7 @@ import {
 } from '@apollosproject/ui-kit';
 
 import AvatarCloud from '../../AvatarCloud';
-import { HorizontalPrayerRequestCard } from '../../../ui/Cards';
+import { HorizontalPrayerRequestCard } from '..';
 
 const CardWrapper = styled(({ customTheme, theme }) => ({
   width: HorizontalPrayerRequestCard.cardWidth,
@@ -77,7 +77,9 @@ const HorizontalGroupCard = withIsLoading(
       <CardWrapper isLoading={isLoading} inHorizontalList>
         <View>
           <Image source={imageSource} />
-          <StyledAvatarCloud avatars={avatars} isLoading={isLoading} />
+          {!isLoading && (
+            <StyledAvatarCloud avatars={avatars} isLoading={isLoading} />
+          )}
         </View>
         <Content>
           {title ? (

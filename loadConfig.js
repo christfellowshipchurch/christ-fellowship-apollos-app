@@ -250,5 +250,29 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    GROUP_CARD_FRAGMENT: gql`
+      fragment GroupCardFragment on Group {
+        title
+        coverImage {
+          sources {
+            uri
+          }
+        }
+        avatars
+        schedule {
+          friendlyScheduleText
+        }
+        dateTime {
+          start
+          end
+        }
+        leaders {
+          id
+          photo {
+            uri
+          }
+        }
+      }
+    `,
   },
 });

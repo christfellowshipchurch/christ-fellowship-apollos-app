@@ -82,7 +82,6 @@
     "graphql-tools": "3.1.1",
     "lodash": "^4.17.11",
     "memoize-one": "4.0.0",
-    "metro-react-native-babel-preset": "^0.53.1",
     "moment": "2.22.2",
     "node-fetch": "2.2.0",
     "numeral": "^2.0.6",
@@ -138,9 +137,8 @@
     "yup": "0.26.6"
   },
   "devDependencies": {
-    "@apollosproject/babel-preset-apollos": "^1.4.3",
+    "@apollosproject/babel-preset-apollos": "^1.5.0",
     "@apollosproject/eslint-config": "1.5.0",
-    "@apollosproject/ui-storybook": "^1.4.3",
     "@babel/cli": "7.1.5",
     "@babel/core": "^7.4.3",
     "@babel/node": "7.0.0",
@@ -174,7 +172,7 @@
     "jest-react-native": "18.0.0",
     "jetifier": "^1.6.5",
     "lerna": "^3.0.6",
-    "metro-react-native-babel-preset": "^0.56.0",
+    "metro-react-native-babel-preset": "0.56.0",
     "nodemon": "1.18.7",
     "prettier": "1.14.2",
     "prop-types": "15.6.1",
