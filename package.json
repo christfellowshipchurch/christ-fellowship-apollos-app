@@ -29,7 +29,7 @@
     "nuke": "yarn nuke:node && yarn nuke:cache",
     "nuke:node": "rm -rdf ./node_modules && yarn cache clean && yarn",
     "nuke:cache": "watchman watch-del-all && react-native start --reset-cache",
-    "pods": "(cd ios && pod install)",
+    "pods": "(cd ios && bundle install && bundle exec pod install)",
     "go": "yarn && react-native link && yarn pods && yarn start"
   },
   "dependencies": {
