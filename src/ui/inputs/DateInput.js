@@ -67,9 +67,6 @@ const DateInput = ({ value, icon, minYear, maxYear, onConfirm, theme }) => {
   );
 
   const yearRange = [minYear, maxYear].sort((a, b) => a > b);
-
-  console.log({ theme });
-
   return (
     <View>
       <Picker

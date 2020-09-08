@@ -62,8 +62,6 @@ const ContentCardConnected = ({
               cardComponent = HorizontalGroupCard;
             }
 
-            console.log({ typename });
-
             return React.createElement(cardComponent, {
               ...node,
               ...otherProps,
