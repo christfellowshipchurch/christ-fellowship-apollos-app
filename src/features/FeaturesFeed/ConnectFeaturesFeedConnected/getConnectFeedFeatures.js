@@ -6,6 +6,7 @@ export default gql`
     connectFeedFeatures {
       ...FeedFeaturesFragment
       ...ActionBarFeatureFragment
+      ...AvatarListFeatureFragment
       ... on HorizontalCardListFeature {
         primaryAction {
           title
@@ -22,4 +23,5 @@ export default gql`
   ${ApollosConfig.FRAGMENTS.ACTION_BAR_FEATURE_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.RELATED_NODE_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.THEME_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.AVATAR_LIST_FRAGMENT}
 `;
