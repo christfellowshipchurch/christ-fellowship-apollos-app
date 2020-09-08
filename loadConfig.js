@@ -289,9 +289,12 @@ ApollosConfig.loadJs({
           }
 
           campus {
+            id
             name
           }
         }
+
+        isCard
 
         primaryAction {
           action

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 
-import { FeedView, PaddedView } from '@apollosproject/ui-kit';
+import { FeedView } from '@apollosproject/ui-kit';
 
 import { featuresFeedComponentMapper } from '@apollosproject/ui-connected';
 import additionalFeatures from '../additionalFeatures';
-import GET_CONNECT_FEED_FEATURES from './getConnectFeedFeatures';
+import GET_EVENTS_FEED_FEATURES from './getEventsFeedFeatures';
 
 class FeaturesFeedConnected extends PureComponent {
   static propTypes = {
@@ -59,10 +59,10 @@ class FeaturesFeedConnected extends PureComponent {
   render() {
     const { Component, onPressActionItem, ...props } = this.props;
     return (
-      <Query query={GET_CONNECT_FEED_FEATURES} fetchPolicy="cache-and-network">
+      <Query query={GET_EVENTS_FEED_FEATURES} fetchPolicy="cache-and-network">
         {({ error, data, loading, refetch }) => {
-          const features = get(data, 'connectFeedFeatures', []);
-          this.refetchRef({ refetch, id: 'connectFeed' });
+          const features = get(data, 'eventsFeedFeatures', []);
+          this.refetchRef({ refetch, id: 'eventsFeed' });
           return (
             <FeedView
               error={error}
@@ -71,7 +71,6 @@ class FeaturesFeedConnected extends PureComponent {
               renderItem={this.renderFeatures}
               loading={loading}
               refetch={this.refetch}
-              ItemSeparatorComponent={PaddedView}
               {...props}
             />
           );
