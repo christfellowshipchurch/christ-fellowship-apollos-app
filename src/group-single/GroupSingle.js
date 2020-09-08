@@ -36,7 +36,10 @@ import CheckInConnected from './CheckIn';
 
 import GET_GROUP from './getGroup';
 
-const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
+const FlexedScrollView = styled(({ theme }) => ({
+  flex: 1,
+  backgroundColor: theme.colors.screen, // fixes the gradient on `GradientOverlayImage` not lining up with the `BackgroundView` and leaving a white overscroll
+}))(Animated.ScrollView);
 
 // TODO : temp fix until Core resolves the bug where images would disappear when pulling down
 const StretchyView = ({ children, ...props }) =>
@@ -245,40 +248,40 @@ class GroupSingle extends PureComponent {
     return (
       <ThemeConsumer>
         {(theme) => (
-          <BackgroundView>
-            <StretchyView>
-              {({ Stretchy, ...scrollViewProps }) => (
-                <FlexedScrollView {...scrollViewProps}>
-                  <Stretchy>
-                    <GradientOverlayImage
-                      isLoading={!coverImageSources.length || loading}
-                      source={coverImageSources}
-                      // Sets the ratio of the image
-                      minAspectRatio={1}
-                      maxAspectRatio={1}
-                      // Sets the ratio of the placeholder
-                      forceRatio={1}
-                      // No ratios are respected without this
-                      maintainAspectRatio
-                      overlayColor={theme.colors.white}
-                      overlayType="featured"
-                    />
+          <StretchyView>
+            {({ Stretchy, ...scrollViewProps }) => (
+              <FlexedScrollView {...scrollViewProps}>
+                <Stretchy>
+                  <GradientOverlayImage
+                    isLoading={!coverImageSources.length || loading}
+                    source={coverImageSources}
+                    // Sets the ratio of the image
+                    minAspectRatio={1}
+                    maxAspectRatio={1}
+                    // Sets the ratio of the placeholder
+                    forceRatio={1}
+                    // No ratios are respected without this
+                    maintainAspectRatio
+                    overlayColor={theme.colors.paper}
+                    overlayType="featured"
+                  />
 
-                    <StyledAvatarCloud
-                      avatars={avatars}
-                      primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
-                      isLoading={!avatars && loading}
-                    />
-                    <StyledTitle>
-                      <StyledH3 isLoading={loading} numberOfLines={2}>
-                        {content.title}
-                      </StyledH3>
-                      <StyledH5 isLoading={loading} numberOfLines={2}>
-                        {content.groupType}
-                      </StyledH5>
-                    </StyledTitle>
-                  </Stretchy>
+                  <StyledAvatarCloud
+                    avatars={avatars}
+                    primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
+                    isLoading={!avatars && loading}
+                  />
+                  <StyledTitle>
+                    <StyledH3 isLoading={loading} numberOfLines={2}>
+                      {content.title}
+                    </StyledH3>
+                    <StyledH5 isLoading={loading} numberOfLines={2}>
+                      {content.groupType}
+                    </StyledH5>
+                  </StyledTitle>
+                </Stretchy>
 
+                <BackgroundView>
                   <PaddedView vertical={false}>
                     <Cell>
                       {content.schedule ? (
@@ -331,14 +334,14 @@ class GroupSingle extends PureComponent {
                       />
                     )}
 
-                    <StyledH4>{'Group Members'}</StyledH4>
-                    <StyledHorizontalTileFeed
-                      content={content.members}
-                      isLoading={!content.members && loading}
-                      loadingStateObject={loadingStateObject}
-                      renderItem={this.renderMember}
-                    />
+                    <StyledH4 padded>{'Group Members'}</StyledH4>
                   </PaddedView>
+                  <StyledHorizontalTileFeed
+                    content={content.members}
+                    isLoading={!content.members && loading}
+                    loadingStateObject={loadingStateObject}
+                    renderItem={this.renderMember}
+                  />
 
                   {phoneNumbers && allowMessages === 'True' ? (
                     <PaddedView>
@@ -353,10 +356,10 @@ class GroupSingle extends PureComponent {
                       resources={resources}
                     />
                   ) : null}
-                </FlexedScrollView>
-              )}
-            </StretchyView>
-          </BackgroundView>
+                </BackgroundView>
+              </FlexedScrollView>
+            )}
+          </StretchyView>
         )}
       </ThemeConsumer>
     );
