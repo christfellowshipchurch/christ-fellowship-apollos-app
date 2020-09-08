@@ -42,7 +42,6 @@ const Connect = ({ navigation }) => {
       });
     }
     if (action === 'READ_GROUP') {
-      console.log({ relatedNode });
       navigation.navigate('GroupSingle', {
         itemId: relatedNode.id,
         transitionKey: 2,

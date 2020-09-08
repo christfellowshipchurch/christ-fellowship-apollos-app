@@ -45,8 +45,6 @@ const CardFeed = ({
   horizontal,
   ...additionalProps
 }) => {
-  console.log({ content });
-
   const renderItem = ({ item }) =>
     get(item, 'emptyItem') ? (
       <View {...item} />
@@ -93,8 +91,6 @@ const CardFeed = ({
     ...(horizontal ? {} : { numColumns }),
     ...additionalProps,
   };
-
-  console.log({ feedProps, seeMore, ListHeaderComponent });
 
   return horizontal ? (
     <View>

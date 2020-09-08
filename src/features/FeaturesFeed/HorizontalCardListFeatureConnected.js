@@ -22,8 +22,6 @@ const HorizontalCardListFeature = ({
     onPressItem(primaryAction);
   };
 
-  console.log({ title, cards });
-
   return (
     <CardFeed
       title={title}
