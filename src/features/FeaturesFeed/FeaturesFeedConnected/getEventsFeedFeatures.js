@@ -1,9 +1,9 @@
-import gql from 'graphql-tag';
 import ApollosConfig from '@apollosproject/config';
+import gql from 'graphql-tag';
 
 export default gql`
-  query getGiveFeedFeatures {
-    giveFeedFeatures {
+  query getFeedFeatures {
+    userFeedFeatures {
       ...FeedFeaturesFragment
       ...ActionBarFeatureFragment
       ...AvatarListFeatureFragment
