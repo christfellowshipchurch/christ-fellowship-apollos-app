@@ -1,12 +1,12 @@
 PODS:
   - AstronomerAnalytics (3.6.9)
   - boost-for-react-native (1.63.0)
-  - BugsnagReactNative (2.23.7):
-    - BugsnagReactNative/Core (= 2.23.7)
+  - BugsnagReactNative (2.23.10):
+    - BugsnagReactNative/Core (= 2.23.10)
     - React
-  - BugsnagReactNative/Core (2.23.7):
+  - BugsnagReactNative/Core (2.23.10):
     - React
-  - BVLinearGradient (2.5.4):
+  - BVLinearGradient (2.5.6):
     - React
   - DoubleConversion (1.1.6)
   - Folly (2018.10.22.00):
@@ -25,9 +25,9 @@ PODS:
   - google-cast-sdk-no-bluetooth/Core (4.4.7):
     - Protobuf (~> 3.0)
   - OneSignal (2.10.1)
-  - Permission-Notifications (2.1.2):
+  - Permission-Notifications (2.2.0):
     - RNPermissions
-  - Permission-PhotoLibrary (2.1.2):
+  - Permission-PhotoLibrary (2.2.0):
     - RNPermissions
   - Protobuf (3.12.0)
   - React (0.60.5):
@@ -108,7 +108,7 @@ PODS:
     - React
   - react-native-safe-area-context (0.3.6):
     - React
-  - react-native-slider (3.0.0):
+  - react-native-slider (3.0.3):
     - React
   - react-native-sms (1.11.0):
     - React
@@ -119,7 +119,7 @@ PODS:
     - react-native-video/Video (= 5.0.2)
   - react-native-video/Video (5.0.2):
     - React
-  - react-native-webview (5.12.0):
+  - react-native-webview (5.12.1):
     - React
   - React-RCTActionSheet (0.60.5):
     - React-Core (= 0.60.5)
@@ -144,7 +144,7 @@ PODS:
     - React-Core (= 0.60.5)
   - React-RCTWebSocket (0.60.5):
     - React-Core (= 0.60.5)
-  - ReactNativeDarkMode (0.2.1):
+  - ReactNativeDarkMode (0.2.2):
     - React
   - rn-fetch-blob (0.10.16):
     - React-Core
@@ -153,25 +153,25 @@ PODS:
   - RNAnalytics (1.1.5):
     - AstronomerAnalytics
     - React
-  - RNCAsyncStorage (1.6.1):
+  - RNCAsyncStorage (1.12.0):
     - React
-  - RNCMaskedView (0.1.6):
+  - RNCMaskedView (0.1.10):
     - React
-  - RNCPushNotificationIOS (1.0.3):
+  - RNCPushNotificationIOS (1.4.1):
     - React
-  - RNDateTimePicker (2.5.0):
+  - RNDateTimePicker (2.6.2):
     - React
   - RNDeviceInfo (4.0.1):
     - React
-  - RNGestureHandler (1.4.1):
+  - RNGestureHandler (1.8.0):
     - React
-  - RNInAppBrowser (3.3.3):
+  - RNInAppBrowser (3.4.0):
     - React
-  - RNPermissions (2.1.2):
+  - RNPermissions (2.2.0):
     - React
   - RNScreens (1.0.0-alpha.23):
     - React
-  - RNSVG (9.5.1):
+  - RNSVG (9.13.6):
     - React
   - RNZoomBridge (1.0.18):
     - React
@@ -240,14 +240,12 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - AstronomerAnalytics
     - OneSignal
   trunk:
     - boost-for-react-native
     - google-cast-sdk-no-bluetooth
     - Protobuf
-  https://github.com/cocoapods/specs.git:
-    - AstronomerAnalytics
-    - OneSignal
 
 EXTERNAL SOURCES:
   BugsnagReactNative:
@@ -372,15 +370,15 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AstronomerAnalytics: 36f48678a387e41481650edd6247c6c95d994131
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  BugsnagReactNative: 14c1b59cfbf34fd5591b734bfec65a277b677ef8
-  BVLinearGradient: 8cbc5155c978f2e43098818c91d206d07aae6d30
+  BugsnagReactNative: 98fb350df4bb0c94cce903023531a1a5cc11fa51
+  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   google-cast-sdk-no-bluetooth: 197acace9d5a78380bdaef8d45439b2250fa050b
   OneSignal: 8fb749fa07f88006403c9b659a570fb7fb74519a
-  Permission-Notifications: 2f2ff1d01fe7677c3858c8f0a0bd3f3accdbb6bb
-  Permission-PhotoLibrary: e29736d903e867d278747eb30951528303425f64
+  Permission-Notifications: 572d4e94121e57dbecc71a0933abd8ed61108e92
+  Permission-PhotoLibrary: e3ff899f87a3eda29427c142ca93837e8802d228
   Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
   React: 53c53c4d99097af47cf60594b8706b4e3321e722
   React-Core: ba421f6b4f4cbe2fb17c0b6fc675f87622e78a64
@@ -403,11 +401,11 @@ SPEC CHECKSUMS:
   react-native-passkit-wallet: 51e3babdaeec4c10b5736786ebd1bfb470fcaa36
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
   react-native-safe-area-context: e380a6f783ccaec848e2f3cc8eb205a62362950d
-  react-native-slider: 12bd76d3d568c9c5500825db54123d44b48e4ad4
+  react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-sms: 31fbb9d6ebb565ad32e409eaf9dc70329936a129
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: d01ed7ff1e38fa7dcc6c15c94cf505e661b7bfd0
-  react-native-webview: 8b2761a9bf84bbbbe7f90f49743b9b74c7cb11e7
+  react-native-webview: 5036ed4a973ad1deeeff118262d2df7b60b3419d
   React-RCTActionSheet: b0f1ea83f4bf75fb966eae9bfc47b78c8d3efd90
   React-RCTAnimation: 359ba1b5690b1e87cc173558a78e82d35919333e
   React-RCTBlob: 5e2b55f76e9a1c7ae52b826923502ddc3238df24
@@ -418,23 +416,23 @@ SPEC CHECKSUMS:
   React-RCTText: b074d89033583d4f2eb5faf7ea2db3a13c7553a2
   React-RCTVibration: 2105b2e0e2b66a6408fc69a46c8a7fb5b2fdade0
   React-RCTWebSocket: cd932a16b7214898b6b7f788c8bddb3637246ac4
-  ReactNativeDarkMode: 0e6e7bdbd387eb949fa7ff238a48f6d6431a428d
+  ReactNativeDarkMode: 0178ffca3b10f6a7c9f49d6f9810232b328fa949
   rn-fetch-blob: 651b8d076b43d0d7aa294a3d9ec16c00aab8bef9
   RNAirplay: 75777dd55dafbd3687703c3eb9c290ea6cc43248
   RNAnalytics: 360b0680753d0e1d37152a25d47aa34a015cab72
-  RNCAsyncStorage: 2e2e3feb9bdadc752a026703d8c4065ca912e75a
-  RNCMaskedView: a88953beefbd347a29072d9eba90e42945fe291e
-  RNCPushNotificationIOS: 83ec11fe19d4ea9e32cc339d8e7d2cc3c88f543e
-  RNDateTimePicker: a8000390e7a4fe23d9f36492ded9282640721c82
+  RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
+  RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNCPushNotificationIOS: c145c6253ea016e5efeff604f2720736b4a596f7
+  RNDateTimePicker: 968ccf716b3b6aee07849641966005924de5c0f9
   RNDeviceInfo: 687c1b2ab6d86ff1ca1208783320cd144138c7f2
-  RNGestureHandler: 4cb47a93019c1a201df2644413a0a1569a51c8aa
-  RNInAppBrowser: 0800f17fd7ed9fc503eb68e427befebb41ee719b
-  RNPermissions: a96580116f7894146552e92b000ac30bf1661947
+  RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
+  RNInAppBrowser: c1a0dad2734458d79bcb6c8f4297ba8658a1da9f
+  RNPermissions: 477d88d0be7ecb0a7b344e4d5fbb0352de104626
   RNScreens: f28b48b8345f2f5f39ed6195518291515032a788
-  RNSVG: 0eb087cfb5d7937be93c45b163b26352a647e681
+  RNSVG: 8ba35cbeb385a52fd960fd28db9d7d18b4c2974f
   RNZoomBridge: 1835796645f78d2902bf31895d0a3c25afad069f
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
 PODFILE CHECKSUM: f6afe464622383d751ae87adbe415ef7a276219e
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4

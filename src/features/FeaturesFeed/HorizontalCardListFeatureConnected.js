@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
-import { NavigationService } from '@apollosproject/ui-kit';
 import { HorizontalCardListFeatureConnected as CoreHorizontalCardListFeatureConnected } from '@apollosproject/ui-connected';
 import { CardFeed } from 'ui/CardFeeds';
 
@@ -23,6 +22,8 @@ const HorizontalCardListFeature = ({
     onPressItem(primaryAction);
   };
 
+  console.log({ title, cards });
+
   return (
     <CardFeed
       title={title}
@@ -34,6 +35,12 @@ const HorizontalCardListFeature = ({
       seeMoreText={get(primaryAction, 'title', '')}
       onPressItem={onPressItem}
       onPressHeader={onPressHeader}
+      loadingStateObject={{
+        id: 'fake_id',
+        title: '',
+        coverImage: [],
+        avatars: [],
+      }}
       horizontal
     />
   );

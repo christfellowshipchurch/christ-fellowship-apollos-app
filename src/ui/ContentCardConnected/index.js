@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import { LiveConsumer } from '@apollosproject/ui-connected';
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
-import { HorizontalPrayerRequestCard } from '../Cards';
+import { HorizontalPrayerRequestCard, HorizontalGroupCard } from '../Cards';
 import GET_CONTENT_CARD from './query';
 
 const ContentCardConnected = ({
@@ -57,6 +57,12 @@ const ContentCardConnected = ({
             if (typename === 'PrayerRequest') {
               cardComponent = HorizontalPrayerRequestCard;
             }
+
+            if (typename === 'Group') {
+              cardComponent = HorizontalGroupCard;
+            }
+
+            console.log({ typename });
 
             return React.createElement(cardComponent, {
               ...node,
