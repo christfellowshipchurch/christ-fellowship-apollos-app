@@ -71,19 +71,13 @@ const ScheduleView = styled(({ theme }) => ({
 }))(View);
 
 const HorizontalGroupCard = withIsLoading(
-  ({ fill, coverImage, isLoading, title, schedule, avatars, leaders }) => {
-    const leader = head(leaders);
-    const leaderPhoto = get(leader, 'photo', {});
+  ({ fill, coverImage, isLoading, title, schedule, avatars }) => {
     const imageSource = get(coverImage, 'sources', {});
     return (
       <CardWrapper isLoading={isLoading} inHorizontalList>
         <View>
           <Image source={imageSource} />
-          <StyledAvatarCloud
-            avatars={avatars}
-            primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
-            isLoading={isLoading}
-          />
+          <StyledAvatarCloud avatars={avatars} isLoading={isLoading} />
         </View>
         <Content>
           {title ? (
