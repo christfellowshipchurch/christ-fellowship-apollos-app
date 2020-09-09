@@ -64,6 +64,8 @@ const MemberImageWrapper = styled({
   width: 80,
   height: 100,
   overflow: 'hidden',
+  justifyContent: 'center',
+  alignItems: 'center',
 })(View);
 
 const Schedule = styled(({ theme }) => ({
@@ -245,6 +247,7 @@ class GroupSingle extends PureComponent {
     };
 
     const { start } = dateTime;
+
     return (
       <ThemeConsumer>
         {(theme) => (
@@ -352,7 +355,7 @@ class GroupSingle extends PureComponent {
                   {!isEmpty(resources) ? (
                     <Resources
                       isLoading={loading}
-                      navigation={this.navigation}
+                      navigation={this.props.navigation}
                       resources={resources}
                     />
                   ) : null}

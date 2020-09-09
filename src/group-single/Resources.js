@@ -22,14 +22,35 @@ const Resources = ({ resources, isLoading, navigation }) => {
   return (
     <PaddedView>
       <StyledH4>{'Resources'}</StyledH4>
-      {resources.map(({ id, contentChannelItem, url, title }) => {
+      {resources.map(({ id, relatedNode, action, title }) => {
         const handleOnPress = () => {
-          if (contentChannelItem) {
+          if (action === 'READ_CONTENT') {
             navigation.navigate('ContentSingle', {
-              itemId: contentChannelItem,
+              itemId: relatedNode.id,
+              transitionKey: 2,
             });
           }
-          return routeLink(url);
+          if (action === 'READ_EVENT') {
+            navigation.navigate('Event', {
+              eventId: relatedNode.id,
+              transitionKey: 2,
+            });
+          }
+          if (action === 'READ_PRAYER') {
+            navigation.navigate('PrayerRequestSingle', {
+              prayerRequestId: relatedNode.id,
+              transitionKey: 2,
+            });
+          }
+          if (action === 'READ_GROUP') {
+            navigation.navigate('GroupSingle', {
+              itemId: relatedNode.id,
+              transitionKey: 2,
+            });
+          }
+          if (action === 'OPEN_URL') {
+            routeLink(relatedNode.url, { nested: true });
+          }
         };
         return (
           <StyledButton

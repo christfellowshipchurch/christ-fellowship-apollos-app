@@ -32,8 +32,13 @@ export const GROUP_FRAGMENT = gql`
     phoneNumbers
     groupResources {
       title
-      url
-      contentChannelItem
+      action
+      relatedNode {
+        id
+        ... on Url {
+          url
+        }
+      }
     }
     dateTime {
       start
