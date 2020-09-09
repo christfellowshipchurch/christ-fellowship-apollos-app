@@ -15,7 +15,6 @@ import {
   BodyText,
   ConnectedImage,
   HorizontalTileFeed,
-  BodySmall,
   Icon,
   ThemeConsumer,
   // StretchyView,
@@ -25,6 +24,7 @@ import {
 } from '@apollosproject/ui-kit';
 
 import AvatarCloud from '../ui/AvatarCloud';
+import DateLabel from '../ui/DateLabel';
 
 import NavigationHeader from '../content-single/NavigationHeader';
 import AddCalEventButton from '../content-single/AddCalEventButton';
@@ -66,17 +66,18 @@ const MemberImageWrapper = styled({
   overflow: 'hidden',
 })(View);
 
-const Schedule = styled(({ theme }) => ({
-  color: theme.colors.darkPrimary,
-}))(BodySmall);
-
 const ScheduleView = styled(() => ({
   flexDirection: 'row',
+  alignItems: 'center',
 }))(View);
 
 const IconView = styled({
   paddingRight: 6,
 })(View);
+
+const StyledIcon = withTheme(({ theme }) => ({
+  fill: theme.colors.text.tertiary,
+}))(Icon);
 
 const StyledAvatarCloud = styled({
   position: 'absolute',
@@ -288,17 +289,16 @@ class GroupSingle extends PureComponent {
                         <CellItem first>
                           <ScheduleView>
                             <IconView>
-                              <Icon isLoading={loading} name="time" size={16} />
+                              <StyledIcon
+                                isLoading={loading}
+                                name="time"
+                                size={16}
+                              />
                             </IconView>
-                            <Schedule
-                              numberOfLines={1}
-                              isLoading={
-                                !content.schedule.friendlyScheduleText &&
-                                loading
-                              }
-                            >
-                              {content.schedule.friendlyScheduleText}
-                            </Schedule>
+                            <DateLabel
+                              isLoading={!start && loading}
+                              date={start}
+                            />
                           </ScheduleView>
                         </CellItem>
                       ) : null}
@@ -325,6 +325,7 @@ class GroupSingle extends PureComponent {
                         isLoading={loading}
                         parentVideoCall={parentVideoCall}
                         videoCall={videoCall}
+                        date={start}
                       />
                     ) : (
                       <CheckInConnected
