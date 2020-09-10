@@ -1,18 +1,11 @@
 import React, { PureComponent } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import styled from '@stream-io/styled-components';
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
 
-import { withChannelContext, withTranslationContext } from '../../context';
-import { EmptyStateIndicator } from '../Indicators';
-import Message from '../Message';
-
-import EventIndicator from './EventIndicator';
-import MessageNotification from './MessageNotification';
-import DateSeparator from './DateSeparator';
-import TypingIndicator from './TypingIndicator';
-import MessageSystem from './MessageSystem';
+import { withChannelContext, withTranslationContext } from '../context';
+import Message from './Message';
 
 const ListContainer = styled.FlatList`
   flex: 1;
@@ -22,60 +15,21 @@ const ListContainer = styled.FlatList`
   ${({ theme }) => theme.messageList.listContainer.css};
 `;
 
-const ErrorNotificationText = styled.Text`
-  color: red;
-  background-color: #fae6e8;
-  ${({ theme }) => theme.messageList.errorNotificationText.css};
-`;
-
-const ErrorNotification = styled.View`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 10;
-  margin-bottom: 0;
-  padding: 5px;
-  color: red;
-  background-color: #fae6e8;
-  ${({ theme }) => theme.messageList.errorNotification.css};
-`;
-
-const TypingIndicatorContainer = styled.View`
-  position: absolute;
-  bottom: 0;
-  height: 30px;
-  width: 100%;
-  padding-left: 16px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  ${({ theme }) => theme.messageList.typingIndicatorContainer.css};
-`;
-
-class MessageList extends PureComponent {
+class MessageFloatingBy extends PureComponent {
   static propTypes = {
     noGroupByUser: PropTypes.bool,
-    messageActions: PropTypes.oneOfType([PropTypes.bool, PropTypes.array]),
     client: PropTypes.object,
     messages: PropTypes.array.isRequired,
     read: PropTypes.object,
-    typing: PropTypes.object,
-    online: PropTypes.bool,
-    disableWhileEditing: PropTypes.bool,
     onMessageTouch: PropTypes.func,
     dismissKeyboardOnMessageTouch: PropTypes.bool,
     eventHistory: PropTypes.object,
     markRead: PropTypes.func,
-    setEditingState: PropTypes.func,
-    clearEditingState: PropTypes.func,
-    editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
     loadMore: PropTypes.func,
-    actionSheetStyles: PropTypes.object,
     disabled: PropTypes.bool,
-    setFlatListRef: PropTypes.func,
   };
 
   static defaultProps = {
-    disableWhileEditing: true,
     noGroupByUser: false,
     dismissKeyboardOnMessageTouch: true,
   };
@@ -83,10 +37,7 @@ class MessageList extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      newMessagesNotification: false,
-      online: props.online,
-    };
+    this.state = {};
     this.yOffset = 0;
   }
 
@@ -95,10 +46,6 @@ class MessageList extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.online !== prevProps.online) {
-      this.setState({ online: this.props.online });
-    }
-
     // handle new messages being sent/received
     const currentLastMessage = this.props.messages[
       this.props.messages.length - 1
@@ -122,22 +69,8 @@ class MessageList extends PureComponent {
       scrollToBottom = true;
     }
 
-    // Check the scroll position... if you're scrolled up show a little notification
-    if (
-      !scrollToBottom &&
-      hasNewMessage &&
-      !this.state.newMessagesNotification
-    ) {
-      this.setState({ newMessagesNotification: true });
-    }
-
     if (scrollToBottom) {
       this.flatList.scrollToIndex({ index: 0 });
-    }
-
-    // remove the scroll notification if we already scrolled down...
-    if (scrollToBottom && this.state.newMessagesNotification) {
-      this.setState({ newMessagesNotification: false });
     }
 
     this.setLastReceived(this.props.messages);
@@ -276,14 +209,6 @@ class MessageList extends PureComponent {
     return messageGroupStyles;
   };
 
-  goToNewMessages = () => {
-    this.setState({
-      newMessagesNotification: false,
-    });
-    this.flatList.scrollToIndex({ index: 0 });
-    this.props.markRead();
-  };
-
   setLastReceived = (messages) => {
     const l = messages.length;
     let lastReceivedId = null;
@@ -337,15 +262,26 @@ class MessageList extends PureComponent {
     return readData;
   };
 
+  isMuted = (message) =>
+    !!this.props.muted.find(
+      (target) =>
+        target.id === message.user.id &&
+        new Date(target.muted_at).toString() <
+          new Date(message.created_at).toString()
+    );
+
   renderItem = (message, groupStyles) => {
     if (message.type === 'message.date') {
-      return <DateSeparator message={message} />;
+      return null;
     }
     if (message.type === 'channel.event') {
-      return <EventIndicator event={message.event} />;
+      return null;
     }
     if (message.type === 'system') {
-      return <MessageSystem message={message} />;
+      return null;
+    }
+    if (this.isMuted(message)) {
+      return null;
     }
     if (message.type !== 'message.read') {
       const readBy = this.readData[message.id] || [];
@@ -354,8 +290,8 @@ class MessageList extends PureComponent {
           client={this.props.client}
           channel={this.props.channel}
           message={message}
+          muted={this.props.muted}
           groupStyles={groupStyles}
-          Message={this.props.Message}
           readBy={readBy}
           disabled={this.props.disabled}
           lastReceivedId={
@@ -367,14 +303,10 @@ class MessageList extends PureComponent {
           dismissKeyboardOnMessageTouch={
             this.props.dismissKeyboardOnMessageTouch
           }
-          setEditingState={this.props.setEditingState}
-          editing={this.props.editing}
-          messageActions={this.props.messageActions}
           updateMessage={this.props.updateMessage}
           removeMessage={this.props.removeMessage}
           retrySendMessage={this.props.retrySendMessage}
           emojiData={this.props.emojiData}
-          actionSheetStyles={this.props.actionSheetStyles}
         />
       );
     }
@@ -387,16 +319,6 @@ class MessageList extends PureComponent {
       this.props.markRead();
 
     this.yOffset = yOffset;
-    this.setState((prevState) => ({
-      newMessagesNotification: removeNewMessageNotification
-        ? false
-        : prevState.newMessagesNotification,
-    }));
-  };
-
-  renderEmptyState = () => {
-    const Indicator = EmptyStateIndicator;
-    return <Indicator listType="message" />;
   };
 
   render() {
@@ -412,7 +334,7 @@ class MessageList extends PureComponent {
       this.props.messages.length === 0 &&
       !hasEventHistory
     ) {
-      return <View style={{ flex: 1 }}>{this.renderEmptyState()}</View>;
+      return <View style={{ flex: 1 }} />;
     }
 
     const messagesWithDates = this.insertDates(this.props.messages);
@@ -420,90 +342,34 @@ class MessageList extends PureComponent {
     this.readData = this.getReadStates(messagesWithDates);
     messagesWithDates.reverse();
 
-    const typing = Object.values(this.props.typing);
-    let showTypingIndicator;
-    if (
-      typing.length === 0 ||
-      (typing.length === 1 && typing[0].user.id === this.props.client.user.id)
-    ) {
-      showTypingIndicator = false;
-    } else {
-      showTypingIndicator = true;
-    }
-
     return (
-      <React.Fragment>
-        {// Mask for edit state
-        this.props.editing &&
-          this.props.disableWhileEditing && (
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                backgroundColor: 'black',
-                opacity: 0.4,
-                height: '100%',
-                width: '100%',
-                zIndex: 100,
-              }}
-              collapsable={false}
-              onPress={this.props.clearEditingState}
-            />
-          )}
-        <View
-          collapsable={false}
-          style={{ flex: 1, alignItems: 'center', width: '100%' }}
-        >
-          <ListContainer
-            ref={(fl) => {
-              this.flatList = fl;
-              this.props.setFlatListRef && this.props.setFlatListRef(fl);
-            }}
-            data={messagesWithDates}
-            onScroll={this.handleScroll}
-            onEndReached={this.props.loadMore}
-            inverted
-            keyboardShouldPersistTaps="always"
-            keyExtractor={(item) =>
-              item.id ||
-              item.created_at ||
-              (item.date ? item.date.toISOString() : false) ||
-              uuidv4()
-            }
-            renderItem={({ item: message }) =>
-              this.renderItem(message, messageGroupStyles[message.id])
-            }
-            /** Disables the MessageList UI. Which means, message actions, reactions won't work. */
-            extraData={this.props.disabled}
-            maintainVisibleContentPosition={{
-              minIndexForVisible: 1,
-              autoscrollToTopThreshold: 10,
-            }}
-          />
-          {showTypingIndicator && (
-            <TypingIndicatorContainer>
-              <TypingIndicator
-                typing={this.props.typing}
-                client={this.props.client}
-              />
-            </TypingIndicatorContainer>
-          )}
-          {this.state.newMessagesNotification && (
-            <MessageNotification
-              showNotification={this.state.newMessagesNotification}
-              onPress={this.goToNewMessages}
-            />
-          )}
-          {!this.state.online && (
-            <ErrorNotification>
-              <ErrorNotificationText>
-                {t('Connection failure, reconnecting now ...')}
-              </ErrorNotificationText>
-            </ErrorNotification>
-          )}
-        </View>
-      </React.Fragment>
+      <ListContainer
+        ref={(fl) => {
+          this.flatList = fl;
+        }}
+        data={messagesWithDates}
+        onScroll={this.handleScroll}
+        onEndReached={this.props.loadMore}
+        inverted
+        keyboardShouldPersistTaps="always"
+        keyExtractor={(item) =>
+          item.id ||
+          item.created_at ||
+          (item.date ? item.date.toISOString() : false) ||
+          uuidv4()
+        }
+        renderItem={({ item: message }) =>
+          this.renderItem(message, messageGroupStyles[message.id])
+        }
+        /** Disables the MessageList UI. Which means, message actions, reactions won't work. */
+        extraData={this.props.disabled}
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 1,
+          autoscrollToTopThreshold: 10,
+        }}
+      />
     );
   }
 }
 
-export default withTranslationContext(withChannelContext(MessageList));
+export default withTranslationContext(withChannelContext(MessageFloatingBy));

@@ -46,6 +46,8 @@ const LiveStreamContainer = styled(
   ({ isFullscreen, isPortrait }) =>
     isFullscreen
       ? {
+          ...(isPortrait ? {} : StyleSheet.absoluteFillObject),
+          zIndex: isPortrait ? 2 : 1,
           height: isPortrait ? '33%' : '100%',
         }
       : StyleSheet.absoluteFill
@@ -63,11 +65,6 @@ const FullscreenMediaPlayerSafeLayout = styled(({ isFullscreen, theme }) => ({
  * It reads from local graphql state, and so you must use graphql mutations to play tracks.
  */
 class LiveStreamPlayer extends PureComponent {
-  static propTypes = {
-    client: PropTypes.shape({ mutate: PropTypes.func }),
-    contentId: PropTypes.string,
-  };
-
   state = { portrait: true };
 
   // Tracks the fullscreen animation
@@ -186,6 +183,11 @@ class LiveStreamPlayer extends PureComponent {
     { nativeEvent: { layout: { height: this.miniControlHeight } } },
   ]);
 
+  static propTypes = {
+    client: PropTypes.shape({ mutate: PropTypes.func }),
+    contentId: PropTypes.string,
+  };
+
   componentDidMount() {
     Dimensions.addEventListener('change', this.handleOrientationChanged);
   }
@@ -241,7 +243,7 @@ class LiveStreamPlayer extends PureComponent {
       </LiveStreamContainer>,
       isFullscreen ? (
         <LiveStreamChat
-          isPortrait={this.state.isPortrait}
+          isPortrait={this.state.portrait}
           contentId={this.props.contentId}
         />
       ) : null,

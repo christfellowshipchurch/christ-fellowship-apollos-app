@@ -5,12 +5,24 @@ import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../../hooks';
 
 import MediaPlayerSafeLayout from '../controls/MediaPlayerSafeLayout';
-import { Chat, Channel, MessageList, MessageInput } from './components';
+import {
+  Chat,
+  Channel,
+  MessageList,
+  MessageFloatingBy,
+  MessageInput,
+} from './components';
 import chatClient, { streami18n } from './client';
 
-const ChatContainer = styled(({ theme }) => ({
+const ChatContainer = styled(({ theme, isPortrait }) => ({
   flex: 1,
-  backgroundColor: theme.colors.background.screen,
+  // borderColor: 'green', borderWidth: 5,
+  ...(isPortrait ? {} : { position: 'absolute', top: 0, right: 0, bottom: 0 }),
+  zIndex: isPortrait ? 1 : 2,
+  width: isPortrait ? '100%' : '50%',
+  backgroundColor: isPortrait
+    ? theme.colors.background.screen
+    : theme.colors.transparent,
 }))(MediaPlayerSafeLayout);
 
 const LiveStreamChat = ({ isPortrait, contentId }) => {
@@ -72,22 +84,27 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
 
   if (loading || connecting) {
     return (
-      <ChatContainer>
+      <ChatContainer isPortrait={isPortrait}>
         <ActivityIndicator size={'large'} />
       </ChatContainer>
     );
   }
 
-  if (isPortrait) {
-    return null;
-  }
-
   return (
     <Chat client={chatClient} i18nInstance={streami18n}>
-      <ChatContainer>
-        <Channel channel={channel.current}>
-          <MessageList />
-          <MessageInput />
+      <ChatContainer isPortrait={isPortrait}>
+        <Channel
+          disableKeyboardCompatibleView={!isPortrait}
+          channel={channel.current}
+        >
+          {isPortrait ? (
+            <React.Fragment>
+              <MessageList />
+              <MessageInput />
+            </React.Fragment>
+          ) : (
+            <MessageFloatingBy />
+          )}
         </Channel>
       </ChatContainer>
     </Chat>
