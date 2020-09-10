@@ -39,7 +39,11 @@ const HorizontalPrayerRequestCard = withIsLoading(
         {requestedDate ? (
           <StyledDateLabel date={requestedDate} isLoading={isLoading} />
         ) : null}
-        {text ? <Text isLoading={isLoading}>{text}</Text> : null}
+        {text ? (
+          <Text isLoading={isLoading} numberOfLines={4}>
+            {text}
+          </Text>
+        ) : null}
       </Content>
     </CardWrapper>
   )
