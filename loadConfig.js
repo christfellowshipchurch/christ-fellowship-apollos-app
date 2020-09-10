@@ -274,5 +274,39 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    AVATAR_LIST_FRAGMENT: gql`
+      fragment AvatarListFeatureFragment on AvatarListFeature {
+        id
+        order
+
+        people {
+          id
+          firstName
+          lastName
+
+          photo {
+            uri
+          }
+
+          campus {
+            id
+            name
+          }
+        }
+
+        isCard
+
+        primaryAction {
+          action
+          icon
+          theme {
+            ...ThemeFragment
+          }
+          relatedNode {
+            ...RelatedFeatureNodeFragment
+          }
+        }
+      }
+    `,
   },
 });

@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import ZoomBridge from 'react-native-zoom-bridge';
 import Config from 'react-native-config';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
 
 import { useMutation } from '@apollo/react-hooks';
 import { styled, Button } from '@apollosproject/ui-kit';
@@ -33,7 +34,13 @@ const config = {
   },
 };
 
-const VideoCall = ({ parentVideoCall, videoCall, isLoading, groupId }) => {
+const VideoCall = ({
+  parentVideoCall,
+  videoCall,
+  isLoading,
+  groupId,
+  date,
+}) => {
   useEffect(() => {
     async function initializeZoom() {
       try {
@@ -58,8 +65,12 @@ const VideoCall = ({ parentVideoCall, videoCall, isLoading, groupId }) => {
   );
 
   const join = async (meetingId, passcode, id) => {
-    try {
+    const callAttend = () =>
+      moment(date).format('MMDDYYYY') === moment().format('MMDDYYYY') &&
       handleAttend({ variables: { id } });
+    callAttend();
+
+    try {
       if (passcode) {
         await ZoomBridge.joinMeetingWithPassword(fullName, meetingId, passcode);
       } else {

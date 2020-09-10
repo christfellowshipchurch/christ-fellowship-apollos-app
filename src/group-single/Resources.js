@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, PaddedView, H4, styled } from '@apollosproject/ui-kit';
+import {
+  Button,
+  PaddedView,
+  H4,
+  styled,
+  ThemeMixin,
+} from '@apollosproject/ui-kit';
 import { useLinkRouter } from '../hooks';
 
 const StyledH4 = styled(({ theme }) => ({
@@ -9,8 +15,6 @@ const StyledH4 = styled(({ theme }) => ({
 
 const StyledButton = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit * 0.5,
-  backgroundColor: 'rgba(120, 120, 128, 0.36)',
-  borderColor: 'rgba(120, 120, 128, 0)',
 }))(Button);
 
 const StyledButtonText = styled(() => ({
@@ -22,25 +26,50 @@ const Resources = ({ resources, isLoading, navigation }) => {
   return (
     <PaddedView>
       <StyledH4>{'Resources'}</StyledH4>
-      {resources.map(({ id, contentChannelItem, url, title }) => {
+      {resources.map(({ id, relatedNode, action, title }) => {
         const handleOnPress = () => {
-          if (contentChannelItem) {
+          if (action === 'READ_CONTENT') {
             navigation.navigate('ContentSingle', {
-              itemId: contentChannelItem,
+              itemId: relatedNode.id,
+              transitionKey: 2,
             });
           }
-          return routeLink(url);
+          if (action === 'READ_EVENT') {
+            navigation.navigate('Event', {
+              eventId: relatedNode.id,
+              transitionKey: 2,
+            });
+          }
+          if (action === 'READ_PRAYER') {
+            navigation.navigate('PrayerRequestSingle', {
+              prayerRequestId: relatedNode.id,
+              transitionKey: 2,
+            });
+          }
+          if (action === 'READ_GROUP') {
+            navigation.navigate('GroupSingle', {
+              itemId: relatedNode.id,
+              transitionKey: 2,
+            });
+          }
+          if (action === 'OPEN_URL') {
+            routeLink(relatedNode.url, { nested: true });
+          }
         };
         return (
-          <StyledButton
-            onPress={() => handleOnPress()}
-            type={'default'}
-            loading={isLoading}
-            pill={false}
+          <ThemeMixin
+            mixin={{ colors: { primary: 'rgba(120, 120, 128, 0.36)' } }}
             key={id}
           >
-            <StyledButtonText>{title}</StyledButtonText>
-          </StyledButton>
+            <StyledButton
+              onPress={() => handleOnPress()}
+              type={'default'}
+              loading={isLoading}
+              pill={false}
+            >
+              <StyledButtonText>{title}</StyledButtonText>
+            </StyledButton>
+          </ThemeMixin>
         );
       })}
     </PaddedView>
@@ -48,11 +77,18 @@ const Resources = ({ resources, isLoading, navigation }) => {
 };
 
 Resources.propTypes = {
-  resources: PropTypes.shape({
-    url: PropTypes.string,
-    title: PropTypes.string,
-    contentChannelItem: PropTypes.string,
-  }),
+  resources: PropTypes.arrayOf(
+    PropTypes.shape({
+      url: PropTypes.string,
+      title: PropTypes.string,
+      contentChannelItem: PropTypes.string,
+      relatedNode: PropTypes.shape({
+        id: PropTypes.string,
+      }),
+      action: PropTypes.string,
+      icon: PropTypes.string,
+    })
+  ),
   isLoading: PropTypes.bool,
 };
 

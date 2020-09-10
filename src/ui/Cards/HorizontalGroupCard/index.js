@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { get, head } from 'lodash';
+import { get } from 'lodash';
 
 import {
   BodySmall,
@@ -18,6 +18,7 @@ import {
 
 import AvatarCloud from '../../AvatarCloud';
 import { HorizontalPrayerRequestCard } from '..';
+import DateLabel from '../../DateLabel';
 
 const CardWrapper = styled(({ customTheme, theme }) => ({
   width: HorizontalPrayerRequestCard.cardWidth,
@@ -41,10 +42,6 @@ const Content = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit,
   paddingBottom: theme.sizing.baseUnit,
 }))(CardContent);
-
-const Schedule = styled(({ theme }) => ({
-  color: theme.colors.darkPrimary,
-}))(BodySmall);
 
 const Title = styled(({ theme }) => ({
   color: theme.colors.darkPrimary,
@@ -71,20 +68,15 @@ const ScheduleView = styled(({ theme }) => ({
 }))(View);
 
 const HorizontalGroupCard = withIsLoading(
-  ({ fill, coverImage, isLoading, title, schedule, avatars, leaders }) => {
-    const leader = head(leaders);
-    const leaderPhoto = get(leader, 'photo', {});
+  ({ fill, coverImage, isLoading, title, schedule, avatars, dateTime }) => {
     const imageSource = get(coverImage, 'sources', {});
+    const date = get(dateTime, 'start', {});
     return (
       <CardWrapper isLoading={isLoading} inHorizontalList>
         <View>
           <Image source={imageSource} />
           {!isLoading && (
-            <StyledAvatarCloud
-              avatars={avatars}
-              primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
-              isLoading={isLoading}
-            />
+            <StyledAvatarCloud avatars={avatars} isLoading={isLoading} />
           )}
         </View>
         <Content>
@@ -98,9 +90,7 @@ const HorizontalGroupCard = withIsLoading(
               <IconView>
                 <Icon isLoading={isLoading} name="time" size={16} fill={fill} />
               </IconView>
-              <Schedule isLoading={isLoading} numberOfLines={1}>
-                {schedule.friendlyScheduleText}
-              </Schedule>
+              <DateLabel isLoading={isLoading} date={date} />
             </ScheduleView>
           ) : null}
         </Content>

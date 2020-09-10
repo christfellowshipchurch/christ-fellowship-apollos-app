@@ -88,7 +88,7 @@ class AvatarCloud extends PureComponent {
     return this.props.primaryAvatar
       ? /* we need some way to differentiate the largest possible `RandomAvatar`s from the
          * `primaryAvatar` so we subtract by a magic number that looks nice 🧙‍♂️ */
-        this.props.maxAvatarWidth - 0.1
+      this.props.maxAvatarWidth - 0.1
       : this.props.maxAvatarWidth;
   }
 
@@ -101,7 +101,7 @@ class AvatarCloud extends PureComponent {
     const sizes = this.props.avatars.map((avatar, i) => {
       const randomNumberInRange =
         this.getRandomPositionValue(i) *
-          (this.getRandomAvatarMaxWidth() - this.props.minAvatarWidth) +
+        (this.getRandomAvatarMaxWidth() - this.props.minAvatarWidth) +
         this.props.minAvatarWidth;
       return Math.floor(randomNumberInRange * 10) / 10;
     });
@@ -133,7 +133,7 @@ class AvatarCloud extends PureComponent {
           typeof this.props.avatars[i] === 'string'
             ? this.props.avatars[i]
             : this.props.avatars[i].uri
-        }${this.props.avatars[i].id ? this.props.avatars[i].id : i}`}
+          }${this.props.avatars[i].id ? this.props.avatars[i].id : i}`}
         order={i} // order = zIndex == higher index === "closer two the viewer/higher layer"
       >
         <RandomAvatar
@@ -157,21 +157,12 @@ class AvatarCloud extends PureComponent {
     } = this.props;
     return (
       <CenteredView {...props}>
-        {isLoading || primaryAvatar ? (
+        {(isLoading || primaryAvatar) && (
           <CenteredAvatar
             avatarWidth={this.getAvatarPercentageWidth(maxAvatarWidth)}
             source={primaryAvatar}
             isLoading={isLoading}
           />
-        ) : (
-          <PlaceholderWrapper
-            size={this.getAvatarPercentageWidth(maxAvatarWidth)}
-          >
-            <PlaceholderIcon
-              isLoading={false}
-              size={this.getAvatarPercentageWidth(maxAvatarWidth * 2)} // Increase the size of the placeholder profile icon by multiplying by a magic number
-            />
-          </PlaceholderWrapper>
         )}
         {this.renderRandomAvatars()}
       </CenteredView>

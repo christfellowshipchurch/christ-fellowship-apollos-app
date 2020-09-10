@@ -82,7 +82,7 @@ const Connect = ({ navigation }) => {
 Connect.navigationOptions = (props) =>
   navigationOptions({
     ...props,
-    title: 'Connect',
+    title: 'Profile',
   });
 
 Connect.propTypes = {
