@@ -64,6 +64,8 @@ const MemberImageWrapper = styled({
   width: 80,
   height: 100,
   overflow: 'hidden',
+  justifyContent: 'center',
+  alignItems: 'center',
 })(View);
 
 const ScheduleView = styled(() => ({
@@ -203,10 +205,10 @@ class GroupSingle extends PureComponent {
             />
           </MemberImageWrapper>
         ) : (
-          <PlaceholderWrapper>
-            <PlaceholderIcon isLoading={false} />
-          </PlaceholderWrapper>
-        )}
+            <PlaceholderWrapper>
+              <PlaceholderIcon isLoading={false} />
+            </PlaceholderWrapper>
+          )}
 
         <BodyText>{name}</BodyText>
       </MemberCard>
@@ -239,13 +241,14 @@ class GroupSingle extends PureComponent {
         hasParentVideoCall
           ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n`
           : ''
-      }Join Zoom ${
+        }Join Zoom ${
         hasParentVideoCall ? 'Breakout' : ''
-      }Meeting:\n${videoCallNote}`;
+        }Meeting:\n${videoCallNote}`;
       return notes.trim();
     };
 
     const { start } = dateTime;
+
     return (
       <ThemeConsumer>
         {(theme) => (
@@ -328,12 +331,12 @@ class GroupSingle extends PureComponent {
                         date={start}
                       />
                     ) : (
-                      <CheckInConnected
-                        id={content.id}
-                        isLoading={loading}
-                        date={start}
-                      />
-                    )}
+                        <CheckInConnected
+                          id={content.id}
+                          isLoading={loading}
+                          date={start}
+                        />
+                      )}
 
                     <StyledH4 padded>{'Group Members'}</StyledH4>
                   </PaddedView>
@@ -353,7 +356,7 @@ class GroupSingle extends PureComponent {
                   {!isEmpty(resources) ? (
                     <Resources
                       isLoading={loading}
-                      navigation={this.navigation}
+                      navigation={this.props.navigation}
                       resources={resources}
                     />
                   ) : null}
@@ -380,7 +383,11 @@ class GroupSingle extends PureComponent {
 
   render() {
     return (
-      <Query query={GET_GROUP} variables={this.queryVariables}>
+      <Query
+        query={GET_GROUP}
+        variables={this.queryVariables}
+        fetchPolicy="cache-and-network"
+      >
         {this.renderWithData}
       </Query>
     );
