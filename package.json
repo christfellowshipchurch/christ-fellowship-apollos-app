@@ -51,6 +51,7 @@
     "@apollosproject/ui-scripture": "1.5.0",
     "@apollosproject/ui-storybook": "1.5.0",
     "@metarouter/analytics-react-native": "^1.1.5",
+    "@expo/react-native-action-sheet": "3.8.0",
     "@react-native-community/async-storage": "^1.5.1",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/datetimepicker": "^2.4.0",

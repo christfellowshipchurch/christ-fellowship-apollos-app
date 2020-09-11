@@ -4,8 +4,7 @@ import { View, Text } from 'react-native';
 import uuidv4 from 'uuid/v4';
 import PropTypes from 'prop-types';
 import Immutable from 'seamless-immutable';
-import debounce from 'lodash/debounce';
-import throttle from 'lodash/throttle';
+import { debounce, throttle, get } from 'lodash';
 import { logChatPromiseExecution } from 'stream-chat';
 import { emojiData } from '../utils';
 
@@ -94,6 +93,12 @@ class Channel extends PureComponent {
     loadingMore: false,
     hasMore: true,
     messages: Immutable([]),
+    mutes: Immutable(
+      get(props, 'client.user.mutes', []).map((o) => ({
+        muted_at: o.created_at,
+        id: o.target.id,
+      }))
+    ),
     online: props.isOnline,
     typing: Immutable({}),
     watchers: Immutable({}),
@@ -193,9 +198,8 @@ class Channel extends PureComponent {
   };
 
   // eslint-disable-next-line require-await
-  editMessage = async (updatedMessage) => {
-    return this.props.client.updateMessage(updatedMessage);
-  };
+  editMessage = async (updatedMessage) =>
+    this.props.client.updateMessage(updatedMessage);
 
   _sendMessage = async (message) => {
     // Scrape the reserved fields if present.
@@ -268,17 +272,23 @@ class Channel extends PureComponent {
     if (e.type === 'member.added') {
       this.addToEventHistory(e);
     }
-
     if (e.type === 'member.removed') {
       this.addToEventHistory(e);
     }
-    this._setStateThrottled({
+    const newState = {
       messages: channel.state.messages,
       watchers: channel.state.watchers,
       read: channel.state.read,
       typing: channel.state.typing,
       watcher_count: channel.state.watcher_count,
-    });
+    };
+    if (e.type === 'notification.mutes_updated') {
+      newState.mutes = get(e, 'me.mutes', []).map((o) => ({
+        muted_at: o.created_at,
+        id: o.target.id,
+      }));
+    }
+    this._setStateThrottled(newState);
   };
 
   addToEventHistory = (e) => {
@@ -388,9 +398,8 @@ class Channel extends PureComponent {
   }
 
   listenToChanges() {
-    // The more complex sync logic is done in chat.js
-    // listen to client.connection.recovered and all channel events
     this.props.client.on('connection.recovered', this.handleEvent);
+    this.props.client.on('notification.mutes_updated', this.handleEvent);
     const channel = this.props.channel;
     channel.on(this.handleEvent);
   }

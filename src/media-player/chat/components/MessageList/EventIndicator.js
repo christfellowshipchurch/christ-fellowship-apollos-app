@@ -3,7 +3,7 @@ import styled from '@stream-io/styled-components';
 import PropTypes from 'prop-types';
 
 import { withTranslationContext } from '../../context';
-import { Avatar } from '../Avatar';
+import Avatar from '../Avatar';
 
 const Date = styled.Text`
   font-size: 10;
