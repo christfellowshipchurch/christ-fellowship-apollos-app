@@ -26,6 +26,7 @@ import GroupSingle from './group-single';
 import NotificationCenter from './notification-center';
 import PrayerRequestSingle from './prayer-request-single';
 import MyPrayerRequestsFeed from './my-prayer-requests-feed';
+import Chat from './chat';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -65,6 +66,7 @@ const AppContent = createStackNavigator(
     Tabs,
     ContentFeed,
     MyPrayerRequestsFeed,
+    Chat,
   },
   {
     initialRouteName: 'Tabs',

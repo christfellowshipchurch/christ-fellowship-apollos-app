@@ -7,12 +7,13 @@ import {
   PanResponder,
   Platform,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Query, withApollo } from 'react-apollo';
 import { get } from 'lodash';
 
-import { styled } from '@apollosproject/ui-kit';
+import { NavigationService, styled } from '@apollosproject/ui-kit';
 
 import MiniControls, { MINI_PLAYER_HEIGHT } from './controls/MiniControls';
 import LiveStreamControls from './controls/LiveStreamControls';
@@ -208,6 +209,16 @@ class LiveStreamPlayer extends PureComponent {
     }).start();
 
     const coverFlow = [
+      isFullscreen ? (
+        <TouchableOpacity
+          key="dms"
+          style={{ backgroundColor: 'red', height: 50, width: '100%' }}
+          onPress={() => {
+            this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
+            NavigationService.navigate('Chat');
+          }}
+        />
+      ) : null,
       <LiveStreamContainer
         key="cover"
         onLayout={this.handleCoverLayout}
