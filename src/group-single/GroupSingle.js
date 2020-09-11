@@ -81,13 +81,13 @@ const StyledIcon = withTheme(({ theme }) => ({
   fill: theme.colors.text.tertiary,
 }))(Icon);
 
-const StyledAvatarCloud = styled({
+const StyledAvatarCloud = styled(({ theme }) => ({
   position: 'absolute',
-  left: 0,
-  right: 0,
-  bottom: 100,
-  top: 40,
-})(AvatarCloud);
+  left: theme.sizing.baseUnit,
+  right: theme.sizing.baseUnit,
+  bottom: 125, // Magic Number to avoid overlaying title
+  top: 40, // Magic Number to avoid overlaying header
+}))(AvatarCloud);
 
 const StyledTitle = styled(({ theme }) => ({
   alignItems: 'center',
@@ -205,10 +205,10 @@ class GroupSingle extends PureComponent {
             />
           </MemberImageWrapper>
         ) : (
-            <PlaceholderWrapper>
-              <PlaceholderIcon isLoading={false} />
-            </PlaceholderWrapper>
-          )}
+          <PlaceholderWrapper>
+            <PlaceholderIcon isLoading={false} />
+          </PlaceholderWrapper>
+        )}
 
         <BodyText>{name}</BodyText>
       </MemberCard>
@@ -241,9 +241,9 @@ class GroupSingle extends PureComponent {
         hasParentVideoCall
           ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n`
           : ''
-        }Join Zoom ${
+      }Join Zoom ${
         hasParentVideoCall ? 'Breakout' : ''
-        }Meeting:\n${videoCallNote}`;
+      }Meeting:\n${videoCallNote}`;
       return notes.trim();
     };
 
@@ -331,12 +331,12 @@ class GroupSingle extends PureComponent {
                         date={start}
                       />
                     ) : (
-                        <CheckInConnected
-                          id={content.id}
-                          isLoading={loading}
-                          date={start}
-                        />
-                      )}
+                      <CheckInConnected
+                        id={content.id}
+                        isLoading={loading}
+                        date={start}
+                      />
+                    )}
 
                     <StyledH4 padded>{'Group Members'}</StyledH4>
                   </PaddedView>
