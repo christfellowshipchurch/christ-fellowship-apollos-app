@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import { get } from 'lodash';
 
 import {
-  BodySmall,
   Card,
   CardContent,
   CardImage,
@@ -68,9 +67,9 @@ const ScheduleView = styled(({ theme }) => ({
 }))(View);
 
 const HorizontalGroupCard = withIsLoading(
-  ({ fill, coverImage, isLoading, title, schedule, avatars, dateTime }) => {
+  ({ fill, coverImage, isLoading, title, avatars, dateTime }) => {
     const imageSource = get(coverImage, 'sources', {});
-    const date = get(dateTime, 'start', {});
+    const date = get(dateTime, 'start', '');
     return (
       <CardWrapper isLoading={isLoading} inHorizontalList>
         <View>
@@ -85,7 +84,7 @@ const HorizontalGroupCard = withIsLoading(
               {title}
             </Title>
           ) : null}
-          {schedule ? (
+          {date ? (
             <ScheduleView>
               <IconView>
                 <Icon isLoading={isLoading} name="time" size={16} fill={fill} />

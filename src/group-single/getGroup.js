@@ -20,9 +20,6 @@ export const GROUP_FRAGMENT = gql`
         uri
       }
     }
-    schedule {
-      friendlyScheduleText
-    }
     coverImage {
       sources {
         uri

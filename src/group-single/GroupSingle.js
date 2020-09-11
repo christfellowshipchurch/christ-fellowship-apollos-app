@@ -161,9 +161,6 @@ class GroupSingle extends PureComponent {
       title: PropTypes.string,
       summary: PropTypes.string,
       members: PropTypes.shape({}),
-      schedule: PropTypes.shape({
-        friendlyScheduleText: PropTypes.string,
-      }),
       avatars: PropTypes.arrayOf(PropTypes.string),
       groupType: PropTypes.string,
     }),
@@ -205,10 +202,10 @@ class GroupSingle extends PureComponent {
             />
           </MemberImageWrapper>
         ) : (
-            <PlaceholderWrapper>
-              <PlaceholderIcon isLoading={false} />
-            </PlaceholderWrapper>
-          )}
+          <PlaceholderWrapper>
+            <PlaceholderIcon isLoading={false} />
+          </PlaceholderWrapper>
+        )}
 
         <BodyText>{name}</BodyText>
       </MemberCard>
@@ -241,9 +238,9 @@ class GroupSingle extends PureComponent {
         hasParentVideoCall
           ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n`
           : ''
-        }Join Zoom ${
+      }Join Zoom ${
         hasParentVideoCall ? 'Breakout' : ''
-        }Meeting:\n${videoCallNote}`;
+      }Meeting:\n${videoCallNote}`;
       return notes.trim();
     };
 
@@ -288,7 +285,7 @@ class GroupSingle extends PureComponent {
                 <BackgroundView>
                   <PaddedView vertical={false}>
                     <Cell>
-                      {content.schedule ? (
+                      {content.dateTime ? (
                         <CellItem first>
                           <ScheduleView>
                             <IconView>
@@ -299,6 +296,7 @@ class GroupSingle extends PureComponent {
                               />
                             </IconView>
                             <DateLabel
+                              withTime
                               isLoading={!start && loading}
                               date={start}
                             />
@@ -331,12 +329,12 @@ class GroupSingle extends PureComponent {
                         date={start}
                       />
                     ) : (
-                        <CheckInConnected
-                          id={content.id}
-                          isLoading={loading}
-                          date={start}
-                        />
-                      )}
+                      <CheckInConnected
+                        id={content.id}
+                        isLoading={loading}
+                        date={start}
+                      />
+                    )}
 
                     <StyledH4 padded>{'Group Members'}</StyledH4>
                   </PaddedView>
