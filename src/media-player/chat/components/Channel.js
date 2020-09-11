@@ -93,7 +93,7 @@ class Channel extends PureComponent {
     loadingMore: false,
     hasMore: true,
     messages: Immutable([]),
-    muted: Immutable(
+    mutes: Immutable(
       get(props, 'client.user.mutes', []).map((o) => ({
         muted_at: o.created_at,
         id: o.target.id,
@@ -283,7 +283,7 @@ class Channel extends PureComponent {
       watcher_count: channel.state.watcher_count,
     };
     if (e.type === 'notification.mutes_updated') {
-      newState.muted = get(e, 'me.mutes', []).map((o) => ({
+      newState.mutes = get(e, 'me.mutes', []).map((o) => ({
         muted_at: o.created_at,
         id: o.target.id,
       }));

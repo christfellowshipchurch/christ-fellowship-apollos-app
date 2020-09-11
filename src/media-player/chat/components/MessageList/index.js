@@ -338,7 +338,7 @@ class MessageList extends PureComponent {
   };
 
   isMuted = (message) =>
-    !!this.props.muted.find(
+    !!this.props.mutes.find(
       (target) =>
         target.id === message.user.id &&
         new Date(target.muted_at).toString() <
@@ -365,7 +365,7 @@ class MessageList extends PureComponent {
           client={this.props.client}
           channel={this.props.channel}
           message={message}
-          muted={this.props.muted}
+          mutes={this.props.mutes}
           groupStyles={groupStyles}
           readBy={readBy}
           disabled={this.props.disabled}

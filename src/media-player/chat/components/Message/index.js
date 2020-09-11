@@ -15,7 +15,7 @@ class Message extends React.Component {
     message: PropTypes.object.isRequired,
     client: PropTypes.object.isRequired,
     channel: PropTypes.object.isRequired,
-    muted: PropTypes.array,
+    mutes: PropTypes.array,
     readBy: PropTypes.array,
     groupStyles: PropTypes.array,
     editing: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
@@ -91,7 +91,7 @@ class Message extends React.Component {
   isMyMessage = (message) => this.props.client.user.id === message.user.id;
 
   isMuted = (message) =>
-    !!this.props.muted.find((target) => target.id === message.user.id);
+    !!this.props.mutes.find((target) => target.id === message.user.id);
 
   isAdmin = () =>
     this.props.client.user.role === 'admin' ||
