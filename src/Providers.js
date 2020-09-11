@@ -14,11 +14,12 @@ import { AuthProvider } from "@apollosproject/ui-auth";
 import {
   DynamicValue,
   useDynamicValue,
-  DarkModeProvider
-} from "react-native-dark-mode";
-import NotificationsProvider from "./NotificationsProvider";
-import { SideMenuProvider } from "./sidemenu";
-import AppStateProvider from "./AppStateProvider";
+  DarkModeProvider,
+} from 'react-native-dark-mode';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import NotificationsProvider from './NotificationsProvider';
+import { SideMenuProvider } from './sidemenu';
+import AppStateProvider from './AppStateProvider';
 
 import { track, identify } from "./amplitude";
 import ClientProvider, { client } from "./client";
@@ -59,7 +60,9 @@ const AppProviders = props => {
                   >
                     <BackgroundView>
                       <SideMenuProvider {...props}>
-                        <AppStateProvider {...props} />
+                        <ActionSheetProvider>
+                          <AppStateProvider {...props} />
+                        </ActionSheetProvider>
                       </SideMenuProvider>
                     </BackgroundView>
                   </Providers>

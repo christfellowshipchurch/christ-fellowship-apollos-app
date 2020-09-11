@@ -5,7 +5,7 @@ import styled from '@stream-io/styled-components';
 
 import { StreamChat } from 'stream-chat';
 
-import { Avatar } from '../Avatar';
+import Avatar from '../Avatar';
 import { themed } from '../../styles/theme';
 import { withTranslationContext } from '../../context';
 
