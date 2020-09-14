@@ -23,7 +23,6 @@ import DateLabel from '../../DateLabel';
 const CardWrapper = styled(({ customTheme, theme }) => ({
   width: HorizontalPrayerRequestCard.cardWidth,
   flex: 1,
-  backgroundColor: get(customTheme, 'colors.primary', theme.colors.white),
 }))(Card);
 
 const Image = withTheme(({ customTheme, theme }) => ({
@@ -31,7 +30,11 @@ const Image = withTheme(({ customTheme, theme }) => ({
   maxAspectRatio: 1.5,
   maintainAspectRatio: true,
   forceRatio: 1.5, // fixes loading state
-  overlayColor: get(customTheme, 'colors.primary', theme.colors.white), // else check for a custom theme (prop) or default to black.
+  overlayColor: get(
+    customTheme,
+    'colors.primary',
+    theme.colors.background.paper
+  ), // else check for a custom theme (prop) or default to black.
   overlayType: 'featured',
   style: { flex: 1 },
 }))(CardImage);
@@ -44,7 +47,7 @@ const Content = styled(({ theme }) => ({
 }))(CardContent);
 
 const Title = styled(({ theme }) => ({
-  color: theme.colors.darkPrimary,
+  color: theme.colors.text.primary,
   textAlign: 'center',
 }))(H5);
 
