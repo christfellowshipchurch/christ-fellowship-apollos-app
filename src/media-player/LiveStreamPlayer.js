@@ -207,7 +207,7 @@ class LiveStreamPlayer extends PureComponent {
 
   handleDirectMessage = ({ userId }) => {
     this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
-    NavigationService.navigate('Chat', { userId, nested: true });
+    NavigationService.navigate('Channel', { userId, nested: true });
   };
 
   renderCover = ({ data: { mediaPlayer = {} } = {} }) => {
@@ -231,7 +231,7 @@ class LiveStreamPlayer extends PureComponent {
           style={{ backgroundColor: 'red', height: 80, width: '100%' }}
           onPress={() => {
             this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
-            NavigationService.navigate('Chat', { nested: true });
+            NavigationService.navigate('ChannelsList', { nested: true });
           }}
         />
       ) : null,

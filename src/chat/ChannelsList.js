@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { H4 } from '@apollosproject/ui-kit';
+import { createStackNavigator } from 'react-navigation';
 
 import { navigationOptions } from '../navigation';
 
@@ -29,4 +30,14 @@ ChannelsList.navigationOptions = ({ navigation, ...props }) =>
     headerLeft: null,
   });
 
-export default ChannelsList;
+const ChannelsListNavigator = createStackNavigator(
+  {
+    ChannelsList,
+  },
+  {
+    initialRouteName: 'ChannelsList',
+    headerLayoutPreset: 'left',
+  }
+);
+
+export default ChannelsListNavigator;
