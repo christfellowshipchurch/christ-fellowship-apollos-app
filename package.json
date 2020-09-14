@@ -84,7 +84,7 @@
     "lodash": "^4.17.11",
     "memoize-one": "4.0.0",
     "moment": "2.22.2",
-    "node-fetch": "2.2.0",
+    "node-fetch": "2.6.1",
     "numeral": "^2.0.6",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
