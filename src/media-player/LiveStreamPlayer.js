@@ -70,7 +70,7 @@ class LiveStreamPlayer extends PureComponent {
     contentId: PropTypes.string,
   };
 
-  state = { portrait: true };
+  state = { portrait: true, channels: [] };
 
   // Tracks the fullscreen animation
   fullscreen = new Animated.Value(0);
@@ -200,6 +200,16 @@ class LiveStreamPlayer extends PureComponent {
     this.setState({ portrait: height > width });
   };
 
+  handleChannelsLoaded = ({ channels }) => {
+    // Show the banner, and/or show new messages state
+    // this.setState({ channels });
+  };
+
+  handleDirectMessage = ({ userId }) => {
+    this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
+    NavigationService.navigate('Chat', { userId, nested: true });
+  };
+
   renderCover = ({ data: { mediaPlayer = {} } = {} }) => {
     const { isFullscreen = false, isCasting = false } = mediaPlayer;
 
@@ -210,18 +220,18 @@ class LiveStreamPlayer extends PureComponent {
     }).start();
 
     const playerContext = {
-      onChannelsLoad: () => {},
-      onDirectMessage: () => {},
+      onChannelsLoad: this.handleChannelsLoaded,
+      onDirectMessage: this.handleDirectMessage,
     };
 
     const coverFlow = [
       isFullscreen ? (
         <TouchableOpacity
           key="dms"
-          style={{ backgroundColor: 'red', height: 50, width: '100%' }}
+          style={{ backgroundColor: 'red', height: 80, width: '100%' }}
           onPress={() => {
             this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
-            NavigationService.navigate('Chat');
+            NavigationService.navigate('Chat', { nested: true });
           }}
         />
       ) : null,

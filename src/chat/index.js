@@ -1,14 +1,17 @@
-import React from 'react';
-import { View } from 'react-native';
-import { H4 } from '@apollosproject/ui-kit';
+import { createStackNavigator } from 'react-navigation';
 
-export default function() {
-  return (
-    <View
-      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-    >
-      <H4>{'Chat'}</H4>
-    </View>
-  );
-};
+import ChannelsList from './ChannelsList';
+import Channel from './Channel';
 
+const ChatNavigator = createStackNavigator(
+  {
+    ChannelsList,
+    Channel,
+  },
+  {
+    initialRouteName: 'ChannelsList',
+    headerLayoutPreset: 'left',
+  }
+);
+
+export default ChatNavigator;
