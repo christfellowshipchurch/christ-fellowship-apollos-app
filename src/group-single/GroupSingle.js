@@ -210,7 +210,7 @@ class GroupSingle extends PureComponent {
           </PlaceholderWrapper>
         )}
 
-        <BodyText>{name}</BodyText>
+        <BodyText numberOfLines={1}>{name}</BodyText>
       </MemberCard>
     );
   };
