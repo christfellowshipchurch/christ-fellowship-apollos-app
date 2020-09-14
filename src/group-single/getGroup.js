@@ -13,13 +13,6 @@ export const GROUP_FRAGMENT = gql`
         uri
       }
     }
-    leaders {
-      id
-      firstName
-      photo {
-        uri
-      }
-    }
     coverImage {
       sources {
         uri
