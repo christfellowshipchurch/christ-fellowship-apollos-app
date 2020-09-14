@@ -15,6 +15,8 @@ import { get } from 'lodash';
 
 import { NavigationService, styled } from '@apollosproject/ui-kit';
 
+import { PlayerContext } from '../chat/context';
+import LiveStreamChat from './LiveStreamChat';
 import MiniControls, { MINI_PLAYER_HEIGHT } from './controls/MiniControls';
 import LiveStreamControls from './controls/LiveStreamControls';
 import VideoWindow from './controls/VideoWindow';
@@ -28,8 +30,6 @@ import {
 } from './controls/PlayheadState';
 import MediaPlayerSafeLayout from './controls/MediaPlayerSafeLayout';
 import GoogleCastController from './controls/GoogleCastController';
-import LiveStreamChat from './chat';
-import { PlayerContext } from './chat/context';
 
 const VideoSizer = styled(
   ({ isFullscreen, isVideo, theme }) =>

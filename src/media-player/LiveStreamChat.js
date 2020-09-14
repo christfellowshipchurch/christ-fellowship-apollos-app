@@ -4,11 +4,11 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
-import { useCurrentUser } from '../../hooks';
+import { useCurrentUser } from '../hooks';
 
-import MediaPlayerSafeLayout from '../controls/MediaPlayerSafeLayout';
-import { Chat, Channel, MessageList, MessageInput } from './components';
-import chatClient, { streami18n } from './client';
+import { Chat, Channel, MessageList, MessageInput } from '../chat/components';
+import chatClient, { streami18n } from '../chat/client';
+import MediaPlayerSafeLayout from './controls/MediaPlayerSafeLayout';
 
 const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   query getCurrentUserRoleForChannel($channelId: ID!) {
