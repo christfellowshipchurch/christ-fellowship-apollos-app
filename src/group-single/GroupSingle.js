@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Animated, View } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
-import { get, head, isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
 import {
   styled,
@@ -173,12 +173,6 @@ class GroupSingle extends PureComponent {
     }),
   };
 
-  static navigationOptions = {
-    header: NavigationHeader,
-    headerTransparent: true,
-    headerMode: 'float',
-  };
-
   get itemId() {
     return this.props.navigation.getParam('itemId', []);
   }
@@ -186,6 +180,12 @@ class GroupSingle extends PureComponent {
   get queryVariables() {
     return { itemId: this.itemId };
   }
+
+  static navigationOptions = {
+    header: NavigationHeader,
+    headerTransparent: true,
+    headerMode: 'float',
+  };
 
   renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
@@ -205,10 +205,10 @@ class GroupSingle extends PureComponent {
             />
           </MemberImageWrapper>
         ) : (
-            <PlaceholderWrapper>
-              <PlaceholderIcon isLoading={false} />
-            </PlaceholderWrapper>
-          )}
+          <PlaceholderWrapper>
+            <PlaceholderIcon isLoading={false} />
+          </PlaceholderWrapper>
+        )}
 
         <BodyText>{name}</BodyText>
       </MemberCard>
@@ -216,8 +216,6 @@ class GroupSingle extends PureComponent {
   };
 
   renderContent = ({ content, loading }) => {
-    const leader = head(get(content, 'leaders', []));
-    const leaderPhoto = get(leader, 'photo', {});
     const coverImageSources = get(content, 'coverImage.sources', []);
     const resources = get(content, 'groupResources', []);
     const dateTime = get(content, 'dateTime', {});
@@ -241,9 +239,9 @@ class GroupSingle extends PureComponent {
         hasParentVideoCall
           ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n`
           : ''
-        }Join Zoom ${
+      }Join Zoom ${
         hasParentVideoCall ? 'Breakout' : ''
-        }Meeting:\n${videoCallNote}`;
+      }Meeting:\n${videoCallNote}`;
       return notes.trim();
     };
 
@@ -272,7 +270,6 @@ class GroupSingle extends PureComponent {
 
                   <StyledAvatarCloud
                     avatars={avatars}
-                    primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
                     isLoading={!avatars && loading}
                   />
                   <StyledTitle>
@@ -331,12 +328,12 @@ class GroupSingle extends PureComponent {
                         date={start}
                       />
                     ) : (
-                        <CheckInConnected
-                          id={content.id}
-                          isLoading={loading}
-                          date={start}
-                        />
-                      )}
+                      <CheckInConnected
+                        id={content.id}
+                        isLoading={loading}
+                        date={start}
+                      />
+                    )}
 
                     <StyledH4 padded>{'Group Members'}</StyledH4>
                   </PaddedView>

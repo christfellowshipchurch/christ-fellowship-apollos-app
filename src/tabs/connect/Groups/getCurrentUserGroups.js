@@ -23,12 +23,6 @@ export default gql`
               start
               end
             }
-            leaders {
-              id
-              photo {
-                uri
-              }
-            }
           }
         }
       }
