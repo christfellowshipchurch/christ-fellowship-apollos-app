@@ -16,6 +16,7 @@ const MESSAGE_ACTIONS = {
   edit: 'edit',
   delete: 'delete',
   reactions: 'reactions',
+  message: 'message',
   flag: 'flag',
   mute: 'mute',
   unmute: 'unmute',
@@ -108,6 +109,7 @@ class MessageContent extends React.PureComponent {
     handleMute: PropTypes.func,
     handleUnmute: PropTypes.func,
     handleBan: PropTypes.func,
+    handleSendMessage: PropTypes.func,
     dismissKeyboard: PropTypes.func,
     handleAction: PropTypes.func,
     alignment: PropTypes.oneOf(['right', 'left']),
@@ -147,6 +149,7 @@ class MessageContent extends React.PureComponent {
     canMuteUser: PropTypes.func,
     canUnmuteUser: PropTypes.func,
     canBanUser: PropTypes.func,
+    canMessageUser: PropTypes.func,
     t: PropTypes.func,
   };
 
@@ -172,6 +175,7 @@ class MessageContent extends React.PureComponent {
       canMuteUser,
       canUnmuteUser,
       canBanUser,
+      canMessageUser,
       t,
     } = this.props;
 
@@ -181,6 +185,13 @@ class MessageContent extends React.PureComponent {
       options.push({
         id: MESSAGE_ACTIONS.reactions,
         title: t('Add Reaction'),
+      });
+    }
+
+    if (canMessageUser()) {
+      options.push({
+        id: MESSAGE_ACTIONS.message,
+        title: 'Send Person A Message',
       });
     }
 
@@ -267,6 +278,9 @@ class MessageContent extends React.PureComponent {
     switch (action) {
       case MESSAGE_ACTIONS.reactions:
         this.props.openReactionPicker();
+        break;
+      case MESSAGE_ACTIONS.message:
+        this.props.handleSendMessage();
         break;
       case MESSAGE_ACTIONS.edit:
         this.props.handleEdit();

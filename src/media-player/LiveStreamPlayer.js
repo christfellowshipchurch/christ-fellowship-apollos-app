@@ -29,6 +29,7 @@ import {
 import MediaPlayerSafeLayout from './controls/MediaPlayerSafeLayout';
 import GoogleCastController from './controls/GoogleCastController';
 import LiveStreamChat from './chat';
+import { PlayerContext } from './chat/context';
 
 const VideoSizer = styled(
   ({ isFullscreen, isVideo, theme }) =>
@@ -208,6 +209,11 @@ class LiveStreamPlayer extends PureComponent {
       bounciness: 4,
     }).start();
 
+    const playerContext = {
+      onChannelsLoad: () => {},
+      onDirectMessage: () => {},
+    };
+
     const coverFlow = [
       isFullscreen ? (
         <TouchableOpacity
@@ -251,10 +257,12 @@ class LiveStreamPlayer extends PureComponent {
         </Animated.View>
       </LiveStreamContainer>,
       isFullscreen ? (
-        <LiveStreamChat
-          isPortrait={this.state.isPortrait}
-          contentId={this.props.contentId}
-        />
+        <PlayerContext.Provider value={playerContext}>
+          <LiveStreamChat
+            isPortrait={this.state.isPortrait}
+            contentId={this.props.contentId}
+          />
+        </PlayerContext.Provider>
       ) : null,
       <MusicControls key="music-controls" />,
     ];

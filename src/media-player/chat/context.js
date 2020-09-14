@@ -1,8 +1,6 @@
 import React from 'react';
 import { Keyboard } from 'react-native';
 
-export const ChatContext = React.createContext({ client: null });
-
 const getContextAwareComponent = (context, originalComponent) => {
   const Context = context;
   const OriginalComponent = originalComponent;
@@ -23,6 +21,18 @@ const getContextAwareComponent = (context, originalComponent) => {
 
   return ContextAwareComponent;
 };
+
+export const PlayerContext = React.createContext({});
+
+export function withPlayerContext(OriginalComponent) {
+  const ContextAwareComponent = getContextAwareComponent(
+    PlayerContext,
+    OriginalComponent
+  );
+  return ContextAwareComponent;
+}
+
+export const ChatContext = React.createContext({ client: null });
 
 export function withChatContext(OriginalComponent) {
   const ContextAwareComponent = getContextAwareComponent(
