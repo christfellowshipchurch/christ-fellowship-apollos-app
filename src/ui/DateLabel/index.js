@@ -9,7 +9,14 @@ const DefaultDateLabelComponent = styled(({ theme }) => ({
   color: theme.colors.text.tertiary,
 }))(H6);
 
-const DateLabel = ({ date, isTodayText, Component, isLoading, ...props }) => {
+const DateLabel = ({
+  date,
+  withTime,
+  isTodayText,
+  Component,
+  isLoading,
+  ...props
+}) => {
   const mDate = moment(date);
   if (!mDate.isValid()) return null;
 
@@ -18,16 +25,20 @@ const DateLabel = ({ date, isTodayText, Component, isLoading, ...props }) => {
 
   /** If the date is today, display the isTodayText */
   if (mDate.format('MMDDYYYY') === now.format('MMDDYYYY')) {
-    displayText = isTodayText;
+    displayText = withTime ? mDate.format(`[Today at] h:mm A`) : isTodayText;
   } else if (mDate.week() === now.week()) {
     /** If the date is within this week: Monday */
-    displayText = mDate.format('dddd');
+    displayText = withTime
+      ? mDate.format('dddd [at] h:mm A')
+      : mDate.format('dddd');
   } else if (mDate.year() < now.year()) {
     /** If the date is outside of this year: Jan 1, 1996 */
     displayText = mDate.format('MMM DD, YYYY');
   } else {
     /** If the date is within this year: January 1 */
-    displayText = mDate.format('MMMM DD');
+    displayText = withTime
+      ? mDate.format('MMM DD [at] h:mm A')
+      : mDate.format('MMMM DD');
   }
 
   return (
@@ -42,12 +53,14 @@ DateLabel.propTypes = {
   isTodayText: PropTypes.string,
   Component: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   isLoading: PropTypes.bool,
+  withTime: PropTypes.bool,
 };
 
 DateLabel.defaultProps = {
   isTodayText: 'Today',
   Component: DefaultDateLabelComponent,
   isLoading: false,
+  withTime: false,
 };
 
 DateLabel.displayName = 'DateLabel';

@@ -161,9 +161,6 @@ class GroupSingle extends PureComponent {
       title: PropTypes.string,
       summary: PropTypes.string,
       members: PropTypes.shape({}),
-      schedule: PropTypes.shape({
-        friendlyScheduleText: PropTypes.string,
-      }),
       avatars: PropTypes.arrayOf(PropTypes.string),
       groupType: PropTypes.string,
     }),
@@ -285,7 +282,7 @@ class GroupSingle extends PureComponent {
                 <BackgroundView>
                   <PaddedView vertical={false}>
                     <Cell>
-                      {content.schedule ? (
+                      {content.dateTime ? (
                         <CellItem first>
                           <ScheduleView>
                             <IconView>
@@ -296,6 +293,7 @@ class GroupSingle extends PureComponent {
                               />
                             </IconView>
                             <DateLabel
+                              withTime
                               isLoading={!start && loading}
                               date={start}
                             />
