@@ -26,7 +26,8 @@ ChannelsList.navigationOptions = ({ navigation, ...props }) =>
   navigationOptions({
     navigation,
     ...props,
-    title: 'Channels List',
+    title: 'Conversations',
+    blur: true,
     headerLeft: null,
   });
 

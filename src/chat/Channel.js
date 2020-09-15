@@ -6,7 +6,7 @@ import { View } from 'react-native';
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 import { useCurrentUser } from '../hooks';
-import { navigationOptions } from '../navigation';
+import { navigationOptions, NavigationSpacer } from '../navigation';
 
 import {
   Chat,
@@ -56,6 +56,9 @@ const Channel = ({ navigation }) => {
 
       await channel.current.watch();
 
+      const response = await chatClient.queryUsers({ id: { $in: [userId] } });
+      navigation.setParams({ name: response?.users?.[0]?.name });
+
       setConnecting(false);
     } catch (e) {
       console.error(e.message); // eslint-disable-line no-console
@@ -85,6 +88,7 @@ const Channel = ({ navigation }) => {
   return (
     <Chat client={chatClient} i18nInstance={streami18n}>
       <FlexedMediaSpacer Component={PaddedView}>
+        <NavigationSpacer />
         <ChatContainer>
           <ChannelInner channel={channel.current}>
             <MessageList />
@@ -106,7 +110,8 @@ Channel.navigationOptions = ({ navigation, ...props }) =>
   navigationOptions({
     navigation,
     ...props,
-    title: 'Chat',
+    title: navigation.getParam('name', '…'),
+    blur: true,
     headerLeft: null,
   });
 
