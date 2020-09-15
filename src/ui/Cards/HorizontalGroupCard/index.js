@@ -10,7 +10,6 @@ import {
   H5,
   ImageSourceType,
   styled,
-  withIsLoading,
   withTheme,
   Icon,
 } from '@apollosproject/ui-kit';
@@ -69,43 +68,44 @@ const ScheduleView = styled(({ theme }) => ({
   paddingTop: theme.sizing.baseUnit,
 }))(View);
 
-const HorizontalGroupCard = withIsLoading(
-  ({ fill, coverImage, isLoading, title, avatars, dateTime }) => {
-    const date = get(dateTime, 'start', '');
-    return (
-      <CardWrapper isLoading={isLoading} inHorizontalList>
-        <View>
-          <Image source={coverImage} isLoading={isLoading} />
-          {!isLoading && (
-            <StyledAvatarCloud avatars={avatars} isLoading={isLoading} />
-          )}
-        </View>
-        <Content>
-          {title ? (
-            <Title isLoading={isLoading} numberOfLines={2}>
-              {title}
-            </Title>
-          ) : null}
-          {date ? (
-            <ScheduleView>
-              <IconView>
-                <Icon isLoading={isLoading} name="time" size={16} fill={fill} />
-              </IconView>
-              <DateLabel isLoading={isLoading} date={date} />
-            </ScheduleView>
-          ) : null}
-        </Content>
-      </CardWrapper>
-    );
-  }
-);
+const HorizontalGroupCard = ({
+  fill,
+  coverImage,
+  isLoading,
+  title,
+  avatars,
+  dateTime,
+}) => {
+  const date = get(dateTime, 'start', '');
+  return (
+    <CardWrapper isLoading={isLoading} inHorizontalList>
+      <View>
+        <Image source={coverImage} />
+        {!isLoading && (
+          <StyledAvatarCloud avatars={avatars} isLoading={isLoading} />
+        )}
+      </View>
+      <Content>
+        {title ? <Title numberOfLines={2}>{title}</Title> : null}
+        {date ? (
+          <ScheduleView>
+            <IconView>
+              <Icon name="time" size={16} fill={fill} />
+            </IconView>
+            <DateLabel isLoading={isLoading} date={date} />
+          </ScheduleView>
+        ) : null}
+      </Content>
+    </CardWrapper>
+  );
+};
 
 HorizontalGroupCard.propTypes = {
   coverImage: PropTypes.oneOfType([
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
   ]).isRequired,
-  summary: PropTypes.string,
+  isLoading: PropTypes.bool,
   title: PropTypes.string,
 };
 
