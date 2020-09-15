@@ -186,7 +186,7 @@ class GroupSingle extends PureComponent {
 
   renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
-    const name = get(item, 'firstName', '');
+    const name = get(item, 'nickName', '') || get(item, 'firstName', '');
     return (
       <MemberCard>
         {!isLoading && photo && photo.uri ? (

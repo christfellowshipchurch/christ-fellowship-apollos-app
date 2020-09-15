@@ -9,6 +9,7 @@ export const GROUP_FRAGMENT = gql`
     members {
       id
       firstName
+      nickName
       photo {
         uri
       }
