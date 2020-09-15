@@ -207,7 +207,9 @@ class LiveStreamPlayer extends PureComponent {
 
   handleDirectMessage = ({ userId }) => {
     this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
-    NavigationService.navigate('Channel', { userId, nested: true });
+    setTimeout(() => {
+      NavigationService.navigate('Channel', { userId, nested: true });
+    }, 250);
   };
 
   renderCover = ({ data: { mediaPlayer = {} } = {} }) => {

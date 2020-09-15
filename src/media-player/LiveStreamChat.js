@@ -62,7 +62,9 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
         image: currentUser?.profile?.photo?.uri,
       };
 
-      await chatClient.setUser(user, currentUser?.streamChatToken);
+      if (!chatClient.userID) {
+        await chatClient.setUser(user, currentUser?.streamChatToken);
+      }
       // const res = await chatClient.setUser(user, currentUser?.streamChatToken);
       // console.log('setUser', { res });
       channel.current = chatClient.channel('livestream', contentId);
