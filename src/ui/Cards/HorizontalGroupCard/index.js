@@ -71,12 +71,11 @@ const ScheduleView = styled(({ theme }) => ({
 
 const HorizontalGroupCard = withIsLoading(
   ({ fill, coverImage, isLoading, title, avatars, dateTime }) => {
-    const imageSource = get(coverImage, 'sources', {});
     const date = get(dateTime, 'start', '');
     return (
       <CardWrapper isLoading={isLoading} inHorizontalList>
         <View>
-          <Image source={imageSource} />
+          <Image source={coverImage} isLoading={isLoading} />
           {!isLoading && (
             <StyledAvatarCloud avatars={avatars} isLoading={isLoading} />
           )}
