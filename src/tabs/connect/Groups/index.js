@@ -20,7 +20,9 @@ const loadingStateObject = {
 };
 
 const GroupsListConnected = ({ navigation }) => {
-  const { loading, error, data } = useQuery(GET_CURRENT_USER_GROUPS);
+  const { loading, error, data } = useQuery(GET_CURRENT_USER_GROUPS, {
+    fetchPolicy: 'cache-and-network',
+  });
   const groups = get(data, 'currentUser.profile.groups', []);
 
   if (error) return <ErrorCard error={error} />;
