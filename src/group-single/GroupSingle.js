@@ -81,13 +81,13 @@ const StyledIcon = withTheme(({ theme }) => ({
   fill: theme.colors.text.tertiary,
 }))(Icon);
 
-const StyledAvatarCloud = styled({
+const StyledAvatarCloud = styled(({ theme }) => ({
   position: 'absolute',
-  left: 0,
-  right: 0,
-  bottom: 100,
-  top: 40,
-})(AvatarCloud);
+  left: theme.sizing.baseUnit,
+  right: theme.sizing.baseUnit,
+  bottom: 125, // Magic Number to avoid overlaying title
+  top: 40, // Magic Number to avoid overlaying header
+}))(AvatarCloud);
 
 const StyledTitle = styled(({ theme }) => ({
   alignItems: 'center',

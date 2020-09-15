@@ -50,13 +50,13 @@ const Title = styled(({ theme }) => ({
   textAlign: 'center',
 }))(H5);
 
-const StyledAvatarCloud = styled({
+const StyledAvatarCloud = styled(({ theme }) => ({
   position: 'absolute',
-  left: 0,
-  right: 0,
+  left: theme.sizing.baseUnit,
+  right: theme.sizing.baseUnit,
   bottom: 0,
-  top: 0,
-})(AvatarCloud);
+  top: theme.sizing.baseUnit,
+}))(AvatarCloud);
 
 const IconView = styled({
   paddingRight: 6,
