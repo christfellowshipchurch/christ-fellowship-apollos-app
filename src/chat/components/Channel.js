@@ -470,15 +470,13 @@ class Channel extends PureComponent {
           enabled={!this.props.disableKeyboardCompatibleView}
         >
           <ChannelContext.Provider value={this.getContext()}>
-            <View collapsable={false} style={{ height: '100%' }}>
-              {children}
-            </View>
+            {children}
           </ChannelContext.Provider>
         </KeyboardCompatibleView>
       );
     }
 
-    return <View style={{ height: '100%' }}>{core}</View>;
+    return core;
   }
 }
 

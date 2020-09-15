@@ -1,8 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Keyboard, View } from 'react-native';
+import { Animated, Keyboard } from 'react-native';
+import styled from '@stream-io/styled-components';
 
 import { KeyboardContext } from '../context';
 import { useKeyboardCompatibleHeight } from './hooks/useKeyboardCompatibleHeight';
+
+const KeyboardCompatibleContainer = styled.View`
+  height: 100%;
+`;
 
 export const KeyboardCompatibleView = ({
   children,
@@ -111,9 +116,9 @@ export const KeyboardCompatibleView = ({
       }}
     >
       <KeyboardContext.Provider value={{ dismissKeyboard }}>
-        <View collapsable={false} ref={rootChannelView}>
+        <KeyboardCompatibleContainer ref={rootChannelView}>
           {children}
-        </View>
+        </KeyboardCompatibleContainer>
       </KeyboardContext.Provider>
     </Animated.View>
   );

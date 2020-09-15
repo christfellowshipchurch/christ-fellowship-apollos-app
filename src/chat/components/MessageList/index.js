@@ -22,6 +22,15 @@ const ListContainer = styled.FlatList`
   ${({ theme }) => theme.messageList.listContainer.css};
 `;
 
+const EditingContainer = styled.TouchableOpacity`
+  position: absolute;
+  backgroundColor: black;
+  opacity: 0.4;
+  height: 100%;
+  width: 100%;
+  zIndex: 100;
+`;
+
 const ErrorNotificationText = styled.Text`
   color: red;
   background-color: #fae6e8;
@@ -445,70 +454,57 @@ class MessageList extends PureComponent {
         {// Mask for edit state
         this.props.editing &&
           this.props.disableWhileEditing && (
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                backgroundColor: 'black',
-                opacity: 0.4,
-                height: '100%',
-                width: '100%',
-                zIndex: 100,
-              }}
+            <EditingContainer
               collapsable={false}
               onPress={this.props.clearEditingState}
             />
           )}
-        <View
-          collapsable={false}
-          style={{ flex: 1, alignItems: 'center', width: '100%' }}
-        >
-          <ListContainer
-            ref={(fl) => {
-              this.flatList = fl;
-            }}
-            data={messagesWithDates}
-            onScroll={this.handleScroll}
-            onEndReached={this.props.loadMore}
-            inverted
-            keyboardShouldPersistTaps="always"
-            keyExtractor={(item) =>
-              item.id ||
-              item.created_at ||
-              (item.date ? item.date.toISOString() : false) ||
-              uuidv4()
-            }
-            renderItem={({ item: message }) =>
-              this.renderItem(message, messageGroupStyles[message.id])
-            }
-            /** Disables the MessageList UI. Which means, message actions, reactions won't work. */
-            extraData={this.props.disabled}
-            maintainVisibleContentPosition={{
-              minIndexForVisible: 1,
-              autoscrollToTopThreshold: 10,
-            }}
-          />
-          {showTypingIndicator && (
-            <TypingIndicatorContainer>
-              <TypingIndicator
-                typing={this.props.typing}
-                client={this.props.client}
-              />
-            </TypingIndicatorContainer>
-          )}
-          {this.state.newMessagesNotification && (
-            <MessageNotification
-              showNotification={this.state.newMessagesNotification}
-              onPress={this.goToNewMessages}
+        <ListContainer
+          ref={(fl) => {
+            this.flatList = fl;
+          }}
+          data={messagesWithDates}
+          onScroll={this.handleScroll}
+          onEndReached={this.props.loadMore}
+          inverted
+          keyboardShouldPersistTaps="always"
+          keyExtractor={(item) =>
+            item.id ||
+            item.created_at ||
+            (item.date ? item.date.toISOString() : false) ||
+            uuidv4()
+          }
+          renderItem={({ item: message }) =>
+            this.renderItem(message, messageGroupStyles[message.id])
+          }
+          /** Disables the MessageList UI. Which means, message actions, reactions won't work. */
+          extraData={this.props.disabled}
+          maintainVisibleContentPosition={{
+            minIndexForVisible: 1,
+            autoscrollToTopThreshold: 10,
+          }}
+        />
+        {showTypingIndicator && (
+          <TypingIndicatorContainer>
+            <TypingIndicator
+              typing={this.props.typing}
+              client={this.props.client}
             />
-          )}
-          {!this.state.online && (
-            <ErrorNotification>
-              <ErrorNotificationText>
-                {t('Connection failure, reconnecting now ...')}
-              </ErrorNotificationText>
-            </ErrorNotification>
-          )}
-        </View>
+          </TypingIndicatorContainer>
+        )}
+        {this.state.newMessagesNotification && (
+          <MessageNotification
+            showNotification={this.state.newMessagesNotification}
+            onPress={this.goToNewMessages}
+          />
+        )}
+        {!this.state.online && (
+          <ErrorNotification>
+            <ErrorNotificationText>
+              {t('Connection failure, reconnecting now ...')}
+            </ErrorNotificationText>
+          </ErrorNotification>
+        )}
       </React.Fragment>
     );
   }

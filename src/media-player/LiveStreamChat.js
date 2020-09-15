@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
+import { View } from 'react-native';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
 import { Chat, Channel, MessageList, MessageInput } from '../chat/components';
 import chatClient, { streami18n } from '../chat/client';
-import MediaPlayerSafeLayout from './controls/MediaPlayerSafeLayout';
 
 const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   query getCurrentUserRoleForChannel($channelId: ID!) {
@@ -21,8 +21,9 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
 
 const ChatContainer = styled(({ theme }) => ({
   flex: 1,
-  backgroundColor: theme.colors.background.screen,
-}))(MediaPlayerSafeLayout);
+  paddingBottom: theme.sizing.baseUnit,
+  backgroundColor: theme.colors.background.paper,
+}))(View);
 
 const LiveStreamChat = ({ isPortrait, contentId }) => {
   const [connecting, setConnecting] = useState(true);

@@ -24,8 +24,7 @@ const Container = styled(({ padding, ...rest }) => <View {...rest} />)`
   background-color: rgba(0, 0, 0, 0.05);
   padding-top: ${({ theme, padding }) =>
     padding ? theme.messageInput.container.conditionalPadding : 0}px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 10px;
   ${({ theme }) => theme.messageInput.container.css};
 `;
 
