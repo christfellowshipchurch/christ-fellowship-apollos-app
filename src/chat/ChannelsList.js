@@ -94,11 +94,11 @@ const ChannelsList = ({ navigation }) => {
             filters={filters}
             sort={sort}
             options={options}
-            onSelect={async (channel) => {
-              const { members } = await channel.queryMembers({
-                id: { $nin: [curUserId] },
-              });
-              const userId = get(members, '[0].user.id');
+            onSelect={(channel) => {
+              const members = get(channel, 'state.members');
+              const userId = Object.keys(members).find(
+                (id) => id !== curUserId
+              );
               navigation.navigate('Channel', { userId, nested: true });
             }}
           />
