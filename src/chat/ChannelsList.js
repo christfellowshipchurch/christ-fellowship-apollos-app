@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from 'react-navigation';
 import { SafeAreaView, View } from 'react-native';
+import { get } from 'lodash';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
@@ -29,20 +30,22 @@ const ChannelsList = ({ navigation }) => {
   const [connecting, setConnecting] = useState(true);
 
   const { loading, data = {} } = useCurrentUser();
-  const { currentUser = {} } = data;
 
   const connect = async () => {
     try {
+      const firstName = get(data, 'currentUser.profile.firstName', '');
+      const lastName = get(data, 'currentUser.profile.lastName', '');
       const user = {
-        id: currentUser?.id.split(':')[1],
-        name: `${currentUser?.profile?.firstName} ${
-          currentUser?.profile?.lastName
-        }`,
-        image: currentUser?.profile?.photo?.uri,
+        id: get(data, 'currentUser.id', '').split(':')[1],
+        name: `${firstName} ${lastName}`,
+        image: get(data, 'currentUser.profile.photo.uri'),
       };
 
       if (!chatClient.userID) {
-        await chatClient.setUser(user, currentUser?.streamChatToken);
+        await chatClient.setUser(
+          user,
+          get(data, 'currentUser.streamChatToken')
+        );
       }
 
       setConnecting(false);
@@ -71,9 +74,10 @@ const ChannelsList = ({ navigation }) => {
     );
   }
 
+  const curUserId = get(data, 'currentUser.id', '').split(':')[1];
   const filters = {
     type: 'messaging',
-    members: { $in: [currentUser?.id.split(':')[1]] },
+    members: { $in: [curUserId] },
   };
   const sort = { last_message_at: -1 };
   const options = {
@@ -92,9 +96,9 @@ const ChannelsList = ({ navigation }) => {
             options={options}
             onSelect={async (channel) => {
               const { members } = await channel.queryMembers({
-                id: { $nin: [currentUser?.id.split(':')[1]] },
+                id: { $nin: [curUserId] },
               });
-              const userId = members?.[0]?.user?.id;
+              const userId = get(members, '[0].user.id');
               navigation.navigate('Channel', { userId, nested: true });
             }}
           />

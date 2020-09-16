@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { createStackNavigator } from 'react-navigation';
 import { View } from 'react-native';
+import { get } from 'lodash';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
@@ -40,27 +41,29 @@ const Channel = ({ navigation }) => {
 
   const connect = async () => {
     try {
-      const { currentUser = {} } = data;
+      const firstName = get(data, 'currentUser.profile.firstName', '');
+      const lastName = get(data, 'currentUser.profile.lastName', '');
       const user = {
-        id: currentUser?.id.split(':')[1],
-        name: `${currentUser?.profile?.firstName} ${
-          currentUser?.profile?.lastName
-        }`,
-        image: currentUser?.profile?.photo?.uri,
+        id: get(data, 'currentUser.id', '').split(':')[1],
+        name: `${firstName} ${lastName}`,
+        image: get(data, 'currentUser.profile.photo.uri'),
       };
 
       if (!chatClient.userID) {
-        await chatClient.setUser(user, currentUser?.streamChatToken);
+        await chatClient.setUser(
+          user,
+          get(data, 'currentUser.streamChatToken')
+        );
       }
 
       channel.current = chatClient.channel('messaging', {
-        members: [userId, currentUser?.id.split(':')[1]],
+        members: [userId, get(data, 'currentUser.id', '').split(':')[1]],
       });
 
       await channel.current.watch();
 
       const response = await chatClient.queryUsers({ id: { $in: [userId] } });
-      navigation.setParams({ name: response?.users?.[0]?.name });
+      navigation.setParams({ name: get(response, 'users[0].name') });
 
       setConnecting(false);
     } catch (e) {

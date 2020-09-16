@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
 import { View } from 'react-native';
+import { get } from 'lodash';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
@@ -53,23 +54,25 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
 
   const connect = async () => {
     try {
-      const { currentUser = {} } = data;
+      const firstName = get(data, 'currentUser.profile.firstName', '');
+      const lastName = get(data, 'currentUser.profile.lastName', '');
       const user = {
-        id: currentUser?.id.split(':')[1],
-        name: `${currentUser?.profile?.firstName} ${
-          currentUser?.profile?.lastName
-        }`,
-        image: currentUser?.profile?.photo?.uri,
+        id: get(data, 'currentUser.id', '').split(':')[1],
+        name: `${firstName} ${lastName}`,
+        image: get(data, 'currentUser.profile.photo.uri'),
       };
 
       if (!chatClient.userID) {
-        await chatClient.setUser(user, currentUser?.streamChatToken);
+        await chatClient.setUser(
+          user,
+          get(data, 'currentUser.streamChatToken')
+        );
+        // console.log('setUser', { res1 });
       }
-      // const res1 = await chatClient.setUser(user, currentUser?.streamChatToken);
-      // console.log('setUser', { res1 });
+
       channel.current = chatClient.channel('livestream', contentId);
 
-      const res2 = await channel.current.watch();
+      await channel.current.watch();
       // console.log('watch', { res2 });
       // chatClient.on(handleClientEvent);
       // channel.current.on(handleChannelEvent);
