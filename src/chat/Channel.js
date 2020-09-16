@@ -128,4 +128,6 @@ const ChannelNavigator = createStackNavigator(
   }
 );
 
+export { Channel };
+
 export default ChannelNavigator;

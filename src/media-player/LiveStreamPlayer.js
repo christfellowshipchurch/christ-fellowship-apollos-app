@@ -233,7 +233,9 @@ class LiveStreamPlayer extends PureComponent {
           style={{ backgroundColor: 'red', height: 80, width: '100%' }}
           onPress={() => {
             this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
-            NavigationService.navigate('ChannelsList', { nested: true });
+            setTimeout(() => {
+              NavigationService.navigate('ChannelsList', { nested: true });
+            }, 250);
           }}
         />
       ) : null,
