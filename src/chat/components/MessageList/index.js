@@ -484,14 +484,14 @@ class MessageList extends PureComponent {
             autoscrollToTopThreshold: 10,
           }}
         />
-        {showTypingIndicator && (
+        {/* showTypingIndicator && (
           <TypingIndicatorContainer>
             <TypingIndicator
               typing={this.props.typing}
               client={this.props.client}
             />
           </TypingIndicatorContainer>
-        )}
+        ) */}
         {this.state.newMessagesNotification && (
           <MessageNotification
             showNotification={this.state.newMessagesNotification}
