@@ -1,18 +1,16 @@
 import React from 'react';
+import { View } from 'react-native';
+import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
 
-import styled from '@stream-io/styled-components';
-import { ActivityIndicator } from '@apollosproject/ui-kit';
-
-const Container = styled.View`
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  ${({ theme }) => theme.channelListFooterLoadingIndicator.container.css}
-`;
+const Container = styled({
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+})(View);
 
 const ChannelListFooterLoadingIndicator = () => (
   <Container>
-    <ActivityIndicator size={'large'} />
+    <ActivityIndicator />
   </Container>
 );
 

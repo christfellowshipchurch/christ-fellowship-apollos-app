@@ -1,24 +1,22 @@
 import React from 'react';
-import styled from '@stream-io/styled-components';
 import PropTypes from 'prop-types';
+import { TouchableOpacity } from 'react-native';
+
+import { styled, UIText } from '@apollosproject/ui-kit';
 import { withTranslationContext } from '../../context';
 
-const Container = styled.TouchableOpacity`
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  background-color: #fae6e8;
-  padding: 3px;
-  ${({ theme }) => theme.channelListHeaderErrorIndicator.container.css};
-`;
+const Container = styled({
+  width: '100%',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: '#fae6e8',
+  padding: 3,
+})(TouchableOpacity);
 
-const ErrorText = styled.Text`
-  color: red;
-  font-size: 12;
-  font-weight: bold;
-  padding: 3px;
-  ${({ theme }) => theme.channelListHeaderErrorIndicator.errorText.css};
-`;
+const ErrorText = styled({
+  color: 'red',
+  padding: 3,
+})(UIText);
 
 const ChannelListHeaderErrorIndicator = withTranslationContext(
   ({ onPress, t }) => (
