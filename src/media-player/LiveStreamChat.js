@@ -112,7 +112,7 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
     );
   }
 
-  if (isPortrait) {
+  if (!props.isPortrait) {
     return null;
   }
 

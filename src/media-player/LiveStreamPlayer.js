@@ -273,7 +273,7 @@ class LiveStreamPlayer extends PureComponent {
       isFullscreen ? (
         <PlayerContext.Provider value={playerContext}>
           <LiveStreamChat
-            isPortrait={this.state.isPortrait}
+            isPortrait={this.state.portrait}
             contentId={this.props.contentId}
           />
         </PlayerContext.Provider>
