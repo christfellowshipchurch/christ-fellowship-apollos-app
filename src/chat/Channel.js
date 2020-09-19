@@ -43,8 +43,9 @@ const Channel = ({ navigation }) => {
     try {
       const firstName = get(data, 'currentUser.profile.firstName', '');
       const lastName = get(data, 'currentUser.profile.lastName', '');
+      const curId = get(data, 'currentUser.id', '').split(':')[1];
       const user = {
-        id: get(data, 'currentUser.id', '').split(':')[1],
+        id: curId,
         name: `${firstName} ${lastName}`,
         image: get(data, 'currentUser.profile.photo.uri'),
       };
@@ -57,7 +58,7 @@ const Channel = ({ navigation }) => {
       }
 
       channel.current = chatClient.channel('messaging', {
-        members: [userId, get(data, 'currentUser.id', '').split(':')[1]],
+        members: [userId, curId],
       });
 
       await channel.current.watch();

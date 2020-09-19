@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import {
   Animated,
+  Easing,
   View,
   StyleSheet,
   Dimensions,
@@ -20,6 +21,7 @@ import {
   Icon,
   NavigationService,
   Touchable,
+  LayoutConsumer,
 } from '@apollosproject/ui-kit';
 
 import { PlayerContext } from '../chat/context';
@@ -42,8 +44,10 @@ const MessagesBannerContainer = styled(({ theme }) => ({
   backgroundColor: theme.colors.primary,
 }))(SafeAreaView);
 
+const BANNER_HEIGHT = 50;
+
 const MessagesBanner = styled(({ theme }) => ({
-  height: 50,
+  height: BANNER_HEIGHT,
   width: '100%',
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -79,10 +83,10 @@ const Dot = styled(({ theme }) => ({
   aspectRatio: 1,
   backgroundColor: theme.colors.alert,
   borderColor: theme.colors.primary,
-  borderWidth: 3,
+  borderWidth: 0,
   borderRadius: 14,
   marginTop: -5,
-  marginRight: 5,
+  marginRight: 8,
   position: 'absolute',
   right: 0,
   top: 0,
@@ -131,6 +135,9 @@ class LiveStreamPlayer extends PureComponent {
   };
 
   state = { portrait: true, channels: [] };
+
+  // Tracks the messages banner height
+  bannerHeight = new Animated.Value(0);
 
   // Tracks the fullscreen animation
   fullscreen = new Animated.Value(0);
@@ -252,6 +259,17 @@ class LiveStreamPlayer extends PureComponent {
     Dimensions.addEventListener('change', this.handleOrientationChanged);
   }
 
+  componentDidUpdate(_, oldState) {
+    if (this.state.channels.length && !oldState.channels.length) {
+      Animated.timing(this.bannerHeight, {
+        toValue: 1,
+        duration: 250,
+        ease: Easing.inOut(Easing.ease),
+        // useNativeDriver: true,
+      }).start();
+    }
+  }
+
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.handleOrientationChanged);
   }
@@ -260,9 +278,9 @@ class LiveStreamPlayer extends PureComponent {
     this.setState({ portrait: height > width });
   };
 
-  handleChannelsLoaded = ({ channels }) => {
-    // Show the banner, and/or show new messages state
-    // this.setState({ channels });
+  handleChannelsUpdated = ({ channels }) => {
+    // console.log({ channels });
+    this.setState({ channels });
   };
 
   handleDirectMessage = ({ userId }) => {
@@ -272,50 +290,73 @@ class LiveStreamPlayer extends PureComponent {
     }, 250);
   };
 
-  renderCover = ({ data: { mediaPlayer = {} } = {} }) => {
-    const { isFullscreen = false, isCasting = false } = mediaPlayer;
-
-    Animated.spring(this.fullscreen, {
-      toValue: isFullscreen ? 1 : 0,
-      useNativeDriver: true,
-      bounciness: 4,
-    }).start();
-
-    const playerContext = {
-      onChannelsLoad: this.handleChannelsLoaded,
-      onDirectMessage: this.handleDirectMessage,
-    };
-
-    const coverFlow = [
-      isFullscreen ? (
-        <MessagesBannerContainer
-          key="dms"
-          {...(Platform.OS !== 'android' && isFullscreen
-            ? this.panResponder.panHandlers
-            : {})}
-        >
-          <MessagesBanner
-            onPress={() => {
-              this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
-              setTimeout(() => {
-                NavigationService.navigate('ChannelsList', { nested: true });
-              }, 250);
+  renderMessagesBanner = ({ isFullscreen }) => {
+    if (!isFullscreen) return null;
+    return (
+      <LayoutConsumer>
+        {({ top }) => (
+          <Animated.View
+            style={{
+              height: this.bannerHeight.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, top + BANNER_HEIGHT],
+              }),
+              transform: [
+                {
+                  translateY: this.bannerHeight.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-top - BANNER_HEIGHT, 0],
+                  }),
+                },
+              ],
             }}
           >
-            <FlexHorizontal>
-              <MessagesIcon />
-              <MessagesBannerText>
-                {'You’re involved in 5 conversations.'}
-              </MessagesBannerText>
-            </FlexHorizontal>
-            <FlexHorizontal>
-              <MessagesBannerText>{'VIEW'}</MessagesBannerText>
-              <RightArrow />
-              <Dot />
-            </FlexHorizontal>
-          </MessagesBanner>
-        </MessagesBannerContainer>
-      ) : null,
+            <MessagesBannerContainer
+              key="banner"
+              {...(Platform.OS !== 'android' && isFullscreen
+                ? this.panResponder.panHandlers
+                : {})}
+            >
+              <MessagesBanner
+                onPress={() => {
+                  this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
+                  setTimeout(() => {
+                    NavigationService.navigate('ChannelsList', {
+                      nested: true,
+                    });
+                  }, 250);
+                }}
+              >
+                <React.Fragment>
+                  <FlexHorizontal>
+                    <MessagesIcon />
+                    <MessagesBannerText>
+                      {`You’re involved in ${
+                        this.state.channels.length
+                      } conversation${
+                        this.state.channels.length === 1 ? '' : 's'
+                      }.`}
+                    </MessagesBannerText>
+                  </FlexHorizontal>
+                  <FlexHorizontal>
+                    <MessagesBannerText>{'VIEW'}</MessagesBannerText>
+                    <RightArrow />
+                    {this.state.channels.find((c) => !!c.countUnread()) ? (
+                      <Dot />
+                    ) : null}
+                  </FlexHorizontal>
+                </React.Fragment>
+              </MessagesBanner>
+            </MessagesBannerContainer>
+          </Animated.View>
+        )}
+      </LayoutConsumer>
+    );
+  };
+
+  renderLiveStream = ({ mediaPlayer }) => {
+    const { isFullscreen = false, isCasting = false } = mediaPlayer;
+    return (
       <LiveStreamContainer
         key="cover"
         onLayout={this.handleCoverLayout}
@@ -346,16 +387,41 @@ class LiveStreamPlayer extends PureComponent {
         <Animated.View style={this.fullscreenControlsAnimation}>
           <LiveStreamControls isCasting={isCasting} />
         </Animated.View>
-      </LiveStreamContainer>,
-      isFullscreen ? (
-        <PlayerContext.Provider value={playerContext}>
-          <LiveStreamChat
-            isPortrait={this.state.portrait}
-            contentId={this.props.contentId}
-          />
-        </PlayerContext.Provider>
-      ) : null,
-      <MusicControls key="music-controls" />,
+      </LiveStreamContainer>
+    );
+  };
+
+  renderChat = ({ isFullscreen }) => {
+    if (!isFullscreen) return null;
+
+    const playerContext = {
+      onChannelsUpdated: this.handleChannelsUpdated,
+      onDirectMessage: this.handleDirectMessage,
+    };
+
+    return (
+      <PlayerContext.Provider value={playerContext} key={'chat'}>
+        <LiveStreamChat
+          isPortrait={this.state.portrait}
+          contentId={this.props.contentId}
+        />
+      </PlayerContext.Provider>
+    );
+  };
+
+  renderCover = ({ data: { mediaPlayer = {} } = {} }) => {
+    const { isFullscreen = false } = mediaPlayer;
+    Animated.spring(this.fullscreen, {
+      toValue: isFullscreen ? 1 : 0,
+      useNativeDriver: true,
+      bounciness: 4,
+    }).start();
+
+    const coverFlow = [
+      this.renderMessagesBanner({ isFullscreen }),
+      this.renderLiveStream({ mediaPlayer }),
+      this.renderChat({ isFullscreen }),
+      <MusicControls key={'music-controls'} />,
     ];
 
     if (!isFullscreen) {
