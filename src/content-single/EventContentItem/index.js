@@ -23,7 +23,7 @@ import { HorizontalDivider } from 'ui/Dividers';
 import ButtonWithLinkRouting from 'ui/ButtonWithLinkRouting';
 import Color from 'color';
 import Features from '../Features';
-import EventDateTimes from '../EventDateTimes';
+import EventGroupings from '../EventGroupings';
 import Title from '../Title';
 import HTMLContent from '../HTMLContent';
 import CheckInButton from '../CheckInButton';
@@ -112,25 +112,7 @@ const EventContentItem = ({ content, loading }) => {
                     )}
                     <Title contentId={content.id} isLoading={loading} />
 
-                    {events.length < 1 &&
-                      callsToAction.length > 0 && (
-                        <H4 isLoading={loading}>{buttonLabel}</H4>
-                      )}
-
-                    {events.length < 1 &&
-                      callsToAction.length < 1 && (
-                        <H4 isLoading={loading}>
-                          Check Back Soon for More Information
-                        </H4>
-                      )}
-
-                    {events.length > 0 && (
-                      <EventDateTimes
-                        contentId={content.id}
-                        events={content.events}
-                        loading={loading}
-                      />
-                    )}
+                    <EventGroupings contentId={content.id} />
 
                     {callsToAction.length > 0 &&
                       callsToAction.map((n) => (

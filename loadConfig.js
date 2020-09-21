@@ -90,19 +90,20 @@ ApollosConfig.loadJs({
     `,
     EVENT_ITEM_FRAGMENT: gql`
       fragment eventContentItemFragment on EventContentItem {
-        events {
-          start
-          end
-          campuses {
-            name
+        eventGroupings {
+          name
+          instances {
+            id
+            start
+            end
           }
-          location
         }
+
         callsToAction {
           call
           action
         }
-        hideLabel
+
         checkin {
           id
           title

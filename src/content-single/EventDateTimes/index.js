@@ -63,7 +63,18 @@ const EventDateTimes = ({ events, loading }) => {
 };
 
 EventDateTimes.propTypes = {
-  events: PropTypes.arrayOf(PropTypes.object),
+  instances: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      instances: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string,
+          start: PropTypes.string,
+          end: PropTypes.string,
+        })
+      ),
+    })
+  ),
   loading: PropTypes.bool,
 };
 
