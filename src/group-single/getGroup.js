@@ -9,19 +9,10 @@ export const GROUP_FRAGMENT = gql`
     members {
       id
       firstName
+      nickName
       photo {
         uri
       }
-    }
-    leaders {
-      id
-      firstName
-      photo {
-        uri
-      }
-    }
-    schedule {
-      friendlyScheduleText
     }
     coverImage {
       sources {

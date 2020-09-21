@@ -17,10 +17,6 @@ const StyledButton = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit * 0.5,
 }))(Button);
 
-const StyledButtonText = styled(() => ({
-  color: '#FFF',
-}))(H4);
-
 const Resources = ({ resources, isLoading, navigation }) => {
   const { routeLink } = useLinkRouter();
   return (
@@ -63,11 +59,12 @@ const Resources = ({ resources, isLoading, navigation }) => {
           >
             <StyledButton
               onPress={() => handleOnPress()}
-              type={'default'}
+              type={'ghost'}
+              bordered
               loading={isLoading}
               pill={false}
             >
-              <StyledButtonText>{title}</StyledButtonText>
+              <H4>{title}</H4>
             </StyledButton>
           </ThemeMixin>
         );

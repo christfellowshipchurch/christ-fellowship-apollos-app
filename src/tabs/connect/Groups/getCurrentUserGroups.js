@@ -16,18 +16,9 @@ export default gql`
               }
             }
             avatars
-            schedule {
-              friendlyScheduleText
-            }
             dateTime {
               start
               end
-            }
-            leaders {
-              id
-              photo {
-                uri
-              }
             }
           }
         }

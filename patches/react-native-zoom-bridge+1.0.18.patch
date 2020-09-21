@@ -5,10 +5,10 @@ index 0000000..0d259dd
 +++ b/node_modules/react-native-zoom-bridge/android/build/.transforms/81b160fbb31a6a5821dea10aa018f88d.bin
 @@ -0,0 +1 @@
 +o/classes
-diff --git a/node_modules/react-native-zoom-bridge/android/build/.transforms/81b160fbb31a6a5821dea10aa018f88d/classes/classes.dex b/node_modules/react-native-zoom-bridge/android/build/.transforms/81b160fbb31a6a5821dea10aa018f88d/classes/classes.dex
-new file mode 100644
-index 0000000..e629dc2
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/.transforms/81b160fbb31a6a5821dea10aa018f88d/classes/classes.dex differ
+diff --git a/node_modules/react-native-zoom-bridge/android/libs/Put your downloaded aar's here b/node_modules/react-native-zoom-bridge/android/build/.transforms/81b160fbb31a6a5821dea10aa018f88d/classes/classes.dex
+similarity index 100%
+rename from node_modules/react-native-zoom-bridge/android/libs/Put your downloaded aar's here
+rename to node_modules/react-native-zoom-bridge/android/build/.transforms/81b160fbb31a6a5821dea10aa018f88d/classes/classes.dex
 diff --git a/node_modules/react-native-zoom-bridge/android/build/generated/source/buildConfig/debug/com/appgoalz/reactnative/BuildConfig.java b/node_modules/react-native-zoom-bridge/android/build/generated/source/buildConfig/debug/com/appgoalz/reactnative/BuildConfig.java
 new file mode 100644
 index 0000000..484b69b
@@ -67,14 +67,13 @@ index 0000000..9e26dfe
 @@ -0,0 +1 @@
 +{}
 \ No newline at end of file
-diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/compile_library_classes/debug/classes.jar b/node_modules/react-native-zoom-bridge/android/build/intermediates/compile_library_classes/debug/classes.jar
-new file mode 100644
-index 0000000..2db53a8
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/intermediates/compile_library_classes/debug/classes.jar differ
+diff --git a/node_modules/react-native-zoom-bridge/ios/libs/Put your downloaded sdk & bundle here b/node_modules/react-native-zoom-bridge/android/build/intermediates/compile_library_classes/debug/classes.jar
+similarity index 100%
+rename from node_modules/react-native-zoom-bridge/ios/libs/Put your downloaded sdk & bundle here
+rename to node_modules/react-native-zoom-bridge/android/build/intermediates/compile_library_classes/debug/classes.jar
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar b/node_modules/react-native-zoom-bridge/android/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar
 new file mode 100644
-index 0000000..546eaf2
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/intermediates/compile_only_not_namespaced_r_class_jar/debug/R.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/compile_symbol_list/debug/R.txt b/node_modules/react-native-zoom-bridge/android/build/intermediates/compile_symbol_list/debug/R.txt
 new file mode 100644
 index 0000000..6b8fbdf
@@ -11629,8 +11628,7 @@ index 0000000..6b8fbdf
 +int xml zm_restrictions 0x0
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/incremental/debug-mergeNativeLibs/merge-state b/node_modules/react-native-zoom-bridge/android/build/intermediates/incremental/debug-mergeNativeLibs/merge-state
 new file mode 100644
-index 0000000..4bb51a7
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/intermediates/incremental/debug-mergeNativeLibs/merge-state differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml b/node_modules/react-native-zoom-bridge/android/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
 new file mode 100644
 index 0000000..1c7d1ff
@@ -11676,24 +11674,19 @@ index 0000000..1645310
 \ No newline at end of file
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/BuildConfig.class b/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/BuildConfig.class
 new file mode 100644
-index 0000000..91e808d
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/BuildConfig.class differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/RNZoomBridgeModule$1.class b/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/RNZoomBridgeModule$1.class
 new file mode 100644
-index 0000000..ad91ac1
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/RNZoomBridgeModule$1.class differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/RNZoomBridgeModule.class b/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/RNZoomBridgeModule.class
 new file mode 100644
-index 0000000..8eb1912
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/RNZoomBridgeModule.class differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/RNZoomBridgePackage.class b/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/RNZoomBridgePackage.class
 new file mode 100644
-index 0000000..649c978
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/intermediates/javac/debug/classes/com/appgoalz/reactnative/RNZoomBridgePackage.class differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/library_java_res/debug/res.jar b/node_modules/react-native-zoom-bridge/android/build/intermediates/library_java_res/debug/res.jar
 new file mode 100644
-index 0000000..15cb0ec
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/intermediates/library_java_res/debug/res.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/library_manifest/debug/AndroidManifest.xml b/node_modules/react-native-zoom-bridge/android/build/intermediates/library_manifest/debug/AndroidManifest.xml
 new file mode 100644
 index 0000000..1305718
@@ -11757,8 +11750,7 @@ index 0000000..0637a08
 \ No newline at end of file
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/runtime_library_classes/debug/classes.jar b/node_modules/react-native-zoom-bridge/android/build/intermediates/runtime_library_classes/debug/classes.jar
 new file mode 100644
-index 0000000..3f67592
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/build/intermediates/runtime_library_classes/debug/classes.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/react-native-zoom-bridge/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
 new file mode 100644
 index 0000000..06ce096
@@ -22376,9 +22368,6 @@ index 0000000..c21c47e
 +		INJECTED from /Users/jordanwade/code/di/christfellowship/apollos-app/node_modules/react-native-zoom-bridge/android/src/main/AndroidManifest.xml
 +		ADDED from /Users/jordanwade/code/di/christfellowship/apollos-app/node_modules/react-native-zoom-bridge/android/src/main/AndroidManifest.xml
 +		INJECTED from /Users/jordanwade/code/di/christfellowship/apollos-app/node_modules/react-native-zoom-bridge/android/src/main/AndroidManifest.xml
-diff --git a/node_modules/react-native-zoom-bridge/android/libs/Put your downloaded aar's here b/node_modules/react-native-zoom-bridge/android/libs/Put your downloaded aar's here
-deleted file mode 100644
-index e69de29..0000000
 diff --git a/node_modules/react-native-zoom-bridge/android/libs/commonlib.aar b/node_modules/react-native-zoom-bridge/android/libs/commonlib.aar
 new file mode 100644
 index 0000000..1463d1d
@@ -22387,10 +22376,57 @@ diff --git a/node_modules/react-native-zoom-bridge/android/libs/mobilertc.aar b/
 new file mode 100644
 index 0000000..6250429
 Binary files /dev/null and b/node_modules/react-native-zoom-bridge/android/libs/mobilertc.aar differ
+diff --git a/node_modules/react-native-zoom-bridge/android/src/main/java/com/appgoalz/reactnative/RNZoomBridgeModule.java b/node_modules/react-native-zoom-bridge/android/src/main/java/com/appgoalz/reactnative/RNZoomBridgeModule.java
+index fcf6937..a8cc553 100644
+--- a/node_modules/react-native-zoom-bridge/android/src/main/java/com/appgoalz/reactnative/RNZoomBridgeModule.java
++++ b/node_modules/react-native-zoom-bridge/android/src/main/java/com/appgoalz/reactnative/RNZoomBridgeModule.java
+@@ -139,6 +139,21 @@ public class RNZoomBridgeModule extends ReactContextBaseJavaModule implements Zo
+       }
+ 
+       final MeetingService meetingService = zoomSDK.getMeetingService();
++      if(meetingService.getMeetingStatus() != MeetingStatus.MEETING_STATUS_IDLE) {
++        long lMeetingNo = 0;
++        try {
++          lMeetingNo = Long.parseLong(meetingNo);
++        } catch (NumberFormatException e) {
++          promise.reject("ERR_ZOOM_START", "Invalid meeting number: " + meetingNo);
++          return;
++        }
++
++        if(meetingService.getCurrentRtcMeetingNumber() == lMeetingNo) {
++          meetingService.returnToMeeting(reactContext.getCurrentActivity());
++          promise.resolve("Already joined zoom meeting");
++          return;
++        }
++      }
+ 
+       JoinMeetingOptions opts = new JoinMeetingOptions();
+       JoinMeetingParams params = new JoinMeetingParams();
+@@ -173,6 +188,21 @@ public class RNZoomBridgeModule extends ReactContextBaseJavaModule implements Zo
+       }
+ 
+       final MeetingService meetingService = zoomSDK.getMeetingService();
++      if(meetingService.getMeetingStatus() != MeetingStatus.MEETING_STATUS_IDLE) {
++        long lMeetingNo = 0;
++        try {
++          lMeetingNo = Long.parseLong(meetingNo);
++        } catch (NumberFormatException e) {
++          promise.reject("ERR_ZOOM_START", "Invalid meeting number: " + meetingNo);
++          return;
++        }
++
++        if(meetingService.getCurrentRtcMeetingNumber() == lMeetingNo) {
++          meetingService.returnToMeeting(reactContext.getCurrentActivity());
++          promise.resolve("Already joined zoom meeting");
++          return;
++        }
++      }
+ 
+       JoinMeetingOptions opts = new JoinMeetingOptions();
+       JoinMeetingParams params = new JoinMeetingParams();
 diff --git a/node_modules/react-native-zoom-bridge/ios/.DS_Store b/node_modules/react-native-zoom-bridge/ios/.DS_Store
 new file mode 100644
-index 0000000..db385b3
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/ios/.DS_Store differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/ios/RNZoomBridge.xcodeproj/project.pbxproj b/node_modules/react-native-zoom-bridge/ios/RNZoomBridge.xcodeproj/project.pbxproj
 index afea5ed..5e4e9bc 100644
 --- a/node_modules/react-native-zoom-bridge/ios/RNZoomBridge.xcodeproj/project.pbxproj
@@ -22441,8 +22477,7 @@ index afea5ed..5e4e9bc 100644
  				PRODUCT_NAME = RNZoomBridge;
 diff --git a/node_modules/react-native-zoom-bridge/ios/RNZoomBridge.xcodeproj/project.xcworkspace/xcuserdata/jordanwade.xcuserdatad/UserInterfaceState.xcuserstate b/node_modules/react-native-zoom-bridge/ios/RNZoomBridge.xcodeproj/project.xcworkspace/xcuserdata/jordanwade.xcuserdatad/UserInterfaceState.xcuserstate
 new file mode 100644
-index 0000000..c4f0065
-Binary files /dev/null and b/node_modules/react-native-zoom-bridge/ios/RNZoomBridge.xcodeproj/project.xcworkspace/xcuserdata/jordanwade.xcuserdatad/UserInterfaceState.xcuserstate differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework/Headers/MobileRTC.h b/node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework/Headers/MobileRTC.h
 new file mode 100644
 index 0000000..5577fcf
@@ -47721,6 +47756,3 @@ diff --git a/node_modules/react-native-zoom-bridge/ios/libs/MobileRTCScreenShare
 new file mode 100644
 index 0000000..194379c
 Binary files /dev/null and b/node_modules/react-native-zoom-bridge/ios/libs/MobileRTCScreenShare.framework/MobileRTCScreenShare differ
-diff --git a/node_modules/react-native-zoom-bridge/ios/libs/Put your downloaded sdk & bundle here b/node_modules/react-native-zoom-bridge/ios/libs/Put your downloaded sdk & bundle here
-deleted file mode 100644
-index e69de29..0000000

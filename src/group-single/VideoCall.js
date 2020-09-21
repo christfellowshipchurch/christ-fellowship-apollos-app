@@ -57,8 +57,8 @@ const VideoCall = ({
     initializeZoom();
   }, []);
 
-  const { firstName, lastName } = useCurrentUser();
-  const fullName = `${firstName} ${lastName}`;
+  const { firstName, nickName } = useCurrentUser();
+  const name = nickName || firstName;
 
   const [handleAttend, { loading: mutationLoading }] = useMutation(
     ATTEND_MEETING
@@ -72,9 +72,9 @@ const VideoCall = ({
 
     try {
       if (passcode) {
-        await ZoomBridge.joinMeetingWithPassword(fullName, meetingId, passcode);
+        await ZoomBridge.joinMeetingWithPassword(name, meetingId, passcode);
       } else {
-        await ZoomBridge.joinMeeting(fullName, meetingId);
+        await ZoomBridge.joinMeeting(name, meetingId);
       }
     } catch (e) {
       throw e;

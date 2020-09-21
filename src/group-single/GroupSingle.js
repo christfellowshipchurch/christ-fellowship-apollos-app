@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Animated, View } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
-import { get, head, isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
 import {
   styled,
@@ -81,13 +81,13 @@ const StyledIcon = withTheme(({ theme }) => ({
   fill: theme.colors.text.tertiary,
 }))(Icon);
 
-const StyledAvatarCloud = styled({
+const StyledAvatarCloud = styled(({ theme }) => ({
   position: 'absolute',
-  left: 0,
-  right: 0,
-  bottom: 100,
-  top: 40,
-})(AvatarCloud);
+  left: theme.sizing.baseUnit,
+  right: theme.sizing.baseUnit,
+  bottom: 125, // Magic Number to avoid overlaying title
+  top: 40, // Magic Number to avoid overlaying header
+}))(AvatarCloud);
 
 const StyledTitle = styled(({ theme }) => ({
   alignItems: 'center',
@@ -161,9 +161,6 @@ class GroupSingle extends PureComponent {
       title: PropTypes.string,
       summary: PropTypes.string,
       members: PropTypes.shape({}),
-      schedule: PropTypes.shape({
-        friendlyScheduleText: PropTypes.string,
-      }),
       avatars: PropTypes.arrayOf(PropTypes.string),
       groupType: PropTypes.string,
     }),
@@ -171,12 +168,6 @@ class GroupSingle extends PureComponent {
       getParam: PropTypes.func,
       navigate: PropTypes.func,
     }),
-  };
-
-  static navigationOptions = {
-    header: NavigationHeader,
-    headerTransparent: true,
-    headerMode: 'float',
   };
 
   get itemId() {
@@ -187,9 +178,15 @@ class GroupSingle extends PureComponent {
     return { itemId: this.itemId };
   }
 
+  static navigationOptions = {
+    header: NavigationHeader,
+    headerTransparent: true,
+    headerMode: 'float',
+  };
+
   renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
-    const name = get(item, 'firstName', '');
+    const name = get(item, 'nickName', '') || get(item, 'firstName', '');
     return (
       <MemberCard>
         {!isLoading && photo && photo.uri ? (
@@ -205,19 +202,17 @@ class GroupSingle extends PureComponent {
             />
           </MemberImageWrapper>
         ) : (
-            <PlaceholderWrapper>
-              <PlaceholderIcon isLoading={false} />
-            </PlaceholderWrapper>
-          )}
+          <PlaceholderWrapper>
+            <PlaceholderIcon isLoading={false} />
+          </PlaceholderWrapper>
+        )}
 
-        <BodyText>{name}</BodyText>
+        <BodyText numberOfLines={1}>{name}</BodyText>
       </MemberCard>
     );
   };
 
   renderContent = ({ content, loading }) => {
-    const leader = head(get(content, 'leaders', []));
-    const leaderPhoto = get(leader, 'photo', {});
     const coverImageSources = get(content, 'coverImage.sources', []);
     const resources = get(content, 'groupResources', []);
     const dateTime = get(content, 'dateTime', {});
@@ -241,9 +236,9 @@ class GroupSingle extends PureComponent {
         hasParentVideoCall
           ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n`
           : ''
-        }Join Zoom ${
+      }Join Zoom ${
         hasParentVideoCall ? 'Breakout' : ''
-        }Meeting:\n${videoCallNote}`;
+      }Meeting:\n${videoCallNote}`;
       return notes.trim();
     };
 
@@ -272,7 +267,6 @@ class GroupSingle extends PureComponent {
 
                   <StyledAvatarCloud
                     avatars={avatars}
-                    primaryAvatar={leaderPhoto.uri ? leaderPhoto : null}
                     isLoading={!avatars && loading}
                   />
                   <StyledTitle>
@@ -288,7 +282,7 @@ class GroupSingle extends PureComponent {
                 <BackgroundView>
                   <PaddedView vertical={false}>
                     <Cell>
-                      {content.schedule ? (
+                      {content.dateTime ? (
                         <CellItem first>
                           <ScheduleView>
                             <IconView>
@@ -299,6 +293,7 @@ class GroupSingle extends PureComponent {
                               />
                             </IconView>
                             <DateLabel
+                              withTime
                               isLoading={!start && loading}
                               date={start}
                             />
@@ -331,12 +326,12 @@ class GroupSingle extends PureComponent {
                         date={start}
                       />
                     ) : (
-                        <CheckInConnected
-                          id={content.id}
-                          isLoading={loading}
-                          date={start}
-                        />
-                      )}
+                      <CheckInConnected
+                        id={content.id}
+                        isLoading={loading}
+                        date={start}
+                      />
+                    )}
 
                     <StyledH4 padded>{'Group Members'}</StyledH4>
                   </PaddedView>
