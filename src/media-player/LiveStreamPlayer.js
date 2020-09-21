@@ -341,7 +341,9 @@ class LiveStreamPlayer extends PureComponent {
                   <FlexHorizontal>
                     <MessagesBannerText>{'VIEW'}</MessagesBannerText>
                     <RightArrow />
-                    {this.state.channels.find((c) => !!c.countUnread()) ? (
+                    {this.state.channels.find(
+                      (c) => !c.disconnected && !!c.countUnread()
+                    ) ? (
                       <Dot />
                     ) : null}
                   </FlexHorizontal>
