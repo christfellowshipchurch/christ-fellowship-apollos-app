@@ -78,7 +78,9 @@ const Channel = ({ navigation }) => {
         connect();
       }
       return () => {
-        chatClient.disconnect();
+        if (get(chatClient, 'listeners.all.length', 0) < 2) {
+          chatClient.disconnect();
+        }
       };
     },
     [data.currentUser]

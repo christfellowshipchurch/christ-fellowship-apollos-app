@@ -117,8 +117,10 @@ const LiveStreamChat = (props) => {
         // if (channel.current) {
         //   channel.current.off(handleChannelEvent);
         // }
-        chatClient.off(handleClientEvent);
-        chatClient.disconnect();
+        if (get(chatClient, 'listeners.all.length', 0) < 2) {
+          chatClient.off(handleClientEvent);
+          chatClient.disconnect();
+        }
       };
     },
     [data.currentUser]
