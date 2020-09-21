@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { get } from 'lodash';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
@@ -22,7 +22,9 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
 `;
 
 const ChatContainer = styled(({ theme }) => ({
-  flex: 1,
+  height: '100%',
+  ...StyleSheet.absoluteFillObject,
+  zIndex: 0,
   paddingBottom: theme.sizing.baseUnit,
   backgroundColor: theme.colors.background.paper,
 }))(View);

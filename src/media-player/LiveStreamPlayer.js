@@ -41,6 +41,7 @@ import MediaPlayerSafeLayout from './controls/MediaPlayerSafeLayout';
 import GoogleCastController from './controls/GoogleCastController';
 
 const MessagesBannerContainer = styled(({ theme }) => ({
+  flex: 1,
   backgroundColor: theme.colors.primary,
 }))(SafeAreaView);
 
@@ -112,6 +113,7 @@ const LiveStreamContainer = styled(
       ? {
           height: isPortrait ? '33%' : '100%',
           ...Platform.select(theme.shadows.default),
+          zIndex: 1,
         }
       : StyleSheet.absoluteFill
 )(Animated.View);
@@ -296,7 +298,9 @@ class LiveStreamPlayer extends PureComponent {
       <LayoutConsumer>
         {({ top }) => (
           <Animated.View
+            // eslint-disable-next-line react-native/no-inline-styles
             style={{
+              zIndex: 1,
               height: this.bannerHeight.interpolate({
                 inputRange: [0, 1],
                 outputRange: [0, top + BANNER_HEIGHT],
