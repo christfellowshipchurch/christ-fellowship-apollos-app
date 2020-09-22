@@ -97,7 +97,9 @@ const LiveStreamChat = (props) => {
       // await channel.current.watch();
       // channel.current.on(handleChannelEvent);
 
-      chatClient.on(handleClientEvent);
+      if (get(chatClient, 'listeners.all.length', 0) < 2) {
+        chatClient.on(handleClientEvent);
+      }
 
       // Now that we're sure the channel exists, we can request the user's role for it. On the
       // server, this will either add or remove the user as a moderator while computing the result.
