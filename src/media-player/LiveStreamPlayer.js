@@ -296,18 +296,18 @@ class LiveStreamPlayer extends PureComponent {
     if (!isFullscreen) return null;
     return (
       <LayoutConsumer>
-        {({ top }) => (
+        {({ top: notch }) => (
           <Animated.View
             style={{
               height: this.bannerHeight.interpolate({
                 inputRange: [0, 1],
-                outputRange: [0, top + BANNER_HEIGHT],
+                outputRange: [0, notch + BANNER_HEIGHT],
               }),
               transform: [
                 {
                   translateY: this.bannerHeight.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [-top - BANNER_HEIGHT, 0],
+                    outputRange: [-notch - BANNER_HEIGHT, 0],
                   }),
                 },
               ],
@@ -401,18 +401,21 @@ class LiveStreamPlayer extends PureComponent {
     const playerContext = {
       onChannelsUpdated: this.handleChannelsUpdated,
       onDirectMessage: this.handleDirectMessage,
+      isBannerOpen: !!this.state.channels.length,
     };
 
     return (
-      <PlayerContext.Provider value={playerContext} key={'chat'}>
-        <LayoutConsumer>
-          {({ top }) => (
+      <LayoutConsumer key={'chat'}>
+        {({ top: notch }) => (
+          <PlayerContext.Provider
+            value={{ ...playerContext, bannerHeight: notch + BANNER_HEIGHT }}
+          >
             <Animated.View
               style={{
                 ...StyleSheet.absoluteFillObject,
                 top: this.bannerHeight.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [LIVESTREAM_HEIGHT, LIVESTREAM_HEIGHT + top + BANNER_HEIGHT],
+                  outputRange: [LIVESTREAM_HEIGHT, LIVESTREAM_HEIGHT + notch + BANNER_HEIGHT],
                 }),
               }}
             >
@@ -421,9 +424,9 @@ class LiveStreamPlayer extends PureComponent {
                 contentId={this.props.contentId}
               />
             </Animated.View>
-          )}
-        </LayoutConsumer>
-      </PlayerContext.Provider>
+          </PlayerContext.Provider>
+        )}
+      </LayoutConsumer>
     );
   };
 

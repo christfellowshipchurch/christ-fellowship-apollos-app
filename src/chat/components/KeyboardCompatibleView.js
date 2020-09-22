@@ -14,6 +14,8 @@ export const KeyboardCompatibleView = ({
   enabled = true,
   keyboardDismissAnimationDuration = 250,
   keyboardOpenAnimationDuration = 250,
+  isBannerOpen = false,
+  bannerHeight = 0,
 }) => {
   const heightAnim = useRef(new Animated.Value(0)).current;
   const rootChannelView = useRef();
@@ -73,6 +75,20 @@ export const KeyboardCompatibleView = ({
     ]
   );
 
+  useEffect(
+    () => {
+      if (isBannerOpen) {
+        setInitialHeight(initialHeight - bannerHeight);
+        Animated.timing(heightAnim, {
+          duration: 10,
+          toValue: initialHeight - bannerHeight,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+    [isBannerOpen]
+  );
+
   const onLayout = useCallback(
     ({
       nativeEvent: {
@@ -85,10 +101,10 @@ export const KeyboardCompatibleView = ({
 
       // Not to set initial height again.
       if (!initialHeight) {
-        setInitialHeight(height);
+        setInitialHeight(isBannerOpen ? height - bannerHeight : height);
         Animated.timing(heightAnim, {
           duration: 10,
-          toValue: height,
+          toValue: isBannerOpen ? height - bannerHeight : height,
           useNativeDriver: false,
         }).start();
       }

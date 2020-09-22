@@ -12,6 +12,7 @@ import {
   ChannelContext,
   withChatContext,
   withTranslationContext,
+  withPlayerContext,
 } from '../context';
 import { LoadingIndicator, LoadingErrorIndicator } from './Indicators';
 import { KeyboardCompatibleView } from './KeyboardCompatibleView';
@@ -25,6 +26,8 @@ class Channel extends PureComponent {
     isOnline: PropTypes.bool,
     disableIfFrozenChannel: PropTypes.bool,
     disableKeyboardCompatibleView: PropTypes.bool,
+    isBannerOpen: PropTypes.bool,
+    bannerHeight: PropTypes.number,
   };
 
   static defaultProps = {
@@ -467,6 +470,8 @@ class Channel extends PureComponent {
     } else {
       core = (
         <KeyboardCompatibleView
+          isBannerOpen={this.props.isBannerOpen}
+          bannerHeight={this.props.bannerHeight}
           enabled={!this.props.disableKeyboardCompatibleView}
         >
           <ChannelContext.Provider value={this.getContext()}>
@@ -480,4 +485,6 @@ class Channel extends PureComponent {
   }
 }
 
-export default withTranslationContext(withChatContext(Channel));
+export default withTranslationContext(
+  withPlayerContext(withChatContext(Channel))
+);
