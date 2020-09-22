@@ -46,6 +46,7 @@ const MessagesBannerContainer = styled(({ theme }) => ({
 }))(SafeAreaView);
 
 const BANNER_HEIGHT = 50;
+const LIVESTREAM_HEIGHT = 0.33 * Dimensions.get('window').height;
 
 const MessagesBanner = styled(({ theme }) => ({
   height: BANNER_HEIGHT,
@@ -111,9 +112,8 @@ const LiveStreamContainer = styled(
   ({ isFullscreen, isPortrait, theme }) =>
     isFullscreen
       ? {
-          height: isPortrait ? '33%' : '100%',
+          height: isPortrait ? '33%' /* = LIVESTREAM_HEIGHT */ : '100%',
           ...Platform.select(theme.shadows.default),
-          zIndex: 1,
         }
       : StyleSheet.absoluteFill
 )(Animated.View);
@@ -298,9 +298,7 @@ class LiveStreamPlayer extends PureComponent {
       <LayoutConsumer>
         {({ top }) => (
           <Animated.View
-            // eslint-disable-next-line react-native/no-inline-styles
             style={{
-              zIndex: 1,
               height: this.bannerHeight.interpolate({
                 inputRange: [0, 1],
                 outputRange: [0, top + BANNER_HEIGHT],
@@ -407,10 +405,24 @@ class LiveStreamPlayer extends PureComponent {
 
     return (
       <PlayerContext.Provider value={playerContext} key={'chat'}>
-        <LiveStreamChat
-          isPortrait={this.state.portrait}
-          contentId={this.props.contentId}
-        />
+        <LayoutConsumer>
+          {({ top }) => (
+            <Animated.View
+              style={{
+                ...StyleSheet.absoluteFillObject,
+                top: this.bannerHeight.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [LIVESTREAM_HEIGHT, LIVESTREAM_HEIGHT + top + BANNER_HEIGHT],
+                }),
+              }}
+            >
+              <LiveStreamChat
+                isPortrait={this.state.portrait}
+                contentId={this.props.contentId}
+              />
+            </Animated.View>
+          )}
+        </LayoutConsumer>
       </PlayerContext.Provider>
     );
   };
