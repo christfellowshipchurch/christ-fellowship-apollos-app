@@ -294,6 +294,8 @@ class LiveStreamPlayer extends PureComponent {
 
   renderMessagesBanner = ({ isFullscreen }) => {
     if (!isFullscreen) return null;
+    if (!this.state.portrait) return null;
+
     return (
       <LayoutConsumer>
         {({ top: notch }) => (
