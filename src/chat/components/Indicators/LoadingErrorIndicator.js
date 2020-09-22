@@ -12,7 +12,7 @@ const Container = styled({
 })(TouchableOpacity);
 
 const ErrorText = styled({
-  marginTop: 50,
+  marginTop: 60,
 })(UIText);
 
 const RetryText = styled({})(UIText);

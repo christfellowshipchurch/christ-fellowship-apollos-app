@@ -12,7 +12,7 @@ const Container = styled({
 })(SafeAreaView);
 
 const LoadingText = styled({
-  marginTop: 50,
+  marginTop: 60,
 })(UIText);
 
 const LoadingIndicator = ({ listType = 'default', loadingText }) => {
