@@ -212,7 +212,7 @@ class GroupSingle extends PureComponent {
     );
   };
 
-  renderContent = ({ content, loading }) => {
+  render() {
     const coverImageSources = get(content, 'coverImage.sources', []);
     const resources = get(content, 'groupResources', []);
     const dateTime = get(content, 'dateTime', {});
@@ -361,30 +361,6 @@ class GroupSingle extends PureComponent {
           </StretchyView>
         )}
       </ThemeConsumer>
-    );
-  };
-
-  renderWithData = ({ data, error, loading }) => {
-    if (error) return <ErrorCard error={error} />;
-
-    const content = get(data, 'node', {});
-    const { theme = {} } = content;
-    return (
-      <ThemeMixin theme={theme}>
-        {this.renderContent({ content, loading, error })}
-      </ThemeMixin>
-    );
-  };
-
-  render() {
-    return (
-      <Query
-        query={GET_GROUP}
-        variables={this.queryVariables}
-        fetchPolicy="cache-and-network"
-      >
-        {this.renderWithData}
-      </Query>
     );
   }
 }
