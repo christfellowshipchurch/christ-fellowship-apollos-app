@@ -1,28 +1,21 @@
 import React, { useContext } from 'react';
-import styled from '@stream-io/styled-components';
 import PropTypes from 'prop-types';
+import { TouchableOpacity } from 'react-native';
 
+import { styled, UIText } from '@apollosproject/ui-kit';
 import { TranslationContext } from '../../context';
 
-const Container = styled.TouchableOpacity`
-  align-items: center;
-  height: 100%;
-  justify-content: center;
-  ${({ theme }) => theme.loadingErrorIndicator.container.css};
-`;
+const Container = styled({
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+})(TouchableOpacity);
 
-const ErrorText = styled.Text`
-  font-size: 14px;
-  font-weight: 600;
-  margin-top: 20px;
-  ${({ theme }) => theme.loadingErrorIndicator.errorText.css};
-`;
+const ErrorText = styled({
+  marginTop: 60,
+})(UIText);
 
-const RetryText = styled.Text`
-  font-size: 30px;
-  font-weight: 600;
-  ${({ theme }) => theme.loadingErrorIndicator.retryText.css};
-`;
+const RetryText = styled({})(UIText);
 
 const LoadingErrorIndicator = ({ listType, retry }) => {
   const { t } = useContext(TranslationContext);

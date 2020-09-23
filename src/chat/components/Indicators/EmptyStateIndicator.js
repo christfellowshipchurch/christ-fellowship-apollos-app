@@ -1,14 +1,14 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { UIText } from '@apollosproject/ui-kit';
 
 const EmptyStateIndicator = ({ listType }) => {
   switch (listType) {
     case 'channel':
-      return <Text>You have no channels currently</Text>;
+      return <UIText>You have no channels currently</UIText>;
     case 'message':
       return null;
     default:
-      return <Text>No items exist</Text>;
+      return <UIText>No items exist</UIText>;
   }
 };
 
