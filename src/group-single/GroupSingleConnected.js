@@ -8,8 +8,9 @@ import { ThemeMixin, ErrorCard } from '@apollosproject/ui-kit';
 import NavigationHeader from '../content-single/NavigationHeader';
 
 import GET_GROUP from './getGroup';
+import GroupSingle from './GroupSingle';
 
-class GroupSingle extends PureComponent {
+class GroupSingleConnected extends PureComponent {
   static propTypes = {
     navigation: PropTypes.shape({
       getParam: PropTypes.func,
@@ -35,9 +36,18 @@ class GroupSingle extends PureComponent {
 
           const content = get(data, 'node', {});
           const { theme = {} } = content;
+
           return (
             <ThemeMixin theme={theme}>
-              {this.renderContent({ content, loading, error })}
+              <GroupSingle
+                content={content}
+                contentId={get(content, 'id')}
+                groupType={get(content, 'groupType')}
+                loading={loading}
+                members={get(content, 'members', [])}
+                summary={get(content, 'summary')}
+                title={get(content, 'title')}
+              />
             </ThemeMixin>
           );
         }}
@@ -46,4 +56,4 @@ class GroupSingle extends PureComponent {
   }
 }
 
-export default GroupSingle;
+export default GroupSingleConnected;
