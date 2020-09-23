@@ -215,7 +215,8 @@ class GroupSingle extends PureComponent {
   render() {
     const coverImageSources = get(this.props.content, 'coverImage.sources', []);
     const resources = get(this.props.content, 'groupResources', []);
-    const dateTime = get(this.props.content, 'dateTime', {});
+    const dateTime = get(this.props.content, 'dateTime');
+    const startTime = get(dateTime, 'start');
     const videoCall = get(this.props.content, 'videoCall', {});
     const parentVideoCall = get(this.props.content, 'parentVideoCall', {});
     const phoneNumbers = get(this.props.content, 'phoneNumbers', []);
@@ -241,8 +242,6 @@ class GroupSingle extends PureComponent {
       }Meeting:\n${videoCallNote}`;
       return notes.trim();
     };
-
-    const { start } = dateTime;
 
     return (
       <ThemeConsumer>
@@ -271,10 +270,10 @@ class GroupSingle extends PureComponent {
                   />
                   <StyledTitle>
                     <StyledH3 isLoading={this.props.loading} numberOfLines={2}>
-                      {this.props.content.title}
+                      {this.props.title}
                     </StyledH3>
                     <StyledH5 isLoading={this.props.loading} numberOfLines={2}>
-                      {this.props.content.groupType}
+                      {this.props.groupType}
                     </StyledH5>
                   </StyledTitle>
                 </Stretchy>
@@ -282,7 +281,7 @@ class GroupSingle extends PureComponent {
                 <BackgroundView>
                   <PaddedView vertical={false}>
                     <Cell>
-                      {this.props.content.dateTime ? (
+                      {dateTime ? (
                         <CellItem first>
                           <ScheduleView>
                             <IconView>
@@ -294,18 +293,18 @@ class GroupSingle extends PureComponent {
                             </IconView>
                             <DateLabel
                               withTime
-                              isLoading={!start && this.props.loading}
-                              date={start}
+                              isLoading={!startTime && this.props.loading}
+                              date={startTime}
                             />
                           </ScheduleView>
                         </CellItem>
                       ) : null}
-                      {start ? (
+                      {startTime ? (
                         <CellItem>
                           <AddCalEventButton
                             eventNotes={getNotes()}
-                            eventStart={start}
-                            eventTitle={this.props.content.title}
+                            eventStart={startTime}
+                            eventTitle={this.props.title}
                             isLoading={this.props.loading}
                           />
                         </CellItem>
@@ -313,37 +312,33 @@ class GroupSingle extends PureComponent {
                     </Cell>
                     <PaddedView horizontal={false}>
                       <BodyText
-                        isLoading={
-                          !this.props.content.summary && this.props.loading
-                        }
+                        isLoading={!this.props.summary && this.props.loading}
                       >
-                        {this.props.content.summary}
+                        {this.props.summary}
                       </BodyText>
                     </PaddedView>
 
                     {videoCall ? (
                       <VideoCall
-                        groupId={this.props.content.id}
+                        groupId={this.props.contentId}
                         isLoading={this.props.loading}
                         parentVideoCall={parentVideoCall}
                         videoCall={videoCall}
-                        date={start}
+                        date={startTime}
                       />
                     ) : (
                       <CheckInConnected
-                        id={this.props.content.id}
+                        id={this.props.contentId}
                         isLoading={this.props.loading}
-                        date={start}
+                        date={startTime}
                       />
                     )}
 
                     <StyledH4 padded>{'Group Members'}</StyledH4>
                   </PaddedView>
                   <StyledHorizontalTileFeed
-                    content={this.props.content.members}
-                    isLoading={
-                      !this.props.content.members && this.props.loading
-                    }
+                    content={this.props.members}
+                    isLoading={!this.props.members && this.props.loading}
                     loadingStateObject={loadingStateObject}
                     renderItem={this.renderMember}
                   />
