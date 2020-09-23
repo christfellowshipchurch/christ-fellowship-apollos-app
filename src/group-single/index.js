@@ -1,6 +1,6 @@
 import { createStackNavigator } from 'react-navigation';
 
-import GroupSingle from './GroupSingle';
+import GroupSingle from './GroupSingleConnected';
 
 const GroupSingleNavigator = createStackNavigator(
   {
