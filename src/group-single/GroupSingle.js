@@ -213,14 +213,14 @@ class GroupSingle extends PureComponent {
   };
 
   render() {
-    const coverImageSources = get(content, 'coverImage.sources', []);
-    const resources = get(content, 'groupResources', []);
-    const dateTime = get(content, 'dateTime', {});
-    const videoCall = get(content, 'videoCall', {});
-    const parentVideoCall = get(content, 'parentVideoCall', {});
-    const phoneNumbers = get(content, 'phoneNumbers', []);
-    const allowMessages = get(content, 'allowMessages', '');
-    const avatars = get(content, 'avatars', []);
+    const coverImageSources = get(this.props.content, 'coverImage.sources', []);
+    const resources = get(this.props.content, 'groupResources', []);
+    const dateTime = get(this.props.content, 'dateTime', {});
+    const videoCall = get(this.props.content, 'videoCall', {});
+    const parentVideoCall = get(this.props.content, 'parentVideoCall', {});
+    const phoneNumbers = get(this.props.content, 'phoneNumbers', []);
+    const allowMessages = get(this.props.content, 'allowMessages', '');
+    const avatars = get(this.props.content, 'avatars', []);
 
     const getNotes = () => {
       const hasParentVideoCall = parentVideoCall && parentVideoCall.link;
@@ -252,7 +252,7 @@ class GroupSingle extends PureComponent {
               <FlexedScrollView {...scrollViewProps}>
                 <Stretchy>
                   <GradientOverlayImage
-                    isLoading={!coverImageSources.length || loading}
+                    isLoading={!coverImageSources.length || this.props.loading}
                     source={coverImageSources}
                     // Sets the ratio of the image
                     minAspectRatio={1}
@@ -267,14 +267,14 @@ class GroupSingle extends PureComponent {
 
                   <StyledAvatarCloud
                     avatars={avatars}
-                    isLoading={!avatars && loading}
+                    isLoading={!avatars && this.props.loading}
                   />
                   <StyledTitle>
-                    <StyledH3 isLoading={loading} numberOfLines={2}>
-                      {content.title}
+                    <StyledH3 isLoading={this.props.loading} numberOfLines={2}>
+                      {this.props.content.title}
                     </StyledH3>
-                    <StyledH5 isLoading={loading} numberOfLines={2}>
-                      {content.groupType}
+                    <StyledH5 isLoading={this.props.loading} numberOfLines={2}>
+                      {this.props.content.groupType}
                     </StyledH5>
                   </StyledTitle>
                 </Stretchy>
@@ -282,19 +282,19 @@ class GroupSingle extends PureComponent {
                 <BackgroundView>
                   <PaddedView vertical={false}>
                     <Cell>
-                      {content.dateTime ? (
+                      {this.props.content.dateTime ? (
                         <CellItem first>
                           <ScheduleView>
                             <IconView>
                               <StyledIcon
-                                isLoading={loading}
+                                isLoading={this.props.loading}
                                 name="time"
                                 size={16}
                               />
                             </IconView>
                             <DateLabel
                               withTime
-                              isLoading={!start && loading}
+                              isLoading={!start && this.props.loading}
                               date={start}
                             />
                           </ScheduleView>
@@ -305,30 +305,34 @@ class GroupSingle extends PureComponent {
                           <AddCalEventButton
                             eventNotes={getNotes()}
                             eventStart={start}
-                            eventTitle={content.title}
-                            isLoading={loading}
+                            eventTitle={this.props.content.title}
+                            isLoading={this.props.loading}
                           />
                         </CellItem>
                       ) : null}
                     </Cell>
                     <PaddedView horizontal={false}>
-                      <BodyText isLoading={!content.summary && loading}>
-                        {content.summary}
+                      <BodyText
+                        isLoading={
+                          !this.props.content.summary && this.props.loading
+                        }
+                      >
+                        {this.props.content.summary}
                       </BodyText>
                     </PaddedView>
 
                     {videoCall ? (
                       <VideoCall
-                        groupId={content.id}
-                        isLoading={loading}
+                        groupId={this.props.content.id}
+                        isLoading={this.props.loading}
                         parentVideoCall={parentVideoCall}
                         videoCall={videoCall}
                         date={start}
                       />
                     ) : (
                       <CheckInConnected
-                        id={content.id}
-                        isLoading={loading}
+                        id={this.props.content.id}
+                        isLoading={this.props.loading}
                         date={start}
                       />
                     )}
@@ -336,8 +340,10 @@ class GroupSingle extends PureComponent {
                     <StyledH4 padded>{'Group Members'}</StyledH4>
                   </PaddedView>
                   <StyledHorizontalTileFeed
-                    content={content.members}
-                    isLoading={!content.members && loading}
+                    content={this.props.content.members}
+                    isLoading={
+                      !this.props.content.members && this.props.loading
+                    }
                     loadingStateObject={loadingStateObject}
                     renderItem={this.renderMember}
                   />
@@ -350,7 +356,7 @@ class GroupSingle extends PureComponent {
 
                   {!isEmpty(resources) ? (
                     <Resources
-                      isLoading={loading}
+                      isLoading={this.props.loading}
                       navigation={this.props.navigation}
                       resources={resources}
                     />
