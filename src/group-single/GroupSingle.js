@@ -215,18 +215,18 @@ class GroupSingle extends PureComponent {
   render() {
     const resources = get(this.props.content, 'groupResources', []);
     const videoCall = get(this.props.content, 'videoCall', {});
-    const parentVideoCall = get(this.props.content, 'parentVideoCall', {});
     const phoneNumbers = get(this.props.content, 'phoneNumbers', []);
 
     const getNotes = () => {
-      const hasParentVideoCall = parentVideoCall && parentVideoCall.link;
+      const hasParentVideoCall =
+        this.props.parentVideoCall && this.props.parentVideoCall.link;
       const hasVideoCall = videoCall && videoCall.link;
 
       if (!hasParentVideoCall && !hasVideoCall) return null;
 
       const videoCallNote = hasVideoCall ? videoCall.link : '';
       const parentVideoCallNote = hasParentVideoCall
-        ? parentVideoCall.link
+        ? this.props.parentVideoCall.link
         : '';
       const notes = `${
         hasParentVideoCall
@@ -319,7 +319,7 @@ class GroupSingle extends PureComponent {
                       <VideoCall
                         groupId={this.props.contentId}
                         isLoading={this.props.loading}
-                        parentVideoCall={parentVideoCall}
+                        parentVideoCall={this.props.parentVideoCall}
                         videoCall={videoCall}
                         date={this.props.startTime}
                       />
