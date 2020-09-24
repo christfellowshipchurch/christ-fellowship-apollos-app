@@ -54,6 +54,7 @@ class GroupSingleConnected extends PureComponent {
                 resources={get(content, 'groupResources', [])}
                 summary={get(content, 'summary')}
                 title={get(content, 'title')}
+                videoCall={get(content, 'videoCall', {})}
               />
             </ThemeMixin>
           );

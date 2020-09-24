@@ -213,16 +213,14 @@ class GroupSingle extends PureComponent {
   };
 
   render() {
-    const videoCall = get(this.props.content, 'videoCall', {});
-
     const getNotes = () => {
       const hasParentVideoCall =
         this.props.parentVideoCall && this.props.parentVideoCall.link;
-      const hasVideoCall = videoCall && videoCall.link;
+      const hasVideoCall = this.props.videoCall && this.props.videoCall.link;
 
       if (!hasParentVideoCall && !hasVideoCall) return null;
 
-      const videoCallNote = hasVideoCall ? videoCall.link : '';
+      const videoCallNote = hasVideoCall ? this.props.videoCall.link : '';
       const parentVideoCallNote = hasParentVideoCall
         ? this.props.parentVideoCall.link
         : '';
@@ -313,12 +311,12 @@ class GroupSingle extends PureComponent {
                       </BodyText>
                     </PaddedView>
 
-                    {videoCall ? (
+                    {this.props.videoCall ? (
                       <VideoCall
                         groupId={this.props.contentId}
                         isLoading={this.props.loading}
                         parentVideoCall={this.props.parentVideoCall}
-                        videoCall={videoCall}
+                        videoCall={this.props.videoCall}
                         date={this.props.startTime}
                       />
                     ) : (
