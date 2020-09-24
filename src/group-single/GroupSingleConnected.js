@@ -37,17 +37,19 @@ class GroupSingleConnected extends PureComponent {
           const content = get(data, 'node', {});
           const { theme = {} } = content;
 
+          const allowMessages = get(content, 'allowMessages') === 'True'; // Rock returns a string this makes sure we are always working with a boolean
+
           return (
             <ThemeMixin theme={theme}>
               <GroupSingle
-                allowMessages={get(content, 'allowMessages')}
+                allowMessages={allowMessages}
                 avatars={get(content, 'avatars', [])}
                 content={content}
                 contentId={get(content, 'id')}
                 coverImageSources={get(content, 'coverImage.sources', [])}
                 startTime={get(content, 'dateTime.start')}
                 groupType={get(content, 'groupType')}
-                loading={loading}
+                isLoading={loading}
                 members={get(content, 'members', [])}
                 parentVideoCall={get(content, 'parentVideoCall', {})}
                 phoneNumbers={get(content, 'phoneNumbers', [])}
