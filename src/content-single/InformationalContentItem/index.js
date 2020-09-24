@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Animated } from 'react-native';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -34,12 +34,19 @@ const ButtonContainer = styled(({ theme }) => ({
 const InformationalContentItem = ({ content, loading, navigation }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
-  const redirectUrl = get(content, 'redirectUrl', '');
   const { routeLink } = useLinkRouter();
 
-  if (redirectUrl && redirectUrl !== '') {
-    routeLink(redirectUrl);
-  }
+  useEffect(() => {
+    const redirect = () => {
+      const redirectUrl = get(content, 'redirectUrl', '');
+
+      if (redirectUrl && redirectUrl !== '') {
+        routeLink(redirectUrl);
+      }
+    };
+
+    redirect();
+  }, []);
 
   return (
     <BackgroundView>

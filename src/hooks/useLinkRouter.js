@@ -33,10 +33,14 @@ const openLinkExternal = (url) =>
   });
 
 const openLinkInternal = (url) => {
-  if (url.startsWith('http')) {
-    // safe enough to use InAppBrowser
-    InAppBrowser.open(url);
-  }
+  Linking.canOpenURL(url).then((supported) => {
+    if (supported && InAppBrowser.isAvailable()) {
+      // safe enough to use InAppBrowser
+      InAppBrowser.open(url);
+    } else {
+      console.log(`Don't know how to open URI: ${url}`);
+    }
+  });
 };
 
 const routeLink = (url, { restrictedQueryParams, navigationOptions }) => {
