@@ -220,7 +220,6 @@ class GroupSingle extends PureComponent {
     const videoCall = get(this.props.content, 'videoCall', {});
     const parentVideoCall = get(this.props.content, 'parentVideoCall', {});
     const phoneNumbers = get(this.props.content, 'phoneNumbers', []);
-    const allowMessages = get(this.props.content, 'allowMessages', '');
     const avatars = get(this.props.content, 'avatars', []);
 
     const getNotes = () => {
@@ -343,7 +342,7 @@ class GroupSingle extends PureComponent {
                     renderItem={this.renderMember}
                   />
 
-                  {phoneNumbers && allowMessages === 'True' ? (
+                  {phoneNumbers && this.props.allowMessages === 'True' ? (
                     <PaddedView>
                       <MessagesButton recipients={phoneNumbers} />
                     </PaddedView>

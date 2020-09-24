@@ -40,6 +40,7 @@ class GroupSingleConnected extends PureComponent {
           return (
             <ThemeMixin theme={theme}>
               <GroupSingle
+                allowMessages={get(content, 'allowMessages')}
                 content={content}
                 contentId={get(content, 'id')}
                 groupType={get(content, 'groupType')}
