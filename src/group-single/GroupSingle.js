@@ -178,6 +178,26 @@ class GroupSingle extends PureComponent {
     return { itemId: this.itemId };
   }
 
+  getNotes() {
+    const hasParentVideoCall =
+      this.props.parentVideoCall && this.props.parentVideoCall.link;
+    const hasVideoCall = this.props.videoCall && this.props.videoCall.link;
+
+    if (!hasParentVideoCall && !hasVideoCall) return null;
+
+    const videoCallNote = hasVideoCall ? this.props.videoCall.link : '';
+    const parentVideoCallNote = hasParentVideoCall
+      ? this.props.parentVideoCall.link
+      : '';
+    const notes = `${
+      hasParentVideoCall ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n` : ''
+    }Join Zoom ${
+      hasParentVideoCall ? 'Breakout' : ''
+    }Meeting:\n${videoCallNote}`;
+
+    return notes.trim();
+  }
+
   static navigationOptions = {
     header: NavigationHeader,
     headerTransparent: true,
@@ -213,27 +233,6 @@ class GroupSingle extends PureComponent {
   };
 
   render() {
-    const getNotes = () => {
-      const hasParentVideoCall =
-        this.props.parentVideoCall && this.props.parentVideoCall.link;
-      const hasVideoCall = this.props.videoCall && this.props.videoCall.link;
-
-      if (!hasParentVideoCall && !hasVideoCall) return null;
-
-      const videoCallNote = hasVideoCall ? this.props.videoCall.link : '';
-      const parentVideoCallNote = hasParentVideoCall
-        ? this.props.parentVideoCall.link
-        : '';
-      const notes = `${
-        hasParentVideoCall
-          ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n`
-          : ''
-      }Join Zoom ${
-        hasParentVideoCall ? 'Breakout' : ''
-      }Meeting:\n${videoCallNote}`;
-      return notes.trim();
-    };
-
     return (
       <ThemeConsumer>
         {(theme) => (
@@ -295,7 +294,7 @@ class GroupSingle extends PureComponent {
                         </CellItem>
                         <CellItem>
                           <AddCalEventButton
-                            eventNotes={getNotes()}
+                            eventNotes={this.getNotes()}
                             eventStart={this.props.startTime}
                             eventTitle={this.props.title}
                             isLoading={this.props.loading}
