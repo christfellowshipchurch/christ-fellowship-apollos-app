@@ -50,6 +50,7 @@ class GroupSingleConnected extends PureComponent {
                 loading={loading}
                 members={get(content, 'members', [])}
                 parentVideoCall={get(content, 'parentVideoCall', {})}
+                phoneNumbers={get(content, 'phoneNumbers', [])}
                 summary={get(content, 'summary')}
                 title={get(content, 'title')}
               />
