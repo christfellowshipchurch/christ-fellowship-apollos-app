@@ -45,6 +45,7 @@ class GroupSingleConnected extends PureComponent {
                 content={content}
                 contentId={get(content, 'id')}
                 coverImageSources={get(content, 'coverImage.sources', [])}
+                startTime={get(content, 'dateTime.start')}
                 groupType={get(content, 'groupType')}
                 loading={loading}
                 members={get(content, 'members', [])}

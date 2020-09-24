@@ -214,8 +214,6 @@ class GroupSingle extends PureComponent {
 
   render() {
     const resources = get(this.props.content, 'groupResources', []);
-    const dateTime = get(this.props.content, 'dateTime');
-    const startTime = get(dateTime, 'start');
     const videoCall = get(this.props.content, 'videoCall', {});
     const parentVideoCall = get(this.props.content, 'parentVideoCall', {});
     const phoneNumbers = get(this.props.content, 'phoneNumbers', []);
@@ -280,7 +278,7 @@ class GroupSingle extends PureComponent {
                 <BackgroundView>
                   <PaddedView vertical={false}>
                     <Cell>
-                      {dateTime ? (
+                      {this.props.startTime ? (
                         <CellItem first>
                           <ScheduleView>
                             <IconView>
@@ -292,17 +290,19 @@ class GroupSingle extends PureComponent {
                             </IconView>
                             <DateLabel
                               withTime
-                              isLoading={!startTime && this.props.loading}
-                              date={startTime}
+                              isLoading={
+                                !this.props.startTime && this.props.loading
+                              }
+                              date={this.props.startTime}
                             />
                           </ScheduleView>
                         </CellItem>
                       ) : null}
-                      {startTime ? (
+                      {this.props.startTime ? (
                         <CellItem>
                           <AddCalEventButton
                             eventNotes={getNotes()}
-                            eventStart={startTime}
+                            eventStart={this.props.startTime}
                             eventTitle={this.props.title}
                             isLoading={this.props.loading}
                           />
@@ -323,13 +323,13 @@ class GroupSingle extends PureComponent {
                         isLoading={this.props.loading}
                         parentVideoCall={parentVideoCall}
                         videoCall={videoCall}
-                        date={startTime}
+                        date={this.props.startTime}
                       />
                     ) : (
                       <CheckInConnected
                         id={this.props.contentId}
                         isLoading={this.props.loading}
-                        date={startTime}
+                        date={this.props.startTime}
                       />
                     )}
 
