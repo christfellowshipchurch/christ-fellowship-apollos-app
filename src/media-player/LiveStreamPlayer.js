@@ -1,19 +1,31 @@
 import React, { PureComponent } from 'react';
 import {
   Animated,
+  Easing,
   View,
   StyleSheet,
   Dimensions,
   PanResponder,
   Platform,
   StatusBar,
+  SafeAreaView,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Query, withApollo } from 'react-apollo';
 import { get } from 'lodash';
 
-import { styled } from '@apollosproject/ui-kit';
+import {
+  styled,
+  withTheme,
+  H5,
+  Icon,
+  NavigationService,
+  Touchable,
+  LayoutConsumer,
+} from '@apollosproject/ui-kit';
 
+import { PlayerContext } from '../chat/context';
+import LiveStreamChat from './LiveStreamChat';
 import MiniControls, { MINI_PLAYER_HEIGHT } from './controls/MiniControls';
 import LiveStreamControls from './controls/LiveStreamControls';
 import VideoWindow from './controls/VideoWindow';
@@ -27,7 +39,61 @@ import {
 } from './controls/PlayheadState';
 import MediaPlayerSafeLayout from './controls/MediaPlayerSafeLayout';
 import GoogleCastController from './controls/GoogleCastController';
-import LiveStreamChat from './chat';
+
+const MessagesBannerContainer = styled(({ theme }) => ({
+  flex: 1,
+  backgroundColor: theme.colors.primary,
+}))(SafeAreaView);
+
+const BANNER_HEIGHT = 50;
+const LIVESTREAM_HEIGHT = 0.33 * Dimensions.get('window').height;
+
+const MessagesBanner = styled(({ theme }) => ({
+  height: BANNER_HEIGHT,
+  width: '100%',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingHorizontal: theme.sizing.baseUnit,
+}))(Touchable);
+
+const MessagesBannerText = styled(({ theme }) => ({
+  color: theme.colors.white,
+}))(H5);
+
+const MessagesIcon = withTheme(({ theme }) => ({
+  name: 'message-bubble',
+  size: 18,
+  fill: theme.colors.white,
+  style: {
+    marginRight: theme.sizing.baseUnit / 2,
+  },
+}))(Icon);
+
+const FlexHorizontal = styled({
+  flexDirection: 'row',
+  alignItems: 'center',
+})(View);
+
+const RightArrow = withTheme(({ theme }) => ({
+  name: 'arrow-next',
+  size: 18,
+  fill: theme.colors.white,
+}))(Icon);
+
+const Dot = styled(({ theme }) => ({
+  aspectRatio: 1,
+  backgroundColor: theme.colors.alert,
+  borderColor: theme.colors.primary,
+  borderWidth: 0,
+  borderRadius: 14,
+  marginTop: -5,
+  marginRight: 8,
+  position: 'absolute',
+  right: 0,
+  top: 0,
+  width: 14,
+}))(View);
 
 const VideoSizer = styled(
   ({ isFullscreen, isVideo, theme }) =>
@@ -43,10 +109,11 @@ const VideoSizer = styled(
 )(View);
 
 const LiveStreamContainer = styled(
-  ({ isFullscreen, isPortrait }) =>
+  ({ isFullscreen, isPortrait, theme }) =>
     isFullscreen
       ? {
-          height: isPortrait ? '33%' : '100%',
+          height: isPortrait ? '33%' /* = LIVESTREAM_HEIGHT */ : '100%',
+          ...Platform.select(theme.shadows.default),
         }
       : StyleSheet.absoluteFill
 )(Animated.View);
@@ -63,12 +130,16 @@ const FullscreenMediaPlayerSafeLayout = styled(({ isFullscreen, theme }) => ({
  * It reads from local graphql state, and so you must use graphql mutations to play tracks.
  */
 class LiveStreamPlayer extends PureComponent {
+  // eslint-disable-next-line react/sort-comp
   static propTypes = {
     client: PropTypes.shape({ mutate: PropTypes.func }),
     contentId: PropTypes.string,
   };
 
-  state = { portrait: true };
+  state = { portrait: true, channels: [] };
+
+  // Tracks the messages banner height
+  bannerHeight = new Animated.Value(0);
 
   // Tracks the fullscreen animation
   fullscreen = new Animated.Value(0);
@@ -190,6 +261,17 @@ class LiveStreamPlayer extends PureComponent {
     Dimensions.addEventListener('change', this.handleOrientationChanged);
   }
 
+  componentDidUpdate(_, oldState) {
+    if (this.state.channels.length && !oldState.channels.length) {
+      Animated.timing(this.bannerHeight, {
+        toValue: 1,
+        duration: 250,
+        ease: Easing.inOut(Easing.ease),
+        // useNativeDriver: true,
+      }).start();
+    }
+  }
+
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.handleOrientationChanged);
   }
@@ -198,16 +280,89 @@ class LiveStreamPlayer extends PureComponent {
     this.setState({ portrait: height > width });
   };
 
-  renderCover = ({ data: { mediaPlayer = {} } = {} }) => {
+  handleChannelsUpdated = ({ channels }) => {
+    // console.log({ channels });
+    this.setState({ channels });
+  };
+
+  handleDirectMessage = ({ userId }) => {
+    this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
+    setTimeout(() => {
+      NavigationService.navigate('Channel', { userId, nested: true });
+    }, 250);
+  };
+
+  renderMessagesBanner = ({ isFullscreen }) => {
+    if (!isFullscreen) return null;
+    if (!this.state.portrait) return null;
+
+    return (
+      <LayoutConsumer>
+        {({ top: notch }) => (
+          <Animated.View
+            style={{
+              height: this.bannerHeight.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, notch + BANNER_HEIGHT],
+              }),
+              transform: [
+                {
+                  translateY: this.bannerHeight.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [-notch - BANNER_HEIGHT, 0],
+                  }),
+                },
+              ],
+            }}
+          >
+            <MessagesBannerContainer
+              key="banner"
+              {...(Platform.OS !== 'android' && isFullscreen
+                ? this.panResponder.panHandlers
+                : {})}
+            >
+              <MessagesBanner
+                onPress={() => {
+                  this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
+                  setTimeout(() => {
+                    NavigationService.navigate('ChannelsList', {
+                      nested: true,
+                    });
+                  }, 250);
+                }}
+              >
+                <React.Fragment>
+                  <FlexHorizontal>
+                    <MessagesIcon />
+                    <MessagesBannerText>
+                      {`You’re involved in ${
+                        this.state.channels.length
+                      } conversation${
+                        this.state.channels.length === 1 ? '' : 's'
+                      }.`}
+                    </MessagesBannerText>
+                  </FlexHorizontal>
+                  <FlexHorizontal>
+                    <MessagesBannerText>{'VIEW'}</MessagesBannerText>
+                    <RightArrow />
+                    {this.state.channels.find(
+                      (c) => !c.disconnected && !!c.countUnread()
+                    ) ? (
+                      <Dot />
+                    ) : null}
+                  </FlexHorizontal>
+                </React.Fragment>
+              </MessagesBanner>
+            </MessagesBannerContainer>
+          </Animated.View>
+        )}
+      </LayoutConsumer>
+    );
+  };
+
+  renderLiveStream = ({ mediaPlayer }) => {
     const { isFullscreen = false, isCasting = false } = mediaPlayer;
-
-    Animated.spring(this.fullscreen, {
-      toValue: isFullscreen ? 1 : 0,
-      useNativeDriver: true,
-      bounciness: 4,
-    }).start();
-
-    const coverFlow = [
+    return (
       <LiveStreamContainer
         key="cover"
         onLayout={this.handleCoverLayout}
@@ -238,14 +393,58 @@ class LiveStreamPlayer extends PureComponent {
         <Animated.View style={this.fullscreenControlsAnimation}>
           <LiveStreamControls isCasting={isCasting} />
         </Animated.View>
-      </LiveStreamContainer>,
-      isFullscreen ? (
-        <LiveStreamChat
-          isPortrait={this.state.isPortrait}
-          contentId={this.props.contentId}
-        />
-      ) : null,
-      <MusicControls key="music-controls" />,
+      </LiveStreamContainer>
+    );
+  };
+
+  renderChat = ({ isFullscreen }) => {
+    if (!isFullscreen) return null;
+
+    const playerContext = {
+      onChannelsUpdated: this.handleChannelsUpdated,
+      onDirectMessage: this.handleDirectMessage,
+      isBannerOpen: !!this.state.channels.length,
+    };
+
+    return (
+      <LayoutConsumer key={'chat'}>
+        {({ top: notch }) => (
+          <PlayerContext.Provider
+            value={{ ...playerContext, bannerHeight: notch + BANNER_HEIGHT }}
+          >
+            <Animated.View
+              style={{
+                ...StyleSheet.absoluteFillObject,
+                top: this.bannerHeight.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [LIVESTREAM_HEIGHT, LIVESTREAM_HEIGHT + notch + BANNER_HEIGHT],
+                }),
+              }}
+            >
+              <LiveStreamChat
+                isPortrait={this.state.portrait}
+                contentId={this.props.contentId}
+              />
+            </Animated.View>
+          </PlayerContext.Provider>
+        )}
+      </LayoutConsumer>
+    );
+  };
+
+  renderCover = ({ data: { mediaPlayer = {} } = {} }) => {
+    const { isFullscreen = false } = mediaPlayer;
+    Animated.spring(this.fullscreen, {
+      toValue: isFullscreen ? 1 : 0,
+      useNativeDriver: true,
+      bounciness: 4,
+    }).start();
+
+    const coverFlow = [
+      this.renderMessagesBanner({ isFullscreen }),
+      this.renderLiveStream({ mediaPlayer }),
+      this.renderChat({ isFullscreen }),
+      <MusicControls key={'music-controls'} />,
     ];
 
     if (!isFullscreen) {

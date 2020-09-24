@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import deepequal from 'deep-equal';
 
-import { withKeyboardContext } from '../../context';
+import { withPlayerContext, withKeyboardContext } from '../../context';
 import MessageInner from './MessageInner';
 
 class Message extends React.Component {
@@ -27,6 +27,7 @@ class Message extends React.Component {
     openThread: PropTypes.func,
     dismissKeyboard: PropTypes.func,
     onMessageTouch: PropTypes.func,
+    onDirectMessage: PropTypes.func,
     dismissKeyboardOnMessageTouch: PropTypes.bool,
     disabled: PropTypes.bool,
   };
@@ -123,6 +124,10 @@ class Message extends React.Component {
     !this.isMyMessage(this.props.message) &&
     (this.isModerator() || this.isAdmin());
 
+  canMessageUser = () =>
+    !this.isMyMessage(this.props.message) &&
+    (this.isModerator() || this.isAdmin());
+
   // this.props.client.flagUser);
   // this.props.client.flagMessage);
   // this.props.client.muteUser);
@@ -156,6 +161,13 @@ class Message extends React.Component {
 
     const { message } = this.props;
     await this.props.channel.banUser(message.user.id);
+  };
+
+  handleSendMessage = (event) => {
+    event?.preventDefault?.();
+
+    const { message } = this.props;
+    this.props.onDirectMessage({ userId: message.user.id });
   };
 
   handleEdit = () => {
@@ -326,12 +338,14 @@ class Message extends React.Component {
           canMuteUser={this.canMuteUser}
           canUnmuteUser={this.canUnmuteUser}
           canBanUser={this.canBanUser}
+          canMessageUser={this.canMessageUser}
           handleEdit={this.handleEdit}
           handleDelete={this.handleDelete}
           handleFlag={this.handleFlag}
           handleMute={this.handleMute}
           handleUnmute={this.handleUnmute}
           handleBan={this.handleBan}
+          handleSendMessage={this.handleSendMessage}
           openThread={
             this.props.openThread && this.props.openThread.bind(this, message)
           }
@@ -341,4 +355,4 @@ class Message extends React.Component {
   }
 }
 
-export default withKeyboardContext(Message);
+export default withKeyboardContext(withPlayerContext(Message));

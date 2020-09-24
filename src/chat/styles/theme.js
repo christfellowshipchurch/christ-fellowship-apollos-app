@@ -29,22 +29,6 @@ export const defaultTheme = {
     text: {},
     fallback: {},
   },
-  channelListHeaderErrorIndicator: {
-    container: {},
-    errorText: {},
-  },
-  channelListHeaderNetworkDownIndicator: {
-    container: {},
-    errorText: {},
-  },
-  channelListFooterLoadingIndicator: {
-    container: {},
-  },
-  loadingErrorIndicator: {
-    container: {},
-    errorText: {},
-    retryText: {},
-  },
   channelPreview: {
     container: {},
     details: {},
@@ -177,10 +161,6 @@ export const defaultTheme = {
       text: {},
     },
   },
-  loadingIndicator: {
-    container: {},
-    loadingText: {},
-  },
   messageInput: {
     container: {
       conditionalPadding: 20,
@@ -201,11 +181,6 @@ export const defaultTheme = {
       dismissImage: {},
       upload: {},
     },
-    uploadProgressIndicator: {
-      overlay: {},
-      container: {},
-    },
-
     suggestions: {
       wrapper: {},
       container: {

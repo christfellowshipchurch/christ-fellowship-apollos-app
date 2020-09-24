@@ -2,13 +2,15 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
+import { View } from 'react-native';
+import { get } from 'lodash';
 
 import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
-import { useCurrentUser } from '../../hooks';
+import { useCurrentUser } from '../hooks';
 
-import MediaPlayerSafeLayout from '../controls/MediaPlayerSafeLayout';
-import { Chat, Channel, MessageList, MessageInput } from './components';
-import chatClient, { streami18n } from './client';
+import { Chat, Channel, MessageList, MessageInput } from '../chat/components';
+import { withPlayerContext } from '../chat/context';
+import chatClient, { streami18n } from '../chat/client';
 
 const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   query getCurrentUserRoleForChannel($channelId: ID!) {
@@ -21,10 +23,11 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
 
 const ChatContainer = styled(({ theme }) => ({
   flex: 1,
-  backgroundColor: theme.colors.background.screen,
-}))(MediaPlayerSafeLayout);
+  paddingBottom: theme.sizing.baseUnit,
+  backgroundColor: theme.colors.background.paper,
+}))(View);
 
-const LiveStreamChat = ({ isPortrait, contentId }) => {
+const LiveStreamChat = (props) => {
   const [connecting, setConnecting] = useState(true);
 
   const { loading, data = {} } = useCurrentUser();
@@ -32,7 +35,7 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
   const [fetchRole] = useLazyQuery(GET_CURRENT_USER_ROLE_FOR_CHANNEL, {
     fetchPolicy: 'network-only',
     variables: {
-      channelId: contentId,
+      channelId: props.contentId,
     },
   });
 
@@ -44,31 +47,57 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
   //     channel: channel.current.state,
   //   });
   // };
-  //
-  // const handleClientEvent = (e) => {
-  //   console.log({ e });
-  //   console.log('client event recvd, showing client', { client: chatClient });
-  // };
+
+  const loadChannels = async () => {
+    const filter = {
+      type: 'messaging',
+      members: { $in: [get(data, 'currentUser.id', '').split(':')[1]] },
+    };
+    const sort = { last_message_at: -1 };
+    const options = { watch: false, state: false };
+
+    const channels = await chatClient.queryChannels(filter, sort, options);
+    props.onChannelsUpdated({ channels });
+  };
+
+  const handleClientEvent = (e) => {
+    // console.log({ e });
+    switch (e.type) {
+      case 'notification.message_new': {
+        loadChannels();
+        break;
+      }
+      default:
+        break;
+    }
+  };
 
   const connect = async () => {
     try {
-      const { currentUser = {} } = data;
+      const firstName = get(data, 'currentUser.profile.firstName', '');
+      const lastName = get(data, 'currentUser.profile.lastName', '');
       const user = {
-        id: currentUser?.id.split(':')[1],
-        name: `${currentUser?.profile?.firstName} ${
-          currentUser?.profile?.lastName
-        }`,
-        image: currentUser?.profile?.photo?.uri,
+        id: get(data, 'currentUser.id', '').split(':')[1],
+        name: `${firstName} ${lastName}`,
+        image: get(data, 'currentUser.profile.photo.uri'),
       };
 
-      await chatClient.setUser(user, currentUser?.streamChatToken);
-      // const res = await chatClient.setUser(user, currentUser?.streamChatToken);
-      // console.log('setUser', { res });
-      channel.current = chatClient.channel('livestream', contentId);
+      if (!chatClient.userID) {
+        await chatClient.setUser(
+          user,
+          get(data, 'currentUser.streamChatToken')
+        );
+      }
 
-      await channel.current.watch();
-      // chatClient.on(handleClientEvent);
+      channel.current = chatClient.channel('livestream', props.contentId);
+
+      await channel.current.create();
+      // await channel.current.watch();
       // channel.current.on(handleChannelEvent);
+
+      if (get(chatClient, 'listeners.all.length', 0) < 2) {
+        chatClient.on(handleClientEvent);
+      }
 
       // Now that we're sure the channel exists, we can request the user's role for it. On the
       // server, this will either add or remove the user as a moderator while computing the result.
@@ -89,12 +118,21 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
       return () => {
         // if (channel.current) {
         //   channel.current.off(handleChannelEvent);
-        //   chatClient.off(handleClientEvent);
         // }
-        chatClient.disconnect();
+        if (get(chatClient, 'listeners.all.length', 0) < 2) {
+          chatClient.off(handleClientEvent);
+          chatClient.disconnect();
+        }
       };
     },
     [data.currentUser]
+  );
+
+  useEffect(
+    () => {
+      if (!loading && !connecting) loadChannels();
+    },
+    [loading, connecting]
   );
 
   if (loading || connecting) {
@@ -105,7 +143,7 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
     );
   }
 
-  if (isPortrait) {
+  if (!props.isPortrait) {
     return null;
   }
 
@@ -124,6 +162,7 @@ const LiveStreamChat = ({ isPortrait, contentId }) => {
 LiveStreamChat.propTypes = {
   isPortrait: PropTypes.bool,
   contentId: PropTypes.string,
+  onChannelsUpdated: PropTypes.func,
 };
 
-export default LiveStreamChat;
+export default withPlayerContext(LiveStreamChat);

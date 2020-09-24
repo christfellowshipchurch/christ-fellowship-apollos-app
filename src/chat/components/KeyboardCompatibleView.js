@@ -1,14 +1,21 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Keyboard, View } from 'react-native';
+import { Animated, Keyboard } from 'react-native';
+import styled from '@stream-io/styled-components';
 
 import { KeyboardContext } from '../context';
 import { useKeyboardCompatibleHeight } from './hooks/useKeyboardCompatibleHeight';
+
+const KeyboardCompatibleContainer = styled.View`
+  height: 100%;
+`;
 
 export const KeyboardCompatibleView = ({
   children,
   enabled = true,
   keyboardDismissAnimationDuration = 250,
   keyboardOpenAnimationDuration = 250,
+  isBannerOpen = false,
+  bannerHeight = 0,
 }) => {
   const heightAnim = useRef(new Animated.Value(0)).current;
   const rootChannelView = useRef();
@@ -68,6 +75,20 @@ export const KeyboardCompatibleView = ({
     ]
   );
 
+  useEffect(
+    () => {
+      if (isBannerOpen) {
+        setInitialHeight(initialHeight - bannerHeight);
+        Animated.timing(heightAnim, {
+          duration: 10,
+          toValue: initialHeight - bannerHeight,
+          useNativeDriver: false,
+        }).start();
+      }
+    },
+    [isBannerOpen]
+  );
+
   const onLayout = useCallback(
     ({
       nativeEvent: {
@@ -80,10 +101,10 @@ export const KeyboardCompatibleView = ({
 
       // Not to set initial height again.
       if (!initialHeight) {
-        setInitialHeight(height);
+        setInitialHeight(isBannerOpen ? height - bannerHeight : height);
         Animated.timing(heightAnim, {
           duration: 10,
-          toValue: height,
+          toValue: isBannerOpen ? height - bannerHeight : height,
           useNativeDriver: false,
         }).start();
       }
@@ -111,9 +132,9 @@ export const KeyboardCompatibleView = ({
       }}
     >
       <KeyboardContext.Provider value={{ dismissKeyboard }}>
-        <View collapsable={false} ref={rootChannelView}>
+        <KeyboardCompatibleContainer ref={rootChannelView}>
           {children}
-        </View>
+        </KeyboardCompatibleContainer>
       </KeyboardContext.Provider>
     </Animated.View>
   );
