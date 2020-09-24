@@ -213,7 +213,6 @@ class GroupSingle extends PureComponent {
   };
 
   render() {
-    const resources = get(this.props.content, 'groupResources', []);
     const videoCall = get(this.props.content, 'videoCall', {});
 
     const getNotes = () => {
@@ -346,11 +345,11 @@ class GroupSingle extends PureComponent {
                     </PaddedView>
                   ) : null}
 
-                  {!isEmpty(resources) ? (
+                  {!isEmpty(this.props.resources) ? (
                     <Resources
                       isLoading={this.props.loading}
                       navigation={this.props.navigation}
-                      resources={resources}
+                      resources={this.props.resources}
                     />
                   ) : null}
                 </BackgroundView>
