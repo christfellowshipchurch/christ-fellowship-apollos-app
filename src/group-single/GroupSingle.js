@@ -277,8 +277,8 @@ class GroupSingle extends PureComponent {
 
                 <BackgroundView>
                   <PaddedView vertical={false}>
-                    <Cell>
-                      {this.props.startTime ? (
+                    {this.props.startTime ? (
+                      <Cell>
                         <CellItem first>
                           <ScheduleView>
                             <IconView>
@@ -297,8 +297,6 @@ class GroupSingle extends PureComponent {
                             />
                           </ScheduleView>
                         </CellItem>
-                      ) : null}
-                      {this.props.startTime ? (
                         <CellItem>
                           <AddCalEventButton
                             eventNotes={getNotes()}
@@ -307,8 +305,8 @@ class GroupSingle extends PureComponent {
                             isLoading={this.props.loading}
                           />
                         </CellItem>
-                      ) : null}
-                    </Cell>
+                      </Cell>
+                    ) : null}
                     <PaddedView horizontal={false}>
                       <BodyText
                         isLoading={!this.props.summary && this.props.loading}
