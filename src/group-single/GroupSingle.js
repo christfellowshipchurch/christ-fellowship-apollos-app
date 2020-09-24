@@ -220,7 +220,6 @@ class GroupSingle extends PureComponent {
     const videoCall = get(this.props.content, 'videoCall', {});
     const parentVideoCall = get(this.props.content, 'parentVideoCall', {});
     const phoneNumbers = get(this.props.content, 'phoneNumbers', []);
-    const avatars = get(this.props.content, 'avatars', []);
 
     const getNotes = () => {
       const hasParentVideoCall = parentVideoCall && parentVideoCall.link;
@@ -264,8 +263,8 @@ class GroupSingle extends PureComponent {
                   />
 
                   <StyledAvatarCloud
-                    avatars={avatars}
-                    isLoading={!avatars && this.props.loading}
+                    avatars={this.props.avatars}
+                    isLoading={!this.props.avatars && this.props.loading}
                   />
                   <StyledTitle>
                     <StyledH3 isLoading={this.props.loading} numberOfLines={2}>
