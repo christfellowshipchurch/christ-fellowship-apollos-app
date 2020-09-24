@@ -213,7 +213,6 @@ class GroupSingle extends PureComponent {
   };
 
   render() {
-    const coverImageSources = get(this.props.content, 'coverImage.sources', []);
     const resources = get(this.props.content, 'groupResources', []);
     const dateTime = get(this.props.content, 'dateTime');
     const startTime = get(dateTime, 'start');
@@ -249,8 +248,10 @@ class GroupSingle extends PureComponent {
               <FlexedScrollView {...scrollViewProps}>
                 <Stretchy>
                   <GradientOverlayImage
-                    isLoading={!coverImageSources.length || this.props.loading}
-                    source={coverImageSources}
+                    isLoading={
+                      !this.props.coverImageSources.length || this.props.loading // check if `coverImageSources` is cached first then if it's loading
+                    }
+                    source={this.props.coverImageSources}
                     // Sets the ratio of the image
                     minAspectRatio={1}
                     maxAspectRatio={1}
