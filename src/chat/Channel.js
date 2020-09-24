@@ -131,7 +131,7 @@ Channel.navigationOptions = ({ navigation, ...props }) =>
     navigation,
     ...props,
     title: navigation.getParam('name', '…'),
-    blur: true,
+    blur: false,
     headerLeft: null,
   });
 

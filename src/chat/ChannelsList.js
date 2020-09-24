@@ -132,7 +132,7 @@ ChannelsList.navigationOptions = ({ navigation, ...props }) =>
     navigation,
     ...props,
     title: 'Conversations',
-    blur: true,
+    blur: false,
     headerLeft: null,
   });
 
