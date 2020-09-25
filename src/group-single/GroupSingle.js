@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { Animated, View } from 'react-native';
-import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 
@@ -19,8 +18,6 @@ import {
   ThemeConsumer,
   // StretchyView,
   withTheme,
-  ThemeMixin,
-  ErrorCard,
   ImageSourceType,
 } from '@apollosproject/ui-kit';
 
@@ -34,8 +31,6 @@ import MessagesButton from '../content-single/MessagesButton';
 import VideoCall from './VideoCall';
 import Resources from './Resources';
 import CheckInConnected from './CheckIn';
-
-import GET_GROUP from './getGroup';
 
 const FlexedScrollView = styled(({ theme }) => ({
   flex: 1,
@@ -149,6 +144,7 @@ const CellItem = styled(({ theme, first }) => ({
   flex: 1,
 }))(View);
 
+// TODO: this object doesn't look to correctly match the data needed for `StyledHorizontalTileFeed` see note on `renderMember`
 const loadingStateObject = {
   id: 'fake_id',
   title: '',
@@ -187,14 +183,6 @@ class GroupSingle extends PureComponent {
     }),
   };
 
-  get itemId() {
-    return this.props.navigation.getParam('itemId', []);
-  }
-
-  get queryVariables() {
-    return { itemId: this.itemId };
-  }
-
   getNotes() {
     const hasParentVideoCall =
       this.props.parentVideoCall && this.props.parentVideoCall.link;
@@ -224,9 +212,10 @@ class GroupSingle extends PureComponent {
   renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
     const name = get(item, 'nickName', '') || get(item, 'firstName', '');
+
     return (
       <MemberCard>
-        {!isLoading && photo && photo.uri ? (
+        {!isLoading && photo && photo.uri ? ( // TODO: move this "placeholder" loading state/logic into a `MemberImage` component
           <MemberImageWrapper>
             <MemberImage // eslint-disable-line react-native/no-inline-styles
               source={photo}
