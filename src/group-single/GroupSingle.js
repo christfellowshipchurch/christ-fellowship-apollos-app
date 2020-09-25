@@ -15,8 +15,6 @@ import {
   ConnectedImage,
   HorizontalTileFeed,
   Icon,
-  ThemeConsumer,
-  // StretchyView,
   withTheme,
   ImageSourceType,
 } from '@apollosproject/ui-kit';
@@ -144,6 +142,15 @@ const CellItem = styled(({ theme, first }) => ({
   flex: 1,
 }))(View);
 
+const CoverIamge = withTheme(({ theme }) => ({
+  minAspectRatio: 1, // Sets the ratio of the image
+  maxAspectRatio: 1, // Sets the ratio of the placeholder
+  forceRatio: 1,
+  maintainAspectRatio: true, // No ratios are respected without this
+  overlayColor: theme.colors.paper,
+  overlayType: 'featured',
+}))(GradientOverlayImage);
+
 // TODO: this object doesn't look to correctly match the data needed for `StyledHorizontalTileFeed` see note on `renderMember`
 const loadingStateObject = {
   id: 'fake_id',
@@ -240,133 +247,113 @@ class GroupSingle extends PureComponent {
 
   render() {
     return (
-      <ThemeConsumer>
-        {(theme) => (
-          <StretchyView>
-            {({ Stretchy, ...scrollViewProps }) => (
-              <FlexedScrollView {...scrollViewProps}>
-                <Stretchy>
-                  <GradientOverlayImage
-                    isLoading={
-                      !this.props.coverImageSources.length ||
-                      this.props.isLoading // check if `coverImageSources` is cached first then if it's loading
-                    }
-                    source={this.props.coverImageSources}
-                    // Sets the ratio of the image
-                    minAspectRatio={1}
-                    maxAspectRatio={1}
-                    // Sets the ratio of the placeholder
-                    forceRatio={1}
-                    // No ratios are respected without this
-                    maintainAspectRatio
-                    overlayColor={theme.colors.paper}
-                    overlayType="featured"
-                  />
+      <StretchyView>
+        {({ Stretchy, ...scrollViewProps }) => (
+          <FlexedScrollView {...scrollViewProps}>
+            <Stretchy>
+              <CoverIamge
+                isLoading={
+                  !this.props.coverImageSources.length || this.props.isLoading // check if `coverImageSources` is cached first then if it's loading
+                }
+                source={this.props.coverImageSources}
+              />
 
-                  <StyledAvatarCloud
-                    avatars={this.props.avatars}
-                    isLoading={!this.props.avatars && this.props.isLoading}
-                  />
-                  <StyledTitle>
-                    <StyledH3
-                      isLoading={this.props.isLoading}
-                      numberOfLines={2}
-                    >
-                      {this.props.title}
-                    </StyledH3>
-                    <StyledH5
-                      isLoading={this.props.isLoading}
-                      numberOfLines={2}
-                    >
-                      {this.props.groupType}
-                    </StyledH5>
-                  </StyledTitle>
-                </Stretchy>
+              <StyledAvatarCloud
+                avatars={this.props.avatars}
+                isLoading={!this.props.avatars && this.props.isLoading}
+              />
+              <StyledTitle>
+                <StyledH3 isLoading={this.props.isLoading} numberOfLines={2}>
+                  {this.props.title}
+                </StyledH3>
+                <StyledH5 isLoading={this.props.isLoading} numberOfLines={2}>
+                  {this.props.groupType}
+                </StyledH5>
+              </StyledTitle>
+            </Stretchy>
 
-                <BackgroundView>
-                  <PaddedView vertical={false}>
-                    {this.props.startTime ? (
-                      <Cell>
-                        <CellItem first>
-                          <ScheduleView>
-                            <IconView>
-                              <StyledIcon
-                                isLoading={this.props.isLoading}
-                                name="time"
-                                size={16}
-                              />
-                            </IconView>
-                            <DateLabel
-                              withTime
-                              isLoading={
-                                !this.props.startTime && this.props.isLoading
-                              }
-                              date={this.props.startTime}
-                            />
-                          </ScheduleView>
-                        </CellItem>
-                        <CellItem>
-                          <AddCalEventButton
-                            eventNotes={this.getNotes()}
-                            eventStart={this.props.startTime}
-                            eventTitle={this.props.title}
+            <BackgroundView>
+              <PaddedView vertical={false}>
+                {this.props.startTime ? (
+                  <Cell>
+                    <CellItem first>
+                      <ScheduleView>
+                        <IconView>
+                          <StyledIcon
                             isLoading={this.props.isLoading}
+                            name="time"
+                            size={16}
                           />
-                        </CellItem>
-                      </Cell>
-                    ) : null}
-                    <PaddedView horizontal={false}>
-                      <BodyText
-                        isLoading={!this.props.summary && this.props.isLoading}
-                      >
-                        {this.props.summary}
-                      </BodyText>
-                    </PaddedView>
-
-                    {this.props.videoCall ? (
-                      <VideoCall
-                        groupId={this.props.contentId}
+                        </IconView>
+                        <DateLabel
+                          withTime
+                          isLoading={
+                            !this.props.startTime && this.props.isLoading
+                          }
+                          date={this.props.startTime}
+                        />
+                      </ScheduleView>
+                    </CellItem>
+                    <CellItem>
+                      <AddCalEventButton
+                        eventNotes={this.getNotes()}
+                        eventStart={this.props.startTime}
+                        eventTitle={this.props.title}
                         isLoading={this.props.isLoading}
-                        parentVideoCall={this.props.parentVideoCall}
-                        videoCall={this.props.videoCall}
-                        date={this.props.startTime}
                       />
-                    ) : (
-                      <CheckInConnected
-                        id={this.props.contentId}
-                        isLoading={this.props.isLoading}
-                        date={this.props.startTime}
-                      />
-                    )}
+                    </CellItem>
+                  </Cell>
+                ) : null}
+                <PaddedView horizontal={false}>
+                  <BodyText
+                    isLoading={!this.props.summary && this.props.isLoading}
+                  >
+                    {this.props.summary}
+                  </BodyText>
+                </PaddedView>
 
-                    <StyledH4 padded>{'Group Members'}</StyledH4>
-                  </PaddedView>
-                  <StyledHorizontalTileFeed
-                    content={this.props.members}
-                    isLoading={!this.props.members && this.props.isLoading}
-                    loadingStateObject={loadingStateObject}
-                    renderItem={this.renderMember}
+                {this.props.videoCall ? (
+                  <VideoCall
+                    groupId={this.props.contentId}
+                    isLoading={this.props.isLoading}
+                    parentVideoCall={this.props.parentVideoCall}
+                    videoCall={this.props.videoCall}
+                    date={this.props.startTime}
                   />
+                ) : (
+                  <CheckInConnected
+                    id={this.props.contentId}
+                    isLoading={this.props.isLoading}
+                    date={this.props.startTime}
+                  />
+                )}
 
-                  {this.props.phoneNumbers && this.props.allowMessages ? (
-                    <PaddedView>
-                      <MessagesButton recipients={this.props.phoneNumbers} />
-                    </PaddedView>
-                  ) : null}
+                <StyledH4 padded>{'Group Members'}</StyledH4>
+              </PaddedView>
+              <StyledHorizontalTileFeed
+                content={this.props.members}
+                isLoading={!this.props.members && this.props.isLoading}
+                loadingStateObject={loadingStateObject}
+                renderItem={this.renderMember}
+              />
 
-                  {!isEmpty(this.props.resources) ? (
-                    <Resources
-                      isLoading={this.props.isLoading}
-                      navigation={this.props.navigation}
-                      resources={this.props.resources}
-                    />
-                  ) : null}
-                </BackgroundView>
-              </FlexedScrollView>
-            )}
-          </StretchyView>
+              {this.props.phoneNumbers && this.props.allowMessages ? (
+                <PaddedView>
+                  <MessagesButton recipients={this.props.phoneNumbers} />
+                </PaddedView>
+              ) : null}
+
+              {!isEmpty(this.props.resources) ? (
+                <Resources
+                  isLoading={this.props.isLoading}
+                  navigation={this.props.navigation}
+                  resources={this.props.resources}
+                />
+              ) : null}
+            </BackgroundView>
+          </FlexedScrollView>
         )}
-      </ThemeConsumer>
+      </StretchyView>
     );
   }
 }
