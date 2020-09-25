@@ -2,20 +2,21 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { styled, UIText } from '@apollosproject/ui-kit';
+import { lightenBy } from 'utils/theme';
 import { withTranslationContext } from '../../context';
 
-const Container = styled({
+const Container = styled(({ theme }) => ({
   width: '100%',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: '#fae6e8',
+  backgroundColor: lightenBy(theme.colors.alert, 0.25).hex(),
   padding: 3,
-})(View);
+}))(View);
 
-const ErrorText = styled({
-  color: 'red',
+const ErrorText = styled(({ theme }) => ({
+  color: theme.colors.alert,
   padding: 3,
-})(UIText);
+}))(UIText);
 
 const ChannelListHeaderNetworkDownIndicator = withTranslationContext(
   ({ t }) => (

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, Image } from 'react-native';
 import PropTypes from 'prop-types';
-import styled from '@stream-io/styled-components';
+import styled, { withTheme } from '@stream-io/styled-components';
 
 import { logChatPromiseExecution } from 'stream-chat';
 
@@ -296,15 +296,7 @@ class MessageInput extends PureComponent {
   setInputBoxRef = (o) => (this.inputBox = o);
 
   renderInputContainer = () => {
-    const { disabled, Input, t } = this.props;
-
-    let additionalTextInputProps = {};
-
-    if (disabled) {
-      additionalTextInputProps = {
-        editable: false,
-      };
-    }
+    const { disabled, theme, t } = this.props;
 
     return (
       <Container>
@@ -313,9 +305,10 @@ class MessageInput extends PureComponent {
             multiline
             onChangeText={this.onChangeText}
             placeholder={t('Write your message')}
+            placeholderTextColor={theme.colors.textLight}
             ref={this.setInputBoxRef}
             value={this.state.text}
-            {...additionalTextInputProps}
+            editable={!disabled}
           />
           <SendButtonContainer
             title={t('Send message')}
@@ -361,5 +354,5 @@ class MessageInput extends PureComponent {
 }
 
 export default withTranslationContext(
-  withKeyboardContext(withChannelContext(themed(MessageInput)))
+  withKeyboardContext(withChannelContext(themed(withTheme(MessageInput))))
 );

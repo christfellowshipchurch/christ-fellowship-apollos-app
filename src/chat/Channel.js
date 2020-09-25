@@ -3,8 +3,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createStackNavigator } from 'react-navigation';
 import { View } from 'react-native';
 import { get } from 'lodash';
+import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 import { useCurrentUser } from '../hooks';
 import { navigationOptions, NavigationSpacer } from '../navigation';
@@ -16,22 +17,27 @@ import {
   MessageInput,
 } from './components';
 import chatClient, { streami18n } from './client';
+import mapChatTheme from './styles/mapTheme';
 
 const ChatContainer = styled(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.background.paper,
 }))(View);
 
-const FlexedMediaSpacer = styled({
+const FlexedMediaSpacer = styled(({ theme }) => ({
   flex: 1,
-})(MediaPlayerSpacer);
+  backgroundColor: theme.colors.background.paper,
+}))(MediaPlayerSpacer);
 
 const PaddedView = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit,
+  backgroundColor: theme.colors.background.paper,
 }))(View);
 
-const Channel = ({ navigation }) => {
-  const userId = navigation.getParam('userId');
+const themed = withTheme();
+
+const Channel = themed((props) => {
+  const userId = props.navigation.getParam('userId');
 
   const [connecting, setConnecting] = useState(true);
 
@@ -64,7 +70,7 @@ const Channel = ({ navigation }) => {
       await channel.current.watch();
 
       const response = await chatClient.queryUsers({ id: { $in: [userId] } });
-      navigation.setParams({ name: get(response, 'users[0].name') });
+      props.navigation.setParams({ name: get(response, 'users[0].name') });
 
       setConnecting(false);
     } catch (e) {
@@ -95,23 +101,28 @@ const Channel = ({ navigation }) => {
   }
 
   return (
-    <Chat client={chatClient} i18nInstance={streami18n}>
-      <FlexedMediaSpacer Component={PaddedView}>
-        <NavigationSpacer />
-        <ChatContainer>
-          <ChannelInner channel={channel.current}>
-            <MessageList />
-            <MessageInput />
-          </ChannelInner>
-        </ChatContainer>
-      </FlexedMediaSpacer>
-    </Chat>
+    <ChatThemeProvider theme={mapChatTheme(props.theme)}>
+      <Chat client={chatClient} i18nInstance={streami18n}>
+        <FlexedMediaSpacer Component={PaddedView}>
+          <NavigationSpacer />
+          <ChatContainer>
+            <ChannelInner channel={channel.current}>
+              <MessageList />
+              <MessageInput />
+            </ChannelInner>
+          </ChatContainer>
+        </FlexedMediaSpacer>
+      </Chat>
+    </ChatThemeProvider>
   );
-};
+});
 
 Channel.propTypes = {
   navigation: PropTypes.shape({
     getParam: PropTypes.func,
+  }),
+  theme: PropTypes.shape({
+    colors: PropTypes.shape({}),
   }),
 };
 
@@ -120,7 +131,7 @@ Channel.navigationOptions = ({ navigation, ...props }) =>
     navigation,
     ...props,
     title: navigation.getParam('name', '…'),
-    blur: true,
+    blur: false,
     headerLeft: null,
   });
 

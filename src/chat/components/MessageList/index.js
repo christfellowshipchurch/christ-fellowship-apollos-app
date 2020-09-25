@@ -24,11 +24,11 @@ const ListContainer = styled.FlatList`
 
 const EditingContainer = styled.TouchableOpacity`
   position: absolute;
-  backgroundColor: black;
+  background-color: black;
   opacity: 0.4;
   height: 100%;
   width: 100%;
-  zIndex: 100;
+  z-index: 100;
 `;
 
 const ErrorNotificationText = styled.Text`
@@ -49,16 +49,16 @@ const ErrorNotification = styled.View`
   ${({ theme }) => theme.messageList.errorNotification.css};
 `;
 
-const TypingIndicatorContainer = styled.View`
-  position: absolute;
-  bottom: 0;
-  height: 30px;
-  width: 100%;
-  padding-left: 16px;
-  padding-top: 3px;
-  padding-bottom: 3px;
-  ${({ theme }) => theme.messageList.typingIndicatorContainer.css};
-`;
+// const TypingIndicatorContainer = styled.View`
+//   position: absolute;
+//   bottom: 0;
+//   height: 30px;
+//   width: 100%;
+//   padding-left: 16px;
+//   padding-top: 3px;
+//   padding-bottom: 3px;
+//   ${({ theme }) => theme.messageList.typingIndicatorContainer.css};
+// `;
 
 class MessageList extends PureComponent {
   static propTypes = {

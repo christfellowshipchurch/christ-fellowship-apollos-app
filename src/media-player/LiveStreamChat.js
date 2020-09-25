@@ -4,13 +4,15 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import { get } from 'lodash';
+import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
 import { Chat, Channel, MessageList, MessageInput } from '../chat/components';
 import { withPlayerContext } from '../chat/context';
 import chatClient, { streami18n } from '../chat/client';
+import mapChatTheme from '../chat/styles/mapTheme';
 
 const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   query getCurrentUserRoleForChannel($channelId: ID!) {
@@ -148,14 +150,16 @@ const LiveStreamChat = (props) => {
   }
 
   return (
-    <Chat client={chatClient} i18nInstance={streami18n}>
-      <ChatContainer>
-        <Channel channel={channel.current}>
-          <MessageList />
-          <MessageInput />
-        </Channel>
-      </ChatContainer>
-    </Chat>
+    <ChatThemeProvider theme={mapChatTheme(props.theme)}>
+      <Chat client={chatClient} i18nInstance={streami18n}>
+        <ChatContainer>
+          <Channel channel={channel.current}>
+            <MessageList />
+            <MessageInput />
+          </Channel>
+        </ChatContainer>
+      </Chat>
+    </ChatThemeProvider>
   );
 };
 
@@ -163,6 +167,11 @@ LiveStreamChat.propTypes = {
   isPortrait: PropTypes.bool,
   contentId: PropTypes.string,
   onChannelsUpdated: PropTypes.func,
+  theme: PropTypes.shape({
+    colors: PropTypes.shape({}),
+  }),
 };
 
-export default withPlayerContext(LiveStreamChat);
+const themed = withTheme();
+
+export default withPlayerContext(themed(LiveStreamChat));
