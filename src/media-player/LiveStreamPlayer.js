@@ -133,7 +133,13 @@ class LiveStreamPlayer extends PureComponent {
   // eslint-disable-next-line react/sort-comp
   static propTypes = {
     client: PropTypes.shape({ mutate: PropTypes.func }),
-    contentId: PropTypes.string,
+    channelId: PropTypes.string,
+    event: PropTypes.shape({
+      parentId: PropTypes.string,
+      name: PropTypes.string,
+      startsAt: PropTypes.string,
+      endsAt: PropTypes.string,
+    }),
   };
 
   state = { portrait: true, channels: [] };
@@ -423,7 +429,8 @@ class LiveStreamPlayer extends PureComponent {
             >
               <LiveStreamChat
                 isPortrait={this.state.portrait}
-                contentId={this.props.contentId}
+                channelId={this.props.channelId}
+                event={this.props.event}
               />
             </Animated.View>
           </PlayerContext.Provider>

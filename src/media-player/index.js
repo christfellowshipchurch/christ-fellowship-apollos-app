@@ -37,7 +37,16 @@ const GET_LIVE_CONTENT = gql`
       }
       contentItem {
         id
+        title
+        ... on EventContentItem {
+          events {
+            id
+            start
+            end
+          }
+        }
       }
+      chatChannelId
     }
   }
 `;
@@ -55,14 +64,20 @@ const MediaPlayer = () => {
 
   if (loading) return null;
 
-  const livestreams = get(liveData, 'liveStreams', []).filter((s) => s.isLive);
-  const livestream = livestreams.find(
+  const liveStreams = get(liveData, 'liveStreams', []).filter((s) => s.isLive);
+  const liveStream = liveStreams.find(
     (l) => uri === get(l, 'media.sources[0].uri')
   );
-  const contentId = get(livestream, 'contentItem.id', '').split(':')[1];
+  const channelId = get(liveStream, 'chatChannelId');
 
-  if (enabled && livestream) {
-    return <LiveStreamPlayer contentId={contentId} />;
+  if (enabled && liveStream) {
+    const event = {
+      parentId: get(liveStream, 'contentItem.id'),
+      name: get(liveStream, 'contentItem.title'),
+      startsAt: get(liveStream, 'contentItem.events[0].start'),
+      endsAt: get(liveStream, 'contentItem.events[0].end'),
+    };
+    return <LiveStreamPlayer channelId={channelId} event={event} />;
   }
 
   return <FullscreenPlayer />;
