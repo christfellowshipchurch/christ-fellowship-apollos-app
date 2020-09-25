@@ -33,14 +33,14 @@ import CheckInConnected from './CheckIn';
 const FlexedScrollView = styled(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.screen, // fixes the gradient on `GradientOverlayImage` not lining up with the `BackgroundView` and leaving a white overscroll
-}))(Animated.ScrollView);
+}))(Animated.ScrollView); // TODO: needs refactoring. This is very likely broken as you can't use `styled` with an `Animated` component.
 
-// TODO : temp fix until Core resolves the bug where images would disappear when pulling down
+// TODO : check if Apollo core has fixed this. Temp fix until Core resolves the bug where images would disappear when pulling down
 const StretchyView = ({ children, ...props }) =>
   children({ Stretchy: View, ...props });
 
 const MemberCard = styled(({ theme }) => ({
-  width: 80,
+  width: 80, // TODO: magic number 🧙‍♂️ I recommend making this a fluid component and letting the `HorizontalTileFeed` control it's size.
   flex: 1,
   margin: theme.sizing.baseUnit / 2,
   marginBottom: theme.sizing.baseUnit * 0.75,
@@ -48,15 +48,15 @@ const MemberCard = styled(({ theme }) => ({
 }))(View);
 
 const MemberImage = styled({
-  borderRadius: 10,
-  width: 80,
-  height: 100,
+  borderRadius: 10, // TODO: magic number 🧙‍♂️
+  width: 80, // TODO: magic number 🧙‍♂️
+  height: 100, // TODO: magic number 🧙‍♂️
 })(ConnectedImage);
 
 const MemberImageWrapper = styled({
-  borderRadius: 10,
-  width: 80,
-  height: 100,
+  borderRadius: 10, // TODO: magic number 🧙‍♂️
+  width: 80, // TODO: magic number 🧙‍♂️ I recommend making this a fluid component and letting the `HorizontalTileFeed` control it's size.
+  height: 100, // TODO: magic number 🧙‍♂️ I recommend making this a fluid component and letting the `HorizontalTileFeed` control it's size.
   overflow: 'hidden',
   justifyContent: 'center',
   alignItems: 'center',
@@ -68,7 +68,7 @@ const ScheduleView = styled(() => ({
 }))(View);
 
 const IconView = styled({
-  paddingRight: 6,
+  paddingRight: 6, // TODO: magic number 🧙‍♂️
 })(View);
 
 const StyledIcon = withTheme(({ theme }) => ({
@@ -79,17 +79,17 @@ const StyledAvatarCloud = styled(({ theme }) => ({
   position: 'absolute',
   left: theme.sizing.baseUnit,
   right: theme.sizing.baseUnit,
-  bottom: 125, // Magic Number to avoid overlaying title
-  top: 40, // Magic Number to avoid overlaying header
+  bottom: 125, // TODO: magic number to avoid overlaying title 🧙‍♂️
+  top: 40, // TODO: magic number to avoid overlaying header 🧙‍♂️
 }))(AvatarCloud);
 
 const StyledTitle = styled(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   position: 'absolute',
-  left: 20,
-  right: 20,
-  bottom: 20,
+  left: 20, // TODO: magic number 🧙‍♂️
+  right: 20, // TODO: magic number 🧙‍♂️
+  bottom: 20, // TODO: magic number 🧙‍♂️
   paddingHorizontal: theme.sizing.baseUnit * 2,
 }))(View);
 
@@ -108,7 +108,7 @@ const StyledH5 = styled(({ theme }) => ({
 
 const StyledHorizontalTileFeed = withTheme(({ theme }) => ({
   style: {
-    marginTop: theme.sizing.baseUnit * -1.25,
+    marginTop: theme.sizing.baseUnit * -1.25, // TODO: magic number 🧙This feels like a hack
     paddingBottom: theme.sizing.baseUnit,
     zIndex: 1,
   },
@@ -118,13 +118,13 @@ const StyledHorizontalTileFeed = withTheme(({ theme }) => ({
 const PlaceholderIcon = withTheme(({ theme: { colors } = {} }) => ({
   fill: colors.paper,
   name: 'avatarPlacholder',
-  size: 60,
+  size: 60, // TODO: magic number 🧙
 }))(Icon);
 
 const PlaceholderWrapper = styled(({ theme }) => ({
-  borderRadius: 10,
-  width: 80,
-  height: 100,
+  borderRadius: 10, // TODO: magic number 🧙‍♂️
+  width: 80, // TODO: magic number 🧙‍♂️ I recommend making this a fluid component and letting the `HorizontalTileFeed` control it's size.
+  height: 100, // TODO: magic number 🧙‍♂️ I recommend making this a fluid component and letting the `HorizontalTileFeed` control it's size.
   backgroundColor: theme.colors.lightSecondary,
   justifyContent: 'center',
   alignItems: 'center',
