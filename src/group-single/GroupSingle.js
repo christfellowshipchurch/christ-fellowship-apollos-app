@@ -158,6 +158,15 @@ const loadingStateObject = {
   coverImage: [],
 };
 
+/* TODO:
+ *  - Refactor to be a SFC. These class methods can probably be moved outside of the component
+ *    as well.
+ *  - Fix placeholders/loading states by using `withIsLoading` on `GroupSingle`. All children
+ *    that use or can use `getIsLoading` will no longer need `isLoading` passed to it explicitly.
+ *    You will need fix some layout bugs after you do this as placeholders are fluid/responsive. I
+ *    recommend doing this before you fix the magic numbers above as this will setup/make that
+ *    work easy.
+ */
 class GroupSingle extends PureComponent {
   static propTypes = {
     allowMessages: PropTypes.bool,
