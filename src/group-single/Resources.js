@@ -1,12 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  PaddedView,
-  H4,
-  styled,
-  ThemeMixin,
-} from '@apollosproject/ui-kit';
+import { Button, H4, PaddedView, styled } from '@apollosproject/ui-kit';
 import { useLinkRouter } from '../hooks';
 
 const StyledH4 = styled(({ theme }) => ({
@@ -23,6 +17,7 @@ const Resources = ({ resources, isLoading, navigation }) => {
     <PaddedView>
       <StyledH4>{'Resources'}</StyledH4>
       {resources.map(({ id, relatedNode, action, title }) => {
+        // TODO: move to outside the render cycle and the `Resources` component. This looks like it would make a good `switch` statement
         const handleOnPress = () => {
           if (action === 'READ_CONTENT') {
             navigation.navigate('ContentSingle', {
@@ -53,20 +48,15 @@ const Resources = ({ resources, isLoading, navigation }) => {
           }
         };
         return (
-          <ThemeMixin
-            mixin={{ colors: { primary: 'rgba(120, 120, 128, 0.36)' } }}
+          <StyledButton
+            onPress={() => handleOnPress()}
+            type={'secondary'}
+            bordered
+            loading={isLoading}
+            pill={false}
+            title={title}
             key={id}
-          >
-            <StyledButton
-              onPress={() => handleOnPress()}
-              type={'ghost'}
-              bordered
-              loading={isLoading}
-              pill={false}
-            >
-              <H4>{title}</H4>
-            </StyledButton>
-          </ThemeMixin>
+          />
         );
       })}
     </PaddedView>
