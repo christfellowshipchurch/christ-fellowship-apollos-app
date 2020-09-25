@@ -252,9 +252,7 @@ class GroupSingle extends PureComponent {
           <FlexedScrollView {...scrollViewProps}>
             <Stretchy>
               <CoverIamge
-                isLoading={
-                  !this.props.coverImageSources.length || this.props.isLoading // check if `coverImageSources` is cached first then if it's loading
-                }
+                isLoading={this.props.isLoading}
                 source={this.props.coverImageSources}
               />
 
