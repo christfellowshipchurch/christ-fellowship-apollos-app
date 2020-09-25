@@ -47,20 +47,20 @@ const MemberCard = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
-const MemberImage = styled({
-  borderRadius: 10, // TODO: magic number 🧙‍♂️
+const MemberImage = styled(({ theme }) => ({
+  borderRadius: theme.sizing.baseBorderRadius * 1.25,
   width: 80, // TODO: magic number 🧙‍♂️
   height: 100, // TODO: magic number 🧙‍♂️
-})(ConnectedImage);
+}))(ConnectedImage);
 
-const MemberImageWrapper = styled({
-  borderRadius: 10, // TODO: magic number 🧙‍♂️
+const MemberImageWrapper = styled(({ theme }) => ({
+  borderRadius: theme.sizing.baseBorderRadius * 1.25,
   width: 80, // TODO: magic number 🧙‍♂️ I recommend making this a fluid component and letting the `HorizontalTileFeed` control it's size.
   height: 100, // TODO: magic number 🧙‍♂️ I recommend making this a fluid component and letting the `HorizontalTileFeed` control it's size.
   overflow: 'hidden',
   justifyContent: 'center',
   alignItems: 'center',
-})(View);
+}))(View);
 
 const ScheduleView = styled(() => ({
   flexDirection: 'row',
@@ -122,7 +122,7 @@ const PlaceholderIcon = withTheme(({ theme: { colors } = {} }) => ({
 }))(Icon);
 
 const PlaceholderWrapper = styled(({ theme }) => ({
-  borderRadius: 10, // TODO: magic number 🧙‍♂️
+  borderRadius: theme.sizing.baseBorderRadius * 1.25,
   width: 80, // TODO: magic number 🧙‍♂️ I recommend making this a fluid component and letting the `HorizontalTileFeed` control it's size.
   height: 100, // TODO: magic number 🧙‍♂️ I recommend making this a fluid component and letting the `HorizontalTileFeed` control it's size.
   backgroundColor: theme.colors.lightSecondary,
