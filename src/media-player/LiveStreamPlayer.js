@@ -58,13 +58,13 @@ const MessagesBanner = styled(({ theme }) => ({
 }))(Touchable);
 
 const MessagesBannerText = styled(({ theme }) => ({
-  color: theme.colors.white,
+  color: theme.colors.background.paper,
 }))(H5);
 
 const MessagesIcon = withTheme(({ theme }) => ({
   name: 'message-bubble',
   size: 18,
-  fill: theme.colors.white,
+  fill: theme.colors.background.paper,
   style: {
     marginRight: theme.sizing.baseUnit / 2,
   },
@@ -78,7 +78,7 @@ const FlexHorizontal = styled({
 const RightArrow = withTheme(({ theme }) => ({
   name: 'arrow-next',
   size: 18,
-  fill: theme.colors.white,
+  fill: theme.colors.background.paper,
 }))(Icon);
 
 const Dot = styled(({ theme }) => ({

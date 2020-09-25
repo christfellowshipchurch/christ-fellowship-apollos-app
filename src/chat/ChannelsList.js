@@ -3,14 +3,16 @@ import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from 'react-navigation';
 import { SafeAreaView, View } from 'react-native';
 import { get } from 'lodash';
+import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 import { useCurrentUser } from '../hooks';
 import { navigationOptions, NavigationSpacer } from '../navigation';
 
 import { Chat, ChannelList } from './components';
 import chatClient, { streami18n } from './client';
+import mapChatTheme from './styles/mapTheme';
 import { Channel } from './Channel';
 
 const SafeChatContainer = styled(({ theme }) => ({
@@ -18,15 +20,19 @@ const SafeChatContainer = styled(({ theme }) => ({
   backgroundColor: theme.colors.background.paper,
 }))(SafeAreaView);
 
-const FlexedMediaSpacer = styled({
+const FlexedMediaSpacer = styled(({ theme }) => ({
   flex: 1,
-})(MediaPlayerSpacer);
+  backgroundColor: theme.colors.background.paper,
+}))(MediaPlayerSpacer);
 
 const PaddedView = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit,
+  backgroundColor: theme.colors.background.paper,
 }))(View);
 
-const ChannelsList = ({ navigation }) => {
+const themed = withTheme();
+
+const ChannelsList = themed((props) => {
   const [connecting, setConnecting] = useState(true);
 
   const { loading, data = {} } = useCurrentUser();
@@ -88,31 +94,36 @@ const ChannelsList = ({ navigation }) => {
   };
 
   return (
-    <Chat client={chatClient} i18nInstance={streami18n}>
-      <FlexedMediaSpacer Component={PaddedView}>
-        <SafeChatContainer>
-          <NavigationSpacer />
-          <ChannelList
-            filters={filters}
-            sort={sort}
-            options={options}
-            onSelect={(channel) => {
-              const members = get(channel, 'state.members');
-              const userId = Object.keys(members).find(
-                (id) => id !== curUserId
-              );
-              navigation.navigate('Channel', { userId, nested: true });
-            }}
-          />
-        </SafeChatContainer>
-      </FlexedMediaSpacer>
-    </Chat>
+    <ChatThemeProvider theme={mapChatTheme(props.theme)}>
+      <Chat client={chatClient} i18nInstance={streami18n}>
+        <FlexedMediaSpacer Component={PaddedView}>
+          <SafeChatContainer>
+            <NavigationSpacer />
+            <ChannelList
+              filters={filters}
+              sort={sort}
+              options={options}
+              onSelect={(channel) => {
+                const members = get(channel, 'state.members');
+                const userId = Object.keys(members).find(
+                  (id) => id !== curUserId
+                );
+                props.navigation.navigate('Channel', { userId, nested: true });
+              }}
+            />
+          </SafeChatContainer>
+        </FlexedMediaSpacer>
+      </Chat>
+    </ChatThemeProvider>
   );
-};
+});
 
 ChannelsList.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
+  }),
+  theme: PropTypes.shape({
+    colors: PropTypes.shape({}),
   }),
 };
 
@@ -121,7 +132,7 @@ ChannelsList.navigationOptions = ({ navigation, ...props }) =>
     navigation,
     ...props,
     title: 'Conversations',
-    blur: true,
+    blur: false,
     headerLeft: null,
   });
 
