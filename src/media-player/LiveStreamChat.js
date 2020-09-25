@@ -37,7 +37,7 @@ const LiveStreamChat = (props) => {
   const [fetchRole] = useLazyQuery(GET_CURRENT_USER_ROLE_FOR_CHANNEL, {
     fetchPolicy: 'network-only',
     variables: {
-      channelId: props.contentId,
+      channelId: props.channelId,
     },
   });
 
@@ -91,7 +91,11 @@ const LiveStreamChat = (props) => {
         );
       }
 
-      channel.current = chatClient.channel('livestream', props.contentId);
+      channel.current = chatClient.channel(
+        'livestream',
+        props.channelId,
+        props.event
+      );
 
       await channel.current.create();
       // await channel.current.watch();
@@ -165,7 +169,13 @@ const LiveStreamChat = (props) => {
 
 LiveStreamChat.propTypes = {
   isPortrait: PropTypes.bool,
-  contentId: PropTypes.string,
+  channelId: PropTypes.string,
+  event: PropTypes.shape({
+    parentId: PropTypes.string,
+    name: PropTypes.string,
+    startsAt: PropTypes.string,
+    endsAt: PropTypes.string,
+  }),
   onChannelsUpdated: PropTypes.func,
   theme: PropTypes.shape({
     colors: PropTypes.shape({}),
