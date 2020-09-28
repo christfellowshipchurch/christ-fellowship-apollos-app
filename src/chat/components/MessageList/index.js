@@ -467,7 +467,7 @@ class MessageList extends PureComponent {
           onScroll={this.handleScroll}
           onEndReached={this.props.loadMore}
           inverted
-          keyboardShouldPersistTaps="always"
+          keyboardShouldPersistTaps={'never'}
           keyExtractor={(item) =>
             item.id ||
             item.created_at ||
