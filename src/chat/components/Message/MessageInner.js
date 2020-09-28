@@ -14,8 +14,7 @@ const Container = styled.View`
   align-items: flex-end;
   justify-content: ${({ alignment }) =>
     alignment === 'left' ? 'flex-start' : 'flex-end'};
-  margin-bottom: ${({ hasMarginBottom, isVeryLastMessage }) =>
-    hasMarginBottom ? (isVeryLastMessage ? 30 : 20) : 0};
+  margin-bottom: ${({ hasMarginBottom }) => (hasMarginBottom ? 10 : 0)};
   ${({ theme }) => theme.message.container.css};
 `;
 
@@ -69,7 +68,7 @@ class MessageInner extends React.PureComponent {
   static defaultProps = {
     reactionsEnabled: true,
     forceAlign: false,
-    showMessageStatus: true,
+    showMessageStatus: false,
     supportedReactions: emojiData,
   };
 
@@ -117,12 +116,12 @@ class MessageInner extends React.PureComponent {
       alignment = forceAlign;
     else alignment = isMyMessage(message) ? 'right' : 'left';
 
-    const lastMessage = this.props.channel.state.messages[
-      this.props.channel.state.messages.length - 1
-    ];
-    const isVeryLastMessage = lastMessage
-      ? lastMessage.id === message.id
-      : false;
+    // const lastMessage = this.props.channel.state.messages[
+    //   this.props.channel.state.messages.length - 1
+    // ];
+    // const isVeryLastMessage = lastMessage
+    //   ? lastMessage.id === message.id
+    //   : false;
 
     const hasMarginBottom = !!(
       groupStyles[0] === 'single' || groupStyles[0] === 'bottom'
@@ -143,11 +142,7 @@ class MessageInner extends React.PureComponent {
     };
 
     return (
-      <Container
-        alignment={alignment}
-        hasMarginBottom={hasMarginBottom}
-        isVeryLastMessage={isVeryLastMessage}
-      >
+      <Container alignment={alignment} hasMarginBottom={hasMarginBottom}>
         {alignment === 'right' ? (
           <React.Fragment>
             <MessageContent {...forwardedProps} />
