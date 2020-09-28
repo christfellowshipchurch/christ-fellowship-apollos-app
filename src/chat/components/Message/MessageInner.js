@@ -21,9 +21,6 @@ const Container = styled.View`
 class MessageInner extends React.PureComponent {
   static propTypes = {
     reactionsEnabled: PropTypes.bool.isRequired,
-    onMessageTouch: PropTypes.func,
-    onPress: PropTypes.func,
-    onLongPress: PropTypes.func,
     handleDelete: PropTypes.func,
     handleEdit: PropTypes.func,
     dismissKeyboard: PropTypes.func,

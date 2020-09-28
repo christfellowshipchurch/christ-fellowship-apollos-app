@@ -16,11 +16,7 @@ const MESSAGE_ACTIONS = {
   edit: 'edit',
   delete: 'delete',
   reactions: 'reactions',
-  message: 'message',
   flag: 'flag',
-  mute: 'mute',
-  unmute: 'unmute',
-  ban: 'ban',
 };
 
 // Border radii are useful for the case of error message types only.
@@ -100,16 +96,9 @@ class MessageContent extends React.PureComponent {
 
   static propTypes = {
     reactionsEnabled: PropTypes.bool.isRequired,
-    onMessageTouch: PropTypes.func,
-    onPress: PropTypes.func,
-    onLongPress: PropTypes.func,
     handleEdit: PropTypes.func,
     handleDelete: PropTypes.func,
     handleFlag: PropTypes.func,
-    handleMute: PropTypes.func,
-    handleUnmute: PropTypes.func,
-    handleBan: PropTypes.func,
-    handleSendMessage: PropTypes.func,
     dismissKeyboard: PropTypes.func,
     handleAction: PropTypes.func,
     alignment: PropTypes.oneOf(['right', 'left']),
@@ -146,10 +135,6 @@ class MessageContent extends React.PureComponent {
     canEditMessage: PropTypes.func,
     canDeleteMessage: PropTypes.func,
     canFlagMessage: PropTypes.func,
-    canMuteUser: PropTypes.func,
-    canUnmuteUser: PropTypes.func,
-    canBanUser: PropTypes.func,
-    canMessageUser: PropTypes.func,
     t: PropTypes.func,
   };
 
@@ -172,10 +157,6 @@ class MessageContent extends React.PureComponent {
       canEditMessage,
       canDeleteMessage,
       canFlagMessage,
-      canMuteUser,
-      canUnmuteUser,
-      canBanUser,
-      canMessageUser,
       t,
     } = this.props;
 
@@ -185,13 +166,6 @@ class MessageContent extends React.PureComponent {
       options.push({
         id: MESSAGE_ACTIONS.reactions,
         title: t('Add Reaction'),
-      });
-    }
-
-    if (canMessageUser()) {
-      options.push({
-        id: MESSAGE_ACTIONS.message,
-        title: 'Send Person A Message',
       });
     }
 
@@ -216,27 +190,6 @@ class MessageContent extends React.PureComponent {
       });
     }
 
-    if (canMuteUser()) {
-      options.push({
-        id: MESSAGE_ACTIONS.mute,
-        title: 'Mute Person',
-      });
-    }
-
-    if (canUnmuteUser()) {
-      options.push({
-        id: MESSAGE_ACTIONS.unmute,
-        title: 'Unmute Person',
-      });
-    }
-
-    if (canBanUser()) {
-      options.push({
-        id: MESSAGE_ACTIONS.ban,
-        title: 'Ban Person',
-      });
-    }
-
     this.props.showActionSheetWithOptions(
       {
         title: t('Choose an action'),
@@ -250,37 +203,10 @@ class MessageContent extends React.PureComponent {
     );
   };
 
-  /**
-   * @todo: Remove the method in future 1.0.0.
-   * This method has been moved to `ReactionPickerWrapper`.
-   *
-   * @deprecated
-   */
-  _setReactionPickerPosition = async () => {
-    console.warn(
-      'openReactionSelector has been deprecared and will be removed in next major release.' +
-        'Please use this.props.openReactionPicker instead.'
-    );
-
-    await this.props.openReactionPicker();
-  };
-
-  openReactionSelector = async () => {
-    console.warn(
-      'openReactionSelector has been deprecared and will be removed in next major release.' +
-        'Please use this.props.openReactionPicker instead.'
-    );
-
-    await this.props.openReactionPicker();
-  };
-
   onActionPress = (action) => {
     switch (action) {
       case MESSAGE_ACTIONS.reactions:
         this.props.openReactionPicker();
-        break;
-      case MESSAGE_ACTIONS.message:
-        this.props.handleSendMessage();
         break;
       case MESSAGE_ACTIONS.edit:
         this.props.handleEdit();
@@ -290,24 +216,6 @@ class MessageContent extends React.PureComponent {
         break;
       case MESSAGE_ACTIONS.flag:
         this.props.handleFlag();
-        break;
-      case MESSAGE_ACTIONS.mute:
-        this.props.handleMute();
-        break;
-      case MESSAGE_ACTIONS.unmute:
-        this.props.handleUnmute();
-        break;
-      case MESSAGE_ACTIONS.ban:
-        this.props.showActionSheetWithOptions(
-          {
-            title: 'Ban person for remainder of event?',
-            options: ['Cancel', 'Ban Person'],
-            cancelButtonIndex: 0,
-          },
-          (buttonIndex) => {
-            if (buttonIndex) this.props.handleBan();
-          }
-        );
         break;
       default:
         break;
@@ -351,19 +259,11 @@ class MessageContent extends React.PureComponent {
         </DeletedContainer>
       );
 
-    const onLongPress = this.props.onLongPress;
     const contentProps = {
       alignment,
       status: message.status,
-      onPress: this.props.onPress
-        ? this.props.onPress.bind(this, this, message)
-        : this.props.onMessageTouch,
-      onLongPress:
-        onLongPress && !(disabled || readOnly)
-          ? onLongPress.bind(this, this, message)
-          : !(disabled || readOnly)
-            ? this.showActionSheet
-            : () => null,
+      onPress: openReactionPicker,
+      onLongPress: !(disabled || readOnly) ? this.showActionSheet : () => null,
       activeOpacity: 0.7,
       disabled: disabled || readOnly,
       hasReactions,
