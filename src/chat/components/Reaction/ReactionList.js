@@ -11,6 +11,7 @@ const TouchableWrapper = styled.View`
   ${({ alignment }) =>
     alignment === 'left' ? 'left: -10px;' : 'right: -10px;'} height: 28px;
   z-index: 10;
+  margin-top: 5px;
   align-self: ${({ alignment }) =>
     alignment === 'left' ? 'flex-start' : 'flex-end'};
 `;

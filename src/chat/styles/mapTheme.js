@@ -72,23 +72,31 @@ export default function mapTheme(appTheme) {
           color: colors.text.primary,
         },
       },
-      // reactionList: {
-      //   container: {
-      //     css: {
-      //     },
-      //   },
-      //   reactionCount: {
-      //     css: {
-      //     },
-      //   },
-      // },
-      // reactionPicker: {
-      //   containerView: {
-      //     css: {
-      //       backgroundColor: 'red',
-      //     },
-      //   },
-      // },
+      reactionList: {
+        container: {
+          css: {
+            backgroundColor,
+          },
+        },
+        reactionCount: {
+          css: {
+            color: colors.text.primary,
+            backgroundColor,
+          },
+        },
+      },
+      reactionPicker: {
+        containerView: {
+          css: {
+            backgroundColor,
+          },
+        },
+        text: {
+          css: {
+            color: colors.text.primary,
+          },
+        },
+      },
     },
     messageInput: {
       container: {
