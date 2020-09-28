@@ -72,6 +72,23 @@ export default function mapTheme(appTheme) {
           color: colors.text.primary,
         },
       },
+      // reactionList: {
+      //   container: {
+      //     css: {
+      //     },
+      //   },
+      //   reactionCount: {
+      //     css: {
+      //     },
+      //   },
+      // },
+      // reactionPicker: {
+      //   containerView: {
+      //     css: {
+      //       backgroundColor: 'red',
+      //     },
+      //   },
+      // },
     },
     messageInput: {
       container: {
