@@ -9,7 +9,7 @@ export default function mapTheme(appTheme) {
    * Map the CF/Apollos theme (appTheme) to the Stream Chat theme (packageTheme).
    */
 
-  const { colors, type } = appTheme;
+  const { colors, sizing, helpers, typography, type } = appTheme;
 
   const backgroundColor =
     type === 'light'
@@ -102,11 +102,22 @@ export default function mapTheme(appTheme) {
       container: {
         css: {
           backgroundColor,
+          borderRadius: sizing.baseBorderRadius,
         },
       },
       inputBox: {
         css: {
           color: colors.text.primary,
+          fontSize: helpers.rem(0.875),
+          fontFamily: typography.ui.regular,
+        },
+      },
+      sendButton: {
+        css: {
+          backgroundColor: colors.primary,
+          width: helpers.rem(2),
+          height: helpers.rem(2),
+          borderRadius: helpers.rem(1),
         },
       },
       editingBoxContainer: {
