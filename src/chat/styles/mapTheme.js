@@ -57,11 +57,6 @@ export default function mapTheme(appTheme) {
     },
     message: {
       content: {
-        metaText: {
-          css: {
-            color: colors.text.tertiary,
-          },
-        },
         textContainer: {
           leftBorderWidth: 1,
           leftBorderColor: backgroundColor,

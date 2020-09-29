@@ -14,7 +14,7 @@ const Container = styled.View`
   align-items: flex-end;
   justify-content: ${({ alignment }) =>
     alignment === 'left' ? 'flex-start' : 'flex-end'};
-  margin-bottom: ${({ hasMarginBottom }) => (hasMarginBottom ? 10 : 0)};
+  margin-bottom: ${({ hasMarginBottom }) => (hasMarginBottom ? 20 : 0)};
   ${({ theme }) => theme.message.container.css};
 `;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@stream-io/styled-components';
+import { Text } from 'react-native';
 import Immutable from 'seamless-immutable';
 import PropTypes from 'prop-types';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
@@ -57,13 +58,16 @@ const ContainerInner = styled.View`
 
 const MetaContainer = styled.View`
   margin-top: 2;
+  flex-direction: ${({ alignment }) =>
+    alignment === 'left' ? 'row-reverse' : 'row'};
   ${({ theme }) => theme.message.content.metaContainer.css};
 `;
 
 const MetaText = styled.Text`
   font-size: 11;
-  color: ${({ theme }) => theme.colors.textGrey};
-  text-align: ${({ alignment }) => (alignment === 'left' ? 'left' : 'right')};
+  color: ${({ theme, bold }) =>
+    bold ? theme.colors.textDark : theme.colors.textLight};
+  font-weight: ${({ bold }) => (bold ? 'bold' : 'normal')};
   ${({ theme }) => theme.message.content.metaText.css};
 `;
 
@@ -277,6 +281,7 @@ class MessageContent extends React.PureComponent {
       disabled: disabled || readOnly,
     };
 
+    console.log({ message });
     return (
       <MessageContentContext.Provider value={context}>
         <Container
@@ -335,12 +340,14 @@ class MessageContent extends React.PureComponent {
             />
           </ContainerInner>
           {showTime ? (
-            <MetaContainer>
-              <MetaText alignment={alignment}>
+            <MetaContainer alignment={alignment}>
+              <MetaText>
                 {this.props.formatDate
                   ? this.props.formatDate(message.created_at)
                   : tDateTimeParser(message.created_at).format('LT')}
               </MetaText>
+              <Text> </Text>
+              <MetaText bold>{message.user.name}</MetaText>
             </MetaContainer>
           ) : null}
         </Container>
