@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import styled, { withTheme } from '@stream-io/styled-components';
 import { Icon, withTheme as withAppTheme } from '@apollosproject/ui-kit';
@@ -58,21 +58,12 @@ const InputBox = styled.TextInput`
   ${({ theme }) => theme.messageInput.inputBox.css};
 `;
 
-const SendButtonContainer = styled.TouchableOpacity`
-  margin-left: 8;
-  width: 30;
-  height: 30;
-  border-radius: 15;
-  background-color: blue;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ${({ theme }) => theme.messageInput.sendButton.css};
-`;
-
 const StyledIcon = withAppTheme(({ theme }) => ({
-  size: theme.helpers.rem(1),
-  fill: theme.colors.background.paper,
+  size: theme.helpers.rem(2),
+  fill: theme.colors.primary,
+  style: {
+    marginLeft: 8,
+  },
 }))(Icon);
 
 const IconSquareContainer = styled.TouchableOpacity`
@@ -303,17 +294,17 @@ class MessageInput extends PureComponent {
           value={this.state.text}
           editable={!disabled}
         />
-        <SendButtonContainer
+        <TouchableOpacity
           title={t('Send message')}
           onPress={this.sendMessage}
           disabled={disabled || this.sending || !this.isValidMessage()}
         >
           {this.props.editing ? (
-            <StyledIcon name={'clock'} />
+            <StyledIcon name={'paper-airplane-circle'} />
           ) : (
-            <StyledIcon name={'envelope'} />
+            <StyledIcon name={'paper-airplane-circle'} />
           )}
-        </SendButtonContainer>
+        </TouchableOpacity>
       </Container>
     );
   };

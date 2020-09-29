@@ -20,6 +20,7 @@ export Home from './Home';
 export List from './List';
 export Lock from './Lock';
 export MessageBubble from './MessageBubble';
+export PaperAirplaneCircle from './PaperAirplaneCircle';
 export Plus from './Plus';
 export Search from './Search';
 export ShareSquare from './ShareSquare';

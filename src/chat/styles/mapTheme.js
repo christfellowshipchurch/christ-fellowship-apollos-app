@@ -107,14 +107,6 @@ export default function mapTheme(appTheme) {
           fontFamily: typography.ui.regular,
         },
       },
-      sendButton: {
-        css: {
-          backgroundColor: colors.primary,
-          width: helpers.rem(2),
-          height: helpers.rem(2),
-          borderRadius: helpers.rem(1),
-        },
-      },
       editingBoxContainer: {
         css: {
           backgroundColor,
