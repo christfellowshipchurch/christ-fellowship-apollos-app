@@ -126,7 +126,7 @@ const EventContentItem = ({ content, loading }) => {
 
                     {events.length > 0 && (
                       <EventDateTimes
-                        contentId={content.id}
+                        content={content}
                         events={content.events}
                         loading={loading}
                       />
