@@ -27,6 +27,14 @@ export default function mapTheme(appTheme) {
       textDark: colors.text.primary,
       transparent: colors.transparent,
     },
+    avatar: {
+      text: {
+        css: {
+          color: colors.background.paper,
+          fontFamily: typography.sans.regular.default,
+        },
+      },
+    },
     channelPreview: {
       container: {
         css: {
