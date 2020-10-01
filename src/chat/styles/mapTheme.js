@@ -1,4 +1,5 @@
 import merge from 'lodash/merge';
+import { StyleSheet } from 'react-native';
 
 import { lightenBy, darkenBy } from 'utils/theme';
 
@@ -92,6 +93,8 @@ export default function mapTheme(appTheme) {
         containerView: {
           css: {
             backgroundColor,
+            borderColor: colors.text.tertiary,
+            borderWidth: StyleSheet.hairlineWidth,
           },
         },
         text: {
