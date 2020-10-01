@@ -57,7 +57,7 @@ const ContainerInner = styled.View`
 `;
 
 const MetaContainer = styled.View`
-  margin-top: 2;
+  margin-top: 5px;
   flex-direction: ${({ alignment }) =>
     alignment === 'left' ? 'row-reverse' : 'row'};
   ${({ theme }) => theme.message.content.metaContainer.css};
