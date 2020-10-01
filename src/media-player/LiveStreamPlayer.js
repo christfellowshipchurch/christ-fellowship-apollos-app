@@ -142,7 +142,10 @@ class LiveStreamPlayer extends PureComponent {
     }),
   };
 
-  state = { portrait: true, channels: [] };
+  state = {
+    portrait: Dimensions.get('window').height > Dimensions.get('window').width,
+    channels: [],
+  };
 
   // Tracks the messages banner height
   bannerHeight = new Animated.Value(0);
