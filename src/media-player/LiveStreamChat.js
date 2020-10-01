@@ -136,7 +136,7 @@ const LiveStreamChat = (props) => {
         }
       };
     },
-    [data.currentUser]
+    [props.channelId, data.currentUser]
   );
 
   useEffect(
