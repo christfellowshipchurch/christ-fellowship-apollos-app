@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Dayjs from 'dayjs';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 
 import { Streami18n } from 'stream-chat-react-native';
@@ -16,7 +16,7 @@ const Chat = (props) => {
   const [isOnline, setIsOnline] = useState(true);
   const [translators, setTranslators] = useState({
     t: (key) => key,
-    tDateTimeParser: (input) => Dayjs(input),
+    tDateTimeParser: (input) => moment(input),
   });
 
   // Setup translators
