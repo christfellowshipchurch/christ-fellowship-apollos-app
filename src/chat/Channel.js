@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { View } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import { get } from 'lodash';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
@@ -19,10 +19,10 @@ import {
 import chatClient, { streami18n } from './client';
 import mapChatTheme from './styles/mapTheme';
 
-const ChatContainer = styled(({ theme }) => ({
+const SafeChatContainer = styled(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.background.paper,
-}))(View);
+}))(SafeAreaView);
 
 const FlexedMediaSpacer = styled(({ theme }) => ({
   flex: 1,
@@ -94,9 +94,9 @@ const Channel = themed((props) => {
 
   if (loading || connecting) {
     return (
-      <ChatContainer>
+      <SafeChatContainer>
         <ActivityIndicator size={'large'} />
-      </ChatContainer>
+      </SafeChatContainer>
     );
   }
 
@@ -104,13 +104,13 @@ const Channel = themed((props) => {
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
         <FlexedMediaSpacer Component={PaddedView}>
-          <NavigationSpacer />
-          <ChatContainer>
-            <ChannelInner channel={channel.current}>
+          <ChannelInner channel={channel.current}>
+            <SafeChatContainer>
+              <NavigationSpacer />
               <MessageList />
-              <MessageInput />
-            </ChannelInner>
-          </ChatContainer>
+            </SafeChatContainer>
+            <MessageInput />
+          </ChannelInner>
         </FlexedMediaSpacer>
       </Chat>
     </ChatThemeProvider>
