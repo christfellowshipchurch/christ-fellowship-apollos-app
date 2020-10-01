@@ -45,16 +45,17 @@ const Container = styled(({ padding, ...rest }) => <View {...rest} />)`
   background-color: rgba(0, 0, 0, 0.05);
   margin-vertical: 10px;
   margin-horizontal: 16px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
   min-height: 46px;
+  max-height: 60px;
   align-items: center;
   ${({ theme }) => theme.messageInput.container.css};
 `;
 
 const InputBox = styled.TextInput`
   flex: 1;
-  max-height: 60px;
+  padding-bottom: 3px;
   ${({ theme }) => theme.messageInput.inputBox.css};
 `;
 
