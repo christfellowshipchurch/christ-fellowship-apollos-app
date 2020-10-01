@@ -15,6 +15,7 @@ const GET_MEDIA_PLAYER_VISIBILITY = gql`
     mediaPlayer @client {
       isVisible
       currentTrack {
+        title
         mediaSource {
           uri
         }
@@ -61,12 +62,15 @@ const MediaPlayer = () => {
   if (!data.mediaPlayer || !data.mediaPlayer.isVisible) return null;
 
   const uri = get(data, 'mediaPlayer.currentTrack.mediaSource.uri');
+  const title = get(data, 'mediaPlayer.currentTrack.title');
 
   if (loading) return null;
 
   const liveStreams = get(liveData, 'liveStreams', []).filter((s) => s.isLive);
   const liveStream = liveStreams.find(
-    (l) => uri === get(l, 'media.sources[0].uri')
+    (l) =>
+      uri === get(l, 'media.sources[0].uri') &&
+      title === get(l, 'contentItem.title')
   );
   const channelId = get(liveStream, 'chatChannelId');
 
