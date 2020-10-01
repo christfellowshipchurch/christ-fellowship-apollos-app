@@ -75,6 +75,11 @@ export default function mapTheme(appTheme) {
         text: {
           color: colors.text.primary,
         },
+        metaText: {
+          css: {
+            fontFamily: typography.sans.regular.default,
+          },
+        },
       },
       reactionList: {
         container: {
