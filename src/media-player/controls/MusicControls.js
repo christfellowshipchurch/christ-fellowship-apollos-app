@@ -28,10 +28,7 @@ class MusicControls extends Component {
   }
 
   componentDidUpdate(oldProps) {
-    if (
-      this.props.duration === 1 ||
-      oldProps.duration !== this.props.duration
-    ) {
+    if (this.props.duration > 1 && oldProps.duration !== this.props.duration) {
       this.configureMusicControl();
     }
     if (this.props.currentTimeAnimated !== oldProps.currentTimeAnimated) {
