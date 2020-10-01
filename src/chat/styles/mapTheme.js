@@ -45,16 +45,21 @@ export default function mapTheme(appTheme) {
       title: {
         css: {
           color: colors.text.primary,
+          fontFamily: typography.sans.regular.default,
         },
       },
       date: {
         css: {
           color: colors.text.tertiary,
+          fontFamily: typography.sans.regular.default,
         },
       },
       message: {
         color: colors.text.secondary,
         unreadColor: colors.text.primary,
+        css: {
+          fontFamily: typography.sans.regular.default,
+        },
       },
     },
     iconSquare: {
@@ -74,6 +79,7 @@ export default function mapTheme(appTheme) {
         },
         text: {
           color: colors.text.primary,
+          fontFamily: typography.sans.regular.default,
         },
         metaText: {
           css: {
@@ -90,6 +96,7 @@ export default function mapTheme(appTheme) {
         reactionCount: {
           css: {
             color: colors.text.primary,
+            fontFamily: typography.sans.regular.default,
             backgroundColor,
           },
         },
@@ -105,6 +112,7 @@ export default function mapTheme(appTheme) {
         text: {
           css: {
             color: colors.text.primary,
+            fontFamily: typography.sans.regular.default,
           },
         },
       },
@@ -119,8 +127,7 @@ export default function mapTheme(appTheme) {
       inputBox: {
         css: {
           color: colors.text.primary,
-          fontSize: helpers.rem(0.875),
-          fontFamily: typography.ui.regular,
+          fontFamily: typography.sans.regular.default,
         },
       },
       editingBoxContainer: {
@@ -134,6 +141,7 @@ export default function mapTheme(appTheme) {
         text: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
       },
@@ -146,6 +154,7 @@ export default function mapTheme(appTheme) {
         date: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
       },
@@ -153,11 +162,13 @@ export default function mapTheme(appTheme) {
         text: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
         dateText: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
       },
@@ -165,6 +176,7 @@ export default function mapTheme(appTheme) {
         memberUpdateText: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
       },
