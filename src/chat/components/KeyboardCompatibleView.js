@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, Keyboard } from 'react-native';
+import { Animated, Keyboard, Easing } from 'react-native';
 import styled from '@stream-io/styled-components';
 
 import { KeyboardContext } from '../context';
@@ -32,13 +32,19 @@ export const KeyboardCompatibleView = ({
 
   useEffect(
     () => {
-      Animated.timing(heightAnim, {
-        duration: isKeyboardOpen
-          ? keyboardDismissAnimationDuration
-          : keyboardOpenAnimationDuration,
-        toValue: channelHeight,
-        useNativeDriver: false,
-      }).start();
+      if (isKeyboardOpen) {
+        Animated.timing(heightAnim, {
+          duration: keyboardDismissAnimationDuration,
+          toValue: channelHeight,
+          useNativeDriver: false,
+          easing: Easing.inOut(Easing.ease),
+        }).start();
+      } else {
+        Animated.spring(heightAnim, {
+          toValue: channelHeight,
+          useNativeDriver: false,
+        }).start();
+      }
     },
     [
       channelHeight,
@@ -62,6 +68,7 @@ export const KeyboardCompatibleView = ({
             duration: keyboardDismissAnimationDuration,
             toValue: initialHeight,
             useNativeDriver: false,
+            easing: Easing.inOut(Easing.ease),
           }).start(resolve);
         }
       });
@@ -83,6 +90,7 @@ export const KeyboardCompatibleView = ({
           duration: 10,
           toValue: initialHeight - bannerHeight,
           useNativeDriver: false,
+          easing: Easing.inOut(Easing.ease),
         }).start();
       }
     },

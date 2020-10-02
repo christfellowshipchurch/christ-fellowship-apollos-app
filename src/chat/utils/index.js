@@ -10,20 +10,24 @@ export const emojiData = [
     icon: '❤️️',
   },
   {
+    id: 'fire',
+    icon: '🔥',
+  },
+  {
     id: 'haha',
     icon: '😂',
   },
   {
-    id: 'wow',
-    icon: '😮',
+    id: 'smile',
+    icon: '😊',
   },
   {
-    id: 'sad',
-    icon: '😔',
+    id: 'pray',
+    icon: '🙏',
   },
   {
-    id: 'angry',
-    icon: '😠',
+    id: 'highfive',
+    icon: '🙌',
   },
 ];
 

@@ -17,8 +17,8 @@ import MessageSystem from './MessageSystem';
 const ListContainer = styled.FlatList`
   flex: 1;
   width: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
   ${({ theme }) => theme.messageList.listContainer.css};
 `;
 
@@ -467,7 +467,7 @@ class MessageList extends PureComponent {
           onScroll={this.handleScroll}
           onEndReached={this.props.loadMore}
           inverted
-          keyboardShouldPersistTaps="always"
+          keyboardShouldPersistTaps={'never'}
           keyExtractor={(item) =>
             item.id ||
             item.created_at ||

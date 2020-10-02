@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import styled, { withTheme } from '@stream-io/styled-components';
-
+import { Icon, withTheme as withAppTheme } from '@apollosproject/ui-kit';
 import { logChatPromiseExecution } from 'stream-chat';
 
 import {
@@ -10,24 +10,10 @@ import {
   withKeyboardContext,
   withTranslationContext,
 } from '../context';
-import iconEdit from '../images/icons/icon_edit.png';
-import iconSendNewMessage from '../images/icons/icon_new_message.png';
 
 import { themed } from '../styles/theme';
 
 import iconClose from '../images/icons/icon_close.png';
-
-const Container = styled(({ padding, ...rest }) => <View {...rest} />)`
-  display: flex;
-  flex-direction: column;
-  border-radius: 10;
-  background-color: rgba(0, 0, 0, 0.05);
-  padding-top: ${({ theme, padding }) =>
-    padding ? theme.messageInput.container.conditionalPadding : 0}px;
-  margin-vertical: 10px;
-  margin-horizontal: 16px;
-  ${({ theme }) => theme.messageInput.container.css};
-`;
 
 const EditingBoxContainer = styled.View`
   padding-left: 0;
@@ -52,34 +38,34 @@ const EditingBoxHeaderTitle = styled.Text`
   ${({ theme }) => theme.messageInput.editingBoxHeaderTitle.css};
 `;
 
-const InputBoxContainer = styled.View`
+const Container = styled(({ padding, ...rest }) => <View {...rest} />)`
   display: flex;
   flex-direction: row;
-  padding-left: 10px;
-  padding-right: 10px;
-  min-height: 46;
-  margin: 10px;
+  border-radius: 10;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-vertical: 10px;
+  margin-horizontal: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
+  min-height: 46px;
+  max-height: 60px;
   align-items: center;
-  ${({ theme }) => theme.messageInput.inputBoxContainer.css};
+  ${({ theme }) => theme.messageInput.container.css};
 `;
 
 const InputBox = styled.TextInput`
   flex: 1;
-  margin: -5px;
-  max-height: 60px;
+  padding-bottom: 3px;
   ${({ theme }) => theme.messageInput.inputBox.css};
 `;
 
-const SendButtonContainer = styled.TouchableOpacity`
-  margin-left: 8;
-  ${({ theme }) => theme.messageInput.sendButton.css};
-`;
-
-const SendButtonIcon = styled.Image`
-  width: 15;
-  height: 15;
-  ${({ theme }) => theme.messageInput.sendButtonIcon.css};
-`;
+const StyledIcon = withAppTheme(({ theme }) => ({
+  size: theme.helpers.rem(2),
+  fill: theme.colors.primary,
+  style: {
+    marginLeft: 8,
+  },
+}))(Icon);
 
 const IconSquareContainer = styled.TouchableOpacity`
   background-color: rgba(0, 0, 0, 0.05);
@@ -300,28 +286,26 @@ class MessageInput extends PureComponent {
 
     return (
       <Container>
-        <InputBoxContainer>
-          <InputBox
-            multiline
-            onChangeText={this.onChangeText}
-            placeholder={t('Write your message')}
-            placeholderTextColor={theme.colors.textLight}
-            ref={this.setInputBoxRef}
-            value={this.state.text}
-            editable={!disabled}
-          />
-          <SendButtonContainer
-            title={t('Send message')}
-            onPress={this.sendMessage}
-            disabled={disabled || this.sending || !this.isValidMessage()}
-          >
-            {this.props.editing ? (
-              <SendButtonIcon source={iconEdit} />
-            ) : (
-              <SendButtonIcon source={iconSendNewMessage} />
-            )}
-          </SendButtonContainer>
-        </InputBoxContainer>
+        <InputBox
+          multiline
+          onChangeText={this.onChangeText}
+          placeholder={t('Write your message')}
+          placeholderTextColor={theme.colors.textLight}
+          ref={this.setInputBoxRef}
+          value={this.state.text}
+          editable={!disabled}
+        />
+        <TouchableOpacity
+          title={t('Send message')}
+          onPress={this.sendMessage}
+          disabled={disabled || this.sending || !this.isValidMessage()}
+        >
+          {this.props.editing ? (
+            <StyledIcon name={'paper-airplane-circle'} />
+          ) : (
+            <StyledIcon name={'paper-airplane-circle'} />
+          )}
+        </TouchableOpacity>
       </Container>
     );
   };
