@@ -16,6 +16,7 @@ function loadStories() {
   require('../src/ui/CardFeeds/CardFeed.stories');
   require('../src/ui/CardFeeds/GridCardFeed/GridCardFeed.stories');
   require('../src/ui/CardFeeds/HeroCardFeed/HeroCardFeed.stories');
+  require('../src/ui/CardFeeds/HorizontalCardFeed.stories');
   require('../src/ui/Cards/Cards.stories');
   require('../src/ui/LandingScreen/LandingScreen.stories');
   require('../src/ui/Onboarding/Onboarding.stories');
@@ -35,6 +36,7 @@ const stories = [
   '../src/ui/CardFeeds/CardFeed.stories',
   '../src/ui/CardFeeds/GridCardFeed/GridCardFeed.stories',
   '../src/ui/CardFeeds/HeroCardFeed/HeroCardFeed.stories',
+  '../src/ui/CardFeeds/HorizontalCardFeed.stories',
   '../src/ui/Cards/Cards.stories',
   '../src/ui/LandingScreen/LandingScreen.stories',
   '../src/ui/Onboarding/Onboarding.stories',
