@@ -1,4 +1,5 @@
 import merge from 'lodash/merge';
+import { StyleSheet } from 'react-native';
 
 import { lightenBy, darkenBy } from 'utils/theme';
 
@@ -9,7 +10,7 @@ export default function mapTheme(appTheme) {
    * Map the CF/Apollos theme (appTheme) to the Stream Chat theme (packageTheme).
    */
 
-  const { colors, type } = appTheme;
+  const { colors, sizing, helpers, typography, type } = appTheme;
 
   const backgroundColor =
     type === 'light'
@@ -27,6 +28,14 @@ export default function mapTheme(appTheme) {
       textDark: colors.text.primary,
       transparent: colors.transparent,
     },
+    avatar: {
+      text: {
+        css: {
+          color: colors.background.paper,
+          fontFamily: typography.sans.regular.default,
+        },
+      },
+    },
     channelPreview: {
       container: {
         css: {
@@ -36,16 +45,21 @@ export default function mapTheme(appTheme) {
       title: {
         css: {
           color: colors.text.primary,
+          fontFamily: typography.sans.regular.default,
         },
       },
       date: {
         css: {
           color: colors.text.tertiary,
+          fontFamily: typography.sans.regular.default,
         },
       },
       message: {
         color: colors.text.secondary,
         unreadColor: colors.text.primary,
+        css: {
+          fontFamily: typography.sans.regular.default,
+        },
       },
     },
     iconSquare: {
@@ -57,11 +71,6 @@ export default function mapTheme(appTheme) {
     },
     message: {
       content: {
-        metaText: {
-          css: {
-            color: colors.text.tertiary,
-          },
-        },
         textContainer: {
           leftBorderWidth: 1,
           leftBorderColor: backgroundColor,
@@ -70,6 +79,41 @@ export default function mapTheme(appTheme) {
         },
         text: {
           color: colors.text.primary,
+          fontFamily: typography.sans.regular.default,
+        },
+        metaText: {
+          css: {
+            fontFamily: typography.sans.regular.default,
+          },
+        },
+      },
+      reactionList: {
+        container: {
+          css: {
+            backgroundColor,
+          },
+        },
+        reactionCount: {
+          css: {
+            color: colors.text.primary,
+            fontFamily: typography.sans.regular.default,
+            backgroundColor,
+          },
+        },
+      },
+      reactionPicker: {
+        containerView: {
+          css: {
+            backgroundColor,
+            borderColor: colors.text.tertiary,
+            borderWidth: StyleSheet.hairlineWidth,
+          },
+        },
+        text: {
+          css: {
+            color: colors.text.primary,
+            fontFamily: typography.sans.regular.default,
+          },
         },
       },
     },
@@ -77,11 +121,13 @@ export default function mapTheme(appTheme) {
       container: {
         css: {
           backgroundColor,
+          borderRadius: sizing.baseBorderRadius,
         },
       },
       inputBox: {
         css: {
           color: colors.text.primary,
+          fontFamily: typography.sans.regular.default,
         },
       },
       editingBoxContainer: {
@@ -95,6 +141,7 @@ export default function mapTheme(appTheme) {
         text: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
       },
@@ -107,6 +154,7 @@ export default function mapTheme(appTheme) {
         date: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
       },
@@ -114,11 +162,13 @@ export default function mapTheme(appTheme) {
         text: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
         dateText: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
       },
@@ -126,6 +176,7 @@ export default function mapTheme(appTheme) {
         memberUpdateText: {
           css: {
             color: colors.text.secondary,
+            fontFamily: typography.sans.regular.default,
           },
         },
       },

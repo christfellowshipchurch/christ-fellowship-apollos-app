@@ -6,19 +6,12 @@ import PropTypes from 'prop-types';
 import { themed } from '../../styles/theme';
 import { renderReactions, emojiData } from '../../utils';
 
-import leftTail from '../../images/reactionlist/left-tail.png';
-import leftCenter from '../../images/reactionlist/left-center.png';
-import leftEnd from '../../images/reactionlist/left-end.png';
-
-import rightTail from '../../images/reactionlist/right-tail.png';
-import rightCenter from '../../images/reactionlist/right-center.png';
-import rightEnd from '../../images/reactionlist/right-end.png';
-
 const TouchableWrapper = styled.View`
   position: relative;
   ${({ alignment }) =>
     alignment === 'left' ? 'left: -10px;' : 'right: -10px;'} height: 28px;
   z-index: 10;
+  margin-top: 5px;
   align-self: ${({ alignment }) =>
     alignment === 'left' ? 'flex-start' : 'flex-end'};
 `;
@@ -32,6 +25,21 @@ const Container = styled.View`
   align-items: center;
   padding-left: 5px;
   padding-right: 5px;
+  padding-bottom: 1px;
+  border-width: 0;
+  background-color: black;
+  border-radius: 30;
+  ${({ theme }) => theme.message.reactionList.container.css};
+`;
+
+const PointyThing = styled.View`
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  ${({ alignment }) =>
+    alignment === 'left' ? 'left: 7px;' : 'right: 7px;'} bottom: 1px;
+  background-color: black;
+  transform: rotate(45deg);
   ${({ theme }) => theme.message.reactionList.container.css};
 `;
 
@@ -45,43 +53,6 @@ const ReactionCount = styled(({ reactionCounts, ...rest }) => (
     theme.message.reactionList.reactionCount.css};
 `;
 
-const ImageWrapper = styled.View`
-  display: flex;
-  flex-direction: row;
-  top: -23px;
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
-`;
-
-const LeftTail = styled.Image`
-  width: 25px;
-  height: 33px;
-`;
-
-const LeftCenter = styled.Image`
-  height: 33;
-  flex: 1;
-`;
-
-const LeftEnd = styled.Image`
-  width: 14px;
-  height: 33px;
-`;
-
-const RightTail = styled.Image`
-  width: 25px;
-  height: 33px;
-`;
-
-const RightCenter = styled.Image`
-  height: 33;
-  flex: 1;
-`;
-
-const RightEnd = styled.Image`
-  width: 14px;
-  height: 33px;
-`;
-
 const Reactions = styled.View`
   flex-direction: row;
 `;
@@ -92,12 +63,11 @@ const Reactions = styled.View`
  */
 
 class ReactionList extends React.PureComponent {
-  static themePath = 'message.reactionList';
-
   static propTypes = {
     latestReactions: PropTypes.array,
     getTotalReactionCount: PropTypes.func,
     visible: PropTypes.bool,
+    alignment: PropTypes.string,
     /**
      * e.g.,
      * [
@@ -126,6 +96,8 @@ class ReactionList extends React.PureComponent {
     supportedReactions: emojiData,
   };
 
+  static themePath = 'message.reactionList';
+
   render() {
     const {
       latestReactions,
@@ -136,6 +108,7 @@ class ReactionList extends React.PureComponent {
     } = this.props;
     return (
       <TouchableWrapper alignment={alignment} activeOpacity={1}>
+        <PointyThing alignment={alignment} />
         <Container visible={visible}>
           <Reactions>
             {renderReactions(latestReactions, supportedReactions)}
@@ -146,21 +119,6 @@ class ReactionList extends React.PureComponent {
             {getTotalReactionCount(supportedReactions)}
           </ReactionCount>
         </Container>
-        <ImageWrapper visible={visible}>
-          {alignment === 'left' ? (
-            <React.Fragment>
-              <LeftTail source={leftTail} />
-              <LeftCenter source={leftCenter} resizeMode="stretch" />
-              <LeftEnd source={leftEnd} />
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <RightEnd source={rightEnd} />
-              <RightCenter source={rightCenter} resizeMode="stretch" />
-              <RightTail source={rightTail} />
-            </React.Fragment>
-          )}
-        </ImageWrapper>
       </TouchableWrapper>
     );
   }

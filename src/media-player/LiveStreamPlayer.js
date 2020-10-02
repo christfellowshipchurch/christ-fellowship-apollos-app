@@ -45,7 +45,7 @@ const MessagesBannerContainer = styled(({ theme }) => ({
   backgroundColor: theme.colors.primary,
 }))(SafeAreaView);
 
-const BANNER_HEIGHT = 50;
+const BANNER_HEIGHT = 35;
 const LIVESTREAM_HEIGHT = 0.33 * Dimensions.get('window').height;
 
 const MessagesBanner = styled(({ theme }) => ({
