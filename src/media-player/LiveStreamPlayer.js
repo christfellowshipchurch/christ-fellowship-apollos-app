@@ -413,15 +413,12 @@ class LiveStreamPlayer extends PureComponent {
     const playerContext = {
       onChannelsUpdated: this.handleChannelsUpdated,
       onDirectMessage: this.handleDirectMessage,
-      isBannerOpen: !!this.state.channels.length,
     };
 
     return (
       <LayoutConsumer key={'chat'}>
         {({ top: notch }) => (
-          <PlayerContext.Provider
-            value={{ ...playerContext, bannerHeight: notch + BANNER_HEIGHT }}
-          >
+          <PlayerContext.Provider value={playerContext}>
             <Animated.View
               style={{
                 ...StyleSheet.absoluteFillObject,

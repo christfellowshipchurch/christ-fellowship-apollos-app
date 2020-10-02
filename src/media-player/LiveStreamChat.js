@@ -2,9 +2,10 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { get } from 'lodash';
 import moment from 'moment';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
 import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
@@ -158,6 +159,8 @@ const LiveStreamChat = (props) => {
     return null;
   }
 
+  const KeyboardAvoider =
+    Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
@@ -165,6 +168,7 @@ const LiveStreamChat = (props) => {
           <Channel channel={channel.current}>
             <MessageList />
             <MessageInput />
+            <KeyboardAvoider />
           </Channel>
         </ChatContainer>
       </Chat>

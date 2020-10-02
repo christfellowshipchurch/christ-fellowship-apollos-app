@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Platform } from 'react-native';
+import { View, Text } from 'react-native';
 
 import uuidv4 from 'uuid/v4';
 import PropTypes from 'prop-types';
@@ -15,7 +15,6 @@ import {
   withPlayerContext,
 } from '../context';
 import { LoadingIndicator, LoadingErrorIndicator } from './Indicators';
-import { KeyboardCompatibleView } from './KeyboardCompatibleView';
 
 class Channel extends PureComponent {
   static propTypes = {
@@ -25,13 +24,9 @@ class Channel extends PureComponent {
     client: PropTypes.object.isRequired,
     isOnline: PropTypes.bool,
     disableIfFrozenChannel: PropTypes.bool,
-    disableKeyboardCompatibleView: PropTypes.bool,
-    isBannerOpen: PropTypes.bool,
-    bannerHeight: PropTypes.number,
   };
 
   static defaultProps = {
-    disableKeyboardCompatibleView: false,
     disableIfFrozenChannel: true,
   };
 
@@ -468,18 +463,10 @@ class Channel extends PureComponent {
         </View>
       );
     } else {
-      const Component =
-        Platform.OS === 'ios' ? KeyboardCompatibleView : React.Fragment;
       core = (
-        <Component
-          isBannerOpen={this.props.isBannerOpen}
-          bannerHeight={this.props.bannerHeight}
-          enabled={!this.props.disableKeyboardCompatibleView}
-        >
-          <ChannelContext.Provider value={this.getContext()}>
-            {children}
-          </ChannelContext.Provider>
-        </Component>
+        <ChannelContext.Provider value={this.getContext()}>
+          {children}
+        </ChannelContext.Provider>
       );
     }
 
