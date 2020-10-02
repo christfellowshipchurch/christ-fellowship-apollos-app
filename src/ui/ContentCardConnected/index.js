@@ -58,7 +58,7 @@ const ContentCardConnected = ({
               cardComponent = HorizontalPrayerRequestCard;
             }
 
-            if (typename === 'Group') {
+            if (typename === 'Group' || typename === 'VolunteerGroup') {
               cardComponent = HorizontalGroupCard;
             }
 
