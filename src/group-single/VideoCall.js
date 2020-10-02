@@ -9,7 +9,7 @@ import moment from 'moment';
 import { useMutation } from '@apollo/react-hooks';
 import { styled, Button } from '@apollosproject/ui-kit';
 
-import { useCurrentUser } from '../hooks';
+import { useCurrentUser, useLinkRouter } from '../hooks';
 
 import ATTEND_MEETING from './attendMeeting';
 
@@ -58,6 +58,7 @@ const VideoCall = ({
   }, []);
 
   const { firstName, nickName } = useCurrentUser();
+  const { routeLink } = useLinkRouter();
   const name = nickName || firstName;
 
   const [handleAttend, { loading: mutationLoading }] = useMutation(
@@ -115,7 +116,13 @@ const VideoCall = ({
         <CellItem first>
           <Button
             onPress={() =>
-              join(parentVideoCall.meetingId, parentVideoCall.passcode, groupId)
+              parentVideoCall.meetingId
+                ? join(
+                    parentVideoCall.meetingId,
+                    parentVideoCall.passcode,
+                    groupId
+                  )
+                : routeLink(parentVideoCall.link)
             }
             loading={isLoading || mutationLoading}
             title={parentVideoCall.labelText || 'Join Meeting'}
@@ -128,7 +135,9 @@ const VideoCall = ({
         <CellItem>
           <Button
             onPress={() =>
-              join(videoCall.meetingId, videoCall.passcode, groupId)
+              videoCall.meetingId
+                ? join(videoCall.meetingId, videoCall.passcode, groupId)
+                : routeLink(videoCall.link)
             }
             loading={isLoading}
             title={
@@ -146,14 +155,16 @@ const VideoCall = ({
 
 VideoCall.propTypes = {
   parentVideoCall: PropTypes.shape({
+    labelText: PropTypes.string,
+    link: PropTypes.string,
     meetingId: PropTypes.string,
     passcode: PropTypes.string,
-    labelText: PropTypes.string,
   }),
   videoCall: PropTypes.shape({
+    labelText: PropTypes.string,
+    link: PropTypes.string,
     meetingId: PropTypes.string,
     passcode: PropTypes.string,
-    labelText: PropTypes.string,
   }),
   groupId: PropTypes.string,
   isLoading: PropTypes.bool,
