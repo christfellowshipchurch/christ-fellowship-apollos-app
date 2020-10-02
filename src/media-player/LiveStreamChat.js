@@ -61,7 +61,7 @@ const LiveStreamChat = (props) => {
     const options = { watch: false, state: false };
 
     const channels = await chatClient.queryChannels(filter, sort, options);
-    const sinceYesterday = moment().subtract(24, 'hour');
+    const sinceYesterday = moment().subtract(12, 'hour');
     const recentOnly = channels.filter((c) =>
       moment(get(c, 'state.last_message_at')).isAfter(sinceYesterday)
     );
