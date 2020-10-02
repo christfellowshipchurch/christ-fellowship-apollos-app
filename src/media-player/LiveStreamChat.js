@@ -4,6 +4,7 @@ import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import { get } from 'lodash';
+import moment from 'moment';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
 import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
@@ -59,7 +60,11 @@ const LiveStreamChat = (props) => {
     const options = { watch: false, state: false };
 
     const channels = await chatClient.queryChannels(filter, sort, options);
-    props.onChannelsUpdated({ channels });
+    const sinceYesterday = moment().subtract(24, 'hour');
+    const recentOnly = channels.filter((c) =>
+      moment(get(c, 'state.last_message_at')).isAfter(sinceYesterday)
+    );
+    props.onChannelsUpdated({ channels: recentOnly });
   };
 
   const handleClientEvent = (e) => {
@@ -131,7 +136,7 @@ const LiveStreamChat = (props) => {
         }
       };
     },
-    [data.currentUser]
+    [props.channelId, data.currentUser]
   );
 
   useEffect(

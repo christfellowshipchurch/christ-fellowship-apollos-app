@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from 'react-navigation';
 import { SafeAreaView, View } from 'react-native';
 import { get } from 'lodash';
+import moment from 'moment';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
 import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
@@ -93,6 +94,12 @@ const ChannelsList = themed((props) => {
     watch: true,
   };
 
+  const sinceYesterday = moment().subtract(24, 'hour');
+  const filterFn = (channels) =>
+    channels.filter((c) =>
+      moment(get(c, 'state.last_message_at')).isAfter(sinceYesterday)
+    );
+
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
@@ -103,6 +110,7 @@ const ChannelsList = themed((props) => {
               filters={filters}
               sort={sort}
               options={options}
+              postFilter={filterFn}
               onSelect={(channel) => {
                 const members = get(channel, 'state.members');
                 const userId = Object.keys(members).find(

@@ -9,6 +9,7 @@ import {
   Platform,
   StatusBar,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Query, withApollo } from 'react-apollo';
@@ -20,7 +21,6 @@ import {
   H5,
   Icon,
   NavigationService,
-  Touchable,
   LayoutConsumer,
 } from '@apollosproject/ui-kit';
 
@@ -55,7 +55,7 @@ const MessagesBanner = styled(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   paddingHorizontal: theme.sizing.baseUnit,
-}))(Touchable);
+}))(TouchableOpacity);
 
 const MessagesBannerText = styled(({ theme }) => ({
   color: theme.colors.background.paper,
@@ -142,7 +142,10 @@ class LiveStreamPlayer extends PureComponent {
     }),
   };
 
-  state = { portrait: true, channels: [] };
+  state = {
+    portrait: Dimensions.get('window').height > Dimensions.get('window').width,
+    channels: [],
+  };
 
   // Tracks the messages banner height
   bannerHeight = new Animated.Value(0);
@@ -328,6 +331,7 @@ class LiveStreamPlayer extends PureComponent {
                 : {})}
             >
               <MessagesBanner
+                activeOpacity={0.5}
                 onPress={() => {
                   this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
                   setTimeout(() => {
@@ -423,7 +427,10 @@ class LiveStreamPlayer extends PureComponent {
                 ...StyleSheet.absoluteFillObject,
                 top: this.bannerHeight.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [LIVESTREAM_HEIGHT, LIVESTREAM_HEIGHT + notch + BANNER_HEIGHT],
+                  outputRange: [
+                    LIVESTREAM_HEIGHT,
+                    LIVESTREAM_HEIGHT + notch + BANNER_HEIGHT,
+                  ],
                 }),
               }}
             >

@@ -38,6 +38,7 @@ class ChannelList extends PureComponent {
     client: PropTypes.object,
     setActiveChannel: PropTypes.func,
     lockChannelOrder: PropTypes.bool,
+    postFilter: PropTypes.func,
   };
 
   static defaultProps = {
@@ -45,6 +46,7 @@ class ChannelList extends PureComponent {
     options: {},
     sort: {},
     lockChannelOrder: false,
+    postFilter: (channels) => channels,
   };
 
   constructor(props) {
@@ -299,7 +301,10 @@ class ChannelList extends PureComponent {
       (c) => this.state.channelIds.indexOf(c.id) === -1
     );
 
-    distinctChannels = [...this.state.channels, ...distinctChannels];
+    distinctChannels = [
+      ...this.state.channels,
+      this.props.postFilter(...distinctChannels),
+    ];
     const channelIds = [
       ...this.state.channelIds,
       ...distinctChannels.map((c) => c.id),
@@ -314,7 +319,7 @@ class ChannelList extends PureComponent {
   };
 
   setChannels = (channels = [], additionalState = {}) => {
-    const distinctChannels = [...channels];
+    const distinctChannels = [...this.props.postFilter(channels)];
     const channelIds = [...channels.map((c) => c.id)];
 
     return this.setStateAsync({
@@ -556,24 +561,18 @@ class ChannelList extends PureComponent {
     this._queryChannelsDebounced();
   };
 
-  renderLoading = () => {
-    return <LoadingIndicator listType="channel" />;
-  };
+  renderLoading = () => <LoadingIndicator listType="channel" />;
 
-  renderLoadingError = () => {
-    return (
-      <LoadingErrorIndicator
-        error={this.state.error}
-        retry={this.reloadList}
-        listType="channel"
-        loadNextPage={this.loadNextPage}
-      />
-    );
-  };
+  renderLoadingError = () => (
+    <LoadingErrorIndicator
+      error={this.state.error}
+      retry={this.reloadList}
+      listType="channel"
+      loadNextPage={this.loadNextPage}
+    />
+  );
 
-  renderEmptyState = () => {
-    return <EmptyStateIndicator listType="channel" />;
-  };
+  renderEmptyState = () => <EmptyStateIndicator listType="channel" />;
 
   renderHeaderIndicator = () => {
     const { isOnline, error } = this.props;
