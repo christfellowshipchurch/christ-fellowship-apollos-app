@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 
 import uuidv4 from 'uuid/v4';
 import PropTypes from 'prop-types';
@@ -468,8 +468,10 @@ class Channel extends PureComponent {
         </View>
       );
     } else {
+      const Component =
+        Platform.OS === 'ios' ? KeyboardCompatibleView : React.Fragment;
       core = (
-        <KeyboardCompatibleView
+        <Component
           isBannerOpen={this.props.isBannerOpen}
           bannerHeight={this.props.bannerHeight}
           enabled={!this.props.disableKeyboardCompatibleView}
@@ -477,7 +479,7 @@ class Channel extends PureComponent {
           <ChannelContext.Provider value={this.getContext()}>
             {children}
           </ChannelContext.Provider>
-        </KeyboardCompatibleView>
+        </Component>
       );
     }
 
