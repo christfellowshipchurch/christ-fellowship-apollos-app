@@ -259,7 +259,7 @@ ApollosConfig.loadJs({
       }
     `,
     GROUP_CARD_FRAGMENT: gql`
-      fragment GroupCardFragment on Group {
+      fragment GroupCardFragment on GroupItem {
         title
         coverImage {
           sources {
@@ -267,17 +267,20 @@ ApollosConfig.loadJs({
           }
         }
         avatars
-        schedule {
-          friendlyScheduleText
-        }
-        dateTime {
-          start
-          end
-        }
         leaders {
           id
           photo {
             uri
+          }
+        }
+
+        ... on Group {
+          schedule {
+            friendlyScheduleText
+          }
+          dateTime {
+            start
+            end
           }
         }
       }
