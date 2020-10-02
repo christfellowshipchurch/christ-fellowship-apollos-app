@@ -281,7 +281,6 @@ class MessageContent extends React.PureComponent {
       disabled: disabled || readOnly,
     };
 
-    console.log({ message });
     return (
       <MessageContentContext.Provider value={context}>
         <Container

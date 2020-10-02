@@ -118,10 +118,10 @@ const VideoCall = ({
             onPress={() =>
               parentVideoCall.meetingId
                 ? join(
-                    parentVideoCall.meetingId,
-                    parentVideoCall.passcode,
-                    groupId
-                  )
+                  parentVideoCall.meetingId,
+                  parentVideoCall.passcode,
+                  groupId
+                )
                 : routeLink(parentVideoCall.link)
             }
             loading={isLoading || mutationLoading}
