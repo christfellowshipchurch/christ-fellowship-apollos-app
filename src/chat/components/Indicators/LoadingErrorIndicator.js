@@ -34,10 +34,15 @@ const LoadingErrorIndicator = ({ listType, retry }) => {
       );
     case 'message':
       return (
-        <Container>
+        <Container
+          onPress={() => {
+            retry && retry();
+          }}
+        >
           <ErrorText>
             {t('Error loading messages for this channel ...')}
           </ErrorText>
+          <RetryText>⟳</RetryText>
         </Container>
       );
     default:

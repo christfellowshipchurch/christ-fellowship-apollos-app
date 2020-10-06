@@ -11,7 +11,13 @@ import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components
 import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
-import { Chat, Channel, MessageList, MessageInput } from '../chat/components';
+import {
+  Chat,
+  Channel,
+  MessageList,
+  MessageInput,
+  LoadingErrorIndicator,
+} from '../chat/components';
 import { withPlayerContext } from '../chat/context';
 import chatClient, { streami18n } from '../chat/client';
 import mapChatTheme from '../chat/styles/mapTheme';
@@ -33,6 +39,7 @@ const ChatContainer = styled(({ theme }) => ({
 
 const LiveStreamChat = (props) => {
   const [connecting, setConnecting] = useState(true);
+  const [error, setError] = useState(false);
 
   const { loading, data = {} } = useCurrentUser();
 
@@ -118,7 +125,8 @@ const LiveStreamChat = (props) => {
 
       setConnecting(false);
     } catch (e) {
-      console.error(e.message); // eslint-disable-line no-console
+      console.warn(e.message); // eslint-disable-line no-console
+      setError(true);
     }
   };
 
@@ -157,6 +165,19 @@ const LiveStreamChat = (props) => {
 
   if (!props.isPortrait) {
     return null;
+  }
+
+  if (error) {
+    return (
+      <Chat client={chatClient} i18nInstance={streami18n}>
+        <ChatContainer>
+          <LoadingErrorIndicator
+            listType="channel"
+            retry={() => setError(false)}
+          />
+        </ChatContainer>
+      </Chat>
+    );
   }
 
   const KeyboardAvoider =
