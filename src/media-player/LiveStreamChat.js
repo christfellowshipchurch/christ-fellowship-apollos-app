@@ -172,7 +172,7 @@ const LiveStreamChat = (props) => {
       <Chat client={chatClient} i18nInstance={streami18n}>
         <ChatContainer>
           <LoadingErrorIndicator
-            listType="channel"
+            listType={'message'}
             retry={() => setError(false)}
           />
         </ChatContainer>
