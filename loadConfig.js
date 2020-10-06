@@ -267,11 +267,28 @@ ApollosConfig.loadJs({
           }
         }
         avatars
-        leaders {
-          id
-          photo {
-            uri
+
+        leaders: people(first: 4, isLeader: true) {
+          edges {
+            node {
+              id
+              photo {
+                uri
+              }
+            }
           }
+          totalCount
+        }
+        members: people(first: 8, isLeader: false) {
+          edges {
+            node {
+              id
+              photo {
+                uri
+              }
+            }
+          }
+          totalCount
         }
 
         ... on Group {
