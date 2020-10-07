@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Query, withApollo } from 'react-apollo';
+import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
 import { get } from 'lodash';
 
 import {
@@ -140,6 +141,7 @@ class LiveStreamPlayer extends PureComponent {
       startsAt: PropTypes.string,
       endsAt: PropTypes.string,
     }),
+    isLoading: PropTypes.bool,
   };
 
   state = {
@@ -371,6 +373,7 @@ class LiveStreamPlayer extends PureComponent {
   };
 
   renderLiveStream = ({ mediaPlayer }) => {
+    console.log('LIVESTREAM LODDED');
     const { isFullscreen = false, isCasting = false } = mediaPlayer;
     return (
       <LiveStreamContainer
@@ -465,7 +468,7 @@ class LiveStreamPlayer extends PureComponent {
           style={this.miniControlsAnimation}
           onLayout={this.handleMiniControlLayout}
         >
-          <MiniControls />
+          <MiniControls nodeId={this.props.event.parentId} isLiveStream />
         </Animated.View>
       );
     }
