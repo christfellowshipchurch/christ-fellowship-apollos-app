@@ -55,7 +55,9 @@ const GET_LIVE_CONTENT = gql`
 const MediaPlayer = () => {
   const { data = {} } = useQuery(GET_MEDIA_PLAYER_VISIBILITY);
 
-  const { loading, data: liveData } = useQuery(GET_LIVE_CONTENT);
+  const { loading, data: liveData } = useQuery(GET_LIVE_CONTENT, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   const { enabled } = useFeatureFlag({ key: 'LIVE_STREAM_CHAT' });
 

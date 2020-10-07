@@ -94,7 +94,7 @@ const ChannelsList = themed((props) => {
     watch: true,
   };
 
-  const sinceYesterday = moment().subtract(24, 'hour');
+  const sinceYesterday = moment().subtract(12, 'hour');
   const filterFn = (channels) =>
     channels.filter((c) =>
       moment(get(c, 'state.last_message_at')).isAfter(sinceYesterday)

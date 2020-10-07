@@ -2,15 +2,22 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import { get } from 'lodash';
 import moment from 'moment';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
 import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
-import { Chat, Channel, MessageList, MessageInput } from '../chat/components';
+import {
+  Chat,
+  Channel,
+  MessageList,
+  MessageInput,
+  LoadingErrorIndicator,
+} from '../chat/components';
 import { withPlayerContext } from '../chat/context';
 import chatClient, { streami18n } from '../chat/client';
 import mapChatTheme from '../chat/styles/mapTheme';
@@ -32,6 +39,7 @@ const ChatContainer = styled(({ theme }) => ({
 
 const LiveStreamChat = (props) => {
   const [connecting, setConnecting] = useState(true);
+  const [error, setError] = useState(false);
 
   const { loading, data = {} } = useCurrentUser();
 
@@ -60,7 +68,7 @@ const LiveStreamChat = (props) => {
     const options = { watch: false, state: false };
 
     const channels = await chatClient.queryChannels(filter, sort, options);
-    const sinceYesterday = moment().subtract(24, 'hour');
+    const sinceYesterday = moment().subtract(12, 'hour');
     const recentOnly = channels.filter((c) =>
       moment(get(c, 'state.last_message_at')).isAfter(sinceYesterday)
     );
@@ -117,7 +125,8 @@ const LiveStreamChat = (props) => {
 
       setConnecting(false);
     } catch (e) {
-      console.error(e.message); // eslint-disable-line no-console
+      console.warn(e.message); // eslint-disable-line no-console
+      setError(true);
     }
   };
 
@@ -158,6 +167,21 @@ const LiveStreamChat = (props) => {
     return null;
   }
 
+  if (error) {
+    return (
+      <Chat client={chatClient} i18nInstance={streami18n}>
+        <ChatContainer>
+          <LoadingErrorIndicator
+            listType={'message'}
+            retry={() => setError(false)}
+          />
+        </ChatContainer>
+      </Chat>
+    );
+  }
+
+  const KeyboardAvoider =
+    Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
@@ -165,6 +189,7 @@ const LiveStreamChat = (props) => {
           <Channel channel={channel.current}>
             <MessageList />
             <MessageInput />
+            <KeyboardAvoider />
           </Channel>
         </ChatContainer>
       </Chat>

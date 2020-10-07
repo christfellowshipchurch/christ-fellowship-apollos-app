@@ -15,7 +15,6 @@ import {
   withPlayerContext,
 } from '../context';
 import { LoadingIndicator, LoadingErrorIndicator } from './Indicators';
-import { KeyboardCompatibleView } from './KeyboardCompatibleView';
 
 class Channel extends PureComponent {
   static propTypes = {
@@ -25,13 +24,9 @@ class Channel extends PureComponent {
     client: PropTypes.object.isRequired,
     isOnline: PropTypes.bool,
     disableIfFrozenChannel: PropTypes.bool,
-    disableKeyboardCompatibleView: PropTypes.bool,
-    isBannerOpen: PropTypes.bool,
-    bannerHeight: PropTypes.number,
   };
 
   static defaultProps = {
-    disableKeyboardCompatibleView: false,
     disableIfFrozenChannel: true,
   };
 
@@ -469,15 +464,9 @@ class Channel extends PureComponent {
       );
     } else {
       core = (
-        <KeyboardCompatibleView
-          isBannerOpen={this.props.isBannerOpen}
-          bannerHeight={this.props.bannerHeight}
-          enabled={!this.props.disableKeyboardCompatibleView}
-        >
-          <ChannelContext.Provider value={this.getContext()}>
-            {children}
-          </ChannelContext.Provider>
-        </KeyboardCompatibleView>
+        <ChannelContext.Provider value={this.getContext()}>
+          {children}
+        </ChannelContext.Provider>
       );
     }
 

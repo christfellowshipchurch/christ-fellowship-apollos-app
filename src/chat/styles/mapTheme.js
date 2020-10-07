@@ -121,7 +121,7 @@ export default function mapTheme(appTheme) {
       container: {
         css: {
           backgroundColor,
-          borderRadius: sizing.baseBorderRadius,
+          borderRadius: helpers.rem(2),
         },
       },
       inputBox: {
