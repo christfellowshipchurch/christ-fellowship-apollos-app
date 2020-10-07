@@ -17,7 +17,7 @@ const LoadingBar = styled(({ theme, alignment = 'left' }) => ({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: alignment === 'left' ? 'flex-start' : 'flex-end',
-  paddingVertical: theme.sizing.baseUnit,
+  paddingVertical: theme.sizing.baseUnit / 2,
 }))(View);
 
 const LoadingAvatar = withTheme(({ theme }) => ({
