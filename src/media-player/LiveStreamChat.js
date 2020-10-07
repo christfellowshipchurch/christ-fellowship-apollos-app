@@ -8,7 +8,7 @@ import moment from 'moment';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, withTheme } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
 import {
@@ -16,6 +16,7 @@ import {
   Channel,
   MessageList,
   MessageInput,
+  LoadingMessages,
   LoadingErrorIndicator,
 } from '../chat/components';
 import { withPlayerContext } from '../chat/context';
@@ -157,9 +158,14 @@ const LiveStreamChat = (props) => {
 
   if (loading || connecting) {
     return (
-      <ChatContainer>
-        <ActivityIndicator size={'large'} />
-      </ChatContainer>
+      <ChatThemeProvider theme={mapChatTheme(props.theme)}>
+        <Chat client={chatClient} i18nInstance={streami18n}>
+          <ChatContainer>
+            <LoadingMessages />
+            <MessageInput disabled />
+          </ChatContainer>
+        </Chat>
+      </ChatThemeProvider>
     );
   }
 
