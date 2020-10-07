@@ -124,13 +124,13 @@ const EventContentItem = ({ content, loading }) => {
                         </H4>
                       )}
 
-                    {events.length > 0 && (
+                    {/* {events.length > 0 && (
                       <EventDateTimes
                         content={content}
                         events={content.events}
                         loading={loading}
                       />
-                    )}
+                    )} */}
 
                     {callsToAction.length > 0 &&
                       callsToAction.map((n) => (
