@@ -22,6 +22,8 @@ import {
 import chatClient, { streami18n } from './client';
 import mapChatTheme from './styles/mapTheme';
 
+const KeyboardAvoider = Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
+
 const SafeChatContainer = styled(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.background.paper,
@@ -106,8 +108,6 @@ const Channel = themed((props) => {
     );
   }
 
-  const KeyboardAvoider =
-    Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>

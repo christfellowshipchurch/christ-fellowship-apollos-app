@@ -32,6 +32,8 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   }
 `;
 
+const KeyboardAvoider = Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
+
 const ChatContainer = styled(({ theme }) => ({
   flex: 1,
   paddingBottom: theme.sizing.baseUnit,
@@ -186,8 +188,6 @@ const LiveStreamChat = (props) => {
     );
   }
 
-  const KeyboardAvoider =
-    Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
