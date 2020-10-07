@@ -5,10 +5,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Platform } from 'react-native';
 import { get } from 'lodash';
 import moment from 'moment';
+import numeral from 'numeral';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, Icon, UIText, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
 import {
@@ -37,9 +38,32 @@ const ChatContainer = styled(({ theme }) => ({
   backgroundColor: theme.colors.background.paper,
 }))(View);
 
+const WatchingContainer = styled(({ theme }) => ({
+  position: 'absolute',
+  top: -theme.helpers.rem(2),
+  right: 0,
+  flexDirection: 'row',
+  alignItems: 'center',
+  height: theme.helpers.rem(2),
+}))(View);
+
+const WatchingIcon = withTheme(({ theme }) => ({
+  name: 'groups',
+  fill: theme.colors.lightPrimary,
+  size: theme.helpers.rem(1),
+  style: {
+    marginHorizontal: 5,
+  },
+}))(Icon);
+
+const WatchingText = styled(({ theme }) => ({
+  color: theme.colors.lightPrimary,
+}))(UIText);
+
 const LiveStreamChat = (props) => {
   const [connecting, setConnecting] = useState(true);
   const [error, setError] = useState(false);
+  const [numWatching, setNumWatching] = useState(0);
 
   const { loading, data = {} } = useCurrentUser();
 
@@ -52,12 +76,18 @@ const LiveStreamChat = (props) => {
 
   const channel = useRef(null);
 
-  // const handleChannelEvent = (e) => {
-  //   console.log({ e });
-  //   console.log('channel event recvd, showing state', {
-  //     channel: channel.current.state,
-  //   });
-  // };
+  const handleChannelEvent = (e) => {
+    // console.log({ e });
+    switch (e.type) {
+      case 'user.watching.start':
+      case 'user.watching.stop': {
+        setNumWatching(get(channel.current, 'state.watcher_count', 0));
+        break;
+      }
+      default:
+        break;
+    }
+  };
 
   const loadChannels = async () => {
     const filter = {
@@ -110,9 +140,8 @@ const LiveStreamChat = (props) => {
         props.event
       );
 
-      await channel.current.create();
-      // await channel.current.watch();
-      // channel.current.on(handleChannelEvent);
+      await channel.current.watch();
+      channel.current.on(handleChannelEvent);
 
       if (get(chatClient, 'listeners.all.length', 0) < 2) {
         chatClient.on(handleClientEvent);
@@ -136,9 +165,9 @@ const LiveStreamChat = (props) => {
         connect();
       }
       return () => {
-        // if (channel.current) {
-        //   channel.current.off(handleChannelEvent);
-        // }
+        if (channel.current) {
+          channel.current.off(handleChannelEvent);
+        }
         if (get(chatClient, 'listeners.all.length', 0) < 2) {
           chatClient.off(handleClientEvent);
           chatClient.disconnect();
@@ -187,6 +216,14 @@ const LiveStreamChat = (props) => {
       <Chat client={chatClient} i18nInstance={streami18n}>
         <ChatContainer>
           <Channel channel={channel.current}>
+            {numWatching > 1 && (
+              <WatchingContainer>
+                <WatchingText>
+                  {numeral(numWatching).format('0,0')}
+                </WatchingText>
+                <WatchingIcon />
+              </WatchingContainer>
+            )}
             <MessageList />
             <MessageInput />
             <KeyboardAvoider />
