@@ -373,7 +373,6 @@ class LiveStreamPlayer extends PureComponent {
   };
 
   renderLiveStream = ({ mediaPlayer }) => {
-    console.log('LIVESTREAM LODDED');
     const { isFullscreen = false, isCasting = false } = mediaPlayer;
     return (
       <LiveStreamContainer
@@ -385,6 +384,11 @@ class LiveStreamPlayer extends PureComponent {
           ? this.panResponder.panHandlers
           : {})}
       >
+        <InteractWhenLoadedConnected
+          isLoading={this.props.isLoading}
+          nodeId={this.props.event.parentId}
+          action={'LIVESTREAM_JOINED'}
+        />
         <PlayheadConsumer>
           {({ currentTime }) => (
             <GoogleCastController
