@@ -16,13 +16,13 @@ const MediaPlayerSafeLayoutWithSpacing = styled(
   'ui-media.MediaPlayer.MediaPlayerSpacer.MediaPlayerSafeLayoutWithSpacing'
 )(MediaPlayerSafeLayout);
 
-const MediaPlayerSpacer = ({ onOpen, onClose, ...props }) => (
+const MediaPlayerSpacer = (props) => (
   <Query query={GET_MEDIA_PLAYER_VISIBILITY}>
     {({ data = {} }) =>
       get(data, 'mediaPlayer.isVisible') ? (
-        <MediaPlayerSafeLayoutWithSpacing onLayout={onOpen} {...props} />
+        <MediaPlayerSafeLayoutWithSpacing {...props} />
       ) : (
-        <SafeAreaView onLayout={onClose} {...props} />
+        <SafeAreaView {...props} />
       )
     }
   </Query>
