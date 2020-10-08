@@ -122,6 +122,16 @@ class MiniControls extends Component {
     return false;
   }
 
+  get queryVariables() {
+    if (this.props.isLiveStream)
+      return { nodeId: this.props.nodeId, action: 'LIVESTREAM_CLOSED' };
+    return null;
+  }
+
+  get isLiveStream() {
+    return { isLiveStream: this.props.isLiveStream };
+  }
+
   renderMiniControls = ({
     data: {
       mediaPlayer: {
@@ -174,15 +184,8 @@ class MiniControls extends Component {
                   </Mutation>
                 )}
                 <Mutation
-                  mutation={
-                    this.props.isLiveStream ? DISMISS_LIVESTREAM : DISMISS
-                  }
-                  variables={
-                    this.props.isLiveStream && {
-                      nodeId: this.props.nodeId,
-                      action: 'LIVESTREAM_CLOSED',
-                    }
-                  }
+                  mutation={this.isLiveStream ? DISMISS_LIVESTREAM : DISMISS}
+                  variables={this.queryVariables}
                 >
                   {(dismiss) => (
                     <StyledButtonIcon name="close" onPress={() => dismiss()} />
