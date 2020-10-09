@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Query, withApollo } from 'react-apollo';
-import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
 import { get } from 'lodash';
 
 import {
@@ -32,7 +31,7 @@ import LiveStreamControls from './controls/LiveStreamControls';
 import VideoWindow from './controls/VideoWindow';
 import MusicControls from './controls/MusicControls';
 import { GET_FULL_VISIBILITY_STATE } from './queries';
-import { EXIT_FULLSCREEN, GO_FULLSCREEN } from './mutations';
+import { EXIT_FULLSCREEN, GO_FULLSCREEN, JOIN_LIVESTREAM } from './mutations';
 import {
   Provider,
   ControlsConsumer,
@@ -270,6 +269,14 @@ class LiveStreamPlayer extends PureComponent {
 
   componentDidMount() {
     Dimensions.addEventListener('change', this.handleOrientationChanged);
+    this.joinLiveStreamTimeout = setTimeout(
+      () =>
+        this.props.client.mutate({
+          mutation: JOIN_LIVESTREAM,
+          variables: { nodeId: this.props.event.parentId },
+        }),
+      10000
+    );
   }
 
   componentDidUpdate(_, oldState) {
@@ -285,6 +292,7 @@ class LiveStreamPlayer extends PureComponent {
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.handleOrientationChanged);
+    clearTimeout(this.joinLiveStreamTimeout);
   }
 
   handleOrientationChanged = ({ window: { width, height } }) => {
@@ -384,11 +392,6 @@ class LiveStreamPlayer extends PureComponent {
           ? this.panResponder.panHandlers
           : {})}
       >
-        <InteractWhenLoadedConnected
-          isLoading={this.props.isLoading}
-          nodeId={this.props.event.parentId}
-          action={'LIVESTREAM_JOINED'}
-        />
         <PlayheadConsumer>
           {({ currentTime }) => (
             <GoogleCastController

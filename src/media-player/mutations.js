@@ -51,6 +51,14 @@ const DISMISS_LIVESTREAM = gql`
   }
 `;
 
+const JOIN_LIVESTREAM = gql`
+  mutation($nodeId: ID!) {
+    interactWithNode(nodeId: $nodeId, action: LIVESTREAM_JOINED) {
+      success
+    }
+  }
+`;
+
 const PAUSE_AND_RESTART = gql`
   mutation pause {
     mediaPlayerUpdateState(isPlaying: false) @client
@@ -122,4 +130,5 @@ export {
   HIDE_VIDEO,
   CAST_CONNECTED,
   CAST_DISCONNECTED,
+  JOIN_LIVESTREAM,
 };
