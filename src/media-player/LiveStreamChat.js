@@ -8,8 +8,15 @@ import moment from 'moment';
 import numeral from 'numeral';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
+import Color from 'color';
 
-import { styled, Icon, UIText, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
+import {
+  styled,
+  Icon,
+  UIText,
+  withTheme,
+  ActivityIndicator,
+} from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
 import {
@@ -58,6 +65,7 @@ const WatchingIcon = withTheme(({ theme }) => ({
 
 const WatchingText = styled(({ theme }) => ({
   color: theme.colors.lightPrimary,
+  fontWeight: 'bold',
 }))(UIText);
 
 const LiveStreamChat = (props) => {
@@ -75,13 +83,15 @@ const LiveStreamChat = (props) => {
   });
 
   const channel = useRef(null);
+  const updateNumWatching = () =>
+    setNumWatching(get(channel.current, 'state.watcher_count', 0));
 
   const handleChannelEvent = (e) => {
     // console.log({ e });
     switch (e.type) {
       case 'user.watching.start':
       case 'user.watching.stop': {
-        setNumWatching(get(channel.current, 'state.watcher_count', 0));
+        updateNumWatching();
         break;
       }
       default:
@@ -153,6 +163,7 @@ const LiveStreamChat = (props) => {
       fetchRole();
 
       setConnecting(false);
+      updateNumWatching();
     } catch (e) {
       console.warn(e.message); // eslint-disable-line no-console
       setError(true);
