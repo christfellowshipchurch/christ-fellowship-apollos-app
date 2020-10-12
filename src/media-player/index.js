@@ -15,6 +15,7 @@ const GET_MEDIA_PLAYER_VISIBILITY = gql`
     mediaPlayer @client {
       isVisible
       currentTrack {
+        title
         mediaSource {
           uri
         }
@@ -37,7 +38,16 @@ const GET_LIVE_CONTENT = gql`
       }
       contentItem {
         id
+        title
+        ... on EventContentItem {
+          events {
+            id
+            start
+            end
+          }
+        }
       }
+      chatChannelId
     }
   }
 `;
@@ -45,24 +55,35 @@ const GET_LIVE_CONTENT = gql`
 const MediaPlayer = () => {
   const { data = {} } = useQuery(GET_MEDIA_PLAYER_VISIBILITY);
 
-  const { loading, data: liveData } = useQuery(GET_LIVE_CONTENT);
+  const { loading, data: liveData } = useQuery(GET_LIVE_CONTENT, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   const { enabled } = useFeatureFlag({ key: 'LIVE_STREAM_CHAT' });
 
   if (!data.mediaPlayer || !data.mediaPlayer.isVisible) return null;
 
   const uri = get(data, 'mediaPlayer.currentTrack.mediaSource.uri');
+  const title = get(data, 'mediaPlayer.currentTrack.title');
 
   if (loading) return null;
 
-  const livestreams = get(liveData, 'liveStreams', []).filter((s) => s.isLive);
-  const livestream = livestreams.find(
-    (l) => uri === get(l, 'media.sources[0].uri')
+  const liveStreams = get(liveData, 'liveStreams', []).filter((s) => s.isLive);
+  const liveStream = liveStreams.find(
+    (l) =>
+      uri === get(l, 'media.sources[0].uri') &&
+      title === get(l, 'contentItem.title')
   );
-  const contentId = get(livestream, 'contentItem.id', '').split(':')[1];
+  const channelId = get(liveStream, 'chatChannelId');
 
-  if (enabled && livestream) {
-    return <LiveStreamPlayer contentId={contentId} />;
+  if (enabled && liveStream) {
+    const event = {
+      parentId: get(liveStream, 'contentItem.id'),
+      name: get(liveStream, 'contentItem.title'),
+      startsAt: get(liveStream, 'contentItem.events[0].start'),
+      endsAt: get(liveStream, 'contentItem.events[0].end'),
+    };
+    return <LiveStreamPlayer channelId={channelId} event={event} />;
   }
 
   return <FullscreenPlayer />;

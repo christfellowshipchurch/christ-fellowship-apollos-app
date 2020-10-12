@@ -25,7 +25,7 @@ const Content = styled(({ theme }) => ({
 }))(CardContent);
 
 const Text = styled(({ theme }) => ({
-  color: theme.colors.darkPrimary,
+  color: theme.colors.text.primary,
 }))(H5);
 
 const StyledDateLabel = styled(({ theme }) => ({

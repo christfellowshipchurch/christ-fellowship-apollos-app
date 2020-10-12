@@ -3,23 +3,20 @@ import { presentEventCreatingDialog } from 'react-native-add-calendar-event';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import {
-  Button,
-  BodySmall,
-  Icon,
-  withTheme,
-  styled,
-} from '@apollosproject/ui-kit';
+import { Button, BodySmall, Icon, withTheme } from '@apollosproject/ui-kit';
 
-const StyledButton = withTheme(({ theme }) => ({
+const StyledButton = withTheme(({ size, theme }) => ({
   style: {
     alignSelf: 'flex-end',
-    height: theme.sizing.baseUnit * 2,
+    height: size || theme.sizing.baseUnit * 2,
   },
 }))(Button);
 
-const StyledIcon = styled(({ theme }) => ({
-  marginRight: theme.sizing.baseUnit * 0.5,
+const StyledIcon = withTheme(({ size, theme }) => ({
+  size: (size || theme.sizing.baseUnit * 2) * 0.4375,
+  style: {
+    marginRight: theme.sizing.baseUnit * 0.5,
+  },
 }))(Icon);
 
 const utcDateToString = (momentInUTC) => {
@@ -57,6 +54,8 @@ const AddCalEventButton = ({
   eventNotes,
   isLoading,
   disabled,
+  buttonLabel = 'Add to Calendar',
+  size = null,
 }) => (
   <StyledButton
     disabled={disabled || isLoading}
@@ -66,9 +65,10 @@ const AddCalEventButton = ({
     }}
     bordered
     type={'primary'}
+    size={size}
   >
-    <StyledIcon name="calendar-add" size={14} />
-    <BodySmall>Add to Calendar</BodySmall>
+    <StyledIcon name="calendar-add" size={size} />
+    <BodySmall>{buttonLabel}</BodySmall>
   </StyledButton>
 );
 
@@ -78,6 +78,8 @@ AddCalEventButton.propTypes = {
   eventNotes: PropTypes.string,
   isLoading: PropTypes.bool,
   disabled: PropTypes.bool,
+  buttonLabel: PropTypes.string,
+  size: PropTypes.number,
 };
 
 export default AddCalEventButton;
