@@ -203,10 +203,6 @@ const LiveStreamChat = (props) => {
     );
   }
 
-  if (!props.isPortrait) {
-    return null;
-  }
-
   if (error) {
     return (
       <Chat client={chatClient} i18nInstance={streami18n}>

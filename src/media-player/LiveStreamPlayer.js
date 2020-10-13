@@ -112,6 +112,7 @@ const LiveStreamContainer = styled(
   ({ isFullscreen, isPortrait, theme }) =>
     isFullscreen
       ? {
+          zIndex: isPortrait ? 2 : 1,
           height: isPortrait ? '33%' /* = LIVESTREAM_HEIGHT */ : '100%',
           ...Platform.select(theme.shadows.default),
         }
@@ -122,6 +123,10 @@ const FullscreenMediaPlayerSafeLayout = styled(({ isFullscreen, theme }) => ({
   ...StyleSheet.absoluteFillObject,
   margin: isFullscreen ? 0 : theme.sizing.baseUnit,
 }))(MediaPlayerSafeLayout);
+
+const TappableArea = styled({
+  backgroundColor: 'green',
+})(TouchableOpacity);
 
 /**
  * LiveStreamPlayer is a animating media player that transitions between
@@ -145,6 +150,7 @@ class LiveStreamPlayer extends PureComponent {
   state = {
     portrait: Dimensions.get('window').height > Dimensions.get('window').width,
     channels: [],
+    showChat: true,
   };
 
   // Tracks the messages banner height
@@ -285,13 +291,49 @@ class LiveStreamPlayer extends PureComponent {
     Dimensions.removeEventListener('change', this.handleOrientationChanged);
   }
 
-  handleOrientationChanged = ({ window: { width, height } }) => {
+  chatAnimation = ({ showChat, isFullscreen, isPortrait, top }) => {
+    if (!isPortrait && isFullscreen) {
+      if (showChat)
+        return {
+          ...StyleSheet.absoluteFill,
+          left: '50%',
+          right: '2%',
+          zIndex: 2,
+        };
+      return {
+        ...StyleSheet.absoluteFill,
+        left: '40%',
+        right: '2%',
+        zIndex: 2,
+      };
+    }
+
+    return {
+      ...StyleSheet.absoluteFillObject,
+      top: this.bannerHeight.interpolate({
+        inputRange: [0, 1],
+        outputRange: [
+          LIVESTREAM_HEIGHT,
+          LIVESTREAM_HEIGHT + top + BANNER_HEIGHT,
+        ],
+      }),
+    };
+  };
+
+  handleOrientationChanged = ({ screen: { width, height } }) => {
     this.setState({ portrait: height > width });
   };
 
   handleChannelsUpdated = ({ channels }) => {
     // console.log({ channels });
     this.setState({ channels });
+  };
+
+  handleShowChat = () => {
+    console.log(this.state.showChat);
+    this.setState((prevState) => ({
+      showChat: !prevState.showChat,
+    }));
   };
 
   handleDirectMessage = ({ userId }) => {
@@ -408,8 +450,6 @@ class LiveStreamPlayer extends PureComponent {
   };
 
   renderChat = ({ isFullscreen }) => {
-    if (!isFullscreen) return null;
-
     const playerContext = {
       onChannelsUpdated: this.handleChannelsUpdated,
       onDirectMessage: this.handleDirectMessage,
@@ -420,17 +460,16 @@ class LiveStreamPlayer extends PureComponent {
         {({ top: notch }) => (
           <PlayerContext.Provider value={playerContext}>
             <Animated.View
-              style={{
-                ...StyleSheet.absoluteFillObject,
-                top: this.bannerHeight.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [
-                    LIVESTREAM_HEIGHT,
-                    LIVESTREAM_HEIGHT + notch + BANNER_HEIGHT,
-                  ],
-                }),
-              }}
+              style={this.chatAnimation({
+                isFullscreen,
+                isPortrait: this.state.portrait,
+                showChat: this.state.showChat,
+                top: notch,
+              })}
             >
+              <TappableArea onPress={this.handleShowChat}>
+                <Icon fill={'red'} name={'arrow-next'} size={18} />
+              </TappableArea>
               <LiveStreamChat
                 isPortrait={this.state.portrait}
                 channelId={this.props.channelId}
