@@ -46,7 +46,6 @@ const MessagesBannerContainer = styled(({ theme }) => ({
 }))(SafeAreaView);
 
 const BANNER_HEIGHT = 35;
-const LIVESTREAM_HEIGHT = 0.33 * Dimensions.get('window').height;
 
 const MessagesBanner = styled(({ theme }) => ({
   height: BANNER_HEIGHT,
@@ -112,7 +111,7 @@ const LiveStreamContainer = styled(
   ({ isFullscreen, isPortrait, theme }) =>
     isFullscreen
       ? {
-          height: isPortrait ? '33%' /* = LIVESTREAM_HEIGHT */ : '100%',
+          height: isPortrait ? '33%' : '100%',
           ...Platform.select(theme.shadows.default),
         }
       : StyleSheet.absoluteFill
@@ -426,30 +425,13 @@ class LiveStreamPlayer extends PureComponent {
     };
 
     return (
-      <LayoutConsumer key={'chat'}>
-        {({ top: notch }) => (
-          <PlayerContext.Provider value={playerContext}>
-            <Animated.View
-              style={{
-                ...StyleSheet.absoluteFillObject,
-                top: this.bannerHeight.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [
-                    LIVESTREAM_HEIGHT,
-                    LIVESTREAM_HEIGHT + notch + BANNER_HEIGHT,
-                  ],
-                }),
-              }}
-            >
-              <LiveStreamChat
-                isPortrait={this.state.portrait}
-                channelId={this.props.channelId}
-                event={this.props.event}
-              />
-            </Animated.View>
-          </PlayerContext.Provider>
-        )}
-      </LayoutConsumer>
+      <PlayerContext.Provider key={'chat'} value={playerContext}>
+        <LiveStreamChat
+          isPortrait={this.state.portrait}
+          channelId={this.props.channelId}
+          event={this.props.event}
+        />
+      </PlayerContext.Provider>
     );
   };
 
