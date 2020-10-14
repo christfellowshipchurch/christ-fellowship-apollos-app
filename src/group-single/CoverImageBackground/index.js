@@ -18,7 +18,7 @@ const Container = styled(({ theme }) => ({
 }))(FlexedView);
 
 const StyledGradientOverlayImage = withTheme(({ theme }) => ({
-    overlayColor: theme.colors.paper,
+    overlayColor: theme.colors.screen,
     overlayType: 'featured',
     style: {
         position: 'absolute',

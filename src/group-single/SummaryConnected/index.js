@@ -37,9 +37,9 @@ const SummaryConnected = ({ id, isCollapsed }) => {
         fetchPolicy: 'cache-and-network',
     });
 
-    const content = get(data, 'node');
+    const summary = get(data, 'node.summary');
 
-    if (!content?.summary && !loading) return null;
+    if (!summary && !loading) return null;
 
     return (
         <PaddedView horizontal={false}>
@@ -48,9 +48,7 @@ const SummaryConnected = ({ id, isCollapsed }) => {
                 collapsed={collapsed}
                 onExpandableChange={(isExpandable) => setExpandable(isExpandable)}
             >
-                <BodyText isLoading={!content.summary && loading}>
-                    {content.summary}
-                </BodyText>
+                <BodyText isLoading={!summary && loading}>{summary}</BodyText>
             </ExpandableText>
             {expandable && (
                 <ToggleSpacing>

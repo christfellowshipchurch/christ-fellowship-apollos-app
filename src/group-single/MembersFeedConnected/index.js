@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { get, set, uniqBy } from 'lodash';
 
@@ -12,6 +12,7 @@ import {
     withTheme,
     H4,
     HorizontalTileFeed,
+    InlineActivityIndicator,
 } from '@apollosproject/ui-kit';
 
 import GET_MEMBERS from './getMembers';
@@ -77,7 +78,7 @@ const HeaderSpacing = styled(({ theme }) => ({
 
 const StyledActivityIndicator = styled(({ theme }) => ({
     paddingHorizontal: theme.sizing.baseUnit,
-}))(ActivityIndicator);
+}))(InlineActivityIndicator);
 
 const loadingStateObject = {
     id: 'fake_id',
