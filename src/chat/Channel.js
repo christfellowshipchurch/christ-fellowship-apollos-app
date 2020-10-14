@@ -7,10 +7,17 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
 import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
+
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 import { MINI_PLAYER_HEIGHT } from '../media-player/controls/MiniControls';
+
 import { useCurrentUser } from '../hooks';
 import { navigationOptions, NavigationSpacer } from '../navigation';
+
+// Local
+import chatClient, { streami18n } from './client';
+import mapChatTheme from './styles/mapTheme';
+import { getStreamUser } from './utils';
 
 import {
   Chat,
@@ -18,9 +25,12 @@ import {
   MessageList,
   MessageInput,
 } from './components';
-import chatClient, { streami18n } from './client';
-import mapChatTheme from './styles/mapTheme';
 
+const themed = withTheme();
+const KeyboardAvoider = Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
+
+// :: Styled Components
+// ---
 const SafeChatContainer = styled(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.background.paper,
@@ -36,8 +46,8 @@ const PaddedView = styled(({ theme }) => ({
   backgroundColor: theme.colors.background.paper,
 }))(View);
 
-const themed = withTheme();
-
+// :: Main Component
+// ---
 const Channel = themed((props) => {
   const userId = props.navigation.getParam('userId');
 
@@ -50,24 +60,17 @@ const Channel = themed((props) => {
 
   const connect = async () => {
     try {
-      const firstName = get(data, 'currentUser.profile.firstName', '');
-      const lastName = get(data, 'currentUser.profile.lastName', '');
-      const curId = get(data, 'currentUser.id', '').split(':')[1];
-      const user = {
-        id: curId,
-        name: `${firstName} ${lastName}`,
-        image: get(data, 'currentUser.profile.photo.uri'),
-      };
+      const currentStreamUser = getStreamUser(get(data, 'currentUser'));
 
       if (!chatClient.userID) {
         await chatClient.setUser(
-          user,
+          currentStreamUser,
           get(data, 'currentUser.streamChatToken')
         );
       }
 
       channel.current = chatClient.channel('messaging', {
-        members: [userId, curId],
+        members: [userId, currentStreamUser.id],
       });
 
       await channel.current.watch();
@@ -103,8 +106,6 @@ const Channel = themed((props) => {
     );
   }
 
-  const KeyboardAvoider =
-    Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>

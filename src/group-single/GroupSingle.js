@@ -37,6 +37,7 @@ import GET_GROUP from './getGroup';
 YellowBox.ignoreWarnings([
   'Warning: Failed prop type',
   'Warning: componentWillReceiveProps',
+  'Warning: componentWillMount',
   'Warning: Failed child context',
   'Warning: Failed context type',
   'Warning: Async Storage',
@@ -142,7 +143,6 @@ class GroupSingle extends PureComponent {
     const videoCall = get(content, 'videoCall', {});
     const parentVideoCall = get(content, 'parentVideoCall', {});
     const avatars = get(content, 'avatars', []);
-
     const getNotes = () => {
       const hasParentVideoCall = parentVideoCall && parentVideoCall.link;
       const hasVideoCall = videoCall && videoCall.link;
@@ -283,6 +283,8 @@ class GroupSingle extends PureComponent {
 
     const content = get(data, 'node', {});
     const { theme = {} } = content;
+    console.log('[rkd] Group content:', content);
+
     return (
       <ThemeMixin theme={theme}>
         {this.renderContent({ content, loading, error })}

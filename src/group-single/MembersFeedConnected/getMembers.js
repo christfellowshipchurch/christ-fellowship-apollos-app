@@ -7,21 +7,22 @@ export default gql`
       id
       ... on Group {
         members {
-          ...GroupMemebersFragment
+          ...GroupMembersFragment
         }
       }
 
       ... on VolunteerGroup {
         members {
-          ...GroupMemebersFragment
+          ...GroupMembersFragment
         }
       }
     }
   }
 
-  fragment GroupMemebersFragment on Person {
+  fragment GroupMembersFragment on Person {
     id
     firstName
+    lastName
     nickName
     photo {
       uri

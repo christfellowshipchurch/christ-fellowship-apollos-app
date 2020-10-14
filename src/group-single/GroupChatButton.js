@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { styled, Button } from '@apollosproject/ui-kit';
+import { styled, Button, NavigationService } from '@apollosproject/ui-kit';
 
 const StyledButton = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit,
@@ -8,7 +8,7 @@ const StyledButton = styled(({ theme }) => ({
 
 const GroupChatButton = ({ isLoading }) => (
   <StyledButton
-    onPress={() => null}
+    onPress={() => NavigationService.navigate('Channel', { nested: true })}
     loading={isLoading}
     title={'Message Group'}
     type={'primary'}
