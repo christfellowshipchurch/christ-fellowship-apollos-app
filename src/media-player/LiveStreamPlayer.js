@@ -9,6 +9,7 @@ import {
   Platform,
   StatusBar,
   SafeAreaView,
+  TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -22,6 +23,7 @@ import {
   Icon,
   NavigationService,
   LayoutConsumer,
+  BodyText,
 } from '@apollosproject/ui-kit';
 
 import { PlayerContext } from '../chat/context';
@@ -124,9 +126,27 @@ const FullscreenMediaPlayerSafeLayout = styled(({ isFullscreen, theme }) => ({
   margin: isFullscreen ? 0 : theme.sizing.baseUnit,
 }))(MediaPlayerSafeLayout);
 
-const TappableArea = styled({
-  backgroundColor: 'green',
-})(TouchableOpacity);
+const TappableArea = withTheme(({ theme }) => ({
+  style: {
+    backgroundColor: theme.colors.background.paper,
+    borderBottomColor: theme.colors.text.tertiary,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  underlayColor: theme.colors.background.screen,
+}))(TouchableHighlight);
+
+const TappableView = styled({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+})(View);
+
+const CloseChatIcon = withTheme(({ theme }) => ({
+  name: 'arrow-next',
+  fill: theme.colors.lightPrimary,
+  size: theme.helpers.rem(1),
+}))(Icon);
 
 /**
  * LiveStreamPlayer is a animating media player that transitions between
@@ -297,13 +317,13 @@ class LiveStreamPlayer extends PureComponent {
         return {
           ...StyleSheet.absoluteFill,
           left: '50%',
-          right: '2%',
+          right: '0%',
           zIndex: 2,
         };
       return {
         ...StyleSheet.absoluteFill,
-        left: '40%',
-        right: '2%',
+        left: '100%',
+        right: '0%',
         zIndex: 2,
       };
     }
@@ -443,7 +463,11 @@ class LiveStreamPlayer extends PureComponent {
           </VideoSizer>
         ) : null}
         <Animated.View style={this.fullscreenControlsAnimation}>
-          <LiveStreamControls isCasting={isCasting} />
+          <LiveStreamControls
+            isCasting={isCasting}
+            isPortrait={this.state.portrait}
+            handleShowChat={this.handleShowChat}
+          />
         </Animated.View>
       </LiveStreamContainer>
     );
@@ -467,9 +491,19 @@ class LiveStreamPlayer extends PureComponent {
                 top: notch,
               })}
             >
-              <TappableArea onPress={this.handleShowChat}>
-                <Icon fill={'red'} name={'arrow-next'} size={18} />
-              </TappableArea>
+              {!this.state.portrait && (
+                <TappableArea onPress={this.handleShowChat}>
+                  <TappableView>
+                    <BodyText style={{ display: 'flex' }}>HIDE CHAT</BodyText>
+                    <CloseChatIcon
+                      style={{ display: 'flex' }}
+                      fill={'red'}
+                      name={'arrow-next'}
+                      size={18}
+                    />
+                  </TappableView>
+                </TappableArea>
+              )}
               <LiveStreamChat
                 isPortrait={this.state.portrait}
                 channelId={this.props.channelId}

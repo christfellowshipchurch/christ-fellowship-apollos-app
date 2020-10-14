@@ -308,7 +308,14 @@ class LiveStreamControls extends PureComponent {
                   <Title>{get(mediaPlayer, 'currentTrack.title')}</Title>
                   <Artist>{get(mediaPlayer, 'currentTrack.artist')}</Artist>
                 </Titles>
-                <IconSm name="empty" disabled />
+                {!this.props.isPortrait ? (
+                  <IconSm
+                    name={'chat-conversation'}
+                    onPress={this.props.handleShowChat}
+                  />
+                ) : (
+                  <IconSm name="empty" disabled />
+                )}
               </UpperControls>
               <LowerControls>
                 <CastButtons>
