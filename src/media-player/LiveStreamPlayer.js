@@ -31,7 +31,7 @@ import LiveStreamControls from './controls/LiveStreamControls';
 import VideoWindow from './controls/VideoWindow';
 import MusicControls from './controls/MusicControls';
 import { GET_FULL_VISIBILITY_STATE } from './queries';
-import { EXIT_FULLSCREEN, GO_FULLSCREEN } from './mutations';
+import { EXIT_FULLSCREEN, GO_FULLSCREEN, JOIN_LIVESTREAM } from './mutations';
 import {
   Provider,
   ControlsConsumer,
@@ -46,7 +46,6 @@ const MessagesBannerContainer = styled(({ theme }) => ({
 }))(SafeAreaView);
 
 const BANNER_HEIGHT = 35;
-const LIVESTREAM_HEIGHT = 0.33 * Dimensions.get('window').height;
 
 const MessagesBanner = styled(({ theme }) => ({
   height: BANNER_HEIGHT,
@@ -112,7 +111,7 @@ const LiveStreamContainer = styled(
   ({ isFullscreen, isPortrait, theme }) =>
     isFullscreen
       ? {
-          height: isPortrait ? '33%' /* = LIVESTREAM_HEIGHT */ : '100%',
+          height: isPortrait ? '33%' : '100%',
           ...Platform.select(theme.shadows.default),
         }
       : StyleSheet.absoluteFill
@@ -140,6 +139,7 @@ class LiveStreamPlayer extends PureComponent {
       startsAt: PropTypes.string,
       endsAt: PropTypes.string,
     }),
+    isLoading: PropTypes.bool,
   };
 
   state = {
@@ -268,6 +268,14 @@ class LiveStreamPlayer extends PureComponent {
 
   componentDidMount() {
     Dimensions.addEventListener('change', this.handleOrientationChanged);
+    this.joinLiveStreamTimeout = setTimeout(
+      () =>
+        this.props.client.mutate({
+          mutation: JOIN_LIVESTREAM,
+          variables: { nodeId: this.props.event.parentId },
+        }),
+      10000
+    );
   }
 
   componentDidUpdate(_, oldState) {
@@ -283,6 +291,7 @@ class LiveStreamPlayer extends PureComponent {
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.handleOrientationChanged);
+    clearTimeout(this.joinLiveStreamTimeout);
   }
 
   handleOrientationChanged = ({ window: { width, height } }) => {
@@ -416,30 +425,13 @@ class LiveStreamPlayer extends PureComponent {
     };
 
     return (
-      <LayoutConsumer key={'chat'}>
-        {({ top: notch }) => (
-          <PlayerContext.Provider value={playerContext}>
-            <Animated.View
-              style={{
-                ...StyleSheet.absoluteFillObject,
-                top: this.bannerHeight.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [
-                    LIVESTREAM_HEIGHT,
-                    LIVESTREAM_HEIGHT + notch + BANNER_HEIGHT,
-                  ],
-                }),
-              }}
-            >
-              <LiveStreamChat
-                isPortrait={this.state.portrait}
-                channelId={this.props.channelId}
-                event={this.props.event}
-              />
-            </Animated.View>
-          </PlayerContext.Provider>
-        )}
-      </LayoutConsumer>
+      <PlayerContext.Provider key={'chat'} value={playerContext}>
+        <LiveStreamChat
+          isPortrait={this.state.portrait}
+          channelId={this.props.channelId}
+          event={this.props.event}
+        />
+      </PlayerContext.Provider>
     );
   };
 
@@ -465,7 +457,7 @@ class LiveStreamPlayer extends PureComponent {
           style={this.miniControlsAnimation}
           onLayout={this.handleMiniControlLayout}
         >
-          <MiniControls />
+          <MiniControls nodeId={this.props.event.parentId} isLiveStream />
         </Animated.View>
       );
     }

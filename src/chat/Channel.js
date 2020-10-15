@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { SafeAreaView, View, Platform } from 'react-native';
+import { SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, withTheme } from '@apollosproject/ui-kit';
 
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
-import { MINI_PLAYER_HEIGHT } from '../media-player/controls/MiniControls';
 
 import { useCurrentUser } from '../hooks';
 import { navigationOptions, NavigationSpacer } from '../navigation';
@@ -24,10 +22,10 @@ import {
   Channel as ChannelInner,
   MessageList,
   MessageInput,
+  LoadingMessages,
 } from './components';
 
 const themed = withTheme();
-const KeyboardAvoider = Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
 
 // :: Styled Components
 // ---
@@ -41,10 +39,9 @@ const FlexedMediaSpacer = styled(({ theme }) => ({
   backgroundColor: theme.colors.background.paper,
 }))(MediaPlayerSpacer);
 
-const PaddedView = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit,
-  backgroundColor: theme.colors.background.paper,
-}))(View);
+const KeyboardAvoider = styled({
+  flex: 1,
+})(Platform.OS === 'ios' ? KeyboardAvoidingView : React.Fragment);
 
 // :: Main Component
 // ---
@@ -52,7 +49,6 @@ const Channel = themed((props) => {
   const userId = props.navigation.getParam('userId');
 
   const [connecting, setConnecting] = useState(true);
-  const [playerVisible, setPlayerVisible] = useState(false);
 
   const { loading, data = {} } = useCurrentUser();
 
@@ -100,29 +96,31 @@ const Channel = themed((props) => {
 
   if (loading || connecting) {
     return (
-      <SafeChatContainer>
-        <ActivityIndicator size={'large'} />
-      </SafeChatContainer>
+      <ChatThemeProvider theme={mapChatTheme(props.theme)}>
+        <Chat client={chatClient} i18nInstance={streami18n}>
+          <FlexedMediaSpacer>
+            <SafeChatContainer>
+              <LoadingMessages />
+              <MessageInput disabled />
+            </SafeChatContainer>
+          </FlexedMediaSpacer>
+        </Chat>
+      </ChatThemeProvider>
     );
   }
 
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <FlexedMediaSpacer
-          onOpen={() => setPlayerVisible(true)}
-          onClose={() => setPlayerVisible(false)}
-          Component={PaddedView}
-        >
+        <FlexedMediaSpacer>
           <ChannelInner channel={channel.current}>
-            <SafeChatContainer>
-              <NavigationSpacer />
-              <MessageList />
-            </SafeChatContainer>
-            <MessageInput />
-            <KeyboardAvoider
-              topSpacing={playerVisible ? -MINI_PLAYER_HEIGHT : 0}
-            />
+            <KeyboardAvoider behavior={'padding'}>
+              <SafeChatContainer>
+                <NavigationSpacer />
+                <MessageList />
+              </SafeChatContainer>
+              <MessageInput />
+            </KeyboardAvoider>
           </ChannelInner>
         </FlexedMediaSpacer>
       </Chat>
