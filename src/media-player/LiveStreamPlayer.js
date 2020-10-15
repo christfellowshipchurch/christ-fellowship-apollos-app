@@ -466,7 +466,7 @@ class LiveStreamPlayer extends PureComponent {
           <LiveStreamControls
             isCasting={isCasting}
             isPortrait={this.state.portrait}
-            handleShowChat={this.handleShowChat}
+            onShowChat={this.handleShowChat}
           />
         </Animated.View>
       </LiveStreamContainer>
@@ -491,24 +491,25 @@ class LiveStreamPlayer extends PureComponent {
                 top: notch,
               })}
             >
-              {!this.state.portrait && (
-                <TappableArea onPress={this.handleShowChat}>
-                  <TappableView>
-                    <BodyText style={{ display: 'flex' }}>HIDE CHAT</BodyText>
-                    <CloseChatIcon
-                      style={{ display: 'flex' }}
-                      fill={'red'}
-                      name={'arrow-next'}
-                      size={18}
-                    />
-                  </TappableView>
-                </TappableArea>
-              )}
-              <LiveStreamChat
-                isPortrait={this.state.portrait}
-                channelId={this.props.channelId}
-                event={this.props.event}
-              />
+              <>
+                {!this.state.portrait && (
+                  <TappableArea onPress={this.handleShowChat}>
+                    <TappableView>
+                      <BodyText>HIDE CHAT</BodyText>
+                      <CloseChatIcon
+                        fill={'red'}
+                        name={'arrow-next'}
+                        size={18}
+                      />
+                    </TappableView>
+                  </TappableArea>
+                )}
+                <LiveStreamChat
+                  isPortrait={this.state.portrait}
+                  channelId={this.props.channelId}
+                  event={this.props.event}
+                />
+              </>
             </Animated.View>
           </PlayerContext.Provider>
         )}
