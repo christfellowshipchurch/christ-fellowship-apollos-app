@@ -46,19 +46,24 @@ const KeyboardAvoider = styled({
 // :: Main Component
 // ---
 const Channel = themed((props) => {
-  const userId = props.navigation.getParam('userId');
+  const userId = props.navigation.getParam('user');
   const channelId = props.navigation.getParam('channelId');
-  console.log('[rkd] [Channel] channelId:', channelId);
   const [connecting, setConnecting] = useState(true);
 
   const { loading, data = {} } = useCurrentUser();
 
   const channel = useRef(null);
 
+  console.group('[rkd] [Channel] props');
+  console.log('[rkd] userId:', userId);
+  console.log('[rkd] channelId:', channelId);
+  console.groupEnd();
+
   const connect = async () => {
     try {
       const currentStreamUser = getStreamUser(get(data, 'currentUser'));
 
+      // Initialize user connection with Stream Client if we haven't yet
       if (!chatClient.userID) {
         await chatClient.setUser(
           currentStreamUser,
@@ -66,18 +71,14 @@ const Channel = themed((props) => {
         );
       }
 
-      // Direct Message
       if (userId) {
+        // Direct Message
         channel.current = chatClient.channel('messaging', {
           members: [userId, currentStreamUser.id],
         });
-
-        const response = await chatClient.queryUsers({ id: { $in: [userId] } });
-        props.navigation.setParams({ name: get(response, 'users[0].name') });
       } else if (channelId) {
-        channel.current = chatClient.channel('messaging', channelId, {
-          // Group meta data here?
-        });
+        // Group Chat
+        channel.current = chatClient.channel('messaging', channelId);
       }
 
       await channel.current.watch();
@@ -93,6 +94,7 @@ const Channel = themed((props) => {
       if (!loading) {
         connect();
       }
+
       return () => {
         if (get(chatClient, 'listeners.all.length', 0) < 2) {
           chatClient.disconnect();

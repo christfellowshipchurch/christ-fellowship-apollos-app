@@ -259,7 +259,10 @@ class GroupSingle extends PureComponent {
                             date={start}
                           />
                         )}
-                        <GroupChatButton channelId={channelId} />
+                        <GroupChatButton
+                          channelId={channelId}
+                          groupName={content.title}
+                        />
                       </View>
                     )}
                   </PaddedView>

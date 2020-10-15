@@ -303,10 +303,16 @@ class LiveStreamPlayer extends PureComponent {
     this.setState({ channels });
   };
 
-  handleDirectMessage = ({ userId }) => {
+  handleDirectMessage = ({ user }) => {
     this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
+    const { id, name } = user;
+
     setTimeout(() => {
-      NavigationService.navigate('Channel', { userId, nested: true });
+      NavigationService.navigate('Channel', {
+        userId: id,
+        name,
+        nested: true,
+      });
     }, 250);
   };
 
@@ -423,6 +429,8 @@ class LiveStreamPlayer extends PureComponent {
       onChannelsUpdated: this.handleChannelsUpdated,
       onDirectMessage: this.handleDirectMessage,
     };
+
+    console.log('[rkd] channelId:', this.props.channelId);
 
     return (
       <PlayerContext.Provider key={'chat'} value={playerContext}>
