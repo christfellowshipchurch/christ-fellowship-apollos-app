@@ -1,15 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { compose } from 'recompose';
 
 import {
   CenteredView,
   ConnectedImage,
   ImageSourceType,
   styled,
-  withTheme,
-  Icon,
 } from '@apollosproject/ui-kit';
 
 const BlurWrapper = styled(
@@ -42,24 +39,6 @@ const RandomAvatar = styled(
   'ui-kit.AvatarList.RandomAvatar'
 )(ConnectedImage);
 
-const PlaceholderIcon = compose(
-  withTheme(({ theme: { colors } = {}, size }) => ({
-    fill: colors.paper,
-    name: 'avatarPlacholder',
-    size,
-  }))
-)(Icon);
-
-const PlaceholderWrapper = styled(({ size, theme }) => ({
-  width: size,
-  borderRadius: 1000,
-  backgroundColor: theme.colors.lightSecondary,
-  justifyContent: 'center',
-  alignItems: 'center',
-  zIndex: 100,
-  aspectRatio: 1,
-}))(View);
-
 class AvatarCloud extends PureComponent {
   static propTypes = {
     avatars: PropTypes.arrayOf(ImageSourceType).isRequired,
@@ -88,7 +67,7 @@ class AvatarCloud extends PureComponent {
     return this.props.primaryAvatar
       ? /* we need some way to differentiate the largest possible `RandomAvatar`s from the
          * `primaryAvatar` so we subtract by a magic number that looks nice 🧙‍♂️ */
-      this.props.maxAvatarWidth - 0.1
+        this.props.maxAvatarWidth - 0.1
       : this.props.maxAvatarWidth;
   }
 
@@ -101,7 +80,7 @@ class AvatarCloud extends PureComponent {
     const sizes = this.props.avatars.map((avatar, i) => {
       const randomNumberInRange =
         this.getRandomPositionValue(i) *
-        (this.getRandomAvatarMaxWidth() - this.props.minAvatarWidth) +
+          (this.getRandomAvatarMaxWidth() - this.props.minAvatarWidth) +
         this.props.minAvatarWidth;
       return Math.floor(randomNumberInRange * 10) / 10;
     });
@@ -133,7 +112,7 @@ class AvatarCloud extends PureComponent {
           typeof this.props.avatars[i] === 'string'
             ? this.props.avatars[i]
             : this.props.avatars[i].uri
-          }${this.props.avatars[i].id ? this.props.avatars[i].id : i}`}
+        }${this.props.avatars[i].id ? this.props.avatars[i].id : i}`}
         order={i} // order = zIndex == higher index === "closer two the viewer/higher layer"
       >
         <RandomAvatar

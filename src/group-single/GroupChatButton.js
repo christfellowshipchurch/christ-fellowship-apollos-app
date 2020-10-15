@@ -6,18 +6,26 @@ const StyledButton = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit,
 }))(Button);
 
-const GroupChatButton = ({ isLoading }) => (
-  <StyledButton
-    onPress={() => NavigationService.navigate('Channel', { nested: true })}
-    loading={isLoading}
-    title={'Message Group'}
-    type={'primary'}
-    pill={false}
-  />
-);
+const GroupChatButton = ({ channelId }) => {
+  if (!channelId) {
+    return null;
+  }
+
+  const handlePress = () =>
+    NavigationService.navigate('Channel', { channelId, nested: true });
+
+  return (
+    <StyledButton
+      onPress={handlePress}
+      title={'Message Group'}
+      type={'primary'}
+      pill={false}
+    />
+  );
+};
 
 GroupChatButton.propTypes = {
-  isLoading: PropTypes.bool,
+  channelId: PropTypes.string,
 };
 
 export default GroupChatButton;

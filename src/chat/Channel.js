@@ -47,7 +47,8 @@ const KeyboardAvoider = styled({
 // ---
 const Channel = themed((props) => {
   const userId = props.navigation.getParam('userId');
-
+  const channelId = props.navigation.getParam('channelId');
+  console.log('[rkd] [Channel] channelId:', channelId);
   const [connecting, setConnecting] = useState(true);
 
   const { loading, data = {} } = useCurrentUser();
@@ -65,14 +66,21 @@ const Channel = themed((props) => {
         );
       }
 
-      channel.current = chatClient.channel('messaging', {
-        members: [userId, currentStreamUser.id],
-      });
+      // Direct Message
+      if (userId) {
+        channel.current = chatClient.channel('messaging', {
+          members: [userId, currentStreamUser.id],
+        });
+
+        const response = await chatClient.queryUsers({ id: { $in: [userId] } });
+        props.navigation.setParams({ name: get(response, 'users[0].name') });
+      } else if (channelId) {
+        channel.current = chatClient.channel('messaging', channelId, {
+          // Group meta data here?
+        });
+      }
 
       await channel.current.watch();
-
-      const response = await chatClient.queryUsers({ id: { $in: [userId] } });
-      props.navigation.setParams({ name: get(response, 'users[0].name') });
 
       setConnecting(false);
     } catch (e) {

@@ -34,6 +34,7 @@ import MembersFeedConnected from './MembersFeedConnected';
 
 import GET_GROUP from './getGroup';
 
+// ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
 YellowBox.ignoreWarnings([
   'Warning: Failed prop type',
   'Warning: componentWillReceiveProps',
@@ -43,6 +44,7 @@ YellowBox.ignoreWarnings([
   'Warning: Async Storage',
   'Warning: "getContext',
 ]);
+// ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
 
 const FlexedScrollView = styled(({ theme }) => ({
   flex: 1,
@@ -143,6 +145,8 @@ class GroupSingle extends PureComponent {
     const videoCall = get(content, 'videoCall', {});
     const parentVideoCall = get(content, 'parentVideoCall', {});
     const avatars = get(content, 'avatars', []);
+    const channelId = get(content, 'chatChannelId', null);
+
     const getNotes = () => {
       const hasParentVideoCall = parentVideoCall && parentVideoCall.link;
       const hasVideoCall = videoCall && videoCall.link;
@@ -255,7 +259,7 @@ class GroupSingle extends PureComponent {
                             date={start}
                           />
                         )}
-                        <GroupChatButton />
+                        <GroupChatButton channelId={channelId} />
                       </View>
                     )}
                   </PaddedView>
