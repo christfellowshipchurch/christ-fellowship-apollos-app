@@ -114,7 +114,6 @@ const LiveStreamContainer = styled(
   ({ isFullscreen, isPortrait, theme }) =>
     isFullscreen
       ? {
-          zIndex: isPortrait ? 2 : 1,
           height: isPortrait ? '33%' /* = LIVESTREAM_HEIGHT */ : '100%',
           ...Platform.select(theme.shadows.default),
         }
@@ -144,7 +143,7 @@ const TappableView = styled({
 
 const CloseChatIcon = withTheme(({ theme }) => ({
   name: 'arrow-next',
-  fill: theme.colors.lightPrimary,
+  fill: theme.colors.text.lightPrimary,
   size: theme.helpers.rem(1),
 }))(Icon);
 
@@ -170,7 +169,7 @@ class LiveStreamPlayer extends PureComponent {
   state = {
     portrait: Dimensions.get('window').height > Dimensions.get('window').width,
     channels: [],
-    showChat: true,
+    showChat: false,
   };
 
   // Tracks the messages banner height
@@ -496,11 +495,7 @@ class LiveStreamPlayer extends PureComponent {
                   <TappableArea onPress={this.handleShowChat}>
                     <TappableView>
                       <BodyText>HIDE CHAT</BodyText>
-                      <CloseChatIcon
-                        fill={'red'}
-                        name={'arrow-next'}
-                        size={18}
-                      />
+                      <CloseChatIcon name={'arrow-next'} size={18} />
                     </TappableView>
                   </TappableArea>
                 )}
