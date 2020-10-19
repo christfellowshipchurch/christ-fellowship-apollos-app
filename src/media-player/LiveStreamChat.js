@@ -2,21 +2,13 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Platform } from 'react-native';
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
 import moment from 'moment';
 import numeral from 'numeral';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
-import Color from 'color';
 
-import {
-  styled,
-  Icon,
-  UIText,
-  withTheme,
-  ActivityIndicator,
-} from '@apollosproject/ui-kit';
+import { styled, Icon, UIText, withTheme } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
 import {
@@ -24,6 +16,7 @@ import {
   Channel,
   MessageList,
   MessageInput,
+  LoadingMessages,
   LoadingErrorIndicator,
 } from '../chat/components';
 import { withPlayerContext } from '../chat/context';
@@ -39,12 +32,12 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   }
 `;
 
-const ChatContainer = styled(({ isPortrait, theme }) => ({
+const KeyboardAvoider = styled(({ isPortrait, theme }) => ({
   flex: 1,
-  paddingBottom: theme.sizing.baseUnit,
+  marginBottom: theme.sizing.baseUnit,
   backgroundColor: theme.colors.background.paper,
   paddingRight: !isPortrait ? theme.sizing.baseUnit : 0,
-}))(View);
+}))(Platform.OS === 'ios' ? KeyboardAvoidingView : View);
 
 const WatchingContainer = styled(({ theme }) => ({
   position: 'absolute',
@@ -198,31 +191,34 @@ const LiveStreamChat = (props) => {
 
   if (loading || connecting) {
     return (
-      <ChatContainer isPortrait={props.isPortrait}>
-        <ActivityIndicator size={'large'} />
-      </ChatContainer>
+      <ChatThemeProvider theme={mapChatTheme(props.theme)}>
+        <Chat client={chatClient} i18nInstance={streami18n}>
+          <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
+            <LoadingMessages />
+            <MessageInput disabled />
+          </KeyboardAvoider>
+        </Chat>
+      </ChatThemeProvider>
     );
   }
 
   if (error) {
     return (
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <ChatContainer isPortrait={props.isPortrait}>
+        <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
           <LoadingErrorIndicator
             listType={'message'}
             retry={() => setError(false)}
           />
-        </ChatContainer>
+        </KeyboardAvoider>
       </Chat>
     );
   }
 
-  const KeyboardAvoider =
-    Platform.OS === 'ios' ? KeyboardSpacer : React.Fragment;
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <ChatContainer isPortrait={props.isPortrait}>
+        <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
           <Channel channel={channel.current}>
             {numWatching > 1 && (
               <WatchingContainer>
@@ -234,9 +230,8 @@ const LiveStreamChat = (props) => {
             )}
             <MessageList />
             <MessageInput />
-            <KeyboardAvoider />
           </Channel>
-        </ChatContainer>
+        </KeyboardAvoider>
       </Chat>
     </ChatThemeProvider>
   );

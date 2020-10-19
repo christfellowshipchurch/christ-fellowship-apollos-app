@@ -33,7 +33,7 @@ import LiveStreamControls from './controls/LiveStreamControls';
 import VideoWindow from './controls/VideoWindow';
 import MusicControls from './controls/MusicControls';
 import { GET_FULL_VISIBILITY_STATE } from './queries';
-import { EXIT_FULLSCREEN, GO_FULLSCREEN } from './mutations';
+import { EXIT_FULLSCREEN, GO_FULLSCREEN, JOIN_LIVESTREAM } from './mutations';
 import {
   Provider,
   ControlsConsumer,
@@ -48,7 +48,6 @@ const MessagesBannerContainer = styled(({ theme }) => ({
 }))(SafeAreaView);
 
 const BANNER_HEIGHT = 35;
-const LIVESTREAM_HEIGHT = 0.33 * Dimensions.get('window').height;
 
 const MessagesBanner = styled(({ theme }) => ({
   height: BANNER_HEIGHT,
@@ -114,7 +113,7 @@ const LiveStreamContainer = styled(
   ({ isFullscreen, isPortrait, theme }) =>
     isFullscreen
       ? {
-          height: isPortrait ? '33%' /* = LIVESTREAM_HEIGHT */ : '100%',
+          height: isPortrait ? '33%' : '100%',
           ...Platform.select(theme.shadows.default),
         }
       : StyleSheet.absoluteFill
@@ -164,6 +163,7 @@ class LiveStreamPlayer extends PureComponent {
       startsAt: PropTypes.string,
       endsAt: PropTypes.string,
     }),
+    isLoading: PropTypes.bool,
   };
 
   state = {
@@ -293,6 +293,14 @@ class LiveStreamPlayer extends PureComponent {
 
   componentDidMount() {
     Dimensions.addEventListener('change', this.handleOrientationChanged);
+    this.joinLiveStreamTimeout = setTimeout(
+      () =>
+        this.props.client.mutate({
+          mutation: JOIN_LIVESTREAM,
+          variables: { nodeId: this.props.event.parentId },
+        }),
+      10000
+    );
   }
 
   componentDidUpdate(_, oldState) {
@@ -308,34 +316,22 @@ class LiveStreamPlayer extends PureComponent {
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.handleOrientationChanged);
+    clearTimeout(this.joinLiveStreamTimeout);
   }
 
-  chatAnimation = ({ showChat, isFullscreen, isPortrait, top }) => {
-    if (!isPortrait && isFullscreen) {
-      if (showChat)
-        return {
-          ...StyleSheet.absoluteFill,
-          left: '50%',
-          right: '0%',
-          zIndex: 2,
-        };
+  chatAnimation = ({ showChat }) => {
+    if (showChat)
       return {
         ...StyleSheet.absoluteFill,
-        left: '100%',
+        left: '50%',
         right: '0%',
         zIndex: 2,
       };
-    }
-
     return {
-      ...StyleSheet.absoluteFillObject,
-      top: this.bannerHeight.interpolate({
-        inputRange: [0, 1],
-        outputRange: [
-          LIVESTREAM_HEIGHT,
-          LIVESTREAM_HEIGHT + top + BANNER_HEIGHT,
-        ],
-      }),
+      ...StyleSheet.absoluteFill,
+      left: '100%',
+      right: '0%',
+      zIndex: 2,
     };
   };
 
@@ -349,7 +345,6 @@ class LiveStreamPlayer extends PureComponent {
   };
 
   handleShowChat = () => {
-    console.log(this.state.showChat);
     this.setState((prevState) => ({
       showChat: !prevState.showChat,
     }));
@@ -479,36 +474,38 @@ class LiveStreamPlayer extends PureComponent {
     };
 
     return (
-      <LayoutConsumer key={'chat'}>
-        {({ top: notch }) => (
-          <PlayerContext.Provider value={playerContext}>
+      <PlayerContext.Provider key={'chat'} value={playerContext}>
+        {this.state.portrait &&
+          isFullscreen && (
+            <LiveStreamChat
+              isPortrait={this.state.portrait}
+              channelId={this.props.channelId}
+              event={this.props.event}
+            />
+          )}
+        {!this.state.portrait &&
+          isFullscreen && (
             <Animated.View
               style={this.chatAnimation({
                 isFullscreen,
                 isPortrait: this.state.portrait,
                 showChat: this.state.showChat,
-                top: notch,
               })}
             >
-              <>
-                {!this.state.portrait && (
-                  <TappableArea onPress={this.handleShowChat}>
-                    <TappableView>
-                      <BodyText>HIDE CHAT</BodyText>
-                      <CloseChatIcon name={'arrow-next'} size={18} />
-                    </TappableView>
-                  </TappableArea>
-                )}
-                <LiveStreamChat
-                  isPortrait={this.state.portrait}
-                  channelId={this.props.channelId}
-                  event={this.props.event}
-                />
-              </>
+              <TappableArea onPress={this.handleShowChat}>
+                <TappableView>
+                  <BodyText>HIDE CHAT</BodyText>
+                  <CloseChatIcon name={'arrow-next'} size={18} />
+                </TappableView>
+              </TappableArea>
+              <LiveStreamChat
+                isPortrait={this.state.portrait}
+                channelId={this.props.channelId}
+                event={this.props.event}
+              />
             </Animated.View>
-          </PlayerContext.Provider>
-        )}
-      </LayoutConsumer>
+          )}
+      </PlayerContext.Provider>
     );
   };
 
@@ -534,7 +531,7 @@ class LiveStreamPlayer extends PureComponent {
           style={this.miniControlsAnimation}
           onLayout={this.handleMiniControlLayout}
         >
-          <MiniControls />
+          <MiniControls nodeId={this.props.event.parentId} isLiveStream />
         </Animated.View>
       );
     }

@@ -83,7 +83,13 @@ const MediaPlayer = () => {
       startsAt: get(liveStream, 'contentItem.events[0].start'),
       endsAt: get(liveStream, 'contentItem.events[0].end'),
     };
-    return <LiveStreamPlayer channelId={channelId} event={event} />;
+    return (
+      <LiveStreamPlayer
+        channelId={channelId}
+        event={event}
+        isLoading={loading}
+      />
+    );
   }
 
   return <FullscreenPlayer />;

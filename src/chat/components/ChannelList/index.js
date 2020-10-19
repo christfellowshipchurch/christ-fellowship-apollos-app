@@ -9,15 +9,12 @@ import uniqWith from 'lodash/uniqWith';
 import isEqual from 'lodash/isEqual';
 
 import { withChatContext } from '../../context';
-import {
-  LoadingIndicator,
-  LoadingErrorIndicator,
-  EmptyStateIndicator,
-} from '../Indicators';
+import { LoadingErrorIndicator, EmptyStateIndicator } from '../Indicators';
 import ChannelPreview from './ChannelPreview';
 import ChannelListHeaderNetworkDownIndicator from './ChannelListHeaderNetworkDownIndicator';
 import ChannelListHeaderErrorIndicator from './ChannelListHeaderErrorIndicator';
 import ChannelListFooterLoadingIndicator from './ChannelListFooterLoadingIndicator';
+import LoadingChannels from './LoadingChannels';
 
 export const DEFAULT_QUERY_CHANNELS_LIMIT = 10;
 export const MAX_QUERY_CHANNELS_LIMIT = 30;
@@ -561,17 +558,6 @@ class ChannelList extends PureComponent {
     this._queryChannelsDebounced();
   };
 
-  renderLoading = () => <LoadingIndicator listType="channel" />;
-
-  renderLoadingError = () => (
-    <LoadingErrorIndicator
-      error={this.state.error}
-      retry={this.reloadList}
-      listType="channel"
-      loadNextPage={this.loadNextPage}
-    />
-  );
-
   renderEmptyState = () => <EmptyStateIndicator listType="channel" />;
 
   renderHeaderIndicator = () => {
@@ -622,10 +608,17 @@ class ChannelList extends PureComponent {
 
   render() {
     if (this.state.error && this.state.channels.length === 0) {
-      return this.renderLoadingError();
+      return (
+        <LoadingErrorIndicator
+          error={this.state.error}
+          retry={this.reloadList}
+          listType="channel"
+          loadNextPage={this.loadNextPage}
+        />
+      );
     }
     if (this.state.loadingChannels) {
-      return this.renderLoading();
+      return <LoadingChannels />;
     }
     return this.renderChannels();
   }
