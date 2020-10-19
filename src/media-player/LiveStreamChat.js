@@ -39,10 +39,11 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   }
 `;
 
-const ChatContainer = styled(({ theme }) => ({
+const ChatContainer = styled(({ isPortrait, theme }) => ({
   flex: 1,
   paddingBottom: theme.sizing.baseUnit,
   backgroundColor: theme.colors.background.paper,
+  paddingRight: !isPortrait ? theme.sizing.baseUnit : 0,
 }))(View);
 
 const WatchingContainer = styled(({ theme }) => ({
@@ -197,7 +198,7 @@ const LiveStreamChat = (props) => {
 
   if (loading || connecting) {
     return (
-      <ChatContainer>
+      <ChatContainer isPortrait={props.isPortrait}>
         <ActivityIndicator size={'large'} />
       </ChatContainer>
     );
@@ -206,7 +207,7 @@ const LiveStreamChat = (props) => {
   if (error) {
     return (
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <ChatContainer>
+        <ChatContainer isPortrait={props.isPortrait}>
           <LoadingErrorIndicator
             listType={'message'}
             retry={() => setError(false)}
@@ -221,7 +222,7 @@ const LiveStreamChat = (props) => {
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <ChatContainer>
+        <ChatContainer isPortrait={props.isPortrait}>
           <Channel channel={channel.current}>
             {numWatching > 1 && (
               <WatchingContainer>
