@@ -54,11 +54,6 @@ const Channel = themed((props) => {
 
   const channel = useRef(null);
 
-  console.group('[rkd] [Channel] props');
-  console.log('[rkd] userId:', userId);
-  console.log('[rkd] channelId:', channelId);
-  console.groupEnd();
-
   const connect = async () => {
     try {
       const currentStreamUser = getStreamUser(get(data, 'currentUser'));

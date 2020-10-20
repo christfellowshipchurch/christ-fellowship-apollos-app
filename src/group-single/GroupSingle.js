@@ -290,7 +290,6 @@ class GroupSingle extends PureComponent {
 
     const content = get(data, 'node', {});
     const { theme = {} } = content;
-    console.log('[rkd] Group content:', content);
 
     return (
       <ThemeMixin theme={theme}>
