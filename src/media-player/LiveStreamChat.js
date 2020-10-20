@@ -34,7 +34,7 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
 
 const KeyboardAvoider = styled(({ isPortrait, theme }) => ({
   flex: 1,
-  marginBottom: theme.sizing.baseUnit,
+  marginBottom: isPortrait ? theme.sizing.baseUnit : 0,
   backgroundColor: theme.colors.background.paper,
   paddingRight: !isPortrait ? theme.sizing.baseUnit : 0,
 }))(Platform.OS === 'ios' ? KeyboardAvoidingView : View);
