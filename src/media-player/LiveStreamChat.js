@@ -220,14 +220,15 @@ const LiveStreamChat = (props) => {
       <Chat client={chatClient} i18nInstance={streami18n}>
         <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
           <Channel channel={channel.current}>
-            {numWatching > 1 && (
-              <WatchingContainer>
-                <WatchingText>
-                  {numeral(numWatching).format('0,0')}
-                </WatchingText>
-                <WatchingIcon />
-              </WatchingContainer>
-            )}
+            {numWatching > 1 &&
+              props.isPortrait && (
+                <WatchingContainer>
+                  <WatchingText>
+                    {numeral(numWatching).format('0,0')}
+                  </WatchingText>
+                  <WatchingIcon />
+                </WatchingContainer>
+              )}
             <MessageList />
             <MessageInput />
           </Channel>
