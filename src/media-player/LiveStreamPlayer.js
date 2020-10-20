@@ -329,12 +329,10 @@ class LiveStreamPlayer extends PureComponent {
         left: '50%',
         right: '0%',
         zIndex: 2,
+        elevation: 50,
       };
     return {
-      ...StyleSheet.absoluteFill,
-      left: '100%',
-      right: '0%',
-      zIndex: 2,
+      display: 'none',
     };
   };
 
