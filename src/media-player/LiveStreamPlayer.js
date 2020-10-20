@@ -133,12 +133,15 @@ const TappableArea = withTheme(({ theme }) => ({
   underlayColor: theme.colors.background.screen,
 }))(TouchableHighlight);
 
-const TappableView = styled({
+const TappableView = styled(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'center',
+  justifyContent: 'flex-end',
   alignItems: 'center',
-})(View);
+  paddingTop: theme.sizing.baseUnit / 2,
+  paddingRight: theme.sizing.baseUnit,
+  paddingBottom: theme.sizing.baseUnit / 2,
+}))(View);
 
 const CloseChatIcon = withTheme(({ theme }) => ({
   name: 'arrow-next',
@@ -494,7 +497,7 @@ class LiveStreamPlayer extends PureComponent {
             >
               <TappableArea onPress={this.handleShowChat}>
                 <TappableView>
-                  <BodyText>HIDE CHAT</BodyText>
+                  <BodyText>Hide Chat</BodyText>
                   <CloseChatIcon name={'arrow-next'} size={18} />
                 </TappableView>
               </TappableArea>
