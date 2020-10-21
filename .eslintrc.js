@@ -54,6 +54,7 @@ module.exports = {
     'import/no-cycle': 0,
     'function-paren-newline': 0,
     'no-underscore-dangle': 0,
+    'no-unused-vars': [2, { argsIgnorePattern: 'theme'}]
     // "graphql/template-strings": ['warn', { env: 'apollo' }]
   },
   // overrides: [

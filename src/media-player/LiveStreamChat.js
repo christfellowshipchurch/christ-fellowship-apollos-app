@@ -6,17 +6,9 @@ import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
 import moment from 'moment';
 import numeral from 'numeral';
-import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
-import Color from 'color';
 
-import {
-  styled,
-  Icon,
-  UIText,
-  withTheme,
-  ActivityIndicator,
-} from '@apollosproject/ui-kit';
+import { styled, Icon, UIText, withTheme } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
 import {
