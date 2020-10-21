@@ -9,6 +9,7 @@ import {
   Platform,
   StatusBar,
   SafeAreaView,
+  TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
@@ -22,6 +23,7 @@ import {
   Icon,
   NavigationService,
   LayoutConsumer,
+  BodyText,
 } from '@apollosproject/ui-kit';
 
 import { PlayerContext } from '../chat/context';
@@ -122,6 +124,31 @@ const FullscreenMediaPlayerSafeLayout = styled(({ isFullscreen, theme }) => ({
   margin: isFullscreen ? 0 : theme.sizing.baseUnit,
 }))(MediaPlayerSafeLayout);
 
+const TappableArea = withTheme(({ theme }) => ({
+  style: {
+    backgroundColor: theme.colors.background.paper,
+    borderBottomColor: theme.colors.text.tertiary,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  underlayColor: theme.colors.background.screen,
+}))(TouchableHighlight);
+
+const TappableView = styled(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  paddingTop: theme.sizing.baseUnit / 2,
+  paddingRight: theme.sizing.baseUnit,
+  paddingBottom: theme.sizing.baseUnit / 2,
+}))(View);
+
+const CloseChatIcon = withTheme(({ theme }) => ({
+  name: 'arrow-next',
+  fill: theme.colors.text.lightPrimary,
+  size: theme.helpers.rem(1),
+}))(Icon);
+
 /**
  * LiveStreamPlayer is a animating media player that transitions between
  * a mini state and a full screen state.
@@ -145,6 +172,7 @@ class LiveStreamPlayer extends PureComponent {
   state = {
     portrait: Dimensions.get('window').height > Dimensions.get('window').width,
     channels: [],
+    showChat: false,
   };
 
   // Tracks the messages banner height
@@ -294,13 +322,33 @@ class LiveStreamPlayer extends PureComponent {
     clearTimeout(this.joinLiveStreamTimeout);
   }
 
-  handleOrientationChanged = ({ window: { width, height } }) => {
+  chatAnimation = ({ showChat }) => {
+    if (showChat)
+      return {
+        ...StyleSheet.absoluteFill,
+        left: '50%',
+        right: '0%',
+        zIndex: 2,
+        elevation: 50,
+      };
+    return {
+      display: 'none',
+    };
+  };
+
+  handleOrientationChanged = ({ screen: { width, height } }) => {
     this.setState({ portrait: height > width });
   };
 
   handleChannelsUpdated = ({ channels }) => {
     // console.log({ channels });
     this.setState({ channels });
+  };
+
+  handleShowChat = () => {
+    this.setState((prevState) => ({
+      showChat: !prevState.showChat,
+    }));
   };
 
   handleDirectMessage = ({ user }) => {
@@ -416,15 +464,17 @@ class LiveStreamPlayer extends PureComponent {
           </VideoSizer>
         ) : null}
         <Animated.View style={this.fullscreenControlsAnimation}>
-          <LiveStreamControls isCasting={isCasting} />
+          <LiveStreamControls
+            isCasting={isCasting}
+            isPortrait={this.state.portrait}
+            onShowChat={this.handleShowChat}
+          />
         </Animated.View>
       </LiveStreamContainer>
     );
   };
 
   renderChat = ({ isFullscreen }) => {
-    if (!isFullscreen) return null;
-
     const playerContext = {
       onChannelsUpdated: this.handleChannelsUpdated,
       onDirectMessage: this.handleDirectMessage,
@@ -434,11 +484,36 @@ class LiveStreamPlayer extends PureComponent {
 
     return (
       <PlayerContext.Provider key={'chat'} value={playerContext}>
-        <LiveStreamChat
-          isPortrait={this.state.portrait}
-          channelId={this.props.channelId}
-          event={this.props.event}
-        />
+        {this.state.portrait &&
+          isFullscreen && (
+            <LiveStreamChat
+              isPortrait={this.state.portrait}
+              channelId={this.props.channelId}
+              event={this.props.event}
+            />
+          )}
+        {!this.state.portrait &&
+          isFullscreen && (
+            <Animated.View
+              style={this.chatAnimation({
+                isFullscreen,
+                isPortrait: this.state.portrait,
+                showChat: this.state.showChat,
+              })}
+            >
+              <TappableArea onPress={this.handleShowChat}>
+                <TappableView>
+                  <BodyText>Hide Chat</BodyText>
+                  <CloseChatIcon name={'arrow-next'} size={18} />
+                </TappableView>
+              </TappableArea>
+              <LiveStreamChat
+                isPortrait={this.state.portrait}
+                channelId={this.props.channelId}
+                event={this.props.event}
+              />
+            </Animated.View>
+          )}
       </PlayerContext.Provider>
     );
   };

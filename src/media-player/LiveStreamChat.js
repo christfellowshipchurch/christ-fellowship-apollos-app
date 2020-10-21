@@ -32,10 +32,11 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   }
 `;
 
-const KeyboardAvoider = styled(({ theme }) => ({
+const KeyboardAvoider = styled(({ isPortrait, theme }) => ({
   flex: 1,
-  marginBottom: theme.sizing.baseUnit,
+  marginBottom: isPortrait ? theme.sizing.baseUnit : 0,
   backgroundColor: theme.colors.background.paper,
+  paddingRight: !isPortrait ? theme.sizing.baseUnit : 0,
 }))(Platform.OS === 'ios' ? KeyboardAvoidingView : View);
 
 const WatchingContainer = styled(({ theme }) => ({
@@ -192,7 +193,7 @@ const LiveStreamChat = (props) => {
     return (
       <ChatThemeProvider theme={mapChatTheme(props.theme)}>
         <Chat client={chatClient} i18nInstance={streami18n}>
-          <KeyboardAvoider behavior={'padding'}>
+          <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
             <LoadingMessages />
             <MessageInput disabled />
           </KeyboardAvoider>
@@ -201,14 +202,10 @@ const LiveStreamChat = (props) => {
     );
   }
 
-  if (!props.isPortrait) {
-    return null;
-  }
-
   if (error) {
     return (
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <KeyboardAvoider behavior={'padding'}>
+        <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
           <LoadingErrorIndicator
             listType={'message'}
             retry={() => setError(false)}
@@ -221,16 +218,17 @@ const LiveStreamChat = (props) => {
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <KeyboardAvoider behavior={'padding'}>
+        <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
           <Channel channel={channel.current}>
-            {numWatching > 1 && (
-              <WatchingContainer>
-                <WatchingText>
-                  {numeral(numWatching).format('0,0')}
-                </WatchingText>
-                <WatchingIcon />
-              </WatchingContainer>
-            )}
+            {numWatching > 1 &&
+              props.isPortrait && (
+                <WatchingContainer>
+                  <WatchingText>
+                    {numeral(numWatching).format('0,0')}
+                  </WatchingText>
+                  <WatchingIcon />
+                </WatchingContainer>
+              )}
             <MessageList />
             <MessageInput />
           </Channel>
