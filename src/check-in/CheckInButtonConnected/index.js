@@ -15,7 +15,7 @@ import {
     withTheme,
 } from '@apollosproject/ui-kit';
 
-import { useCheckIn } from 'hooks';
+import useCheckIn from '../useCheckIn';
 import {
     StyledButton,
     ButtonTitle,
@@ -85,19 +85,20 @@ const CheckInButton = withTheme()(({ id, sheetRef, theme }) => {
 
     const CheckInButtonWrapper =
         options.length === checkInCompleted ? View : TouchableScale;
-    const buttonProps = checkInCompleted
-        ? {}
-        : {
-            onPress: () => {
-                if (enabled && !checkInCompleted) {
-                    if (options.length === 1) {
-                        checkInCurrentUser({ optionId: get(options, '[0].id') });
-                    } else {
-                        sheetRef.current.open();
+    const buttonProps =
+        checkInCompleted && options.length === 1
+            ? {}
+            : {
+                onPress: () => {
+                    if (enabled) {
+                        if (options.length === 1) {
+                            checkInCurrentUser({ optionId: get(options, '[0].id') });
+                        } else {
+                            sheetRef.current.open();
+                        }
                     }
-                }
-            },
-        };
+                },
+            };
 
     const renderItem = ({ item }) => (
         <FlexedView>
@@ -122,9 +123,9 @@ const CheckInButton = withTheme()(({ id, sheetRef, theme }) => {
             <CheckInButtonWrapper {...buttonProps}>
                 <StyledButton
                     isLoading={loading}
-                    disabled={loading || checkInCompleted}
+                    disabled={loading || (checkInCompleted && options.length === 1)}
                     pill={false}
-                    isCheckedIn={options.find((o) => o.isCheckedIn)}
+                    isCheckedIn={options.find((o) => o.isCheckedIn) || checkInCompleted}
                 >
                     {loading ? (
                         <ActivityIndicator />
@@ -183,7 +184,9 @@ const CheckInButton = withTheme()(({ id, sheetRef, theme }) => {
                                         optionIds: selectedItems,
                                     });
                                 }}
-                                disabled={selectedItems.length === 0 || loading}
+                                disabled={
+                                    selectedItems.length === 0 || loading || checkInCompleted
+                                }
                                 loading={loading}
                             />
                         </FlexedSafeAreaView>

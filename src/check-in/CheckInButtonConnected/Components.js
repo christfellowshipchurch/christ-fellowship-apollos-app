@@ -33,8 +33,9 @@ export const StyledButton = styled(
             backgroundColor,
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'center',
             borderRadius: theme.sizing.baseBorderRadius,
-            ...(isLoading ? { width: 75, justifyContent: 'center' } : {}),
+            ...(isLoading ? { minWidth: 75 } : {}),
         };
     }
 )(View);

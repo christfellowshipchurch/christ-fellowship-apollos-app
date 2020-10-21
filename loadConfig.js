@@ -266,7 +266,6 @@ ApollosConfig.loadJs({
             uri
           }
         }
-        avatars
 
         leaders: people(first: 4, isLeader: true) {
           edges {

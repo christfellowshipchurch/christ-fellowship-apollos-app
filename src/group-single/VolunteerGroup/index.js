@@ -15,7 +15,7 @@ import Resources from '../Resources';
 import MembersFeedConnected from '../MembersFeedConnected';
 import HeaderConnected from '../HeaderConnected';
 import SummaryConnected from '../SummaryConnected';
-import CheckInButton from '../CheckInButton';
+import { CheckInButtonConnected } from '../../check-in';
 
 const Cell = styled(({ theme }) => ({
     paddingBottom: theme.sizing.baseUnit * 0.5,
@@ -37,7 +37,7 @@ const VolunteerGroup = ({ id, content, loading, navigation }) => {
                 <PaddedView vertical={false}>
                     <Cell>
                         <View />
-                        <CheckInButton id={id} ref={checkInRef} />
+                        <CheckInButtonConnected id={id} ref={checkInRef} />
                     </Cell>
 
                     <SummaryConnected id={id} />

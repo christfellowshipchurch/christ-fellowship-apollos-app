@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
@@ -23,6 +23,7 @@ import CheckInConnected from '../CheckIn';
 import MembersFeedConnected from '../MembersFeedConnected';
 import HeaderConnected from '../HeaderConnected';
 import SummaryConnected from '../SummaryConnected';
+import { CheckInButtonConnected } from '../../check-in';
 
 const ScheduleView = styled(() => ({
     flexDirection: 'row',
@@ -49,7 +50,12 @@ const CellItem = styled(({ theme, first }) => ({
     flex: 1,
 }))(View);
 
+const StyledPaddedView = styled(({ theme }) => ({
+    justifyContent: 'center',
+}))(PaddedView);
+
 const Group = ({ id, content, loading, navigation }) => {
+    const checkInRef = useRef();
     const coverImageSources = get(content, 'coverImage.sources', []);
     const resources = get(content, 'groupResources', []);
     const dateTime = get(content, 'dateTime', {});
@@ -64,10 +70,8 @@ const Group = ({ id, content, loading, navigation }) => {
 
         const videoCallNote = hasVideoCall ? videoCall.link : '';
         const parentVideoCallNote = hasParentVideoCall ? parentVideoCall.link : '';
-        const notes = `${
-            hasParentVideoCall ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n` : ''
-            }Join Zoom ${
-            hasParentVideoCall ? 'Breakout' : ''
+        const notes = `${hasParentVideoCall ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n` : ''
+            }Join Zoom ${hasParentVideoCall ? 'Breakout' : ''
             }Meeting:\n${videoCallNote}`;
         return notes.trim();
     };
@@ -80,6 +84,18 @@ const Group = ({ id, content, loading, navigation }) => {
 
             <BackgroundView>
                 <PaddedView vertical={false}>
+                    {!videoCall && (
+                        <Cell>
+                            <CellItem />
+                            <CellItem>
+                                <PaddedView horizontal={false}>
+                                    <CheckInButtonConnected id={id} ref={checkInRef} />
+                                </PaddedView>
+                            </CellItem>
+                            <CellItem />
+                        </Cell>
+                    )}
+
                     <Cell>
                         {content.dateTime ? (
                             <CellItem first>
@@ -107,8 +123,8 @@ const Group = ({ id, content, loading, navigation }) => {
                         ) : null}
                     </Cell>
 
-                    <PaddedView>
-                        {videoCall ? (
+                    {videoCall && (
+                        <PaddedView horizontal={false}>
                             <VideoCall
                                 groupId={content.id}
                                 isLoading={loading}
@@ -116,14 +132,8 @@ const Group = ({ id, content, loading, navigation }) => {
                                 videoCall={videoCall}
                                 date={start}
                             />
-                        ) : (
-                                <CheckInConnected
-                                    id={content.id}
-                                    isLoading={loading}
-                                    date={start}
-                                />
-                            )}
-                    </PaddedView>
+                        </PaddedView>
+                    )}
 
                     <SummaryConnected id={id} />
                 </PaddedView>

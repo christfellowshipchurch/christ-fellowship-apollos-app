@@ -112,12 +112,14 @@ const useCheckIn = (props) => {
   };
 
   /**
-   * @param {String} optionId Required to check the user into a specific option
+   * @param {Object}    props
+   * @param {string}    optionId  Id of the Check In Option that you want to check in a user to
+   * @param {string[]}  optionIds Ids of the Check In Options that you want to check in a user to
    */
-  const checkInCurrentUser = ({ optionId, optionIds }) => {
-    if (optionId || optionIds) {
-      setLoading(true);
+  const checkInCurrentUser = ({ optionId, optionIds = [] }) => {
+    if (!!optionId || optionIds.length > 0) {
       const oids = uniq([optionId, ...optionIds]).filter((o) => !!o);
+
       checkInCurrentUserMutation({
         variables: {
           id: checkInId,

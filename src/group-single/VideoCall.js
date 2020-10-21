@@ -15,12 +15,12 @@ import ATTEND_MEETING from './attendMeeting';
 
 const Cell = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
-  flexDirection: 'row',
+  flexDirection: 'column',
   justifyContent: 'flex-start',
 }))(View);
 
 const CellItem = styled(({ theme, first }) => ({
-  marginRight: first ? theme.sizing.baseUnit : 0,
+  paddingVertical: theme.sizing.baseUnit * 0.5,
   justifyContent: 'center',
   flex: 1,
 }))(View);
