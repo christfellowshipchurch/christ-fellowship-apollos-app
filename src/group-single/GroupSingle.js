@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, View, YellowBox } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
@@ -29,9 +29,22 @@ import AddCalEventButton from '../content-single/AddCalEventButton';
 import VideoCall from './VideoCall';
 import Resources from './Resources';
 import CheckInConnected from './CheckIn';
+import GroupChatButton from './GroupChatButton';
 import MembersFeedConnected from './MembersFeedConnected';
 
 import GET_GROUP from './getGroup';
+
+// ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+YellowBox.ignoreWarnings([
+  'Warning: Failed prop type',
+  'Warning: componentWillReceiveProps',
+  'Warning: componentWillMount',
+  'Warning: Failed child context',
+  'Warning: Failed context type',
+  'Warning: Async Storage',
+  'Warning: "getContext',
+]);
+// ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
 
 const FlexedScrollView = styled(({ theme }) => ({
   flex: 1,
@@ -132,6 +145,7 @@ class GroupSingle extends PureComponent {
     const videoCall = get(content, 'videoCall', {});
     const parentVideoCall = get(content, 'parentVideoCall', {});
     const avatars = get(content, 'avatars', []);
+    const channelId = get(content, 'chatChannelId', null);
 
     const getNotes = () => {
       const hasParentVideoCall = parentVideoCall && parentVideoCall.link;
@@ -147,9 +161,9 @@ class GroupSingle extends PureComponent {
         hasParentVideoCall
           ? `Join Zoom Meeting:\n${parentVideoCallNote}\n\n`
           : ''
-        }Join Zoom ${
+      }Join Zoom ${
         hasParentVideoCall ? 'Breakout' : ''
-        }Meeting:\n${videoCallNote}`;
+      }Meeting:\n${videoCallNote}`;
       return notes.trim();
     };
 
@@ -239,12 +253,16 @@ class GroupSingle extends PureComponent {
                             date={start}
                           />
                         ) : (
-                            <CheckInConnected
-                              id={content.id}
-                              isLoading={loading}
-                              date={start}
-                            />
-                          )}
+                          <CheckInConnected
+                            id={content.id}
+                            isLoading={loading}
+                            date={start}
+                          />
+                        )}
+                        <GroupChatButton
+                          channelId={channelId}
+                          groupName={content.title}
+                        />
                       </View>
                     )}
                   </PaddedView>
@@ -272,6 +290,7 @@ class GroupSingle extends PureComponent {
 
     const content = get(data, 'node', {});
     const { theme = {} } = content;
+
     return (
       <ThemeMixin theme={theme}>
         {this.renderContent({ content, loading, error })}

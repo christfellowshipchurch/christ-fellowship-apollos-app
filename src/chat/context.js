@@ -22,60 +22,51 @@ const getContextAwareComponent = (context, originalComponent) => {
   return ContextAwareComponent;
 };
 
+// ---
 export const PlayerContext = React.createContext({});
 
 export function withPlayerContext(OriginalComponent) {
-  const ContextAwareComponent = getContextAwareComponent(
-    PlayerContext,
-    OriginalComponent
-  );
-  return ContextAwareComponent;
+  return getContextAwareComponent(PlayerContext, OriginalComponent);
 }
 
+// ---
 export const ChatContext = React.createContext({ client: null });
 
 export function withChatContext(OriginalComponent) {
-  const ContextAwareComponent = getContextAwareComponent(
-    ChatContext,
-    OriginalComponent
-  );
-  return ContextAwareComponent;
+  return getContextAwareComponent(ChatContext, OriginalComponent);
 }
 
+// ---
 export const TranslationContext = React.createContext({
   t: () => 'Value not found',
 });
 
 export function withTranslationContext(OriginalComponent) {
-  const ContextAwareComponent = getContextAwareComponent(
-    TranslationContext,
-    OriginalComponent
-  );
-  return ContextAwareComponent;
+  return getContextAwareComponent(TranslationContext, OriginalComponent);
 }
 
+// ---
 export const ChannelContext = React.createContext({});
 
 export function withChannelContext(OriginalComponent) {
-  const ContextAwareComponent = getContextAwareComponent(
-    ChannelContext,
-    OriginalComponent
-  );
-  return ContextAwareComponent;
+  return getContextAwareComponent(ChannelContext, OriginalComponent);
 }
 
+// ---
 export const SuggestionsContext = React.createContext({});
 
 export function withSuggestionsContext(OriginalComponent) {
   return getContextAwareComponent(SuggestionsContext, OriginalComponent);
 }
 
+// ---
 export const MessageContentContext = React.createContext({});
 
 export function withMessageContentContext(OriginalComponent) {
   return getContextAwareComponent(MessageContentContext, OriginalComponent);
 }
 
+// ---
 export const KeyboardContext = React.createContext({
   dismissKeyboard: Keyboard.dismiss,
 });

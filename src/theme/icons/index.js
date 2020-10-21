@@ -3,7 +3,8 @@
  * For organization, please keep exports in alphabetical order
  */
 export AngleRight from './AngleRight';
-export AvatarPlacholder from './AvatarPlacholder';
+export AvatarPlaceholder from './AvatarPlaceholder';
+export BarsAlt from './BarsAlt';
 export Bars from './Bars';
 export BarsAlt from './BarsAlt';
 export Bell from './Bell';
