@@ -14,23 +14,23 @@ import {
 
 export const StyledButton = styled(
     ({ theme, disabled, isLoading, isCheckedIn }) => {
-        let backgroundColor = theme.colors.primary;
+        let backgroundColor = Color(theme.colors.primary);
 
-        if (isCheckedIn) {
-            backgroundColor = Color(theme.colors.success).hex();
+        if (isCheckedIn && !isLoading) {
+            backgroundColor = Color(theme.colors.success);
         }
 
         if (isLoading || disabled) {
-            backgroundColor = Color(theme.colors.primary)
-                .mix(Color(theme.colors.background.screen))
-                .hex();
+            backgroundColor = backgroundColor.mix(
+                Color(theme.colors.background.screen)
+            );
         }
 
         return {
             paddingVertical: theme.sizing.baseUnit * 0.25,
             paddingHorizontal: theme.sizing.baseUnit * 0.5,
             marginLeft: 5,
-            backgroundColor,
+            backgroundColor: backgroundColor.hex(),
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',

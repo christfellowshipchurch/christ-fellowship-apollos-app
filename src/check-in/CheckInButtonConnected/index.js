@@ -47,6 +47,8 @@ const CheckInButton = withTheme()(({ id, sheetRef, theme }) => {
         onCheckInSuccess: () => setCheckInSuccess(true),
     });
 
+    console.log({ checkInCompleted, options });
+
     /** After a check in is completed, we set a timer
      *  and if the drawer is still open, automatically
      *  close it for the user
