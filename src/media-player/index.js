@@ -47,7 +47,10 @@ const GET_LIVE_CONTENT = gql`
           }
         }
       }
-      chatChannelId
+      streamChatChannel {
+        id
+        channelId
+      }
     }
   }
 `;
@@ -72,7 +75,7 @@ const MediaPlayer = () => {
       uri === get(l, 'media.sources[0].uri') &&
       title === get(l, 'contentItem.title')
   );
-  const channelId = get(liveStream, 'chatChannelId');
+  const channelId = get(liveStream, 'streamChatChannel.channelId');
 
   if (enabled && liveStream) {
     const event = {
