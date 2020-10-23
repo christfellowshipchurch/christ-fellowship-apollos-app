@@ -19,7 +19,6 @@ import AddCalEventButton from '../../content-single/AddCalEventButton';
 import CoverImageBackground from '../CoverImageBackground';
 import VideoCall from '../VideoCall';
 import Resources from '../Resources';
-import CheckInConnected from '../CheckIn';
 import MembersFeedConnected from '../MembersFeedConnected';
 import HeaderConnected from '../HeaderConnected';
 import SummaryConnected from '../SummaryConnected';
@@ -49,10 +48,6 @@ const CellItem = styled(({ theme, first }) => ({
     justifyContent: 'center',
     flex: 1,
 }))(View);
-
-const StyledPaddedView = styled(({ theme }) => ({
-    justifyContent: 'center',
-}))(PaddedView);
 
 const Group = ({ id, content, loading, navigation }) => {
     const checkInRef = useRef();
