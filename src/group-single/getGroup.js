@@ -21,7 +21,10 @@ export const GROUP_ITEM_FRAGMENT = gql`
       }
     }
     avatars
-    chatChannelId
+    streamChatChannel {
+      id
+      channelId
+    }
   }
 `;
 

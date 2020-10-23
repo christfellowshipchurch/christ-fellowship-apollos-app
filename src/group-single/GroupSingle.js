@@ -145,7 +145,7 @@ class GroupSingle extends PureComponent {
     const videoCall = get(content, 'videoCall', {});
     const parentVideoCall = get(content, 'parentVideoCall', {});
     const avatars = get(content, 'avatars', []);
-    const channelId = get(content, 'chatChannelId', null);
+    const channelId = get(content, 'streamChatChannel.channelId', null);
 
     const getNotes = () => {
       const hasParentVideoCall = parentVideoCall && parentVideoCall.link;
