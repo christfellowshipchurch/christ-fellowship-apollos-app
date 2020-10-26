@@ -81,9 +81,10 @@ const HorizontalGroupCard = ({
     <CardWrapper isLoading={isLoading} inHorizontalList>
       <View>
         <Image source={coverImage} />
-        {!isLoading && (
-          <StyledAvatarCloud avatars={avatars} isLoading={isLoading} />
-        )}
+        {!isLoading &&
+          avatars && (
+            <StyledAvatarCloud avatars={avatars} isLoading={isLoading} />
+          )}
       </View>
       <Content>
         {title ? <Title numberOfLines={2}>{title}</Title> : null}
