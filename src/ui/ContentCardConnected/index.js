@@ -42,6 +42,7 @@ const ContentCardConnected = ({
             const coverImage = get(node, 'coverImage.sources', undefined);
             let label = get(otherProps, 'label', '');
             const isLive = !!(liveStream && liveStream.isLive);
+            const typenameProps = {};
 
             if (typename === 'EventContentItem') {
               const hideLabel = get(node, 'hideLabel', false);
@@ -60,11 +61,26 @@ const ContentCardConnected = ({
 
             if (typename === 'Group' || typename === 'VolunteerGroup') {
               cardComponent = HorizontalGroupCard;
+
+              typenameProps.heroAvatars = get(node, 'leaders.edges', []).map(
+                ({ node }) => node.photo
+              );
+              typenameProps.totalHeroAvatars = get(
+                node,
+                'leaders.totalCount',
+                0
+              );
+
+              typenameProps.avatars = get(node, 'members.edges', []).map(
+                ({ node }) => node.photo
+              );
+              typenameProps.totalAvatars = get(node, 'members.totalCount', 0);
             }
 
             return React.createElement(cardComponent, {
               ...node,
               ...otherProps,
+              ...typenameProps,
               coverImage,
               // metrics,
               tile,

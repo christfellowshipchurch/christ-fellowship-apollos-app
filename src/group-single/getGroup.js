@@ -20,8 +20,17 @@ export const GROUP_ITEM_FRAGMENT = gql`
         uri
       }
     }
-    avatars
-    chatChannelId
+
+    leaders: people(isLeader: true) {
+      edges {
+        node {
+          id
+          photo {
+            uri
+          }
+        }
+      }
+    }
   }
 `;
 

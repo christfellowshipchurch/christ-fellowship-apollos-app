@@ -2,16 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { get } from 'lodash';
+import { get, set, uniqBy } from 'lodash';
 
 import {
   styled,
   BodyText,
   ConnectedImage,
-  HorizontalTileFeed,
   Icon,
   withTheme,
   H4,
+  HorizontalTileFeed,
+  InlineActivityIndicator,
 } from '@apollosproject/ui-kit';
 
 import GET_MEMBERS from './getMembers';
@@ -41,7 +42,7 @@ const MemberImageWrapper = styled({
 
 const PlaceholderIcon = withTheme(({ theme: { colors } = {} }) => ({
   fill: colors.paper,
-  name: 'avatarPlaceholder',
+  name: 'avatarPlacholder',
   size: 60,
 }))(Icon);
 
@@ -69,6 +70,16 @@ const StyledH4 = styled(({ theme }) => ({
   paddingTop: theme.sizing.baseUnit * 2,
 }))(H4);
 
+const HeaderSpacing = styled(({ theme }) => ({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+}))(View);
+
+const StyledActivityIndicator = styled(({ theme }) => ({
+  paddingHorizontal: theme.sizing.baseUnit,
+}))(InlineActivityIndicator);
+
 const loadingStateObject = {
   id: 'fake_id',
   firstName: '',
@@ -76,19 +87,29 @@ const loadingStateObject = {
   photo: [],
 };
 
+const mapEdges = (data) =>
+  get(data, 'node.people.edges', []).map(({ node }) => ({
+    ...node,
+  }));
+
 const MembersFeedConnected = ({ id }) => {
-  const { loading, data, error } = useQuery(GET_MEMBERS, {
-    variables: { groupId: id },
+  const { loading, error, data, fetchMore, variables } = useQuery(GET_MEMBERS, {
+    variables: {
+      groupId: id,
+      first: 15,
+      after: null,
+      isLeader: false,
+    },
     skip: !id || id === '',
     fetchPolicy: 'cache-and-network',
   });
 
-  const renderMember = ({ item }) => {
+  const renderMember = ({ item, isLoading }) => {
     const photo = get(item, 'photo', {});
     const name = get(item, 'nickName', '') || get(item, 'firstName', '');
     return (
       <MemberCard>
-        {!loading && photo && photo.uri ? (
+        {photo && photo.uri ? (
           <MemberImageWrapper>
             <MemberImage // eslint-disable-line react-native/no-inline-styles
               source={photo}
@@ -101,30 +122,56 @@ const MembersFeedConnected = ({ id }) => {
             />
           </MemberImageWrapper>
         ) : (
-          <PlaceholderWrapper>
-            <PlaceholderIcon isLoading={false} />
-          </PlaceholderWrapper>
-        )}
+            <PlaceholderWrapper>
+              <PlaceholderIcon isLoading={false} />
+            </PlaceholderWrapper>
+          )}
 
         <BodyText numberOfLines={1}>{name}</BodyText>
       </MemberCard>
     );
   };
 
-  const members = get(data, 'node.members', []);
+  const members = mapEdges(data);
 
   if (error && !loading && !members) return null;
 
-  console.log({ members });
-
   return (
     <View>
-      <StyledH4>Members</StyledH4>
+      <HeaderSpacing>
+        <StyledH4>Members</StyledH4>
+        {loading && <StyledActivityIndicator />}
+      </HeaderSpacing>
       <StyledHorizontalTileFeed
-        content={members}
+        data={members}
         isLoading={members.length === 0 && loading}
         loadingStateObject={loadingStateObject}
         renderItem={renderMember}
+        onEndReachedThreshold={0.7}
+        onEndReached={() => {
+          const pageInfoPath = `node.people.pageInfo`;
+          const edgePath = `node.people.edges`;
+
+          const after = get(data, `${pageInfoPath}.endCursor`);
+          if (!after) return;
+
+          fetchMore({
+            variables: { ...variables, after },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+              const result = fetchMoreResult;
+              const originalPeople = get(previousResult, edgePath, []);
+              const newPeople = get(result, edgePath, []);
+
+              set(
+                result,
+                edgePath,
+                uniqBy([...originalPeople, ...newPeople], 'node.id')
+              );
+
+              return result;
+            },
+          });
+        }}
       />
     </View>
   );
