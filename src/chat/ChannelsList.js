@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { get } from 'lodash';
 import moment from 'moment';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, withTheme } from '@apollosproject/ui-kit';
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 import { useCurrentUser } from '../hooks';
 import { navigationOptions, NavigationSpacer } from '../navigation';
 
-import { Chat, ChannelList } from './components';
+import { Chat, ChannelList, LoadingChannels } from './components';
 import chatClient, { streami18n } from './client';
 import mapChatTheme from './styles/mapTheme';
 import { Channel } from './Channel';
@@ -25,11 +25,6 @@ const FlexedMediaSpacer = styled(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.background.paper,
 }))(MediaPlayerSpacer);
-
-const PaddedView = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit,
-  backgroundColor: theme.colors.background.paper,
-}))(View);
 
 const themed = withTheme();
 
@@ -77,9 +72,16 @@ const ChannelsList = themed((props) => {
 
   if (loading || connecting) {
     return (
-      <SafeChatContainer>
-        <ActivityIndicator size={'large'} />
-      </SafeChatContainer>
+      <ChatThemeProvider theme={mapChatTheme(props.theme)}>
+        <Chat client={chatClient} i18nInstance={streami18n}>
+          <FlexedMediaSpacer>
+            <SafeChatContainer>
+              <NavigationSpacer />
+              <LoadingChannels />
+            </SafeChatContainer>
+          </FlexedMediaSpacer>
+        </Chat>
+      </ChatThemeProvider>
     );
   }
 
@@ -94,7 +96,7 @@ const ChannelsList = themed((props) => {
     watch: true,
   };
 
-  const sinceYesterday = moment().subtract(24, 'hour');
+  const sinceYesterday = moment().subtract(12, 'hour');
   const filterFn = (channels) =>
     channels.filter((c) =>
       moment(get(c, 'state.last_message_at')).isAfter(sinceYesterday)
@@ -103,7 +105,7 @@ const ChannelsList = themed((props) => {
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <FlexedMediaSpacer Component={PaddedView}>
+        <FlexedMediaSpacer>
           <SafeChatContainer>
             <NavigationSpacer />
             <ChannelList

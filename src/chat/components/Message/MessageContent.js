@@ -66,7 +66,7 @@ const MetaContainer = styled.View`
 const MetaText = styled.Text`
   font-size: 11;
   color: ${({ theme, bold }) =>
-    bold ? theme.colors.textDark : theme.colors.textLight};
+    bold ? theme.colors.textGrey : theme.colors.textLight};
   font-weight: ${({ bold }) => (bold ? 'bold' : 'normal')};
   ${({ theme }) => theme.message.content.metaText.css};
 `;

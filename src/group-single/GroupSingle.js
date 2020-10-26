@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Animated, View } from 'react-native';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
-import { get, isEmpty } from 'lodash';
+import { get } from 'lodash';
 
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 

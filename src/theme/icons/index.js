@@ -3,15 +3,16 @@
  * For organization, please keep exports in alphabetical order
  */
 export AngleRight from './AngleRight';
-export AvatarPlacholder from './AvatarPlacholder';
-export BarsAlt from './BarsAlt';
+export AvatarPlaceholder from './AvatarPlaceholder';
 export Bars from './Bars';
+export BarsAlt from './BarsAlt';
 export Bell from './Bell';
 export BirthdayCake from './BirthdayCake';
 export Brand from './Brand';
 export Calendar from './Calendar';
 export CalendarAdd from './CalendarAdd';
 export Campus from './Campus';
+export ChatConversation from './ChatConversation';
 export Clock from './Clock';
 export Envelope from './Envelope';
 export EnvelopeOpenDollar from './EnvelopeOpenDollar';

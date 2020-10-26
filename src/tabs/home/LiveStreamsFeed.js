@@ -86,7 +86,7 @@ const LiveView = styled(({ theme }) => ({
 
 const circleSize = 64;
 
-const CirclularImage = withTheme(({ theme }) => ({
+const CircularImage = withTheme(({ theme }) => ({
   minAspectRatio: 1,
   maxAspectRatio: 1,
   maintainAspectRatio: true,
@@ -125,13 +125,13 @@ const LivePosition = (props) => {
   const MIN = 0.3;
   const MAX = 1;
   const duration = 1000;
-  const [opacity, setOpacity] = useState(new Animated.Value(MIN));
+  const [opacity] = useState(new Animated.Value(MIN));
   const fadeIn = () => {
     Animated.timing(opacity, {
       toValue: MAX,
       duration,
     }).start(() => {
-      fadeOut();
+      fadeOut(); // eslint-disable-line no-use-before-define
     });
   };
   const fadeOut = () => {
@@ -179,7 +179,7 @@ const LiveTouchable = ({ title, coverImage, media }) => {
         })
       }
     >
-      <CirclularImage source={get(coverImage, 'sources[0]')} />
+      <CircularImage source={get(coverImage, 'sources[0]')} />
       <LivePosition>
         <LiveDot />
         <LiveText>LIVE</LiveText>
@@ -187,15 +187,30 @@ const LiveTouchable = ({ title, coverImage, media }) => {
     </LiveItemContainer>
   );
 };
+LiveTouchable.propTypes = {
+  title: PropTypes.string,
+  coverImage: PropTypes.shape({
+    sources: PropTypes.arrayOf(PropTypes.string),
+  }),
+  media: PropTypes.shape({
+    sources: PropTypes.arrayOf(PropTypes.string),
+  }),
+};
 
 const renderItem = ({ item }) => {
   const { contentItem, media } = item;
 
-  return <LiveTouchable {...contentItem} media={media} />;
+  return (
+    <LiveTouchable
+      key={get(contentItem, 'id')}
+      {...contentItem}
+      media={media}
+    />
+  );
 };
 
-const LiveStreamsFeed = ({ navigation }) => {
-  const { loading, error, data } = useQuery(GET_LIVE_STREAMS, {
+const LiveStreamsFeed = () => {
+  const { data } = useQuery(GET_LIVE_STREAMS, {
     pollInterval: 30000,
     fetchPolicy: 'cache-and-network',
     variables: {
@@ -204,7 +219,6 @@ const LiveStreamsFeed = ({ navigation }) => {
   });
   const liveStreams = get(data, 'liveStreams', []);
   const flagStatus = get(data, 'flagStatus');
-  const dailyPrayers = get(data, 'dailyPrayers', {});
 
   return liveStreams.length > 0 && flagStatus === 'LIVE' ? (
     <FlatListContainer>
@@ -218,11 +232,6 @@ const LiveStreamsFeed = ({ navigation }) => {
             ListFooterComponent={<EndCapSpacer />}
           />
         </LiveView>
-        {/* <View>
-          <AddIconBackground>
-            <AddIcon />
-          </AddIconBackground>
-        </View> */}
       </ScrollView>
     </FlatListContainer>
   ) : null;

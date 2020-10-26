@@ -2,15 +2,23 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/react-hooks';
 import React, { useState, useEffect, useRef } from 'react';
-import { View } from 'react-native';
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
 import moment from 'moment';
+import numeral from 'numeral';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, Icon, UIText, withTheme } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 
-import { Chat, Channel, MessageList, MessageInput } from '../chat/components';
+import {
+  Chat,
+  Channel,
+  MessageList,
+  MessageInput,
+  LoadingMessages,
+  LoadingErrorIndicator,
+} from '../chat/components';
 import { withPlayerContext } from '../chat/context';
 import chatClient, { streami18n } from '../chat/client';
 import mapChatTheme from '../chat/styles/mapTheme';
@@ -24,14 +32,40 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   }
 `;
 
-const ChatContainer = styled(({ theme }) => ({
+const KeyboardAvoider = styled(({ isPortrait, theme }) => ({
   flex: 1,
-  paddingBottom: theme.sizing.baseUnit,
+  marginBottom: isPortrait ? theme.sizing.baseUnit : 0,
   backgroundColor: theme.colors.background.paper,
+  paddingRight: !isPortrait ? theme.sizing.baseUnit : 0,
+}))(Platform.OS === 'ios' ? KeyboardAvoidingView : View);
+
+const WatchingContainer = styled(({ theme }) => ({
+  position: 'absolute',
+  top: -theme.helpers.rem(2),
+  right: 0,
+  flexDirection: 'row',
+  alignItems: 'center',
+  height: theme.helpers.rem(2),
 }))(View);
+
+const WatchingIcon = withTheme(({ theme }) => ({
+  name: 'groups',
+  fill: theme.colors.lightPrimary,
+  size: theme.helpers.rem(1),
+  style: {
+    marginHorizontal: 5,
+  },
+}))(Icon);
+
+const WatchingText = styled(({ theme }) => ({
+  color: theme.colors.lightPrimary,
+  fontWeight: 'bold',
+}))(UIText);
 
 const LiveStreamChat = (props) => {
   const [connecting, setConnecting] = useState(true);
+  const [error, setError] = useState(false);
+  const [numWatching, setNumWatching] = useState(0);
 
   const { loading, data = {} } = useCurrentUser();
 
@@ -43,13 +77,21 @@ const LiveStreamChat = (props) => {
   });
 
   const channel = useRef(null);
+  const updateNumWatching = () =>
+    setNumWatching(get(channel.current, 'state.watcher_count', 0));
 
-  // const handleChannelEvent = (e) => {
-  //   console.log({ e });
-  //   console.log('channel event recvd, showing state', {
-  //     channel: channel.current.state,
-  //   });
-  // };
+  const handleChannelEvent = (e) => {
+    // console.log({ e });
+    switch (e.type) {
+      case 'user.watching.start':
+      case 'user.watching.stop': {
+        updateNumWatching();
+        break;
+      }
+      default:
+        break;
+    }
+  };
 
   const loadChannels = async () => {
     const filter = {
@@ -60,7 +102,7 @@ const LiveStreamChat = (props) => {
     const options = { watch: false, state: false };
 
     const channels = await chatClient.queryChannels(filter, sort, options);
-    const sinceYesterday = moment().subtract(24, 'hour');
+    const sinceYesterday = moment().subtract(12, 'hour');
     const recentOnly = channels.filter((c) =>
       moment(get(c, 'state.last_message_at')).isAfter(sinceYesterday)
     );
@@ -102,9 +144,8 @@ const LiveStreamChat = (props) => {
         props.event
       );
 
-      await channel.current.create();
-      // await channel.current.watch();
-      // channel.current.on(handleChannelEvent);
+      await channel.current.watch();
+      channel.current.on(handleChannelEvent);
 
       if (get(chatClient, 'listeners.all.length', 0) < 2) {
         chatClient.on(handleClientEvent);
@@ -116,8 +157,10 @@ const LiveStreamChat = (props) => {
       fetchRole();
 
       setConnecting(false);
+      updateNumWatching();
     } catch (e) {
-      console.error(e.message); // eslint-disable-line no-console
+      console.warn(e.message); // eslint-disable-line no-console
+      setError(true);
     }
   };
 
@@ -127,9 +170,9 @@ const LiveStreamChat = (props) => {
         connect();
       }
       return () => {
-        // if (channel.current) {
-        //   channel.current.off(handleChannelEvent);
-        // }
+        if (channel.current) {
+          channel.current.off(handleChannelEvent);
+        }
         if (get(chatClient, 'listeners.all.length', 0) < 2) {
           chatClient.off(handleClientEvent);
           chatClient.disconnect();
@@ -148,25 +191,48 @@ const LiveStreamChat = (props) => {
 
   if (loading || connecting) {
     return (
-      <ChatContainer>
-        <ActivityIndicator size={'large'} />
-      </ChatContainer>
+      <ChatThemeProvider theme={mapChatTheme(props.theme)}>
+        <Chat client={chatClient} i18nInstance={streami18n}>
+          <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
+            <LoadingMessages />
+            <MessageInput disabled />
+          </KeyboardAvoider>
+        </Chat>
+      </ChatThemeProvider>
     );
   }
 
-  if (!props.isPortrait) {
-    return null;
+  if (error) {
+    return (
+      <Chat client={chatClient} i18nInstance={streami18n}>
+        <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
+          <LoadingErrorIndicator
+            listType={'message'}
+            retry={() => setError(false)}
+          />
+        </KeyboardAvoider>
+      </Chat>
+    );
   }
 
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <ChatContainer>
+        <KeyboardAvoider behavior={'padding'} isPortrait={props.isPortrait}>
           <Channel channel={channel.current}>
+            {numWatching > 1 &&
+              props.isPortrait && (
+                <WatchingContainer>
+                  <WatchingText>
+                    {numeral(numWatching).format('0,0')}
+                  </WatchingText>
+                  <WatchingIcon />
+                </WatchingContainer>
+              )}
             <MessageList />
             <MessageInput />
           </Channel>
-        </ChatContainer>
+        </KeyboardAvoider>
       </Chat>
     </ChatThemeProvider>
   );

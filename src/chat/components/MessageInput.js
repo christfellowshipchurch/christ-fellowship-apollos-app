@@ -45,21 +45,28 @@ const Container = styled(({ padding, ...rest }) => <View {...rest} />)`
   background-color: rgba(0, 0, 0, 0.05);
   margin-vertical: 10px;
   margin-horizontal: 16px;
-  padding-left: 8px;
+  padding-left: 16px;
   padding-right: 8px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   min-height: 46px;
-  max-height: 60px;
+  max-height: 100px;
   align-items: center;
   ${({ theme }) => theme.messageInput.container.css};
 `;
 
 const InputBox = styled.TextInput`
   flex: 1;
-  padding-bottom: 3px;
+  padding-bottom: 4px;
   ${({ theme }) => theme.messageInput.inputBox.css};
 `;
 
-const StyledIcon = withAppTheme(({ theme }) => ({
+const SendButtonContainer = styled.TouchableOpacity`
+  align-self: flex-end;
+  padding-bottom: 4px;
+`;
+
+const SendButton = withAppTheme(({ theme }) => ({
   size: theme.helpers.rem(2),
   fill: theme.colors.primary,
   style: {
@@ -295,17 +302,17 @@ class MessageInput extends PureComponent {
           value={this.state.text}
           editable={!disabled}
         />
-        <TouchableOpacity
+        <SendButtonContainer
           title={t('Send message')}
           onPress={this.sendMessage}
           disabled={disabled || this.sending || !this.isValidMessage()}
         >
           {this.props.editing ? (
-            <StyledIcon name={'paper-airplane-circle'} />
+            <SendButton name={'paper-airplane-circle'} />
           ) : (
-            <StyledIcon name={'paper-airplane-circle'} />
+            <SendButton name={'paper-airplane-circle'} />
           )}
-        </TouchableOpacity>
+        </SendButtonContainer>
       </Container>
     );
   };

@@ -14,8 +14,9 @@ import {
   withTranslationContext,
   withPlayerContext,
 } from '../context';
-import { LoadingIndicator, LoadingErrorIndicator } from './Indicators';
-import { KeyboardCompatibleView } from './KeyboardCompatibleView';
+import { LoadingErrorIndicator } from './Indicators';
+import LoadingMessages from './MessageList/LoadingMessages';
+import MessageInput from './MessageInput';
 
 class Channel extends PureComponent {
   static propTypes = {
@@ -25,13 +26,9 @@ class Channel extends PureComponent {
     client: PropTypes.object.isRequired,
     isOnline: PropTypes.bool,
     disableIfFrozenChannel: PropTypes.bool,
-    disableKeyboardCompatibleView: PropTypes.bool,
-    isBannerOpen: PropTypes.bool,
-    bannerHeight: PropTypes.number,
   };
 
   static defaultProps = {
-    disableKeyboardCompatibleView: false,
     disableIfFrozenChannel: true,
   };
 
@@ -444,23 +441,20 @@ class Channel extends PureComponent {
     }
   }
 
-  renderLoading = () => {
-    const Indicator = LoadingIndicator;
-    return <Indicator listType="message" />;
-  };
-
-  renderLoadingError = () => {
-    const Indicator = LoadingErrorIndicator;
-    return <Indicator error={this.state.error} listType="message" />;
-  };
-
   render() {
     let core;
     const { children, t } = this.props;
     if (this.state.error) {
-      core = this.renderLoadingError();
+      core = (
+        <LoadingErrorIndicator error={this.state.error} listType="message" />
+      );
     } else if (this.state.loading) {
-      core = this.renderLoading();
+      core = (
+        <ChannelContext.Provider value={this.getContext()}>
+          <LoadingMessages />
+          <MessageInput disabled />
+        </ChannelContext.Provider>
+      );
     } else if (!this.props.channel || !this.props.channel.watch) {
       core = (
         <View>
@@ -469,15 +463,9 @@ class Channel extends PureComponent {
       );
     } else {
       core = (
-        <KeyboardCompatibleView
-          isBannerOpen={this.props.isBannerOpen}
-          bannerHeight={this.props.bannerHeight}
-          enabled={!this.props.disableKeyboardCompatibleView}
-        >
-          <ChannelContext.Provider value={this.getContext()}>
-            {children}
-          </ChannelContext.Provider>
-        </KeyboardCompatibleView>
+        <ChannelContext.Provider value={this.getContext()}>
+          {children}
+        </ChannelContext.Provider>
       );
     }
 

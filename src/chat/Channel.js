@@ -1,24 +1,34 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, withTheme, ActivityIndicator } from '@apollosproject/ui-kit';
+import { styled, withTheme } from '@apollosproject/ui-kit';
+
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
+
 import { useCurrentUser } from '../hooks';
 import { navigationOptions, NavigationSpacer } from '../navigation';
+
+// Local
+import chatClient, { streami18n } from './client';
+import mapChatTheme from './styles/mapTheme';
+import { getStreamUser } from './utils';
 
 import {
   Chat,
   Channel as ChannelInner,
   MessageList,
   MessageInput,
+  LoadingMessages,
 } from './components';
-import chatClient, { streami18n } from './client';
-import mapChatTheme from './styles/mapTheme';
 
+const themed = withTheme();
+
+// :: Styled Components
+// ---
 const SafeChatContainer = styled(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.colors.background.paper,
@@ -29,16 +39,15 @@ const FlexedMediaSpacer = styled(({ theme }) => ({
   backgroundColor: theme.colors.background.paper,
 }))(MediaPlayerSpacer);
 
-const PaddedView = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit,
-  backgroundColor: theme.colors.background.paper,
-}))(View);
+const KeyboardAvoider = styled({
+  flex: 1,
+})(Platform.OS === 'ios' ? KeyboardAvoidingView : React.Fragment);
 
-const themed = withTheme();
-
+// :: Main Component
+// ---
 const Channel = themed((props) => {
-  const userId = props.navigation.getParam('userId');
-
+  const userId = props.navigation.getParam('user');
+  const channelId = props.navigation.getParam('channelId');
   const [connecting, setConnecting] = useState(true);
 
   const { loading, data = {} } = useCurrentUser();
@@ -47,30 +56,27 @@ const Channel = themed((props) => {
 
   const connect = async () => {
     try {
-      const firstName = get(data, 'currentUser.profile.firstName', '');
-      const lastName = get(data, 'currentUser.profile.lastName', '');
-      const curId = get(data, 'currentUser.id', '').split(':')[1];
-      const user = {
-        id: curId,
-        name: `${firstName} ${lastName}`,
-        image: get(data, 'currentUser.profile.photo.uri'),
-      };
+      const currentStreamUser = getStreamUser(get(data, 'currentUser'));
 
+      // Initialize user connection with Stream Client if we haven't yet
       if (!chatClient.userID) {
         await chatClient.setUser(
-          user,
+          currentStreamUser,
           get(data, 'currentUser.streamChatToken')
         );
       }
 
-      channel.current = chatClient.channel('messaging', {
-        members: [userId, curId],
-      });
+      if (userId) {
+        // Direct Message
+        channel.current = chatClient.channel('messaging', {
+          members: [userId, currentStreamUser.id],
+        });
+      } else if (channelId) {
+        // Group Chat
+        channel.current = chatClient.channel('messaging', channelId);
+      }
 
       await channel.current.watch();
-
-      const response = await chatClient.queryUsers({ id: { $in: [userId] } });
-      props.navigation.setParams({ name: get(response, 'users[0].name') });
 
       setConnecting(false);
     } catch (e) {
@@ -83,6 +89,7 @@ const Channel = themed((props) => {
       if (!loading) {
         connect();
       }
+
       return () => {
         if (get(chatClient, 'listeners.all.length', 0) < 2) {
           chatClient.disconnect();
@@ -94,22 +101,31 @@ const Channel = themed((props) => {
 
   if (loading || connecting) {
     return (
-      <SafeChatContainer>
-        <ActivityIndicator size={'large'} />
-      </SafeChatContainer>
+      <ChatThemeProvider theme={mapChatTheme(props.theme)}>
+        <Chat client={chatClient} i18nInstance={streami18n}>
+          <FlexedMediaSpacer>
+            <SafeChatContainer>
+              <LoadingMessages />
+              <MessageInput disabled />
+            </SafeChatContainer>
+          </FlexedMediaSpacer>
+        </Chat>
+      </ChatThemeProvider>
     );
   }
 
   return (
     <ChatThemeProvider theme={mapChatTheme(props.theme)}>
       <Chat client={chatClient} i18nInstance={streami18n}>
-        <FlexedMediaSpacer Component={PaddedView}>
+        <FlexedMediaSpacer>
           <ChannelInner channel={channel.current}>
-            <SafeChatContainer>
-              <NavigationSpacer />
-              <MessageList />
-            </SafeChatContainer>
-            <MessageInput />
+            <KeyboardAvoider behavior={'padding'}>
+              <SafeChatContainer>
+                <NavigationSpacer />
+                <MessageList />
+              </SafeChatContainer>
+              <MessageInput />
+            </KeyboardAvoider>
           </ChannelInner>
         </FlexedMediaSpacer>
       </Chat>

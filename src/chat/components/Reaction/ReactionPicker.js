@@ -112,6 +112,7 @@ class ReactionPicker extends React.PureComponent {
         animationType="fade"
         onShow={() => {}}
         onRequestClose={handleDismiss}
+        supportedOrientations={['portrait', 'landscape']}
       >
         {reactionPickerVisible && (
           <Container

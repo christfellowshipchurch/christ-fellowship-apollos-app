@@ -167,7 +167,7 @@ class Message extends React.Component {
     event?.preventDefault?.();
 
     const { message } = this.props;
-    this.props.onDirectMessage({ userId: message.user.id });
+    this.props.onDirectMessage({ user: message.user });
   };
 
   handleEdit = () => {
