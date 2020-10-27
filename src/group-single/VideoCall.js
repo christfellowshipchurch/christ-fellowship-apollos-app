@@ -3,24 +3,22 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import ZoomBridge from 'react-native-zoom-bridge';
 import Config from 'react-native-config';
-import isEmpty from 'lodash/isEmpty';
+import { first, isEmpty } from 'lodash';
 import moment from 'moment';
 
-import { useMutation } from '@apollo/react-hooks';
 import { styled, Button } from '@apollosproject/ui-kit';
 
+import { useCheckIn } from 'check-in';
 import { useCurrentUser, useLinkRouter } from '../hooks';
-
-import ATTEND_MEETING from './attendMeeting';
 
 const Cell = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
-  flexDirection: 'row',
+  flexDirection: 'column',
   justifyContent: 'flex-start',
 }))(View);
 
 const CellItem = styled(({ theme, first }) => ({
-  marginRight: first ? theme.sizing.baseUnit : 0,
+  paddingVertical: theme.sizing.baseUnit * 0.5,
   justifyContent: 'center',
   flex: 1,
 }))(View);
@@ -57,19 +55,23 @@ const VideoCall = ({
     initializeZoom();
   }, []);
 
+  const { loading, options, checkInCurrentUser } = useCheckIn({
+    nodeId: groupId,
+  });
   const { firstName, nickName } = useCurrentUser();
   const { routeLink } = useLinkRouter();
   const name = nickName || firstName;
 
-  const [handleAttend, { loading: mutationLoading }] = useMutation(
-    ATTEND_MEETING
-  );
+  const join = async (meetingId, passcode) => {
+    if (options.length > 0) {
+      const closestCheckInOption = first(
+        options.sort((a, b) => Math.abs(moment(a).diff(b)))
+      );
 
-  const join = async (meetingId, passcode, id) => {
-    const callAttend = () =>
-      moment(date).format('MMDDYYYY') === moment().format('MMDDYYYY') &&
-      handleAttend({ variables: { id } });
-    callAttend();
+      if (closestCheckInOption.id) {
+        checkInCurrentUser({ optionId: closestCheckInOption.id });
+      }
+    }
 
     try {
       if (passcode) {
@@ -117,14 +119,10 @@ const VideoCall = ({
           <Button
             onPress={() =>
               parentVideoCall.meetingId
-                ? join(
-                  parentVideoCall.meetingId,
-                  parentVideoCall.passcode,
-                  groupId
-                )
+                ? join(parentVideoCall.meetingId, parentVideoCall.passcode)
                 : routeLink(parentVideoCall.link)
             }
-            loading={isLoading || mutationLoading}
+            loading={isLoading || loading}
             title={parentVideoCall.labelText || 'Join Meeting'}
             type={'primary'}
             pill={false}
@@ -136,7 +134,7 @@ const VideoCall = ({
           <Button
             onPress={() =>
               videoCall.meetingId
-                ? join(videoCall.meetingId, videoCall.passcode, groupId)
+                ? join(videoCall.meetingId, videoCall.passcode)
                 : routeLink(videoCall.link)
             }
             loading={isLoading}

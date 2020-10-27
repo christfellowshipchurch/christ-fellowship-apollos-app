@@ -47,6 +47,7 @@ const GET_LIVE_CONTENT = gql`
         }
       }
       streamChatChannel {
+        id
         channelId
       }
     }

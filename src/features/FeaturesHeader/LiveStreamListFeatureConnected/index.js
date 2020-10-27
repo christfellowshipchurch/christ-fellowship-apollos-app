@@ -26,7 +26,7 @@ const LiveItemContainer = styled(({ theme, withMargin }) => ({
 
 const BorderWithPulse = withTheme()(({ theme, ...props }) => {
   const themeSize = theme.sizing.avatar.medium * AVATAR_MULTIPLIER;
-  const MIN = 0.4;
+  const MIN = 0.3;
   const MAX = 1;
   const duration = 1000;
   const [opacity, setOpacity] = useState(new Animated.Value(MIN));
