@@ -35,6 +35,7 @@ import {
   MUTE,
   UNMUTE,
 } from '../mutations';
+import { WithFeatureFlag } from '../../hooks';
 import { ControlsConsumer } from './PlayheadState';
 import Seeker from './Seeker';
 import AirPlayButton from './AirPlayButton';
@@ -310,14 +311,18 @@ class LiveStreamControls extends PureComponent {
                   <Title>{get(mediaPlayer, 'currentTrack.title')}</Title>
                   <Artist>{get(mediaPlayer, 'currentTrack.artist')}</Artist>
                 </Titles>
-                {!this.props.isPortrait ? (
-                  <IconSm
-                    name={'chat-conversation'}
-                    onPress={this.props.onShowChat}
-                  />
-                ) : (
-                  <IconSm name="empty" disabled />
-                )}
+                <WithFeatureFlag flag={'LIVE_STREAM_LANDSCAPE_CHAT'}>
+                  {(enabled) =>
+                    !this.props.isPortrait && enabled ? (
+                      <IconSm
+                        name={'chat-conversation'}
+                        onPress={this.props.onShowChat}
+                      />
+                    ) : (
+                      <IconSm name="empty" disabled />
+                    )
+                  }
+                </WithFeatureFlag>
               </UpperControls>
               <LowerControls>
                 <CastButtons>
