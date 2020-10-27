@@ -64,10 +64,18 @@ export default gql`
       ... on Group {
         ...GroupItemFragment
         ...groupFragment
+        streamChatChannel {
+          id
+          channelId
+        }
       }
 
       ... on VolunteerGroup {
         ...GroupItemFragment
+        streamChatChannel {
+          id
+          channelId
+        }
       }
     }
   }
