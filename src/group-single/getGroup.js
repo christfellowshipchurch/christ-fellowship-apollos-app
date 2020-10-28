@@ -1,26 +1,10 @@
 import gql from 'graphql-tag';
 
-export const GROUP_FRAGMENT = gql`
-  fragment groupFragment on Group {
-    id
+export const GROUP_ITEM_FRAGMENT = gql`
+  fragment GroupItemFragment on GroupItem {
     title
-    groupType
     summary
-    members {
-      id
-      firstName
-      nickName
-      photo {
-        uri
-      }
-    }
-    coverImage {
-      sources {
-        uri
-      }
-    }
-    avatars
-    phoneNumbers
+    groupType
     groupResources {
       title
       action
@@ -31,6 +15,27 @@ export const GROUP_FRAGMENT = gql`
         }
       }
     }
+    coverImage {
+      sources {
+        uri
+      }
+    }
+
+    leaders: people(isLeader: true) {
+      edges {
+        node {
+          id
+          photo {
+            uri
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GROUP_FRAGMENT = gql`
+  fragment groupFragment on Group {
     dateTime {
       start
       end
@@ -55,10 +60,26 @@ export default gql`
   query getGroup($itemId: ID!) {
     node(id: $itemId) {
       __typename
+      id
       ... on Group {
+        ...GroupItemFragment
         ...groupFragment
+        streamChatChannel {
+          id
+          channelId
+        }
+      }
+
+      ... on VolunteerGroup {
+        ...GroupItemFragment
+        streamChatChannel {
+          id
+          channelId
+        }
       }
     }
   }
+
+  ${GROUP_ITEM_FRAGMENT}
   ${GROUP_FRAGMENT}
 `;

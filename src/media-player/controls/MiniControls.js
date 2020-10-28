@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Platform, View, Animated, StyleSheet } from 'react-native';
 import { Mutation, Query } from 'react-apollo';
 import LinearGradient from 'react-native-linear-gradient';
@@ -14,7 +15,13 @@ import {
 
 import { GET_CONTROL_STATE } from '../queries';
 
-import { GO_FULLSCREEN, DISMISS, PLAY, PAUSE } from '../mutations';
+import {
+  GO_FULLSCREEN,
+  DISMISS,
+  DISMISS_LIVESTREAM,
+  PLAY,
+  PAUSE,
+} from '../mutations';
 
 import Seeker from './Seeker';
 
@@ -106,8 +113,23 @@ const MiniSeeker = styled(
 class MiniControls extends Component {
   dismissAnimator = new Animated.Value(0);
 
+  static propTypes = {
+    nodeId: PropTypes.string.isRequired,
+    isLiveStream: PropTypes.bool.isRequired,
+  };
+
   shouldComponentUpdate() {
     return false;
+  }
+
+  get queryVariables() {
+    if (this.props.isLiveStream)
+      return { nodeId: this.props.nodeId, action: 'LIVESTREAM_CLOSED' };
+    return null;
+  }
+
+  get isLiveStream() {
+    return { isLiveStream: this.props.isLiveStream };
   }
 
   renderMiniControls = ({
@@ -161,7 +183,14 @@ class MiniControls extends Component {
                     )}
                   </Mutation>
                 )}
-                <Mutation mutation={DISMISS}>
+                <Mutation
+                  mutation={
+                    this.isLiveStream && this.props.nodeId
+                      ? DISMISS_LIVESTREAM
+                      : DISMISS
+                  }
+                  variables={this.queryVariables}
+                >
                   {(dismiss) => (
                     <StyledButtonIcon name="close" onPress={() => dismiss()} />
                   )}

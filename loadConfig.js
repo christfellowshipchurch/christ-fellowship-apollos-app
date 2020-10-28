@@ -260,25 +260,44 @@ ApollosConfig.loadJs({
       }
     `,
     GROUP_CARD_FRAGMENT: gql`
-      fragment GroupCardFragment on Group {
+      fragment GroupCardFragment on GroupItem {
         title
         coverImage {
           sources {
             uri
           }
         }
-        avatars
-        schedule {
-          friendlyScheduleText
+
+        leaders: people(first: 4, isLeader: true) {
+          edges {
+            node {
+              id
+              photo {
+                uri
+              }
+            }
+          }
+          totalCount
         }
-        dateTime {
-          start
-          end
+        members: people(first: 8, isLeader: false) {
+          edges {
+            node {
+              id
+              photo {
+                uri
+              }
+            }
+          }
+          totalCount
         }
-        leaders {
-          id
-          photo {
-            uri
+
+        ... on Group {
+          schedule {
+            friendlyScheduleText
+          }
+          dateTime {
+            start
+            end
           }
         }
       }

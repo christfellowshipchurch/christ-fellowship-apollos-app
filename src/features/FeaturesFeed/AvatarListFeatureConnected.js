@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import {
+  Avatar,
   PaddedView,
   H4,
   H6,
@@ -9,7 +10,6 @@ import {
   Card,
   CardContent,
 } from '@apollosproject/ui-kit';
-import { UserAvatarConnected } from '@apollosproject/ui-connected';
 import { get } from 'lodash';
 
 const Title = styled(({ theme }) => ({
@@ -50,10 +50,11 @@ const AvatarListFeatureConnected = ({
       {people.map((person) => (
         <Flag key={person.id}>
           <FlagMedia>
-            <UserAvatarConnected
-              size={'medium'}
+            <Avatar
               buttonIcon={get(primaryAction, 'icon')}
               onPressIcon={() => onPressItem(primaryAction)}
+              size={'medium'}
+              source={get(person, 'photo')}
             />
           </FlagMedia>
           <FlagContent>

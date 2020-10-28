@@ -35,6 +35,7 @@ import {
   MUTE,
   UNMUTE,
 } from '../mutations';
+import { WithFeatureFlag } from '../../hooks';
 import { ControlsConsumer } from './PlayheadState';
 import Seeker from './Seeker';
 import AirPlayButton from './AirPlayButton';
@@ -113,21 +114,6 @@ const IconLg = withTheme(({ theme }) => ({
  * LiveStreamControls displays fading player controls
  */
 class LiveStreamControls extends PureComponent {
-  static propTypes = {
-    client: PropTypes.shape({
-      mutate: PropTypes.func,
-    }),
-    isCasting: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    isCasting: false,
-  };
-
-  state = {
-    controlsVisible: true,
-  };
-
   fader = new Animated.Value(1);
 
   wasFullscreen = false;
@@ -141,6 +127,23 @@ class LiveStreamControls extends PureComponent {
     toValue: 0,
     useNativeDriver: true,
   });
+
+  static propTypes = {
+    client: PropTypes.shape({
+      mutate: PropTypes.func,
+    }),
+    isCasting: PropTypes.bool,
+    onShowChat: PropTypes.func,
+    isPortrait: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    isCasting: false,
+  };
+
+  state = {
+    controlsVisible: true,
+  };
 
   constructor(...args) {
     super(...args);
@@ -308,7 +311,18 @@ class LiveStreamControls extends PureComponent {
                   <Title>{get(mediaPlayer, 'currentTrack.title')}</Title>
                   <Artist>{get(mediaPlayer, 'currentTrack.artist')}</Artist>
                 </Titles>
-                <IconSm name="empty" disabled />
+                <WithFeatureFlag flag={'LIVE_STREAM_CHAT'}>
+                  {(enabled) =>
+                    !this.props.isPortrait && enabled ? (
+                      <IconSm
+                        name={'chat-conversation'}
+                        onPress={this.props.onShowChat}
+                      />
+                    ) : (
+                      <IconSm name="empty" disabled />
+                    )
+                  }
+                </WithFeatureFlag>
               </UpperControls>
               <LowerControls>
                 <CastButtons>
