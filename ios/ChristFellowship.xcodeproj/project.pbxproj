@@ -341,7 +341,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				214D24EE93F21D9FD54F2D45 /* [CP] Copy Pods Resources */,
-				4E75AEFDFA060C01238BA49B /* [CP] Embed Pods Frameworks */,
+				03549BBDEF580C68222BAFF6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -525,6 +525,24 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
+		03549BBDEF580C68222BAFF6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-frameworks.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MobileRTC.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		214D24EE93F21D9FD54F2D45 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -586,24 +604,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		4E75AEFDFA060C01238BA49B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-frameworks.sh",
-				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MobileRTC.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		9C20354F160AAF86C8281F23 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
