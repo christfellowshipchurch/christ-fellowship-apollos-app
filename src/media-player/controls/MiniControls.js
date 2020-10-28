@@ -184,7 +184,11 @@ class MiniControls extends Component {
                   </Mutation>
                 )}
                 <Mutation
-                  mutation={this.isLiveStream ? DISMISS_LIVESTREAM : DISMISS}
+                  mutation={
+                    this.isLiveStream && this.props.nodeId
+                      ? DISMISS_LIVESTREAM
+                      : DISMISS
+                  }
                   variables={this.queryVariables}
                 >
                   {(dismiss) => (

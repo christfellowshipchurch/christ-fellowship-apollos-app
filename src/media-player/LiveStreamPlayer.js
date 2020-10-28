@@ -475,12 +475,14 @@ class LiveStreamPlayer extends PureComponent {
   };
 
   renderChat = ({ isFullscreen }) => {
+    if (!this.props.channelId) {
+      return null;
+    }
+
     const playerContext = {
       onChannelsUpdated: this.handleChannelsUpdated,
       onDirectMessage: this.handleDirectMessage,
     };
-
-    console.log('[rkd] channelId:', this.props.channelId);
 
     return (
       <PlayerContext.Provider key={'chat'} value={playerContext}>

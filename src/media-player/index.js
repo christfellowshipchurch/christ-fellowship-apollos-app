@@ -3,7 +3,6 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
-import { useFeatureFlag } from 'hooks';
 import LiveStreamPlayer from './LiveStreamPlayer';
 import FullscreenPlayer from './FullscreenPlayer';
 
@@ -62,8 +61,6 @@ const MediaPlayer = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const { enabled } = useFeatureFlag({ key: 'LIVE_STREAM_CHAT' });
-
   if (!data.mediaPlayer || !data.mediaPlayer.isVisible) return null;
 
   const uri = get(data, 'mediaPlayer.currentTrack.mediaSource.uri');
@@ -79,7 +76,7 @@ const MediaPlayer = () => {
   );
   const channelId = get(liveStream, 'streamChatChannel.channelId');
 
-  if (enabled && liveStream) {
+  if (channelId && liveStream) {
     const event = {
       parentId: get(liveStream, 'contentItem.id'),
       name: get(liveStream, 'contentItem.title'),
