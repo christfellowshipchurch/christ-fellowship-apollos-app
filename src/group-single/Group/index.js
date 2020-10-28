@@ -123,8 +123,8 @@ const Group = ({ id, content, loading, navigation }) => {
             ) : null}
           </Cell>
 
-          {videoCall && (
-            <PaddedView horizontal={false}>
+          <PaddedView horizontal={false}>
+            {videoCall && (
               <VideoCall
                 groupId={content.id}
                 isLoading={loading}
@@ -132,19 +132,15 @@ const Group = ({ id, content, loading, navigation }) => {
                 videoCall={videoCall}
                 date={start}
               />
-            </PaddedView>
-          )}
+            )}
 
-          {chatChannelId && (
-            <Cell>
-              <CellItem>
-                <GroupChatButton
-                  channelId={chatChannelId}
-                  groupName={content.title}
-                />
-              </CellItem>
-            </Cell>
-          )}
+            {chatChannelId && (
+              <GroupChatButton
+                channelId={chatChannelId}
+                groupName={content.title}
+              />
+            )}
+          </PaddedView>
 
           <SummaryConnected id={id} />
         </PaddedView>
