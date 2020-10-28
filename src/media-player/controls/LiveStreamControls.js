@@ -311,7 +311,7 @@ class LiveStreamControls extends PureComponent {
                   <Title>{get(mediaPlayer, 'currentTrack.title')}</Title>
                   <Artist>{get(mediaPlayer, 'currentTrack.artist')}</Artist>
                 </Titles>
-                <WithFeatureFlag flag={'LIVE_STREAM_LANDSCAPE_CHAT'}>
+                <WithFeatureFlag flag={'LIVE_STREAM_CHAT'}>
                   {(enabled) =>
                     !this.props.isPortrait && enabled ? (
                       <IconSm
