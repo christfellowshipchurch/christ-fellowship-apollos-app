@@ -58,9 +58,13 @@ ApollosConfig.loadJs({
           tags
         }
         ... on EventContentItem {
-          nextOccurrence
-          events {
-            start
+          eventGroupings {
+            name
+            instances {
+              id
+              start
+              end
+            }
           }
         }
         ... on InformationalContentItem {
