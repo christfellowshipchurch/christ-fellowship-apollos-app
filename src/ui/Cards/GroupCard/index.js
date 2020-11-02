@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   CardImage,
+  H3,
   H5,
   ImageSourceType,
   styled,
@@ -17,12 +18,11 @@ import {
   ThemeMixin,
 } from '@apollosproject/ui-kit';
 
-import { HorizontalPrayerRequestCard } from '..';
 import DateLabel from '../../DateLabel';
 import LiveLabel from '../../LiveLabel';
 
-const CardWrapper = styled(({ customTheme, theme }) => ({
-  width: HorizontalPrayerRequestCard.cardWidth,
+const CardWrapper = styled(({ inHorizontalList }) => ({
+  ...(inHorizontalList ? { width: 240 } : {}),
   flex: 1,
 }))(Card);
 
@@ -53,7 +53,13 @@ const Content = styled(({ theme }) => ({
   marginTop: -1 * theme.sizing.baseUnit,
 }))(CardContent);
 
-const Title = styled(({ theme }) => ({
+const VerticalCardTitle = styled(({ theme }) => ({
+  color: theme.colors.text.primary,
+  textAlign: 'center',
+  fontWeight: 'bold',
+}))(H3);
+
+const HorizontalCardTitle = styled(({ theme }) => ({
   color: theme.colors.text.primary,
   textAlign: 'center',
   fontWeight: 'bold',
@@ -118,14 +124,23 @@ const GroupCard = ({
   dateTime,
   theme,
   isLive,
+  inHorizontalList,
 }) => {
   const date = get(dateTime, 'start', '');
   const heroAvatarsDiff = totalHeroAvatars - heroAvatars.length;
   const avatarsDiff = totalAvatars - avatars.length;
 
+  // order is Vertical, Horizontal value
+  const valueFromListStyle = (v, h) => (inHorizontalList ? h : v);
+
+  // MARK : - Feed specific styles
+  const Title = valueFromListStyle(VerticalCardTitle, HorizontalCardTitle);
+  const heroAvatarSize = valueFromListStyle(75, 50);
+  const avatarSize = heroAvatarSize * 0.45;
+
   return (
     <ThemeMixin mixin={theme}>
-      <CardWrapper isLoading={isLoading} inHorizontalList>
+      <CardWrapper isLoading={isLoading} inHorizontalList={inHorizontalList}>
         <HeadingSpacing>
           <Image source={coverImage} />
           {heroAvatars.length > 0 && (
@@ -136,7 +151,7 @@ const GroupCard = ({
                   index={i}
                   zIndex={avatars.length + 1 - i}
                 >
-                  <Avatar source={hero} themeSize={50} />
+                  <Avatar source={hero} themeSize={heroAvatarSize} />
                 </HeroAvatarPosition>
               ))}
 
@@ -163,7 +178,7 @@ const GroupCard = ({
                     index={i}
                     zIndex={avatars.length + 1 - i}
                   >
-                    <Avatar source={avatar} size="small" />
+                    <Avatar source={avatar} themeSize={avatarSize} />
                   </AvatarPosition>
                 ))}
 
@@ -210,6 +225,7 @@ GroupCard.propTypes = {
   totalHeroAvatars: PropTypes.number,
   theme: PropTypes.shape({}),
   isLive: PropTypes.bool,
+  inHorizontalList: PropTypes.bool,
 };
 
 GroupCard.defaultProps = {
@@ -218,6 +234,7 @@ GroupCard.defaultProps = {
   heroAvatars: [],
   totalHeroAvatars: 0,
   isLive: false,
+  inHorizontalList: false,
 };
 
 GroupCard.displayName = 'GroupCard';
