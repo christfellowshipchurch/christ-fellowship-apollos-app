@@ -90,6 +90,8 @@ const ContentCardConnected = ({
                 label = generateEventGroupingLabel(
                   get(node, 'eventGroupings', [])
                 );
+              } else {
+                label = eventLabelOverride;
               }
             }
 

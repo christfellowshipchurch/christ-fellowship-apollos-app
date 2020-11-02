@@ -58,6 +58,7 @@ ApollosConfig.loadJs({
           tags
         }
         ... on EventContentItem {
+          label
           eventGroupings {
             name
             instances {
