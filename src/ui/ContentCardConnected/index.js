@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import { LiveConsumer } from '@apollosproject/ui-connected';
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
-import { HorizontalPrayerRequestCard, HorizontalGroupCard } from '../Cards';
+import { HorizontalPrayerRequestCard, GroupCard } from '../Cards';
 import GET_CONTENT_CARD from './query';
 
 const ContentCardConnected = ({
@@ -50,8 +50,8 @@ const ContentCardConnected = ({
 
               label = node.events.length
                 ? moment(get(node, 'nextOccurrence', new Date())).format(
-                  'MMM D'
-                )
+                    'MMM D'
+                  )
                 : comingSoon;
             }
 
@@ -60,7 +60,7 @@ const ContentCardConnected = ({
             }
 
             if (typename === 'Group' || typename === 'VolunteerGroup') {
-              cardComponent = HorizontalGroupCard;
+              cardComponent = GroupCard;
 
               typenameProps.heroAvatars = get(node, 'leaders.edges', []).map(
                 ({ node }) => node.photo

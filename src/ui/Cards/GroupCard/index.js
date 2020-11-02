@@ -106,7 +106,7 @@ const ExtraAvatarsText = styled(({ theme }) => ({
   paddingLeft: 5,
 }))(UIText);
 
-const HorizontalGroupCard = ({
+const GroupCard = ({
   fill,
   coverImage,
   isLoading,
@@ -197,7 +197,7 @@ const HorizontalGroupCard = ({
   );
 };
 
-HorizontalGroupCard.propTypes = {
+GroupCard.propTypes = {
   coverImage: PropTypes.oneOfType([
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
@@ -212,7 +212,7 @@ HorizontalGroupCard.propTypes = {
   isLive: PropTypes.bool,
 };
 
-HorizontalGroupCard.defaultProps = {
+GroupCard.defaultProps = {
   avatars: [],
   totalAvatars: 0,
   heroAvatars: [],
@@ -220,9 +220,9 @@ HorizontalGroupCard.defaultProps = {
   isLive: false,
 };
 
-HorizontalGroupCard.displayName = 'HorizontalGroupCard';
+GroupCard.displayName = 'GroupCard';
 
 export default withTheme(({ theme, ...props }) => ({
   fill: theme.colors.darkTertiary,
   ...props,
-}))(HorizontalGroupCard);
+}))(GroupCard);
