@@ -46,6 +46,7 @@ storiesOf('cf-ui/HorizontalHightlightCard', module).add('Theme Small', () => (
           <HorizontalHightlightCard {...item} size="small" />
         )}
         loadingStateObject={loadingStateObject}
+        snapToInterval={150 + 16}
       />
     </SafeAreaView>
   </BackgroundView>
@@ -62,6 +63,7 @@ storiesOf('cf-ui/HorizontalHightlightCard', module).add('Theme Medium', () => (
           <HorizontalHightlightCard {...item} size="medium" />
         )}
         loadingStateObject={loadingStateObject}
+        snapToInterval={150 + 16}
       />
     </SafeAreaView>
   </BackgroundView>
