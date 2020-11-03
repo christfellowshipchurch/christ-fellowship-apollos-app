@@ -16,7 +16,7 @@ import {
 } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from 'ui/ContentCardConnected';
-import { HorizontalHighlightCard } from 'ui/Cards';
+import { HorizontalDefaultCard } from 'ui/Cards';
 
 const RowHeader = styled(({ theme, viewAll }) => ({
   flexDirection: 'row',
@@ -78,7 +78,7 @@ const TileContentFeed = ({
       <ContentCardConnected
         contentId={item.id}
         isLoading={isLoading}
-        card={HorizontalHighlightCard}
+        card={HorizontalDefaultCard}
       />
     </TouchableScale>
   );
