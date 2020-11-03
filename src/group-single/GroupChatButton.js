@@ -6,7 +6,7 @@ const StyledButton = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit,
 }))(Button);
 
-const GroupChatButton = ({ channelId, groupName }) => {
+const GroupChatButton = ({ channelId, channelType, groupName }) => {
   if (!channelId) {
     return null;
   }
@@ -14,6 +14,7 @@ const GroupChatButton = ({ channelId, groupName }) => {
   const handlePress = () =>
     NavigationService.navigate('Channel', {
       channelId,
+      channelType,
       name: groupName,
       nested: true,
     });
@@ -21,7 +22,7 @@ const GroupChatButton = ({ channelId, groupName }) => {
   return (
     <StyledButton
       onPress={handlePress}
-      title={'Message Group'}
+      title={`Message Group`}
       type={'primary'}
       pill={false}
     />
@@ -30,6 +31,7 @@ const GroupChatButton = ({ channelId, groupName }) => {
 
 GroupChatButton.propTypes = {
   channelId: PropTypes.string,
+  channelType: PropTypes.string,
   groupName: PropTypes.string,
 };
 

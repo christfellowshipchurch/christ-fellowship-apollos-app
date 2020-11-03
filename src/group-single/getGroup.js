@@ -67,6 +67,7 @@ export default gql`
         streamChatChannel {
           id
           channelId
+          channelType
         }
       }
 
@@ -75,6 +76,7 @@ export default gql`
         streamChatChannel {
           id
           channelId
+          channelType
         }
       }
     }

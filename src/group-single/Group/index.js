@@ -76,7 +76,7 @@ const Group = ({ id, content, loading, navigation }) => {
 
   const start = get(dateTime, 'start');
   const chatChannelId = get(content, 'streamChatChannel.channelId');
-  console.log('[rkd] chatChannelId:', chatChannelId);
+  const chatChannelType = get(content, 'streamChatChannel.channelType');
 
   return (
     <CoverImageBackground isLoading={loading} source={coverImageSources}>
@@ -137,6 +137,7 @@ const Group = ({ id, content, loading, navigation }) => {
             {chatChannelId && (
               <GroupChatButton
                 channelId={chatChannelId}
+                channelType={chatChannelType}
                 groupName={content.title}
               />
             )}

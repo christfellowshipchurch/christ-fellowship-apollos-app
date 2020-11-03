@@ -48,6 +48,9 @@ const KeyboardAvoider = styled({
 const Channel = themed((props) => {
   const userId = props.navigation.getParam('user');
   const channelId = props.navigation.getParam('channelId');
+  const channelType = (
+    props.navigation.getParam('channelType') || 'messaging'
+  ).toLowerCase(); // Note: Required when given a channelId
   const [connecting, setConnecting] = useState(true);
 
   const { loading, data = {} } = useCurrentUser();
@@ -68,12 +71,12 @@ const Channel = themed((props) => {
 
       if (userId) {
         // Direct Message
-        channel.current = chatClient.channel('messaging', {
+        channel.current = chatClient.channel(channelType, {
           members: [userId, currentStreamUser.id],
         });
       } else if (channelId) {
         // Group Chat
-        channel.current = chatClient.channel('messaging', channelId);
+        channel.current = chatClient.channel(channelType, channelId);
       }
 
       await channel.current.watch();

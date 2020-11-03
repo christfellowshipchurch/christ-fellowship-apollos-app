@@ -139,7 +139,7 @@ const LiveStreamChat = (props) => {
       }
 
       channel.current = chatClient.channel(
-        'livestream',
+        props.channelType,
         props.channelId,
         props.event
       );
@@ -241,6 +241,7 @@ const LiveStreamChat = (props) => {
 LiveStreamChat.propTypes = {
   isPortrait: PropTypes.bool,
   channelId: PropTypes.string,
+  channelType: PropTypes.string,
   event: PropTypes.shape({
     parentId: PropTypes.string,
     name: PropTypes.string,

@@ -49,6 +49,7 @@ const GET_LIVE_CONTENT = gql`
       streamChatChannel {
         id
         channelId
+        channelType
       }
     }
   }
@@ -75,6 +76,7 @@ const MediaPlayer = () => {
       title === get(l, 'contentItem.title')
   );
   const channelId = get(liveStream, 'streamChatChannel.channelId');
+  const channelType = get(liveStream, 'streamChatChannel.channelType');
 
   if (channelId && liveStream) {
     const event = {
@@ -86,6 +88,7 @@ const MediaPlayer = () => {
     return (
       <LiveStreamPlayer
         channelId={channelId}
+        channelType={channelType}
         event={event}
         isLoading={loading}
       />
