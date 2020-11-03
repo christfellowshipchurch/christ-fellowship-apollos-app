@@ -35,8 +35,20 @@ const Give = ({ navigation }) => {
         transitionKey: 2,
       });
     }
+    if (action === 'READ_PRAYER') {
+      navigation.navigate('PrayerRequestSingle', {
+        prayerRequestId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'READ_GROUP') {
+      navigation.navigate('GroupSingle', {
+        itemId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
     if (action === 'OPEN_URL') {
-      routeLink(relatedNode.url);
+      routeLink(relatedNode.url, { nested: true });
     }
   };
 

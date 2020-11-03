@@ -341,5 +341,37 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    HORIZONTAL_CARD_LIST_FEATURE_FRAGMENT: gql`
+      fragment HorizontalCardListFeatureFragment on HorizontalCardListFeature {
+        id
+        title
+        subtitle
+        cards {
+          action
+          title
+          hyphenatedTitle: title(hyphenated: true)
+          hasAction
+          actionIcon
+          labelText
+          summary
+          coverImage {
+            sources {
+              uri
+            }
+          }
+          relatedNode {
+            ...RelatedFeatureNodeFragment
+          }
+        }
+        cardType
+        primaryAction {
+          title
+          action
+          relatedNode {
+            ...RelatedFeatureNodeFragment
+          }
+        }
+      }
+    `,
   },
 });

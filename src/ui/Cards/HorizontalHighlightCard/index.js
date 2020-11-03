@@ -38,7 +38,7 @@ const BlurLabel = styled(({ theme, size }) => {
   return {
     paddingHorizontal: theme.sizing.baseUnit * 0.5,
     paddingVertical: theme.sizing.baseUnit * 0.25,
-    borderRadius: theme.sizing.baseBorderRadius,
+    borderRadius: theme.sizing.baseBorderRadius * 0.5,
     left: theme.sizing.baseUnit * -0.25,
     ...transform,
   };

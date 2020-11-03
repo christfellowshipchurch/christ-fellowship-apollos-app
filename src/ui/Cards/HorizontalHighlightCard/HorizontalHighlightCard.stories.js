@@ -1,12 +1,10 @@
 import React from 'react';
-import { SafeAreaView, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { BackgroundView } from '@apollosproject/ui-kit';
 import { storiesOf } from '@apollosproject/ui-storybook';
 import { CardFeed } from '../../CardFeeds';
 import mockData from './HorizontalHighlightCardMockData';
 import HorizontalHightlightCard from '.';
-
-console.log({ mockData });
 
 const loadingStateObject = {
   id: 'fakeId0',
