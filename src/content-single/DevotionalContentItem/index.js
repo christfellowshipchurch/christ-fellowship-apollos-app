@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Animated } from 'react-native';
+import { Animated, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-navigation';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 
@@ -23,7 +22,8 @@ import GET_SCRIPTURE from './getScripture';
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
 const StyledMediaControlsConnected = styled(({ theme }) => ({
-  marginTop: -(theme.sizing.baseUnit * 2.5),
+  position: 'absolute',
+  bottom: theme.sizing.baseUnit,
 }))(MediaControlsConnected);
 /**
  * The devotional component.
@@ -104,7 +104,7 @@ class DevotionalContentItem extends PureComponent {
       : [];
 
     const hasScripture = loading || validScriptures.length;
-    const tabRoutes = [{ title: 'Devotional', key: 'content' }];
+    const tabRoutes = [{ title: 'Content', key: 'content' }];
     const map = {
       content: this.contentRoute({ scriptures, loading }),
     };
@@ -128,23 +128,27 @@ class DevotionalContentItem extends PureComponent {
         <StretchyView>
           {({ Stretchy, ...scrollViewProps }) => (
             <FlexedScrollView {...scrollViewProps}>
-              {coverImageSources.length || parentLoading ? (
-                <Stretchy>
-                  <GradientOverlayImage
-                    isLoading={!coverImageSources.length && parentLoading}
-                    source={coverImageSources}
-                    // Sets the ratio of the image
-                    minAspectRatio={1}
-                    maxAspectRatio={1}
-                    // Sets the ratio of the placeholder
-                    forceRatio={1}
-                    // No ratios are respected without this
-                    maintainAspectRatio
-                  />
-                </Stretchy>
-              ) : null}
-              <StyledMediaControlsConnected contentId={content.id} />
-              {/* fixes text/navigation spacing by adding vertical padding if we dont have an image */}
+              <View>
+                {coverImageSources.length || parentLoading ? (
+                  <Stretchy>
+                    <GradientOverlayImage
+                      isLoading={!coverImageSources.length && parentLoading}
+                      source={coverImageSources}
+                      // Sets the ratio of the image
+                      minAspectRatio={1}
+                      maxAspectRatio={1}
+                      // Sets the ratio of the placeholder
+                      forceRatio={1}
+                      // No ratios are respected without this
+                      maintainAspectRatio
+                    />
+                  </Stretchy>
+                ) : null}
+                {coverImageSources.length > 0 && (
+                  <StyledMediaControlsConnected contentId={content.id} />
+                )}
+              </View>
+
               <Query
                 query={GET_SCRIPTURE}
                 variables={{ itemId: this.props.id }}
