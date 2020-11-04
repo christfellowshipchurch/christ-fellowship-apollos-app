@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { get } from 'lodash';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 
-import NavigationHeader from '../content-single/NavigationHeader';
+import NavigationHeader from 'ui/NavigationHeader';
 import NotificationList from './NotificationList';
 
 const GET_NOTIFICATIONS = gql`
