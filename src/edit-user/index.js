@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 
+import NavigationHeader from 'ui/NavigationHeader';
 import { useCurrentUser } from '../hooks';
-import NavigationHeader from '../content-single/NavigationHeader';
 import EditUser from './EditUser';
 
 const EditCurrentUser = ({ navigation }) => {

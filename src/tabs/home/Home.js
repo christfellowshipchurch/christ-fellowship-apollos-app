@@ -49,6 +49,13 @@ const Home = ({ navigation }) => {
       navigation.navigate('GroupSingle', {
         itemId: relatedNode.id,
         transitionKey: 2,
+      })    
+    }
+    if (action === 'OPEN_NODE') {
+      console.warn(relatedNode);
+      navigation.navigate('NodeSingle', {
+        nodeId: relatedNode.id,
+        transitionKey: 2,
       });
     }
     if (action === 'OPEN_URL') {

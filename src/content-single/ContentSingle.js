@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { ErrorCard } from '@apollosproject/ui-kit';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
+import NavigationHeader from 'ui/NavigationHeader';
 import ThemeMixin from '../ui/DynamicThemeMixin';
 
 import ActionContainer from './ActionContainer';
@@ -16,8 +17,6 @@ import UniversalContentItem from './UniversalContentItem';
 import WeekendContentItem from './WeekendContentItem';
 import EventContentItem from './EventContentItem';
 import InformationalContentItem from './InformationalContentItem';
-
-import NavigationHeader from './NavigationHeader';
 
 class ContentSingle extends PureComponent {
   static propTypes = {
