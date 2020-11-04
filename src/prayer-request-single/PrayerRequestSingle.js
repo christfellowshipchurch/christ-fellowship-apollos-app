@@ -12,7 +12,7 @@ import {
   StretchyView,
 } from '@apollosproject/ui-kit';
 
-import NavigationHeader from '../content-single/NavigationHeader';
+import NavigationHeader from 'ui/NavigationHeader';
 import GET_PRAYER_REQUEST from './getPrayerRequest';
 
 import PrayerRequestText from './PrayerRequestText';

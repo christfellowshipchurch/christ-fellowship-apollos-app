@@ -19,6 +19,7 @@ import StatusBar from './ui/StatusBar';
 
 import Providers from './Providers';
 import ContentSingle from './content-single';
+import NodeSingle from './node-single';
 import ContentFeed from './content-feed';
 import Tabs from './tabs';
 import EditUser from './edit-user';
@@ -86,6 +87,7 @@ const AppNavigator = createStackNavigator(
       },
     },
     ContentSingle,
+    NodeSingle,
     Auth: EnhancedAuth,
     Passes,
     Onboarding,

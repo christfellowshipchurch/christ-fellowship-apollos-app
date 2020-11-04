@@ -7,7 +7,7 @@ import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 
 import { ThemeMixin, ErrorCard } from '@apollosproject/ui-kit';
 
-import NavigationHeader from '../content-single/NavigationHeader';
+import NavigationHeader from 'ui/NavigationHeader';
 import Group from './Group';
 import VolunteerGroup from './VolunteerGroup';
 

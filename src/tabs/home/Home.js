@@ -8,6 +8,7 @@ import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 import { styled } from '@apollosproject/ui-kit';
 
 import { FeaturesFeedConnected, FeaturesHeaderConnected } from 'features';
+import { useLinkRouter } from 'hooks';
 
 import Wordmark from 'ui/Wordmark';
 import {
@@ -22,6 +23,7 @@ const ListHeaderSpacer = styled(({ theme }) => ({
 }))(View);
 
 const Home = ({ navigation }) => {
+  const { routeLink } = useLinkRouter();
   const [refetchRef, setRefetchRef] = useState(null);
   const { scrollY } = useHeaderScrollEffect({ navigation });
   const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
@@ -37,8 +39,27 @@ const Home = ({ navigation }) => {
         transitionKey: 2,
       });
     }
+    if (action === 'READ_PRAYER') {
+      navigation.navigate('PrayerRequestSingle', {
+        prayerRequestId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
+    if (action === 'READ_GROUP') {
+      navigation.navigate('GroupSingle', {
+        itemId: relatedNode.id,
+        transitionKey: 2,
+      })    
+    }
+    if (action === 'OPEN_NODE') {
+      console.warn(relatedNode);
+      navigation.navigate('NodeSingle', {
+        nodeId: relatedNode.id,
+        transitionKey: 2,
+      });
+    }
     if (action === 'OPEN_URL') {
-      openUrl(relatedNode.url);
+      routeLink(relatedNode.url, { nested: true });
     }
   };
 

@@ -8,6 +8,7 @@ export default gql`
       ...ActionBarFeatureFragment
       ...AvatarListFeatureFragment
       ... on HorizontalCardListFeature {
+        cardType
         primaryAction {
           title
           action

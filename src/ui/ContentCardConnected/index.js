@@ -1,13 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
-import { get } from 'lodash';
+import { get, flatten, uniqBy, head, last } from 'lodash';
 import moment from 'moment';
 
 import { LiveConsumer } from '@apollosproject/ui-connected';
 import { ContentCard, ErrorCard } from '@apollosproject/ui-kit';
-import { HorizontalPrayerRequestCard, HorizontalGroupCard } from '../Cards';
+import { HorizontalPrayerRequestCard, GroupCard } from '../Cards';
 import GET_CONTENT_CARD from './query';
+
+const generateEventGroupingLabel = (eventGroups) => {
+  if (eventGroups.length === 0) return null;
+  /**
+   * The following transformations need to be applied after getting the eventGroupings
+   * Map to start dates                   : [ [date1Time, date1Time], [date2Time] ]
+   * Flatten the array                    : [date1Time, date1Time, date2Time]
+   * Filter to just get the unique dates  : [date1Time, date2Time]
+   */
+  let eventDates = eventGroups;
+  eventDates = eventDates.map((grouping) =>
+    grouping.instances.map(({ start }) => moment(start).format(''))
+  );
+  eventDates = flatten(eventDates);
+  eventDates = uniqBy(eventDates, (date) => moment(date).format('MMDD'));
+
+  if (eventDates.length === 0) return null;
+
+  /**
+   * If today with 1 date     : Today
+   * If not today with 1 date : January 1
+   * If more than 1 date      : Jan 1 - Jan 5
+   */
+  if (eventDates.length === 1) {
+    const today = moment().format('MMMM D');
+    const date = moment(eventDates[0]).format('MMMM D');
+
+    return date === today ? 'Today' : date;
+  }
+
+  eventDates = eventDates.sort((a, b) => moment(a).diff(b));
+  const firstDate = moment(head(eventDates)).format('MMM D');
+  const lastDate = moment(last(eventDates)).format('MMM D');
+
+  return `${firstDate} - ${lastDate}`;
+};
 
 const ContentCardConnected = ({
   contentId,
@@ -45,14 +81,18 @@ const ContentCardConnected = ({
             const typenameProps = {};
 
             if (typename === 'EventContentItem') {
-              const hideLabel = get(node, 'hideLabel', false);
-              const comingSoon = hideLabel ? '' : 'Dates Coming Soon';
-
-              label = node.events.length
-                ? moment(get(node, 'nextOccurrence', new Date())).format(
-                  'MMM D'
-                )
-                : comingSoon;
+              /**
+               * If label is not null or an empty string, override the date duration
+               * and use the custom label instead
+               */
+              const eventLabelOverride = get(node, 'label');
+              if (!eventLabelOverride || eventLabelOverride === '') {
+                label = generateEventGroupingLabel(
+                  get(node, 'eventGroupings', [])
+                );
+              } else {
+                label = eventLabelOverride;
+              }
             }
 
             if (typename === 'PrayerRequest') {
@@ -60,7 +100,7 @@ const ContentCardConnected = ({
             }
 
             if (typename === 'Group' || typename === 'VolunteerGroup') {
-              cardComponent = HorizontalGroupCard;
+              cardComponent = GroupCard;
 
               typenameProps.heroAvatars = get(node, 'leaders.edges', []).map(
                 ({ node }) => node.photo

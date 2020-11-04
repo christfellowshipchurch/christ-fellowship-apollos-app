@@ -4,6 +4,14 @@ import { get } from 'lodash';
 
 import { HorizontalCardListFeatureConnected as CoreHorizontalCardListFeatureConnected } from '@apollosproject/ui-connected';
 import { CardFeed } from 'ui/CardFeeds';
+import { HorizontalHighlightCard, HorizontalDefaultCard } from 'ui/Cards';
+
+const SmallHighlightCard = (props) => (
+  <HorizontalHighlightCard {...props} size="small" />
+);
+const MediumHighlightCard = (props) => (
+  <HorizontalHighlightCard {...props} size="medium" />
+);
 
 const HorizontalCardListFeature = ({
   featureId,
@@ -12,6 +20,7 @@ const HorizontalCardListFeature = ({
   cards,
   onPressItem,
   primaryAction,
+  cardType,
 }) => {
   const seeMore =
     get(primaryAction, 'title', '') !== '' &&
@@ -21,6 +30,12 @@ const HorizontalCardListFeature = ({
   const onPressHeader = () => {
     onPressItem(primaryAction);
   };
+
+  let CardComponent = HorizontalDefaultCard;
+
+  if (cardType === 'HIGHLIGHT') CardComponent = HorizontalHighlightCard;
+  if (cardType === 'HIGHLIGHT_MEDIUM') CardComponent = MediumHighlightCard;
+  if (cardType === 'HIGHLIGHT_SMALL') CardComponent = SmallHighlightCard;
 
   return (
     <CardFeed
@@ -33,6 +48,7 @@ const HorizontalCardListFeature = ({
       seeMoreText={get(primaryAction, 'title', '')}
       onPressItem={onPressItem}
       onPressHeader={onPressHeader}
+      card={CardComponent}
       loadingStateObject={{
         id: 'fake_id',
         title: '',
@@ -57,6 +73,10 @@ HorizontalCardListFeature.propTypes = {
       id: PropTypes.string,
     })
   ),
+};
+
+HorizontalCardListFeature.propTypes = {
+  cardType: 'DEFAULT',
 };
 
 const HorizontalCardListFeatureConnected = (props) => (
