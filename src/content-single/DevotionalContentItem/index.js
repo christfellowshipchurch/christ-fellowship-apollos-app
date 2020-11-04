@@ -152,6 +152,7 @@ class DevotionalContentItem extends PureComponent {
               <Query
                 query={GET_SCRIPTURE}
                 variables={{ itemId: this.props.id }}
+                fetchPolicy="cache-and-network"
               >
                 {({ data, loading, error }) =>
                   loading

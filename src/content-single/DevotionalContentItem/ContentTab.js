@@ -3,12 +3,13 @@ import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { HorizontalContentSeriesFeedConnected } from '@apollosproject/ui-connected';
 import { PaddedView, styled, withIsLoading } from '@apollosproject/ui-kit';
-import { ScriptureList } from '@apollosproject/ui-scripture';
 import Title from '../Title';
 import HTMLContent from '../HTMLContent';
 
 const ContentContainer = withIsLoading(
-  styled({ paddingVertical: 0 })(PaddedView)
+  styled(({ theme }) => ({
+    paddingVertical: theme.sizing.baseUnit * 0.5,
+  }))(PaddedView)
 );
 
 /**
