@@ -1,23 +1,30 @@
 import React, { PureComponent } from 'react';
+import { Animated, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { SafeAreaView } from 'react-navigation';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 
+import { MediaControlsConnected } from '@apollosproject/ui-connected';
 import {
   ErrorCard,
   TabView,
   TabSceneMap as SceneMap,
   BackgroundView,
   styled,
+  StretchyView,
+  GradientOverlayImage,
 } from '@apollosproject/ui-kit';
 import ContentTab from './ContentTab';
 import ScriptureTab from './ScriptureTab';
 
 import GET_SCRIPTURE from './getScripture';
 
-const FlexedSafeAreaView = styled({ flex: 1 })(SafeAreaView);
+const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
+const StyledMediaControlsConnected = styled(({ theme }) => ({
+  position: 'absolute',
+  bottom: theme.sizing.baseUnit,
+}))(MediaControlsConnected);
 /**
  * The devotional component.
  * Displays a TabView with two tabs: ContentTab and ScriptureTab.
@@ -29,6 +36,7 @@ class DevotionalContentItem extends PureComponent {
     content: PropTypes.shape({
       /** The devotional title */
       title: PropTypes.string,
+      id: PropTypes.string,
     }),
     /** Toggles placeholders */
     loading: PropTypes.bool,
@@ -96,7 +104,7 @@ class DevotionalContentItem extends PureComponent {
       : [];
 
     const hasScripture = loading || validScriptures.length;
-    const tabRoutes = [{ title: 'Devotional', key: 'content' }];
+    const tabRoutes = [{ title: 'Content', key: 'content' }];
     const map = {
       content: this.contentRoute({ scriptures, loading }),
     };
@@ -112,17 +120,48 @@ class DevotionalContentItem extends PureComponent {
   };
 
   render() {
+    const { content, loading: parentLoading } = this.props;
+    const coverImageSources = get(content, 'coverImage.sources', []);
+
     return (
       <BackgroundView>
-        <FlexedSafeAreaView forceInset={{ top: 'always' }}>
-          <Query query={GET_SCRIPTURE} variables={{ itemId: this.props.id }}>
-            {({ data, loading, error }) =>
-              loading
-                ? this.renderLoading()
-                : this.renderTabs({ data, loading, error })
-            }
-          </Query>
-        </FlexedSafeAreaView>
+        <StretchyView>
+          {({ Stretchy, ...scrollViewProps }) => (
+            <FlexedScrollView {...scrollViewProps}>
+              <View>
+                {coverImageSources.length || parentLoading ? (
+                  <Stretchy>
+                    <GradientOverlayImage
+                      isLoading={!coverImageSources.length && parentLoading}
+                      source={coverImageSources}
+                      // Sets the ratio of the image
+                      minAspectRatio={1}
+                      maxAspectRatio={1}
+                      // Sets the ratio of the placeholder
+                      forceRatio={1}
+                      // No ratios are respected without this
+                      maintainAspectRatio
+                    />
+                  </Stretchy>
+                ) : null}
+                {coverImageSources.length > 0 && (
+                  <StyledMediaControlsConnected contentId={content.id} />
+                )}
+              </View>
+
+              <Query
+                query={GET_SCRIPTURE}
+                variables={{ itemId: this.props.id }}
+              >
+                {({ data, loading, error }) =>
+                  loading
+                    ? this.renderLoading()
+                    : this.renderTabs({ data, loading, error })
+                }
+              </Query>
+            </FlexedScrollView>
+          )}
+        </StretchyView>
       </BackgroundView>
     );
   }

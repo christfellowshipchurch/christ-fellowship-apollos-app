@@ -68,12 +68,14 @@ import {
 const colors = {
   primary: '#00aeef',
   secondary: '#000',
+  tertiary: '#88D8F6',
   alert: '#d52158',
   success: '#1ec27f',
   warning: '#e09541',
   text: {
     link: '#00aeef',
   },
+  wordOfChrist: '#d52158',
 };
 
 /* Base Typography sizing and fonts.
