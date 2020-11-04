@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
-import { styled, Touchable, H6, Icon, withTheme } from '@apollosproject/ui-kit';
+import {
+  styled,
+  Touchable,
+  UIText,
+  Icon,
+  withTheme,
+} from '@apollosproject/ui-kit';
 
 const ActionBarItemWrapper = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit,
@@ -17,7 +23,11 @@ const StyledIcon = withTheme(({ theme }) => ({
 const StyledLabel = styled(({ theme }) => ({
   textAlign: 'center',
   color: theme.colors.primary,
-}))(H6);
+  fontSize: theme.helpers.rem(0.65),
+  lineHeight: theme.helpers.verticalRhythm(0.65),
+  fontFamily: theme.typography.sans.bold.default,
+  paddingTop: 3,
+}))(UIText);
 
 const StyledTouchable = styled(({ theme }) => ({
   flex: 1,
