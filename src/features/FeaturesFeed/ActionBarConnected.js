@@ -31,7 +31,7 @@ const ActionBarFeatureConnected = ({
    *  we're gonna put in a safety net so that if anyone puts in more
    *  than 3 items, we just create multiple bars
    */
-  const chunkedActions = chunk(actions, 3);
+  const chunkedActions = chunk(actions, 4);
 
   return (
     <View listKey={`${listKey}`}>

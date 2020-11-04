@@ -26,6 +26,7 @@ const StyledLabel = styled(({ theme }) => ({
   fontSize: theme.helpers.rem(0.65),
   lineHeight: theme.helpers.verticalRhythm(0.65),
   fontFamily: theme.typography.sans.bold.default,
+  paddingTop: 3,
 }))(UIText);
 
 const StyledTouchable = styled(({ theme }) => ({
