@@ -58,9 +58,14 @@ ApollosConfig.loadJs({
           tags
         }
         ... on EventContentItem {
-          nextOccurrence
-          events {
-            start
+          label
+          eventGroupings {
+            name
+            instances {
+              id
+              start
+              end
+            }
           }
         }
         ... on InformationalContentItem {
@@ -330,6 +335,38 @@ ApollosConfig.loadJs({
           theme {
             ...ThemeFragment
           }
+          relatedNode {
+            ...RelatedFeatureNodeFragment
+          }
+        }
+      }
+    `,
+    HORIZONTAL_CARD_LIST_FEATURE_FRAGMENT: gql`
+      fragment HorizontalCardListFeatureFragment on HorizontalCardListFeature {
+        id
+        title
+        subtitle
+        cards {
+          action
+          title
+          hyphenatedTitle: title(hyphenated: true)
+          hasAction
+          actionIcon
+          labelText
+          summary
+          coverImage {
+            sources {
+              uri
+            }
+          }
+          relatedNode {
+            ...RelatedFeatureNodeFragment
+          }
+        }
+        cardType
+        primaryAction {
+          title
+          action
           relatedNode {
             ...RelatedFeatureNodeFragment
           }
