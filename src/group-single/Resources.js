@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
+import { useApolloClient } from '@apollo/react-hooks';
+
 import {
   Button,
   PaddedView,
@@ -8,6 +11,14 @@ import {
   ThemeMixin,
 } from '@apollosproject/ui-kit';
 import { useLinkRouter } from '../hooks';
+
+const GROUP_RESOURCE_INTERACTION = gql`
+  mutation($nodeId: ID!, $action: InteractionAction!) {
+    interactWithNode(nodeId: $nodeId, action: $action) {
+      success
+    }
+  }
+`;
 
 const StyledH4 = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit,
@@ -19,11 +30,21 @@ const StyledButton = styled(({ theme }) => ({
 
 const Resources = ({ resources, isLoading, navigation }) => {
   const { routeLink } = useLinkRouter();
+  const client = useApolloClient();
+  const resourceInteraction = (relatedNode, action) =>
+    client.mutate({
+      mutation: GROUP_RESOURCE_INTERACTION,
+      variables: {
+        nodeId: relatedNode.id,
+        action: `GROUP_${action}`,
+      },
+    });
   return (
     <PaddedView>
       <StyledH4>{'Resources'}</StyledH4>
       {resources.map(({ id, relatedNode, action, title }) => {
         const handleOnPress = () => {
+          resourceInteraction(relatedNode, action);
           if (action === 'READ_CONTENT') {
             navigation.navigate('ContentSingle', {
               itemId: relatedNode.id,
@@ -87,6 +108,9 @@ Resources.propTypes = {
     })
   ),
   isLoading: PropTypes.bool,
+  client: PropTypes.shape({
+    mutate: PropTypes.func,
+  }).isRequired,
 };
 
 export default Resources;
