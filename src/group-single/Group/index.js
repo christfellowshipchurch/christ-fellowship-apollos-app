@@ -76,7 +76,6 @@ const Group = ({ id, content, loading, navigation }) => {
 
   const start = get(dateTime, 'start');
   const chatChannelId = get(content, 'streamChatChannel.channelId');
-  console.log('[rkd] chatChannelId:', chatChannelId);
 
   return (
     <CoverImageBackground isLoading={loading} source={coverImageSources}>
