@@ -16,6 +16,8 @@ import {
   Avatar,
 } from '@apollosproject/ui-kit';
 
+import EditGroupButton from '../EditGroupButton';
+
 import GET_HEADER from './getHeader';
 
 const HeaderSpacing = withTheme(({ theme }) => ({
@@ -27,6 +29,15 @@ const HeaderSpacing = withTheme(({ theme }) => ({
   ],
   style: { paddingTop: theme.sizing.baseUnit * 2 },
 }))(LinearGradient);
+
+const EditContainer = styled(({ theme }) => ({
+  position: 'absolute',
+  top: -(theme.sizing.baseUnit / 2),
+  left: theme.sizing.baseUnit,
+  width: '100%',
+  flexDirection: 'row',
+  justifyContent: 'center',
+}))(View);
 
 const HeroAvatars = styled(() => ({
   flexDirection: 'row',
@@ -55,7 +66,7 @@ const StyledH5 = styled(({ theme }) => ({
 }))(H5);
 
 const HeaderConnected = ({ id }) => {
-  const { data, loading, error } = useQuery(GET_HEADER, {
+  const { data, loading } = useQuery(GET_HEADER, {
     variables: { groupId: id },
     skip: !id,
     fetchPolicy: 'cache-and-network',
@@ -68,6 +79,9 @@ const HeaderConnected = ({ id }) => {
     <HeaderSpacing>
       <SafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
         <PaddedView>
+          <EditContainer>
+            <EditGroupButton />
+          </EditContainer>
           {avatars.length > 0 && (
             <HeroAvatars>
               {avatars.map(({ id: personId, photo }) => (
