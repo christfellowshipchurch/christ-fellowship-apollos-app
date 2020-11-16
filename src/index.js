@@ -38,7 +38,6 @@ import AuthBackground from './ui/AuthBackground';
 // bugsnag configuration
 // eslint-disable-next-line
 import bugsnag from './bugsnag';
-import './YellowBoxConfig';
 
 // Hack to avoid needing to pass emailRequired through the navigator.navigate
 const EnhancedAuth = (props) => (
