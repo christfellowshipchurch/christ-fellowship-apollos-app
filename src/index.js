@@ -24,6 +24,7 @@ import ContentFeed from './content-feed';
 import Tabs from './tabs';
 import EditUser from './edit-user';
 import GroupSingle from './group-single';
+import EditGroup from './edit-group';
 import NotificationCenter from './notification-center';
 import PrayerRequestSingle from './prayer-request-single';
 import MyPrayerRequestsFeed from './my-prayer-requests-feed';
@@ -37,6 +38,7 @@ import AuthBackground from './ui/AuthBackground';
 // bugsnag configuration
 // eslint-disable-next-line
 import bugsnag from './bugsnag';
+import './YellowBoxConfig';
 
 // Hack to avoid needing to pass emailRequired through the navigator.navigate
 const EnhancedAuth = (props) => (
@@ -95,6 +97,7 @@ const AppNavigator = createStackNavigator(
     EditUser,
     Location,
     GroupSingle,
+    EditGroup,
     NotificationCenter,
     PrayerRequestSingle,
   },
