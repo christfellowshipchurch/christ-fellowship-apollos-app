@@ -16,6 +16,8 @@ import {
   Avatar,
 } from '@apollosproject/ui-kit';
 
+import { useCurrentUser, useFeatureFlag } from '../../hooks';
+
 import EditGroupButton from '../EditGroupButton';
 
 import GET_HEADER from './getHeader';
@@ -30,15 +32,6 @@ const HeaderSpacing = withTheme(({ theme }) => ({
   style: { paddingTop: theme.sizing.baseUnit * 2 },
 }))(LinearGradient);
 
-const EditContainer = styled(({ theme }) => ({
-  position: 'absolute',
-  top: -(theme.sizing.baseUnit / 2),
-  left: theme.sizing.baseUnit,
-  width: '100%',
-  flexDirection: 'row',
-  justifyContent: 'center',
-}))(View);
-
 const HeroAvatars = styled(() => ({
   flexDirection: 'row',
   alignItems: 'center',
@@ -48,6 +41,7 @@ const HeroAvatars = styled(() => ({
 
 const HeroAvatarSpacing = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit * 0.5,
+  paddingBottom: 0,
 }))(View);
 
 const StyledTitle = styled(({ theme }) => ({
@@ -65,7 +59,12 @@ const StyledH5 = styled(({ theme }) => ({
   textAlign: 'center',
 }))(H5);
 
-const HeaderConnected = ({ id }) => {
+const HeaderConnected = ({ id, onEditGroupPress }) => {
+  const { enabled } = useFeatureFlag({
+    key: 'GROUP_CUSTOMIZATION',
+  });
+  const { id: currentUserId } = useCurrentUser();
+
   const { data, loading } = useQuery(GET_HEADER, {
     variables: { groupId: id },
     skip: !id,
@@ -73,15 +72,17 @@ const HeaderConnected = ({ id }) => {
   });
 
   const content = get(data, 'node', {});
-  const avatars = get(content, 'leaders.edges', []).map(({ node }) => node);
+  const leaders = get(content, 'leaders.edges', []);
+  const avatars = leaders.map(({ node }) => node);
+  const isGroupLeader = Boolean(
+    leaders.find((leader) => get(leader, 'node.id') === currentUserId)
+  );
+  const canEditGroup = enabled && isGroupLeader;
 
   return (
     <HeaderSpacing>
       <SafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
         <PaddedView>
-          <EditContainer>
-            <EditGroupButton />
-          </EditContainer>
           {avatars.length > 0 && (
             <HeroAvatars>
               {avatars.map(({ id: personId, photo }) => (
@@ -100,6 +101,7 @@ const HeaderConnected = ({ id }) => {
               !!content.groupType && (
                 <StyledH5 numberOfLines={2}>{content.groupType}</StyledH5>
               )}
+            {canEditGroup && <EditGroupButton onPress={onEditGroupPress} />}
           </StyledTitle>
         </PaddedView>
       </SafeAreaView>
@@ -109,6 +111,7 @@ const HeaderConnected = ({ id }) => {
 
 HeaderConnected.propTypes = {
   id: PropTypes.string,
+  onEditGroupPress: PropTypes.func,
 };
 
 export default HeaderConnected;

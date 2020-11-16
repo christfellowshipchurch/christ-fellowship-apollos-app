@@ -77,9 +77,11 @@ const Group = ({ id, content, loading, navigation }) => {
   const start = get(dateTime, 'start');
   const chatChannelId = get(content, 'streamChatChannel.channelId');
 
+  const handleEditGroupPress = () => navigation.navigate('EditGroup', { id });
+
   return (
     <CoverImageBackground isLoading={loading} source={coverImageSources}>
-      <HeaderConnected id={id} />
+      <HeaderConnected id={id} onEditGroupPress={handleEditGroupPress} />
 
       <BackgroundView>
         <PaddedView vertical={false}>
@@ -165,6 +167,10 @@ Group.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     summary: PropTypes.string,
+    dateTime: PropTypes.shape({
+      state: PropTypes.string,
+      end: PropTypes.string,
+    }),
     groupType: PropTypes.string,
     groupResources: PropTypes.arrayOf(
       PropTypes.shape({
