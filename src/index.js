@@ -1,5 +1,6 @@
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import React from 'react';
+import { YellowBox } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { useDarkModeContext } from 'react-native-dark-mode';
@@ -38,6 +39,9 @@ import AuthBackground from './ui/AuthBackground';
 // bugsnag configuration
 // eslint-disable-next-line
 import bugsnag from './bugsnag';
+
+// ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+YellowBox.ignoreWarnings(['Warning:']);
 
 // Hack to avoid needing to pass emailRequired through the navigator.navigate
 const EnhancedAuth = (props) => (

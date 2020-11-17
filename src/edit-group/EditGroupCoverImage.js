@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
-  ScrollView,
-} from 'react-native';
+import { View, Platform, StatusBar, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import Color from 'color';
 import { SafeAreaView } from 'react-navigation';
@@ -20,18 +14,18 @@ import {
   H3,
   H4,
   BackgroundView,
-  FlexedView,
   withMediaQuery,
-  Button,
 } from '@apollosproject/ui-kit';
 
 // import NavigationHeader from '../ui/NavigationHeader';
 
-import { useGroup } from '../hooks';
 import GET_GROUP_COVER_IMAGES from './getGroupCoverImages';
 
 // :: Styled Components
 // ------------------------------------------------------------------
+const StyledSafeAreaView = styled(({ theme }) => ({
+  flex: 1,
+}))(SafeAreaView);
 
 export const ContentContainer = withMediaQuery(
   ({ md }) => ({ maxWidth: md }),
@@ -53,18 +47,6 @@ export const FieldContainer = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.75,
 }))(View);
 
-const Overlay = styled(({ theme }) => ({
-  alignContent: 'center',
-  justifyContent: 'center',
-  position: 'absolute',
-  width: '100%',
-  height: '100%',
-  backgroundColor: Color(theme.colors.background.screen).fade(0.75),
-  top: 0,
-  left: 0,
-  zIndex: 1,
-}))(FlexedView);
-
 const StyledH3 = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit,
   ...Platform.select({
@@ -76,8 +58,7 @@ const StyledH3 = styled(({ theme }) => ({
 
 // :: Core Component
 // ------------------------------------------------------------------
-
-const EditGroup = ({ navigation, group, loading, error }) => {
+const EditGroupCoverImage = ({ navigation, group, loading, error }) => {
   // const currentCoverImage = get(group, 'coverImage.sources[0].uri', null);
 
   if (loading)
@@ -92,30 +73,14 @@ const EditGroup = ({ navigation, group, loading, error }) => {
 
   return (
     <View>
-      {loading && (
-        <Overlay>
-          <ActivityIndicator />
-        </Overlay>
-      )}
-
       <FieldContainer>
-        <StyledH3>Customize my Group</StyledH3>
-      </FieldContainer>
-      <FieldContainer>
-        <H4>Cover Photo</H4>
-        <Button
-          title="Update"
-          onPress={() => navigation.navigate('EditGroupCoverImage')}
-        />
-      </FieldContainer>
-      <FieldContainer>
-        <H4>Resources</H4>
+        <StyledH3>Edit Group Cover Image</StyledH3>
       </FieldContainer>
     </View>
   );
 };
 
-EditGroup.propTypes = {
+EditGroupCoverImage.propTypes = {
   navigation: PropTypes.shape({
     getParam: PropTypes.func,
     navigate: PropTypes.func,
@@ -124,18 +89,14 @@ EditGroup.propTypes = {
   error: PropTypes.bool,
 };
 
-EditGroup.defaultProps = {
+EditGroupCoverImage.defaultProps = {
   loading: false,
   error: null,
 };
 
 // :: Connected Component
 // ------------------------------------------------------------------
-const EditGroupConnected = (props) => {
-  // Group data
-  const id = props.navigation.getParam('id');
-  const { group } = useGroup(id);
-
+const EditGroupCoverImageConnected = (props) => {
   // Cover images
   const coverImagesQuery = useQuery(GET_GROUP_COVER_IMAGES, {
     fetchPolicy: 'cache-and-network',
@@ -147,16 +108,15 @@ const EditGroupConnected = (props) => {
     data: get(coverImagesQuery, 'data.groupCoverImages', []),
   };
 
-  console.log('[EditGroupConnected] group:', group);
-  console.log('[EditGroupConnected] coverImages:', coverImages);
+  console.log('[EditGroupCoverImageConnected] coverImages:', coverImages);
 
-  return <EditGroup {...props} group={group} coverImages={coverImages} />;
+  return <EditGroupCoverImage {...props} coverImages={coverImages} />;
 };
 
-// EditGroupConnected.navigationOptions = {
+// EditGroupCoverImageConnected.navigationOptions = {
 //   header: NavigationHeader,
 //   headerTransparent: true,
 //   headerMode: 'float',
 // };
 
-export default EditGroupConnected;
+export default EditGroupCoverImageConnected;
