@@ -4,12 +4,8 @@ import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import {
   styled,
-  withTheme,
   BackgroundView,
   PaddedView,
-  H4,
-  UIText,
-  Icon,
   StretchyView,
 } from '@apollosproject/ui-kit';
 import {

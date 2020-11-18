@@ -8,7 +8,7 @@ import { H4 } from '@apollosproject/ui-kit';
 
 import DateLabel from 'ui/DateLabel';
 import GET_PRAYER_REQUEST from './getPrayerRequest';
-import { Label } from './styles';
+import Label from './styles';
 
 const RequestedDate = ({ prayerRequestId, isLoading, title }) => {
   const { loading, error, data } = useQuery(GET_PRAYER_REQUEST, {

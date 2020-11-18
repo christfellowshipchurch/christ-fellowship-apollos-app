@@ -41,10 +41,6 @@ ContentTab.propTypes = {
    * reference link is tapped.
    */
   navigationState: PropTypes.shape({ routes: PropTypes.array }),
-  /** An array of human readable references (i.e. '1 Corinthians 15:57') */
-  references: PropTypes.arrayOf(PropTypes.string),
-  /** The devotional title */
-  title: PropTypes.string,
   navigation: PropTypes.shape({ navigate: PropTypes.func }).isRequired,
 };
 

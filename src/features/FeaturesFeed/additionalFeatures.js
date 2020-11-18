@@ -5,9 +5,9 @@ import HorizontalCardListFeatureConnected from './HorizontalCardListFeatureConne
 import VerticalCardListFeatureConnected from './VerticalCardListFeatureConnected';
 
 export default {
-    ActionBarFeature: ActionBarConnected,
-    AvatarListFeature: AvatarListFeatureConnected,
-    HeroListFeature: HeroListFeatureConnected,
-    HorizontalCardListFeature: HorizontalCardListFeatureConnected,
-    VerticalCardListFeature: VerticalCardListFeatureConnected,
+  ActionBarFeature: ActionBarConnected,
+  AvatarListFeature: AvatarListFeatureConnected,
+  HeroListFeature: HeroListFeatureConnected,
+  HorizontalCardListFeature: HorizontalCardListFeatureConnected,
+  VerticalCardListFeature: VerticalCardListFeatureConnected,
 };

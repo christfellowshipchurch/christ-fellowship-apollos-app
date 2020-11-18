@@ -49,7 +49,7 @@ const Home = ({ navigation }) => {
       navigation.navigate('GroupSingle', {
         itemId: relatedNode.id,
         transitionKey: 2,
-      })    
+      });
     }
     if (action === 'OPEN_NODE') {
       console.warn(relatedNode);
