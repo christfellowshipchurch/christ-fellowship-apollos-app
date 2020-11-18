@@ -4,9 +4,8 @@ export default gql`
   query getGroupCoverImages {
     groupCoverImages {
       guid
+      name
       image {
-        name
-        key
         sources {
           uri
         }

@@ -98,19 +98,21 @@ EditGroupCoverImage.defaultProps = {
 // ------------------------------------------------------------------
 const EditGroupCoverImageConnected = (props) => {
   // Cover images
-  const coverImagesQuery = useQuery(GET_GROUP_COVER_IMAGES, {
+  const { data, loading, error } = useQuery(GET_GROUP_COVER_IMAGES, {
     fetchPolicy: 'cache-and-network',
   });
 
-  const coverImages = {
-    loading: coverImagesQuery.loading,
-    error: coverImagesQuery.error,
-    data: get(coverImagesQuery, 'data.groupCoverImages', []),
-  };
-
+  const coverImages = get(data, 'groupCoverImages', []);
   console.log('[EditGroupCoverImageConnected] coverImages:', coverImages);
 
-  return <EditGroupCoverImage {...props} coverImages={coverImages} />;
+  return (
+    <EditGroupCoverImage
+      {...props}
+      loading={loading}
+      error={error}
+      coverImages={coverImages}
+    />
+  );
 };
 
 // EditGroupCoverImageConnected.navigationOptions = {
