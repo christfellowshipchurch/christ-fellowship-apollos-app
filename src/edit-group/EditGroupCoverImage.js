@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Platform, StatusBar, ScrollView } from 'react-native';
+import { View, Platform, StatusBar, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import Color from 'color';
 import { SafeAreaView } from 'react-navigation';
@@ -8,26 +8,24 @@ import { get } from 'lodash';
 
 import {
   styled,
-  BodyText,
   ActivityIndicator,
+  BackgroundView,
+  BodyText,
+  CardImage,
   ErrorCard,
   H3,
   H4,
-  BackgroundView,
+  H6,
   withMediaQuery,
+  withTheme,
 } from '@apollosproject/ui-kit';
-
-// import NavigationHeader from '../ui/NavigationHeader';
 
 import GET_GROUP_COVER_IMAGES from './getGroupCoverImages';
 
 // :: Styled Components
 // ------------------------------------------------------------------
-const StyledSafeAreaView = styled(({ theme }) => ({
-  flex: 1,
-}))(SafeAreaView);
 
-export const ContentContainer = withMediaQuery(
+const ContentContainer = withMediaQuery(
   ({ md }) => ({ maxWidth: md }),
   styled(({ theme }) => ({
     marginVertical: theme.sizing.baseUnit * 1.5,
@@ -42,7 +40,7 @@ export const ContentContainer = withMediaQuery(
 )(View);
 
 // Read Only Fields that show on the Profile
-export const FieldContainer = styled(({ theme }) => ({
+const FieldContainer = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit * 1.5,
   marginVertical: theme.sizing.baseUnit * 0.75,
 }))(View);
@@ -56,9 +54,39 @@ const StyledH3 = styled(({ theme }) => ({
   }),
 }))(H3);
 
+const Image = withTheme(({ theme }) => ({
+  forceRatio: 1.5,
+  imageStyle: { aspectRatio: 1.5 },
+}))(CardImage);
+
+// :: Sub-Components
+// ------------------------------------------------------------------
+
+const CoverImageItemContainer = styled(({ theme }) => ({
+  marginBottom: theme.sizing.baseUnit * 1.5,
+}))(View);
+
+const CoverImageItem = ({ item }) => {
+  console.log('[rkd] item:', item);
+  const imageSource = get(item, 'image.sources[0].uri', null);
+
+  if (!imageSource) return null;
+
+  return (
+    <CoverImageItemContainer>
+      <Image source={imageSource} label={item.name} />
+    </CoverImageItemContainer>
+  );
+};
+
 // :: Core Component
 // ------------------------------------------------------------------
-const EditGroupCoverImage = ({ navigation, group, loading, error }) => {
+const EditGroupCoverImage = ({
+  navigation,
+  loading,
+  error,
+  coverImages = [],
+}) => {
   // const currentCoverImage = get(group, 'coverImage.sources[0].uri', null);
 
   if (loading)
@@ -75,6 +103,9 @@ const EditGroupCoverImage = ({ navigation, group, loading, error }) => {
     <View>
       <FieldContainer>
         <StyledH3>Edit Group Cover Image</StyledH3>
+        {coverImages.map((coverImage) => (
+          <CoverImageItem key={coverImage.guid} item={coverImage} />
+        ))}
       </FieldContainer>
     </View>
   );

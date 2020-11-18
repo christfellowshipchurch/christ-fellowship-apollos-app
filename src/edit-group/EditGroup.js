@@ -1,28 +1,25 @@
 import React from 'react';
-import {
-  View,
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar,
-  ScrollView,
-} from 'react-native';
+import { View, Platform, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import Color from 'color';
-import { SafeAreaView } from 'react-navigation';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
 import {
   styled,
-  BodyText,
   ActivityIndicator,
+  BackgroundView,
+  ButtonIcon,
+  ButtonLink,
+  CardImage,
   ErrorCard,
+  FlexedView,
   H3,
   H4,
-  BackgroundView,
-  FlexedView,
+  H6,
+  Touchable,
   withMediaQuery,
-  Button,
+  withTheme,
 } from '@apollosproject/ui-kit';
 
 // import NavigationHeader from '../ui/NavigationHeader';
@@ -74,11 +71,41 @@ const StyledH3 = styled(({ theme }) => ({
   }),
 }))(H3);
 
+// ✂️ From TileContentFeed --------------------------------------------------------
+const RowHeader = styled(({ theme }) => ({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  zIndex: 2, // UX hack to improve tapability. Positions RowHeader above StyledHorizontalTileFeed
+}))(View);
+
+const Name = styled({
+  flexGrow: 2,
+})(View);
+
+const AndroidTouchableFix = withTheme(({ theme }) => ({
+  borderRadius: theme.sizing.baseBorderRadius / 2,
+}))(Touchable);
+
+const ButtonLinkSpacing = styled(({ theme }) => ({
+  flexDirection: 'row', // correctly positions the loading state
+  justifyContent: 'flex-end', // correctly positions the loading state
+  padding: theme.sizing.baseUnit, // UX hack to improve tapability.
+  paddingRight: 0,
+}))(View);
+
+const Image = withTheme(({ theme }) => ({
+  forceRatio: 1.5,
+  imageStyle: { aspectRatio: 1.5 },
+}))(CardImage);
+
+// ✂️ From TileContentFeed --------------------------------------------------------
+
 // :: Core Component
 // ------------------------------------------------------------------
 
 const EditGroup = ({ navigation, group, loading, error }) => {
-  // const currentCoverImage = get(group, 'coverImage.sources[0].uri', null);
+  const coverImage = get(group, 'coverImage.sources[0].uri', null);
 
   if (loading)
     return (
@@ -102,14 +129,28 @@ const EditGroup = ({ navigation, group, loading, error }) => {
         <StyledH3>Customize my Group</StyledH3>
       </FieldContainer>
       <FieldContainer>
-        <H4>Cover Photo</H4>
-        <Button
-          title="Update"
-          onPress={() => navigation.navigate('EditGroupCoverImage')}
-        />
+        <RowHeader>
+          <Name>
+            <H4>Cover Photo</H4>
+          </Name>
+          <AndroidTouchableFix
+            onPress={() => navigation.navigate('EditGroupCoverImage')}
+          >
+            <ButtonLinkSpacing>
+              <H6>
+                <ButtonLink>Update</ButtonLink>
+              </H6>
+            </ButtonLinkSpacing>
+          </AndroidTouchableFix>
+        </RowHeader>
+        <Image source={coverImage} />
       </FieldContainer>
       <FieldContainer>
-        <H4>Resources</H4>
+        <RowHeader>
+          <Name>
+            <H4>Resources</H4>
+          </Name>
+        </RowHeader>
       </FieldContainer>
     </View>
   );
