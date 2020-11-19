@@ -27,19 +27,6 @@ const SquareCard = styled({
   height: 240,
 })(Card);
 
-// We have to position `LikeIcon` in a `View` rather than `LikeIcon` directly so `LikeIcon`'s loading state is positioned correctly 💥
-const LikeIconPositioning = styled(({ theme }) => ({
-  position: 'absolute',
-  top: theme.sizing.baseUnit,
-  right: theme.sizing.baseUnit,
-}))(View);
-
-const LikeIcon = withTheme(({ theme, isLiked }) => ({
-  fill: theme.colors.white,
-  name: isLiked ? 'like-solid' : 'like',
-  size: theme.sizing.baseUnit * 1.5,
-}))(Icon);
-
 const Image = withTheme(({ theme, hasTitleAndSummary }) => ({
   minAspectRatio: hasTitleAndSummary ? 2 : 1.5, // adjusts `Image` height to fill available `Card` whitespace if there is no `Title` or `Summary`
   maxAspectRatio: hasTitleAndSummary ? 2 : 1.5, // adjusts `Image` height to fill available `Card` whitespace if there is no `Title` or `Summary`
@@ -78,7 +65,7 @@ const Label = withTheme(({ theme }) => ({
 }))(H6);
 
 const HorizontalDefaultCard = withIsLoading(
-  ({ coverImage, isLiked, isLoading, isLive, summary, title, label }) => (
+  ({ coverImage, isLoading, isLive, summary, title, label }) => (
     <ThemeMixin>
       <SquareCard isLoading={isLoading} inHorizontalList>
         <View>

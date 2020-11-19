@@ -212,7 +212,6 @@ const HorizontalHighlightCard = withIsLoading(
     disabled,
     isLiked,
     isLoading,
-    LabelComponent,
     labelText,
     theme,
     isLive,
@@ -267,7 +266,6 @@ HorizontalHighlightCard.propTypes = {
   hasAction: PropTypes.bool,
   disabled: PropTypes.bool, // "Disabled state". Alternatively use this to highlight/differentiate the "active" card in a list.
   isLiked: PropTypes.bool,
-  LabelComponent: PropTypes.element,
   labelText: PropTypes.string,
   theme: PropTypes.shape({
     type: PropTypes.string,

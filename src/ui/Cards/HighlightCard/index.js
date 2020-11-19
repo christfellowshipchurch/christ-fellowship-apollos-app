@@ -76,12 +76,6 @@ const HighlightCard = withIsLoading(
             )}
           </Content>
         </CardContentWrapper>
-
-        {/* {isLiked != null ? (
-          <LikeIconPositioning>
-            <LikeIcon isLiked={isLiked} />
-          </LikeIconPositioning>
-        ) : null} */}
       </Card>
     </ThemeMixin>
   )

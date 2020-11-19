@@ -290,11 +290,11 @@ export const themed = (OriginalComponent) => {
           style = replaceCssShorthand(style);
           for (const k in style) {
             if (
-              lodashGet(defaultTheme, OriginalComponent.themePath + '.' + k)
+              lodashGet(defaultTheme, `${OriginalComponent.themePath}.${k}`)
             ) {
               merge(
                 themeDiff,
-                lodashSet({}, OriginalComponent.themePath + '.' + k, style[k]),
+                lodashSet({}, `${OriginalComponent.themePath}.${k}`, style[k])
               );
             } else if (lodashGet(defaultTheme, k)) {
               merge(themeDiff, lodashSet({}, k, style[k]));
@@ -334,5 +334,5 @@ export function setOriginalCSS(path, string) {
     .split('\n')
     .slice(1, -2)
     .join('\n');
-  lodashSet(originalCSS, path + '.defaultCSS', string);
+  lodashSet(originalCSS, `${path}.defaultCSS`, string);
 }

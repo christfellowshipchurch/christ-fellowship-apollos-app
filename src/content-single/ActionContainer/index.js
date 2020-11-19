@@ -8,10 +8,7 @@ import {
   ThemeMixin,
 } from '@apollosproject/ui-kit';
 import { MediaPlayerSpacer } from '@apollosproject/ui-media-player';
-import {
-  LikeButtonConnected,
-  ShareButtonConnected,
-} from '@apollosproject/ui-connected';
+import { ShareButtonConnected } from '@apollosproject/ui-connected';
 
 const PositioningView = styled(({ theme }) => ({
   justifyContent: 'space-around',
@@ -33,7 +30,6 @@ const ActionContainer = withTheme()(({ itemId, theme }) => (
     <Container>
       <MediaPlayerSpacer>
         <PositioningView>
-          {/* <LikeButtonConnected itemId={itemId} /> */}
           <StyledShareButtonConnected itemId={itemId} />
         </PositioningView>
       </MediaPlayerSpacer>

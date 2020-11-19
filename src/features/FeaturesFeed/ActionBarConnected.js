@@ -3,12 +3,7 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { chunk } from 'lodash';
 
-import {
-  styled,
-  ActivityIndicator,
-  ThemeMixin,
-  H6,
-} from '@apollosproject/ui-kit';
+import { ActivityIndicator, ThemeMixin } from '@apollosproject/ui-kit';
 import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
 import ActionBar, { ActionBarItem } from 'ui/ActionBar';
 

@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { H4 } from '@apollosproject/ui-kit';
 
 import GET_PRAYER_REQUEST from './getPrayerRequest';
-import { Label } from './styles';
+import Label from './styles';
 
 const PrayerRequestText = ({ prayerRequestId, isLoading, title }) => {
   const { loading, error, data } = useQuery(GET_PRAYER_REQUEST, {

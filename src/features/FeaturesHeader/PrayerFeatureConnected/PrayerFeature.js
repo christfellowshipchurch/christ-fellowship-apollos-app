@@ -6,7 +6,6 @@ import {
   Avatar,
   AvatarList,
   ImageSourceType,
-  withIsLoading,
   withTheme,
   ThemeMixin,
   styled,

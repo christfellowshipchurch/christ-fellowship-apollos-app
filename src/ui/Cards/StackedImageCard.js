@@ -1,9 +1,8 @@
-import React, { PureComponent } from 'react';
-import { View, Platform, Text } from 'react-native';
+import React from 'react';
+import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
-  H5,
   H6,
   styled,
   withTheme,
@@ -12,7 +11,6 @@ import {
   FlexedView,
   CardLabel,
   CardImage,
-  Card,
 } from '@apollosproject/ui-kit';
 import ThemeMixin from '../DynamicThemeMixin';
 

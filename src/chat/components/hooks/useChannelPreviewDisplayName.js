@@ -1,22 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { ChatContext } from '../../context';
 
-export const useChannelPreviewDisplayName = (channel) => {
-  const { client } = useContext(ChatContext);
-  const [displayName, setDisplayName] = useState(
-    getChannelPreviewDisplayName(channel, client)
-  );
-
-  useEffect(
-    () => {
-      setDisplayName(getChannelPreviewDisplayName(channel, client));
-    },
-    [channel]
-  );
-
-  return displayName;
-};
-
 const getChannelPreviewDisplayName = (channel, client) => {
   const currentUserId = client?.user?.id;
   const channelName = channel?.data?.name;
@@ -33,4 +17,20 @@ const getChannelPreviewDisplayName = (channel, client) => {
     .join(', ');
 
   return name;
+};
+
+export const useChannelPreviewDisplayName = (channel) => {
+  const { client } = useContext(ChatContext);
+  const [displayName, setDisplayName] = useState(
+    getChannelPreviewDisplayName(channel, client)
+  );
+
+  useEffect(
+    () => {
+      setDisplayName(getChannelPreviewDisplayName(channel, client));
+    },
+    [channel]
+  );
+
+  return displayName;
 };
