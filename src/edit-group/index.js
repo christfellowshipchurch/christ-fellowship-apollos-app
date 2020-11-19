@@ -19,6 +19,9 @@ import NavigationHeader from '../ui/NavigationHeader';
 import EditGroupConnected from './EditGroup';
 import EditGroupCoverImageConnected from './EditGroupCoverImage';
 
+// :: Styled Components
+// ------------------------------------------------------------------
+
 export const ContentContainer = withMediaQuery(
   ({ md }) => ({ maxWidth: md }),
   styled(({ theme }) => ({
@@ -39,7 +42,7 @@ const RouteContainer = ({ children }) => (
     <KeyboardAvoidingView behavior={'padding'}>
       <ScrollView>
         <ContentContainer>
-          <SafeAreaView forceInset={{ top: 'always' }}>{children}</SafeAreaView>
+          <SafeAreaView>{children}</SafeAreaView>
         </ContentContainer>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -49,12 +52,14 @@ RouteContainer.propTypes = {
   children: PropTypes.node,
 };
 
+// :: Routes
+// ------------------------------------------------------------------
+
 const EditGroup = ({ navigation }) => (
   <RouteContainer>
     <EditGroupConnected navigation={navigation} />
   </RouteContainer>
 );
-
 EditGroup.navigationOptions = {
   headerMode: 'float',
   headerTransparent: true,
@@ -66,12 +71,14 @@ const EditGroupCoverImage = ({ navigation }) => (
     <EditGroupCoverImageConnected navigation={navigation} />
   </RouteContainer>
 );
-
 EditGroupCoverImage.navigationOptions = {
   headerMode: 'float',
   headerTransparent: true,
   header: NavigationHeader,
 };
+
+// :: Core Component
+// ------------------------------------------------------------------
 
 const EditGroupNavigator = createStackNavigator(
   {

@@ -9,15 +9,17 @@ import {
   styled,
   ActivityIndicator,
   BackgroundView,
-  ButtonIcon,
   ButtonLink,
+  Card,
   CardImage,
   ErrorCard,
   FlexedView,
   H3,
   H4,
   H6,
+  PaddedView,
   Touchable,
+  TouchableScale,
   withMediaQuery,
   withTheme,
 } from '@apollosproject/ui-kit';
@@ -46,7 +48,6 @@ export const ContentContainer = withMediaQuery(
 
 // Read Only Fields that show on the Profile
 export const FieldContainer = styled(({ theme }) => ({
-  paddingHorizontal: theme.sizing.baseUnit * 1.5,
   marginVertical: theme.sizing.baseUnit * 0.75,
 }))(View);
 
@@ -62,20 +63,12 @@ const Overlay = styled(({ theme }) => ({
   zIndex: 1,
 }))(FlexedView);
 
-const StyledH3 = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit,
-  ...Platform.select({
-    android: {
-      paddingTop: theme.sizing.baseUnit,
-    },
-  }),
-}))(H3);
-
 // ✂️ From TileContentFeed --------------------------------------------------------
 const RowHeader = styled(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
+  paddingHorizontal: theme.sizing.baseUnit,
   zIndex: 2, // UX hack to improve tapability. Positions RowHeader above StyledHorizontalTileFeed
 }))(View);
 
@@ -95,8 +88,8 @@ const ButtonLinkSpacing = styled(({ theme }) => ({
 }))(View);
 
 const Image = withTheme(({ theme }) => ({
-  forceRatio: 1.5,
-  imageStyle: { aspectRatio: 1.5 },
+  forceRatio: 1.78,
+  imageStyle: { aspectRatio: 1.78 },
 }))(CardImage);
 
 // ✂️ From TileContentFeed --------------------------------------------------------
@@ -117,6 +110,9 @@ const EditGroup = ({ navigation, group, loading, error }) => {
 
   if (error) return <ErrorCard />;
 
+  const handleUpdateGroupCoverImagePress = () =>
+    navigation.navigate('EditGroupCoverImage', { groupId: group.id });
+
   return (
     <View>
       {loading && (
@@ -124,18 +120,16 @@ const EditGroup = ({ navigation, group, loading, error }) => {
           <ActivityIndicator />
         </Overlay>
       )}
+      <PaddedView>
+        <H3>Customize my Group</H3>
+      </PaddedView>
 
-      <FieldContainer>
-        <StyledH3>Customize my Group</StyledH3>
-      </FieldContainer>
       <FieldContainer>
         <RowHeader>
           <Name>
             <H4>Cover Photo</H4>
           </Name>
-          <AndroidTouchableFix
-            onPress={() => navigation.navigate('EditGroupCoverImage')}
-          >
+          <AndroidTouchableFix onPress={handleUpdateGroupCoverImagePress}>
             <ButtonLinkSpacing>
               <H6>
                 <ButtonLink>Update</ButtonLink>
@@ -143,7 +137,11 @@ const EditGroup = ({ navigation, group, loading, error }) => {
             </ButtonLinkSpacing>
           </AndroidTouchableFix>
         </RowHeader>
-        <Image source={coverImage} />
+        <TouchableScale onPress={handleUpdateGroupCoverImagePress}>
+          <Card>
+            <Image source={coverImage} />
+          </Card>
+        </TouchableScale>
       </FieldContainer>
       <FieldContainer>
         <RowHeader>
@@ -163,6 +161,16 @@ EditGroup.propTypes = {
   }),
   loading: PropTypes.bool,
   error: PropTypes.bool,
+  group: PropTypes.shape({
+    id: PropTypes.string,
+    coverImage: PropTypes.shape({
+      sources: PropTypes.arrayOf(
+        PropTypes.shape({
+          uri: PropTypes.string,
+        })
+      ),
+    }),
+  }).isRequired,
 };
 
 EditGroup.defaultProps = {

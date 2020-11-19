@@ -1,8 +1,6 @@
 import React from 'react';
-import { View, Platform, StatusBar, FlatList } from 'react-native';
+import { View, StatusBar, Alert } from 'react-native';
 import PropTypes from 'prop-types';
-import Color from 'color';
-import { SafeAreaView } from 'react-navigation';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
@@ -10,114 +8,129 @@ import {
   styled,
   ActivityIndicator,
   BackgroundView,
-  BodyText,
+  Card,
+  CardContent,
   CardImage,
   ErrorCard,
   H3,
-  H4,
-  H6,
-  withMediaQuery,
+  H5,
+  PaddedView,
+  TouchableScale,
   withTheme,
 } from '@apollosproject/ui-kit';
 
+import { useGroup } from '../hooks';
+
 import GET_GROUP_COVER_IMAGES from './getGroupCoverImages';
+
+const CoverImageShape = PropTypes.shape({
+  guid: PropTypes.string,
+  name: PropTypes.string,
+  image: PropTypes.shape({
+    sources: PropTypes.arrayOf(
+      PropTypes.shape({
+        uri: PropTypes.string,
+      })
+    ),
+  }),
+});
 
 // :: Styled Components
 // ------------------------------------------------------------------
 
-const ContentContainer = withMediaQuery(
-  ({ md }) => ({ maxWidth: md }),
-  styled(({ theme }) => ({
-    marginVertical: theme.sizing.baseUnit * 1.5,
-    backgroundColor: theme.colors.transparent,
-  })),
-  styled(({ theme }) => ({
-    marginVertical: theme.sizing.baseUnit * 1.5,
-    backgroundColor: theme.colors.transparent,
-    width: 500,
-    alignSelf: 'center',
-  }))
-)(View);
-
-// Read Only Fields that show on the Profile
-const FieldContainer = styled(({ theme }) => ({
-  paddingHorizontal: theme.sizing.baseUnit * 1.5,
-  marginVertical: theme.sizing.baseUnit * 0.75,
-}))(View);
-
-const StyledH3 = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit,
-  ...Platform.select({
-    android: {
-      paddingTop: theme.sizing.baseUnit,
-    },
-  }),
-}))(H3);
+const CoverImageCardTouchable = styled(({ theme }) => ({
+  marginBottom: theme.sizing.baseUnit,
+}))(TouchableScale);
 
 const Image = withTheme(({ theme }) => ({
-  forceRatio: 1.5,
-  imageStyle: { aspectRatio: 1.5 },
+  forceRatio: 1.78,
+  imageStyle: { aspectRatio: 1.78 },
 }))(CardImage);
+
+const Row = styled(({ theme }) => ({
+  flex: 1,
+  width: '100%',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  borderColor: 'cyan',
+}));
 
 // :: Sub-Components
 // ------------------------------------------------------------------
 
-const CoverImageItemContainer = styled(({ theme }) => ({
-  marginBottom: theme.sizing.baseUnit * 1.5,
-}))(View);
-
-const CoverImageItem = ({ item }) => {
-  console.log('[rkd] item:', item);
-  const imageSource = get(item, 'image.sources[0].uri', null);
+const CoverImageCard = ({ coverImage, current, onPress }) => {
+  const imageSource = get(coverImage, 'image.sources[0].uri', null);
 
   if (!imageSource) return null;
 
   return (
-    <CoverImageItemContainer>
-      <Image source={imageSource} label={item.name} />
-    </CoverImageItemContainer>
+    <CoverImageCardTouchable onPress={onPress}>
+      <Card>
+        <Image source={imageSource} />
+        <CardContent>
+          <Row>
+            <H5>{coverImage.name}</H5>
+            {current && <H5>{'*** Current ***'}</H5>}
+          </Row>
+        </CardContent>
+      </Card>
+    </CoverImageCardTouchable>
   );
+};
+
+CoverImageCard.propTypes = {
+  coverImage: CoverImageShape.isRequired,
+  onPress: PropTypes.func.isRequired,
+  current: PropTypes.bool,
+};
+CoverImageCard.defaultProps = {
+  current: false,
 };
 
 // :: Core Component
 // ------------------------------------------------------------------
 const EditGroupCoverImage = ({
-  navigation,
   loading,
   error,
+  currentCoverImageUri,
   coverImages = [],
+  onSelectCoverImage,
 }) => {
-  // const currentCoverImage = get(group, 'coverImage.sources[0].uri', null);
-
-  if (loading)
-    return (
-      <BackgroundView>
-        <StatusBar hidden />
-        <ActivityIndicator />
-      </BackgroundView>
-    );
-
   if (error) return <ErrorCard />;
 
   return (
     <View>
-      <FieldContainer>
-        <StyledH3>Edit Group Cover Image</StyledH3>
-        {coverImages.map((coverImage) => (
-          <CoverImageItem key={coverImage.guid} item={coverImage} />
-        ))}
-      </FieldContainer>
+      <PaddedView>
+        <H3>Update Group Cover Photo</H3>
+      </PaddedView>
+
+      {loading ? (
+        <View style={{ flex: 1, minHeight: 300 }}>
+          <ActivityIndicator />
+        </View>
+      ) : (
+        coverImages.map((coverImage) => (
+          <CoverImageCard
+            key={coverImage.guid}
+            coverImage={coverImage}
+            onPress={() => onSelectCoverImage(coverImage.guid)}
+            current={
+              get(coverImage, 'image.sources[0].uri', null) ===
+              currentCoverImageUri
+            }
+          />
+        ))
+      )}
     </View>
   );
 };
 
 EditGroupCoverImage.propTypes = {
-  navigation: PropTypes.shape({
-    getParam: PropTypes.func,
-    navigate: PropTypes.func,
-  }),
   loading: PropTypes.bool,
   error: PropTypes.bool,
+  coverImages: PropTypes.arrayOf(CoverImageShape).isRequired,
+  onSelectCoverImage: PropTypes.func.isRequired,
+  currentCoverImageUri: PropTypes.string,
 };
 
 EditGroupCoverImage.defaultProps = {
@@ -128,20 +141,58 @@ EditGroupCoverImage.defaultProps = {
 // :: Connected Component
 // ------------------------------------------------------------------
 const EditGroupCoverImageConnected = (props) => {
-  // Cover images
-  const { data, loading, error } = useQuery(GET_GROUP_COVER_IMAGES, {
-    fetchPolicy: 'cache-and-network',
-  });
+  const groupId = props.navigation.getParam('groupId');
 
+  // Group Details
+  const { group, loading: loadingGroup } = useGroup(groupId);
+  const currentCoverImageUri = get(group, 'coverImage.sources[0].uri', null);
+
+  // Cover Image Options
+  const { data, loading: loadingCoverImages, error } = useQuery(
+    GET_GROUP_COVER_IMAGES,
+    {
+      fetchPolicy: 'cache-and-network',
+    }
+  );
   const coverImages = get(data, 'groupCoverImages', []);
-  console.log('[EditGroupCoverImageConnected] coverImages:', coverImages);
+
+  const handleSelectCoverImage = (guid) => {
+    console.log('[handleSelectCoverImage] guid:', guid);
+    Alert.alert('Cover image selected', `guid: ${guid}`);
+    // Works on both Android and iOS
+    Alert.alert(
+      'Use this Group Cover Photo?',
+      '',
+      [
+        {
+          text: 'Yes',
+          onPress: () => console.log('✅ Yes'),
+        },
+        {
+          text: 'Cancel',
+          onPress: () => console.log('❌ Cancel'),
+          style: 'cancel',
+        },
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  console.group('[EditGroupCoverImageConnected]');
+  console.log('groupId:', groupId);
+  console.log('coverImages:', coverImages);
+  console.log('currentCoverImageUri:', currentCoverImageUri);
+  console.groupEnd();
 
   return (
     <EditGroupCoverImage
       {...props}
-      loading={loading}
+      loading={loadingGroup || loadingCoverImages}
       error={error}
+      currentCoverImageUri={currentCoverImageUri}
       coverImages={coverImages}
+      onSelectCoverImage={handleSelectCoverImage}
     />
   );
 };
