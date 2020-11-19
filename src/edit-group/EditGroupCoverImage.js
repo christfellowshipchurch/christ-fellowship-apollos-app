@@ -1,27 +1,25 @@
 import React from 'react';
-import { View, StatusBar, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
 import {
   styled,
   ActivityIndicator,
-  BackgroundView,
   Card,
   CardContent,
   CardImage,
   ErrorCard,
   H3,
-  H5,
+  H4,
+  Icon,
   PaddedView,
   TouchableScale,
   withTheme,
 } from '@apollosproject/ui-kit';
 
-import { useGroup } from '../hooks';
-
-import GET_GROUP_COVER_IMAGES from './getGroupCoverImages';
+import { GET_GROUP_COVER_IMAGES, UPDATE_GROUP_COVER_IMAGE } from './queries';
 
 const CoverImageShape = PropTypes.shape({
   guid: PropTypes.string,
@@ -38,6 +36,11 @@ const CoverImageShape = PropTypes.shape({
 // :: Styled Components
 // ------------------------------------------------------------------
 
+const LoadingContainer = styled(({ theme }) => ({
+  flex: 1,
+  minHeight: 300,
+}))(View);
+
 const CoverImageCardTouchable = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit,
 }))(TouchableScale);
@@ -51,9 +54,17 @@ const Row = styled(({ theme }) => ({
   flex: 1,
   width: '100%',
   flexDirection: 'row',
-  justifyContent: 'space-between',
-  borderColor: 'cyan',
-}));
+  justifyContent: 'flex-start',
+}))(View);
+
+const CheckIcon = withTheme(({ theme }) => ({
+  name: 'check',
+  size: 22,
+  fill: theme.colors.primary,
+  style: {
+    marginLeft: theme.sizing.baseUnit / 2,
+  },
+}))(Icon);
 
 // :: Sub-Components
 // ------------------------------------------------------------------
@@ -63,17 +74,25 @@ const CoverImageCard = ({ coverImage, current, onPress }) => {
 
   if (!imageSource) return null;
 
+  const cardCore = (
+    <Card>
+      <Image source={imageSource} />
+      <CardContent>
+        <Row>
+          <H4>{coverImage.name}</H4>
+          {current && <CheckIcon />}
+        </Row>
+      </CardContent>
+    </Card>
+  );
+
+  if (current) {
+    return cardCore;
+  }
+
   return (
     <CoverImageCardTouchable onPress={onPress}>
-      <Card>
-        <Image source={imageSource} />
-        <CardContent>
-          <Row>
-            <H5>{coverImage.name}</H5>
-            {current && <H5>{'*** Current ***'}</H5>}
-          </Row>
-        </CardContent>
-      </Card>
+      {cardCore}
     </CoverImageCardTouchable>
   );
 };
@@ -101,13 +120,13 @@ const EditGroupCoverImage = ({
   return (
     <View>
       <PaddedView>
-        <H3>Update Group Cover Photo</H3>
+        <H3 padded>Update Group Cover Photo</H3>
       </PaddedView>
 
       {loading ? (
-        <View style={{ flex: 1, minHeight: 300 }}>
+        <LoadingContainer>
           <ActivityIndicator />
-        </View>
+        </LoadingContainer>
       ) : (
         coverImages.map((coverImage) => (
           <CoverImageCard
@@ -141,66 +160,52 @@ EditGroupCoverImage.defaultProps = {
 // :: Connected Component
 // ------------------------------------------------------------------
 const EditGroupCoverImageConnected = (props) => {
-  const groupId = props.navigation.getParam('groupId');
-
-  // Group Details
-  const { group, loading: loadingGroup } = useGroup(groupId);
-  const currentCoverImageUri = get(group, 'coverImage.sources[0].uri', null);
+  // Navigation props
+  const { navigation } = props;
+  const groupId = navigation.getParam('groupId');
+  const currentCoverImageUri = navigation.getParam('currentCoverImageUri');
 
   // Cover Image Options
-  const { data, loading: loadingCoverImages, error } = useQuery(
-    GET_GROUP_COVER_IMAGES,
-    {
-      fetchPolicy: 'cache-and-network',
-    }
-  );
-  const coverImages = get(data, 'groupCoverImages', []);
+  const { data, loading, error } = useQuery(GET_GROUP_COVER_IMAGES, {
+    fetchPolicy: 'cache-and-network',
+  });
+  const [updateCoverImage] = useMutation(UPDATE_GROUP_COVER_IMAGE);
 
+  // Event handler
   const handleSelectCoverImage = (guid) => {
-    console.log('[handleSelectCoverImage] guid:', guid);
-    Alert.alert('Cover image selected', `guid: ${guid}`);
-    // Works on both Android and iOS
     Alert.alert(
-      'Use this Group Cover Photo?',
-      '',
+      'Update Group Cover Photo',
+      'Use this photo instead?',
       [
         {
           text: 'Yes',
-          onPress: () => console.log('✅ Yes'),
+          onPress: async () => {
+            await updateCoverImage({
+              variables: { imageId: guid, groupId },
+            });
+            navigation.goBack();
+          },
         },
         {
           text: 'Cancel',
-          onPress: () => console.log('❌ Cancel'),
+          onPress: () => {},
           style: 'cancel',
         },
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
       ],
-      { cancelable: false }
+      { cancelable: true }
     );
   };
-
-  console.group('[EditGroupCoverImageConnected]');
-  console.log('groupId:', groupId);
-  console.log('coverImages:', coverImages);
-  console.log('currentCoverImageUri:', currentCoverImageUri);
-  console.groupEnd();
 
   return (
     <EditGroupCoverImage
       {...props}
-      loading={loadingGroup || loadingCoverImages}
+      loading={loading}
       error={error}
       currentCoverImageUri={currentCoverImageUri}
-      coverImages={coverImages}
+      coverImages={get(data, 'groupCoverImages', [])}
       onSelectCoverImage={handleSelectCoverImage}
     />
   );
 };
-
-// EditGroupCoverImageConnected.navigationOptions = {
-//   header: NavigationHeader,
-//   headerTransparent: true,
-//   headerMode: 'float',
-// };
 
 export default EditGroupCoverImageConnected;

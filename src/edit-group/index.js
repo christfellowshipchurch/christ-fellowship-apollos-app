@@ -19,6 +19,12 @@ import NavigationHeader from '../ui/NavigationHeader';
 import EditGroupConnected from './EditGroup';
 import EditGroupCoverImageConnected from './EditGroupCoverImage';
 
+const SHARED_NAVIGATION_OPTIONS = {
+  headerMode: 'float',
+  headerTransparent: true,
+  header: NavigationHeader,
+};
+
 // :: Styled Components
 // ------------------------------------------------------------------
 
@@ -60,22 +66,14 @@ const EditGroup = ({ navigation }) => (
     <EditGroupConnected navigation={navigation} />
   </RouteContainer>
 );
-EditGroup.navigationOptions = {
-  headerMode: 'float',
-  headerTransparent: true,
-  header: NavigationHeader,
-};
+EditGroup.navigationOptions = SHARED_NAVIGATION_OPTIONS;
 
 const EditGroupCoverImage = ({ navigation }) => (
   <RouteContainer>
     <EditGroupCoverImageConnected navigation={navigation} />
   </RouteContainer>
 );
-EditGroupCoverImage.navigationOptions = {
-  headerMode: 'float',
-  headerTransparent: true,
-  header: NavigationHeader,
-};
+EditGroupCoverImage.navigationOptions = SHARED_NAVIGATION_OPTIONS;
 
 // :: Core Component
 // ------------------------------------------------------------------

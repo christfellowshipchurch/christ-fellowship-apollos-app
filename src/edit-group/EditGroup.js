@@ -111,7 +111,10 @@ const EditGroup = ({ navigation, group, loading, error }) => {
   if (error) return <ErrorCard />;
 
   const handleUpdateGroupCoverImagePress = () =>
-    navigation.navigate('EditGroupCoverImage', { groupId: group.id });
+    navigation.navigate('EditGroupCoverImage', {
+      groupId: group.id,
+      currentCoverImageUri: coverImage,
+    });
 
   return (
     <View>
@@ -121,7 +124,7 @@ const EditGroup = ({ navigation, group, loading, error }) => {
         </Overlay>
       )}
       <PaddedView>
-        <H3>Customize my Group</H3>
+        <H3 padded>Customize my Group</H3>
       </PaddedView>
 
       <FieldContainer>
@@ -185,27 +188,7 @@ const EditGroupConnected = (props) => {
   const id = props.navigation.getParam('id');
   const { group } = useGroup(id);
 
-  // Cover images
-  const coverImagesQuery = useQuery(GET_GROUP_COVER_IMAGES, {
-    fetchPolicy: 'cache-and-network',
-  });
-
-  const coverImages = {
-    loading: coverImagesQuery.loading,
-    error: coverImagesQuery.error,
-    data: get(coverImagesQuery, 'data.groupCoverImages', []),
-  };
-
-  console.log('[EditGroupConnected] group:', group);
-  console.log('[EditGroupConnected] coverImages:', coverImages);
-
-  return <EditGroup {...props} group={group} coverImages={coverImages} />;
+  return <EditGroup {...props} group={group} />;
 };
-
-// EditGroupConnected.navigationOptions = {
-//   header: NavigationHeader,
-//   headerTransparent: true,
-//   headerMode: 'float',
-// };
 
 export default EditGroupConnected;
