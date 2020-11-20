@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import { withProps } from 'recompose';
 import { useQuery } from '@apollo/react-hooks';
-import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 

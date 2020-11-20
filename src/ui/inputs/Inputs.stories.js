@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, SafeAreaView, View, ScrollView } from 'react-native';
+import { SafeAreaView, View, ScrollView } from 'react-native';
 import { storiesOf } from '@apollosproject/ui-storybook';
 import { styled, H4, BackgroundView } from '@apollosproject/ui-kit';
 import moment from 'moment';

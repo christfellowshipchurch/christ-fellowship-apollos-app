@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 
 import {
-    styled,
-    BackgroundView,
-    PaddedView,
-    ImageSourceType,
+  styled,
+  BackgroundView,
+  PaddedView,
+  ImageSourceType,
 } from '@apollosproject/ui-kit';
 
 import CoverImageBackground from '../CoverImageBackground';
@@ -18,63 +18,63 @@ import SummaryConnected from '../SummaryConnected';
 import { CheckInButtonConnected } from '../../check-in';
 
 const Cell = styled(({ theme }) => ({
-    paddingBottom: theme.sizing.baseUnit * 0.5,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flex: 1,
+  paddingBottom: theme.sizing.baseUnit * 0.5,
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  flex: 1,
 }))(View);
 
 const VolunteerGroup = ({ id, content, loading, navigation }) => {
-    const checkInRef = useRef();
-    const coverImageSources = get(content, 'coverImage.sources', []);
-    const resources = get(content, 'groupResources', []);
+  const checkInRef = useRef();
+  const coverImageSources = get(content, 'coverImage.sources', []);
+  const resources = get(content, 'groupResources', []);
 
-    return (
-        <CoverImageBackground isLoading={loading} source={coverImageSources}>
-            <HeaderConnected id={id} />
+  return (
+    <CoverImageBackground isLoading={loading} source={coverImageSources}>
+      <HeaderConnected id={id} />
 
-            <BackgroundView>
-                <PaddedView vertical={false}>
-                    <Cell>
-                        <View />
-                        <CheckInButtonConnected id={id} ref={checkInRef} />
-                    </Cell>
+      <BackgroundView>
+        <PaddedView vertical={false}>
+          <Cell>
+            <View />
+            <CheckInButtonConnected id={id} ref={checkInRef} />
+          </Cell>
 
-                    <SummaryConnected id={id} />
-                </PaddedView>
+          <SummaryConnected id={id} />
+        </PaddedView>
 
-                <MembersFeedConnected id={id} />
+        <MembersFeedConnected id={id} />
 
-                {!isEmpty(resources) ? (
-                    <Resources
-                        isLoading={loading}
-                        navigation={navigation}
-                        resources={resources}
-                    />
-                ) : null}
-            </BackgroundView>
-        </CoverImageBackground>
-    );
+        {!isEmpty(resources) ? (
+          <Resources
+            isLoading={loading}
+            navigation={navigation}
+            resources={resources}
+          />
+        ) : null}
+      </BackgroundView>
+    </CoverImageBackground>
+  );
 };
 
 VolunteerGroup.propTypes = {
+  id: PropTypes.string,
+  content: PropTypes.shape({
+    __typename: PropTypes.string,
     id: PropTypes.string,
-    content: PropTypes.shape({
-        __typename: PropTypes.string,
-        id: PropTypes.string,
+    title: PropTypes.string,
+    summary: PropTypes.string,
+    groupType: PropTypes.string,
+    groupResources: PropTypes.arrayOf(
+      PropTypes.shape({
         title: PropTypes.string,
-        summary: PropTypes.string,
-        groupType: PropTypes.string,
-        groupResources: PropTypes.arrayOf(
-            PropTypes.shape({
-                title: PropTypes.string,
-                action: PropTypes.string,
-                relatedNode: PropTypes.shape({ id: PropTypes.string }),
-            })
-        ),
-        coverImage: ImageSourceType,
-    }),
-    loading: PropTypes.bool,
+        action: PropTypes.string,
+        relatedNode: PropTypes.shape({ id: PropTypes.string }),
+      })
+    ),
+    coverImage: ImageSourceType,
+  }),
+  loading: PropTypes.bool,
 };
 
 export default VolunteerGroup;

@@ -17,7 +17,7 @@ const Cell = styled(({ theme }) => ({
   justifyContent: 'flex-start',
 }))(View);
 
-const CellItem = styled(({ theme, first }) => ({
+const CellItem = styled(({ theme }) => ({
   paddingVertical: theme.sizing.baseUnit * 0.5,
   justifyContent: 'center',
   flex: 1,
@@ -32,13 +32,7 @@ const config = {
   },
 };
 
-const VideoCall = ({
-  parentVideoCall,
-  videoCall,
-  isLoading,
-  groupId,
-  date,
-}) => {
+const VideoCall = ({ parentVideoCall, videoCall, isLoading, groupId }) => {
   useEffect(() => {
     async function initializeZoom() {
       try {
@@ -83,39 +77,11 @@ const VideoCall = ({
       throw e;
     }
   };
-  // Meeting zak token generated from using the jwt token as auth from jwt zoom app in postman and hitting the https://api.zoom.us/v2/users/{userId}/token?type=zak endpoint
-
-  // const zakTokenRaw = Config.ZOOM_ZAK_TOKEN;
-
-  // const startMeeting = async (meetingId) => {
-  //   const zakToken = decodeURIComponent(zakTokenRaw);
-
-  //   // TODO recieve user's details from zoom API? WOUT: webinar user is different
-  //   const userId = 'null'; // NOTE: no need for userId when using zakToken
-  //   const userType = ZoomBridgeerType;
-  //   const zoomToken = 'null'; // NOTE: no need for userId when using zakToken
-
-  //   const zoomAccessToken = zakToken;
-  //   // console.warn('zoomAccessToken', zoomAccessToken);
-
-  //   try {
-  //     await ZoomBridge.startMeeting(
-  //       fullName,
-  //       meetingId,
-  //       userId,
-  //       userType,
-  //       zoomAccessToken,
-  //       zoomToken
-  //     );
-  //   } catch (e) {
-  //     throw e;
-  //   }
-  // };
 
   return (
     <Cell>
       {!isEmpty(parentVideoCall) ? (
-        <CellItem first>
+        <CellItem>
           <Button
             onPress={() =>
               parentVideoCall.meetingId

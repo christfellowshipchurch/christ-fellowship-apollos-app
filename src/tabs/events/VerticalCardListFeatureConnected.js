@@ -12,17 +12,17 @@ const VerticalCardListFeature = ({
   onPressItem,
   title,
 }) => (
-    <CardFeed
-      title={title}
-      content={cards}
-      removeClippedSubviews={false}
-      onPressItem={onPressItem}
-      isLoading={isLoading}
-      listKey={listKey}
-      seeMore={false}
-      card={ActionRow}
-    />
-  );
+  <CardFeed
+    title={title}
+    content={cards}
+    removeClippedSubviews={false}
+    onPressItem={onPressItem}
+    isLoading={isLoading}
+    listKey={listKey}
+    seeMore={false}
+    card={ActionRow}
+  />
+);
 
 VerticalCardListFeature.propTypes = {
   cards: PropTypes.arrayOf(PropTypes.shape({})).isRequired,

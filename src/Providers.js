@@ -1,16 +1,16 @@
-import React from "react";
-import ApollosConfig from "@apollosproject/config";
+import React from 'react';
+import ApollosConfig from '@apollosproject/config';
 import {
   Providers,
   BackgroundView,
-  NavigationService
-} from "@apollosproject/ui-kit";
-import { AnalyticsProvider } from "@apollosproject/ui-analytics";
-import { MediaPlayerProvider } from "@apollosproject/ui-media-player";
+  NavigationService,
+} from '@apollosproject/ui-kit';
+import { AnalyticsProvider } from '@apollosproject/ui-analytics';
+import { MediaPlayerProvider } from '@apollosproject/ui-media-player';
 // import { NotificationsProvider } from '@apollosproject/ui-notifications';
-import { LiveProvider } from "@apollosproject/ui-connected";
-import { checkOnboardingStatusAndNavigate } from "@apollosproject/ui-onboarding";
-import { AuthProvider } from "@apollosproject/ui-auth";
+import { LiveProvider } from '@apollosproject/ui-connected';
+import { checkOnboardingStatusAndNavigate } from '@apollosproject/ui-onboarding';
+import { AuthProvider } from '@apollosproject/ui-auth';
 import {
   DynamicValue,
   useDynamicValue,
@@ -21,13 +21,13 @@ import NotificationsProvider from './NotificationsProvider';
 import { SideMenuProvider } from './sidemenu';
 import AppStateProvider from './AppStateProvider';
 
-import { track, identify } from "./amplitude";
-import ClientProvider, { client } from "./client";
-import customTheme, { customIcons } from "./theme";
+import { track, identify } from './amplitude';
+import ClientProvider, { client } from './client';
+import customTheme, { customIcons } from './theme';
 
-const dynamicTheme = new DynamicValue("light", "dark");
+const dynamicTheme = new DynamicValue('light', 'dark');
 
-const AppProviders = props => {
+const AppProviders = (props) => {
   const theme = useDynamicValue(dynamicTheme);
 
   return (
@@ -37,12 +37,12 @@ const AppProviders = props => {
         navigate={NavigationService.navigate}
       >
         <AuthProvider
-          navigateToAuth={() => NavigationService.navigate("Auth")}
+          navigateToAuth={() => NavigationService.navigate('Auth')}
           navigate={NavigationService.navigate}
           closeAuth={() =>
             checkOnboardingStatusAndNavigate({
               client,
-              navigation: NavigationService
+              navigation: NavigationService,
             })
           }
         >

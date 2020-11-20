@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import {
@@ -36,7 +36,7 @@ const StyledPicker = styled(({ theme }) => ({
   }),
 }))(CorePicker);
 
-const Picker = ({ value, style, icon, hideIcon, ...pickerProps }) => (
+const Picker = ({ value, icon, hideIcon, ...pickerProps }) => (
   <Row>
     <InputIcon icon={icon} hideIcon={hideIcon} />
     <StyledPicker {...pickerProps} value={value} wrapperStyle={{ flex: 1 }} />
@@ -45,13 +45,11 @@ const Picker = ({ value, style, icon, hideIcon, ...pickerProps }) => (
 
 Picker.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  style: PropTypes.object,
   icon: PropTypes.string,
   hideIcon: PropTypes.bool,
 };
 
 Picker.defaultProps = {
-  style: {},
   hideIcon: false,
   icon: 'text',
 };
