@@ -105,6 +105,8 @@ PODS:
   - react-native-onesignal (3.9.1):
     - OneSignal (= 2.15.2)
     - React (< 1.0.0, >= 0.13.0)
+  - react-native-orientation-locker (1.2.0):
+    - React
   - react-native-passkit-wallet (0.1.4):
     - React
   - react-native-safari-view (1.0.0):
@@ -204,6 +206,7 @@ DEPENDENCIES:
   - react-native-music-control (from `../node_modules/react-native-music-control`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
+  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-passkit-wallet (from `../node_modules/react-native-passkit-wallet`)
   - react-native-safari-view (from `../node_modules/react-native-safari-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -298,6 +301,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-onesignal:
     :path: "../node_modules/react-native-onesignal"
+  react-native-orientation-locker:
+    :path: "../node_modules/react-native-orientation-locker"
   react-native-passkit-wallet:
     :path: "../node_modules/react-native-passkit-wallet"
   react-native-safari-view:
@@ -397,6 +402,7 @@ SPEC CHECKSUMS:
   react-native-music-control: dcfe5b61e56a15898c4618579cb8ce612c9d21a8
   react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
   react-native-onesignal: ad2eaab1517951e50d19fa3eccd16d3048167181
+  react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
   react-native-passkit-wallet: 51e3babdaeec4c10b5736786ebd1bfb470fcaa36
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
   react-native-safe-area-context: 79fea126c6830c85f65947c223a5e3058a666937
