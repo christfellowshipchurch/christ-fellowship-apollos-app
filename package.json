@@ -117,7 +117,7 @@
     "react-native-modal-datetime-picker": "8.7.1",
     "react-native-music-control": "0.10.8",
     "react-native-onesignal": "3.9.1",
-    "react-native-orientation-locker": "^1.2.0",
+    "react-native-orientation-locker": "1.2.0",
     "react-native-passkit-wallet": "^0.1.4",
     "react-native-permissions": "^2.1.2",
     "react-native-raw-bottom-sheet": "^2.2.0",

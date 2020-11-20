@@ -2,6 +2,9 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
+import ScreenOrientation, {
+  UNLOCK,
+} from 'react-native-orientation-locker/ScreenOrientation';
 
 import LiveStreamPlayer from './LiveStreamPlayer';
 import FullscreenPlayer from './FullscreenPlayer';
@@ -84,15 +87,23 @@ const MediaPlayer = () => {
       endsAt: get(liveStream, 'contentItem.events[0].end'),
     };
     return (
-      <LiveStreamPlayer
-        channelId={channelId}
-        event={event}
-        isLoading={loading}
-      />
+      <>
+        <ScreenOrientation orientation={UNLOCK} />
+        <LiveStreamPlayer
+          channelId={channelId}
+          event={event}
+          isLoading={loading}
+        />
+      </>
     );
   }
 
-  return <FullscreenPlayer />;
+  return (
+    <>
+      <ScreenOrientation orientation={UNLOCK} />
+      <FullscreenPlayer />
+    </>
+  );
 };
 
 const MemoizedMediaPlayer = React.memo(MediaPlayer, () => true); // never re-render

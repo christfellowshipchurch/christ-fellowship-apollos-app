@@ -3,6 +3,9 @@ import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { useDarkModeContext } from 'react-native-dark-mode';
+import ScreenOrientation, {
+  PORTRAIT,
+} from 'react-native-orientation-locker/ScreenOrientation';
 
 import {
   BackgroundView,
@@ -114,6 +117,7 @@ const App = () => {
     <Providers>
       <BackgroundView>
         <StatusBar />
+        <ScreenOrientation orientation={PORTRAIT} />
         <CoreNavigationAnalytics>
           {(props) => (
             <AppContainer

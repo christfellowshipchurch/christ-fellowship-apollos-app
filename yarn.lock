@@ -15533,7 +15533,7 @@ react-native-onesignal@3.9.1:
   dependencies:
     invariant "^2.2.2"
 
-react-native-orientation-locker@^1.2.0:
+react-native-orientation-locker@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-native-orientation-locker/-/react-native-orientation-locker-1.2.0.tgz#9fa51b3aade9b847e63066b6fd60509371940a7e"
   integrity sha512-lnwp9Jbt1m/0Gfw9a5Mrwj/APNSuYkVdJEgBKRyQgOshDrKRv5dxpD0P786AgIEjnEbjyrNOS6GQvBdqPYSxsg==
