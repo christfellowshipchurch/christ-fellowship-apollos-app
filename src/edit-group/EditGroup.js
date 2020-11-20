@@ -146,13 +146,6 @@ const EditGroup = ({ navigation, group, loading, error }) => {
           </Card>
         </TouchableScale>
       </FieldContainer>
-      <FieldContainer>
-        <RowHeader>
-          <Name>
-            <H4>Resources</H4>
-          </Name>
-        </RowHeader>
-      </FieldContainer>
     </View>
   );
 };
