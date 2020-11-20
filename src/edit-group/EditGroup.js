@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Platform, StatusBar } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
 import Color from 'color';
-import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
 
 import {
@@ -27,7 +26,6 @@ import {
 // import NavigationHeader from '../ui/NavigationHeader';
 
 import { useGroup } from '../hooks';
-import GET_GROUP_COVER_IMAGES from './getGroupCoverImages';
 
 // :: Styled Components
 // ------------------------------------------------------------------
