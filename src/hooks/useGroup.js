@@ -12,9 +12,6 @@ export default function useGroup(id) {
     fetchPolicy: 'cache-and-network',
   });
 
-  console.log('\n------------\n[useGroup] id:', id);
-  console.log('[useGroup] data:', data);
-
   return {
     group: get(data, 'node', {}),
     ...rest,

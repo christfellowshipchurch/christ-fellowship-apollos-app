@@ -13,8 +13,8 @@ import {
   CardImage,
   ErrorCard,
   FlexedView,
+  H2,
   H3,
-  H4,
   H6,
   PaddedView,
   Touchable,
@@ -23,9 +23,9 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 
-// import NavigationHeader from '../ui/NavigationHeader';
-
 import { useGroup } from '../hooks';
+
+import EditGroupResourcesForm from './EditGroupResourcesForm';
 
 // :: Styled Components
 // ------------------------------------------------------------------
@@ -46,7 +46,7 @@ export const ContentContainer = withMediaQuery(
 
 // Read Only Fields that show on the Profile
 export const FieldContainer = styled(({ theme }) => ({
-  marginVertical: theme.sizing.baseUnit * 0.75,
+  marginBottom: theme.sizing.baseUnit,
 }))(View);
 
 const Overlay = styled(({ theme }) => ({
@@ -95,7 +95,7 @@ const Image = withTheme(({ theme }) => ({
 // :: Core Component
 // ------------------------------------------------------------------
 
-const EditGroup = ({ navigation, group, loading, error }) => {
+const EditGroup = ({ navigation, group, refetchGroup, loading, error }) => {
   const coverImage = get(group, 'coverImage.sources[0].uri', null);
 
   if (loading)
@@ -122,13 +122,13 @@ const EditGroup = ({ navigation, group, loading, error }) => {
         </Overlay>
       )}
       <PaddedView>
-        <H3 padded>Customize my Group</H3>
+        <H2 padded>Customize my Group</H2>
       </PaddedView>
 
       <FieldContainer>
         <RowHeader>
           <Name>
-            <H4>Cover Photo</H4>
+            <H3>Cover Photo</H3>
           </Name>
           <AndroidTouchableFix onPress={handleUpdateGroupCoverImagePress}>
             <ButtonLinkSpacing>
@@ -143,6 +143,19 @@ const EditGroup = ({ navigation, group, loading, error }) => {
             <Image source={coverImage} />
           </Card>
         </TouchableScale>
+      </FieldContainer>
+      <FieldContainer>
+        <RowHeader>
+          <Name>
+            <H3>Resources</H3>
+          </Name>
+        </RowHeader>
+        <PaddedView>
+          <EditGroupResourcesForm
+            groupId={group.id}
+            resources={get(group, 'resources', [])}
+          />
+        </PaddedView>
       </FieldContainer>
     </View>
   );
@@ -177,9 +190,9 @@ EditGroup.defaultProps = {
 const EditGroupConnected = (props) => {
   // Group data
   const id = props.navigation.getParam('id');
-  const { group } = useGroup(id);
+  const { group, refetch } = useGroup(id);
 
-  return <EditGroup {...props} group={group} />;
+  return <EditGroup {...props} group={group} refetchGroup={refetch} />;
 };
 
 export default EditGroupConnected;
