@@ -72,7 +72,7 @@ const ResourcesSection = ({
     <View>
       <ResourcesList
         resources={resources}
-        disableRemove={addFormVisible}
+        disableRemoval={addFormVisible}
         onRemoveResource={onRemoveResource}
       />
 
