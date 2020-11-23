@@ -19,10 +19,8 @@ import {
   CardImage,
   ErrorCard,
   FlexedView,
-  H2,
   H3,
   H6,
-  PaddedView,
   Touchable,
   TouchableScale,
   withMediaQuery,
@@ -157,9 +155,7 @@ const EditGroup = ({ navigation, group, loading, error }) => {
                     <H3>Resources</H3>
                   </Name>
                 </RowHeader>
-                <PaddedView>
-                  <ResourcesSection groupId={group.id} />
-                </PaddedView>
+                <ResourcesSection groupId={group.id} />
               </FieldContainer>
             </ContentContainer>
           </KeyboardAvoidingView>

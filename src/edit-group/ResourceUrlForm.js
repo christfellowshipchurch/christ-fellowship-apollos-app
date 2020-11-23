@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 
 import {
   styled,
-  BodyText,
+  BodySmall,
   Button,
   Card,
   CardContent,
@@ -18,6 +18,11 @@ import { useForm } from '../hooks';
 
 import { ResourceShape } from './EditGroupPropTypes';
 
+const FORM_ERRORS = Object.freeze({
+  GENERIC: 'Something went wrong. Please try again.',
+  ALREADY_EXISTS: 'A resource with that Title and URL already exists',
+});
+
 // :: Styled Components
 // ------------------------------------------------------------------
 
@@ -27,7 +32,7 @@ const FormTitle = styled(({ theme }) => ({
 
 const ErrorText = styled(({ theme }) => ({
   color: theme.colors.alert,
-}))(BodyText);
+}))(BodySmall);
 
 const ButtonsRow = styled(({ theme }) => ({
   flex: 1,
@@ -59,14 +64,16 @@ const ResourceUrlForm = (props) => {
       .filter((string) => Boolean(string))
   );
   const [error, setError] = useState(null);
-  const canSubmit = !error && !isEmpty(values.title) && !isEmpty(values.url);
+  const canSubmit =
+    (!error || error === FORM_ERRORS.GENERIC) &&
+    !(isEmpty(values.title) && isEmpty(values.url));
 
   useEffect(
     () => {
       const valuesSerialized = `${values.title}${values.url}`;
 
       if (resourcesSerialized.includes(valuesSerialized)) {
-        setError('A resource with that Title and URL already exists');
+        setError(FORM_ERRORS.ALREADY_EXISTS);
       } else {
         setError(null);
       }
@@ -74,7 +81,13 @@ const ResourceUrlForm = (props) => {
     [values]
   );
 
-  const handleSubmit = () => props.onSubmit(values);
+  const handleSubmit = async () => {
+    try {
+      await props.onSubmit(values);
+    } catch (submitError) {
+      setError(FORM_ERRORS.GENERIC);
+    }
+  };
 
   return (
     <Card>
@@ -113,7 +126,7 @@ const ResourceUrlForm = (props) => {
           <Button
             pill={false}
             title="Done"
-            disabled={!canSubmit}
+            disabled={canSubmit}
             onPress={handleSubmit}
           />
         </ButtonsRow>
