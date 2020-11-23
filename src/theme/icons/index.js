@@ -19,6 +19,7 @@ export Envelope from './Envelope';
 export EnvelopeOpenDollar from './EnvelopeOpenDollar';
 export Handshake from './Handshake';
 export Home from './Home';
+export Link from './Link';
 export List from './List';
 export Lock from './Lock';
 export MessageBubble from './MessageBubble';
