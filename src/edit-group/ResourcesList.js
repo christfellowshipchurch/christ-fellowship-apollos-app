@@ -30,20 +30,17 @@ const EmptyResourcesList = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
-const ResourceListItemContainer = styled(
-  ({ theme, removing, borderBottom }) => ({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingBottom: theme.sizing.baseUnit,
-    marginBottom: theme.sizing.baseUnit,
-    opacity: removing ? theme.alpha.medium : 1,
-    borderBottomWidth: borderBottom ? 1 : 0,
-    borderBottomColor: Color(theme.colors.text.tertiary)
-      .fade(theme.alpha.high)
-      .string(),
-  })
-)(View);
+const ResourceListItemContainer = styled(({ theme, borderBottom }) => ({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingBottom: theme.sizing.baseUnit,
+  marginBottom: theme.sizing.baseUnit,
+  borderBottomWidth: borderBottom ? 1 : 0,
+  borderBottomColor: Color(theme.colors.text.tertiary)
+    .fade(theme.alpha.high)
+    .string(),
+}))(View);
 
 const RemoveIconTouchable = withTheme(({ theme }) => ({
   padding: theme.sizing.baseUnit,
@@ -57,17 +54,20 @@ const RemoveIcon = withTheme(({ theme }) => ({
 }))(Icon);
 
 // ⚠️ Warning: Prop drilling of onRemoveResource! Create Context?
-const ResourceListItem = ({ resource, isLastItem, onRemoveResource }) => {
-  const [removing, setRemoving] = useState(false);
+const ResourceListItem = ({
+  resource,
+  isLastItem,
+  disableRemoval,
+  onRemoveResource,
+}) => {
   const isUrl = resource.relatedNode.__typename === RESOURCE_TYPES.URL;
 
   const handleRemove = () => {
-    setRemoving(true);
     onRemoveResource(resource.id);
   };
 
   return (
-    <ResourceListItemContainer removing={removing} borderBottom={!isLastItem}>
+    <ResourceListItemContainer borderBottom={!isLastItem}>
       <View>
         <BodyText bold>{resource.title}</BodyText>
         {isUrl ? (
@@ -76,7 +76,7 @@ const ResourceListItem = ({ resource, isLastItem, onRemoveResource }) => {
           <BodyText>Study</BodyText>
         )}
       </View>
-      <RemoveIconTouchable onPress={handleRemove} disabled={removing}>
+      <RemoveIconTouchable onPress={handleRemove} disabled={disableRemoval}>
         <RemoveIcon />
       </RemoveIconTouchable>
     </ResourceListItemContainer>
@@ -84,6 +84,7 @@ const ResourceListItem = ({ resource, isLastItem, onRemoveResource }) => {
 };
 ResourceListItem.propTypes = {
   resource: ResourceShape,
+  disableRemoval: PropTypes.bool,
   isLastItem: PropTypes.bool,
   onRemoveResource: PropTypes.func.isRequired,
 };
@@ -100,13 +101,22 @@ const ResourcesList = (props) => (
       <ResourceListItem
         key={resource.id}
         resource={resource}
+        disableRemoval={props.disableRemoval}
         onRemoveResource={props.onRemoveResource}
         isLastItem={index === props.resources.length - 1}
       />
     ))}
   </View>
 );
+
 ResourcesList.propTypes = {
-  resources: PropTypes.arrayOf(ResourceShape),
+  resources: PropTypes.arrayOf(ResourceShape).isRequired,
+  disableRemoval: PropTypes.bool,
   onRemoveResource: PropTypes.func.isRequired,
 };
+
+ResourcesList.defaultProps = {
+  disableRemoval: false,
+};
+
+export default ResourcesList;

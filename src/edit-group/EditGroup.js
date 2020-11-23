@@ -92,7 +92,7 @@ const Image = withTheme(({ theme }) => ({
 // :: Core Component
 // ------------------------------------------------------------------
 
-const EditGroup = ({ navigation, group, refetchGroup, loading, error }) => {
+const EditGroup = ({ navigation, group, loading, error }) => {
   const coverImage = get(group, 'coverImage.sources[0].uri', null);
 
   if (loading)
@@ -148,10 +148,7 @@ const EditGroup = ({ navigation, group, refetchGroup, loading, error }) => {
           </Name>
         </RowHeader>
         <PaddedView>
-          <ResourcesSection
-            groupId={group.id}
-            resources={get(group, 'resources', [])}
-          />
+          <ResourcesSection groupId={group.id} />
         </PaddedView>
       </FieldContainer>
     </View>
@@ -187,9 +184,9 @@ EditGroup.defaultProps = {
 const EditGroupConnected = (props) => {
   // Group data
   const id = props.navigation.getParam('id');
-  const { group, refetch } = useGroup(id);
+  const { group, loading } = useGroup(id);
 
-  return <EditGroup {...props} group={group} refetchGroup={refetch} />;
+  return <EditGroup {...props} group={group} loading={loading} />;
 };
 
 export default EditGroupConnected;

@@ -72,6 +72,7 @@ const ResourcesSection = ({
     <View>
       <ResourcesList
         resources={resources}
+        disableRemove={addFormVisible}
         onRemoveResource={onRemoveResource}
       />
 
@@ -88,6 +89,7 @@ const ResourcesSection = ({
 
       {addFormVisible && (
         <ResourceUrlForm
+          existingResources={resources}
           onSubmit={onUpdateUrlResource}
           onCancel={onHideAddForm}
         />
@@ -121,6 +123,7 @@ ResourcesSection.defaultProps = {
 
 // :: Connected Component
 // ------------------------------------------------------------------
+
 const ResourcesSectionConnected = (props) => {
   const [addFormVisible, setAddFormVisible] = useState(false);
 

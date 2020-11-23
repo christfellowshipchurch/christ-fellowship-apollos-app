@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
-import { styled, Button, Card, CardContent, H4 } from '@apollosproject/ui-kit';
+import {
+  styled,
+  BodyText,
+  Button,
+  Card,
+  CardContent,
+  H4,
+} from '@apollosproject/ui-kit';
 
 import { TextInput } from '../ui/inputs';
 
 import { useForm } from '../hooks';
 
+import { ResourceShape } from './EditGroupPropTypes';
+
 // :: Styled Components
 // ------------------------------------------------------------------
 
-export const FormTitle = styled(({ theme }) => ({
+const FormTitle = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit,
 }))(H4);
+
+const ErrorText = styled(({ theme }) => ({
+  color: theme.colors.alert,
+}))(BodyText);
 
 const ButtonsRow = styled(({ theme }) => ({
   flex: 1,
@@ -34,6 +48,32 @@ const ResourceUrlForm = (props) => {
     },
   });
 
+  // Initialize a list of existing resources serialized for quicker comparison,
+  // for enforcing unique title/url combinations don't already exist.
+  const [resourcesSerialized] = useState(
+    props.existingResources
+      .map(
+        ({ title, relatedNode }) =>
+          relatedNode?.url ? `${title}${relatedNode.url}` : null
+      )
+      .filter((string) => Boolean(string))
+  );
+  const [error, setError] = useState(null);
+  const canSubmit = !error && !isEmpty(values.title) && !isEmpty(values.url);
+
+  useEffect(
+    () => {
+      const valuesSerialized = `${values.title}${values.url}`;
+
+      if (resourcesSerialized.includes(valuesSerialized)) {
+        setError('A resource with that Title and URL already exists');
+      } else {
+        setError(null);
+      }
+    },
+    [values]
+  );
+
   const handleSubmit = () => props.onSubmit(values);
 
   return (
@@ -46,6 +86,9 @@ const ResourceUrlForm = (props) => {
           value={values.title}
           onChangeText={(newTitle) => setValue('title', newTitle)}
           returnKeyType="done"
+          error={error}
+          hideErrorText
+          errorIndicator={Boolean(error)}
         />
         <TextInput
           label="Link (URL)"
@@ -53,7 +96,12 @@ const ResourceUrlForm = (props) => {
           value={values.url}
           onChangeText={(newUrl) => setValue('url', newUrl)}
           returnKeyType="done"
+          error={error}
+          hideErrorText
+          errorIndicator={Boolean(error)}
+          autoCapitalize={false}
         />
+        {error && <ErrorText bold>{error}</ErrorText>}
         <ButtonsRow>
           <Button
             type="secondary"
@@ -62,7 +110,12 @@ const ResourceUrlForm = (props) => {
             title="Cancel"
             onPress={props.onCancel}
           />
-          <Button pill={false} title="Done" onPress={handleSubmit} />
+          <Button
+            pill={false}
+            title="Done"
+            disabled={!canSubmit}
+            onPress={handleSubmit}
+          />
         </ButtonsRow>
       </CardContent>
     </Card>
@@ -70,6 +123,7 @@ const ResourceUrlForm = (props) => {
 };
 
 ResourceUrlForm.propTypes = {
+  existingResources: PropTypes.arrayOf(ResourceShape).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
 };
