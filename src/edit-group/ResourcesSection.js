@@ -11,6 +11,7 @@ import {
   ErrorCard,
   H5,
   Icon,
+  PaddedView,
   withTheme,
 } from '@apollosproject/ui-kit';
 
@@ -70,22 +71,24 @@ const ResourcesSection = ({
 
   return (
     <View>
-      <ResourcesList
-        resources={resources}
-        disableRemoval={addFormVisible}
-        onRemoveResource={onRemoveResource}
-      />
+      <PaddedView vertical={false}>
+        <ResourcesList
+          resources={resources}
+          disableRemoval={addFormVisible}
+          onRemoveResource={onRemoveResource}
+        />
 
-      {!addFormVisible && (
-        <Button
-          bordered
-          pill={false}
-          onPress={addFormVisible ? onHideAddForm : onShowAddForm}
-        >
-          <AddIcon />
-          <H5>Add Resource</H5>
-        </Button>
-      )}
+        {!addFormVisible && (
+          <Button
+            bordered
+            pill={false}
+            onPress={addFormVisible ? onHideAddForm : onShowAddForm}
+          >
+            <AddIcon />
+            <H5>Add Resource</H5>
+          </Button>
+        )}
+      </PaddedView>
 
       {addFormVisible && (
         <ResourceUrlForm

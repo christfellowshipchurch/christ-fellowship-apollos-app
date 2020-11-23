@@ -16,13 +16,12 @@ import {
 
 import { ResourceShape } from './EditGroupPropTypes';
 
-const RESOURCE_TYPES = Object.freeze({
-  URL: 'Url',
-  STUDY: 'MediaContentItem',
-});
-
 // :: Styled Components
 // ------------------------------------------------------------------
+
+const Container = styled(({ theme }) => ({
+  marginTop: theme.sizing.baseUnit,
+}))(View);
 
 const EmptyResourcesList = styled(({ theme }) => ({
   minHeight: 96,
@@ -53,6 +52,9 @@ const RemoveIcon = withTheme(({ theme }) => ({
   fill: theme.colors.alert,
 }))(Icon);
 
+// :: Sub-Components
+// ------------------------------------------------------------------
+
 // ⚠️ Warning: Prop drilling of onRemoveResource! Create Context?
 const ResourceListItem = ({
   resource,
@@ -60,7 +62,7 @@ const ResourceListItem = ({
   disableRemoval,
   onRemoveResource,
 }) => {
-  const isUrl = resource.relatedNode.__typename === RESOURCE_TYPES.URL;
+  const isUrlResource = resource.action === 'OPEN_URL';
 
   const handleRemove = () => {
     onRemoveResource(resource.id);
@@ -70,11 +72,7 @@ const ResourceListItem = ({
     <ResourceListItemContainer borderBottom={!isLastItem}>
       <View>
         <BodyText bold>{resource.title}</BodyText>
-        {isUrl ? (
-          <ButtonLink>{resource.relatedNode.url}</ButtonLink>
-        ) : (
-          <BodyText>Study</BodyText>
-        )}
+        {isUrlResource && <ButtonLink>{resource.relatedNode.url}</ButtonLink>}
       </View>
       <RemoveIconTouchable onPress={handleRemove} disabled={disableRemoval}>
         <RemoveIcon />
@@ -89,9 +87,11 @@ ResourceListItem.propTypes = {
   onRemoveResource: PropTypes.func.isRequired,
 };
 
-// ---
+// :: Core Component
+// ------------------------------------------------------------------
+
 const ResourcesList = (props) => (
-  <View>
+  <Container>
     {!get(props, 'resources.length', 0) && (
       <EmptyResourcesList>
         <H5>No group resources</H5>
@@ -106,7 +106,7 @@ const ResourcesList = (props) => (
         isLastItem={index === props.resources.length - 1}
       />
     ))}
-  </View>
+  </Container>
 );
 
 ResourcesList.propTypes = {
