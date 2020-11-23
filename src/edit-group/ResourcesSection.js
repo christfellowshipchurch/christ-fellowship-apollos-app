@@ -15,6 +15,7 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 
+import ActionBar, { ActionBarItem } from 'ui/ActionBar';
 import { useGroup } from '../hooks';
 
 import {
@@ -71,24 +72,11 @@ const ResourcesSection = ({
 
   return (
     <View>
-      <PaddedView vertical={false}>
-        <ResourcesList
-          resources={resources}
-          disableRemoval={addFormVisible}
-          onRemoveResource={onRemoveResource}
-        />
-
-        {!addFormVisible && (
-          <Button
-            bordered
-            pill={false}
-            onPress={addFormVisible ? onHideAddForm : onShowAddForm}
-          >
-            <AddIcon />
-            <H5>Add Resource</H5>
-          </Button>
-        )}
-      </PaddedView>
+      {!addFormVisible && (
+        <ActionBar>
+          <ActionBarItem icon="link" label="Add Link" onPress={onShowAddForm} />
+        </ActionBar>
+      )}
 
       {addFormVisible && (
         <ResourceUrlForm
@@ -97,6 +85,14 @@ const ResourcesSection = ({
           onCancel={onHideAddForm}
         />
       )}
+
+      <PaddedView>
+        <ResourcesList
+          resources={resources}
+          disableRemoval={addFormVisible}
+          onRemoveResource={onRemoveResource}
+        />
+      </PaddedView>
     </View>
   );
 };
