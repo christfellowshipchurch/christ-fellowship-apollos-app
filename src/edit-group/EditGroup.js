@@ -25,7 +25,7 @@ import {
 
 import { useGroup } from '../hooks';
 
-import EditGroupResourcesForm from './EditGroupResourcesForm';
+import ResourcesSection from './ResourcesSection';
 
 // :: Styled Components
 // ------------------------------------------------------------------
@@ -46,7 +46,7 @@ export const ContentContainer = withMediaQuery(
 
 // Read Only Fields that show on the Profile
 export const FieldContainer = styled(({ theme }) => ({
-  marginBottom: theme.sizing.baseUnit,
+  marginBottom: theme.sizing.baseUnit * 2,
 }))(View);
 
 const Overlay = styled(({ theme }) => ({
@@ -61,7 +61,6 @@ const Overlay = styled(({ theme }) => ({
   zIndex: 1,
 }))(FlexedView);
 
-// ✂️ From TileContentFeed --------------------------------------------------------
 const RowHeader = styled(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
@@ -89,8 +88,6 @@ const Image = withTheme(({ theme }) => ({
   forceRatio: 1.78,
   imageStyle: { aspectRatio: 1.78 },
 }))(CardImage);
-
-// ✂️ From TileContentFeed --------------------------------------------------------
 
 // :: Core Component
 // ------------------------------------------------------------------
@@ -151,7 +148,7 @@ const EditGroup = ({ navigation, group, refetchGroup, loading, error }) => {
           </Name>
         </RowHeader>
         <PaddedView>
-          <EditGroupResourcesForm
+          <ResourcesSection
             groupId={group.id}
             resources={get(group, 'resources', [])}
           />
