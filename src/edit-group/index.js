@@ -1,19 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {
-  View,
-  KeyboardAvoidingView,
-  StatusBar,
-  ScrollView,
-} from 'react-native';
-import { createStackNavigator, SafeAreaView } from 'react-navigation';
+import { View } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
 
-import {
-  styled,
-  BodyText,
-  BackgroundView,
-  withMediaQuery,
-} from '@apollosproject/ui-kit';
+import { styled, withMediaQuery } from '@apollosproject/ui-kit';
 
 import NavigationHeader from '../ui/NavigationHeader';
 import EditGroupConnected from './EditGroup';
@@ -42,36 +31,16 @@ export const ContentContainer = withMediaQuery(
   }))
 )(View);
 
-const RouteContainer = ({ children }) => (
-  <BackgroundView>
-    <StatusBar hidden />
-    <KeyboardAvoidingView behavior={'padding'}>
-      <ScrollView>
-        <ContentContainer>
-          <SafeAreaView>{children}</SafeAreaView>
-        </ContentContainer>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  </BackgroundView>
-);
-RouteContainer.propTypes = {
-  children: PropTypes.node,
-};
-
 // :: Routes
 // ------------------------------------------------------------------
 
 const EditGroup = ({ navigation }) => (
-  <RouteContainer>
-    <EditGroupConnected navigation={navigation} />
-  </RouteContainer>
+  <EditGroupConnected navigation={navigation} />
 );
 EditGroup.navigationOptions = SHARED_NAVIGATION_OPTIONS;
 
 const EditGroupCoverImage = ({ navigation }) => (
-  <RouteContainer>
-    <EditGroupCoverImageConnected navigation={navigation} />
-  </RouteContainer>
+  <EditGroupCoverImageConnected navigation={navigation} />
 );
 EditGroupCoverImage.navigationOptions = SHARED_NAVIGATION_OPTIONS;
 

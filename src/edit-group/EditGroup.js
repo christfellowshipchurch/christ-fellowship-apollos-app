@@ -1,8 +1,14 @@
 import React from 'react';
-import { View, StatusBar } from 'react-native';
+import {
+  View,
+  StatusBar,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'react-native';
 import PropTypes from 'prop-types';
 import Color from 'color';
 import { get } from 'lodash';
+import { SafeAreaView } from 'react-navigation';
 
 import {
   styled,
@@ -112,46 +118,54 @@ const EditGroup = ({ navigation, group, loading, error }) => {
     });
 
   return (
-    <View>
-      {loading && (
-        <Overlay>
-          <ActivityIndicator />
-        </Overlay>
-      )}
-      <PaddedView>
-        <H2 padded>Customize my Group</H2>
-      </PaddedView>
+    <BackgroundView>
+      <StatusBar hidden />
+      <ScrollView>
+        <SafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
+          <KeyboardAvoidingView behavior={'padding'}>
+            <ContentContainer>
+              {loading && (
+                <Overlay>
+                  <ActivityIndicator />
+                </Overlay>
+              )}
 
-      <FieldContainer>
-        <RowHeader>
-          <Name>
-            <H3>Cover Photo</H3>
-          </Name>
-          <AndroidTouchableFix onPress={handleUpdateGroupCoverImagePress}>
-            <ButtonLinkSpacing>
-              <H6>
-                <ButtonLink>Update</ButtonLink>
-              </H6>
-            </ButtonLinkSpacing>
-          </AndroidTouchableFix>
-        </RowHeader>
-        <TouchableScale onPress={handleUpdateGroupCoverImagePress}>
-          <Card>
-            <Image source={coverImage} />
-          </Card>
-        </TouchableScale>
-      </FieldContainer>
-      <FieldContainer>
-        <RowHeader>
-          <Name>
-            <H3>Resources</H3>
-          </Name>
-        </RowHeader>
-        <PaddedView>
-          <ResourcesSection groupId={group.id} />
-        </PaddedView>
-      </FieldContainer>
-    </View>
+              <FieldContainer>
+                <RowHeader>
+                  <Name>
+                    <H3>Cover Photo</H3>
+                  </Name>
+                  <AndroidTouchableFix
+                    onPress={handleUpdateGroupCoverImagePress}
+                  >
+                    <ButtonLinkSpacing>
+                      <H6>
+                        <ButtonLink>Update</ButtonLink>
+                      </H6>
+                    </ButtonLinkSpacing>
+                  </AndroidTouchableFix>
+                </RowHeader>
+                <TouchableScale onPress={handleUpdateGroupCoverImagePress}>
+                  <Card>
+                    <Image source={coverImage} />
+                  </Card>
+                </TouchableScale>
+              </FieldContainer>
+              <FieldContainer>
+                <RowHeader>
+                  <Name>
+                    <H3>Resources</H3>
+                  </Name>
+                </RowHeader>
+                <PaddedView>
+                  <ResourcesSection groupId={group.id} />
+                </PaddedView>
+              </FieldContainer>
+            </ContentContainer>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </ScrollView>
+    </BackgroundView>
   );
 };
 

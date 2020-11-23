@@ -3,21 +3,23 @@ import { View, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { get } from 'lodash';
+import { SafeAreaView } from 'react-navigation';
 
 import {
   styled,
-  ActivityIndicator,
   Card,
-  CardContent,
   CardImage,
   ErrorCard,
   H3,
-  H4,
   Icon,
   PaddedView,
   TouchableScale,
   withTheme,
+  FeedView,
+  FlexedView,
+  BackgroundView,
 } from '@apollosproject/ui-kit';
+import ThemeMixin from 'ui/DynamicThemeMixin';
 
 import { GET_GROUP_COVER_IMAGES, UPDATE_GROUP_COVER_IMAGE } from './queries';
 
@@ -36,33 +38,34 @@ const CoverImageShape = PropTypes.shape({
 // :: Styled Components
 // ------------------------------------------------------------------
 
-const LoadingContainer = styled(({ theme }) => ({
+const StyledSafeAreaView = styled(({ theme }) => ({
   flex: 1,
-  minHeight: 300,
-}))(View);
+}))(SafeAreaView);
 
 const CoverImageCardTouchable = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit,
 }))(TouchableScale);
 
-const Image = withTheme(({ theme }) => ({
-  forceRatio: 1.78,
-  imageStyle: { aspectRatio: 1.78 },
+const Image = withTheme(({ theme, current }) => ({
+  forceRatio: 1,
+  imageStyle: { aspectRatio: 1 },
+  ...(current
+    ? {
+        overlayColor: theme.colors.background.paper,
+        overlayType: 'gradient-selected',
+      }
+    : {}),
 }))(CardImage);
 
-const Row = styled(({ theme }) => ({
-  flex: 1,
-  width: '100%',
-  flexDirection: 'row',
-  justifyContent: 'flex-start',
-}))(View);
-
 const CheckIcon = withTheme(({ theme }) => ({
-  name: 'check',
+  name: 'circle-outline-check-mark',
   size: 22,
   fill: theme.colors.primary,
   style: {
     marginLeft: theme.sizing.baseUnit / 2,
+    position: 'absolute',
+    right: theme.sizing.baseUnit / 2,
+    bottom: theme.sizing.baseUnit / 2,
   },
 }))(Icon);
 
@@ -75,25 +78,24 @@ const CoverImageCard = ({ coverImage, current, onPress }) => {
   if (!imageSource) return null;
 
   const cardCore = (
-    <Card>
-      <Image source={imageSource} />
-      <CardContent>
-        <Row>
-          <H4>{coverImage.name}</H4>
-          {current && <CheckIcon />}
-        </Row>
-      </CardContent>
-    </Card>
+    <ThemeMixin>
+      <Card>
+        <Image source={imageSource} current={current} />
+        {current && <CheckIcon />}
+      </Card>
+    </ThemeMixin>
   );
 
-  if (current) {
-    return cardCore;
-  }
-
   return (
-    <CoverImageCardTouchable onPress={onPress}>
-      {cardCore}
-    </CoverImageCardTouchable>
+    <FlexedView>
+      {current ? (
+        cardCore
+      ) : (
+        <CoverImageCardTouchable onPress={onPress}>
+          {cardCore}
+        </CoverImageCardTouchable>
+      )}
+    </FlexedView>
   );
 };
 
@@ -117,30 +119,35 @@ const EditGroupCoverImage = ({
 }) => {
   if (error) return <ErrorCard />;
 
-  return (
-    <View>
-      <PaddedView>
-        <H3 padded>Update Group Cover Photo</H3>
-      </PaddedView>
+  console.log({ coverImages });
 
-      {loading ? (
-        <LoadingContainer>
-          <ActivityIndicator />
-        </LoadingContainer>
-      ) : (
-        coverImages.map((coverImage) => (
-          <CoverImageCard
-            key={coverImage.guid}
-            coverImage={coverImage}
-            onPress={() => onSelectCoverImage(coverImage.guid)}
-            current={
-              get(coverImage, 'image.sources[0].uri', null) ===
-              currentCoverImageUri
-            }
-          />
-        ))
-      )}
-    </View>
+  const renderItem = ({ item: coverImage }) => (
+    <CoverImageCard
+      key={coverImage.guid}
+      coverImage={coverImage}
+      onPress={() => onSelectCoverImage(coverImage.guid)}
+      current={
+        get(coverImage, 'image.sources[0].uri', null) === currentCoverImageUri
+      }
+    />
+  );
+
+  return (
+    <BackgroundView>
+      <StyledSafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
+        <PaddedView>
+          <H3 padded>Select Photo</H3>
+        </PaddedView>
+
+        <FeedView
+          numColumns={2}
+          content={coverImages}
+          renderItem={renderItem}
+          isLoading={loading}
+          keyExtractor={(item) => item.guid}
+        />
+      </StyledSafeAreaView>
+    </BackgroundView>
   );
 };
 

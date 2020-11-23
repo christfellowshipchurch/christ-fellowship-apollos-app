@@ -53,7 +53,7 @@ const CellItem = styled(({ theme, first }) => ({
 const Group = ({ id, content, loading, navigation }) => {
   const checkInRef = useRef();
   const coverImageSources = get(content, 'coverImage.sources', []);
-  const resources = get(content, 'groupResources', []);
+  const resources = get(content, 'resources', []);
   const dateTime = get(content, 'dateTime', {});
   const videoCall = get(content, 'videoCall', {});
   const parentVideoCall = get(content, 'parentVideoCall', {});
