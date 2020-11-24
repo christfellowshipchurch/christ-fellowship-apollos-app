@@ -119,8 +119,6 @@ const EditGroupCoverImage = ({
 }) => {
   if (error) return <ErrorCard />;
 
-  console.log({ coverImages });
-
   const renderItem = ({ item: coverImage }) => (
     <CoverImageCard
       key={coverImage.guid}

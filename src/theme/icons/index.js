@@ -8,6 +8,7 @@ export Bars from './Bars';
 export BarsAlt from './BarsAlt';
 export Bell from './Bell';
 export BirthdayCake from './BirthdayCake';
+export BookClosed from './BookClosed';
 export Brand from './Brand';
 export CashApp from './CashApp';
 export Calendar from './Calendar';

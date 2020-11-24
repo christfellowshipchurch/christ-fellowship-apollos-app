@@ -6,7 +6,6 @@ export const GROUP_ITEM_FRAGMENT = gql`
     summary
     groupType
     resources {
-      id
       title
       action
       relatedNode {

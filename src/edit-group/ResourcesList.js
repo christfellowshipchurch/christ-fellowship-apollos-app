@@ -80,7 +80,7 @@ const ResourceListItem = ({
       };
 
   const handleRemove = () => {
-    onRemoveResource(resource.id);
+    onRemoveResource(get(resource, 'relatedNode.id'));
   };
 
   return (
@@ -113,7 +113,7 @@ const ResourcesList = (props) => (
     )}
     {props.resources.map((resource, index) => (
       <ResourceListItem
-        key={resource.id}
+        key={resource.relatedNode.id}
         resource={resource}
         disableRemoval={props.disableRemoval}
         onRemoveResource={props.onRemoveResource}

@@ -56,6 +56,7 @@ const ResourcesSection = ({
   // resourceOptions = [],
   addFormVisible,
   onShowAddForm,
+  onAddContentItem,
   onHideAddForm,
   onUpdateUrlResource,
   onRemoveResource,
@@ -75,6 +76,11 @@ const ResourcesSection = ({
       {!addFormVisible && (
         <ActionBar>
           <ActionBarItem icon="link" label="Add Link" onPress={onShowAddForm} />
+          <ActionBarItem
+            icon="book-closed"
+            label="Add Study"
+            onPress={onAddContentItem}
+          />
         </ActionBar>
       )}
 
@@ -110,6 +116,7 @@ ResourcesSection.propTypes = {
   // ).isRequired,
   addFormVisible: PropTypes.bool,
   onShowAddForm: PropTypes.func.isRequired,
+  onAddContentItem: PropTypes.func.isRequired,
   onHideAddForm: PropTypes.func.isRequired,
   onUpdateUrlResource: PropTypes.func.isRequired,
   onRemoveResource: PropTypes.func.isRequired,
@@ -128,9 +135,6 @@ const ResourcesSectionConnected = (props) => {
 
   // Resource content item options
   const { group, loading, error, refetch } = useGroup(props.groupId);
-  // const { data, loading, error } = useQuery(GET_GROUP_RESOURCE_OPTIONS, {
-  //   fetchPolicy: 'cache-and-network',
-  // });
   const [updateResourceUrl] = useMutation(UPDATE_GROUP_RESOURCE_URL);
   const [removeResource] = useMutation(REMOVE_GROUP_RESOURCE);
 
@@ -138,6 +142,7 @@ const ResourcesSectionConnected = (props) => {
   const handleShowAddForm = () => setAddFormVisible(true);
   const handleHideAddForm = () => setAddFormVisible(false);
 
+  const onAddContentItem = get(props, 'onAddContentItem', () => null);
   const handleUpdateUrlResource = async (fields) => {
     await updateResourceUrl({
       variables: {
@@ -159,13 +164,15 @@ const ResourcesSectionConnected = (props) => {
           text: 'Delete',
           style: 'destructive',
           onPress: async () => {
-            await removeResource({
-              variables: {
-                groupId: props.groupId,
-                id,
-              },
-            });
-            refetch();
+            if (id) {
+              await removeResource({
+                variables: {
+                  groupId: props.groupId,
+                  id,
+                },
+              });
+              refetch();
+            }
           },
         },
         {
@@ -187,6 +194,7 @@ const ResourcesSectionConnected = (props) => {
       // resourceOptions={get(data, 'groupResourceOptions', [])}
       addFormVisible={addFormVisible}
       onShowAddForm={handleShowAddForm}
+      onAddContentItem={onAddContentItem}
       onHideAddForm={handleHideAddForm}
       onUpdateUrlResource={handleUpdateUrlResource}
       onRemoveResource={handleRemoveResource}
@@ -195,6 +203,7 @@ const ResourcesSectionConnected = (props) => {
 };
 ResourcesSectionConnected.propTypes = {
   groupId: PropTypes.string.isRequired,
+  onAddContentItem: PropTypes.func,
 };
 
 export default ResourcesSectionConnected;

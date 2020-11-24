@@ -31,29 +31,63 @@ export const UPDATE_GROUP_COVER_IMAGE = gql`
 // Resources
 
 export const GET_GROUP_RESOURCE_OPTIONS = gql`
-  query getGroupResourceOptions {
-    groupResourceOptions {
-      __typename
-      id
-      title
+  query getGroupResourceOptions(
+    $groupId: ID!
+    $input: ContentItemsConnectionInput
+  ) {
+    groupResourceOptions(groupId: $groupId, input: $input) {
+      totalCount
+      pageInfo {
+        endCursor
+      }
+      edges {
+        node {
+          id
+
+          ... on ContentItem {
+            title
+            coverImage {
+              sources {
+                uri
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;
 
+export const REMOVE_GROUP_RESOURCE = gql`
+  mutation removeGroupResource($groupId: ID!, $id: ID!) {
+    removeGroupResource(relatedNodeId: $id, groupId: $groupId) {
+      id
+      resources {
+        title
+        action
+        relatedNode {
+          __typename
+          id
+          ... on Url {
+            url
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * TODO
+ */
 export const UPDATE_GROUP_RESOURCE_CONTENT_ITEM = gql`
-  mutation updateGroupResourceContentItem(
-    $contentItemId: ID!
-    $groupId: ID!
-    $id: ID
-  ) {
+  mutation updateGroupResourceContentItem($contentItemId: ID!, $groupId: ID!) {
     updateGroupResourceContentItem(
       contentItemId: $contentItemId
       groupId: $groupId
-      id: $id
     ) {
       id
       resources {
-        id
         title
         action
         relatedNode {
@@ -83,27 +117,6 @@ export const UPDATE_GROUP_RESOURCE_URL = gql`
     ) {
       id
       resources {
-        id
-        title
-        action
-        relatedNode {
-          __typename
-          id
-          ... on Url {
-            url
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const REMOVE_GROUP_RESOURCE = gql`
-  mutation removeGroupResource($groupId: ID!, $id: ID!) {
-    removeGroupResource(groupId: $groupId, id: $id) {
-      id
-      resources {
-        id
         title
         action
         relatedNode {

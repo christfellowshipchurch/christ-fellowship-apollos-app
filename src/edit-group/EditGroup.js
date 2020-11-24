@@ -114,6 +114,10 @@ const EditGroup = ({ navigation, group, loading, error }) => {
       groupId: group.id,
       currentCoverImageUri: coverImage,
     });
+  const navigateToAddContentItem = () =>
+    navigation.navigate('AddContentItem', {
+      groupId: group.id,
+    });
 
   return (
     <BackgroundView>
@@ -155,7 +159,10 @@ const EditGroup = ({ navigation, group, loading, error }) => {
                     <H3>Resources</H3>
                   </Name>
                 </RowHeader>
-                <ResourcesSection groupId={group.id} />
+                <ResourcesSection
+                  groupId={group.id}
+                  onAddContentItem={navigateToAddContentItem}
+                />
               </FieldContainer>
             </ContentContainer>
           </KeyboardAvoidingView>

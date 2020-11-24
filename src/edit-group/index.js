@@ -7,6 +7,7 @@ import { styled, withMediaQuery } from '@apollosproject/ui-kit';
 import NavigationHeader from '../ui/NavigationHeader';
 import EditGroupConnected from './EditGroup';
 import EditGroupCoverImageConnected from './EditGroupCoverImage';
+import AddContentItemConnected from './AddContentItemConnected';
 
 const SHARED_NAVIGATION_OPTIONS = {
   headerMode: 'float',
@@ -34,6 +35,11 @@ export const ContentContainer = withMediaQuery(
 // :: Routes
 // ------------------------------------------------------------------
 
+const AddContentItem = ({ navigation }) => (
+  <AddContentItemConnected navigation={navigation} />
+);
+AddContentItem.navigationOptions = SHARED_NAVIGATION_OPTIONS;
+
 const EditGroup = ({ navigation }) => (
   <EditGroupConnected navigation={navigation} />
 );
@@ -49,6 +55,7 @@ EditGroupCoverImage.navigationOptions = SHARED_NAVIGATION_OPTIONS;
 
 const EditGroupNavigator = createStackNavigator(
   {
+    AddContentItem,
     EditGroup,
     EditGroupCoverImage,
   },
