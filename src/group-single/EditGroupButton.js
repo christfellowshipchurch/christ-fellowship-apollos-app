@@ -16,7 +16,7 @@ const StyledButton = withTheme(({ theme }) => ({
 const StyledIcon = withTheme(({ size, theme }) => ({
   size: (size || theme.sizing.baseUnit * 2) * 0.4375,
   style: {
-    marginRight: theme.sizing.baseUnit * 0.5,
+    marginRight: theme.sizing.baseUnit * 0.25,
   },
 }))(Icon);
 

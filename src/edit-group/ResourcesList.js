@@ -4,15 +4,8 @@ import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import Color from 'color';
 
-import {
-  styled,
-  BodyText,
-  ButtonLink,
-  H5,
-  Icon,
-  Touchable,
-  withTheme,
-} from '@apollosproject/ui-kit';
+import { styled, H5, Icon, Touchable, withTheme } from '@apollosproject/ui-kit';
+import ActionListItem from 'ui/ActionListItem';
 
 import { ResourceShape } from './EditGroupPropTypes';
 
@@ -33,7 +26,8 @@ const ResourceListItemContainer = styled(({ theme, borderBottom }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  paddingBottom: theme.sizing.baseUnit,
+  paddingBottom: theme.sizing.baseUnit * 0.5,
+  paddingRight: theme.sizing.baseUnit,
   marginBottom: theme.sizing.baseUnit,
   borderBottomWidth: borderBottom ? 1 : 0,
   borderBottomColor: Color(theme.colors.text.tertiary)
@@ -48,8 +42,8 @@ const RemoveIconTouchable = withTheme(({ theme }) => ({
 
 const RemoveIcon = withTheme(({ theme }) => ({
   name: 'close',
-  size: 20,
-  fill: theme.colors.alert,
+  size: 12,
+  fill: theme.colors.text.secondary,
 }))(Icon);
 
 // :: Sub-Components
@@ -63,6 +57,19 @@ const ResourceListItem = ({
   onRemoveResource,
 }) => {
   const isUrlResource = resource.action === 'OPEN_URL';
+  const actionListItemProps = isUrlResource
+    ? {
+        title: resource.title,
+        label: resource.relatedNode.url,
+        icon: 'link',
+      }
+    : {
+        title: resource.title,
+        label: get(resource, 'relatedNode.label'),
+        imageSource: get(resource, 'relatedNode.coverImage.sources[0].uri'),
+      };
+
+  console.log({ resource });
 
   const handleRemove = () => {
     onRemoveResource(resource.id);
@@ -70,10 +77,7 @@ const ResourceListItem = ({
 
   return (
     <ResourceListItemContainer borderBottom={!isLastItem}>
-      <View>
-        <BodyText bold>{resource.title}</BodyText>
-        {isUrlResource && <ButtonLink>{resource.relatedNode.url}</ButtonLink>}
-      </View>
+      <ActionListItem {...actionListItemProps} />
       <RemoveIconTouchable onPress={handleRemove} disabled={disableRemoval}>
         <RemoveIcon />
       </RemoveIconTouchable>

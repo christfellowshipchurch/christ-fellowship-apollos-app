@@ -15,8 +15,17 @@ export const GROUP_ITEM_FRAGMENT = gql`
         ... on Url {
           url
         }
+
+        ... on ContentItem {
+          coverImage {
+            sources {
+              uri
+            }
+          }
+        }
       }
     }
+
     coverImage {
       sources {
         uri
