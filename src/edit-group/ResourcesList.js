@@ -35,6 +35,16 @@ const ResourceListItemContainer = styled(({ theme, borderBottom }) => ({
     .string(),
 }))(View);
 
+/**
+ * When using Flex spacing props, both the margin and the padding of the parent
+ * container is taken into consideration. With these stacking on top of each other,
+ * the Remove Icon was being pulled a bit lower than dead center, so we need to help
+ * conpensate for that.
+ */
+const RemoveIconSpacing = styled(({ theme }) => ({
+  marginTop: theme.sizing.baseUnit * -0.5,
+}))(View);
+
 const RemoveIconTouchable = withTheme(({ theme }) => ({
   padding: theme.sizing.baseUnit,
   backgroundColor: 'cyan',
@@ -69,8 +79,6 @@ const ResourceListItem = ({
         imageSource: get(resource, 'relatedNode.coverImage.sources[0].uri'),
       };
 
-  console.log({ resource });
-
   const handleRemove = () => {
     onRemoveResource(resource.id);
   };
@@ -78,9 +86,11 @@ const ResourceListItem = ({
   return (
     <ResourceListItemContainer borderBottom={!isLastItem}>
       <ActionListItem {...actionListItemProps} />
-      <RemoveIconTouchable onPress={handleRemove} disabled={disableRemoval}>
-        <RemoveIcon />
-      </RemoveIconTouchable>
+      <RemoveIconSpacing>
+        <RemoveIconTouchable onPress={handleRemove} disabled={disableRemoval}>
+          <RemoveIcon />
+        </RemoveIconTouchable>
+      </RemoveIconSpacing>
     </ResourceListItemContainer>
   );
 };
