@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import { get } from 'lodash';
 import { useApolloClient } from '@apollo/react-hooks';
 
 import {
@@ -10,6 +11,7 @@ import {
   styled,
   ThemeMixin,
 } from '@apollosproject/ui-kit';
+import ActionListItem from 'ui/ActionListItem';
 import { useLinkRouter } from '../hooks';
 
 const GROUP_RESOURCE_INTERACTION = gql`
@@ -43,6 +45,19 @@ const Resources = ({ resources, isLoading, navigation }) => {
     <PaddedView>
       <StyledH4>{'Resources'}</StyledH4>
       {resources.map(({ id, relatedNode, action, title }) => {
+        const isUrlResource = action === 'OPEN_URL';
+        const actionListItemProps = isUrlResource
+          ? {
+              title,
+              label: relatedNode.url,
+              icon: 'link',
+            }
+          : {
+              title,
+              label: get(relatedNode, 'label'),
+              imageSource: get(relatedNode, 'coverImage.sources[0].uri'),
+            };
+
         const handleOnPress = () => {
           resourceInteraction(relatedNode, action);
           if (action === 'READ_CONTENT') {
@@ -78,15 +93,7 @@ const Resources = ({ resources, isLoading, navigation }) => {
             mixin={{ colors: { primary: 'rgba(120, 120, 128, 0.36)' } }}
             key={id}
           >
-            <StyledButton
-              onPress={() => handleOnPress()}
-              type={'ghost'}
-              bordered
-              loading={isLoading}
-              pill={false}
-            >
-              <H4>{title}</H4>
-            </StyledButton>
+            <ActionListItem {...actionListItemProps} onPress={handleOnPress} />
           </ThemeMixin>
         );
       })}
