@@ -3,9 +3,6 @@ import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { useDarkModeContext } from 'react-native-dark-mode';
-import ScreenOrientation, {
-  PORTRAIT,
-} from 'react-native-orientation-locker/ScreenOrientation';
 
 import {
   BackgroundView,
@@ -16,6 +13,7 @@ import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
 import { CoreNavigationAnalytics } from '@apollosproject/ui-analytics';
+import ScreenOrientation from 'screen-orientation';
 import { MediaPlayer } from './media-player';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
@@ -117,7 +115,7 @@ const App = () => {
     <Providers>
       <BackgroundView>
         <StatusBar />
-        <ScreenOrientation orientation={PORTRAIT} />
+        <ScreenOrientation />
         <CoreNavigationAnalytics>
           {(props) => (
             <AppContainer
