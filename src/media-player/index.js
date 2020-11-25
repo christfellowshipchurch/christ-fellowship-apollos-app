@@ -2,9 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { get } from 'lodash';
-import ScreenOrientation, {
-  UNLOCK,
-} from 'react-native-orientation-locker/ScreenOrientation';
+import ScreenOrientation from 'screen-orientation';
 
 import LiveStreamPlayer from './LiveStreamPlayer';
 import FullscreenPlayer from './FullscreenPlayer';
@@ -88,7 +86,7 @@ const MediaPlayer = () => {
     };
     return (
       <>
-        <ScreenOrientation orientation={UNLOCK} />
+        <ScreenOrientation type="media-player" />
         <LiveStreamPlayer
           channelId={channelId}
           event={event}
@@ -100,7 +98,7 @@ const MediaPlayer = () => {
 
   return (
     <>
-      <ScreenOrientation orientation={UNLOCK} />
+      <ScreenOrientation type="media-player" />
       <FullscreenPlayer />
     </>
   );
