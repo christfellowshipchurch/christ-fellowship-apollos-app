@@ -7,15 +7,11 @@ import { get } from 'lodash';
 import {
   styled,
   ActivityIndicator,
-  Button,
   ErrorCard,
-  H5,
-  Icon,
   PaddedView,
-  withTheme,
 } from '@apollosproject/ui-kit';
 
-import ActionBar, { ActionBarItem } from 'ui/ActionBar';
+import ActionBar, { ActionBarItem } from '../ui/ActionBar';
 import { useGroup } from '../hooks';
 
 import {
@@ -37,15 +33,6 @@ const LoadingContainer = styled(({ theme }) => ({
   minHeight: 150,
 }))(View);
 
-const AddIcon = withTheme(({ theme }) => ({
-  name: 'plus',
-  size: 20,
-  fill: theme.colors.primary,
-  style: {
-    marginRight: theme.sizing.baseUnit / 2,
-  },
-}))(Icon);
-
 // :: Core Component
 // ------------------------------------------------------------------
 
@@ -53,7 +40,6 @@ const ResourcesSection = ({
   loading,
   error,
   resources = [],
-  // resourceOptions = [],
   addFormVisible,
   onShowAddForm,
   onAddContentItem,
@@ -107,13 +93,6 @@ ResourcesSection.propTypes = {
   loading: PropTypes.bool,
   error: PropTypes.bool,
   resources: PropTypes.arrayOf(ResourceShape).isRequired,
-  // resourceOptions: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     __typename: PropTypes.string,
-  //     id: PropTypes.string,
-  //     title: PropTypes.string,
-  //   })
-  // ).isRequired,
   addFormVisible: PropTypes.bool,
   onShowAddForm: PropTypes.func.isRequired,
   onAddContentItem: PropTypes.func.isRequired,
@@ -191,7 +170,6 @@ const ResourcesSectionConnected = (props) => {
       loading={loading}
       error={error}
       resources={get(group, 'resources', [])}
-      // resourceOptions={get(data, 'groupResourceOptions', [])}
       addFormVisible={addFormVisible}
       onShowAddForm={handleShowAddForm}
       onAddContentItem={onAddContentItem}

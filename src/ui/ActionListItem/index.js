@@ -96,11 +96,10 @@ const ActionListItem = ({ imageSource, title, label, onPress, icon }) => (
 );
 
 ActionListItem.propTypes = {
-  imageSource: ImageSourceType.isRequired,
+  imageSource: ImageSourceType,
   title: PropTypes.string,
   label: PropTypes.string,
   onPress: PropTypes.func,
-  start: PropTypes.string,
   icon: PropTypes.string,
 };
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
 import {
   styled,
@@ -20,7 +20,7 @@ import { ResourceShape } from './EditGroupPropTypes';
 
 const FORM_ERRORS = Object.freeze({
   GENERIC: 'Something went wrong. Please try again.',
-  ALREADY_EXISTS: 'A resource with that Title and URL already exists',
+  ALREADY_EXISTS: 'A resource with that URL already exists',
 });
 
 // :: Styled Components
@@ -53,26 +53,21 @@ const ResourceUrlForm = (props) => {
     },
   });
 
-  // Initialize a list of existing resources serialized for quicker comparison,
-  // for enforcing unique title/url combinations don't already exist.
-  const [resourcesSerialized] = useState(
+  // Initialize a list of existing resource URLs for quicker validation logic
+  const [resourceUrls] = useState(
     props.existingResources
-      .map(
-        ({ title, relatedNode }) =>
-          relatedNode?.url ? `${title}${relatedNode.url}` : null
-      )
+      .map(({ relatedNode }) => get(relatedNode, 'url', null))
       .filter((string) => Boolean(string))
   );
   const [error, setError] = useState(null);
-  const canSubmit =
+  const formIsValid =
     (!error || error === FORM_ERRORS.GENERIC) &&
-    !(isEmpty(values.title) && isEmpty(values.url));
+    !isEmpty(values.title) &&
+    !isEmpty(values.url);
 
   useEffect(
     () => {
-      const valuesSerialized = `${values.title}${values.url}`;
-
-      if (resourcesSerialized.includes(valuesSerialized)) {
+      if (resourceUrls.includes(values.url)) {
         setError(FORM_ERRORS.ALREADY_EXISTS);
       } else {
         setError(null);
@@ -92,16 +87,13 @@ const ResourceUrlForm = (props) => {
   return (
     <Card>
       <CardContent>
-        <FormTitle>Add new Resource</FormTitle>
+        <FormTitle>Add a Link Resource</FormTitle>
         <TextInput
           label="Title"
           hidePrefix
           value={values.title}
           onChangeText={(newTitle) => setValue('title', newTitle)}
           returnKeyType="done"
-          error={error}
-          hideErrorText
-          errorIndicator={Boolean(error)}
         />
         <TextInput
           label="Link (URL)"
@@ -126,7 +118,7 @@ const ResourceUrlForm = (props) => {
           <Button
             pill={false}
             title="Done"
-            disabled={canSubmit}
+            disabled={!formIsValid}
             onPress={handleSubmit}
           />
         </ButtonsRow>

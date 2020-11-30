@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Alert } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { get } from 'lodash';
@@ -8,10 +8,10 @@ import { SafeAreaView } from 'react-navigation';
 import { fetchMoreResolver } from '@apollosproject/ui-connected';
 import {
   styled,
+  BodyText,
   Button,
   Card,
   CardImage,
-  ErrorCard,
   H3,
   H4,
   Icon,
@@ -96,6 +96,18 @@ const CheckIcon = withTheme(({ theme }) => ({
   size: 22,
   fill: theme.colors.primary,
 }))(Icon);
+
+const EmptyTextContainer = styled(({ theme }) => ({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  alignContent: 'center',
+}))(View);
+
+const EmptyText = styled(({ theme }) => ({
+  width: 300,
+  textAlign: 'center',
+}))(BodyText);
 
 // :: Sub-Components
 // ------------------------------------------------------------------
@@ -197,29 +209,37 @@ const AddContentItemConnected = (props) => {
           <H3 padded>Select Study</H3>
         </PaddedView>
 
-        <FeedView
-          numColumns={2}
-          content={
-            items.length % 2 === 0
-              ? items
-              : [
-                  ...items,
-                  {
-                    emptyItem: true,
-                  },
-                ]
-          }
-          renderItem={renderItem}
-          isLoading={loading || mutationLoading}
-          error={error || mutationError}
-          fetchMore={fetchMoreResolver({
-            collectionName: 'groupResourceOptions.edges',
-            fetchMore,
-            variables,
-            data,
-          })}
-          refetch={refetch}
-        />
+        {items.length ? (
+          <FeedView
+            numColumns={2}
+            content={
+              items.length % 2 === 0
+                ? items
+                : [
+                    ...items,
+                    {
+                      emptyItem: true,
+                    },
+                  ]
+            }
+            renderItem={renderItem}
+            isLoading={loading || mutationLoading}
+            error={error || mutationError}
+            fetchMore={fetchMoreResolver({
+              collectionName: 'groupResourceOptions.edges',
+              fetchMore,
+              variables,
+              data,
+            })}
+            refetch={refetch}
+          />
+        ) : (
+          <EmptyTextContainer>
+            <EmptyText>
+              {`All available studies are already added to your Group's resources`}
+            </EmptyText>
+          </EmptyTextContainer>
+        )}
 
         <PaddedView>
           <Button

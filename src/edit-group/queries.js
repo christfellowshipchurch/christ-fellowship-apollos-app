@@ -106,14 +106,14 @@ export const UPDATE_GROUP_RESOURCE_URL = gql`
   mutation updateGroupResourceUrl(
     $title: String!
     $url: String!
-    $id: ID
+    $relatedNodeId: ID
     $groupId: ID!
   ) {
     updateGroupResourceUrl(
       title: $title
       url: $url
       groupId: $groupId
-      id: $id
+      relatedNodeId: $relatedNodeId
     ) {
       id
       resources {
