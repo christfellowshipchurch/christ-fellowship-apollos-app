@@ -13,7 +13,7 @@ then
             --dev false \
             --entry-file index.js \
             --bundle-output "$1-release.bundle" \
-            --sourcemap-output "$1f-release.bundle.map"
+            --sourcemap-output "$1-release.bundle.map"
     else
         echo "Please use either `ios` or `android` as a parameter"  
     fi
