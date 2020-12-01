@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import { get, includes } from 'lodash';
 
 import { HorizontalCardListFeatureConnected as CoreHorizontalCardListFeatureConnected } from '@apollosproject/ui-connected';
 import { withTheme } from '@apollosproject/ui-kit';
@@ -36,7 +36,7 @@ const HorizontalCardListFeature = withTheme()(
 
     let CardComponent = HorizontalDefaultCard;
     const snapToInterval =
-      cardType && (cardType.includes('MEDIUM') || cardType.includes('SMALL'))
+      includes(cardType, 'MEDIUM') || includes(cardType, 'SMALL')
         ? 150 + theme.sizing.baseUnit
         : 240 + theme.sizing.baseUnit;
 
