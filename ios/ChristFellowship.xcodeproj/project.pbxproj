@@ -768,7 +768,7 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ChristFellowship/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 5.4.0;
+				MARKETING_VERSION = 5.4.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -797,7 +797,7 @@
 				);
 				INFOPLIST_FILE = ChristFellowship/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 5.4.0;
+				MARKETING_VERSION = 5.4.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
