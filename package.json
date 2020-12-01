@@ -11,6 +11,11 @@
   "scripts": {
     "android": "SIM=\"$($HOME/Library/Android/sdk/emulator/emulator -list-avds | sed -n 1p)\" && $HOME/Library/Android/sdk/emulator/emulator -avd \"${SIM}\" & react-native run-android --appId com.apolloschurch.app --main-activity LaunchActivity",
     "beta": "./scripts/add-packages.sh beta",
+    "bugsnag-release": "yarn bugsnag-release:android && yarn bugsnag-release:ios",
+    "bugsnag-release:android": "yarn generate-source-map:android && yarn upload-source-map:android",
+    "bugsnag-release:ios": "yarn generate-source-map:ios && yarn upload-source-map:ios",
+    "generate-source-map:android": "bash ./scripts/generate-bugsnag-source-map.sh android",
+    "generate-source-map:ios": "bash ./scripts/generate-bugsnag-source-map.sh ios",
     "canary": "./scripts/add-packages.sh canary",
     "codecov": "cat ./coverage/lcov.info | codecov",
     "fixlint": "eslint ./src --fix",
@@ -35,6 +40,8 @@
     "test": "jest",
     "unlink-packages": "rm -rf ./node_modules/@apollosproject/* && ../node_modules/.bin/wml rm all",
     "upgrade": "npx @apollosproject/upgrade-tools upgrade",
+    "upload-source-map:android": "bash ./scripts/upload-bugsnag-source-map.sh android",
+    "upload-source-map:ios": "bash ./scripts/upload-bugsnag-source-map.sh ios",
     "version": "node ../../scripts/update-apollos-version.js && git add apollos.json"
   },
   "dependencies": {
