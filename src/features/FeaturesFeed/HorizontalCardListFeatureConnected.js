@@ -36,7 +36,7 @@ const HorizontalCardListFeature = withTheme()(
 
     let CardComponent = HorizontalDefaultCard;
     const snapToInterval =
-      cardType.includes('MEDIUM') || cardType.includes('SMALL')
+      cardType && (cardType.includes('MEDIUM') || cardType.includes('SMALL'))
         ? 150 + theme.sizing.baseUnit
         : 240 + theme.sizing.baseUnit;
 
