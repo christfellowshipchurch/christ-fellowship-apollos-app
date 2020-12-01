@@ -16,6 +16,10 @@ import {
   Avatar,
 } from '@apollosproject/ui-kit';
 
+import { useCurrentUser, useFeatureFlag } from '../../hooks';
+
+import EditGroupButton from '../EditGroupButton';
+
 import GET_HEADER from './getHeader';
 
 const HeaderSpacing = withTheme(({ theme }) => ({
@@ -37,6 +41,7 @@ const HeroAvatars = styled(() => ({
 
 const HeroAvatarSpacing = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit * 0.5,
+  paddingBottom: 0,
 }))(View);
 
 const StyledTitle = styled(({ theme }) => ({
@@ -54,15 +59,25 @@ const StyledH5 = styled(({ theme }) => ({
   textAlign: 'center',
 }))(H5);
 
-const HeaderConnected = ({ id }) => {
-  const { data, loading, error } = useQuery(GET_HEADER, {
+const HeaderConnected = ({ id, onEditGroupPress }) => {
+  const { enabled } = useFeatureFlag({
+    key: 'GROUP_CUSTOMIZATION',
+  });
+  const { id: currentUserId } = useCurrentUser();
+
+  const { data, loading } = useQuery(GET_HEADER, {
     variables: { groupId: id },
     skip: !id,
     fetchPolicy: 'cache-and-network',
   });
 
   const content = get(data, 'node', {});
-  const avatars = get(content, 'leaders.edges', []).map(({ node }) => node);
+  const leaders = get(content, 'leaders.edges', []);
+  const avatars = leaders.map(({ node }) => node);
+  const isGroupLeader = Boolean(
+    leaders.find((leader) => get(leader, 'node.id') === currentUserId)
+  );
+  const canEditGroup = enabled && isGroupLeader;
 
   return (
     <HeaderSpacing>
@@ -86,6 +101,7 @@ const HeaderConnected = ({ id }) => {
               !!content.groupType && (
                 <StyledH5 numberOfLines={2}>{content.groupType}</StyledH5>
               )}
+            {canEditGroup && <EditGroupButton onPress={onEditGroupPress} />}
           </StyledTitle>
         </PaddedView>
       </SafeAreaView>
@@ -95,6 +111,7 @@ const HeaderConnected = ({ id }) => {
 
 HeaderConnected.propTypes = {
   id: PropTypes.string,
+  onEditGroupPress: PropTypes.func,
 };
 
 export default HeaderConnected;

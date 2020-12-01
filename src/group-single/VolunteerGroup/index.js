@@ -27,7 +27,7 @@ const Cell = styled(({ theme }) => ({
 const VolunteerGroup = ({ id, content, loading, navigation }) => {
   const checkInRef = useRef();
   const coverImageSources = get(content, 'coverImage.sources', []);
-  const resources = get(content, 'groupResources', []);
+  const resources = get(content, 'resources', []);
 
   return (
     <CoverImageBackground isLoading={loading} source={coverImageSources}>

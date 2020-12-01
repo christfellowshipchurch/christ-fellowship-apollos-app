@@ -5,16 +5,26 @@ export const GROUP_ITEM_FRAGMENT = gql`
     title
     summary
     groupType
-    groupResources {
+    resources {
       title
       action
       relatedNode {
+        __typename
         id
         ... on Url {
           url
         }
+
+        ... on ContentItem {
+          coverImage {
+            sources {
+              uri
+            }
+          }
+        }
       }
     }
+
     coverImage {
       sources {
         uri
