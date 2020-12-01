@@ -13,6 +13,7 @@
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
 #import <GoogleCast/GoogleCast.h>
+#import "Orientation.h"
 
 @implementation AppDelegate
 
@@ -57,6 +58,11 @@
   [RNSplashScreen show];
   
   return YES;
+}
+
+// React Native Orientation Locker
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge

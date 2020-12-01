@@ -13,6 +13,7 @@ import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
 import { CoreNavigationAnalytics } from '@apollosproject/ui-analytics';
+import ScreenOrientation from 'screen-orientation';
 import { MediaPlayer } from './media-player';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
@@ -114,6 +115,7 @@ const App = () => {
     <Providers>
       <BackgroundView>
         <StatusBar />
+        <ScreenOrientation />
         <CoreNavigationAnalytics>
           {(props) => (
             <AppContainer
