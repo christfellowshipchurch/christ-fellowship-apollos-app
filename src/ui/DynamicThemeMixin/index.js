@@ -9,11 +9,22 @@ const dynamicTheme = new DynamicValue('light', 'dark');
 
 const DynamicThemeMixin = ({ children, theme }) => {
   const defaultTheme = useDynamicValue(dynamicTheme);
+  let mixinType = get(theme, 'type');
+
+  if (
+    !mixinType ||
+    mixinType === '' ||
+    mixinType !== 'LIGHT' ||
+    mixinType !== 'DARK' ||
+    typeof mixinType !== 'string'
+  ) {
+    mixinType = defaultTheme;
+  }
 
   return (
     <ThemeMixin
       mixin={{
-        type: get(theme, 'type', defaultTheme).toLowerCase(),
+        type: mixinType.toLowerCase(),
         colors: get(theme, 'colors'),
       }}
     >
