@@ -18,7 +18,9 @@ function loadStories() {
   require('../src/ui/CardFeeds/HeroCardFeed/HeroCardFeed.stories');
   require('../src/ui/CardFeeds/HorizontalCardFeed.stories');
   require('../src/ui/Cards/Cards.stories');
-  require('../src/ui/Cards/HorizontalGroupCard/HorizontalGroupCard.stories');
+  require('../src/ui/Cards/GroupCard/GroupCard.stories');
+  require('../src/ui/Cards/HorizontalDefaultCard/HorizontalDefaultCard.stories');
+  require('../src/ui/Cards/HorizontalHighlightCard/HorizontalHighlightCard.stories');
   require('../src/ui/LandingScreen/LandingScreen.stories');
   require('../src/ui/Onboarding/Onboarding.stories');
   require('../src/ui/inputs/Inputs.stories');
@@ -39,7 +41,9 @@ const stories = [
   '../src/ui/CardFeeds/HeroCardFeed/HeroCardFeed.stories',
   '../src/ui/CardFeeds/HorizontalCardFeed.stories',
   '../src/ui/Cards/Cards.stories',
-  '../src/ui/Cards/HorizontalGroupCard/HorizontalGroupCard.stories',
+  '../src/ui/Cards/GroupCard/GroupCard.stories',
+  '../src/ui/Cards/HorizontalDefaultCard/HorizontalDefaultCard.stories',
+  '../src/ui/Cards/HorizontalHighlightCard/HorizontalHighlightCard.stories',
   '../src/ui/LandingScreen/LandingScreen.stories',
   '../src/ui/Onboarding/Onboarding.stories',
   '../src/ui/inputs/Inputs.stories',

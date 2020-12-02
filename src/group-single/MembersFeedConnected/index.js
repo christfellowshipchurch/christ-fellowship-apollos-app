@@ -104,7 +104,7 @@ const MembersFeedConnected = ({ id }) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const renderMember = ({ item, isLoading }) => {
+  const renderMember = ({ item }) => {
     const photo = get(item, 'photo', {});
     const name = get(item, 'nickName', '') || get(item, 'firstName', '');
     return (
@@ -122,10 +122,10 @@ const MembersFeedConnected = ({ id }) => {
             />
           </MemberImageWrapper>
         ) : (
-            <PlaceholderWrapper>
-              <PlaceholderIcon isLoading={false} />
-            </PlaceholderWrapper>
-          )}
+          <PlaceholderWrapper>
+            <PlaceholderIcon isLoading={false} />
+          </PlaceholderWrapper>
+        )}
 
         <BodyText numberOfLines={1}>{name}</BodyText>
       </MemberCard>

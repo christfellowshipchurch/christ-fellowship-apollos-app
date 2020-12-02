@@ -53,7 +53,7 @@ const CellItem = styled(({ theme, first }) => ({
 const Group = ({ id, content, loading, navigation }) => {
   const checkInRef = useRef();
   const coverImageSources = get(content, 'coverImage.sources', []);
-  const resources = get(content, 'groupResources', []);
+  const resources = get(content, 'resources', []);
   const dateTime = get(content, 'dateTime', {});
   const videoCall = get(content, 'videoCall', {});
   const parentVideoCall = get(content, 'parentVideoCall', {});
@@ -78,9 +78,11 @@ const Group = ({ id, content, loading, navigation }) => {
   const chatChannelId = get(content, 'streamChatChannel.channelId');
   const chatChannelType = get(content, 'streamChatChannel.channelType');
 
+  const handleEditGroupPress = () => navigation.navigate('EditGroup', { id });
+
   return (
     <CoverImageBackground isLoading={loading} source={coverImageSources}>
-      <HeaderConnected id={id} />
+      <HeaderConnected id={id} onEditGroupPress={handleEditGroupPress} />
 
       <BackgroundView>
         <PaddedView vertical={false}>
@@ -167,6 +169,10 @@ Group.propTypes = {
     id: PropTypes.string,
     title: PropTypes.string,
     summary: PropTypes.string,
+    dateTime: PropTypes.shape({
+      state: PropTypes.string,
+      end: PropTypes.string,
+    }),
     groupType: PropTypes.string,
     groupResources: PropTypes.arrayOf(
       PropTypes.shape({

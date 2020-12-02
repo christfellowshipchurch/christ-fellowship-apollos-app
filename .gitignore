@@ -52,3 +52,7 @@ project.xcworkspace
 
 # CocoaPods
 /ios/Pods/
+
+# Source Maps
+*release.bundle
+*release.bundle.map

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState } from 'react';
 import { Query } from 'react-apollo';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import { ErrorCard } from '@apollosproject/ui-kit';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
+import NavigationHeader from 'ui/NavigationHeader';
+import ScreenOrientation from 'screen-orientation';
 import ThemeMixin from '../ui/DynamicThemeMixin';
 
 import ActionContainer from './ActionContainer';
@@ -17,7 +19,11 @@ import WeekendContentItem from './WeekendContentItem';
 import EventContentItem from './EventContentItem';
 import InformationalContentItem from './InformationalContentItem';
 
-import NavigationHeader from './NavigationHeader';
+const OrientationHandler = () => {
+  const [orientation, setOrientation] = useState(PORTRAIT);
+
+  return <ScreenOrientation />;
+};
 
 class ContentSingle extends PureComponent {
   static propTypes = {
@@ -118,6 +124,7 @@ class ContentSingle extends PureComponent {
             itemId: this.itemId,
           }}
         />
+        <ScreenOrientation />
         {this.renderContent({ content, loading, error })}
         <ActionContainer itemId={id} />
       </ThemeMixin>

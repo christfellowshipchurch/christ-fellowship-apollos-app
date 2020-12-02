@@ -49,17 +49,18 @@ const CardFeed = ({
     get(item, 'emptyItem') ? (
       <View {...item} />
     ) : (
-        <TouchableScale
-          onPress={() => onPressItem(item, navigation)}
-          style={{ flex: get(item, 'flex', 1) }}
-        >
-          <ContentCardConnected
-            card={card}
-            {...item}
-            contentId={get(item, 'id')}
-          />
-        </TouchableScale>
-      );
+      <TouchableScale
+        onPress={() => onPressItem(item, navigation)}
+        style={{ flex: get(item, 'flex', 1) }}
+      >
+        <ContentCardConnected
+          card={card}
+          {...item}
+          contentId={get(item, 'id')}
+          inHorizontalList={horizontal}
+        />
+      </TouchableScale>
+    );
 
   /** If we are in a loading or error state and we don't have existing content,
    *  we don't want to adjust the content to add an empty object.
@@ -77,12 +78,12 @@ const CardFeed = ({
     content.length % numColumns === 0 || numColumns <= 1 || dontAdjustContent
       ? content
       : [
-        ...content,
-        {
-          emptyItem: true,
-          style: { flex: numColumns - (content.length % numColumns) },
-        },
-      ];
+          ...content,
+          {
+            emptyItem: true,
+            style: { flex: numColumns - (content.length % numColumns) },
+          },
+        ];
   const feedProps = {
     renderItem,
     content: adjustedContent,
@@ -111,27 +112,27 @@ const CardFeed = ({
       />
     </View>
   ) : (
-      <FeedView
-        ListHeaderComponent={
-          (ListHeaderComponent || title) && (
-            <View>
-              {!!title &&
-                title !== '' && (
-                  <FeedHeaderComponent
-                    title={title}
-                    seeMore={seeMore}
-                    isLoading={isLoading}
-                    onPress={onPressHeader}
-                  />
-                )}
-              {ListHeaderComponent}
-            </View>
-          )
-        }
-        {...feedProps}
-        renderItem={(props) => feedProps.renderItem({ ...props, numColumns })}
-      />
-    );
+    <FeedView
+      ListHeaderComponent={
+        (ListHeaderComponent || title) && (
+          <View>
+            {!!title &&
+              title !== '' && (
+                <FeedHeaderComponent
+                  title={title}
+                  seeMore={seeMore}
+                  isLoading={isLoading}
+                  onPress={onPressHeader}
+                />
+              )}
+            {ListHeaderComponent}
+          </View>
+        )
+      }
+      {...feedProps}
+      renderItem={(props) => feedProps.renderItem({ ...props, numColumns })}
+    />
+  );
 };
 
 CardFeed.propTypes = {

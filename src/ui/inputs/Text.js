@@ -39,6 +39,7 @@ const TextInput = enhance((props) => {
     error,
     disabled,
     hideIcon,
+    hidePrefix,
   } = props;
   const [focused, setFocused] = useState(false);
 
@@ -49,12 +50,14 @@ const TextInput = enhance((props) => {
       onEndEditing={() => setFocused(false)}
       error={hideErrorText ? '' : error}
       prefix={
-        <InputIcon
-          icon={icon}
-          disbled={disabled}
-          focused={focused}
-          hideIcon={hideIcon}
-        />
+        hidePrefix ? null : (
+          <InputIcon
+            icon={icon}
+            disabled={disabled}
+            focused={focused}
+            hideIcon={hideIcon}
+          />
+        )
       }
       suffix={
         (errorIndicator || disabled) && (
@@ -71,6 +74,7 @@ TextInput.defaultProps = {
   hideErrorText: false,
   disabled: false,
   hideIcon: false,
+  hidePrefix: false,
 };
 
 export default TextInput;

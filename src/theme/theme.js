@@ -68,12 +68,14 @@ import {
 const colors = {
   primary: '#00aeef',
   secondary: '#000',
+  tertiary: '#88D8F6',
   alert: '#d52158',
   success: '#1ec27f',
   warning: '#e09541',
   text: {
     link: '#00aeef',
   },
+  wordOfChrist: '#d52158',
 };
 
 /* Base Typography sizing and fonts.
@@ -137,6 +139,32 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
     start: { x: 0, y: 0 },
     end: { x: 0, y: 1 },
     locations: [0, 0.7, 1],
+  }),
+  'gradient-highlight-card': ({ overlayColor }) => ({
+    colors: [
+      `${Color(overlayColor)
+        .alpha(0)
+        .string()}`,
+      `${Color(overlayColor)
+        .alpha(0.6)
+        .string()}`,
+    ],
+    start: { x: 0, y: 0 },
+    end: { x: 0, y: 1 },
+    locations: [0, 0.6],
+  }),
+  'gradient-selected': ({ overlayColor }) => ({
+    colors: [
+      `${Color(overlayColor)
+        .alpha(0.7)
+        .string()}`,
+      `${Color(overlayColor)
+        .alpha(0.95)
+        .string()}`,
+    ],
+    start: { x: 0, y: 0 },
+    end: { x: 0, y: 1 },
+    locations: [0, 1],
   }),
 });
 

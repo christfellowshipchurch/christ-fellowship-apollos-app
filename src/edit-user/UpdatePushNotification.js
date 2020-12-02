@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   checkNotifications,
@@ -51,7 +51,7 @@ const UpdatePushNotification = ({ onRequestPushPermissions }) => {
   );
 };
 
-UpdatePushNotification.PropTypes = {
+UpdatePushNotification.propTypes = {
   onRequestPushPermissions: PropTypes.func,
 };
 

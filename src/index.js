@@ -1,5 +1,6 @@
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import React from 'react';
+import { YellowBox } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import SplashScreen from 'react-native-splash-screen';
 import { useDarkModeContext } from 'react-native-dark-mode';
@@ -13,16 +14,19 @@ import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
 import { CoreNavigationAnalytics } from '@apollosproject/ui-analytics';
+import ScreenOrientation from 'screen-orientation';
 import { MediaPlayer } from './media-player';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 
 import Providers from './Providers';
 import ContentSingle from './content-single';
+import NodeSingle from './node-single';
 import ContentFeed from './content-feed';
 import Tabs from './tabs';
 import EditUser from './edit-user';
 import GroupSingle from './group-single';
+import EditGroup from './edit-group';
 import NotificationCenter from './notification-center';
 import PrayerRequestSingle from './prayer-request-single';
 import MyPrayerRequestsFeed from './my-prayer-requests-feed';
@@ -36,6 +40,9 @@ import AuthBackground from './ui/AuthBackground';
 // bugsnag configuration
 // eslint-disable-next-line
 import bugsnag from './bugsnag';
+
+// ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+YellowBox.ignoreWarnings(['Warning:']);
 
 // Hack to avoid needing to pass emailRequired through the navigator.navigate
 const EnhancedAuth = (props) => (
@@ -86,6 +93,7 @@ const AppNavigator = createStackNavigator(
       },
     },
     ContentSingle,
+    NodeSingle,
     Auth: EnhancedAuth,
     Passes,
     Onboarding,
@@ -93,6 +101,7 @@ const AppNavigator = createStackNavigator(
     EditUser,
     Location,
     GroupSingle,
+    EditGroup,
     NotificationCenter,
     PrayerRequestSingle,
   },
@@ -112,6 +121,7 @@ const App = () => {
     <Providers>
       <BackgroundView>
         <StatusBar />
+        <ScreenOrientation />
         <CoreNavigationAnalytics>
           {(props) => (
             <AppContainer

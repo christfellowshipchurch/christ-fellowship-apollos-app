@@ -53,7 +53,8 @@ const RowCard = ({ coverImage, label, title, summary, isLoading, isLive }) => (
 
       <Content>
         {isLive && !isLoading && <LiveLabel />}
-        {label !== '' &&
+        {!!label &&
+          label !== '' &&
           !isLive &&
           !isLoading && (
             <H6 numberOfLines={1} isLoading={isLoading}>

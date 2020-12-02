@@ -19,17 +19,20 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - google-cast-sdk-no-bluetooth (4.4.7):
-    - google-cast-sdk-no-bluetooth/Core (= 4.4.7)
-    - Protobuf (~> 3.0)
-  - google-cast-sdk-no-bluetooth/Core (4.4.7):
-    - Protobuf (~> 3.0)
-  - OneSignal (2.10.1)
+  - google-cast-sdk-no-bluetooth (4.5.1):
+    - google-cast-sdk-no-bluetooth/Core (= 4.5.1)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.12)
+  - google-cast-sdk-no-bluetooth/Core (4.5.1):
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.12)
+  - GTMSessionFetcher/Core (1.5.0)
+  - OneSignal (2.15.2)
   - Permission-Notifications (2.2.0):
     - RNPermissions
   - Permission-PhotoLibrary (2.2.0):
     - RNPermissions
-  - Protobuf (3.12.0)
+  - Protobuf (3.13.0)
   - React (0.60.5):
     - React-Core (= 0.60.5)
     - React-DevSupport (= 0.60.5)
@@ -99,9 +102,11 @@ PODS:
     - React
   - react-native-netinfo (5.9.6):
     - React
-  - react-native-onesignal (3.3.2):
-    - OneSignal (= 2.10.1)
+  - react-native-onesignal (3.9.1):
+    - OneSignal (= 2.15.2)
     - React (< 1.0.0, >= 0.13.0)
+  - react-native-orientation-locker (1.2.0):
+    - React
   - react-native-passkit-wallet (0.1.4):
     - React
   - react-native-safari-view (1.0.0):
@@ -201,6 +206,7 @@ DEPENDENCIES:
   - react-native-music-control (from `../node_modules/react-native-music-control`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
+  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-passkit-wallet (from `../node_modules/react-native-passkit-wallet`)
   - react-native-safari-view (from `../node_modules/react-native-safari-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -236,12 +242,12 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
-    - AstronomerAnalytics
-    - OneSignal
   trunk:
+    - AstronomerAnalytics
     - boost-for-react-native
     - google-cast-sdk-no-bluetooth
+    - GTMSessionFetcher
+    - OneSignal
     - Protobuf
 
 EXTERNAL SOURCES:
@@ -295,6 +301,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-onesignal:
     :path: "../node_modules/react-native-onesignal"
+  react-native-orientation-locker:
+    :path: "../node_modules/react-native-orientation-locker"
   react-native-passkit-wallet:
     :path: "../node_modules/react-native-passkit-wallet"
   react-native-safari-view:
@@ -370,11 +378,12 @@ SPEC CHECKSUMS:
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
-  google-cast-sdk-no-bluetooth: 197acace9d5a78380bdaef8d45439b2250fa050b
-  OneSignal: 8fb749fa07f88006403c9b659a570fb7fb74519a
+  google-cast-sdk-no-bluetooth: 73ac8e9edbee16f52c2a445e391bd531e116bb31
+  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  OneSignal: 9531e385388565f4d31797ddadbe0fcc786430ec
   Permission-Notifications: 572d4e94121e57dbecc71a0933abd8ed61108e92
   Permission-PhotoLibrary: e3ff899f87a3eda29427c142ca93837e8802d228
-  Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
+  Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
   React: 53c53c4d99097af47cf60594b8706b4e3321e722
   React-Core: ba421f6b4f4cbe2fb17c0b6fc675f87622e78a64
   React-cxxreact: 8384287780c4999351ad9b6e7a149d9ed10a2395
@@ -392,7 +401,8 @@ SPEC CHECKSUMS:
   react-native-maps: 6e499eee4eabf422ba8b6f94e993cc768bf35153
   react-native-music-control: dcfe5b61e56a15898c4618579cb8ce612c9d21a8
   react-native-netinfo: 38a1e0b3e89b48e4b5833ed475d8df5f049f6f90
-  react-native-onesignal: 8958311abbd9125f26e600914e48833b57321cbf
+  react-native-onesignal: ad2eaab1517951e50d19fa3eccd16d3048167181
+  react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
   react-native-passkit-wallet: 51e3babdaeec4c10b5736786ebd1bfb470fcaa36
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
   react-native-safe-area-context: 79fea126c6830c85f65947c223a5e3058a666937

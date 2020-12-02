@@ -24,7 +24,7 @@ const AvatarConnected = ({ focused }) => {
   return (
     <Container>
       <StyledAvatar
-        size="sm"
+        size="small"
         source={photo}
         isLoading={loading || error}
         focused={focused}
