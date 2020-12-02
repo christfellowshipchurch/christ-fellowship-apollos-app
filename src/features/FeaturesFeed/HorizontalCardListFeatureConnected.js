@@ -49,7 +49,7 @@ const HorizontalCardListFeature = withTheme()(
         title={title}
         content={cards}
         removeClippedSubviews={false}
-        isLoading={isLoading}
+        isLoading={isLoading && cards.length === 0}
         key={featureId}
         seeMore={seeMore}
         seeMoreText={get(primaryAction, 'title', '')}

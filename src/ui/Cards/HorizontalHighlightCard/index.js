@@ -243,7 +243,9 @@ const HorizontalHighlightCard = withIsLoading(
             <FlexedActionLayoutText hasAction={hasAction}>
               <Title size={size}>{title}</Title>
             </FlexedActionLayoutText>
-            {hasAction ? <ActionIcon name={actionIcon} /> : null}
+            {hasAction ? (
+              <ActionIcon name={actionIcon} isLoading={false} />
+            ) : null}
           </ActionLayout>
         </Content>
         {isLiked != null ? (
