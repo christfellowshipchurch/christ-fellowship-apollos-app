@@ -4,8 +4,9 @@ import { createStackNavigator } from 'react-navigation';
 import { SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
+import NavigationHeader from 'ui/NavigationHeader';
 
-import { styled, withTheme } from '@apollosproject/ui-kit';
+import { styled, withTheme, Icon } from '@apollosproject/ui-kit';
 
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 
@@ -157,7 +158,10 @@ const ChannelNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'Channel',
+    headerMode: 'float',
+    headerTransitionPreset: 'fade-in-place',
     headerLayoutPreset: 'left',
+    navigationOptions: { header: null },
   }
 );
 
