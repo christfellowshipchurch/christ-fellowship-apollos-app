@@ -220,7 +220,7 @@ const HorizontalHighlightCard = withIsLoading(
   }) => (
     <ThemeMixin
       mixin={{
-        type: get(theme, 'type', 'dark').toLowerCase(), // not sure why we need toLowerCase
+        // type: get(theme, 'type', 'dark').toLowerCase(), // not sure why we need toLowerCase
         colors: get(theme, 'colors', {}),
       }}
     >

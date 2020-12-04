@@ -1,12 +1,15 @@
 import Color from 'color';
 
+const lightenBy = (color, ratio) => {
+  const lightness = color.lightness();
+  return color.lightness(lightness + (100 - lightness) * ratio);
+};
+
 const dark = ({ colors: themeColors, alpha }) => ({
   colors: {
     primary: themeColors.primary,
     screen: themeColors.black,
-    paper: Color(themeColors.darkPrimary)
-      .darken(0.5)
-      .hex(),
+    paper: lightenBy(Color(themeColors.black), 0.09).hex(),
 
     text: {
       primary: themeColors.lightPrimary,
@@ -16,9 +19,7 @@ const dark = ({ colors: themeColors, alpha }) => ({
     },
     background: {
       screen: themeColors.black,
-      paper: Color(themeColors.darkPrimary)
-        .darken(0.5)
-        .hex(),
+      paper: lightenBy(Color(themeColors.black), 0.09).hex(),
       accent: Color(themeColors.darkTertiary)
         .fade(alpha.medium)
         .hex(),

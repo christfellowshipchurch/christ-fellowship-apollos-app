@@ -1,17 +1,9 @@
-import React from 'react';
-import { Platform, Text } from 'react-native';
 import Color from 'color';
 
-import { ScriptureText, VerseNumber } from '@apollosproject/ui-scripture';
-import { BodyText } from '@apollosproject/ui-kit';
-import {
-  AddPrayerScreenConnected,
-  PrayerDialogScreen,
-  ConfirmationDialogScreen,
-} from '@apollosproject/ui-prayer/src/screens';
-import { PrayerCard } from '@apollosproject/ui-prayer';
 import authEntry from './authEntry';
 import onboarding from './onboarding';
+
+import light from './light-theme';
 import dark from './dark-theme';
 
 import {
@@ -19,6 +11,7 @@ import {
   UIKitOverrides,
   UIOnboardingOverrides,
   UIPrayerOverrides,
+  Typography,
 } from './overrides';
 
 /* Add your custom theme definitions below. Anything that is supported in UI-Kit Theme can be
@@ -72,9 +65,6 @@ const colors = {
   alert: '#d52158',
   success: '#1ec27f',
   warning: '#e09541',
-  text: {
-    link: '#00aeef',
-  },
   wordOfChrist: '#d52158',
 };
 
@@ -183,11 +173,12 @@ const alpha = {
   low: 0.4,
 };
 
-const overrides = () => ({
+const overrides = ({ colors: themeColors }) => ({
   'DateInput.Chip': {
     backgroundColor: 'transparent',
     borderColor: 'white',
   },
+  ...Typography({ colors: themeColors }),
   ...UIAuthOverrides,
   ...UIKitOverrides({ sizing }),
   ...UIOnboardingOverrides,
@@ -202,6 +193,7 @@ const buttons = ({ colors: themeColors }) => ({
 });
 
 const types = {
+  light,
   dark,
   onboarding,
   'auth-entry': authEntry,

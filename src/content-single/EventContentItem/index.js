@@ -7,6 +7,7 @@ import {
   BackgroundView,
   PaddedView,
   StretchyView,
+  ThemeMixin,
 } from '@apollosproject/ui-kit';
 import {
   HorizontalContentSeriesFeedConnected,
@@ -55,11 +56,6 @@ const StyledImageBackground = styled(({ theme }) => ({
 const EventContentItem = ({ content, loading }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
   const callsToAction = get(content, 'callsToAction', []);
-  const hideLabel = get(content, 'hideLabel', false);
-  const buttonLabel = hideLabel
-    ? 'Get Started'
-    : 'Check Back Soon for More Information';
-  const events = get(content, 'events', []);
   const hasVideo = get(content, 'videos[0].sources[0]', []).length > 0;
   const checkin = get(content, 'checkin', {});
 

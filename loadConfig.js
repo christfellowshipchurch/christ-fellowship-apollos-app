@@ -255,40 +255,54 @@ ApollosConfig.loadJs({
     `,
     THEME_FRAGMENT: gql`
       fragment ThemeFragment on Theme {
-        type
         colors {
           primary
           secondary
           tertiary
+
           alert
+          warning
+          success
+          wordOfChrist
+
           screen
           paper
-          text {
-            primary
-            secondary
-            tertiary
-            link
-          }
+
+          white
+          black
+
+          darkPrimary
+          darkSecondary
+          darkTertiary
+
+          lightPrimary
+          lightSecondary
+          lightTertiary
         }
       }
     `,
     THEMED_NODE_FRAGMENT: gql`
       fragment ThemedNodeFragment on ThemedNode {
         theme {
-          type
           colors {
             primary
             secondary
             tertiary
             alert
+
             screen
             paper
-            text {
-              primary
-              secondary
-              tertiary
-              link
-            }
+
+            white
+            black
+
+            darkPrimary
+            darkSecondary
+            darkTertiary
+
+            lightPrimary
+            lightSecondary
+            lightTertiary
           }
         }
       }
