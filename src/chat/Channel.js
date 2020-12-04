@@ -150,6 +150,7 @@ Channel.navigationOptions = ({ navigation, ...props }) =>
     title: navigation.getParam('name', '…'),
     blur: false,
     headerLeft: null,
+    header: NavigationHeader,
   });
 
 const ChannelNavigator = createStackNavigator(
