@@ -296,14 +296,10 @@ class LiveStreamPlayer extends PureComponent {
 
   componentDidMount() {
     Dimensions.addEventListener('change', this.handleOrientationChanged);
-    this.joinLiveStreamTimeout = setTimeout(
-      () =>
-        this.props.client.mutate({
-          mutation: JOIN_LIVESTREAM,
-          variables: { nodeId: this.props.event.parentId },
-        }),
-      10000
-    );
+    this.props.client.mutate({
+      mutation: JOIN_LIVESTREAM,
+      variables: { nodeId: this.props.event.parentId },
+    });
   }
 
   componentDidUpdate(_, oldState) {
@@ -319,7 +315,6 @@ class LiveStreamPlayer extends PureComponent {
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.handleOrientationChanged);
-    clearTimeout(this.joinLiveStreamTimeout);
   }
 
   chatAnimation = ({ showChat }) => {
