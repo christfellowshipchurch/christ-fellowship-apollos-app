@@ -6,7 +6,7 @@ import { get } from 'lodash';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 import NavigationHeader from 'ui/NavigationHeader';
 
-import { styled, withTheme, Icon } from '@apollosproject/ui-kit';
+import { styled, withTheme } from '@apollosproject/ui-kit';
 
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 
