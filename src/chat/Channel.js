@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation';
 import { SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
+import NavigationHeader from 'ui/NavigationHeader';
 
 import { styled, withTheme } from '@apollosproject/ui-kit';
 
@@ -149,6 +150,7 @@ Channel.navigationOptions = ({ navigation, ...props }) =>
     title: navigation.getParam('name', '…'),
     blur: false,
     headerLeft: null,
+    header: NavigationHeader,
   });
 
 const ChannelNavigator = createStackNavigator(
@@ -157,7 +159,10 @@ const ChannelNavigator = createStackNavigator(
   },
   {
     initialRouteName: 'Channel',
+    headerMode: 'float',
+    headerTransitionPreset: 'fade-in-place',
     headerLayoutPreset: 'left',
+    navigationOptions: { header: null },
   }
 );
 

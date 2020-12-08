@@ -74,8 +74,6 @@ const AppContent = createStackNavigator(
     Tabs,
     ContentFeed,
     MyPrayerRequestsFeed,
-    ChannelsList,
-    Channel,
   },
   {
     initialRouteName: 'Tabs',
@@ -104,6 +102,8 @@ const AppNavigator = createStackNavigator(
     EditGroup,
     NotificationCenter,
     PrayerRequestSingle,
+    Channel,
+    ChannelsList,
   },
   {
     initialRouteName: 'ProtectedRoute',
