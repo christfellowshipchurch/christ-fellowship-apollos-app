@@ -76,6 +76,7 @@ const Group = ({ id, content, loading, navigation }) => {
 
   const start = get(dateTime, 'start');
   const chatChannelId = get(content, 'streamChatChannel.channelId');
+  const chatChannelType = get(content, 'streamChatChannel.channelType');
 
   const handleEditGroupPress = () => navigation.navigate('EditGroup', { id });
 
@@ -138,6 +139,7 @@ const Group = ({ id, content, loading, navigation }) => {
             {chatChannelId && (
               <GroupChatButton
                 channelId={chatChannelId}
+                channelType={chatChannelType}
                 groupName={content.title}
               />
             )}
