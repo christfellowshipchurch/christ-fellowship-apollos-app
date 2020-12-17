@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { get } from 'lodash';
 
 import {

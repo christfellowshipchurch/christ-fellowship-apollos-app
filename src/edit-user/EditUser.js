@@ -6,7 +6,7 @@ import {
   StatusBar,
   ScrollView,
 } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';

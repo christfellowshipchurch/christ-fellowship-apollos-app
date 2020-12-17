@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Text } from 'react-native';
 import ApollosConfig from '@apollosproject/config';
 import {
   Providers,
@@ -6,8 +7,7 @@ import {
   NavigationService,
 } from '@apollosproject/ui-kit';
 import { AnalyticsProvider } from '@apollosproject/ui-analytics';
-import { MediaPlayerProvider } from '@apollosproject/ui-media-player';
-// import { NotificationsProvider } from '@apollosproject/ui-notifications';
+import { NotificationsProvider } from '@apollosproject/ui-notifications';
 import { LiveProvider } from '@apollosproject/ui-connected';
 import { checkOnboardingStatusAndNavigate } from '@apollosproject/ui-onboarding';
 import { AuthProvider } from '@apollosproject/ui-auth';
@@ -17,7 +17,7 @@ import {
   DarkModeProvider,
 } from 'react-native-dark-mode';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import NotificationsProvider from './NotificationsProvider';
+// import NotificationsProvider from './NotificationsProvider';
 import { SideMenuProvider } from './sidemenu';
 import AppStateProvider from './AppStateProvider';
 
@@ -46,30 +46,28 @@ const AppProviders = (props) => {
             })
           }
         >
-          <MediaPlayerProvider>
-            <AnalyticsProvider
-              trackFunctions={[track]}
-              identifyFunctions={[identify]}
-            >
-              <LiveProvider>
-                <DarkModeProvider>
-                  <Providers
-                    themeInput={{ ...customTheme, type: theme }}
-                    iconInput={customIcons}
-                    {...props}
-                  >
-                    <BackgroundView>
-                      <SideMenuProvider {...props}>
-                        <ActionSheetProvider>
-                          <AppStateProvider {...props} />
-                        </ActionSheetProvider>
-                      </SideMenuProvider>
-                    </BackgroundView>
-                  </Providers>
-                </DarkModeProvider>
-              </LiveProvider>
-            </AnalyticsProvider>
-          </MediaPlayerProvider>
+          <AnalyticsProvider
+            trackFunctions={[track]}
+            identifyFunctions={[identify]}
+          >
+            <LiveProvider>
+              <DarkModeProvider>
+                <Providers
+                  themeInput={{ ...customTheme, type: theme }}
+                  iconInput={customIcons}
+                  {...props}
+                >
+                  <BackgroundView>
+                    <SideMenuProvider {...props}>
+                      <ActionSheetProvider>
+                        <AppStateProvider {...props} />
+                      </ActionSheetProvider>
+                    </SideMenuProvider>
+                  </BackgroundView>
+                </Providers>
+              </DarkModeProvider>
+            </LiveProvider>
+          </AnalyticsProvider>
         </AuthProvider>
       </NotificationsProvider>
     </ClientProvider>

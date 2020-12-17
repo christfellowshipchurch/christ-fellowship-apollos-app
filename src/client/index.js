@@ -1,21 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider as ApolloHookProvider } from '@apollo/react-hooks';
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
+import { ApolloProvider, ApolloClient, ApolloLink } from '@apollo/client';
 import { getVersion, getApplicationName } from 'react-native-device-info';
 
-import { NavigationService } from '@apollosproject/ui-kit';
 import { authLink, buildErrorLink } from '@apollosproject/ui-auth';
 
-import { resolvers, schema, defaults } from '../store';
-import { bugsnagLink, setUser } from '../bugsnag';
+import { NavigationService } from '@apollosproject/ui-kit';
+import { resolvers, schema, defaults, GET_ALL_DATA } from '../store';
+
 import httpLink from './httpLink';
-import cache, { ensureCacheHydration, MARK_CACHE_LOADED } from './cache';
+import cache, { ensureCacheHydration } from './cache';
+import MARK_CACHE_LOADED from './markCacheLoaded';
 
 const goToAuth = () => NavigationService.resetToAuth();
-const wipeData = () => cache.writeData({ data: defaults });
+const wipeData = () =>
+  cache.writeQuery({ query: GET_ALL_DATA, data: defaults });
 
 let clearStore;
 let storeIsResetting = false;
@@ -30,7 +29,7 @@ const onAuthError = async () => {
 
 const errorLink = buildErrorLink(onAuthError);
 
-const link = ApolloLink.from([bugsnagLink, authLink, errorLink, httpLink]);
+const link = ApolloLink.from([authLink, errorLink, httpLink]);
 
 export const client = new ApolloClient({
   link,
@@ -56,6 +55,11 @@ class ClientProvider extends PureComponent {
     client: PropTypes.shape({
       cache: PropTypes.shape({}),
     }),
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+      PropTypes.object, // covers Fragments
+    ]).isRequired,
   };
 
   static defaultProps = {
@@ -69,15 +73,14 @@ class ClientProvider extends PureComponent {
       throw e;
     } finally {
       client.mutate({ mutation: MARK_CACHE_LOADED });
-      setUser(client);
     }
   }
 
   render() {
-    // return <ApolloProvider {...this.props} client={client} />;
+    const { children, ...otherProps } = this.props;
     return (
-      <ApolloProvider client={client}>
-        <ApolloHookProvider {...this.props} client={client} />
+      <ApolloProvider {...otherProps} client={client}>
+        {children}
       </ApolloProvider>
     );
   }

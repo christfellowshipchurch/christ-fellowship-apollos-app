@@ -1,6 +1,8 @@
 import gql from 'graphql-tag';
+
 import { schema as mediaPlayerSchema } from '@apollosproject/ui-media-player';
-import { CACHE_LOADED } from '../client/cache'; // eslint-disable-line
+import { updatePushId } from '@apollosproject/ui-notifications';
+import CACHE_LOADED from '../client/getCacheLoaded'; // eslint-disable-line
 
 // TODO: this will require more organization...ie...not keeping everything in one file.
 // But this is simple while our needs our small.
@@ -10,14 +12,14 @@ export const schema = `
     devicePushId: String
     cacheLoaded: Boolean
     notificationsEnabled: Boolean
-}
+  }
 
   type Mutation {
     cacheMarkLoaded
     updateDevicePushId(pushId: String!)
     updatePushPermissions(enabled: Boolean!)
   }
-  ${mediaPlayerSchema}
+${mediaPlayerSchema}
 `;
 
 export const defaults = {
@@ -28,6 +30,14 @@ export const defaults = {
 const GET_LOGGED_IN = gql`
   query {
     isLoggedIn @client
+  }
+`;
+
+export const GET_ALL_DATA = gql`
+  query {
+    isLoggedIn @client
+    cacheLoaded @client
+    notificationsEnabled @client
   }
 `;
 
@@ -44,18 +54,17 @@ export const resolvers = {
         query: GET_LOGGED_IN,
       });
 
-      // On cache load, we check to see if the user is already logged in
-      //    and then check to see if Push Notifications are already enabled
-      // If they are, we want to request permission to get the Device Id
-      //    to update our records
-      // if (isLoggedIn) {
-      //   PushNotification.checkPermissions(({ alert, badge, sound }) => {
-      //     if (alert || badge || sound) {
-      //       PushNotification.requestPermissions();
-      //     }
-      //   });
-      // }
+      const { pushId } = cache.readQuery({
+        query: gql`
+          query {
+            pushId @client
+          }
+        `,
+      });
 
+      if (isLoggedIn && pushId) {
+        updatePushId({ pushId, client });
+      }
       return null;
     },
   },

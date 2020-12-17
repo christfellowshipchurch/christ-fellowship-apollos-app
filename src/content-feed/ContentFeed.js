@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 

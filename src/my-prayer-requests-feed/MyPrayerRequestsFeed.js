@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Animated, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { get } from 'lodash';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import moment from 'moment';
 
 import { fetchMoreResolver } from '@apollosproject/ui-connected';

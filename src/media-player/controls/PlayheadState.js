@@ -1,6 +1,7 @@
 import React, { createContext, Component } from 'react';
 import { Animated } from 'react-native';
-import { Query, withApollo } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
+import { withApollo } from '@apollo/client/react/hoc';
 import PropTypes from 'prop-types';
 
 import { GET_MEDIA_PLAYER_IS_PLAYING } from '../queries';

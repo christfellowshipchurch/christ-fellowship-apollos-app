@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { withProps } from 'recompose';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 

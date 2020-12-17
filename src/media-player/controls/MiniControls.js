@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Platform, View, Animated, StyleSheet } from 'react-native';
-import { Mutation, Query } from 'react-apollo';
+import { Mutation, Query } from '@apollo/client/react/components';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {

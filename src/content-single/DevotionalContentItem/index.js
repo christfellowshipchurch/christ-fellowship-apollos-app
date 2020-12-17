@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Animated, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
 import { get } from 'lodash';
 
 import { MediaControlsConnected } from '@apollosproject/ui-connected';

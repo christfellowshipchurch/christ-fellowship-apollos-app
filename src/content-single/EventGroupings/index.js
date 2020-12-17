@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';

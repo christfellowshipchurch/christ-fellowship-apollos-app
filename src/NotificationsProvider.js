@@ -13,20 +13,26 @@ import React, { Component } from 'react';
 import { Linking, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { withApollo } from 'react-apollo';
+import { withApollo } from '@apollo/client/react/hoc';
 import { get } from 'lodash';
 import OneSignal from 'react-native-onesignal';
-import PushProvider from '@apollosproject/ui-notifications/src/pushProvider';
 import {
   resolvers,
   defaults,
 } from '@apollosproject/ui-notifications/src/store';
+import PushProvider from '@apollosproject/ui-notifications/src/pushProvider';
 
 import { useLinkRouter } from 'hooks';
 
 const UPDATE_DEVICE_PUSH_ID = gql`
   mutation updateDevicePushId($pushId: String!) {
     updateDevicePushId(pushId: $pushId) @client
+  }
+`;
+
+const GET_PUSH_ID = gql`
+  query {
+    pushId @client
   }
 `;
 
@@ -41,11 +47,9 @@ class NotificationsInit extends Component {
     client: PropTypes.shape({
       mutate: PropTypes.func,
       addResolvers: PropTypes.func,
-      writeData: PropTypes.func,
+      writeQuery: PropTypes.func,
       onClearStore: PropTypes.func,
     }).isRequired,
-    routeLink: PropTypes.func,
-    onNotification: PropTypes.func,
   };
 
   static navigationOptions = {};
@@ -54,8 +58,10 @@ class NotificationsInit extends Component {
     super(props);
     const { client } = props;
     client.addResolvers(resolvers);
-    client.writeData({ data: defaults });
-    client.onClearStore(() => client.writeData({ data: defaults }));
+    client.writeQuery({ query: GET_PUSH_ID, data: defaults });
+    client.onClearStore(() =>
+      client.writeQuery({ query: GET_PUSH_ID, data: defaults })
+    );
   }
 
   componentDidMount() {

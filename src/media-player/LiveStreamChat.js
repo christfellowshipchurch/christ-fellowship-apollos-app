@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { useLazyQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/client';
 import React, { useState, useEffect, useRef } from 'react';
 import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';

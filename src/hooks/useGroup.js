@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
 
 import GET_GROUP from '../group-single/getGroup';

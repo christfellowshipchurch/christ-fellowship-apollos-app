@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { getVersion } from 'react-native-device-info';
 
 import {

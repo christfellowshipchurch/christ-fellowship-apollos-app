@@ -2,7 +2,7 @@ import URL from 'url';
 import querystring from 'querystring';
 import { Linking } from 'react-native';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
 import { NavigationService } from '@apollosproject/ui-kit';

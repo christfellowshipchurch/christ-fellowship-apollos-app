@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/client';
 import ApollosConfig from '@apollosproject/config';
 import gql from 'graphql-tag';
 import { get } from 'lodash';

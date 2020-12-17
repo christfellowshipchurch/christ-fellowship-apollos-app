@@ -1,5 +1,7 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/client';
+import { Query } from '@apollo/client/react/components';
+import { get } from 'lodash';
 import {
   checkNotifications,
   openSettings,
@@ -21,7 +23,13 @@ import AuthBackground from '../AuthBackground';
 
 const { resetAction } = NavigationService;
 
-function Onboarding({ navigation }) {
+const Onboarding = ({ navigation }) => {
+  const { data, loading, error } = useQuery(WITH_USER_ID, {
+    fetchPolicy: 'network-only',
+  });
+
+  const id = get(data, 'currentUser.id');
+
   return (
     <AuthBackground>
       <OnboardingSwiper>
@@ -39,44 +47,38 @@ function Onboarding({ navigation }) {
               primaryNavText={'Next'}
               description="We'll use your location to connect you with your nearby campus and community."
             />
-            <Query query={WITH_USER_ID} fetchPolicy="network-only">
-              {({
-                data: { currentUser: { id } = { currentUser: { id: null } } },
-              }) => (
-                <AskNotificationsConnected
-                  onPressPrimary={() => {
-                    onboardingComplete({ userId: id });
-                    navigation.dispatch(
-                      NavigationService.resetAction({
-                        navigatorName: 'Tabs',
-                        routeName: 'Home',
-                      })
-                    );
-                  }}
-                  onRequestPushPermissions={(update) => {
-                    checkNotifications().then((checkRes) => {
-                      if (checkRes.status === RESULTS.DENIED) {
-                        requestNotifications(['alert', 'badge', 'sound']).then(
-                          () => {
-                            update();
-                          }
-                        );
-                      } else {
-                        openSettings();
+            <AskNotificationsConnected
+              onPressPrimary={() => {
+                onboardingComplete({ userId: id });
+                navigation.dispatch(
+                  NavigationService.resetAction({
+                    navigatorName: 'Tabs',
+                    routeName: 'Home',
+                  })
+                );
+              }}
+              onRequestPushPermissions={(update) => {
+                checkNotifications().then((checkRes) => {
+                  if (checkRes.status === RESULTS.DENIED) {
+                    requestNotifications(['alert', 'badge', 'sound']).then(
+                      () => {
+                        update();
                       }
-                    });
-                  }}
-                  primaryNavText={'Finish'}
-                  description="We'll let you know when important things are happening and keep you in the loop."
-                />
-              )}
-            </Query>
+                    );
+                  } else {
+                    openSettings();
+                  }
+                });
+              }}
+              primaryNavText={'Finish'}
+              description="We'll let you know when important things are happening and keep you in the loop."
+            />
           </>
         )}
       </OnboardingSwiper>
     </AuthBackground>
   );
-}
+};
 
 const OnboardingWithTheme = withThemeMixin({
   type: 'onboarding',

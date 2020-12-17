@@ -1,5 +1,5 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';

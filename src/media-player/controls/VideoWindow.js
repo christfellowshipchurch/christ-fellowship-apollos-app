@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Query, withApollo } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
+import { withApollo } from '@apollo/client/react/hoc';
 import { get } from 'lodash';
 import Video from 'react-native-video';
 import { Animated, View, StyleSheet } from 'react-native';
