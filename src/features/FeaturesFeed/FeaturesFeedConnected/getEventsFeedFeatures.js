@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 export default gql`
   query getFeedFeatures {
     userFeedFeatures {
-      ...FeedFeaturesFragment
+      ...LiteFeaturesFragment
       ...ActionBarFeatureFragment
       ...AvatarListFeatureFragment
       ... on HorizontalCardListFeature {
@@ -20,7 +20,7 @@ export default gql`
     }
   }
 
-  ${ApollosConfig.FRAGMENTS.FEED_FEATURES_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.LITE_FEATURES_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.ACTION_BAR_FEATURE_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.RELATED_NODE_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.THEME_FRAGMENT}

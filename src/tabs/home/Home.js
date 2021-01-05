@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { Animated, View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
+import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
+import gql from 'graphql-tag';
 
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 import { styled } from '@apollosproject/ui-kit';
 
-import { FeaturesFeedConnected, FeaturesHeaderConnected } from 'features';
+import {
+  FeaturesFeedConnected,
+  FeaturesHeaderConnected,
+  handleActionPress,
+} from 'features';
 import { useLinkRouter } from 'hooks';
 
 import Wordmark from 'ui/Wordmark';
@@ -22,46 +28,23 @@ const ListHeaderSpacer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
 }))(View);
 
+// getHomeFeed uses the HOME_FEATURES in the config.yml
+// You can also hardcode an ID if you are confident it will never change
+// Or use some other strategy to get a FeatureFeed.id
+export const GET_HOME_FEED = gql`
+  query getHomeFeatureFeed {
+    homeFeedFeatures {
+      id
+    }
+  }
+`;
+
 const Home = ({ navigation }) => {
-  const { routeLink } = useLinkRouter();
+  const { data } = useQuery(GET_HOME_FEED, {
+    fetchPolicy: 'cache-and-network',
+  });
   const [refetchRef, setRefetchRef] = useState(null);
   const { scrollY } = useHeaderScrollEffect({ navigation });
-  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
-    if (action === 'READ_CONTENT') {
-      navigation.navigate('ContentSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_EVENT') {
-      navigation.navigate('Event', {
-        eventId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_PRAYER') {
-      navigation.navigate('PrayerRequestSingle', {
-        prayerRequestId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_GROUP') {
-      navigation.navigate('GroupSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_NODE') {
-      console.warn(relatedNode);
-      navigation.navigate('NodeSingle', {
-        nodeId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_URL') {
-      routeLink(relatedNode.url, { nested: true });
-    }
-  };
 
   return (
     <RockAuthedWebBrowser>
@@ -69,16 +52,19 @@ const Home = ({ navigation }) => {
         <BackgroundView>
           <SafeAreaView>
             <FeaturesFeedConnected
-              onPressActionItem={handleOnPress({ openUrl })}
-              ListHeaderComponent={
-                <ListHeaderSpacer>
-                  <NavigationSpacer />
-                  <FeaturesHeaderConnected
-                    refetchRef={get(refetchRef, 'refetchRef', () => null)}
-                    refetchId="HomeFeedFeaturesHeaderConnected"
-                  />
-                </ListHeaderSpacer>
-              }
+              featureFeedId={data?.homeFeedFeatures?.id}
+              openUrl={openUrl}
+              navigation={navigation}
+              onPressActionItem={handleActionPress}
+              // ListHeaderComponent={
+              //   <ListHeaderSpacer>
+              //     <NavigationSpacer />
+              //     <FeaturesHeaderConnected
+              //       refetchRef={get(refetchRef, 'refetchRef', () => null)}
+              //       refetchId="HomeFeedFeaturesHeaderConnected"
+              //     />
+              //   </ListHeaderSpacer>
+              // }
               scrollEventThrottle={16}
               onScroll={Animated.event([
                 {

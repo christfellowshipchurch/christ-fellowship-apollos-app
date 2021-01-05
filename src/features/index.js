@@ -16,3 +16,4 @@ export {
 export {
   default as PrayerFeatureConnected,
 } from './FeaturesHeader/PrayerFeatureConnected';
+export { default as handleActionPress } from './handleActionPress';

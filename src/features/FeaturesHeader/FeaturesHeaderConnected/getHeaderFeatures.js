@@ -4,8 +4,8 @@ import gql from 'graphql-tag';
 export default gql`
   query getHeaderFeatures {
     userHeaderFeatures {
-      ...FeedFeaturesFragment
+      ...LiteFeaturesFragment
     }
   }
-  ${ApollosConfig.FRAGMENTS.FEED_FEATURES_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.LITE_FEATURES_FRAGMENT}
 `;
