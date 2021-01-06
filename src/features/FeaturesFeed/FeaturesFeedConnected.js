@@ -6,6 +6,7 @@ import { FeaturesFeedConnected as CoreFeaturesFeedConnected } from '@apollosproj
 import { HorizontalDivider } from 'ui/Dividers';
 
 import additionalFeatures from './additionalFeatures';
+import handleActionPress from './handleActionPress';
 
 const FeaturesFeedConnected = ({ onRef, ...props }) => {
   const feedRef = useCallback((ref) => onRef(ref), []);
@@ -16,6 +17,7 @@ const FeaturesFeedConnected = ({ onRef, ...props }) => {
       additionalFeatures={additionalFeatures}
       ItemSeparatorComponent={HorizontalDivider}
       ref={feedRef}
+      onPressActionItem={handleActionPress}
     />
   );
 };

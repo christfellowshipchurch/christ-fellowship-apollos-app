@@ -22,7 +22,7 @@ const Divider = styled(({ theme }) => ({
     Color(theme.colors.screen).isLight()
       ? theme.colors.black
       : theme.colors.white
-  ),
+  ).hex(),
 }))(View);
 
 const ActionBar = ({ children, ...props }) => (

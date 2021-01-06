@@ -8,12 +8,12 @@ export {
   default as FeaturesFeedConnected,
 } from './FeaturesFeed/FeaturesFeedConnected';
 export {
-  default as FeaturesHeaderConnected,
-} from './FeaturesHeader/FeaturesHeaderConnected';
+  default as HorizontalFeaturesFeedConnected,
+} from './HorizontalFeaturesFeed/HorizontalFeaturesFeedConnected';
 export {
   default as GiveFeaturesFeedConnected,
 } from './FeaturesFeed/GiveFeaturesFeedConnected';
 export {
   default as PrayerFeatureConnected,
-} from './FeaturesHeader/PrayerFeatureConnected';
-export { default as handleActionPress } from './handleActionPress';
+} from './HorizontalFeaturesFeed/PrayerFeatureConnected';
+export { default as handleActionPress } from './FeaturesFeed/handleActionPress';

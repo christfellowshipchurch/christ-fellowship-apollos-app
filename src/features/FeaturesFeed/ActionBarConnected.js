@@ -1,20 +1,47 @@
 import React from 'react';
 import { View } from 'react-native';
+import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
-import { chunk } from 'lodash';
+import { useQuery } from '@apollo/client';
+import { get, chunk, isEmpty } from 'lodash';
+import ApollosConfig from '@apollosproject/config';
 
 import { ActivityIndicator, ThemeMixin } from '@apollosproject/ui-kit';
 import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
 import ActionBar, { ActionBarItem } from 'ui/ActionBar';
 
+const { FRAGMENTS } = ApollosConfig;
+
+const GET_ACTION_BAR_FEATURE = gql`
+  query getActionBarFeature($featureId: ID!) {
+    node(id: $featureId) {
+      ...ActionBarFeatureFragment
+    }
+  }
+
+  ${FRAGMENTS.ACTION_BAR_FEATURE_FRAGMENT}
+  ${FRAGMENTS.THEME_FRAGMENT}
+  ${FRAGMENTS.RELATED_NODE_FRAGMENT}
+`;
+
 const ActionBarFeatureConnected = ({
   featureId,
   isLoading,
   listKey,
-  actions,
   onPressItem,
 }) => {
-  if (isLoading && !actions.length)
+  const { data, loading, error } = useQuery(GET_ACTION_BAR_FEATURE, {
+    fetchPolicy: 'cache-and-network',
+    variables: { featureId },
+    skip: isEmpty(featureId),
+  });
+  const actions = get(data, 'node.actions', []);
+
+  console.log({ featureId, data, loading, error });
+
+  if (error && !actions.length) return null;
+
+  if (loading && !actions.length)
     return (
       <ActionBar listKey={listKey}>
         <ActivityIndicator />

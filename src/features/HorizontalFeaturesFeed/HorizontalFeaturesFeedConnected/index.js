@@ -4,17 +4,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ScrollView } from 'react-native';
 import { useQuery } from '@apollo/client';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
+import gql from 'graphql-tag';
 
 import { styled } from '@apollosproject/ui-kit';
-import { featuresFeedComponentMapper } from '@apollosproject/ui-connected';
+import {
+  featuresFeedComponentMapper,
+  GET_FEATURE_FEED,
+} from '@apollosproject/ui-connected';
 
 import HorizontalFeatureFeed from 'ui/HorizontalFeatureFeed';
 import { VerticalDivider, HorizontalDivider } from 'ui/Dividers';
 import PrayerFeatureConnected from '../PrayerFeatureConnected';
 import LiveStreamListFeatureConnected from '../LiveStreamListFeatureConnected';
 
-import GET_HEADER_FEATURES from './getHeaderFeatures';
+// getHomeFeed uses the HOME_FEATURES in the config.yml
+// You can also hardcode an ID if you are confident it will never change
+// Or use some other strategy to get a FeatureFeed.id
+export const GET_HOME_FEED = gql`
+  query getHomeHeaderFeatureFeed {
+    homeHeaderFeedFeatures {
+      id
+    }
+  }
+`;
 
 // The Core Components for Features are created to work for a feed-type view.
 // Since we have a completely different type of horizontal scrolling experience
@@ -67,16 +80,16 @@ const mapFeatures = (
     })
   );
 
-const FeaturesHeaderConnected = ({
-  Component,
-  onPressActionItem,
-  additionalFeatures,
+const HorizontalFeaturesFeedConnected = ({
+  featureFeedId,
   refetchId,
   refetchRef,
   ...props
 }) => {
-  const { error, data, loading, refetch } = useQuery(GET_HEADER_FEATURES, {
+  const { error, data, loading, refetch } = useQuery(GET_FEATURE_FEED, {
     fetchPolicy: 'cache-and-network',
+    variables: { featureFeedId },
+    skip: isEmpty(featureFeedId),
   });
 
   if (refetchId && refetch && refetchRef)
@@ -85,7 +98,7 @@ const FeaturesHeaderConnected = ({
   if (error) return null;
   if (loading && !data) return <HorizontalFeatureFeed isLoading />;
 
-  const features = get(data, 'userHeaderFeatures', []);
+  const features = get(data, 'node.features', []);
 
   return features.length > 0 ? (
     <View>
@@ -97,7 +110,7 @@ const FeaturesHeaderConnected = ({
   ) : null;
 };
 
-FeaturesHeaderConnected.propTypes = {
+HorizontalFeaturesFeedConnected.propTypes = {
   Component: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.func,
@@ -107,10 +120,11 @@ FeaturesHeaderConnected.propTypes = {
   additionalFeatures: PropTypes.shape({}),
   refetchRef: PropTypes.func,
   refetchId: PropTypes.string,
+  featureFeedId: PropTypes.string,
 };
 
-FeaturesHeaderConnected.propTypes = {
-  refetchId: 'FeaturesHeaderConnected',
+HorizontalFeaturesFeedConnected.propTypes = {
+  refetchId: 'HorizontalFeaturesFeedConnected',
 };
 
-export default FeaturesHeaderConnected;
+export default HorizontalFeaturesFeedConnected;

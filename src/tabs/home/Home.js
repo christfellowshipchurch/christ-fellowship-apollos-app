@@ -11,10 +11,9 @@ import { styled } from '@apollosproject/ui-kit';
 
 import {
   FeaturesFeedConnected,
-  FeaturesHeaderConnected,
+  HorizontalFeaturesFeedConnected,
   handleActionPress,
 } from 'features';
-import { useLinkRouter } from 'hooks';
 
 import Wordmark from 'ui/Wordmark';
 import {
@@ -34,6 +33,10 @@ const ListHeaderSpacer = styled(({ theme }) => ({
 export const GET_HOME_FEED = gql`
   query getHomeFeatureFeed {
     homeFeedFeatures {
+      id
+    }
+
+    homeHeaderFeedFeatures {
       id
     }
   }
@@ -56,15 +59,16 @@ const Home = ({ navigation }) => {
               openUrl={openUrl}
               navigation={navigation}
               onPressActionItem={handleActionPress}
-              // ListHeaderComponent={
-              //   <ListHeaderSpacer>
-              //     <NavigationSpacer />
-              //     <FeaturesHeaderConnected
-              //       refetchRef={get(refetchRef, 'refetchRef', () => null)}
-              //       refetchId="HomeFeedFeaturesHeaderConnected"
-              //     />
-              //   </ListHeaderSpacer>
-              // }
+              ListHeaderComponent={
+                <ListHeaderSpacer>
+                  <NavigationSpacer />
+                  <HorizontalFeaturesFeedConnected
+                    featureFeedId={data?.homeHeaderFeedFeatures?.id}
+                    refetchRef={get(refetchRef, 'refetchRef', () => null)}
+                    refetchId="HomeFeedFeaturesHeaderConnected"
+                  />
+                </ListHeaderSpacer>
+              }
               scrollEventThrottle={16}
               onScroll={Animated.event([
                 {

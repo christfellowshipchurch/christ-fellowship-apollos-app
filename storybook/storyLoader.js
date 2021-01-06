@@ -8,7 +8,7 @@ function loadStories() {
   require('../src/auth/AuthProfileDetailsEntry.stories');
   require('../src/content-single/CheckInButton/CheckInButton.stories');
   require('../src/content-single/DevotionalContentItem/Devotional.stories');
-  require('../src/features/FeaturesHeader/PrayerFeatureConnected/PrayerFeature.stories');
+  require('../src/features/HorizontalFeaturesFeed/PrayerFeatureConnected/PrayerFeature.stories');
   require('../src/notification-center/NotificationList.stories');
   require('../src/tabs/discover/Discover.stories');
   require('../src/tabs/discover/SearchFeed/SearchFeed.stories');
@@ -31,7 +31,7 @@ const stories = [
   '../src/auth/AuthProfileDetailsEntry.stories',
   '../src/content-single/CheckInButton/CheckInButton.stories',
   '../src/content-single/DevotionalContentItem/Devotional.stories',
-  '../src/features/FeaturesHeader/PrayerFeatureConnected/PrayerFeature.stories',
+  '../src/features/HorizontalFeaturesFeed/PrayerFeatureConnected/PrayerFeature.stories',
   '../src/notification-center/NotificationList.stories',
   '../src/tabs/discover/Discover.stories',
   '../src/tabs/discover/SearchFeed/SearchFeed.stories',

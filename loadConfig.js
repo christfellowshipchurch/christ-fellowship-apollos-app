@@ -373,5 +373,58 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    LITE_FEATURES_FRAGMENT: gql`
+      fragment LiteFeaturesFragment on Feature {
+        id
+        __typename
+        ... on VerticalCardListFeature {
+          isFeatured
+          title
+          subtitle
+        }
+        ... on HorizontalCardListFeature {
+          title
+          subtitle
+        }
+        ... on ActionListFeature {
+          title
+          subtitle
+        }
+        ... on HeroListFeature {
+          title
+          subtitle
+        }
+        ... on PrayerListFeature {
+          title
+          subtitle
+          isCard
+        }
+        ... on TextFeature {
+          body
+          sharing {
+            message
+          }
+        }
+        ... on ScriptureFeature {
+          # The whole fragment is currently included b/c these nodes don't fetch their own content.
+          sharing {
+            message
+          }
+          scriptures {
+            id
+            html
+            reference
+            copyright
+            version
+          }
+        }
+        ... on WebviewFeature {
+          # The whole fragment is currently included b/c these nodes don't fetch their own content.
+          linkText
+          title
+          url
+        }
+      }
+    `,
   },
 });
