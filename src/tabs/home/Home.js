@@ -58,7 +58,6 @@ const Home = ({ navigation }) => {
               featureFeedId={data?.homeFeedFeatures?.id}
               openUrl={openUrl}
               navigation={navigation}
-              onPressActionItem={handleActionPress}
               ListHeaderComponent={
                 <ListHeaderSpacer>
                   <NavigationSpacer />

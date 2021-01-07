@@ -165,8 +165,6 @@ const LiveStreamsFeedFeatureConnected = ({
     subtitle: null,
   });
 
-  console.log({ data });
-
   const style = liveStreams.length === 1 ? { alignItems: 'center' } : {};
 
   return liveStreams.length > 0 ? (

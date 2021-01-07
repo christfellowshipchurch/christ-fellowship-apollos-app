@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Animated } from 'react-native';
+import { useQuery } from '@apollo/client';
 import { SafeAreaView } from 'react-navigation';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 
 import { styled } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
-import { EventsFeaturesFeedConnected } from 'features';
-import { useLinkRouter } from 'hooks';
+import { FeaturesFeedConnected } from 'features';
 import {
   navigationOptions,
   BackgroundView,
@@ -22,55 +23,33 @@ const additionalFeatures = {
 
 const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
 
+// getEventsFeed uses the EVENTS_FEATURES in the config.yml
+// You can also hardcode an ID if you are confident it will never change
+// Or use some other strategy to get a FeatureFeed.id
+export const GET_EVENTS_FEED = gql`
+  query getEventsFeatureFeed {
+    eventsFeedFeatures {
+      id
+    }
+  }
+`;
+
 const Events = ({ navigation }) => {
-  const { routeLink } = useLinkRouter();
-  const [refetchRef, setRefetchRef] = useState(null);
+  const { data } = useQuery(GET_EVENTS_FEED, {
+    fetchPolicy: 'cache-and-network',
+  });
   const { scrollY } = useHeaderScrollEffect({ navigation });
-  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
-    if (action === 'READ_CONTENT') {
-      navigation.navigate('ContentSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_EVENT') {
-      navigation.navigate('Event', {
-        eventId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_PRAYER') {
-      navigation.navigate('PrayerRequestSingle', {
-        prayerRequestId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_GROUP') {
-      navigation.navigate('GroupSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_NODE') {
-      console.warn(relatedNode);
-      navigation.navigate('NodeSingle', {
-        nodeId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_URL') {
-      routeLink(relatedNode.url, { nested: true });
-    }
-  };
 
   return (
     <RockAuthedWebBrowser>
       {(openUrl) => (
         <BackgroundView>
           <FlexedSafeAreaView>
-            <EventsFeaturesFeedConnected
+            <FeaturesFeedConnected
+              featureFeedId={data?.eventsFeedFeatures?.id}
+              openUrl={openUrl}
+              navigation={navigation}
               additionalFeatures={additionalFeatures}
-              onPressActionItem={handleOnPress({ openUrl })}
               ListHeaderComponent={<NavigationSpacer />}
               scrollEventThrottle={16}
               onScroll={Animated.event([
@@ -82,7 +61,6 @@ const Events = ({ navigation }) => {
               ])}
               removeClippedSubviews={false}
               numColumns={1}
-              onRef={(ref) => setRefetchRef(ref)}
             />
           </FlexedSafeAreaView>
         </BackgroundView>

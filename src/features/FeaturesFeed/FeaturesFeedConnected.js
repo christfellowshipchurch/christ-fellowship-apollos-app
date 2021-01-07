@@ -5,16 +5,19 @@ import { FeaturesFeedConnected as CoreFeaturesFeedConnected } from '@apollosproj
 
 import { HorizontalDivider } from 'ui/Dividers';
 
-import additionalFeatures from './additionalFeatures';
+import defaultAdditionalFeatures from './additionalFeatures';
 import handleActionPress from './handleActionPress';
 
-const FeaturesFeedConnected = ({ onRef, ...props }) => {
+const FeaturesFeedConnected = ({ onRef, additionalFeatures, ...props }) => {
   const feedRef = useCallback((ref) => onRef(ref), []);
 
   return (
     <CoreFeaturesFeedConnected
       {...props}
-      additionalFeatures={additionalFeatures}
+      additionalFeatures={{
+        ...defaultAdditionalFeatures,
+        ...additionalFeatures,
+      }}
       ItemSeparatorComponent={HorizontalDivider}
       ref={feedRef}
       onPressActionItem={handleActionPress}
@@ -24,10 +27,12 @@ const FeaturesFeedConnected = ({ onRef, ...props }) => {
 
 FeaturesFeedConnected.propTypes = {
   onRef: PropTypes.func,
+  additionalFeatures: PropTypes.shape({}),
 };
 
 FeaturesFeedConnected.defaultProps = {
   onRef: () => null,
+  additionalFeatures: {},
 };
 
 export default FeaturesFeedConnected;
