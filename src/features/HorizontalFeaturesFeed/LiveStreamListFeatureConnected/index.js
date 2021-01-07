@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { Animated, FlatList, View } from 'react-native';
-import { get } from 'lodash';
+import { Animated, FlatList, View, LogBox } from 'react-native';
+import { get, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 
 import {
@@ -14,6 +14,8 @@ import {
 import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
 import HorizontalFeatureFeed from 'ui/HorizontalFeatureFeed';
 import GET_LIVE_STREAMS from './getLiveStreamFeature';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 
 const AVATAR_MULTIPLIER = 0.8;
 
@@ -34,6 +36,7 @@ const BorderWithPulse = withTheme()(({ theme, ...props }) => {
     Animated.timing(opacity, {
       toValue: MAX,
       duration,
+      useNativeDriver: true,
     }).start(() => {
       fadeOut();
     });
@@ -42,6 +45,7 @@ const BorderWithPulse = withTheme()(({ theme, ...props }) => {
     Animated.timing(opacity, {
       toValue: MIN,
       duration,
+      useNativeDriver: true,
     }).start(() => {
       fadeIn();
     });
@@ -90,39 +94,38 @@ const CircularImagePosition = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
-const LiveTouchable = ({ title, coverImage, media, withMargin }) => {
-  const [playVideo] = useMutation(PLAY_VIDEO);
+const LiveTouchable = ({ title, coverImage, media, withMargin }) => (
+  // const [playVideo] = useMutation(PLAY_VIDEO);
 
-  return (
-    <LiveItemContainer
-      withMargin={withMargin}
-      onPress={() =>
-        playVideo({
-          variables: {
-            mediaSource: get(media, 'sources[0]'),
-            posterSources: get(coverImage, 'sources[0]'),
-            title,
-            isVideo: true,
-            artist: 'Live',
-          },
-        })
-      }
-    >
-      <BorderWithPulse />
+  <LiveItemContainer
+    withMargin={withMargin}
+    onPress={
+      () => null
+      // playVideo({
+      //   variables: {
+      //     mediaSource: get(media, 'sources[0]'),
+      //     posterSources: get(coverImage, 'sources[0]'),
+      //     title,
+      //     isVideo: true,
+      //     artist: 'Live',
+      //   },
+      // })
+    }
+  >
+    <BorderWithPulse />
 
-      <CircularImagePosition>
-        <CirclularImage source={get(coverImage, 'sources[0]')} />
-      </CircularImagePosition>
-    </LiveItemContainer>
-  );
-};
+    <CircularImagePosition>
+      <CirclularImage source={get(coverImage, 'sources[0]')} />
+    </CircularImagePosition>
+  </LiveItemContainer>
+);
 
 const renderItem = ({ item, index, dataLength }) => {
-  const { contentItem, media } = item;
+  const { relatedNode, media } = item;
 
   return (
     <LiveTouchable
-      {...contentItem}
+      {...relatedNode}
       media={media}
       withMargin={index < dataLength - 1}
     />
@@ -150,7 +153,7 @@ const LiveStreamsFeedFeatureConnected = ({
   const { loading, data } = useQuery(GET_LIVE_STREAMS, {
     pollInterval: 30000,
     fetchPolicy: 'network-only',
-    skip: isLoading,
+    skip: isEmpty(featureId),
     variables: {
       featureId,
     },
@@ -161,6 +164,8 @@ const LiveStreamsFeedFeatureConnected = ({
     title: '',
     subtitle: null,
   });
+
+  console.log({ data });
 
   const style = liveStreams.length === 1 ? { alignItems: 'center' } : {};
 
