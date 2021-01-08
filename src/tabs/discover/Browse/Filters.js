@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Color from 'color';
 
@@ -16,32 +16,35 @@ const Container = styled(({ theme, active }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-const StyledH5 = styled(({ theme, active }) => {
+const StyledH5 = styled(({ theme, active }) => ({
+  color: active ? theme.colors.white : theme.colors.text.secondary,
+  fontWeight: active ? 'bold' : 'normal',
+  letterSpacing: 1,
+  lineHeight: theme.helpers.verticalRhythm(0.5),
+}))(H6);
+
+const RoundedBorder = styled(({ theme, active }) => {
   let borderColor = theme.colors.primary;
 
   if (!active) {
-    const screen = theme.colors.background.screen;
+    const { screen } = theme.colors.background;
     borderColor = Color(screen).isDark()
-      ? lightenBy(screen, 0.25)
-      : darkenBy(screen, 0.05);
+      ? lightenBy(screen, 0.25).hex()
+      : darkenBy(screen, 0.05).hex();
   }
 
   return {
-    color: active ? theme.colors.white : theme.colors.text.secondary,
-    fontWeight: active ? 'bold' : 'normal',
-    letterSpacing: 1,
-    lineHeight: theme.helpers.verticalRhythm(0.5),
     marginHorizontal: theme.sizing.baseUnit * 0.25,
     backgroundColor: active
       ? theme.colors.primary
       : theme.colors.background.screen,
     paddingVertical: theme.sizing.baseUnit * 0.5,
     paddingHorizontal: theme.sizing.baseUnit,
-    borderRadius: theme.sizing.baseBorderRadius,
     borderWidth: 1,
     borderColor,
+    borderRadius: theme.sizing.baseBorderRadius,
   };
-})(H6);
+})(View);
 
 const LoadingStateContainer = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -57,13 +60,19 @@ const LoadingState = styled(({ theme }) => ({
   marginHorizontal: 10,
 }))(View);
 
+const StyledTouchable = styled(({ theme }) => ({
+  borderRadius: theme.sizing.baseBorderRadius,
+}))(Touchable);
+
 const renderItem = ({ item }) => {
   const { title, active, onPress } = item;
 
   return (
-    <Touchable onPress={() => onPress(item)}>
-      <StyledH5 active={active}>{title}</StyledH5>
-    </Touchable>
+    <StyledTouchable onPress={() => onPress(item)}>
+      <RoundedBorder active={active}>
+        <StyledH5 active={active}>{title}</StyledH5>
+      </RoundedBorder>
+    </StyledTouchable>
   );
 };
 

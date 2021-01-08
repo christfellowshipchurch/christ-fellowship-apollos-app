@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
-import { HorizontalContentSeriesFeedConnected } from '@apollosproject/ui-connected';
 import { PaddedView, styled, withIsLoading } from '@apollosproject/ui-kit';
 import Title from '../Title';
 import HTMLContent from '../HTMLContent';
@@ -17,16 +16,12 @@ const ContentContainer = withIsLoading(
  * Displays a header, scripture list (using the ScriptureList component),
  * and the body text of the devo.
  */
-const ContentTab = ({ id, isLoading, navigation }) => (
+const ContentTab = ({ id, isLoading }) => (
   <ScrollView>
     <ContentContainer isLoading={isLoading}>
       <Title contentId={id} isLoading={isLoading} />
       <HTMLContent contentId={id} />
     </ContentContainer>
-    <HorizontalContentSeriesFeedConnected
-      contentId={id}
-      navigation={navigation}
-    />
   </ScrollView>
 );
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-navigation';
-import { throttle } from 'lodash';
+import { get, throttle } from 'lodash';
 
 import { BackgroundView } from '@apollosproject/ui-kit';
 
@@ -12,9 +12,11 @@ import Browse from './Browse';
 import SearchFeed from './SearchFeed';
 
 const Discover = ({ navigation }) => {
-  const [isFocused, setIsFocused] = useState(navigation.getParam('showSearch'));
+  const [isFocused, setIsFocused] = useState(
+    get(navigation, 'params.showSearch', false)
+  );
   const [searchText, setSearchText] = useState(
-    navigation.getParam('searchText')
+    get(navigation, 'params.searchText', '')
   );
 
   const setNavigationParam = (params) => {
@@ -47,7 +49,7 @@ const Discover = ({ navigation }) => {
           ) : (
             <Browse
               navigation={navigation}
-              selectedFilter={navigation.getParam('selectedFilter')}
+              selectedFilter={get('navigation', 'params.selectedFilter', '')}
             />
           )}
         </SafeAreaView>
@@ -62,8 +64,8 @@ Discover.navigationOptions = (props) =>
     title: 'Discover',
     headerTitle: (
       <SearchInputHeader
-        onChangeText={props.navigation.getParam('handleOnChangeText')}
-        onFocus={props.navigation.getParam('handleOnFocus')}
+        onChangeText={get(props, 'navigation.handleOnChangeText', () => null)}
+        onFocus={get(props, 'navigation.handleOnFocus', () => null)}
       />
     ),
     headerRight: null,

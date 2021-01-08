@@ -3,14 +3,13 @@ import { ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import { PaddedView } from '@apollosproject/ui-kit';
 import ScriptureItem from '@apollosproject/ui-scripture';
-import { HorizontalContentSeriesFeedConnected } from '@apollosproject/ui-connected';
 
 /**
  * This is the Scripture side of the Devotional tabbed component.
  * Maps over an array of scripture references and renders them
  * using the ScriptureItem component.
  */
-const ScriptureTab = ({ id, scripture, isLoading, navigation }) => (
+const ScriptureTab = ({ id, scripture, isLoading }) => (
   <ScrollView>
     <PaddedView>
       {scripture.map((ref, i) => (
@@ -27,10 +26,6 @@ const ScriptureTab = ({ id, scripture, isLoading, navigation }) => (
         />
       ))}
     </PaddedView>
-    <HorizontalContentSeriesFeedConnected
-      contentId={id}
-      navigation={navigation}
-    />
   </ScrollView>
 );
 

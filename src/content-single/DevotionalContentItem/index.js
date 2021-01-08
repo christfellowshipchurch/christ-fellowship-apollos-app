@@ -1,17 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Animated, View } from 'react-native';
 import PropTypes from 'prop-types';
 import { Query } from '@apollo/client/react/components';
 import { get } from 'lodash';
 
-import { MediaControlsConnected } from '@apollosproject/ui-connected';
 import {
   ErrorCard,
   TabView,
   TabSceneMap as SceneMap,
-  BackgroundView,
-  styled,
-  StretchyView,
   GradientOverlayImage,
 } from '@apollosproject/ui-kit';
 import ContentTab from './ContentTab';
@@ -19,12 +14,6 @@ import ScriptureTab from './ScriptureTab';
 
 import GET_SCRIPTURE from './getScripture';
 
-const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
-
-const StyledMediaControlsConnected = styled(({ theme }) => ({
-  position: 'absolute',
-  bottom: theme.sizing.baseUnit,
-}))(MediaControlsConnected);
 /**
  * The devotional component.
  * Displays a TabView with two tabs: ContentTab and ScriptureTab.
@@ -41,6 +30,11 @@ class DevotionalContentItem extends PureComponent {
     /** Toggles placeholders */
     loading: PropTypes.bool,
     navigation: PropTypes.shape({}),
+    ImageWrapperComponent: PropTypes.oneOfType([
+      PropTypes.node,
+      PropTypes.func,
+      PropTypes.object, // type check for React fragments
+    ]),
   };
 
   /**
@@ -120,50 +114,38 @@ class DevotionalContentItem extends PureComponent {
   };
 
   render() {
-    const { content, loading: parentLoading } = this.props;
+    const { content, loading, ImageWrapperComponent } = this.props;
     const coverImageSources = get(content, 'coverImage.sources', []);
 
     return (
-      <BackgroundView>
-        <StretchyView>
-          {({ Stretchy, ...scrollViewProps }) => (
-            <FlexedScrollView {...scrollViewProps}>
-              <View>
-                {coverImageSources.length || parentLoading ? (
-                  <Stretchy>
-                    <GradientOverlayImage
-                      isLoading={!coverImageSources.length && parentLoading}
-                      source={coverImageSources}
-                      // Sets the ratio of the image
-                      minAspectRatio={1}
-                      maxAspectRatio={1}
-                      // Sets the ratio of the placeholder
-                      forceRatio={1}
-                      // No ratios are respected without this
-                      maintainAspectRatio
-                    />
-                  </Stretchy>
-                ) : null}
-                {coverImageSources.length > 0 && (
-                  <StyledMediaControlsConnected contentId={content.id} />
-                )}
-              </View>
-
-              <Query
-                query={GET_SCRIPTURE}
-                variables={{ itemId: this.props.id }}
-                fetchPolicy="cache-and-network"
-              >
-                {({ data, loading, error }) =>
-                  loading
-                    ? this.renderLoading()
-                    : this.renderTabs({ data, loading, error })
-                }
-              </Query>
-            </FlexedScrollView>
-          )}
-        </StretchyView>
-      </BackgroundView>
+      <>
+        {(coverImageSources.length || loading) && ImageWrapperComponent ? (
+          <ImageWrapperComponent>
+            <GradientOverlayImage
+              isLoading={!coverImageSources.length && loading}
+              source={coverImageSources}
+              // Sets the ratio of the image
+              minAspectRatio={1}
+              maxAspectRatio={1}
+              // Sets the ratio of the placeholder
+              forceRatio={1}
+              // No ratios are respected without this
+              maintainAspectRatio
+            />
+          </ImageWrapperComponent>
+        ) : null}
+        <Query
+          query={GET_SCRIPTURE}
+          variables={{ itemId: this.props.id }}
+          fetchPolicy="cache-and-network"
+        >
+          {({ data, loading, error }) =>
+            loading
+              ? this.renderLoading()
+              : this.renderTabs({ data, loading, error })
+          }
+        </Query>
+      </>
     );
   }
 }

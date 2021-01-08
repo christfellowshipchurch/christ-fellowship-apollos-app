@@ -118,11 +118,11 @@ const App = (props) => (
               component={ContentFeed}
               options={{ title: 'Content Feed' }}
             /> */}
-          {/* <Screen
-              name="ContentSingle"
-              component={ContentSingle}
-              options={{ title: 'Content' }}
-            /> */}
+          <Screen
+            name="ContentSingle"
+            component={ContentSingle}
+            options={{ title: 'Content' }}
+          />
           {/* <Screen
               name="EditGroup"
               component={EditGroup}

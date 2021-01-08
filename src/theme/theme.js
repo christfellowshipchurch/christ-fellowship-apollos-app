@@ -1,21 +1,12 @@
-import React from 'react';
-import { Platform, Text } from 'react-native';
 import Color from 'color';
 
-import { ScriptureText, VerseNumber } from '@apollosproject/ui-scripture';
-import { BodyText } from '@apollosproject/ui-kit';
-import {
-  AddPrayerScreenConnected,
-  PrayerDialogScreen,
-  ConfirmationDialogScreen,
-} from '@apollosproject/ui-prayer/src/screens';
-import { PrayerCard } from '@apollosproject/ui-prayer';
 import authEntry from './authEntry';
 import onboarding from './onboarding';
 import dark from './dark-theme';
 
 import {
   UIAuthOverrides,
+  UIConnectedOverrides,
   UIKitOverrides,
   UIOnboardingOverrides,
   UIPrayerOverrides,
@@ -189,6 +180,7 @@ const overrides = () => ({
     borderColor: 'white',
   },
   ...UIAuthOverrides,
+  ...UIConnectedOverrides({ colors }),
   ...UIKitOverrides({ sizing }),
   ...UIOnboardingOverrides,
   ...UIPrayerOverrides,
