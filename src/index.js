@@ -5,8 +5,9 @@ import { useDarkModeContext } from 'react-native-dark-mode';
 import 'react-native-gesture-handler'; // required for react-navigation
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import SplashScreen from 'react-native-splash-screen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
+import SplashScreen from 'react-native-splash-screen';
 
 import {
   BackgroundView,
@@ -20,6 +21,7 @@ import { ProtectedRoute } from '@apollosproject/ui-auth';
 import ScreenOrientation from 'screen-orientation';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
+import DrawerNavigator from './drawer';
 
 import Providers from './Providers';
 import ContentSingle from './content-single';
@@ -68,6 +70,7 @@ const EnhancedAuth = (props) => <Auth {...props} emailRequired={false} />;
 hoistNonReactStatic(EnhancedAuth, Auth);
 
 const { Navigator, Screen } = createNativeStackNavigator();
+
 const ThemedNavigator = withTheme(({ theme, ...props }) => ({
   ...props,
   screenOptions: {
@@ -84,6 +87,102 @@ const ThemedNavigator = withTheme(({ theme, ...props }) => ({
   },
 }))(Navigator);
 
+const StackNavigator = (props) => (
+  <ThemedNavigator initialRouteName="ProtectedRoute" {...props}>
+    <Screen
+      name="Auth"
+      component={EnhancedAuth}
+      options={{
+        title: 'Login',
+        gestureEnabled: false,
+        swipeEnabled: false,
+        stackPresentation: 'push',
+      }}
+    />
+    {/* <Screen
+    name="Channel"
+    component={Channel}
+    options={{ title: 'Channel' }}
+  /> */}
+    {/* <Screen
+    name="ChannelsList"
+    component={ChannelsList}
+    options={{ title: 'ChannelsList' }}
+  /> */}
+    {/* <Screen
+    name="ContentFeed"
+    component={ContentFeed}
+    options={{ title: 'Content Feed' }}
+  /> */}
+    <Screen
+      name="ContentSingle"
+      component={ContentSingle}
+      options={{ title: 'Content' }}
+    />
+    {/* <Screen
+    name="EditGroup"
+    component={EditGroup}
+    options={{ title: 'Edit Group' }}
+  /> */}
+    {/* <Screen
+    name="EditUser"
+    component={EditUser}
+    options={{ title: 'Edit User' }}
+  /> */}
+    {/* <Screen
+    name="GroupSingle"
+    component={GroupSingle}
+    options={{ title: 'Group' }}
+  /> */}
+    <Screen
+      name="LandingScreen"
+      component={LandingScreen}
+      options={{ headerShown: false }}
+    />
+    {/* <Screen
+    name="Location"
+    component={Location}
+    options={{ headerShown: true }}
+  /> */}
+    {/* <Screen
+    name="MyPrayerRequestsFeed"
+    component={MyPrayerRequestsFeed}
+    options={{ title: 'My Prayer Requests' }}
+  /> */}
+    {/* <Screen
+    name="NodeSingle"
+    component={NodeSingle}
+    options={{ title: 'Node' }}
+  /> */}
+    {/* <Screen
+    name="NotificationCenter"
+    component={NotificationCenter}
+    options={{ title: 'Notification Center' }}
+  /> */}
+    <Screen
+      name="Onboarding"
+      component={Onboarding}
+      options={{
+        title: 'Onboarding',
+        gestureEnabled: false,
+        stackPresentation: 'push',
+      }}
+    />
+    {/* <Screen
+    name="Passes"
+    component={Passes}
+    options={{ title: 'Check-In Pass' }}
+  /> */}
+    {/* <Screen
+    name="PrayerRequestSingle"
+    component={PrayerRequestSingle}
+    options={{ title: 'Prayer Request Single' }}
+  /> */}
+    <Screen name="ProtectedRoute" component={ProtectedRouteWithSplashScreen} />
+    <Screen name="Tabs" component={Tabs} options={{ title: 'Home' }} />
+  </ThemedNavigator>
+);
+
 const App = (props) => (
   <Providers>
     <BackgroundView>
@@ -93,101 +192,7 @@ const App = (props) => (
         ref={NavigationService.setTopLevelNavigator}
         // theme={mode}
       >
-        <ThemedNavigator initialRouteName="ProtectedRoute" {...props}>
-          <Screen
-            name="Auth"
-            component={EnhancedAuth}
-            options={{
-              title: 'Login',
-              gestureEnabled: false,
-              stackPresentation: 'push',
-            }}
-          />
-          {/* <Screen
-              name="Channel"
-              component={Channel}
-              options={{ title: 'Channel' }}
-            /> */}
-          {/* <Screen
-              name="ChannelsList"
-              component={ChannelsList}
-              options={{ title: 'ChannelsList' }}
-            /> */}
-          {/* <Screen
-              name="ContentFeed"
-              component={ContentFeed}
-              options={{ title: 'Content Feed' }}
-            /> */}
-          <Screen
-            name="ContentSingle"
-            component={ContentSingle}
-            options={{ title: 'Content' }}
-          />
-          {/* <Screen
-              name="EditGroup"
-              component={EditGroup}
-              options={{ title: 'Edit Group' }}
-            /> */}
-          {/* <Screen
-              name="EditUser"
-              component={EditUser}
-              options={{ title: 'Edit User' }}
-            /> */}
-          {/* <Screen
-              name="GroupSingle"
-              component={GroupSingle}
-              options={{ title: 'Group' }}
-            /> */}
-          <Screen
-            name="LandingScreen"
-            component={LandingScreen}
-            options={{ headerShown: false }}
-          />
-          {/* <Screen
-              name="Location"
-              component={Location}
-              options={{ headerShown: true }}
-            /> */}
-          {/* <Screen
-              name="MyPrayerRequestsFeed"
-              component={MyPrayerRequestsFeed}
-              options={{ title: 'My Prayer Requests' }}
-            /> */}
-          {/* <Screen
-              name="NodeSingle"
-              component={NodeSingle}
-              options={{ title: 'Node' }}
-            /> */}
-          {/* <Screen
-              name="NotificationCenter"
-              component={NotificationCenter}
-              options={{ title: 'Notification Center' }}
-            /> */}
-          <Screen
-            name="Onboarding"
-            component={Onboarding}
-            options={{
-              title: 'Onboarding',
-              gestureEnabled: false,
-              stackPresentation: 'push',
-            }}
-          />
-          {/* <Screen
-              name="Passes"
-              component={Passes}
-              options={{ title: 'Check-In Pass' }}
-            /> */}
-          {/* <Screen
-              name="PrayerRequestSingle"
-              component={PrayerRequestSingle}
-              options={{ title: 'Prayer Request Single' }}
-            /> */}
-          <Screen
-            name="ProtectedRoute"
-            component={ProtectedRouteWithSplashScreen}
-          />
-          <Screen name="Tabs" component={Tabs} options={{ title: 'Home' }} />
-        </ThemedNavigator>
+        <DrawerNavigator Stack={StackNavigator} />
       </NavigationContainer>
     </BackgroundView>
   </Providers>
