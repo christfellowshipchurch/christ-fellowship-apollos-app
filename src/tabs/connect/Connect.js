@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Animated } from 'react-native';
+import { Animated, View } from 'react-native';
+import { useQuery } from '@apollo/client';
 import { SafeAreaView } from 'react-navigation';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 
 import { styled } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
-import { ConnectFeaturesFeedConnected } from 'features';
-import { useLinkRouter } from 'hooks';
+import { FeaturesFeedConnected } from 'features';
 
 import {
   navigationOptions,
@@ -18,55 +19,41 @@ import {
 
 const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
 
+// getConnectFeed uses the CONNECT_FEATURES in the config.yml
+// You can also hardcode an ID if you are confident it will never change
+// Or use some other strategy to get a FeatureFeed.id
+export const GET_CONNECT_FEED = gql`
+  query getConnectFeatureFeed {
+    connectFeedFeatures {
+      id
+    }
+  }
+`;
+
+const ItemSeparator = styled(({ theme }) => ({
+  paddingTop: theme.sizing.baseUnit * 2,
+}))(View);
+
 const Connect = ({ navigation }) => {
-  const { routeLink } = useLinkRouter();
+  const { data } = useQuery(GET_CONNECT_FEED, {
+    fetchPolicy: 'network-only',
+  });
   const [refetchRef, setRefetchRef] = useState(null);
   const { scrollY } = useHeaderScrollEffect({ navigation });
-  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
-    if (action === 'READ_CONTENT') {
-      navigation.navigate('ContentSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_EVENT') {
-      navigation.navigate('Event', {
-        eventId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_PRAYER') {
-      navigation.navigate('PrayerRequestSingle', {
-        prayerRequestId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_GROUP') {
-      navigation.navigate('GroupSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_NODE') {
-      console.warn(relatedNode);
-      navigation.navigate('NodeSingle', {
-        nodeId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_URL') {
-      routeLink(relatedNode.url, { nested: true });
-    }
-  };
+
+  console.log({ data });
 
   return (
     <RockAuthedWebBrowser>
       {(openUrl) => (
         <BackgroundView>
           <FlexedSafeAreaView>
-            <ConnectFeaturesFeedConnected
-              onPressActionItem={handleOnPress({ openUrl })}
+            <FeaturesFeedConnected
+              featureFeedId={data?.connectFeedFeatures?.id}
+              openUrl={openUrl}
+              navigation={navigation}
               ListHeaderComponent={<NavigationSpacer />}
+              ItemSeparatorComponent={ItemSeparator}
               scrollEventThrottle={16}
               onScroll={Animated.event([
                 {

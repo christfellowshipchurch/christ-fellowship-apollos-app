@@ -8,7 +8,12 @@ import { HorizontalDivider } from 'ui/Dividers';
 import defaultAdditionalFeatures from './additionalFeatures';
 import handleActionPress from './handleActionPress';
 
-const FeaturesFeedConnected = ({ onRef, additionalFeatures, ...props }) => {
+const FeaturesFeedConnected = ({
+  onRef,
+  additionalFeatures,
+  ItemSeparatorComponent,
+  ...props
+}) => {
   const feedRef = useCallback((ref) => onRef(ref), []);
 
   return (
@@ -18,7 +23,7 @@ const FeaturesFeedConnected = ({ onRef, additionalFeatures, ...props }) => {
         ...defaultAdditionalFeatures,
         ...additionalFeatures,
       }}
-      ItemSeparatorComponent={HorizontalDivider}
+      ItemSeparatorComponent={ItemSeparatorComponent}
       ref={feedRef}
       onPressActionItem={handleActionPress}
     />
@@ -28,11 +33,16 @@ const FeaturesFeedConnected = ({ onRef, additionalFeatures, ...props }) => {
 FeaturesFeedConnected.propTypes = {
   onRef: PropTypes.func,
   additionalFeatures: PropTypes.shape({}),
+  ItemSeparatorComponent: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.object,
+  ]),
 };
 
 FeaturesFeedConnected.defaultProps = {
   onRef: () => null,
   additionalFeatures: {},
+  ItemSeparatorComponent: HorizontalDivider,
 };
 
 export default FeaturesFeedConnected;

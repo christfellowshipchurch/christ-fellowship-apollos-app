@@ -84,117 +84,113 @@ const ThemedNavigator = withTheme(({ theme, ...props }) => ({
   },
 }))(Navigator);
 
-const App = (props) => {
-  const mode = useDarkModeContext();
-
-  return (
-    <Providers>
-      <BackgroundView>
-        <StatusBar />
-        <ScreenOrientation />
-        <NavigationContainer
-          ref={NavigationService.setTopLevelNavigator}
-          // theme={mode}
-        >
-          <ThemedNavigator initialRouteName="ProtectedRoute" {...props}>
-            <Screen
-              name="Auth"
-              component={EnhancedAuth}
-              options={{
-                title: 'Login',
-                gestureEnabled: false,
-                stackPresentation: 'push',
-              }}
-            />
-            {/* <Screen
+const App = (props) => (
+  <Providers>
+    <BackgroundView>
+      <StatusBar />
+      <ScreenOrientation />
+      <NavigationContainer
+        ref={NavigationService.setTopLevelNavigator}
+        // theme={mode}
+      >
+        <ThemedNavigator initialRouteName="ProtectedRoute" {...props}>
+          <Screen
+            name="Auth"
+            component={EnhancedAuth}
+            options={{
+              title: 'Login',
+              gestureEnabled: false,
+              stackPresentation: 'push',
+            }}
+          />
+          {/* <Screen
               name="Channel"
               component={Channel}
               options={{ title: 'Channel' }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="ChannelsList"
               component={ChannelsList}
               options={{ title: 'ChannelsList' }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="ContentFeed"
               component={ContentFeed}
               options={{ title: 'Content Feed' }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="ContentSingle"
               component={ContentSingle}
               options={{ title: 'Content' }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="EditGroup"
               component={EditGroup}
               options={{ title: 'Edit Group' }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="EditUser"
               component={EditUser}
               options={{ title: 'Edit User' }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="GroupSingle"
               component={GroupSingle}
               options={{ title: 'Group' }}
             /> */}
-            <Screen
-              name="LandingScreen"
-              component={LandingScreen}
-              options={{ headerShown: false }}
-            />
-            {/* <Screen
+          <Screen
+            name="LandingScreen"
+            component={LandingScreen}
+            options={{ headerShown: false }}
+          />
+          {/* <Screen
               name="Location"
               component={Location}
               options={{ headerShown: true }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="MyPrayerRequestsFeed"
               component={MyPrayerRequestsFeed}
               options={{ title: 'My Prayer Requests' }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="NodeSingle"
               component={NodeSingle}
               options={{ title: 'Node' }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="NotificationCenter"
               component={NotificationCenter}
               options={{ title: 'Notification Center' }}
             /> */}
-            <Screen
-              name="Onboarding"
-              component={Onboarding}
-              options={{
-                title: 'Onboarding',
-                gestureEnabled: false,
-                stackPresentation: 'push',
-              }}
-            />
-            {/* <Screen
+          <Screen
+            name="Onboarding"
+            component={Onboarding}
+            options={{
+              title: 'Onboarding',
+              gestureEnabled: false,
+              stackPresentation: 'push',
+            }}
+          />
+          {/* <Screen
               name="Passes"
               component={Passes}
               options={{ title: 'Check-In Pass' }}
             /> */}
-            {/* <Screen
+          {/* <Screen
               name="PrayerRequestSingle"
               component={PrayerRequestSingle}
               options={{ title: 'Prayer Request Single' }}
             /> */}
-            <Screen
-              name="ProtectedRoute"
-              component={ProtectedRouteWithSplashScreen}
-            />
-            <Screen name="Tabs" component={Tabs} options={{ title: 'Home' }} />
-          </ThemedNavigator>
-        </NavigationContainer>
-      </BackgroundView>
-    </Providers>
-  );
-};
+          <Screen
+            name="ProtectedRoute"
+            component={ProtectedRouteWithSplashScreen}
+          />
+          <Screen name="Tabs" component={Tabs} options={{ title: 'Home' }} />
+        </ThemedNavigator>
+      </NavigationContainer>
+    </BackgroundView>
+  </Providers>
+);
 
 export default App;

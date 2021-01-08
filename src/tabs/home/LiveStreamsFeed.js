@@ -163,7 +163,8 @@ const LivePosition = (props) => {
 };
 
 const LiveTouchable = ({ title, coverImage, media }) => {
-  const [playVideo] = useMutation(PLAY_VIDEO);
+  // const [playVideo] = useMutation(PLAY_VIDEO);
+  const playVideo = () => null;
 
   return (
     <LiveItemContainer

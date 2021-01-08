@@ -37,8 +37,6 @@ const ActionBarFeatureConnected = ({
   });
   const actions = get(data, 'node.actions', []);
 
-  console.log({ featureId, data, loading, error });
-
   if (error && !actions.length) return null;
 
   if (loading && !actions.length)
