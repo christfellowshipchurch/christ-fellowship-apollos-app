@@ -3,6 +3,8 @@ import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { withTheme } from '@apollosproject/ui-kit';
 
+import Drawer from '../drawer';
+
 import Connect from './connect';
 import Discover from './discover';
 import Events from './events';
@@ -76,4 +78,6 @@ const ThemedTabNavigator = withTheme(({ theme }) => ({
   },
 }))(TabNavigator);
 
-export default ThemedTabNavigator;
+const StackWithDrawer = () => <Drawer Stack={ThemedTabNavigator} />;
+
+export default StackWithDrawer;

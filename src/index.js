@@ -192,7 +192,7 @@ const App = (props) => (
         ref={NavigationService.setTopLevelNavigator}
         // theme={mode}
       >
-        <DrawerNavigator Stack={StackNavigator} />
+        <StackNavigator {...props} />
       </NavigationContainer>
     </BackgroundView>
   </Providers>
