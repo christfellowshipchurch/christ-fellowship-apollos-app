@@ -7,6 +7,7 @@ import {
   PaddedView,
 } from '@apollosproject/ui-kit';
 
+import { ScriptureButton } from 'scripture-single';
 import Title from '../Title';
 import Features from '../Features';
 import Author from '../Author';
@@ -42,6 +43,8 @@ const UniversalContentItem = ({ content, loading, ImageWrapperComponent }) => {
         <Title contentId={content.id} isLoading={loading} />
         {/* author */}
         <Author contentId={content.id} />
+        {/* Scripture */}
+        <ScriptureButton nodeId={content.id} />
         {/* body content */}
         <StyledContentHTMLViewConnected contentId={content.id} />
       </PaddedView>

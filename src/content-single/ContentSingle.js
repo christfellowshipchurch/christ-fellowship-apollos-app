@@ -1,4 +1,5 @@
 import React from 'react';
+import { StatusBar } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
 
@@ -11,7 +12,6 @@ import ActionContainer from './ActionContainer';
 import GET_CONTENT_ITEM from './getContentItem';
 
 import PlayerContainerConnected from './PlayerContainerConnected';
-import DevotionalContentItem from './DevotionalContentItem';
 import UniversalContentItem from './UniversalContentItem';
 import EventContentItem from './EventContentItem';
 import InformationalContentItem from './InformationalContentItem';
@@ -41,8 +41,8 @@ const ContentSingle = (props) => {
     };
 
     switch (__typename) {
-      case 'DevotionalContentItem':
-        return <DevotionalContentItem {...screenProps} />;
+      // case 'DevotionalContentItem':
+      //   return <DevotionalContentItem {...screenProps} />;
       case 'EventContentItem':
         return <EventContentItem {...screenProps} />;
       case 'InformationalContentItem':
@@ -55,6 +55,7 @@ const ContentSingle = (props) => {
 
   return (
     <ThemeMixin theme={theme}>
+      <StatusBar hidden />
       <InteractWhenLoadedConnected
         isLoading={loading}
         nodeId={itemId}

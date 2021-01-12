@@ -88,7 +88,6 @@ const PlayerContainerConnectedWithMedia = ({ nodeId, children }) => {
       presentationProps={{
         title: data.node.title,
       }}
-      collapseOnScroll
     >
       <ScreenOrientation />
       <PlayerContainerInner nodeId={nodeId} ImageWrapperComponent={Noop}>

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
 import { ModalCloseButton, ModalBackButton } from '@apollosproject/ui-kit';
-import ContentSingle from './ContentSingle';
+import ScriptureSingle from './ScriptureSingle';
 
 const { Screen, Navigator } = createNativeStackNavigator();
 
-const ContentSingleNavigator = ({ route, ...props }) => (
+const ScriptureSingleNavigator = ({ route, ...props }) => (
   <Navigator
     {...props}
     headerMode="screen"
@@ -21,17 +21,18 @@ const ContentSingleNavigator = ({ route, ...props }) => (
     }}
   >
     <Screen
-      name="ContentSingle"
-      component={ContentSingle}
+      name="ScriptureSingle"
+      component={ScriptureSingle}
       initialParams={route.params}
     />
   </Navigator>
 );
 
-ContentSingleNavigator.propTypes = {
+ScriptureSingleNavigator.propTypes = {
   route: PropTypes.shape({
     params: PropTypes.shape({}),
   }),
 };
 
-export default ContentSingleNavigator;
+export default ScriptureSingleNavigator;
+export { default as ScriptureButton } from './ScriptureButton';

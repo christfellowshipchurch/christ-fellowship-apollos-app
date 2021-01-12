@@ -25,9 +25,11 @@ import DrawerNavigator from './drawer';
 
 import Providers from './Providers';
 import ContentSingle from './content-single';
+import ScriptureSingle from './scripture-single';
+import Tabs from './tabs';
+
 import NodeSingle from './node-single';
 import ContentFeed from './content-feed';
-import Tabs from './tabs';
 import EditUser from './edit-user';
 import GroupSingle from './group-single';
 import EditGroup from './edit-group';
@@ -83,12 +85,12 @@ const ThemedNavigator = withTheme(({ theme, ...props }) => ({
     //   ...Platform.select(theme.shadows.default),
     // },
     headerShown: false,
-    stackPresentation: 'modal',
+    stackPresentation: 'fullScreenModal',
   },
 }))(Navigator);
 
 const StackNavigator = (props) => (
-  <ThemedNavigator initialRouteName="ProtectedRoute" {...props}>
+  <ThemedNavigator {...props} initialRouteName="ProtectedRoute">
     <Screen
       name="Auth"
       component={EnhancedAuth}
@@ -117,7 +119,10 @@ const StackNavigator = (props) => (
     <Screen
       name="ContentSingle"
       component={ContentSingle}
-      options={{ title: 'Content' }}
+      options={{
+        title: 'Content',
+        // stackPresentation: 'push',
+      }}
     />
     {/* <Screen
     name="EditGroup"
@@ -179,6 +184,13 @@ const StackNavigator = (props) => (
     options={{ title: 'Prayer Request Single' }}
   /> */}
     <Screen name="ProtectedRoute" component={ProtectedRouteWithSplashScreen} />
+    <Screen
+      name="ScriptureSingle"
+      component={ScriptureSingle}
+      options={{
+        stackPresentation: 'modal',
+      }}
+    />
     <Screen name="Tabs" component={Tabs} options={{ title: 'Home' }} />
   </ThemedNavigator>
 );
