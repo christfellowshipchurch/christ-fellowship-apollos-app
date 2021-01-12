@@ -41,8 +41,6 @@ const ContentSingle = (props) => {
     };
 
     switch (__typename) {
-      // case 'DevotionalContentItem':
-      //   return <DevotionalContentItem {...screenProps} />;
       case 'EventContentItem':
         return <EventContentItem {...screenProps} />;
       case 'InformationalContentItem':

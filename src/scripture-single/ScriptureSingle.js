@@ -5,6 +5,7 @@ import { isEmpty, get } from 'lodash';
 
 import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 import { BackgroundView, PaddedView, ErrorCard } from '@apollosproject/ui-kit';
 import ScriptureItem from '@apollosproject/ui-scripture';
 
@@ -37,6 +38,20 @@ const ScriptureSingle = (props) => {
       <ScrollView>
         <SafeAreaView>
           <PaddedView>
+            {scriptures.map(({ id, reference, version }, i) => (
+              <TrackEventWhenLoaded
+                key={`${id}_track_event`}
+                loaded={!!(!loading && id)}
+                eventName={'View Scripture'}
+                properties={{
+                  id,
+                  reference,
+                  version,
+                  nodeId,
+                }}
+              />
+            ))}
+
             {scriptures.map((ref, i) => (
               <ScriptureItem
                 key={ref.id}
