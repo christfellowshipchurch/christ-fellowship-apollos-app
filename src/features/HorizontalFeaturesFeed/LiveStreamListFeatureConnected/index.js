@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { Animated, FlatList, View, LogBox } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { get, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 
@@ -11,7 +12,6 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 
-import { PLAY_VIDEO } from '@apollosproject/ui-media-player';
 import HorizontalFeatureFeed from 'ui/HorizontalFeatureFeed';
 import GET_LIVE_STREAMS from './getLiveStreamFeature';
 
@@ -94,38 +94,31 @@ const CircularImagePosition = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
-const LiveTouchable = ({ title, coverImage, media, withMargin }) => (
-  // const [playVideo] = useMutation(PLAY_VIDEO);
+const LiveTouchable = ({ id, title, coverImage, media, withMargin }) => {
+  const navigation = useNavigation();
+  return (
+    <LiveItemContainer
+      withMargin={withMargin}
+      onPress={() =>
+        navigation.navigate('LiveStreamSingle', { liveStreamId: id })
+      }
+    >
+      <BorderWithPulse />
 
-  <LiveItemContainer
-    withMargin={withMargin}
-    onPress={
-      () => null
-      // playVideo({
-      //   variables: {
-      //     mediaSource: get(media, 'sources[0]'),
-      //     posterSources: get(coverImage, 'sources[0]'),
-      //     title,
-      //     isVideo: true,
-      //     artist: 'Live',
-      //   },
-      // })
-    }
-  >
-    <BorderWithPulse />
-
-    <CircularImagePosition>
-      <CirclularImage source={get(coverImage, 'sources[0]')} />
-    </CircularImagePosition>
-  </LiveItemContainer>
-);
+      <CircularImagePosition>
+        <CirclularImage source={get(coverImage, 'sources[0]')} />
+      </CircularImagePosition>
+    </LiveItemContainer>
+  );
+};
 
 const renderItem = ({ item, index, dataLength }) => {
-  const { relatedNode, media } = item;
+  const { id, relatedNode, media } = item;
 
   return (
     <LiveTouchable
       {...relatedNode}
+      id={id}
       media={media}
       withMargin={index < dataLength - 1}
     />

@@ -19,7 +19,6 @@ import {
   LoadingMessages,
   LoadingErrorIndicator,
 } from '../chat/components';
-import { withPlayerContext } from '../chat/context';
 import chatClient, { streami18n } from '../chat/client';
 import mapChatTheme from '../chat/styles/mapTheme';
 
@@ -34,9 +33,9 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
 
 const KeyboardAvoider = styled(({ isPortrait, theme }) => ({
   flex: 1,
-  marginBottom: isPortrait ? theme.sizing.baseUnit : 0,
+  // marginBottom: isPortrait ? theme.sizing.baseUnit : 0,
   backgroundColor: theme.colors.background.paper,
-  paddingRight: !isPortrait ? theme.sizing.baseUnit : 0,
+  // paddingRight: !isPortrait ? theme.sizing.baseUnit : 0,
 }))(Platform.OS === 'ios' ? KeyboardAvoidingView : View);
 
 const WatchingContainer = styled(({ theme }) => ({

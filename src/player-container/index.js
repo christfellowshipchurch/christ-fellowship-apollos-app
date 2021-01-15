@@ -67,11 +67,7 @@ PlayerContainerConnected.propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 };
 
-const PlayerContainerConnectedWithMedia = ({
-  nodeId,
-  children,
-  InnerComponent,
-}) => {
+const PlayerContainerConnectedWithMedia = ({ nodeId, children }) => {
   const { data } = useQuery(GET_MEDIA, {
     fetchPolicy: 'cache-and-network',
     variables: { nodeId },
@@ -79,7 +75,11 @@ const PlayerContainerConnectedWithMedia = ({
   });
 
   if (!data?.node?.videos?.length)
-    return <InnerComponent nodeId={nodeId}>{children}</InnerComponent>;
+    return (
+      <PlayerContainerConnected nodeId={nodeId}>
+        {children}
+      </PlayerContainerConnected>
+    );
 
   return (
     <ApollosPlayerContainer
@@ -90,9 +90,9 @@ const PlayerContainerConnectedWithMedia = ({
       }}
     >
       <ScreenOrientation />
-      <InnerComponent nodeId={nodeId} ImageWrapperComponent={Noop}>
+      <PlayerContainerInner nodeId={nodeId} ImageWrapperComponent={Noop}>
         {children}
-      </InnerComponent>
+      </PlayerContainerInner>
     </ApollosPlayerContainer>
   );
 };
@@ -100,11 +100,6 @@ const PlayerContainerConnectedWithMedia = ({
 PlayerContainerConnectedWithMedia.propTypes = {
   nodeId: PropTypes.string,
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  InnerComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-};
-
-PlayerContainerConnectedWithMedia.defaultProps = {
-  InnerComponent: PlayerContainerInner,
 };
 
 export default PlayerContainerConnectedWithMedia;

@@ -97,6 +97,7 @@
     "bugsnag-react-native": "^2.23.7",
     "color": "3.0.0",
     "core-js": "^3.7.0",
+    "date-fns": "^2.16.1",
     "dotenv": "^6.2.0",
     "entities": "1.1.1",
     "events": "^3.0.0",

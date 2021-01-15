@@ -180,6 +180,9 @@ ApollosConfig.loadJs({
     `,
     LIVE_STREAM_FRAGMENT: gql`
       fragment LiveStreamFragment on LiveStream {
+        id
+        eventStartTime
+        eventEndTime
         isLive
         media {
           sources {
@@ -187,8 +190,16 @@ ApollosConfig.loadJs({
           }
         }
 
-        contentItem {
+        relatedNode {
           id
+          ... on ContentNode {
+            title
+            coverImage {
+              sources {
+                uri
+              }
+            }
+          }
         }
       }
     `,
@@ -198,6 +209,9 @@ ApollosConfig.loadJs({
         title
         subtitle
         liveStreams {
+          id
+          eventStartTime
+          eventEndTime
           isLive
           media {
             sources {
@@ -372,6 +386,15 @@ ApollosConfig.loadJs({
           relatedNode {
             ...RelatedFeatureNodeFragment
           }
+        }
+      }
+    `,
+    STREAM_CHAT_FRAGMENT: gql`
+      fragment StreamChatChannelNodeFragment on StreamChatChannelNode {
+        streamChatChannel {
+          id
+          channelId
+          channelType
         }
       }
     `,

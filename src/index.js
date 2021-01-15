@@ -25,6 +25,7 @@ import DrawerNavigator from './drawer';
 
 import Providers from './Providers';
 import ContentSingle from './content-single';
+import LiveStreamSingle from './live-stream-single';
 import ScriptureSingle from './scripture-single';
 import Tabs from './tabs';
 
@@ -143,6 +144,14 @@ const StackNavigator = (props) => (
       name="LandingScreen"
       component={LandingScreen}
       options={{ headerShown: false }}
+    />
+    <Screen
+      name="LiveStreamSingle"
+      component={LiveStreamSingle}
+      options={{
+        title: 'Live Stream',
+        // stackPresentation: 'push',
+      }}
     />
     {/* <Screen
     name="Location"
