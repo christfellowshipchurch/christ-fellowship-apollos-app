@@ -1,16 +1,14 @@
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useLazyQuery } from '@apollo/client';
-import React, { useState, useEffect, useRef } from 'react';
-import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
 import moment from 'moment';
 import numeral from 'numeral';
+
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
-
 import { styled, Icon, UIText, withTheme } from '@apollosproject/ui-kit';
-import { useCurrentUser } from '../hooks';
-
 import {
   Chat,
   Channel,
@@ -19,8 +17,10 @@ import {
   LoadingMessages,
   LoadingErrorIndicator,
 } from '../chat/components';
+
 import chatClient, { streami18n } from '../chat/client';
 import mapChatTheme from '../chat/styles/mapTheme';
+import { useCurrentUser } from '../hooks';
 
 const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   query getCurrentUserRoleForChannel($channelId: ID!) {
@@ -34,7 +34,7 @@ const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
 const KeyboardAvoider = styled(({ isPortrait, theme }) => ({
   flex: 1,
   // marginBottom: isPortrait ? theme.sizing.baseUnit : 0,
-  backgroundColor: theme.colors.background.paper,
+  // backgroundColor: theme.colors.background.paper,
   // paddingRight: !isPortrait ? theme.sizing.baseUnit : 0,
 }))(Platform.OS === 'ios' ? KeyboardAvoidingView : View);
 

@@ -15,6 +15,8 @@ export Calendar from './Calendar';
 export CalendarAdd from './CalendarAdd';
 export Campus from './Campus';
 export ChatConversation from './ChatConversation';
+export CircleClose from './CircleClose';
+export CircleOutlineClose from './CircleOutlineClose';
 export Clock from './Clock';
 export Envelope from './Envelope';
 export EnvelopeOpenDollar from './EnvelopeOpenDollar';

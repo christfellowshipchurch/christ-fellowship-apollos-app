@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { differenceInMilliseconds } from 'date-fns';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React from 'react';
+import { useLiveStream } from 'hooks';
 
-import { View } from 'react-native';
 import { ApollosPlayerContainer } from '@apollosproject/ui-media-player';
-import { ErrorCard, styled, ActivityIndicator } from '@apollosproject/ui-kit';
+import { ErrorCard, ActivityIndicator } from '@apollosproject/ui-kit';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
 import StatusBar from 'ui/StatusBar';
-import { useLiveStream } from 'hooks';
+
 import ThemeMixin from '../ui/DynamicThemeMixin';
 
 import LiveStreamPlayer from './LiveStreamPlayer';
 import LiveStreamChat from './LiveStreamChat';
 import PreLiveStream from './PreLiveStream';
 import PostLiveStream from './PostLiveStream';
-
-const BottomInset = styled(({ theme, inset }) => ({
-  backgroundColor: theme.colors.background.paper,
-  paddingBottom: inset - theme.sizing.baseUnit,
-  flex: 1,
-}))(View);
+import CloseButton from './CloseButton';
+import { ChatSpacing } from './LiveStreamChatComponents';
 
 const LiveStreamSingle = (props) => {
   const liveStreamId = props.route?.params?.liveStreamId;
@@ -41,7 +35,6 @@ const LiveStreamSingle = (props) => {
   } = useLiveStream({
     liveStreamId,
   });
-  const insets = useSafeAreaInsets();
 
   // Loading and Error State
   if (loadingWithData) return <ActivityIndicator />;
@@ -66,36 +59,41 @@ const LiveStreamSingle = (props) => {
   if (isAfter) return <PostLiveStream coverImage={coverImage} />;
 
   return (
-    <ApollosPlayerContainer
-      PlayerComponent={LiveStreamPlayer}
-      source={uri}
-      coverImage={coverImage}
-      presentationProps={{
-        title,
-      }}
-      isLive
-      autoplay
-    >
-      <ThemeMixin theme={theme}>
-        <StatusBar />
-        <InteractWhenLoadedConnected
-          isLoading={loading}
-          nodeId={liveStreamId}
-          action={'COMPLETE'}
-        />
-        <TrackEventWhenLoaded
-          loaded={!!(!loading && title)}
-          eventName={'View Live Stream'}
-          properties={{
-            title,
-            liveStreamId,
-          }}
-        />
-        <BottomInset inset={insets.bottom}>
-          <LiveStreamChat channelId={streamChatChannel?.channelId} />
-        </BottomInset>
-      </ThemeMixin>
-    </ApollosPlayerContainer>
+    <>
+      <ApollosPlayerContainer
+        PlayerComponent={LiveStreamPlayer}
+        source={uri}
+        coverImage={coverImage}
+        presentationProps={{
+          title,
+        }}
+        isLive
+        autoplay
+      >
+        <ThemeMixin theme={theme}>
+          <StatusBar />
+
+          <InteractWhenLoadedConnected
+            isLoading={loading}
+            nodeId={liveStreamId}
+            action={'COMPLETE'}
+          />
+          <TrackEventWhenLoaded
+            loaded={!!(!loading && title)}
+            eventName={'View Live Stream'}
+            properties={{
+              title,
+              liveStreamId,
+            }}
+          />
+          <CloseButton />
+
+          <ChatSpacing>
+            <LiveStreamChat channelId={streamChatChannel?.channelId} />
+          </ChatSpacing>
+        </ThemeMixin>
+      </ApollosPlayerContainer>
+    </>
   );
 };
 

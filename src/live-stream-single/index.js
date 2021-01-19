@@ -12,12 +12,7 @@ const LiveStreamSingleNavigator = ({ route, ...props }) => (
     {...props}
     headerMode="screen"
     screenOptions={{
-      headerTranslucent: true,
-      headerStyle: { backgroundColor: 'transparent' },
-      headerHideShadow: true,
-      headerRight: ModalCloseButton,
-      headerLeft: ModalBackButton,
-      headerTitle: '',
+      headerShown: false,
     }}
   >
     <Screen
