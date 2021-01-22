@@ -60,12 +60,12 @@ const PreLiveStream = ({ title, startDate, theme, coverImage, isLoading }) => {
       /**
        * Run a 30 second timer to check for a new difference in the timer so that we can update the text accordingly
        */
-      const timer = setTimeout(() => {
+      const interval = setInterval(() => {
         setNow(new Date());
       }, 30000);
 
       return function cleanup() {
-        clearTimeout(timer);
+        clearInterval(interval);
       };
     },
     [now]

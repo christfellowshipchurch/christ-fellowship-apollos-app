@@ -45,18 +45,27 @@ const LiveStreamSingle = (props) => {
    */
   if (isBefore)
     return (
-      <PreLiveStream
-        startDate={startDate}
-        coverImage={coverImage}
-        title={title}
-        isLoading={loadingWithData}
-      />
+      <>
+        <CloseButton />
+        <PreLiveStream
+          startDate={startDate}
+          coverImage={coverImage}
+          title={title}
+          isLoading={loadingWithData}
+        />
+      </>
     );
 
   /**
    * If the current time is _after_ the end date, show the Post Live component
    */
-  if (isAfter) return <PostLiveStream coverImage={coverImage} />;
+  if (isAfter)
+    return (
+      <>
+        <CloseButton />
+        <PostLiveStream coverImage={coverImage} />
+      </>
+    );
 
   return (
     <>
