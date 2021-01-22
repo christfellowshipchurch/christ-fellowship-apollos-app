@@ -42,13 +42,16 @@ const useLiveStream = ({ liveStreamId }) => {
   useEffect(
     () => {
       const refetchTimer = setTimeout(() => {
-        const endDate = data?.node?.eventEndTime
-          ? parseISO(data?.node?.eventEndTime)
-          : null;
+        // Refetch the data
+        refetch();
 
         /**
          * If right now is within the last 5 minutes of the stream, fetch new data every 30 seconds
          */
+        const endDate = data?.node?.eventEndTime
+          ? parseISO(data?.node?.eventEndTime)
+          : null;
+
         if (differenceInSeconds(endDate, new Date()) < fiveMins) {
           setNextRefetch(30000);
         }
