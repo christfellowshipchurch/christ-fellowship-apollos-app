@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
-import { Animated, FlatList, View, LogBox } from 'react-native';
+import { useQuery } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, isNumber } from 'lodash';
 import PropTypes from 'prop-types';
+import {
+  isWithinInterval,
+  compareAsc,
+  parseISO,
+  differenceInMilliseconds,
+  closestTo,
+} from 'date-fns';
+import { useLiveStreams } from 'hooks';
 
+import { Animated, FlatList, View, LogBox } from 'react-native';
 import {
   ConnectedImage,
   TouchableScale,
@@ -94,7 +102,7 @@ const CircularImagePosition = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
-const LiveTouchable = ({ id, title, coverImage, media, withMargin }) => {
+const LiveTouchable = ({ id, coverImage, withMargin }) => {
   const navigation = useNavigation();
   return (
     <LiveItemContainer
@@ -137,34 +145,29 @@ const LiveStreamsFeedFeature = ({ liveStreams }) => (
 
 const LiveStreamsFeedFeatureConnected = ({
   featureId,
-  isLoading,
   ItemSeparatorComponent,
 }) => {
-  // Since we are refetching on a 30 second interval, we don't care
-  // about the refetchRef from the parents and don't need to worry
-  // about refetching on pull-down
   const { loading, data } = useQuery(GET_LIVE_STREAMS, {
-    pollInterval: 30000,
     fetchPolicy: 'network-only',
     skip: isEmpty(featureId),
     variables: {
       featureId,
     },
   });
-
   const { liveStreams, title, subtitle } = get(data, 'node', {
     liveStreams: [],
     title: '',
     subtitle: null,
   });
+  const { currentStreams } = useLiveStreams(data?.node?.liveStreams);
 
   const style = liveStreams.length === 1 ? { alignItems: 'center' } : {};
 
-  return liveStreams.length > 0 ? (
+  return currentStreams.length > 0 ? (
     <View style={{ flexDirection: 'row' }}>
       <HorizontalFeatureFeed
         Component={LiveStreamsFeedFeature}
-        liveStreams={liveStreams}
+        liveStreams={currentStreams}
         title={title}
         subtitle={subtitle}
         style={style}

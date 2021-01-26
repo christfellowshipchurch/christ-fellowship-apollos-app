@@ -26,6 +26,11 @@ const GET_LIVE_STREAM = gql`
   ${ApollosConfig.FRAGMENTS.STREAM_CHAT_FRAGMENT}
 `;
 
+/**
+ * useLiveStream
+ * Hook to handle the status and refetching of a single live stream node
+ * @param {number} args.liveStreamId | Live Stream Id
+ */
 const useLiveStream = ({ liveStreamId }) => {
   const { data, loading, error, refetch } = useQuery(GET_LIVE_STREAM, {
     variables: { id: liveStreamId },

@@ -50,23 +50,21 @@ const AppProviders = (props) => {
             trackFunctions={[track]}
             identifyFunctions={[identify]}
           >
-            <LiveProvider>
-              <DarkModeProvider>
-                <Providers
-                  themeInput={{ ...customTheme, type: theme }}
-                  iconInput={customIcons}
-                  {...props}
-                >
-                  <BackgroundView>
-                    <SideMenuProvider {...props}>
-                      <ActionSheetProvider>
-                        <AppStateProvider {...props} />
-                      </ActionSheetProvider>
-                    </SideMenuProvider>
-                  </BackgroundView>
-                </Providers>
-              </DarkModeProvider>
-            </LiveProvider>
+            <DarkModeProvider>
+              <Providers
+                themeInput={{ ...customTheme, type: theme }}
+                iconInput={customIcons}
+                {...props}
+              >
+                <BackgroundView>
+                  <SideMenuProvider {...props}>
+                    <ActionSheetProvider>
+                      <AppStateProvider {...props} />
+                    </ActionSheetProvider>
+                  </SideMenuProvider>
+                </BackgroundView>
+              </Providers>
+            </DarkModeProvider>
           </AnalyticsProvider>
         </AuthProvider>
       </NotificationsProvider>
