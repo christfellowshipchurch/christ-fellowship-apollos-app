@@ -3,8 +3,6 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import PropTypes from 'prop-types';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 
-import { ThemeMixin, withTheme } from '@apollosproject/ui-kit';
-
 import {
   AuthSMSPhoneEntryConnected,
   AuthSMSVerificationConnected,
@@ -14,10 +12,15 @@ import {
   Entry,
 } from '@apollosproject/ui-auth';
 
+import { withTheme } from '@apollosproject/ui-kit';
 import AuthProfileDetailsEntry from './AuthProfileDetailsEntry';
-import AuthPasswordEntryConnected from './AuthPasswordWithPasswordReset';
+import AuthPasswordWithPasswordReset from './AuthPasswordWithPasswordReset';
+
 // import Entry from './Entry';
 
+/**
+ * We use a custom Auth Navigator Stack cause we need to be able to check the age of new users to make sure that they are at least 13 years old.
+ */
 export {
   LoginButton,
   ProtectedAction,
@@ -27,12 +30,6 @@ export {
   ProtectedRoute,
   Entry,
 } from '@apollosproject/ui-auth';
-
-const StyledEntry = (props) => (
-  <ThemeMixin mixin={{ type: 'auth-entry' }}>
-    <Entry {...props} />
-  </ThemeMixin>
-);
 
 const AuthStack = createNativeStackNavigator();
 const IdentityStack = createNativeStackNavigator();
@@ -75,7 +72,7 @@ const AuthNavigator = (props) => (
     />
     <AuthStack.Screen
       name="AuthPasswordEntryConnected"
-      component={AuthPasswordEntryConnected}
+      component={AuthPasswordWithPasswordReset}
     />
     <AuthStack.Screen
       name="AuthProfileEntryConnected"

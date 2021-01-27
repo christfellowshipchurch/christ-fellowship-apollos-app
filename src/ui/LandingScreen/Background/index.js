@@ -11,7 +11,7 @@ export const Overlay = styled(({ theme }) => ({
 export default ({ children }) => (
   <ImageBackground
     style={{ ...StyleSheet.absoluteFill }}
-    source={require('./auth_background.jpg')}
+    source={require('./background.jpg')}
   >
     <StatusBar
       barStyle="light-content"

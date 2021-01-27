@@ -27,55 +27,53 @@ const Disclaimer = styled(({ theme }) => ({
 }))(UIText);
 
 const ProfileDetailsEntry = (props) => (
-  <ThemeMixin mixin={{ type: 'dark' }}>
-    <ProfileEntryFieldContainer {...props}>
-      <FieldLabel padded>Gender</FieldLabel>
-      <RadioInput
-        label="Gender"
-        type="radio"
-        value={get(props.values, 'gender')}
-        error={get(props.touched, 'gender') && get(props.errors, 'gender')}
-        onChange={(value) => props.setFieldValue('gender', value)}
-      >
-        {props.genderList.map((gender) => [
-          <RadioButton
-            key={gender}
-            value={gender}
-            label={() => <RadioLabel>{gender}</RadioLabel>}
-            underline={false}
-          />,
-        ])}
-      </RadioInput>
-      <FieldLabel>Birthday</FieldLabel>
-      <DateInput
-        label=""
-        value={moment(
-          get(props.values, 'birthDate', props.defaultDate) || props.defaultDate
-        ).toDate()}
-        error={get(props.errors, 'birthDate')}
-        placeholder={
-          // only show a birthday if we have one.
-          moment(get(props.values, 'birthDate', '')).isValid() // DatePicker shows displayValue > placeholder > label in that order
-            ? moment(props.values.birthDate).format('MMM D, YYYY')
-            : 'Select a date...' // Pass an empty string if we don't have a birthday to show the placeholder.
+  <ProfileEntryFieldContainer {...props}>
+    <FieldLabel padded>Gender</FieldLabel>
+    <RadioInput
+      label="Gender"
+      type="radio"
+      value={get(props.values, 'gender')}
+      error={get(props.touched, 'gender') && get(props.errors, 'gender')}
+      onChange={(value) => props.setFieldValue('gender', value)}
+    >
+      {props.genderList.map((gender) => [
+        <RadioButton
+          key={gender}
+          value={gender}
+          label={() => <RadioLabel>{gender}</RadioLabel>}
+          underline={false}
+        />,
+      ])}
+    </RadioInput>
+    <FieldLabel>Birthday</FieldLabel>
+    <DateInput
+      label=""
+      value={moment(
+        get(props.values, 'birthDate', props.defaultDate) || props.defaultDate
+      ).toDate()}
+      error={get(props.errors, 'birthDate')}
+      placeholder={
+        // only show a birthday if we have one.
+        moment(get(props.values, 'birthDate', '')).isValid() // DatePicker shows displayValue > placeholder > label in that order
+          ? moment(props.values.birthDate).format('MMM D, YYYY')
+          : 'Select a date...' // Pass an empty string if we don't have a birthday to show the placeholder.
+      }
+      onConfirm={(value) => {
+        if (moment(value).isAfter(moment().subtract(13, 'years'))) {
+          props.setFieldError(
+            'birthDate',
+            'You must be at least 13 to create an account'
+          );
+        } else {
+          props.setFieldValue('birthDate', value);
         }
-        onConfirm={(value) => {
-          if (moment(value).isAfter(moment().subtract(13, 'years'))) {
-            props.setFieldError(
-              'birthDate',
-              'You must be at least 13 to create an account'
-            );
-          } else {
-            props.setFieldValue('birthDate', value);
-          }
-        }}
-        maxYear={moment().year() - 13}
-      />
-      <Disclaimer>
-        *You must be at least 13 years old to have an account.
-      </Disclaimer>
-    </ProfileEntryFieldContainer>
-  </ThemeMixin>
+      }}
+      maxYear={moment().year() - 13}
+    />
+    <Disclaimer>
+      *You must be at least 13 years old to have an account.
+    </Disclaimer>
+  </ProfileEntryFieldContainer>
 );
 
 ProfileDetailsEntry.propTypes = {

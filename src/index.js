@@ -42,7 +42,6 @@ import Channel from './chat/Channel';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
-import AuthBackground from './ui/AuthBackground';
 
 // bugsnag configuration
 // eslint-disable-next-line
@@ -130,11 +129,11 @@ const StackNavigator = (props) => (
     component={EditGroup}
     options={{ title: 'Edit Group' }}
   /> */}
-    {/* <Screen
-    name="EditUser"
-    component={EditUser}
-    options={{ title: 'Edit User' }}
-  /> */}
+    <Screen
+      name="EditUser"
+      component={EditUser}
+      options={{ title: 'Edit User' }}
+    />
     {/* <Screen
     name="GroupSingle"
     component={GroupSingle}

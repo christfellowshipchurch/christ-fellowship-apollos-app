@@ -1,14 +1,12 @@
 import Color from 'color';
 
 import authEntry from './authEntry';
-import onboarding from './onboarding';
 import dark from './dark-theme';
 
 import {
   UIAuthOverrides,
   UIConnectedOverrides,
   UIKitOverrides,
-  UIOnboardingOverrides,
   UIPrayerOverrides,
 } from './overrides';
 
@@ -179,10 +177,9 @@ const overrides = () => ({
     backgroundColor: 'transparent',
     borderColor: 'white',
   },
-  ...UIAuthOverrides,
+  // ...UIAuthOverrides,
   ...UIConnectedOverrides({ colors }),
   ...UIKitOverrides({ sizing }),
-  ...UIOnboardingOverrides,
   ...UIPrayerOverrides,
 });
 
@@ -195,8 +192,8 @@ const buttons = ({ colors: themeColors }) => ({
 
 const types = {
   dark,
-  onboarding,
-  'auth-entry': authEntry,
+  // onboarding,
+  'auth-entry': {},
 };
 
 export default {
