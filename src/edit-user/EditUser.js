@@ -98,7 +98,9 @@ const Overlay = styled(({ theme }) => ({
   position: 'absolute',
   width: '100%',
   height: '100%',
-  backgroundColor: Color(theme.colors.background.screen).fade(0.75),
+  backgroundColor: Color(theme.colors.background.screen)
+    .fade(0.75)
+    .hex(),
   top: 0,
   left: 0,
   zIndex: 1,
@@ -171,7 +173,7 @@ const EditUser = ({
   const pickerColor = useDynamicValue(pickerColorValue);
   const featuredImage = get(campus, 'featuredImage.uri', null);
 
-  if (loading)
+  if (loading && !firstName)
     return (
       <BackgroundView>
         <StatusBar hidden />

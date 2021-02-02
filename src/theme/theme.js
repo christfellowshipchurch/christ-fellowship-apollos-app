@@ -179,7 +179,7 @@ const overrides = () => ({
   },
   // ...UIAuthOverrides,
   ...UIConnectedOverrides({ colors }),
-  ...UIKitOverrides({ sizing }),
+  ...UIKitOverrides({ sizing, colors }),
   ...UIPrayerOverrides,
 });
 

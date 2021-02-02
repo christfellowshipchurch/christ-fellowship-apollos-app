@@ -9,7 +9,6 @@ import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components
 import { styled, withTheme } from '@apollosproject/ui-kit';
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 import { useCurrentUser } from '../hooks';
-import { navigationOptions, NavigationSpacer } from '../navigation';
 
 import { Chat, ChannelList, LoadingChannels } from './components';
 import chatClient, { streami18n } from './client';
@@ -76,7 +75,6 @@ const ChannelsList = themed((props) => {
         <Chat client={chatClient} i18nInstance={streami18n}>
           <FlexedMediaSpacer>
             <SafeChatContainer>
-              <NavigationSpacer />
               <LoadingChannels />
             </SafeChatContainer>
           </FlexedMediaSpacer>
@@ -107,7 +105,6 @@ const ChannelsList = themed((props) => {
       <Chat client={chatClient} i18nInstance={streami18n}>
         <FlexedMediaSpacer>
           <SafeChatContainer>
-            <NavigationSpacer />
             <ChannelList
               filters={filters}
               sort={sort}
@@ -136,15 +133,6 @@ ChannelsList.propTypes = {
     colors: PropTypes.shape({}),
   }),
 };
-
-ChannelsList.navigationOptions = ({ navigation, ...props }) =>
-  navigationOptions({
-    navigation,
-    ...props,
-    title: 'Conversations',
-    blur: false,
-    headerLeft: null,
-  });
 
 const ChannelsListNavigator = createStackNavigator(
   {

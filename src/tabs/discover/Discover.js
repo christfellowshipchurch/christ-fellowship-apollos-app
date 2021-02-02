@@ -3,10 +3,8 @@ import { SafeAreaView } from 'react-navigation';
 import { get, throttle } from 'lodash';
 
 import { BackgroundView } from '@apollosproject/ui-kit';
-
 import DynamicThemeMixin from 'ui/DynamicThemeMixin';
 import StatusBar from 'ui/StatusBar';
-import { navigationOptions, NavigationSpacer } from '../../navigation';
 import SearchInputHeader from './SearchInputHeader';
 import Browse from './Browse';
 import SearchFeed from './SearchFeed';
@@ -42,8 +40,11 @@ const Discover = ({ navigation }) => {
     <DynamicThemeMixin>
       <BackgroundView>
         <SafeAreaView style={{ flex: 1 }}>
-          <NavigationSpacer />
           <StatusBar />
+          <SearchInputHeader
+            onChangeText={throttle(setSearchText, 300)}
+            onFocus={setIsFocused}
+          />
           {isFocused ? (
             <SearchFeed searchText={searchText} navigation={navigation} />
           ) : (
@@ -57,19 +58,6 @@ const Discover = ({ navigation }) => {
     </DynamicThemeMixin>
   );
 };
-
-Discover.navigationOptions = (props) =>
-  navigationOptions({
-    ...props,
-    title: 'Discover',
-    headerTitle: (
-      <SearchInputHeader
-        onChangeText={get(props, 'navigation.handleOnChangeText', () => null)}
-        onFocus={get(props, 'navigation.handleOnFocus', () => null)}
-      />
-    ),
-    headerRight: null,
-  });
 
 Discover.propTypes = {};
 

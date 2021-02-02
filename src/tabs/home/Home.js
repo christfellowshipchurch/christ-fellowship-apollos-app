@@ -7,7 +7,7 @@ import { get } from 'lodash';
 import gql from 'graphql-tag';
 
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
-import { styled } from '@apollosproject/ui-kit';
+import { styled, BackgroundView } from '@apollosproject/ui-kit';
 
 import {
   FeaturesFeedConnected,
@@ -16,12 +16,6 @@ import {
 } from 'features';
 
 import Wordmark from 'ui/Wordmark';
-import {
-  navigationOptions,
-  BackgroundView,
-  NavigationSpacer,
-  useHeaderScrollEffect,
-} from '../../navigation';
 
 const ListHeaderSpacer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
@@ -47,7 +41,6 @@ const Home = ({ navigation }) => {
     fetchPolicy: 'cache-and-network',
   });
   const [refetchRef, setRefetchRef] = useState(null);
-  const { scrollY } = useHeaderScrollEffect({ navigation });
 
   return (
     <RockAuthedWebBrowser>
@@ -60,7 +53,6 @@ const Home = ({ navigation }) => {
               navigation={navigation}
               ListHeaderComponent={
                 <ListHeaderSpacer>
-                  <NavigationSpacer />
                   <HorizontalFeaturesFeedConnected
                     featureFeedId={data?.homeHeaderFeedFeatures?.id}
                     refetchRef={get(refetchRef, 'refetchRef', () => null)}
@@ -68,14 +60,6 @@ const Home = ({ navigation }) => {
                   />
                 </ListHeaderSpacer>
               }
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {
-                    contentOffset: { y: scrollY },
-                  },
-                },
-              ])}
               removeClippedSubviews={false}
               numColumns={1}
               onRef={(ref) => setRefetchRef(ref)}
@@ -86,13 +70,6 @@ const Home = ({ navigation }) => {
     </RockAuthedWebBrowser>
   );
 };
-
-Home.navigationOptions = (props) =>
-  navigationOptions({
-    ...props,
-    headerTitle: <Wordmark />,
-    title: 'Home',
-  });
 
 Home.propTypes = {
   navigation: PropTypes.shape({

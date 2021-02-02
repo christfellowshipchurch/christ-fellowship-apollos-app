@@ -3,10 +3,9 @@ import { useLinkRouter } from 'hooks';
 
 const ACTION_MAP = {
   ...FEATURE_FEED_ACTION_MAP,
-  OPEN_URL: ({ relatedNode }) => {
-    const { routeLink } = useLinkRouter();
-    routeLink(relatedNode.url, { nested: true });
-  },
+  // OPEN_URL: ({ relatedNode, openUrl }) => {
+  //   openUrl(relatedNode.url, { nested: true });
+  // },
   READ_GROUP: ({ navigation, relatedNode }) => {
     navigation.navigate('GroupSingle', {
       itemId: relatedNode.id,
@@ -23,6 +22,10 @@ const ACTION_MAP = {
 
 export default ({ action, ...props }) => {
   if (ACTION_MAP[action]) {
-    ACTION_MAP[action]({ action, ...props });
+    try {
+      ACTION_MAP[action]({ action, ...props });
+    } catch (e) {
+      console.log({ e });
+    }
   }
 };

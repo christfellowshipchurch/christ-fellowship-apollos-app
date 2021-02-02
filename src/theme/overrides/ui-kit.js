@@ -1,6 +1,7 @@
 import { Platform } from 'react-native';
+import { lightenBy, darkenBy } from 'utils/theme';
 
-export default ({ sizing }) => ({
+export default ({ sizing, colors: themeColors }) => ({
   'ui-kit.Card.Image.Image': {
     resizeMode: 'cover',
     ...Platform.select({
@@ -10,5 +11,8 @@ export default ({ sizing }) => ({
         borderTopLeftRadius: sizing.baseUnit,
       },
     }),
+  },
+  'ui-kit.inputs.Search.styles.TextInputWrapper': {
+    borderColor: lightenBy(themeColors.screen, 0.25).hex(),
   },
 });

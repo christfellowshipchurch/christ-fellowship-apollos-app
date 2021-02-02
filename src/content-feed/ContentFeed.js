@@ -1,5 +1,4 @@
 import React from 'react';
-import { Animated } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { useQuery } from '@apollo/client';
 import { get } from 'lodash';
@@ -9,11 +8,6 @@ import { BackgroundView } from '@apollosproject/ui-kit';
 
 import { CardFeed } from 'ui/CardFeeds';
 import ActionRow from 'ui/ActionRow';
-import {
-  navigationOptions,
-  NavigationSpacer,
-  useHeaderScrollEffect,
-} from '../navigation';
 
 import GET_CONTENT_FEED from './getContentFeed';
 
@@ -36,7 +30,6 @@ const ContentFeed = ({ navigation, card }) => {
       itemId,
     },
   });
-  const { scrollY } = useHeaderScrollEffect({ navigation });
 
   return (
     <BackgroundView>
@@ -48,27 +41,11 @@ const ContentFeed = ({ navigation, card }) => {
           isLoading={loading}
           error={error}
           refetch={refetch}
-          ListHeaderComponent={<NavigationSpacer />}
-          scrollEventThrottle={16}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: { y: scrollY },
-              },
-            },
-          ])}
         />
       </SafeAreaView>
     </BackgroundView>
   );
 };
-
-ContentFeed.navigationOptions = ({ navigation, ...props }) =>
-  navigationOptions({
-    navigation,
-    ...props,
-    title: navigation.getParam('itemTitle', 'Content Channel'),
-  });
 
 ContentFeed.propTypes = {
   /** Functions passed down from React Navigation to use in navigating to/from

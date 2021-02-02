@@ -5,6 +5,7 @@ import { FeaturesFeedConnected as CoreFeaturesFeedConnected } from '@apollosproj
 
 import { HorizontalDivider } from 'ui/Dividers';
 
+import { useLinkRouter } from 'hooks';
 import defaultAdditionalFeatures from './additionalFeatures';
 import handleActionPress from './handleActionPress';
 
@@ -14,6 +15,7 @@ const FeaturesFeedConnected = ({
   ItemSeparatorComponent,
   ...props
 }) => {
+  const { routeLink } = useLinkRouter();
   const feedRef = useCallback((ref) => onRef(ref), []);
 
   return (
@@ -26,6 +28,7 @@ const FeaturesFeedConnected = ({
       ItemSeparatorComponent={ItemSeparatorComponent}
       ref={feedRef}
       onPressActionItem={handleActionPress}
+      openUrl={(url) => routeLink(url, { nested: true })}
     />
   );
 };

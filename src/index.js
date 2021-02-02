@@ -167,11 +167,11 @@ const StackNavigator = (props) => (
     component={NodeSingle}
     options={{ title: 'Node' }}
   /> */}
-    {/* <Screen
-    name="NotificationCenter"
-    component={NotificationCenter}
-    options={{ title: 'Notification Center' }}
-  /> */}
+    <Screen
+      name="NotificationCenter"
+      component={NotificationCenter}
+      options={{ title: 'Notification Center', stackPresentation: 'modal' }}
+    />
     <Screen
       name="Onboarding"
       component={Onboarding}
@@ -199,7 +199,12 @@ const StackNavigator = (props) => (
         stackPresentation: 'modal',
       }}
     />
-    <Screen name="Tabs" component={Tabs} options={{ title: 'Home' }} />
+    <Screen
+      name="Tabs"
+      component={Tabs}
+      options={{ title: 'Home' }}
+      // screenOptions={{ headerShown: true }}
+    />
   </ThemedNavigator>
 );
 

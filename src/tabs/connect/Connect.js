@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
-import { Animated, View } from 'react-native';
 import { useQuery } from '@apollo/client';
-import { SafeAreaView } from 'react-navigation';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
-import { styled } from '@apollosproject/ui-kit';
+import { SafeAreaView } from 'react-navigation';
+import { View } from 'react-native';
+import { styled, BackgroundView } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
 import { FeaturesFeedConnected } from 'features';
-
-import {
-  navigationOptions,
-  BackgroundView,
-  NavigationSpacer,
-  useHeaderScrollEffect,
-} from '../../navigation';
 
 const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
 
@@ -34,14 +27,11 @@ const ItemSeparator = styled(({ theme }) => ({
   paddingTop: theme.sizing.baseUnit * 2,
 }))(View);
 
-const Connect = ({ navigation }) => {
+const Connect = () => {
   const { data } = useQuery(GET_CONNECT_FEED, {
     fetchPolicy: 'network-only',
   });
   const [refetchRef, setRefetchRef] = useState(null);
-  const { scrollY } = useHeaderScrollEffect({ navigation });
-
-  console.log({ data });
 
   return (
     <RockAuthedWebBrowser>
@@ -51,17 +41,7 @@ const Connect = ({ navigation }) => {
             <FeaturesFeedConnected
               featureFeedId={data?.connectFeedFeatures?.id}
               openUrl={openUrl}
-              navigation={navigation}
-              ListHeaderComponent={<NavigationSpacer />}
               ItemSeparatorComponent={ItemSeparator}
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {
-                    contentOffset: { y: scrollY },
-                  },
-                },
-              ])}
               removeClippedSubviews={false}
               numColumns={1}
               onRef={(ref) => setRefetchRef(ref)}
@@ -72,12 +52,6 @@ const Connect = ({ navigation }) => {
     </RockAuthedWebBrowser>
   );
 };
-
-Connect.navigationOptions = (props) =>
-  navigationOptions({
-    ...props,
-    title: 'Profile',
-  });
 
 Connect.propTypes = {
   navigation: PropTypes.shape({

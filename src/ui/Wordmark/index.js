@@ -5,7 +5,6 @@ import { styled, withTheme, Icon, UIText } from '@apollosproject/ui-kit';
 const Container = styled(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'flex-start',
-  paddingHorizontal: theme.sizing.baseUnit,
   flexDirection: 'row',
 }))(View);
 

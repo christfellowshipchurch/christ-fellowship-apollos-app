@@ -19,11 +19,6 @@ import {
 import { CardFeed } from 'ui/CardFeeds';
 import DateLabel from 'ui/DateLabel';
 import { HorizontalDivider } from 'ui/Dividers';
-import {
-  navigationOptions,
-  NavigationSpacer,
-  useHeaderScrollEffect,
-} from 'navigation';
 import GET_MY_PRAYER_REQUESTS from './getMyPrayerRequests';
 
 const loadingStateObject = {
@@ -74,7 +69,6 @@ const mapEdges = (data) =>
   }));
 
 const MyPrayerRequestsFeed = ({ navigation }) => {
-  const { scrollY } = useHeaderScrollEffect({ navigation });
   const { loading, error, data, refetch, fetchMore, variables } = useQuery(
     GET_MY_PRAYER_REQUESTS,
     {
@@ -106,7 +100,6 @@ const MyPrayerRequestsFeed = ({ navigation }) => {
   return (
     <SafeAreaView forceInset style={{ flex: 1 }}>
       <CardFeed
-        ListHeaderComponent={<NavigationSpacer />}
         content={prayers.sort((a, b) =>
           moment(b.requestedDate).diff(a.requestedDate)
         )}
@@ -121,24 +114,10 @@ const MyPrayerRequestsFeed = ({ navigation }) => {
           data,
         })}
         refetch={refetch}
-        scrollEventThrottle={16}
-        onScroll={Animated.event([
-          {
-            nativeEvent: {
-              contentOffset: { y: scrollY },
-            },
-          },
-        ])}
       />
     </SafeAreaView>
   );
 };
-
-MyPrayerRequestsFeed.navigationOptions = (props) =>
-  navigationOptions({
-    ...props,
-    title: 'My Prayers',
-  });
 
 MyPrayerRequestsFeed.propTypes = {
   navigation: PropTypes.shape({

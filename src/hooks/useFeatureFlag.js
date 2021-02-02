@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
 const GET_FEATURE_STATUS = gql`
   query getFlagStatus($key: String!) {
@@ -14,8 +14,8 @@ const useFeatureFlag = (props) => {
     variables: {
       key,
     },
-    skip: !key || key === '',
-    fetchPolicy: 'cache-and-network',
+    skip: !key || isEmpty(key),
+    fetchPolicy: 'network-only',
   });
 
   return {

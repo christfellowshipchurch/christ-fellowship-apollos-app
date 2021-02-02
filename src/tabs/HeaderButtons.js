@@ -1,29 +1,27 @@
 import React from 'react';
-import { View } from 'react-native';
+import { useNavigation, DrawerActions } from '@react-navigation/native';
 
+import { View } from 'react-native';
 import {
   TouchableScale,
   Icon,
   withTheme,
   styled,
-  NavigationService,
 } from '@apollosproject/ui-kit';
 
 import { useFeatureFlag } from 'hooks';
-import { useSideMenu } from '../sidemenu';
 
 const IconsContainer = styled(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
+  paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const ItemRight = styled(({ theme }) => ({
-  padding: theme.sizing.baseUnit,
   paddingLeft: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const ItemLeft = styled(({ theme }) => ({
-  padding: theme.sizing.baseUnit,
   paddingRight: theme.sizing.baseUnit * 0.5,
 }))(View);
 
@@ -35,15 +33,14 @@ const StyledIcon = withTheme(({ theme }) => ({
   },
 }))(Icon);
 
-const NotificationCenterIconConnected = () => {
+export const NotificationCenterIconConnected = () => {
+  const navigation = useNavigation();
   const { enabled } = useFeatureFlag({
     key: 'NOTIFICATION_CENTER',
   });
 
   return enabled ? (
-    <TouchableScale
-      onPress={() => NavigationService.navigate('NotificationCenter')}
-    >
+    <TouchableScale onPress={() => navigation.navigate('NotificationCenter')}>
       <ItemLeft>
         <StyledIcon name="bell" />
       </ItemLeft>
@@ -51,19 +48,24 @@ const NotificationCenterIconConnected = () => {
   ) : null;
 };
 
-const HeaderRight = () => {
-  const { openSideMenu } = useSideMenu();
-
+export const DrawerButton = () => {
+  const navigation = useNavigation();
   return (
-    <IconsContainer>
-      <NotificationCenterIconConnected />
-      <TouchableScale onPress={openSideMenu}>
-        <ItemRight>
-          <StyledIcon name="bars-alt" />
-        </ItemRight>
-      </TouchableScale>
-    </IconsContainer>
+    <TouchableScale
+      onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+    >
+      <ItemRight>
+        <StyledIcon name="bars-alt" />
+      </ItemRight>
+    </TouchableScale>
   );
 };
 
-export default HeaderRight;
+const HeaderButtons = () => (
+  <IconsContainer>
+    <NotificationCenterIconConnected />
+    <DrawerButton />
+  </IconsContainer>
+);
+
+export default HeaderButtons;

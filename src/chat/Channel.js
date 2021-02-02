@@ -11,7 +11,6 @@ import { styled, withTheme } from '@apollosproject/ui-kit';
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 
 import { useCurrentUser } from '../hooks';
-import { navigationOptions, NavigationSpacer } from '../navigation';
 
 // Local
 import chatClient, { streami18n } from './client';
@@ -122,7 +121,6 @@ const Channel = themed((props) => {
           <ChannelInner channel={channel.current}>
             <KeyboardAvoider behavior={'padding'}>
               <SafeChatContainer>
-                <NavigationSpacer />
                 <MessageList />
               </SafeChatContainer>
               <MessageInput />
@@ -142,16 +140,6 @@ Channel.propTypes = {
     colors: PropTypes.shape({}),
   }),
 };
-
-Channel.navigationOptions = ({ navigation, ...props }) =>
-  navigationOptions({
-    navigation,
-    ...props,
-    title: navigation.getParam('name', '…'),
-    blur: false,
-    headerLeft: null,
-    header: NavigationHeader,
-  });
 
 const ChannelNavigator = createStackNavigator(
   {

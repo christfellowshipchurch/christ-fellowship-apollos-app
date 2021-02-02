@@ -337,7 +337,6 @@ class LiveStreamPlayer extends PureComponent {
   };
 
   handleChannelsUpdated = ({ channels }) => {
-    // console.log({ channels });
     this.setState({ channels });
   };
 

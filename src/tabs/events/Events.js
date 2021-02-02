@@ -1,20 +1,13 @@
 import React from 'react';
-import { Animated } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { SafeAreaView } from 'react-navigation';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
-import { styled } from '@apollosproject/ui-kit';
+import { styled, BackgroundView } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
 import { FeaturesFeedConnected } from 'features';
-import {
-  navigationOptions,
-  BackgroundView,
-  NavigationSpacer,
-  useHeaderScrollEffect,
-} from '../../navigation';
 import VerticalCardListFeatureConnected from './VerticalCardListFeatureConnected';
 
 const additionalFeatures = {
@@ -38,7 +31,6 @@ const Events = ({ navigation }) => {
   const { data } = useQuery(GET_EVENTS_FEED, {
     fetchPolicy: 'cache-and-network',
   });
-  const { scrollY } = useHeaderScrollEffect({ navigation });
 
   return (
     <RockAuthedWebBrowser>
@@ -50,15 +42,6 @@ const Events = ({ navigation }) => {
               openUrl={openUrl}
               navigation={navigation}
               additionalFeatures={additionalFeatures}
-              ListHeaderComponent={<NavigationSpacer />}
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {
-                    contentOffset: { y: scrollY },
-                  },
-                },
-              ])}
               removeClippedSubviews={false}
               numColumns={1}
             />
@@ -68,12 +51,6 @@ const Events = ({ navigation }) => {
     </RockAuthedWebBrowser>
   );
 };
-
-Events.navigationOptions = (props) =>
-  navigationOptions({
-    ...props,
-    title: 'Events',
-  });
 
 Events.propTypes = {
   navigation: PropTypes.shape({

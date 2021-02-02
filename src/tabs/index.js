@@ -1,6 +1,7 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import { Platform } from 'react-native';
 import { withTheme } from '@apollosproject/ui-kit';
 
 import Drawer from '../drawer';
@@ -13,8 +14,35 @@ import Home from './home';
 
 import AvatarIcon from './connect/AvatarIcon';
 import TabBarIcon from './tabBarIcon';
+import HeaderButtons from './HeaderButtons';
 
 const { Navigator, Screen } = createBottomTabNavigator();
+
+/**
+ * Created this `EnhancedNavigator` helper since we use the exact same screen options for Events, Give and Connect
+ */
+const EnhancedNavigator = (Component, screenOptions) =>
+  withTheme(({ theme, ...props }) => ({
+    ...props,
+    screenOptions: {
+      headerTintColor: theme.colors.action.secondary,
+      headerTitleStyle: {
+        color: theme.colors.text.primary,
+      },
+      headerStyle: {
+        backgroundColor: theme.colors.background.paper,
+        ...Platform.select(theme.shadows.default),
+        ...screenOptions?.headerStyle,
+      },
+      headerLargeTitle: true,
+      headerHideShadow: true,
+      headerRight: HeaderButtons,
+    },
+  }))(Component);
+
+const EnhancedEvents = EnhancedNavigator(Events);
+const EnhancedGive = EnhancedNavigator(Give);
+const EnhancedConnect = EnhancedNavigator(Connect);
 
 const TabNavigator = (props) => (
   <Navigator {...props} lazy>
@@ -31,6 +59,7 @@ const TabNavigator = (props) => (
       name="Discover"
       component={Discover}
       options={{
+        title: 'Discover',
         tabBarIcon: ({ focused }) => (
           <TabBarIcon name={'search'} focused={focused} />
         ),
@@ -38,8 +67,9 @@ const TabNavigator = (props) => (
     />
     <Screen
       name="Events"
-      component={Events}
+      component={EnhancedEvents}
       options={{
+        title: 'Events',
         tabBarIcon: ({ focused }) => (
           <TabBarIcon name={'calendar'} focused={focused} />
         ),
@@ -47,8 +77,9 @@ const TabNavigator = (props) => (
     />
     <Screen
       name="Give"
-      component={Give}
+      component={EnhancedGive}
       options={{
+        title: 'Give',
         tabBarIcon: ({ focused }) => (
           <TabBarIcon name={'envelope-open-dollar'} focused={focused} />
         ),
@@ -56,8 +87,9 @@ const TabNavigator = (props) => (
     />
     <Screen
       name="Connect"
-      component={Connect}
+      component={EnhancedConnect}
       options={{
+        title: 'Connect',
         tabBarIcon: ({ focused }) => <AvatarIcon focused={focused} />,
       }}
     />
@@ -65,6 +97,10 @@ const TabNavigator = (props) => (
 );
 
 const ThemedTabNavigator = withTheme(({ theme }) => ({
+  screenOptions: {
+    headerShown: true,
+    headerLargeStyle: true,
+  },
   tabBarOptions: {
     activeTintColor: theme.colors.primary,
     inactiveTintColor: theme.colors.text.tertiary,
