@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 
 import { FeaturesFeedConnected as CoreFeaturesFeedConnected } from '@apollosproject/ui-connected';
 
@@ -15,6 +16,7 @@ const FeaturesFeedConnected = ({
   ItemSeparatorComponent,
   ...props
 }) => {
+  const navigation = useNavigation();
   const { routeLink } = useLinkRouter();
   const feedRef = useCallback((ref) => onRef(ref), []);
 
@@ -27,7 +29,7 @@ const FeaturesFeedConnected = ({
       }}
       ItemSeparatorComponent={ItemSeparatorComponent}
       ref={feedRef}
-      onPressActionItem={handleActionPress}
+      onPressActionItem={(args) => handleActionPress({ ...args, navigation })}
       openUrl={(url) => routeLink(url, { nested: true })}
     />
   );

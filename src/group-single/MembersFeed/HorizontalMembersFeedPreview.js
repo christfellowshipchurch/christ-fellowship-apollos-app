@@ -1,23 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
-import { get, set, uniqBy } from 'lodash';
+import { get } from 'lodash';
 
+import { View } from 'react-native';
 import {
   styled,
   BodyText,
-  ConnectedImage,
-  Icon,
   withTheme,
   H4,
   HorizontalTileFeed,
   InlineActivityIndicator,
+  UIText,
+  Touchable,
+  ConnectedImage,
+  Icon,
 } from '@apollosproject/ui-kit';
 
 import GET_MEMBERS from './getMembers';
 
-const MemberCard = styled(({ theme }) => ({
+export const MemberCard = styled(({ theme }) => ({
   width: 80,
   flex: 1,
   margin: theme.sizing.baseUnit / 2,
@@ -25,13 +28,13 @@ const MemberCard = styled(({ theme }) => ({
   alignItems: 'center',
 }))(View);
 
-const MemberImage = styled({
+export const MemberImage = styled({
   borderRadius: 10,
   width: 80,
   height: 100,
 })(ConnectedImage);
 
-const MemberImageWrapper = styled({
+export const MemberImageWrapper = styled({
   borderRadius: 10,
   width: 80,
   height: 100,
@@ -40,13 +43,13 @@ const MemberImageWrapper = styled({
   alignItems: 'center',
 })(View);
 
-const PlaceholderIcon = withTheme(({ theme: { colors } = {} }) => ({
+export const PlaceholderIcon = withTheme(({ theme: { colors } = {} }) => ({
   fill: colors.paper,
   name: 'avatarPlacholder',
   size: 60,
 }))(Icon);
 
-const PlaceholderWrapper = styled(({ theme }) => ({
+export const PlaceholderWrapper = styled(({ theme }) => ({
   borderRadius: 10,
   width: 80,
   height: 100,
@@ -65,10 +68,17 @@ const StyledHorizontalTileFeed = withTheme(({ theme }) => ({
 }))(HorizontalTileFeed);
 
 const StyledH4 = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit,
-  paddingHorizontal: theme.sizing.baseUnit,
-  paddingTop: theme.sizing.baseUnit * 2,
+  padding: theme.sizing.baseUnit,
 }))(H4);
+
+const ActionText = withTheme(({ theme }) => ({
+  bold: true,
+  style: {
+    padding: theme.sizing.baseUnit, // note : hack for increasing the active area of the Touchable
+    color: theme.colors.primary,
+    fontSize: 12,
+  },
+}))(UIText);
 
 const HeaderSpacing = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -92,12 +102,12 @@ const mapEdges = (data) =>
     ...node,
   }));
 
-const MembersFeedConnected = ({ id }) => {
-  const { loading, error, data, fetchMore, variables } = useQuery(GET_MEMBERS, {
+const HorizontalMembersFeedPreview = ({ id }) => {
+  const navigation = useNavigation();
+  const { loading, error, data } = useQuery(GET_MEMBERS, {
     variables: {
       groupId: id,
-      first: 15,
-      after: null,
+      first: 5,
       isLeader: false,
     },
     skip: !id || id === '',
@@ -140,45 +150,29 @@ const MembersFeedConnected = ({ id }) => {
     <View>
       <HeaderSpacing>
         <StyledH4>Members</StyledH4>
-        {loading && <StyledActivityIndicator />}
+        {loading ? (
+          <StyledActivityIndicator />
+        ) : (
+          <Touchable
+            onPress={() => navigation.navigate('GroupMembersFeed', { id })}
+          >
+            <ActionText>See All</ActionText>
+          </Touchable>
+        )}
       </HeaderSpacing>
       <StyledHorizontalTileFeed
         data={members}
         isLoading={members.length === 0 && loading}
         loadingStateObject={loadingStateObject}
         renderItem={renderMember}
-        onEndReachedThreshold={0.7}
-        onEndReached={() => {
-          const pageInfoPath = `node.people.pageInfo`;
-          const edgePath = `node.people.edges`;
-
-          const after = get(data, `${pageInfoPath}.endCursor`);
-          if (!after) return;
-
-          fetchMore({
-            variables: { ...variables, after },
-            updateQuery: (previousResult, { fetchMoreResult }) => {
-              const result = fetchMoreResult;
-              const originalPeople = get(previousResult, edgePath, []);
-              const newPeople = get(result, edgePath, []);
-
-              set(
-                result,
-                edgePath,
-                uniqBy([...originalPeople, ...newPeople], 'node.id')
-              );
-
-              return result;
-            },
-          });
-        }}
+        scrollEnabled={false}
       />
     </View>
   );
 };
 
-MembersFeedConnected.propTypes = {
+HorizontalMembersFeedPreview.propTypes = {
   id: PropTypes.string.isRequired,
 };
 
-export default MembersFeedConnected;
+export default HorizontalMembersFeedPreview;

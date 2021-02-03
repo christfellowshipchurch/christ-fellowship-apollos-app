@@ -1,5 +1,4 @@
 import { FEATURE_FEED_ACTION_MAP } from '@apollosproject/ui-connected';
-import { useLinkRouter } from 'hooks';
 
 const ACTION_MAP = {
   ...FEATURE_FEED_ACTION_MAP,

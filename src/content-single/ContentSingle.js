@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StatusBar } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
@@ -73,6 +74,14 @@ const ContentSingle = (props) => {
       <ActionContainer itemId={id} />
     </ThemeMixin>
   );
+};
+
+ContentSingle.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      itemId: PropTypes.string,
+    }),
+  }),
 };
 
 export default ContentSingle;

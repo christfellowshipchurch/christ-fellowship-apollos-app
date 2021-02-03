@@ -130,15 +130,15 @@ const StackNavigator = (props) => (
     options={{ title: 'Edit Group' }}
   /> */}
     <Screen
-      name="EditUser"
+      name="EditCurrentUser"
       component={EditUser}
-      options={{ title: 'Edit User' }}
+      options={{ title: 'Edit My Profile' }}
     />
-    {/* <Screen
-    name="GroupSingle"
-    component={GroupSingle}
-    options={{ title: 'Group' }}
-  /> */}
+    <Screen
+      name="GroupSingle"
+      component={GroupSingle}
+      options={{ title: 'Group' }}
+    />
     <Screen
       name="LandingScreen"
       component={LandingScreen}

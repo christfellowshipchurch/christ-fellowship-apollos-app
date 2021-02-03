@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
@@ -19,7 +20,7 @@ import AddCalEventButton from '../../content-single/AddCalEventButton';
 import CoverImageBackground from '../CoverImageBackground';
 import VideoCall from '../VideoCall';
 import Resources from '../Resources';
-import MembersFeedConnected from '../MembersFeedConnected';
+import { HorizontalMembersFeedPreview } from '../MembersFeed';
 import HeaderConnected from '../HeaderConnected';
 import SummaryConnected from '../SummaryConnected';
 import { CheckInButtonConnected } from '../../check-in';
@@ -50,7 +51,8 @@ const CellItem = styled(({ theme, first }) => ({
   flex: 1,
 }))(View);
 
-const Group = ({ id, content, loading, navigation }) => {
+const Group = ({ id, content, loading }) => {
+  const navigation = useNavigation();
   const checkInRef = useRef();
   const coverImageSources = get(content, 'coverImage.sources', []);
   const resources = get(content, 'resources', []);
@@ -146,7 +148,7 @@ const Group = ({ id, content, loading, navigation }) => {
           <SummaryConnected id={id} />
         </PaddedView>
 
-        <MembersFeedConnected id={id} />
+        <HorizontalMembersFeedPreview id={id} />
 
         {!isEmpty(resources) ? (
           <Resources

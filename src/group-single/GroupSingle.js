@@ -1,109 +1,75 @@
-import React, { PureComponent } from 'react';
-import { Query } from '@apollo/client/react/components';
+import React from 'react';
+import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 
 import { ThemeMixin, ErrorCard } from '@apollosproject/ui-kit';
 
-import NavigationHeader from 'ui/NavigationHeader';
 import Group from './Group';
 import VolunteerGroup from './VolunteerGroup';
 
 import GET_GROUP from './getGroup';
 
-class GroupSingle extends PureComponent {
-  static propTypes = {
-    content: PropTypes.shape({
-      id: PropTypes.string,
-      title: PropTypes.string,
-      summary: PropTypes.string,
-      members: PropTypes.shape({}),
-      avatars: PropTypes.arrayOf(PropTypes.string),
-      groupType: PropTypes.string,
-    }),
-    navigation: PropTypes.shape({
-      getParam: PropTypes.func,
-      navigate: PropTypes.func,
-    }),
-  };
+const GroupSingle = (props) => {
+  const itemId = props.route?.params?.itemId;
+  const { data, loading, error } = useQuery(GET_GROUP, {
+    variables: { itemId },
+    skip: isEmpty(itemId),
+    fetchPolicy: 'cache-and-network',
+  });
 
-  get itemId() {
-    return this.props.navigation.getParam('itemId', []);
-  }
+  if (error) return <ErrorCard error={error} />;
 
-  get queryVariables() {
-    return { itemId: this.itemId };
-  }
-
-  static navigationOptions = {
-    header: NavigationHeader,
-    headerTransparent: true,
-    headerMode: 'float',
-  };
-
-  renderContent = ({ content, loading }) => {
+  const content = get(data, 'node', {});
+  const { theme = {} } = content;
+  const renderContent = () => {
     let { __typename } = content;
-    if (!__typename && this.itemId) {
-      [__typename] = this.itemId.split(':');
+    if (!__typename && itemId) {
+      [__typename] = itemId.split(':');
     }
 
     switch (__typename) {
       case 'VolunteerGroup':
         return (
-          <VolunteerGroup
-            id={this.itemId}
-            content={content}
-            loading={loading}
-            navigation={this.props.navigation}
-          />
+          <VolunteerGroup id={itemId} content={content} loading={loading} />
         );
       case 'Group':
       default:
-        return (
-          <Group
-            id={this.itemId}
-            content={content}
-            loading={loading}
-            navigation={this.props.navigation}
-          />
-        );
+        return <Group id={itemId} content={content} loading={loading} />;
     }
   };
 
-  renderWithData = ({ data, error, loading }) => {
-    if (error) return <ErrorCard error={error} />;
+  return (
+    <ThemeMixin theme={theme}>
+      <TrackEventWhenLoaded
+        loaded={!!(!loading && content.title)}
+        eventName={'View Group'}
+        properties={{
+          title: content.title,
+          itemId,
+        }}
+      />
+      {renderContent({ content, loading, error })}
+    </ThemeMixin>
+  );
+};
 
-    const content = get(data, 'node', {});
-    const { theme = {} } = content;
-
-    return (
-      <ThemeMixin theme={theme}>
-        <TrackEventWhenLoaded
-          loaded={!!(!loading && content.title)}
-          eventName={'View Group'}
-          properties={{
-            title: content.title,
-            itemId: this.itemId,
-          }}
-        />
-        {this.renderContent({ content, loading, error })}
-      </ThemeMixin>
-    );
-  };
-
-  render() {
-    return (
-      <Query
-        query={GET_GROUP}
-        variables={this.queryVariables}
-        fetchPolicy="cache-and-network"
-      >
-        {this.renderWithData}
-      </Query>
-    );
-  }
-}
+GroupSingle.propTypes = {
+  content: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+    summary: PropTypes.string,
+    members: PropTypes.shape({}),
+    avatars: PropTypes.arrayOf(PropTypes.string),
+    groupType: PropTypes.string,
+  }),
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      itemId: PropTypes.string,
+    }),
+  }),
+};
 
 export default GroupSingle;
