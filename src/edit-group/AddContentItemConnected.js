@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 import { useQuery, useMutation } from '@apollo/client';
 import { get } from 'lodash';
-import { SafeAreaView } from 'react-navigation';
 
+import { View } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { fetchMoreResolver } from '@apollosproject/ui-connected';
 import {
   styled,
@@ -57,9 +58,10 @@ const StyledSafeAreaView = styled(({ theme }) => ({
 
 const ActionLayout = styled(({ theme, hasSummary }) => ({
   flexDirection: 'row',
-  /* - `center` works in all situations including 1 line summaries
-     * - `flex-end` is needed only for when we have no summary
-     */
+  /**
+   * - `center` works in all situations including 1 line summaries
+   * - `flex-end` is needed only for when we have no summary
+   */
   alignItems: hasSummary ? 'center' : 'flex-end',
   paddingTop: theme.sizing.baseUnit,
 }))(View);
@@ -156,8 +158,8 @@ CoverImageCard.defaultProps = {
 // ------------------------------------------------------------------
 const AddContentItemConnected = (props) => {
   // Navigation props
-  const { navigation } = props;
-  const groupId = navigation.getParam('groupId');
+  const navigation = useNavigation();
+  const groupId = props.route?.params?.groupId;
 
   // Selection State
   const [selected, setSelected] = useState(null);
@@ -204,11 +206,7 @@ const AddContentItemConnected = (props) => {
 
   return (
     <BackgroundView>
-      <StyledSafeAreaView forceInset={{ top: 'always', bottom: 'always' }}>
-        <PaddedView>
-          <H3 padded>Select Study</H3>
-        </PaddedView>
-
+      <StyledSafeAreaView>
         {items.length ? (
           <FeedView
             numColumns={2}
@@ -257,6 +255,14 @@ const AddContentItemConnected = (props) => {
       </StyledSafeAreaView>
     </BackgroundView>
   );
+};
+
+AddContentItemConnected.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      groupId: PropTypes.string,
+    }),
+  }),
 };
 
 export default AddContentItemConnected;

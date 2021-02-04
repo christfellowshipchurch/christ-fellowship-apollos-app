@@ -1,15 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
+import { get } from 'lodash';
+import Color from 'color';
+
 import {
   View,
   StatusBar,
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import PropTypes from 'prop-types';
-import Color from 'color';
-import { get } from 'lodash';
 import { SafeAreaView } from 'react-navigation';
-
 import {
   styled,
   ActivityIndicator,
@@ -96,7 +97,8 @@ const Image = withTheme(({ theme }) => ({
 // :: Core Component
 // ------------------------------------------------------------------
 
-const EditGroup = ({ navigation, group, loading, error }) => {
+const EditGroup = ({ group, loading, error }) => {
+  const navigation = useNavigation();
   const coverImage = get(group, 'coverImage.sources[0].uri', null);
 
   if (loading)
@@ -123,7 +125,7 @@ const EditGroup = ({ navigation, group, loading, error }) => {
     <BackgroundView>
       <StatusBar hidden />
       <ScrollView>
-        <SafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
+        <SafeAreaView>
           <KeyboardAvoidingView behavior={'padding'}>
             <ContentContainer>
               {loading && (
@@ -147,6 +149,9 @@ const EditGroup = ({ navigation, group, loading, error }) => {
                     </ButtonLinkSpacing>
                   </AndroidTouchableFix>
                 </RowHeader>
+                {/**
+                 *  TODO : image isn't updating for some reason after save
+                 */}
                 <TouchableScale onPress={handleUpdateGroupCoverImagePress}>
                   <Card>
                     <Image source={coverImage} />
@@ -200,10 +205,18 @@ EditGroup.defaultProps = {
 // ------------------------------------------------------------------
 const EditGroupConnected = (props) => {
   // Group data
-  const id = props.navigation.getParam('id');
+  const id = props.route?.params?.id;
   const { group, loading } = useGroup(id);
 
   return <EditGroup {...props} group={group} loading={loading} />;
+};
+
+EditGroupConnected.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }),
 };
 
 export default EditGroupConnected;

@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Alert } from 'react-native';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
 import { useQuery, useMutation } from '@apollo/client';
 import { get } from 'lodash';
-import { SafeAreaView } from 'react-navigation';
 
+import { Alert } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import {
   styled,
   Card,
@@ -132,11 +133,7 @@ const EditGroupCoverImage = ({
 
   return (
     <BackgroundView>
-      <StyledSafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
-        <PaddedView>
-          <H3 padded>Select Photo</H3>
-        </PaddedView>
-
+      <StyledSafeAreaView>
         <FeedView
           numColumns={2}
           content={coverImages}
@@ -166,9 +163,9 @@ EditGroupCoverImage.defaultProps = {
 // ------------------------------------------------------------------
 const EditGroupCoverImageConnected = (props) => {
   // Navigation props
-  const { navigation } = props;
-  const groupId = navigation.getParam('groupId');
-  const currentCoverImageUri = navigation.getParam('currentCoverImageUri');
+  const navigation = useNavigation();
+  const groupId = props.route?.params?.groupId;
+  const currentCoverImageUri = props.route?.params?.currentCoverImageUri;
 
   // Cover Image Options
   const { data, loading, error } = useQuery(GET_GROUP_COVER_IMAGES, {
@@ -211,6 +208,15 @@ const EditGroupCoverImageConnected = (props) => {
       onSelectCoverImage={handleSelectCoverImage}
     />
   );
+};
+
+EditGroupCoverImageConnected.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      groupId: PropTypes.string,
+      currentCoverImageUri: PropTypes.string,
+    }),
+  }),
 };
 
 export default EditGroupCoverImageConnected;

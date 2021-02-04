@@ -124,11 +124,11 @@ const StackNavigator = (props) => (
         // stackPresentation: 'push',
       }}
     />
-    {/* <Screen
-    name="EditGroup"
-    component={EditGroup}
-    options={{ title: 'Edit Group' }}
-  /> */}
+    <Screen
+      name="EditGroup"
+      component={EditGroup}
+      options={{ title: 'Edit My Group', stackPresentation: 'modal' }}
+    />
     <Screen
       name="EditCurrentUser"
       component={EditUser}
