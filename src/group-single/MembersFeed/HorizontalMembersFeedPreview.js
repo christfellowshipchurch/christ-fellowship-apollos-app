@@ -23,7 +23,7 @@ import GET_MEMBERS from './getMembers';
 export const MemberCard = styled(({ theme }) => ({
   width: 80,
   flex: 1,
-  margin: theme.sizing.baseUnit / 2,
+  margin: theme.sizing.baseUnit * 0.25,
   marginBottom: theme.sizing.baseUnit * 0.75,
   alignItems: 'center',
 }))(View);
@@ -150,15 +150,16 @@ const HorizontalMembersFeedPreview = ({ id }) => {
     <View>
       <HeaderSpacing>
         <StyledH4>Members</StyledH4>
-        {loading ? (
-          <StyledActivityIndicator />
-        ) : (
-          <Touchable
-            onPress={() => navigation.navigate('GroupMembersFeed', { id })}
-          >
-            <ActionText>See All</ActionText>
-          </Touchable>
-        )}
+        {loading && <StyledActivityIndicator />}
+
+        {!loading &&
+          members.length > 0 && (
+            <Touchable
+              onPress={() => navigation.navigate('GroupMembersFeed', { id })}
+            >
+              <ActionText>See All</ActionText>
+            </Touchable>
+          )}
       </HeaderSpacing>
       <StyledHorizontalTileFeed
         data={members}
