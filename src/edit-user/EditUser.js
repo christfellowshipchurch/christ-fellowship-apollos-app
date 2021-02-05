@@ -187,6 +187,154 @@ const EditUser = ({
 
   if (error) return <ErrorCard />;
 
+  const renderBody = () => (
+    <ContentContainer>
+      {disabled && (
+        <Overlay>
+          <ActivityIndicator />
+        </Overlay>
+      )}
+
+      <FieldContainer>
+        <H4>Campus</H4>
+        <InputWrapper
+          displayValue={campus.name}
+          icon="campus"
+          actionIcon="arrow-next"
+          handleOnPress={() => navigation.navigate('Location')}
+          disabled={disabled}
+        />
+      </FieldContainer>
+
+      <FieldContainer>
+        <H4>Home Address</H4>
+        <TextInput
+          label="Street Address"
+          value={values.street1}
+          onChangeText={(newStreet1) => setValue('street1', newStreet1)}
+          onBlur={handleAddressUpdate}
+          icon="home"
+          disabled={disabled}
+          returnKeyType="done"
+        />
+        <TextInput
+          label="City"
+          value={values.city}
+          onChangeText={(newCity) => setValue('city', newCity)}
+          onBlur={handleAddressUpdate}
+          hideIcon
+          disabled={disabled}
+          returnKeyType="done"
+        />
+        <Picker
+          label="State"
+          value={values.state}
+          displayValue={values.state}
+          onValueChange={(newState) => setValue('state', newState)}
+          onBlur={() => handleAddressUpdate()}
+          hideIcon
+          disabled={disabled}
+        >
+          {stateOptions.map((s) => (
+            <PickerItem label={s} value={s} key={s} color={pickerColor} />
+          ))}
+        </Picker>
+        <TextInput
+          label="Zip Code"
+          value={get(values, 'postalCode', '').substring(0, 5)}
+          onChangeText={(newPostalCode) =>
+            setValue('postalCode', newPostalCode)
+          }
+          onBlur={handleAddressUpdate}
+          hideIcon
+          disabled={disabled}
+          returnKeyType="done"
+        />
+      </FieldContainer>
+
+      <FieldContainer>
+        <H4>Gender</H4>
+        <Radio
+          label=""
+          type="radio"
+          value={gender}
+          onChange={(newGender) => {
+            updateProfileField({
+              variables: {
+                profileField: { field: 'Gender', value: newGender },
+              },
+            });
+          }}
+          disabled={disabled}
+        >
+          {genderOptions.map((g) => (
+            <RadioButton key={g} value={g} label={g} underline={false} />
+          ))}
+        </Radio>
+      </FieldContainer>
+
+      <FieldContainer>
+        <H4>Birthday</H4>
+        {!!birthDate && (
+          <DateInput
+            value={birthDate}
+            onConfirm={(newBirthDate) => {
+              updateProfileField({
+                variables: {
+                  profileField: {
+                    field: 'BirthDate',
+                    value: newBirthDate,
+                  },
+                },
+              });
+            }}
+            disabled={disabled}
+            maxYear={moment().year() - 13}
+          />
+        )}
+        <Disclaimer>
+          *You must be at least 13 years old to have an account.
+        </Disclaimer>
+      </FieldContainer>
+
+      <FieldContainer>
+        <H4>Communication Preferences</H4>
+        {!!phoneNumber &&
+          phoneNumber !== '' && (
+            <Switch
+              icon="message-bubble"
+              label={`Allow Text Notifications`}
+              value={allowSMSToggle}
+              disabled={loading}
+              onValueChange={(value) => {
+                updateCommunicationPreference({
+                  variables: { type: 'SMS', allow: value },
+                });
+                setAllowSMSToggle(value);
+              }}
+            />
+          )}
+
+        {!!email &&
+          email !== '' && (
+            <Switch
+              icon="envelope"
+              label={`Allow Email Notifications`}
+              value={allowEmailToggle}
+              disabled={loading}
+              onValueChange={(value) => {
+                updateCommunicationPreference({
+                  variables: { type: 'Email', allow: value },
+                });
+                setAllowEmailToggle(value);
+              }}
+            />
+          )}
+        <UpdatePushNotification />
+      </FieldContainer>
+    </ContentContainer>
+  );
+
   return (
     <BackgroundView>
       <StatusBar hidden />
@@ -223,163 +371,13 @@ const EditUser = ({
                 </ThemeMixin>
               </Stretchy>
 
-              <ContentContainer>
-                {disabled && (
-                  <Overlay>
-                    <ActivityIndicator />
-                  </Overlay>
-                )}
-
-                <FieldContainer>
-                  <H4>Campus</H4>
-                  <InputWrapper
-                    displayValue={campus.name}
-                    icon="campus"
-                    actionIcon="arrow-next"
-                    handleOnPress={() => navigation.navigate('Location')}
-                    disabled={disabled}
-                  />
-                </FieldContainer>
-
-                <FieldContainer>
-                  <H4>Home Address</H4>
-                  <TextInput
-                    label="Street Address"
-                    value={values.street1}
-                    onChangeText={(newStreet1) =>
-                      setValue('street1', newStreet1)
-                    }
-                    onBlur={handleAddressUpdate}
-                    icon="home"
-                    disabled={disabled}
-                    returnKeyType="done"
-                  />
-                  <TextInput
-                    label="City"
-                    value={values.city}
-                    onChangeText={(newCity) => setValue('city', newCity)}
-                    onBlur={handleAddressUpdate}
-                    hideIcon
-                    disabled={disabled}
-                    returnKeyType="done"
-                  />
-                  <Picker
-                    label="State"
-                    value={values.state}
-                    displayValue={values.state}
-                    onValueChange={(newState) => setValue('state', newState)}
-                    onBlur={() => handleAddressUpdate()}
-                    hideIcon
-                    disabled={disabled}
-                  >
-                    {stateOptions.map((s) => (
-                      <PickerItem
-                        label={s}
-                        value={s}
-                        key={s}
-                        color={pickerColor}
-                      />
-                    ))}
-                  </Picker>
-                  <TextInput
-                    label="Zip Code"
-                    value={get(values, 'postalCode', '').substring(0, 5)}
-                    onChangeText={(newPostalCode) =>
-                      setValue('postalCode', newPostalCode)
-                    }
-                    onBlur={handleAddressUpdate}
-                    hideIcon
-                    disabled={disabled}
-                    returnKeyType="done"
-                  />
-                </FieldContainer>
-
-                <FieldContainer>
-                  <H4>Gender</H4>
-                  <Radio
-                    label=""
-                    type="radio"
-                    value={gender}
-                    onChange={(newGender) => {
-                      updateProfileField({
-                        variables: {
-                          profileField: { field: 'Gender', value: newGender },
-                        },
-                      });
-                    }}
-                    disabled={disabled}
-                  >
-                    {genderOptions.map((g) => (
-                      <RadioButton
-                        key={g}
-                        value={g}
-                        label={g}
-                        underline={false}
-                      />
-                    ))}
-                  </Radio>
-                </FieldContainer>
-
-                <FieldContainer>
-                  <H4>Birthday</H4>
-                  {!!birthDate && (
-                    <DateInput
-                      value={birthDate}
-                      onConfirm={(newBirthDate) => {
-                        updateProfileField({
-                          variables: {
-                            profileField: {
-                              field: 'BirthDate',
-                              value: newBirthDate,
-                            },
-                          },
-                        });
-                      }}
-                      disabled={disabled}
-                      maxYear={moment().year() - 13}
-                    />
-                  )}
-                  <Disclaimer>
-                    *You must be at least 13 years old to have an account.
-                  </Disclaimer>
-                </FieldContainer>
-
-                <FieldContainer>
-                  <H4>Communication Preferences</H4>
-                  {!!phoneNumber &&
-                    phoneNumber !== '' && (
-                      <Switch
-                        icon="message-bubble"
-                        label={`Allow Text Notifications`}
-                        value={allowSMSToggle}
-                        disabled={loading}
-                        onValueChange={(value) => {
-                          updateCommunicationPreference({
-                            variables: { type: 'SMS', allow: value },
-                          });
-                          setAllowSMSToggle(value);
-                        }}
-                      />
-                    )}
-
-                  {!!email &&
-                    email !== '' && (
-                      <Switch
-                        icon="envelope"
-                        label={`Allow Email Notifications`}
-                        value={allowEmailToggle}
-                        disabled={loading}
-                        onValueChange={(value) => {
-                          updateCommunicationPreference({
-                            variables: { type: 'Email', allow: value },
-                          });
-                          setAllowEmailToggle(value);
-                        }}
-                      />
-                    )}
-                  <UpdatePushNotification />
-                </FieldContainer>
-              </ContentContainer>
+              {loading ? (
+                <ContentContainer>
+                  <ActivityIndicator />
+                </ContentContainer>
+              ) : (
+                renderBody()
+              )}
             </KeyboardAvoidingView>
           </FlexedScrollView>
         )}
@@ -448,18 +446,4 @@ EditUser.defaultProps = {
   stateOptions: [],
 };
 
-const EditUserConnected = (props) => {
-  const { data } = useQuery(GET_FIELD_OPTIONS, {
-    fetchPolicy: 'cache-and-network',
-  });
-
-  return (
-    <EditUser
-      {...props}
-      stateOptions={get(data, 'stateOptions', [])}
-      genderOptions={get(data, 'genderOptions', [])}
-    />
-  );
-};
-
-export default EditUserConnected;
+export default EditUser;
