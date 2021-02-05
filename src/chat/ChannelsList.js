@@ -1,19 +1,24 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
-import { createStackNavigator } from 'react-navigation';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { SafeAreaView } from 'react-native';
 import { get } from 'lodash';
 import moment from 'moment';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { styled, withTheme } from '@apollosproject/ui-kit';
+import {
+  styled,
+  withTheme,
+  ModalCloseButton,
+  ModalBackButton,
+} from '@apollosproject/ui-kit';
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 import { useCurrentUser } from '../hooks';
 
 import { Chat, ChannelList, LoadingChannels } from './components';
 import chatClient, { streami18n } from './client';
 import mapChatTheme from './styles/mapTheme';
-import { Channel } from './Channel';
+import { ChatChannel } from './Channel';
 
 const SafeChatContainer = styled(({ theme }) => ({
   flex: 1,
@@ -27,7 +32,7 @@ const FlexedMediaSpacer = styled(({ theme }) => ({
 
 const themed = withTheme();
 
-const ChannelsList = themed((props) => {
+const ChatChannelsList = themed((props) => {
   const [connecting, setConnecting] = useState(true);
 
   const { loading, data = {} } = useCurrentUser();
@@ -115,7 +120,10 @@ const ChannelsList = themed((props) => {
                 const userId = Object.keys(members).find(
                   (id) => id !== curUserId
                 );
-                props.navigation.navigate('Channel', { userId, nested: true });
+                props.navigation.navigate('ChatChannel', {
+                  userId,
+                  nested: true,
+                });
               }}
             />
           </SafeChatContainer>
@@ -125,7 +133,7 @@ const ChannelsList = themed((props) => {
   );
 });
 
-ChannelsList.propTypes = {
+ChatChannelsList.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
   }),
@@ -134,15 +142,38 @@ ChannelsList.propTypes = {
   }),
 };
 
-const ChannelsListNavigator = createStackNavigator(
-  {
-    ChannelsList,
-    Channel,
-  },
-  {
-    initialRouteName: 'ChannelsList',
-    headerLayoutPreset: 'left',
-  }
+const { Screen, Navigator } = createNativeStackNavigator();
+
+const ChatChannelsListNavigator = ({ route, ...props }) => (
+  <Navigator
+    {...props}
+    headerMode="screen"
+    screenOptions={{
+      headerTranslucent: true,
+      headerStyle: { backgroundColor: 'transparent' },
+      headerHideShadow: true,
+      headerRight: ModalCloseButton,
+      headerLeft: ModalBackButton,
+      headerTitle: '',
+    }}
+  >
+    <Screen
+      name="ChatChannelsList"
+      component={ChatChannelsList}
+      initialParams={route.params}
+    />
+    <Screen
+      name="ChatChannel"
+      component={ChatChannel}
+      initialParams={route.params}
+    />
+  </Navigator>
 );
 
-export default ChannelsListNavigator;
+ChatChannelsListNavigator.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({}),
+  }),
+};
+
+export default ChatChannelsListNavigator;

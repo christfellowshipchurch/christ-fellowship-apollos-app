@@ -351,7 +351,7 @@ class LiveStreamPlayer extends PureComponent {
     const { id, name } = user;
 
     setTimeout(() => {
-      NavigationService.navigate('Channel', {
+      NavigationService.navigate('ChatChannel', {
         userId: id,
         name,
         nested: true,
@@ -393,7 +393,7 @@ class LiveStreamPlayer extends PureComponent {
                 onPress={() => {
                   this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
                   setTimeout(() => {
-                    NavigationService.navigate('ChannelsList', {
+                    NavigationService.navigate('ChatChannelsList', {
                       nested: true,
                     });
                   }, 250);

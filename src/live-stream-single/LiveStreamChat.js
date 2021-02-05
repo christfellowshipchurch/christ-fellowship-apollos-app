@@ -93,19 +93,22 @@ const LiveStreamChat = (props) => {
   };
 
   const loadChannels = async () => {
-    const filter = {
-      type: 'messaging',
-      members: { $in: [get(data, 'currentUser.id', '').split(':')[1]] },
-    };
-    const sort = { last_message_at: -1 };
-    const options = { watch: false, state: false };
-
-    const channels = await chatClient.queryChannels(filter, sort, options);
-    const sinceYesterday = moment().subtract(12, 'hour');
-    const recentOnly = channels.filter((c) =>
-      moment(get(c, 'state.last_message_at')).isAfter(sinceYesterday)
-    );
-    props.onChannelsUpdated({ channels: recentOnly });
+    /**
+     * ? Pretty sure we don't need this code at this point but I'm not sure
+     * ? the `props.onChannelsUpdated` was causing errors, so I removed it and everything seemingly worked just fine without it
+     */
+    // const filter = {
+    //   type: 'messaging',
+    //   members: { $in: [get(data, 'currentUser.id', '').split(':')[1]] },
+    // };
+    // const sort = { last_message_at: -1 };
+    // const options = { watch: false, state: false };
+    // const channels = await chatClient.queryChannels(filter, sort, options);
+    // const sinceYesterday = moment().subtract(12, 'hour');
+    // const recentOnly = channels.filter((c) =>
+    //   moment(get(c, 'state.last_message_at')).isAfter(sinceYesterday)
+    // );
+    // props.onChannelsUpdated({ channels: recentOnly });
   };
 
   const handleClientEvent = (e) => {

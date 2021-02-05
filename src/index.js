@@ -37,8 +37,8 @@ import EditGroup from './edit-group';
 import NotificationCenter from './notification-center';
 import PrayerRequestSingle from './prayer-request-single';
 import MyPrayerRequestsFeed from './my-prayer-requests-feed';
-import ChannelsList from './chat/ChannelsList';
-import Channel from './chat/Channel';
+import ChatChannelsList from './chat/ChannelsList';
+import ChatChannel from './chat/Channel';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -101,16 +101,16 @@ const StackNavigator = (props) => (
         stackPresentation: 'push',
       }}
     />
-    {/* <Screen
-    name="Channel"
-    component={Channel}
-    options={{ title: 'Channel' }}
-  /> */}
-    {/* <Screen
-    name="ChannelsList"
-    component={ChannelsList}
-    options={{ title: 'ChannelsList' }}
-  /> */}
+    <Screen
+      name="ChatChannel"
+      component={ChatChannel}
+      options={{ title: 'Chat Channel' }}
+    />
+    <Screen
+      name="ChatChannelsList"
+      component={ChatChannelsList}
+      options={{ title: 'ChatChannelsList' }}
+    />
     {/* <Screen
     name="ContentFeed"
     component={ContentFeed}

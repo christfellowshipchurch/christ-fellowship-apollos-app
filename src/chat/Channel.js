@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
-import { createStackNavigator } from 'react-navigation';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
-import NavigationHeader from 'ui/NavigationHeader';
 
-import { styled, withTheme } from '@apollosproject/ui-kit';
+import {
+  styled,
+  withTheme,
+  ModalCloseButton,
+  ModalBackButton,
+} from '@apollosproject/ui-kit';
 
 import MediaPlayerSpacer from '../media-player/controls/MediaPlayerSpacer';
 
@@ -24,6 +28,8 @@ import {
   MessageInput,
   LoadingMessages,
 } from './components';
+
+const { Screen, Navigator } = createNativeStackNavigator();
 
 const themed = withTheme();
 
@@ -45,9 +51,9 @@ const KeyboardAvoider = styled({
 
 // :: Main Component
 // ---
-const Channel = themed((props) => {
-  const userId = props.navigation.getParam('user');
-  const channelId = props.navigation.getParam('channelId');
+const ChatChannel = themed((props) => {
+  const userId = props.route?.params?.user;
+  const channelId = props.route?.params?.channelId;
   const [connecting, setConnecting] = useState(true);
 
   const { loading, data = {} } = useCurrentUser();
@@ -132,7 +138,7 @@ const Channel = themed((props) => {
   );
 });
 
-Channel.propTypes = {
+ChatChannel.propTypes = {
   navigation: PropTypes.shape({
     getParam: PropTypes.func,
   }),
@@ -141,19 +147,36 @@ Channel.propTypes = {
   }),
 };
 
-const ChannelNavigator = createStackNavigator(
-  {
-    Channel,
-  },
-  {
-    initialRouteName: 'Channel',
-    headerMode: 'float',
-    headerTransitionPreset: 'fade-in-place',
-    headerLayoutPreset: 'left',
-    navigationOptions: { header: null },
-  }
+const ChannelNavigator = ({ route, ...props }) => (
+  <Navigator
+    {...props}
+    headerMode="screen"
+    screenOptions={{
+      headerTranslucent: true,
+      headerStyle: { backgroundColor: 'transparent' },
+      headerHideShadow: true,
+      headerRight: ModalCloseButton,
+      headerLeft: ModalBackButton,
+      headerTitle: '',
+    }}
+  >
+    <Screen
+      name="ChatChannel"
+      component={ChatChannel}
+      initialParams={route.params}
+    />
+  </Navigator>
 );
 
-export { Channel };
+ChannelNavigator.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      user: PropTypes.string,
+      channelId: PropTypes.string,
+    }),
+  }),
+};
+
+export { ChatChannel };
 
 export default ChannelNavigator;

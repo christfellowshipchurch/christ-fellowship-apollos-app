@@ -12,7 +12,7 @@ const GroupChatButton = ({ channelId, groupName }) => {
   }
 
   const handlePress = () =>
-    NavigationService.navigate('Channel', {
+    NavigationService.navigate('ChatChannel', {
       channelId,
       name: groupName,
       nested: true,
