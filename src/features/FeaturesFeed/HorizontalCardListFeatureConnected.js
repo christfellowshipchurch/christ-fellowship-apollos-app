@@ -25,6 +25,7 @@ const HorizontalCardListFeature = withTheme()(
     cardType,
     theme,
   }) => {
+    console.log({ primaryAction });
     const seeMore =
       get(primaryAction, 'title', '') !== '' &&
       get(primaryAction, 'action', '') !== '' &&

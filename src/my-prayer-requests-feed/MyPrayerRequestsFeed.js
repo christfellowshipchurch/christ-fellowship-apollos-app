@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Animated, View } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { get } from 'lodash';
 import { useQuery } from '@apollo/client';
@@ -14,6 +14,8 @@ import {
   TouchableScale,
   Card,
   CardContent,
+  withTheme,
+  UIText,
 } from '@apollosproject/ui-kit';
 
 import { CardFeed } from 'ui/CardFeeds';
@@ -33,8 +35,21 @@ const StyledHorizontalDivider = styled(({ theme }) => ({
 }))(HorizontalDivider);
 
 const StyledDateLabel = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit * 0.5,
+  paddingBottom: theme.sizing.baseUnit * 0.25,
 }))(DateLabel);
+
+/**
+ * note : This component doesn't actually do anything. It's literally only here to give a visual indication to the user that they can tap on an individual prayer to expand it to a full view
+ */
+const ViewText = withTheme(({ theme }) => ({
+  bold: true,
+  style: {
+    color: theme.colors.primary,
+    alignSelf: 'flex-end',
+    fontSize: 10,
+    paddingTop: theme.sizing.baseUnit,
+  },
+}))(UIText);
 
 const PrayerPreview = ({ text, date, isLoading, asCard }) => {
   const BodyContent = () => (
@@ -43,6 +58,7 @@ const PrayerPreview = ({ text, date, isLoading, asCard }) => {
       <H4 isLoading={isLoading} numberOfLines={3}>
         {text}
       </H4>
+      <ViewText>View</ViewText>
     </View>
   );
 
@@ -60,6 +76,13 @@ const PrayerPreview = ({ text, date, isLoading, asCard }) => {
       <StyledHorizontalDivider />
     </View>
   );
+};
+
+PrayerPreview.propTypes = {
+  text: PropTypes.string,
+  date: PropTypes.string,
+  isLoading: PropTypes.bool,
+  asCard: PropTypes.bool,
 };
 
 const mapEdges = (data) =>
@@ -88,7 +111,7 @@ const MyPrayerRequestsFeed = ({ navigation }) => {
       <TouchableScale
         onPress={() =>
           navigation.navigate('PrayerRequestSingle', {
-            prayerRequestId: item.id,
+            itemId: item.id,
           })
         }
         style={{ flex: 1 }}

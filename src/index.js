@@ -157,11 +157,11 @@ const StackNavigator = (props) => (
     component={Location}
     options={{ headerShown: true }}
   /> */}
-    {/* <Screen
-    name="MyPrayerRequestsFeed"
-    component={MyPrayerRequestsFeed}
-    options={{ title: 'My Prayer Requests' }}
-  /> */}
+    <Screen
+      name="MyPrayerRequestsFeed"
+      component={MyPrayerRequestsFeed}
+      options={{ title: 'My Prayer Requests' }}
+    />
     {/* <Screen
     name="NodeSingle"
     component={NodeSingle}
@@ -186,11 +186,11 @@ const StackNavigator = (props) => (
     component={Passes}
     options={{ title: 'Check-In Pass' }}
   /> */}
-    {/* <Screen
-    name="PrayerRequestSingle"
-    component={PrayerRequestSingle}
-    options={{ title: 'Prayer Request Single' }}
-  /> */}
+    <Screen
+      name="PrayerRequestSingle"
+      component={PrayerRequestSingle}
+      options={{ title: 'Prayer Request Single', stackPresentation: 'modal' }}
+    />
     <Screen name="ProtectedRoute" component={ProtectedRouteWithSplashScreen} />
     <Screen
       name="ScriptureSingle"

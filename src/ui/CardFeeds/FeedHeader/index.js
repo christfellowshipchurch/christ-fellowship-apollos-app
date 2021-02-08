@@ -77,7 +77,7 @@ FeedHeader.propTypes = {
 
 FeedHeader.defaultProps = {
   onPress: () => null,
-  seeMoreText: 'See more',
+  seeMoreText: 'See More',
   seeMore: true,
   isLoading: false,
 };
