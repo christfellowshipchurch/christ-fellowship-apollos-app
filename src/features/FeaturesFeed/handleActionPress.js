@@ -2,9 +2,6 @@ import { FEATURE_FEED_ACTION_MAP } from '@apollosproject/ui-connected';
 
 const ACTION_MAP = {
   ...FEATURE_FEED_ACTION_MAP,
-  // OPEN_URL: ({ relatedNode, openUrl }) => {
-  //   openUrl(relatedNode.url, { nested: true });
-  // },
   READ_GROUP: ({ navigation, relatedNode }) => {
     navigation.navigate('GroupSingle', {
       itemId: relatedNode.id,

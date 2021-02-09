@@ -3,12 +3,12 @@ import FRAGMENTS from '@apollosproject/ui-fragments';
 import gql from 'graphql-tag';
 
 ApollosConfig.loadJs({
-  /** Logs the user out when updated.
+  /**
+   * Logs the user out when updated.
    *
-   *  Uses a date format so that we can go back and audit when a decision to force a log
-   *  out what made
+   * Uses a date format so that we can go back and audit when a decision to force a log out what made
    *
-   *  Date Format: yyyy.mm.dd.HH.mm
+   * Date Format: yyyy.mm.dd.HH.mm
    */
   SCHEMA_VERSION: '2020.09.10.14.20',
   FRAGMENTS: {
@@ -398,5 +398,10 @@ ApollosConfig.loadJs({
         }
       }
     `,
+  },
+  FEATURE_FEEDS: {
+    horizontalCardListLength: 3,
+    verticalCardListLength: 3,
+    heroListLength: 3,
   },
 });

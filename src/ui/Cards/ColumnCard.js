@@ -60,9 +60,7 @@ const Label = withTheme(({ theme }) => ({
   },
 }))(H6);
 
-const CardWithLayout = styled(({ theme, placement }) => ({
-  // marginLeft: theme.sizing.baseUnit * (placement === 'right' ? 0.5 : 1),
-  // marginRight: theme.sizing.baseUnit * (placement === 'left' ? 0.5 : 1),
+const CardWithLayout = styled(({ theme }) => ({
   marginHorizontal: theme.sizing.baseUnit * 0.5,
   flex: 1,
 }))(Card);
@@ -82,7 +80,8 @@ const StackedImageCard = ({
         <Image source={coverImage} label={label} />
         {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
 
-        {label !== '' &&
+        {!!label &&
+          label !== '' &&
           !isLive &&
           !isLoading && (
             <BlurLabel blurType="ultraThinMaterial">

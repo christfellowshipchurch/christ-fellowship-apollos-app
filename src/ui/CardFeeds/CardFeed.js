@@ -14,7 +14,7 @@ import {
 } from '@apollosproject/ui-kit';
 
 import ActionRow from '../ActionRow';
-import ContentCardConnected from '../ContentCardConnected';
+import { CardMapper } from '../Cards';
 import FeedHeader from './FeedHeader';
 
 const HorizontalFeedHeaderSpacing = styled(({ theme }) => ({
@@ -30,7 +30,7 @@ const StyledHorizontalTileFeed = withTheme(({ theme }) => ({
 }))(HorizontalTileFeed);
 
 const CardFeed = ({
-  card,
+  CardComponent,
   content,
   navigation,
   error,
@@ -38,6 +38,7 @@ const CardFeed = ({
   numColumns,
   title,
   seeMore,
+  seeMoreText,
   ListHeaderComponent,
   FeedHeaderComponent,
   onPressHeader,
@@ -53,10 +54,10 @@ const CardFeed = ({
         onPress={() => onPressItem(item, navigation)}
         style={{ flex: get(item, 'flex', 1) }}
       >
-        <ContentCardConnected
-          card={card}
+        <CardMapper
+          Component={CardComponent}
           {...item}
-          contentId={get(item, 'id')}
+          nodeId={get(item, 'id')}
           inHorizontalList={horizontal}
         />
       </TouchableScale>
@@ -101,6 +102,7 @@ const CardFeed = ({
             <FeedHeaderComponent
               title={title}
               seeMore={seeMore}
+              seeMoreText={seeMoreText}
               isLoading={isLoading}
               onPress={onPressHeader}
             />
@@ -136,13 +138,6 @@ const CardFeed = ({
 };
 
 CardFeed.propTypes = {
-  /** Functions passed down from React Navigation to use in navigating to/from
-   * items in the feed.
-   */
-  navigation: PropTypes.shape({
-    getParam: PropTypes.func,
-    navigate: PropTypes.func,
-  }),
   card: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
   content: PropTypes.arrayOf(
     PropTypes.shape({
@@ -152,10 +147,12 @@ CardFeed.propTypes = {
     })
   ),
   isLoading: PropTypes.bool,
-  error: PropTypes.any,
+  error: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   numColumns: PropTypes.number,
   title: PropTypes.string,
   seeMore: PropTypes.bool,
+  seeMoreText: PropTypes.string,
+  CardComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   ListHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   FeedHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   onPressHeader: PropTypes.func,
@@ -172,14 +169,7 @@ CardFeed.defaultProps = {
   ListHeaderComponent: null,
   FeedHeaderComponent: FeedHeader,
   onPressHeader: () => null,
-  onPressItem: (item, navigation) => {
-    if (item.id) {
-      navigation.navigate('ContentSingle', {
-        itemId: item.id,
-        sharing: item.sharing,
-      });
-    }
-  },
+  onPressItem: () => null,
   horizontal: false,
   error: null,
 };

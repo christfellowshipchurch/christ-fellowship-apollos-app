@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { SafeAreaView, ScrollView } from 'react-native';
-import Slider from '@react-native-community/slider';
 import { storiesOf } from '@apollosproject/ui-storybook';
 import { take } from 'lodash';
+import Slider from '@react-native-community/slider';
 import { BackgroundView, UIText, PaddedView } from '@apollosproject/ui-kit';
-import mockContent from '../CardFeedDataMock';
-import GridCardFeed from '.';
+import mockContent from '../../../ui/CardFeeds/CardFeedDataMock';
+import HeroListFeature from '.';
 
 const mockNavigation = {
   navigate: () => null,
 };
 
-const GridCardFeedWithSlider = ({ FeedProps }) => {
-  const [numCards, setNumCards] = useState(4);
+const HeroListFeatureWithSlider = ({ FeedProps }) => {
+  const [numCards, setNumCards] = useState(mockContent.length);
   return (
     <ScrollView>
       <PaddedView>
@@ -26,7 +25,7 @@ const GridCardFeedWithSlider = ({ FeedProps }) => {
           onValueChange={(newValue) => setNumCards(newValue)}
         />
       </PaddedView>
-      <GridCardFeed
+      <HeroListFeature
         content={take(mockContent, numCards)}
         navigation={mockNavigation}
         {...FeedProps}
@@ -36,39 +35,40 @@ const GridCardFeedWithSlider = ({ FeedProps }) => {
   );
 };
 
-GridCardFeedWithSlider.propTypes = {
-  FeedProps: PropTypes.shape({}),
-};
-
-storiesOf('cf-ui/GridCardFeed', module).add('default', () => (
-  <BackgroundView>
-    <SafeAreaView>
-      <GridCardFeedWithSlider />
-    </SafeAreaView>
-  </BackgroundView>
-));
-
-storiesOf('cf-ui/GridCardFeed', module).add('isLoading', () => (
+storiesOf('cf-ui/HeroListFeature', module).add('default', () => (
   <BackgroundView>
     <SafeAreaView>
       <ScrollView>
-        <GridCardFeed isLoading navigation={mockNavigation} />
+        <HeroListFeatureWithSlider />
       </ScrollView>
     </SafeAreaView>
   </BackgroundView>
 ));
 
-storiesOf('cf-ui/GridCardFeed', module).add('error', () => (
+storiesOf('cf-ui/HeroListFeature', module).add('isLoading', () => (
   <BackgroundView>
     <SafeAreaView>
       <ScrollView>
-        <GridCardFeed error="Here is some error" navigation={mockNavigation} />
+        <HeroListFeature isLoading navigation={mockNavigation} />
       </ScrollView>
     </SafeAreaView>
   </BackgroundView>
 ));
 
-storiesOf('cf-ui/GridCardFeed', module).add('content + isLoading', () => (
+storiesOf('cf-ui/HeroListFeature', module).add('error', () => (
+  <BackgroundView>
+    <SafeAreaView>
+      <ScrollView>
+        <HeroListFeature
+          error="Here is some error"
+          navigation={mockNavigation}
+        />
+      </ScrollView>
+    </SafeAreaView>
+  </BackgroundView>
+));
+
+storiesOf('cf-ui/HeroListFeature', module).add('content + isLoading', () => (
   <BackgroundView>
     <SafeAreaView>
       <ScrollView>
@@ -86,7 +86,7 @@ storiesOf('cf-ui/GridCardFeed', module).add('content + isLoading', () => (
             updated and reflect the new content.
           </UIText>
         </PaddedView>
-        <GridCardFeed
+        <HeroListFeature
           content={mockContent}
           isLoading
           navigation={mockNavigation}
@@ -96,15 +96,15 @@ storiesOf('cf-ui/GridCardFeed', module).add('content + isLoading', () => (
   </BackgroundView>
 ));
 
-storiesOf('cf-ui/GridCardFeed', module).add('title and see more', () => (
+storiesOf('cf-ui/HeroListFeature', module).add('title and see more', () => (
   <BackgroundView>
     <SafeAreaView>
       <ScrollView>
-        <GridCardFeedWithSlider
+        <HeroListFeatureWithSlider
           FeedProps={{
             title: 'This is my title',
             onPressHeader: () =>
-              console.log('Grid Card Feed title and see more'),
+              console.log('Hero Card Feed title and see more'),
           }}
         />
       </ScrollView>
@@ -112,14 +112,15 @@ storiesOf('cf-ui/GridCardFeed', module).add('title and see more', () => (
   </BackgroundView>
 ));
 
-storiesOf('cf-ui/GridCardFeed', module).add('title without see more', () => (
+storiesOf('cf-ui/HeroListFeature', module).add('title without see more', () => (
   <BackgroundView>
     <SafeAreaView>
       <ScrollView>
-        <GridCardFeedWithSlider
+        <HeroListFeatureWithSlider
           FeedProps={{
             title: 'This is my title',
-            seeMore: false,
+            onPressHeader: () =>
+              console.log('Hero Card Feed title and see more'),
           }}
         />
       </ScrollView>
@@ -127,11 +128,11 @@ storiesOf('cf-ui/GridCardFeed', module).add('title without see more', () => (
   </BackgroundView>
 ));
 
-storiesOf('cf-ui/GridCardFeed', module).add('title loading', () => (
+storiesOf('cf-ui/HeroListFeature', module).add('title loading', () => (
   <BackgroundView>
     <SafeAreaView>
       <ScrollView>
-        <GridCardFeed
+        <HeroListFeature
           title="This is my title"
           isLoading
           navigation={mockNavigation}

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { VerticalCardListFeatureConnected as CoreVerticalCardListFeatureConnected } from '@apollosproject/ui-connected';
 import { CardFeed } from 'ui/CardFeeds';
-import { ActionRow } from 'ui/ActionRow';
+import ActionRow from 'ui/ActionRow';
 
 const VerticalCardListFeature = ({
   cards,
@@ -20,7 +20,7 @@ const VerticalCardListFeature = ({
     isLoading={isLoading}
     listKey={listKey}
     seeMore={false}
-    card={ActionRow}
+    CardComponent={ActionRow}
   />
 );
 

@@ -25,7 +25,6 @@ const HorizontalCardListFeature = withTheme()(
     cardType,
     theme,
   }) => {
-    console.log({ primaryAction });
     const seeMore =
       get(primaryAction, 'title', '') !== '' &&
       get(primaryAction, 'action', '') !== '' &&
@@ -56,7 +55,7 @@ const HorizontalCardListFeature = withTheme()(
         seeMoreText={get(primaryAction, 'title', '')}
         onPressItem={onPressItem}
         onPressHeader={onPressHeader}
-        card={CardComponent}
+        CardComponent={CardComponent}
         loadingStateObject={{
           id: 'fake_id',
           title: '',

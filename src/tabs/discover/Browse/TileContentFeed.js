@@ -16,7 +16,7 @@ import {
 } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from 'ui/ContentCardConnected';
-import { HorizontalDefaultCard } from 'ui/Cards';
+import { HorizontalDefaultCard, CardMapper } from 'ui/Cards';
 
 const RowHeader = styled(({ theme, viewAll }) => ({
   flexDirection: 'row',
@@ -58,6 +58,8 @@ const loadingStateObject = {
   title: '',
   coverImage: [],
 };
+
+// todo : refactor Discover Tab to no longer rely on unique logic/ContentCardConnected and move it over to a Feature Schema
 
 const TileContentFeed = ({
   isLoading,

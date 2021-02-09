@@ -10,7 +10,6 @@ import {
   H5,
   H6,
   BodySmall,
-  Icon,
   withIsLoading,
   ConnectedImage,
   styled,
@@ -75,7 +74,8 @@ const HorizontalDefaultCard = withIsLoading(
           />
           {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
 
-          {label !== '' &&
+          {!!label &&
+            label !== '' &&
             !isLive &&
             !isLoading && (
               <BlurLabel blurType="ultraThinMaterial">
