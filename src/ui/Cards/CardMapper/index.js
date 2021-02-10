@@ -14,6 +14,8 @@ import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 import { useQuery } from '@apollo/client';
 
+import { transformISODates } from 'utils/string';
+
 import { ImageSourceType } from '@apollosproject/ui-kit';
 import HighlightCard from '../HighlightCard';
 import HorizontalPrayerRequestCard from '../HorizontalPrayerRequestCard';
@@ -88,6 +90,7 @@ const CardMapper = ({
        */
       cardProps = {
         ...cardProps,
+        labelText: node?.labelText ? node?.labelText : labelText,
       };
       FinalComponent = HighlightCard;
       /**
@@ -98,7 +101,12 @@ const CardMapper = ({
       break;
   }
 
-  return <FinalComponent {...cardProps} />;
+  return (
+    <FinalComponent
+      {...cardProps}
+      labelText={transformISODates(cardProps?.labelText)}
+    />
+  );
 };
 
 CardMapper.propTypes = {

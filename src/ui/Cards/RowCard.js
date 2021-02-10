@@ -42,7 +42,14 @@ const Content = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit,
 }))(FlexedView);
 
-const RowCard = ({ coverImage, label, title, summary, isLoading, isLive }) => (
+const RowCard = ({
+  coverImage,
+  labelText,
+  title,
+  summary,
+  isLoading,
+  isLive,
+}) => (
   <ThemeMixin>
     <Card>
       <View style={{ flexDirection: 'row' }}>
@@ -50,10 +57,11 @@ const RowCard = ({ coverImage, label, title, summary, isLoading, isLive }) => (
 
         <Content>
           {isLive && <LiveLabel />}
-          {label !== '' &&
+          {!!labelText &&
+            labelText !== '' &&
             !isLive && (
               <Summary numberOfLines={1} isLoading={isLoading}>
-                {label}
+                {labelText}
               </Summary>
             )}
 
@@ -83,7 +91,7 @@ RowCard.propTypes = {
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
   ]),
-  label: PropTypes.string,
+  labelText: PropTypes.string,
   summary: PropTypes.string,
   title: PropTypes.string,
   isLoading: PropTypes.bool,

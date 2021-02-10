@@ -68,7 +68,7 @@ const CardWithLayout = styled(({ theme }) => ({
 const StackedImageCard = ({
   placement,
   coverImage,
-  label,
+  labelText,
   title,
   summary,
   isLive,
@@ -77,15 +77,15 @@ const StackedImageCard = ({
   <ThemeMixin>
     <CardWithLayout placement={placement}>
       <View>
-        <Image source={coverImage} label={label} />
+        <Image source={coverImage} label={labelText} />
         {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
 
-        {!!label &&
-          label !== '' &&
+        {!!labelText &&
+          labelText !== '' &&
           !isLive &&
           !isLoading && (
             <BlurLabel blurType="ultraThinMaterial">
-              <Label isLoading={isLoading}>{label}</Label>
+              <Label isLoading={isLoading}>{labelText}</Label>
             </BlurLabel>
           )}
       </View>
@@ -108,7 +108,7 @@ StackedImageCard.propTypes = {
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
   ]),
-  label: PropTypes.string,
+  labelText: PropTypes.string,
   summary: PropTypes.string,
   title: PropTypes.string,
   placement: PropTypes.oneOf(['', 'left', 'right']),
