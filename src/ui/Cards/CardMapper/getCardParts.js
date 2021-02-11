@@ -10,12 +10,14 @@ const GET_CARD_PARTS = gql`
       ...accessoryFragment
       ...PrayerRequestFragment
       ...GroupCardFragment
+      ...LiveNodeFragment
     }
   }
   ${ApollosConfig.FRAGMENTS.ACCESSORY_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.CONTENT_CARD_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.PRAYER_REQUEST_FRAGMENT}
   ${ApollosConfig.FRAGMENTS.GROUP_CARD_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.LIVE_NODE_FRAGMENT}
 `;
 
 export default GET_CARD_PARTS;

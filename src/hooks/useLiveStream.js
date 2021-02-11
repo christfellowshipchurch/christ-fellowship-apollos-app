@@ -32,10 +32,15 @@ const GET_LIVE_STREAM = gql`
  * @param {number} args.liveStreamId | Live Stream Id
  */
 const useLiveStream = ({ liveStreamId }) => {
+  /**
+   * note : there was an issue where even when `skip` was passed a truthy value, it still wasn't skipping the query and this was causing ID parsing errors on the API. They are handled gracefully by the API, but it'll still throw unecessary errors. The following GitHub issues describes the error perfectly and suggests using the fetch-policy as a hacky way to avoid network requests unecessarily being made.
+   * https://github.com/apollographql/apollo-client/issues/6190
+   */
+  const skip = !liveStreamId || isEmpty(liveStreamId) || liveStreamId === '';
   const { data, loading, error, refetch } = useQuery(GET_LIVE_STREAM, {
-    variables: { id: liveStreamId },
-    skip: !liveStreamId || isEmpty(liveStreamId),
-    fetchPolicy: 'network-only',
+    variables: { id: liveStreamId || '' },
+    skip,
+    fetchPolicy: skip ? 'cache-only' : 'network-only',
   });
   const [nowIsBefore, setNowIsBefore] = useState(false);
   const [nowIsAfter, setNowIsAfter] = useState(false);

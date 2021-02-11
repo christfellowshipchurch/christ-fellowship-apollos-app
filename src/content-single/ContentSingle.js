@@ -42,10 +42,9 @@ const ContentSingle = (props) => {
     };
 
     switch (__typename) {
-      case 'EventContentItem':
-        return <EventContentItem {...screenProps} />;
       case 'InformationalContentItem':
         return <InformationalContentItem {...screenProps} />;
+      case 'EventContentItem':
       case 'UniversalContentItem':
       default:
         return <UniversalContentItem {...screenProps} />;

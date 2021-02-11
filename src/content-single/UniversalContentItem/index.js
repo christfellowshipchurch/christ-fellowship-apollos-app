@@ -1,21 +1,25 @@
 import React from 'react';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import {
-  styled,
-  GradientOverlayImage,
-  PaddedView,
-} from '@apollosproject/ui-kit';
+
+import { View } from 'react-native';
+import { styled, GradientOverlayImage } from '@apollosproject/ui-kit';
 
 import { ScriptureButton } from 'scripture-single';
-import Title from '../Title';
-import Features from '../Features';
 import Author from '../Author';
+import ButtonGroup from '../ButtonGroup';
+import EventGroupings from '../EventGroupings';
+import Features from '../Features';
 import HTMLContent from '../HTMLContent';
+import Title from '../Title';
 
 const StyledContentHTMLViewConnected = styled(({ theme }) => ({
   marginTop: theme.sizing.baseUnit * 0.5,
 }))(HTMLContent);
+
+export const ItemSeparatorComponent = styled(({ theme }) => ({
+  padding: theme.sizing.baseUnit,
+}))(View);
 
 const UniversalContentItem = ({ content, loading, ImageWrapperComponent }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
@@ -27,27 +31,21 @@ const UniversalContentItem = ({ content, loading, ImageWrapperComponent }) => {
           <GradientOverlayImage
             isLoading={!coverImageSources.length && loading}
             source={coverImageSources}
-            // Sets the ratio of the image
-            minAspectRatio={1}
-            maxAspectRatio={1}
             // Sets the ratio of the placeholder
-            forceRatio={1}
+            forceRatio={4 / 3}
             // No ratios are respected without this
             maintainAspectRatio
           />
         </ImageWrapperComponent>
       ) : null}
-      {/* fixes text/navigation spacing by adding vertical padding if we dont have an image */}
-      <PaddedView vertical={!coverImageSources.length}>
-        {/* title */}
-        <Title contentId={content.id} isLoading={loading} />
-        {/* author */}
-        <Author contentId={content.id} />
-        {/* Scripture */}
-        <ScriptureButton nodeId={content.id} />
-        {/* body content */}
-        <StyledContentHTMLViewConnected contentId={content.id} />
-      </PaddedView>
+
+      <Title contentId={content.id} isLoading={loading} />
+      <Author contentId={content.id} />
+      <EventGroupings contentId={content.id} />
+      <ButtonGroup contentId={content.id} />
+      <ScriptureButton nodeId={content.id} />
+      <StyledContentHTMLViewConnected contentId={content.id} />
+
       <Features contentId={content.id} />
     </>
   );

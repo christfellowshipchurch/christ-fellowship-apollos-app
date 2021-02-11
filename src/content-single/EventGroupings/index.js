@@ -10,16 +10,15 @@ import {
   Icon,
   styled,
   withTheme,
-  H4,
   Picker,
 } from '@apollosproject/ui-kit';
 import { PickerItem } from 'ui/inputs';
 import DateLabel from 'ui/DateLabel';
+import { ItemSeparatorComponent } from '../UniversalContentItem';
 
 import GET_EVENT_GROUPINGS from './getEventGroupings';
 
 const StyledPicker = styled(({ theme }) => ({
-  paddingTop: theme.sizing.baseUnit * 0.5,
   color: theme.colors.text.primary,
   ...Platform.select({
     android: {
@@ -92,7 +91,7 @@ const EventGroupings = ({ groupings, defaultSelection }) => {
   const selectedGroup = groupings.find((i) => i.name === selected);
 
   return (
-    <View>
+    <ItemSeparatorComponent>
       <StyledPicker
         label=""
         value={selected}
@@ -107,7 +106,7 @@ const EventGroupings = ({ groupings, defaultSelection }) => {
       {get(selectedGroup, 'instances', []).map((item) => (
         <DateTime key={item.start} start={item.start} />
       ))}
-    </View>
+    </ItemSeparatorComponent>
   );
 };
 
@@ -139,7 +138,6 @@ const EventGroupingsConnected = ({ contentId }) => {
   });
 
   if (error) return null;
-  if (loading) return <H4 isLoading>...loading</H4>;
 
   const groupings = get(data, 'node.eventGroupings', []);
   const myCampus = get(data, 'currentUser.profile.campus.name', '');

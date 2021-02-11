@@ -15,6 +15,7 @@ import { get, isEmpty } from 'lodash';
 import { useQuery } from '@apollo/client';
 
 import { transformISODates } from 'utils/string';
+import { useLiveStream } from 'hooks';
 
 import { ImageSourceType } from '@apollosproject/ui-kit';
 import HighlightCard from '../HighlightCard';
@@ -45,6 +46,15 @@ const CardMapper = ({
     fetchPolicy: 'cache-and-network',
   });
 
+  const node = data?.node;
+
+  /**
+   * If we have a live stream id in the relatedNode, lets check for a Live Stream node
+   */
+  const { isLive } = useLiveStream({
+    liveStreamId: node?.liveStream?.id,
+  });
+
   let FinalComponent = null;
   let cardProps = {
     isLoading,
@@ -54,9 +64,8 @@ const CardMapper = ({
     tile,
     labelText,
     inHorizontalList,
+    isLive,
   };
-
-  const node = data?.node;
 
   switch (__typename) {
     case 'Group':

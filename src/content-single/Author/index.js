@@ -1,9 +1,10 @@
 import React from 'react';
-import { Platform, View } from 'react-native';
-import { useQuery } from '@apollo/client';
-import { get } from 'lodash';
-import moment from 'moment';
 import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/client';
+import { get, isEmpty } from 'lodash';
+import moment from 'moment';
+
+import { Platform } from 'react-native';
 import {
   styled,
   FlexedView,
@@ -11,6 +12,7 @@ import {
   H6,
   withTheme,
 } from '@apollosproject/ui-kit';
+import { ItemSeparatorComponent } from '../UniversalContentItem';
 
 import { GET_AUTHOR } from './queries';
 
@@ -20,9 +22,7 @@ const AuthorContainer = styled(({ theme }) => ({
   flexDirection: 'row',
   flexWrap: 'wrap',
   alignItems: 'center',
-  marginTop: theme.sizing.baseUnit * 0.5,
-  marginBottom: theme.sizing.baseUnit,
-}))(View);
+}))(ItemSeparatorComponent);
 
 const TextContainer = styled(({ theme }) => ({
   justifyContent: 'center',
@@ -54,7 +54,7 @@ const Author = ({ contentId }) => {
       ? moment(node.publishDate).format(DATE_FORMAT)
       : moment().format(DATE_FORMAT);
 
-  if (error || (!loading && firstName === '' && lastName === '')) return null;
+  if (isEmpty(firstName) && isEmpty(lastName)) return null;
 
   return (
     <AuthorContainer>

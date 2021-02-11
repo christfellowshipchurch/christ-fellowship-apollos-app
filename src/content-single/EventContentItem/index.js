@@ -27,7 +27,7 @@ const EventContentItem = ({ content, loading, ImageWrapperComponent }) => {
 
   return (
     <>
-      {coverImageSources.length || loading ? (
+      {/* {coverImageSources.length || loading ? (
         <ImageWrapperComponent>
           <GradientOverlayImage
             isLoading={!coverImageSources.length && loading}
@@ -41,7 +41,7 @@ const EventContentItem = ({ content, loading, ImageWrapperComponent }) => {
             maintainAspectRatio
           />
         </ImageWrapperComponent>
-      ) : null}
+      ) : null} */}
 
       <PaddedView>
         <Title contentId={content.id} isLoading={loading} />

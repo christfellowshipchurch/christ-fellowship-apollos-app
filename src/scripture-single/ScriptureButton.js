@@ -22,8 +22,10 @@ const Container = styled(({ theme }) => ({
   justifyContent: 'center',
 }))(View);
 
-const HorizontalDividerStyled = styled(({ theme }) => ({
-  margin: theme.sizing.baseUnit,
+const HorizontalDividerStyled = styled(({ theme, useMargin }) => ({
+  marginHorizontal: theme.sizing.baseUnit,
+  ...(useMargin === 'top' ? { marginTop: theme.sizing.baseUnit } : {}),
+  ...(useMargin === 'bottom' ? { marginBottom: theme.sizing.baseUnit } : {}),
   width: '90%',
 }))(HorizontalDivider);
 
@@ -81,7 +83,7 @@ const ScriptureButton = ({ nodeId }) => {
 
   return (
     <Container>
-      <HorizontalDividerStyled />
+      <HorizontalDividerStyled useMargin="top" />
       <Touchable
         onPress={() => navigation.navigate('ScriptureSingle', { nodeId })}
       >
@@ -93,7 +95,7 @@ const ScriptureButton = ({ nodeId }) => {
       <References>
         {scriptures.map(({ reference }) => reference).join(', ')}
       </References>
-      <HorizontalDividerStyled />
+      <HorizontalDividerStyled useMargin="bottom" />
     </Container>
   );
 };

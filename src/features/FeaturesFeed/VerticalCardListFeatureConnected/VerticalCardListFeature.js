@@ -61,7 +61,7 @@ const mapContentMd = (content) => {
    */
   let body = useHero ? drop(content) : content;
   if (body.length === 2) {
-    body = body.map((item) => ({ ...item, card: HighlightCard }));
+    body = body.map((item) => ({ ...item, Component: HighlightCard }));
   }
 
   /**
@@ -130,7 +130,7 @@ const VerticalCardListFeature = ({
             {...hero}
             forceRatio={forceRatio}
             isLoading={isLoading && !cards.length}
-            card={HighlightCard}
+            Component={HighlightCard}
           />
         )
       }
@@ -142,7 +142,7 @@ const VerticalCardListFeature = ({
             {...footer}
             forceRatio={forceRatio}
             isLoading={isLoading && !cards.length}
-            card={RowCard}
+            Component={RowCard}
           />
         )
       }

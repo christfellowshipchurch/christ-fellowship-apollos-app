@@ -73,13 +73,21 @@ const PlayerContainerConnectedWithMedia = ({
   InnerComponent,
 }) => {
   const { data } = useQuery(GET_MEDIA, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: isEmpty(nodeId) ? 'cache-only' : 'cache-and-network',
     variables: { nodeId },
     skip: isEmpty(nodeId),
   });
 
-  if (!data?.node?.videos?.length)
-    return <InnerComponent nodeId={nodeId}>{children}</InnerComponent>;
+  const hasMedia =
+    data?.node?.videos?.length &&
+    data.node.videos.some(({ sources }) => sources.length);
+
+  if (!hasMedia)
+    return (
+      <PlayerContainerConnected nodeId={nodeId}>
+        {children}
+      </PlayerContainerConnected>
+    );
 
   return (
     <ApollosPlayerContainer

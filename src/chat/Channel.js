@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import { get } from 'lodash';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
+import { SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
 import {
   styled,
   withTheme,

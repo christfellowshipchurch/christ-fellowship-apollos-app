@@ -203,6 +203,21 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    LIVE_NODE_FRAGMENT: gql`
+      fragment LiveNodeFragment on LiveNode {
+        liveStream {
+          id
+          eventStartTime
+          eventEndTime
+          isLive
+          media {
+            sources {
+              uri
+            }
+          }
+        }
+      }
+    `,
     LIVE_STREAM_LIST_FEATURE_FRAGMENT: gql`
       fragment LiveStreamListFeatureFragment on LiveStreamListFeature {
         id
