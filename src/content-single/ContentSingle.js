@@ -14,8 +14,6 @@ import GET_CONTENT_ITEM from './getContentItem';
 
 import PlayerContainerConnected from './PlayerContainerConnected';
 import UniversalContentItem from './UniversalContentItem';
-import EventContentItem from './EventContentItem';
-import InformationalContentItem from './InformationalContentItem';
 
 const ContentSingle = (props) => {
   const itemId = props.route?.params?.itemId;
@@ -41,14 +39,7 @@ const ContentSingle = (props) => {
       error,
     };
 
-    switch (__typename) {
-      case 'InformationalContentItem':
-        return <InformationalContentItem {...screenProps} />;
-      case 'EventContentItem':
-      case 'UniversalContentItem':
-      default:
-        return <UniversalContentItem {...screenProps} />;
-    }
+    return <UniversalContentItem {...screenProps} />;
   };
 
   return (
