@@ -89,16 +89,6 @@ const ListEmptyComponent = () => (
   </CenteredView>
 );
 
-const StyledFeedView = withMediaQuery(
-  ({ md }) => ({ maxWidth: md }),
-  withProps(({ hasContent, isLoading }) => ({
-    numColumns: 1,
-  })),
-  withProps(({ hasContent, isLoading }) => ({
-    numColumns: 2,
-  }))
-)(FeedView);
-
 const StyledSafeAreaView = styled(({ theme }) => ({
   flex: 1,
 }))(SafeAreaView);
@@ -130,7 +120,7 @@ const NotificationList = ({
           <Spacer asCard={asCard}>
             <CardFeed
               content={notifications}
-              card={ListItemComponent}
+              CardComponent={ListItemComponent}
               ItemSeparatorComponent={
                 asCard ? () => null : StyledHorizontalDivider
               }

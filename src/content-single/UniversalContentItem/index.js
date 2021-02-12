@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 
-import { View } from 'react-native';
-import { styled, GradientOverlayImage } from '@apollosproject/ui-kit';
+import { View, Animated } from 'react-native';
+import {
+  styled,
+  GradientOverlayImage,
+  PaddedView,
+} from '@apollosproject/ui-kit';
+
+import { ApollosPlayerContainer } from '@apollosproject/ui-media-player';
+import VideoPresentationContainer from '@apollosproject/ui-media-player/src/VideoPresentationContainer';
 
 import { ScriptureButton } from 'scripture-single';
-import Author from '../Author';
+import Publication from '../Publication';
 import ButtonGroup from '../ButtonGroup';
+import { CheckInButtonConnected } from '../../check-in';
 import EventGroupings from '../EventGroupings';
 import Features from '../Features';
 import HTMLContent from '../HTMLContent';
@@ -21,8 +29,39 @@ export const ItemSeparatorComponent = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit,
 }))(View);
 
-const UniversalContentItem = ({ content, loading, ImageWrapperComponent }) => {
+export const EmbeddedVideoContainer = styled(({ theme }) => ({
+  aspectRatio: 16 / 9,
+  borderRadius: theme.sizing.baseBorderRadius,
+  overflow: 'hidden',
+}))(View);
+
+const EmbeddedVideo = ({ VideoComponent, ControlsComponent }) => {
+  // note : hack to remove the colored overlay on the video controls
+  const animatedValue = new Animated.Value(0);
+  const collapsedAnimation = animatedValue.interpolate({
+    inputRange: [0, 0],
+    outputRange: [0, 0],
+  });
+
+  return (
+    <EmbeddedVideoContainer>
+      <VideoPresentationContainer
+        VideoComponent={VideoComponent}
+        useNativeFullscreeniOS
+      />
+      <ControlsComponent collapsedAnimation={collapsedAnimation} />
+    </EmbeddedVideoContainer>
+  );
+};
+
+const UniversalContentItem = ({
+  id,
+  content,
+  loading,
+  ImageWrapperComponent,
+}) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
+  const checkInRef = useRef();
 
   return (
     <>
@@ -39,11 +78,30 @@ const UniversalContentItem = ({ content, loading, ImageWrapperComponent }) => {
         </ImageWrapperComponent>
       ) : null}
 
-      <Title contentId={content.id} isLoading={loading} />
-      <Author contentId={content.id} />
-      <EventGroupings contentId={content.id} />
-      <ButtonGroup contentId={content.id} />
+      {/* <CheckInButtonConnected id={content.id} ref={checkInRef} /> */}
+      <Title nodeId={content.id} />
+      <Publication nodeId={content.id} />
+      <EventGroupings nodeId={content.id} />
+      <ButtonGroup nodeId={content.id} />
       <ScriptureButton nodeId={content.id} />
+
+      {/** note : this is a placeholder here to just keep some good code, here, for reference */}
+      {/* <PaddedView>
+        <ApollosPlayerContainer
+          PlayerComponent={EmbeddedVideo}
+          source={{
+            uri:
+              'https://link.theplatform.com/s/IfSiAC/media/lLAPAkVDj_sd/file.m3u8?format=redirect&formats=m3u,mpeg4',
+          }}
+          coverImage={
+            'https://cloudfront.christfellowship.church/GetImage.ashx?guid=968dee27-537f-4f6a-91d4-4f414c1cbe3f'
+          }
+          presentationProps={{
+            title: 'Test',
+          }}
+        />
+      </PaddedView> */}
+
       <StyledContentHTMLViewConnected contentId={content.id} />
 
       <Features contentId={content.id} />
@@ -52,6 +110,7 @@ const UniversalContentItem = ({ content, loading, ImageWrapperComponent }) => {
 };
 
 UniversalContentItem.propTypes = {
+  id: PropTypes.string,
   content: PropTypes.shape({
     __typename: PropTypes.string,
     parentChannel: PropTypes.shape({

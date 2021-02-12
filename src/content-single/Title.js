@@ -1,43 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
-import { get } from 'lodash';
+import { isEmpty } from 'lodash';
 
 import { H3, BodyText } from '@apollosproject/ui-kit';
 import { ItemSeparatorComponent } from './UniversalContentItem';
+import { CONTENT_FRAGMENT } from './getContentItem';
 
-import GET_CONTENT_ITEM from './getContentItem';
+const GET_TITLE = gql`
+  query getTitle($nodeId: ID!) {
+    node(id: $nodeId) {
+      id
+      ...ContentFragment
+    }
+  }
 
-const Title = ({ contentId, isLoading }) => {
-  const { data, loading } = useQuery(GET_CONTENT_ITEM, {
-    variables: { itemId: contentId },
+  ${CONTENT_FRAGMENT}
+`;
+
+const Title = ({ nodeId }) => {
+  const skip = !nodeId || isEmpty(nodeId);
+  const { data, loading } = useQuery(GET_TITLE, {
+    variables: { nodeId },
+    skip,
   });
 
-  const title = get(data, 'node.title', '');
-  const somethingIsLoading = loading || isLoading;
+  const title = data?.node?.title;
+  const summary = data?.node?.summary;
   const theTitleExists = title && title !== '';
+  const somethingIsLoading = loading && !theTitleExists;
   const showLoadingIndicator = somethingIsLoading && !theTitleExists;
 
   if (!theTitleExists) return null;
 
   return (
     <ItemSeparatorComponent>
-      <H3 isLoading={showLoadingIndicator}>{get(data, 'node.title', '')}</H3>
-      <BodyText isLoading={showLoadingIndicator}>
-        {get(data, 'node.summary', '')}
-      </BodyText>
+      <H3 isLoading={showLoadingIndicator}>{title}</H3>
+      <BodyText isLoading={showLoadingIndicator}>{summary}</BodyText>
     </ItemSeparatorComponent>
   );
 };
 
 Title.propTypes = {
-  contentId: PropTypes.string,
-  isLoading: PropTypes.bool,
+  nodeId: PropTypes.string,
 };
 
-Title.defaultProps = {
-  contentId: '',
-  isLoading: false,
-};
+Title.defaultProps = {};
 
 export default Title;

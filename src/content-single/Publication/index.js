@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
 import moment from 'moment';
@@ -13,8 +14,18 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 import { ItemSeparatorComponent } from '../UniversalContentItem';
+import { PUBLICATION_FRAGMENT } from '../getContentItem';
 
-import { GET_AUTHOR } from './queries';
+const GET_PUBLICATION = gql`
+  query getPublication($nodeId: ID!) {
+    node(id: $nodeId) {
+      id
+      ...PublicationNodeFragment
+    }
+  }
+
+  ${PUBLICATION_FRAGMENT}
+`;
 
 const DATE_FORMAT = 'MMMM D, YYYY';
 
@@ -39,12 +50,16 @@ const StyledAvatar = withTheme(({ theme }) => ({
   },
 }))(Avatar);
 
-const Author = ({ contentId }) => {
-  const { data: { node } = {}, loading, error } = useQuery(GET_AUTHOR, {
-    variables: { id: contentId },
+const Publication = ({ nodeId }) => {
+  const skip = !nodeId || nodeId === '';
+  const { data, loading } = useQuery(GET_PUBLICATION, {
+    variables: { nodeId },
     fetchPolicy: 'cache-and-network',
-    skip: !contentId || contentId === '',
+    skip,
   });
+
+  const node = data?.node;
+
   const authorImageSources = get(node, 'author.photo', []);
   const firstName = get(node, 'author.firstName', '');
   const lastName = get(node, 'author.lastName', '');
@@ -61,7 +76,7 @@ const Author = ({ contentId }) => {
       <StyledAvatar
         isLoading={loading}
         source={authorImageSources}
-        size="small"
+        themeSize={40}
       />
       <TextContainer>
         <StyledH6 numberOfLines={2} ellipsizeMode="tail" isLoading={loading}>
@@ -81,8 +96,8 @@ const Author = ({ contentId }) => {
   );
 };
 
-Author.propTypes = {
-  contentId: PropTypes.string,
+Publication.propTypes = {
+  nodeId: PropTypes.string,
 };
 
-export default Author;
+export default Publication;

@@ -9,25 +9,35 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
 import { isEmpty } from 'lodash';
 
 import { styled } from '@apollosproject/ui-kit';
 import ButtonWithLinkRouting from 'ui/ButtonWithLinkRouting';
 import { ItemSeparatorComponent } from '../UniversalContentItem';
+import { ACTIONS_FRAGMENT } from '../getContentItem';
 
-import GET_CONTENT_ACTIONS from './getActions';
+const GET_CONTENT_ACTIONS = gql`
+  query getContentActions($nodeId: ID!) {
+    node(id: $nodeId) {
+      ...ActionsFragment
+    }
+  }
+
+  ${ACTIONS_FRAGMENT}
+`;
 
 const StyledButton = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
 }))(ButtonWithLinkRouting);
 
-const ButtonGroup = ({ contentId }) => {
+const ButtonGroup = ({ nodeId }) => {
   // note : hack to get around a current bug with the skip prop
-  const skip = !contentId || isEmpty(contentId);
+  const skip = !nodeId || isEmpty(nodeId);
   const { data } = useQuery(GET_CONTENT_ACTIONS, {
     variables: {
-      id: contentId,
+      nodeId,
     },
     skip,
     fetchPolicy: skip ? 'cache-only' : 'cache-and-network',
@@ -52,7 +62,7 @@ const ButtonGroup = ({ contentId }) => {
 };
 
 ButtonGroup.propTypes = {
-  contentId: PropTypes.string,
+  nodeId: PropTypes.string,
 };
 ButtonGroup.defaultProps = {};
 

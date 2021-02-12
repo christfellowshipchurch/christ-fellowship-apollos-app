@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { isEmpty, get } from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import {
   Touchable,
   UIText,
@@ -12,28 +12,30 @@ import {
   withTheme,
   styled,
 } from '@apollosproject/ui-kit';
-import { HorizontalDivider } from 'ui/Dividers';
 
 import GET_SCRIPTURE from './getScripture';
 
 /** Horizontal Divider */
-const Container = styled(({ theme }) => ({
-  alignItems: 'center',
-  justifyContent: 'center',
-}))(View);
+const Container = styled(({ theme }) => {
+  const borderColor = theme.colors.text.tertiary;
 
-const HorizontalDividerStyled = styled(({ theme, useMargin }) => ({
-  marginHorizontal: theme.sizing.baseUnit,
-  ...(useMargin === 'top' ? { marginTop: theme.sizing.baseUnit } : {}),
-  ...(useMargin === 'bottom' ? { marginBottom: theme.sizing.baseUnit } : {}),
-  width: '90%',
-}))(HorizontalDivider);
+  return {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderTopColor: borderColor,
+    borderBottomColor: borderColor,
+    paddingVertical: theme.sizing.baseUnit * 2.5,
+    marginHorizontal: theme.sizing.baseUnit,
+  };
+})(View);
 
 /** Button */
 const ButtonRow = styled(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
-  paddingVertical: theme.sizing.baseUnit * 0.5,
+  paddingBottom: theme.sizing.baseUnit * 0.25,
 }))(View);
 
 const ButtonIcon = withTheme(({ theme }) => ({
@@ -83,7 +85,6 @@ const ScriptureButton = ({ nodeId }) => {
 
   return (
     <Container>
-      <HorizontalDividerStyled useMargin="top" />
       <Touchable
         onPress={() => navigation.navigate('ScriptureSingle', { nodeId })}
       >
@@ -95,7 +96,6 @@ const ScriptureButton = ({ nodeId }) => {
       <References>
         {scriptures.map(({ reference }) => reference).join(', ')}
       </References>
-      <HorizontalDividerStyled useMargin="bottom" />
     </Container>
   );
 };

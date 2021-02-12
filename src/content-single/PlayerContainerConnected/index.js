@@ -73,7 +73,7 @@ const PlayerContainerConnectedWithMedia = ({
   InnerComponent,
 }) => {
   const { data } = useQuery(GET_MEDIA, {
-    fetchPolicy: isEmpty(nodeId) ? 'cache-only' : 'cache-and-network',
+    fetchPolicy: 'cache-and-network',
     variables: { nodeId },
     skip: isEmpty(nodeId),
   });
