@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { get } from 'lodash';
 
 import BottomSheet from 'react-native-raw-bottom-sheet';
 import {
@@ -13,6 +12,7 @@ import {
   BodyText,
   FlexedView,
   withTheme,
+  styled,
 } from '@apollosproject/ui-kit';
 
 import useCheckIn from '../useCheckIn';
@@ -28,6 +28,14 @@ import {
 } from './Components';
 import AnimatedCheckInIcon from './AnimatedCheckIcon';
 import TouchableCheckBox from './TouchableCheckBox';
+
+const CenterAlignedPaddedView = styled(() => ({
+  alignItems: 'center',
+}))(PaddedView);
+
+const CenterAlignedBodyText = styled(() => ({
+  textAlign: 'center',
+}))(BodyText);
 
 const CheckInButton = withTheme()(({ id, sheetRef, theme }) => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -91,11 +99,7 @@ const CheckInButton = withTheme()(({ id, sheetRef, theme }) => {
       : {
           onPress: () => {
             if (enabled) {
-              if (options.length === 1) {
-                checkInCurrentUser({ optionId: get(options, '[0].id') });
-              } else {
-                sheetRef.current.open();
-              }
+              sheetRef.current.open();
             }
           },
         };
@@ -157,16 +161,16 @@ const CheckInButton = withTheme()(({ id, sheetRef, theme }) => {
         {checkInSuccess ? (
           <CheckInContainer>
             <AnimatedCheckInIcon />
-            <PaddedView style={{ alignItems: 'center' }}>
+            <CenterAlignedPaddedView>
               <H3>{"You're all set!"}</H3>
               <BodyText>Thank you for serving with us today!</BodyText>
-            </PaddedView>
+            </CenterAlignedPaddedView>
           </CheckInContainer>
         ) : (
           <FlexedSafeAreaView forceInset={{ top: 'never', bottom: 'always' }}>
             <BottomSheetTitle>
               <H3>{title}</H3>
-              <BodyText style={{ textAlign: 'center' }}>{message}</BodyText>
+              <CenterAlignedBodyText>{message}</CenterAlignedBodyText>
             </BottomSheetTitle>
 
             <StyledFlatList
