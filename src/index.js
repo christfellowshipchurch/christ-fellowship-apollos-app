@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-handler-names */
+
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import React from 'react';
 import { Platform, YellowBox } from 'react-native';
@@ -215,6 +217,7 @@ const App = (props) => (
       <ScreenOrientation />
       <NavigationContainer
         ref={NavigationService.setTopLevelNavigator}
+        onReady={NavigationService.setIsReady}
         // theme={mode}
       >
         <StackNavigator {...props} />

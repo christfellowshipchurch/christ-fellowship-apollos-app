@@ -56,7 +56,7 @@ const AuthNavigator = (props) => (
           />
           <IdentityStack.Screen
             name="AuthEmailEntryConnected"
-            component={(props) => <AuthEmailEntryConnected {...props} />}
+            component={AuthEmailEntryConnected}
           />
         </IdentityStack.Navigator>
       )}

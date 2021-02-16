@@ -24,28 +24,24 @@ import GroupCard from '../GroupCard';
 
 import GET_CARD_PARTS from './getCardParts';
 
-const CardMapper = ({
+/**
+ * note : so this isn't the most elegant way to do this, BUT! it's what we gotta do. Right now, there's an issue with the `skip` property of `useQuery` where it doesn't actually skip and sends all kinds of network requests with empty Id's. This causes a lot of noise and unwanted errors on the API. This wrapper component will requeire that an Id be passed with it. Only render this component if you're positive that you have an Id
+ */
+const renderConnectedCard = ({
   __typename,
-  relatedNode,
-  Component,
-  isLoading,
-  coverImage,
-  title,
-  summary,
-  tile,
+  id,
   labelText,
-  inHorizontalList,
+  Component,
   ...props
 }) => {
-  /**
-   * We use this query so that we could load up additional data about a card if we wanted to, but the card rendering is not reliant on this query
-   */
+  const skip = !id || isEmpty(id);
   const { data } = useQuery(GET_CARD_PARTS, {
-    skip: !relatedNode || !relatedNode?.id || isEmpty(relatedNode?.id),
-    variables: { nodeId: relatedNode?.id },
-    fetchPolicy: 'cache-and-network',
+    skip,
+    variables: { nodeId: id },
+    fetchPolicy: skip ? 'cache-only' : 'cache-and-network',
   });
 
+  let cardProps = {};
   const node = data?.node;
 
   /**
@@ -55,24 +51,10 @@ const CardMapper = ({
     liveStreamId: node?.liveStream?.id,
   });
 
-  let FinalComponent = null;
-  let cardProps = {
-    isLoading,
-    title,
-    summary,
-    coverImage,
-    tile,
-    labelText,
-    inHorizontalList,
-    isLive,
-  };
-
   switch (__typename) {
     case 'Group':
     case 'VolunteerGroup':
-      FinalComponent = GroupCard;
       cardProps = {
-        ...cardProps,
         ...node,
         // Group Card Props
         heroAvatars: get(node, 'leaders.edges', []).map(
@@ -86,7 +68,6 @@ const CardMapper = ({
       };
       break;
     case 'PrayerRequest':
-      FinalComponent = HorizontalPrayerRequestCard;
       cardProps = {
         ...cardProps,
         ...node,
@@ -101,6 +82,54 @@ const CardMapper = ({
         ...cardProps,
         labelText: node?.labelText ? node?.labelText : labelText,
       };
+      break;
+  }
+
+  return <Component {...props} isLive={isLive} {...cardProps} />;
+};
+
+const CardMapper = ({
+  __typename,
+  relatedNode,
+  Component,
+  isLoading,
+  coverImage,
+  title,
+  summary,
+  tile,
+  labelText,
+  inHorizontalList,
+}) => {
+  const skip = !relatedNode || !relatedNode?.id || isEmpty(relatedNode?.id);
+
+  /**
+   * If we have a live stream id in the relatedNode, lets check for a Live Stream node
+   */
+
+  let FinalComponent = null;
+  const cardProps = {
+    isLoading,
+    title,
+    summary,
+    coverImage,
+    tile,
+    labelText,
+    inHorizontalList,
+  };
+
+  switch (__typename) {
+    case 'Group':
+    case 'VolunteerGroup':
+      FinalComponent = GroupCard;
+      break;
+    case 'PrayerRequest':
+      FinalComponent = HorizontalPrayerRequestCard;
+      break;
+    case 'ContentItem':
+    default:
+      /**
+       * Default case should be any Content Item
+       */
       FinalComponent = HighlightCard;
       /**
        * If a Component was specified to our Map, let's use that instead of the calculated Component
@@ -110,12 +139,21 @@ const CardMapper = ({
       break;
   }
 
-  return (
-    <FinalComponent
-      {...cardProps}
-      labelText={transformISODates(cardProps?.labelText)}
-    />
-  );
+  if (skip) {
+    return (
+      <FinalComponent
+        {...cardProps}
+        labelText={transformISODates(cardProps?.labelText)}
+      />
+    );
+  }
+
+  return renderConnectedCard({
+    id: relatedNode?.id,
+    Component: FinalComponent,
+    ...cardProps,
+    labelText: transformISODates(cardProps?.labelText),
+  });
 };
 
 CardMapper.propTypes = {
