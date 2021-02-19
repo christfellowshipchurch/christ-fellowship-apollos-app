@@ -22,9 +22,9 @@ then
     echo "Rebuilding Pod File"
     yarn pods
 
-    echo "Running Bugnsag Source Map upload"
-    yarn bugsnag-release
+    # echo "Running Bugnsag Source Map upload"
+    # yarn bugsnag-release
 
-    echo "Starting Metro Bundler"
-    yarn start
+    # echo "Starting Metro Bundler"
+    # yarn start
 fi

@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import ApollosConfig from '@apollosproject/config';
 import {
   Providers,
@@ -18,7 +17,6 @@ import {
 } from 'react-native-dark-mode';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 // import NotificationsProvider from './NotificationsProvider';
-import { SideMenuProvider } from './sidemenu';
 import AppStateProvider from './AppStateProvider';
 
 import { track, identify } from './amplitude';
@@ -57,11 +55,9 @@ const AppProviders = (props) => {
                 {...props}
               >
                 <BackgroundView>
-                  <SideMenuProvider {...props}>
-                    <ActionSheetProvider>
-                      <AppStateProvider {...props} />
-                    </ActionSheetProvider>
-                  </SideMenuProvider>
+                  <ActionSheetProvider>
+                    <AppStateProvider {...props} />
+                  </ActionSheetProvider>
                 </BackgroundView>
               </Providers>
             </DarkModeProvider>
