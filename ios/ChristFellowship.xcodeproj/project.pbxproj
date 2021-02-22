@@ -9,10 +9,12 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ChristFellowshipTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChristFellowshipTests.m */; };
 		08CE105F17284254AD54AF84 /* DroidSerif-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E3B8A0AC5A6B4FABB3BDF6CB /* DroidSerif-Bold.ttf */; };
+		0C8F2ADCD4E0B4A341D38915 /* libPods-ChristFellowship-ChristFellowshipTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E48ED507F0039205B697131 /* libPods-ChristFellowship-ChristFellowshipTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		2B858D6152E41293DAEA0021 /* libPods-ChristFellowship-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA8D2CF210E619A4A33BA89E /* libPods-ChristFellowship-tvOS.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -20,23 +22,21 @@
 		2DCD954D1E0B4F2C00145EB5 /* ChristFellowshipTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChristFellowshipTests.m */; };
 		5660E1852DD44C17A240F411 /* Gotham-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = F28959042DC64AE8B25BF7A8 /* Gotham-BlackItalic.otf */; };
 		7E8883996005484689C0B6BF /* Gotham-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8653779CFF0426389AB4E79 /* Gotham-BoldItalic.otf */; };
-		8DA8FD8C264C74DD353E8850 /* libPods-ChristFellowship-ChristFellowshipTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7A80A565F29B95DAC6513AD /* libPods-ChristFellowship-ChristFellowshipTests.a */; };
-		8EA9BDE542E09F685A47D9BE /* libPods-ChristFellowship-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38B9762ACA099D28C28DBB31 /* libPods-ChristFellowship-tvOS.a */; };
 		90743C40BF544F10A810C43C /* DroidSerif-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADC3D2DB245545ADB1CAB3FE /* DroidSerif-Italic.ttf */; };
 		93A2B0A9328A46A4B7DD5EFA /* DroidSerif-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4E007B33EDD74B82AEF02C24 /* DroidSerif-Regular.ttf */; };
 		9C347AE6B1E5411A92A76B9F /* Gotham-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 457DF18BC87543DD8D501C06 /* Gotham-Medium.otf */; };
 		B02F194A3F6A4FE29AC799B4 /* DroidSerif-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A93F9D112A034626A9421759 /* DroidSerif-BoldItalic.ttf */; };
 		C4968CCD047C49EE87DDE70D /* Gotham-BookItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4645A0B437814AFFACF9292F /* Gotham-BookItalic.otf */; };
-		C675E51C118ED8F970A035B5 /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DE6AB739707208F896AED3F /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a */; };
 		C7473CA60FA44861A35E0672 /* Gotham-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = C94F344D2D664DB5A88E5D42 /* Gotham-Book.otf */; };
 		C7ED6C19561541488F2089B2 /* Gotham-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = CA71116C7F1C43EF9C7A96D7 /* Gotham-MediumItalic.otf */; };
-		E875558F3FB8FA2024EF7DC2 /* libPods-ChristFellowship.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDB6B5B7B6A0D1ECB68CF0DD /* libPods-ChristFellowship.a */; };
+		CE719854A0BBFF999FC28FF7 /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F3446E0F68E1C229573386 /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a */; };
 		E8F152F0A5124AFBB5C80C1E /* Gotham-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E1489AF4706744599156EE12 /* Gotham-Bold.otf */; };
 		EACAA9C64F7048A4BC0E5D6A /* Gotham-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1DDBAC8BCFC847C892652735 /* Gotham-Black.otf */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		EF17D5EF258A92B90040D5A6 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF17D5EE258A92B90040D5A6 /* File.swift */; };
 		EF17D5F0258A92B90040D5A6 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF17D5EE258A92B90040D5A6 /* File.swift */; };
+		FA17583DE60FBD0350583F4E /* libPods-ChristFellowship.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF44E12B0C208488C4556B16 /* libPods-ChristFellowship.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,7 +63,6 @@
 		00E356F21AD99517003FC87E /* ChristFellowshipTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChristFellowshipTests.m; sourceTree = "<group>"; };
 		0D480D95FC7F4569B8B934E3 /* libRCTOneSignal.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTOneSignal.a; sourceTree = "<group>"; };
 		11C2118224D35D9A00440DC3 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
-		123C994C6EFBBE0485050490 /* Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ChristFellowship.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChristFellowship.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ChristFellowship/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = ChristFellowship/AppDelegate.m; sourceTree = "<group>"; };
@@ -73,55 +72,52 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ChristFellowship/main.m; sourceTree = "<group>"; };
 		19B5A9A4EF8B427294B5CE2A /* Gotham-XLight.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-XLight.otf"; path = "../assets/fonts/Gotham-XLight.otf"; sourceTree = "<group>"; };
 		1DDBAC8BCFC847C892652735 /* Gotham-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Black.otf"; path = "../assets/fonts/Gotham-Black.otf"; sourceTree = "<group>"; };
-		1F8F5BC4745C8F22C695573D /* Pods-ChristFellowship.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship.release.xcconfig"; sourceTree = "<group>"; };
 		27FB95AFB95C4094B04FB41A /* Gotham-UltraItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-UltraItalic.otf"; path = "../assets/fonts/Gotham-UltraItalic.otf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* ChristFellowship-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ChristFellowship-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* ChristFellowship-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ChristFellowship-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2D6295D361D678BC3A2726A1 /* Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2F5410F239E9477B9C2E86BD /* Inter-UI-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-BoldItalic.otf"; path = "../assets/fonts/Inter-UI-BoldItalic.otf"; sourceTree = "<group>"; };
-		334DC4BFD511288AD70D0B65 /* Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig"; sourceTree = "<group>"; };
-		38B9762ACA099D28C28DBB31 /* libPods-ChristFellowship-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChristFellowship-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		457DF18BC87543DD8D501C06 /* Gotham-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Medium.otf"; path = "../assets/fonts/Gotham-Medium.otf"; sourceTree = "<group>"; };
 		4645A0B437814AFFACF9292F /* Gotham-BookItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-BookItalic.otf"; path = "../assets/fonts/Gotham-BookItalic.otf"; sourceTree = "<group>"; };
 		4E007B33EDD74B82AEF02C24 /* DroidSerif-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DroidSerif-Regular.ttf"; path = "../assets/fonts/DroidSerif-Regular.ttf"; sourceTree = "<group>"; };
+		4E48ED507F0039205B697131 /* libPods-ChristFellowship-ChristFellowshipTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChristFellowship-ChristFellowshipTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		519080799ABBDEC9FF7655F5 /* Pods-ChristFellowship-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS/Pods-ChristFellowship-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		52CDE4653B0D48CD83312C72 /* Gotham-LightItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-LightItalic.otf"; path = "../assets/fonts/Gotham-LightItalic.otf"; sourceTree = "<group>"; };
-		54F271B8EB67A4997A2C7D96 /* Pods-ChristFellowship.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship.debug.xcconfig"; sourceTree = "<group>"; };
+		57E5783D478DF679ADCCA2A9 /* Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig"; sourceTree = "<group>"; };
 		5A5A2BC2998547F4816B82E4 /* Inter-UI-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-BlackItalic.otf"; path = "../assets/fonts/Inter-UI-BlackItalic.otf"; sourceTree = "<group>"; };
-		5DE6AB739707208F896AED3F /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		63F6EE53A9B44B4388B5F1C2 /* Inter-UI-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-Italic.otf"; path = "../assets/fonts/Inter-UI-Italic.otf"; sourceTree = "<group>"; };
-		745C835CA2F1E1EC2425152A /* Pods-ChristFellowship-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS/Pods-ChristFellowship-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		68605A5C2E1F3EF9EC3C275B /* Pods-ChristFellowship-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS/Pods-ChristFellowship-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		7460DD8FAE5C4D9DB10462C5 /* Gotham-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Light.otf"; path = "../assets/fonts/Gotham-Light.otf"; sourceTree = "<group>"; };
+		7B4D5FC707286118DBB6772E /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		7BA0E6A4BB5B794AD9124426 /* Pods-ChristFellowship.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship.debug.xcconfig"; sourceTree = "<group>"; };
 		A460FD7884FD4574A818005A /* Inter-UI-MediumItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-MediumItalic.otf"; path = "../assets/fonts/Inter-UI-MediumItalic.otf"; sourceTree = "<group>"; };
 		A613256118404CB691DE2C8E /* Inter-UI-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-Regular.otf"; path = "../assets/fonts/Inter-UI-Regular.otf"; sourceTree = "<group>"; };
 		A8653779CFF0426389AB4E79 /* Gotham-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-BoldItalic.otf"; path = "../assets/fonts/Gotham-BoldItalic.otf"; sourceTree = "<group>"; };
 		A93F9D112A034626A9421759 /* DroidSerif-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DroidSerif-BoldItalic.ttf"; path = "../assets/fonts/DroidSerif-BoldItalic.ttf"; sourceTree = "<group>"; };
-		AB44FC16DED929081698EDFD /* Pods-ChristFellowshipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowshipTests.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowshipTests/Pods-ChristFellowshipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ADC3D2DB245545ADB1CAB3FE /* DroidSerif-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DroidSerif-Italic.ttf"; path = "../assets/fonts/DroidSerif-Italic.ttf"; sourceTree = "<group>"; };
-		AE85030F59F256E90D5A4C2B /* Pods-ChristFellowship-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS/Pods-ChristFellowship-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		B6BCBDB0E7FD564D7B670D01 /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		B136C501594D2A9BD54E81FE /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B6763055463933ADC22EE326 /* Pods-ChristFellowship.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship.release.xcconfig"; sourceTree = "<group>"; };
+		B9F3446E0F68E1C229573386 /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C94F344D2D664DB5A88E5D42 /* Gotham-Book.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Book.otf"; path = "../assets/fonts/Gotham-Book.otf"; sourceTree = "<group>"; };
 		CA71116C7F1C43EF9C7A96D7 /* Gotham-MediumItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-MediumItalic.otf"; path = "../assets/fonts/Gotham-MediumItalic.otf"; sourceTree = "<group>"; };
+		CA8D2CF210E619A4A33BA89E /* libPods-ChristFellowship-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChristFellowship-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF63C3228BDF42A8B8535BD5 /* Gotham-Ultra.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Ultra.otf"; path = "../assets/fonts/Gotham-Ultra.otf"; sourceTree = "<group>"; };
-		D394E3064D75710E81C51EB0 /* Pods-ChristFellowship-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOSTests/Pods-ChristFellowship-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D5157D807E164356ADE87867 /* Inter-UI-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-Bold.otf"; path = "../assets/fonts/Inter-UI-Bold.otf"; sourceTree = "<group>"; };
 		D63BF6551589488CB3D1337A /* Gotham-Thin.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Thin.otf"; path = "../assets/fonts/Gotham-Thin.otf"; sourceTree = "<group>"; };
-		D8ABBCDAD6DFF85D8CEA38EA /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		DA9745795726553C6FA9E7A8 /* Pods-ChristFellowship-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOSTests/Pods-ChristFellowship-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		DC74A378C1CC40E4B6192D7F /* Inter-UI-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-Medium.otf"; path = "../assets/fonts/Inter-UI-Medium.otf"; sourceTree = "<group>"; };
-		DDB6B5B7B6A0D1ECB68CF0DD /* libPods-ChristFellowship.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChristFellowship.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1489AF4706744599156EE12 /* Gotham-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Bold.otf"; path = "../assets/fonts/Gotham-Bold.otf"; sourceTree = "<group>"; };
 		E1ABBC25F91C4E6C9D573F40 /* Gotham-XLightItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-XLightItalic.otf"; path = "../assets/fonts/Gotham-XLightItalic.otf"; sourceTree = "<group>"; };
 		E3B8A0AC5A6B4FABB3BDF6CB /* DroidSerif-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DroidSerif-Bold.ttf"; path = "../assets/fonts/DroidSerif-Bold.ttf"; sourceTree = "<group>"; };
 		E7E6A760EB3D43F38BE1DD68 /* Gotham-ThinItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-ThinItalic.otf"; path = "../assets/fonts/Gotham-ThinItalic.otf"; sourceTree = "<group>"; };
-		E98AC9782C338F13632EF710 /* Pods-ChristFellowshipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowshipTests.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowshipTests/Pods-ChristFellowshipTests.release.xcconfig"; sourceTree = "<group>"; };
 		EC21254B449443F99016EBFD /* Inter-UI-Black.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-Black.otf"; path = "../assets/fonts/Inter-UI-Black.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EF17D5EE258A92B90040D5A6 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		EF17D656258A94FA0040D5A6 /* ChristFellowship-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChristFellowship-Bridging-Header.h"; sourceTree = "<group>"; };
+		EF44E12B0C208488C4556B16 /* libPods-ChristFellowship.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChristFellowship.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFCC914B25DEE08800000E7A /* Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift.swift; sourceTree = "<group>"; };
 		F28959042DC64AE8B25BF7A8 /* Gotham-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-BlackItalic.otf"; path = "../assets/fonts/Gotham-BlackItalic.otf"; sourceTree = "<group>"; };
-		F7A80A565F29B95DAC6513AD /* libPods-ChristFellowship-ChristFellowshipTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChristFellowship-ChristFellowshipTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DA8FD8C264C74DD353E8850 /* libPods-ChristFellowship-ChristFellowshipTests.a in Frameworks */,
+				0C8F2ADCD4E0B4A341D38915 /* libPods-ChristFellowship-ChristFellowshipTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,7 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
-				E875558F3FB8FA2024EF7DC2 /* libPods-ChristFellowship.a in Frameworks */,
+				FA17583DE60FBD0350583F4E /* libPods-ChristFellowship.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,7 +144,7 @@
 			files = (
 				ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */,
-				8EA9BDE542E09F685A47D9BE /* libPods-ChristFellowship-tvOS.a in Frameworks */,
+				2B858D6152E41293DAEA0021 /* libPods-ChristFellowship-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,7 +152,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C675E51C118ED8F970A035B5 /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a in Frameworks */,
+				CE719854A0BBFF999FC28FF7 /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,10 +200,10 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				DDB6B5B7B6A0D1ECB68CF0DD /* libPods-ChristFellowship.a */,
-				38B9762ACA099D28C28DBB31 /* libPods-ChristFellowship-tvOS.a */,
-				F7A80A565F29B95DAC6513AD /* libPods-ChristFellowship-ChristFellowshipTests.a */,
-				5DE6AB739707208F896AED3F /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a */,
+				EF44E12B0C208488C4556B16 /* libPods-ChristFellowship.a */,
+				4E48ED507F0039205B697131 /* libPods-ChristFellowship-ChristFellowshipTests.a */,
+				CA8D2CF210E619A4A33BA89E /* libPods-ChristFellowship-tvOS.a */,
+				B9F3446E0F68E1C229573386 /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -250,18 +246,14 @@
 		76EC01CF690166B3232686FE /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				54F271B8EB67A4997A2C7D96 /* Pods-ChristFellowship.debug.xcconfig */,
-				1F8F5BC4745C8F22C695573D /* Pods-ChristFellowship.release.xcconfig */,
-				745C835CA2F1E1EC2425152A /* Pods-ChristFellowship-tvOS.debug.xcconfig */,
-				AE85030F59F256E90D5A4C2B /* Pods-ChristFellowship-tvOS.release.xcconfig */,
-				D394E3064D75710E81C51EB0 /* Pods-ChristFellowship-tvOSTests.debug.xcconfig */,
-				DA9745795726553C6FA9E7A8 /* Pods-ChristFellowship-tvOSTests.release.xcconfig */,
-				AB44FC16DED929081698EDFD /* Pods-ChristFellowshipTests.debug.xcconfig */,
-				E98AC9782C338F13632EF710 /* Pods-ChristFellowshipTests.release.xcconfig */,
-				334DC4BFD511288AD70D0B65 /* Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig */,
-				123C994C6EFBBE0485050490 /* Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig */,
-				D8ABBCDAD6DFF85D8CEA38EA /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig */,
-				B6BCBDB0E7FD564D7B670D01 /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig */,
+				7BA0E6A4BB5B794AD9124426 /* Pods-ChristFellowship.debug.xcconfig */,
+				B6763055463933ADC22EE326 /* Pods-ChristFellowship.release.xcconfig */,
+				2D6295D361D678BC3A2726A1 /* Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig */,
+				57E5783D478DF679ADCCA2A9 /* Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig */,
+				519080799ABBDEC9FF7655F5 /* Pods-ChristFellowship-tvOS.debug.xcconfig */,
+				68605A5C2E1F3EF9EC3C275B /* Pods-ChristFellowship-tvOS.release.xcconfig */,
+				B136C501594D2A9BD54E81FE /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig */,
+				7B4D5FC707286118DBB6772E /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -316,13 +308,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "ChristFellowshipTests" */;
 			buildPhases = (
-				2C62ED438C51D0F43EC7017B /* [CP] Check Pods Manifest.lock */,
-				4739514E11B75F9D2BA86E16 /* [CP] Prepare Artifacts */,
+				2D39B338D8D28794D99EBC40 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				B956B3BC4C2B838C4B5ED52A /* [CP] Copy Pods Resources */,
-				5B42F2A9124E8AEEB29380D0 /* [CP] Embed Pods Frameworks */,
+				12D50EA18152C91C0BD93F0C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -338,14 +328,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "ChristFellowship" */;
 			buildPhases = (
-				DEEF24CE4F76789E5E8C369D /* [CP] Check Pods Manifest.lock */,
-				FCCA4C49EA7A2AEC803404CA /* [CP] Prepare Artifacts */,
+				FB66AA3F98BCB53CBC75B68B /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				214D24EE93F21D9FD54F2D45 /* [CP] Copy Pods Resources */,
-				B33F5D3E98AEA4ED193D3970 /* [CP] Embed Pods Frameworks */,
+				11B455F1F0D099470B7A78F0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -360,7 +348,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "ChristFellowship-tvOS" */;
 			buildPhases = (
-				9C20354F160AAF86C8281F23 /* [CP] Check Pods Manifest.lock */,
+				EC346A0A1AE06EF68C9C5018 /* [CP] Check Pods Manifest.lock */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
 				2D02E4791E0B4A5D006451C7 /* Resources */,
@@ -379,7 +367,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "ChristFellowship-tvOSTests" */;
 			buildPhases = (
-				A85CD736CDC3356677735901 /* [CP] Check Pods Manifest.lock */,
+				01BD2F6CE21404691C524FCD /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -514,122 +502,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		214D24EE93F21D9FD54F2D45 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.5.3_static/GoogleCast.framework/GoogleCastCoreResources.bundle",
-				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.5.3_static/GoogleCast.framework/GoogleCastUIResources.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleCastCoreResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleCastUIResources.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2C62ED438C51D0F43EC7017B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ChristFellowship-ChristFellowshipTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		4739514E11B75F9D2BA86E16 /* [CP] Prepare Artifacts */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-artifacts.sh",
-				"${PODS_ROOT}/OpenSSL-Universal/Frameworks/OpenSSL.xcframework",
-			);
-			name = "[CP] Prepare Artifacts";
-			outputPaths = (
-				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-artifacts.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5B42F2A9124E8AEEB29380D0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9C20354F160AAF86C8281F23 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ChristFellowship-tvOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A85CD736CDC3356677735901 /* [CP] Check Pods Manifest.lock */ = {
+		01BD2F6CE21404691C524FCD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -651,24 +524,29 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B33F5D3E98AEA4ED193D3970 /* [CP] Embed Pods Frameworks */ = {
+		11B455F1F0D099470B7A78F0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
+				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.5.3_static/GoogleCast.framework/GoogleCastCoreResources.bundle",
+				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.5.3_static/GoogleCast.framework/GoogleCastUIResources.bundle",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleCastCoreResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleCastUIResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B956B3BC4C2B838C4B5ED52A /* [CP] Copy Pods Resources */ = {
+		12D50EA18152C91C0BD93F0C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -690,7 +568,65 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DEEF24CE4F76789E5E8C369D /* [CP] Check Pods Manifest.lock */ = {
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		2D39B338D8D28794D99EBC40 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ChristFellowship-ChristFellowshipTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EC346A0A1AE06EF68C9C5018 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ChristFellowship-tvOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB66AA3F98BCB53CBC75B68B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -710,24 +646,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FCCA4C49EA7A2AEC803404CA /* [CP] Prepare Artifacts */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-artifacts.sh",
-				"${PODS_ROOT}/OpenSSL-Universal/Frameworks/OpenSSL.xcframework",
-			);
-			name = "[CP] Prepare Artifacts";
-			outputPaths = (
-				"${BUILT_PRODUCTS_DIR}/cocoapods-artifacts-${CONFIGURATION}.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-artifacts.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -799,7 +717,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 334DC4BFD511288AD70D0B65 /* Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig */;
+			baseConfigurationReference = 2D6295D361D678BC3A2726A1 /* Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -827,7 +745,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 123C994C6EFBBE0485050490 /* Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig */;
+			baseConfigurationReference = 57E5783D478DF679ADCCA2A9 /* Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -852,11 +770,11 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 54F271B8EB67A4997A2C7D96 /* Pods-ChristFellowship.debug.xcconfig */;
+			baseConfigurationReference = 7BA0E6A4BB5B794AD9124426 /* Pods-ChristFellowship.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				ENABLE_BITCODE = NO;
@@ -882,11 +800,11 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F8F5BC4745C8F22C695573D /* Pods-ChristFellowship.release.xcconfig */;
+			baseConfigurationReference = B6763055463933ADC22EE326 /* Pods-ChristFellowship.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -914,7 +832,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 745C835CA2F1E1EC2425152A /* Pods-ChristFellowship-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 519080799ABBDEC9FF7655F5 /* Pods-ChristFellowship-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -950,7 +868,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AE85030F59F256E90D5A4C2B /* Pods-ChristFellowship-tvOS.release.xcconfig */;
+			baseConfigurationReference = 68605A5C2E1F3EF9EC3C275B /* Pods-ChristFellowship-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -985,7 +903,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8ABBCDAD6DFF85D8CEA38EA /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = B136C501594D2A9BD54E81FE /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1017,7 +935,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6BCBDB0E7FD564D7B670D01 /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 7B4D5FC707286118DBB6772E /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
