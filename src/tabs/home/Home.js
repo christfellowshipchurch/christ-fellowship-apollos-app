@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';

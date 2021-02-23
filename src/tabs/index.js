@@ -55,6 +55,7 @@ const TabNavigator = (props) => (
         ),
       }}
     />
+
     <Screen
       name="Discover"
       component={Discover}
@@ -65,6 +66,7 @@ const TabNavigator = (props) => (
         ),
       }}
     />
+
     <Screen
       name="Events"
       component={EnhancedEvents}

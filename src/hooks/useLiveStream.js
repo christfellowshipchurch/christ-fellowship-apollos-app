@@ -36,17 +36,45 @@ const useLiveStream = ({ liveStreamId }) => {
    * note : there was an issue where even when `skip` was passed a truthy value, it still wasn't skipping the query and this was causing ID parsing errors on the API. They are handled gracefully by the API, but it'll still throw unecessary errors. The following GitHub issues describes the error perfectly and suggests using the fetch-policy as a hacky way to avoid network requests unecessarily being made.
    * https://github.com/apollographql/apollo-client/issues/6190
    */
+  const fiveMins = 60 * 5;
   const skip = !liveStreamId || isEmpty(liveStreamId) || liveStreamId === '';
-  const { data, loading, error, refetch } = useQuery(GET_LIVE_STREAM, {
-    variables: { id: liveStreamId || '' },
-    skip,
-    fetchPolicy: skip ? 'cache-only' : 'network-only',
-  });
+
+  // State
   const [nowIsBefore, setNowIsBefore] = useState(false);
   const [nowIsAfter, setNowIsAfter] = useState(false);
   const [nextRefetch, setNextRefetch] = useState(null);
 
-  const fiveMins = 60 * 5;
+  // Fetch
+  const { data, loading, error, refetch } = useQuery(GET_LIVE_STREAM, {
+    variables: { id: liveStreamId || '' },
+    skip,
+    fetchPolicy: skip ? 'cache-only' : 'network-only',
+    // eslint-disable-next-line no-shadow
+    onCompleted: ({ data }) => {
+      const startDate = data?.node?.eventStartTime
+        ? parseISO(data?.node?.eventStartTime)
+        : null;
+      const endDate = data?.node?.eventEndTime
+        ? parseISO(data?.node?.eventEndTime)
+        : null;
+
+      if (startDate) setNowIsBefore(isBefore(new Date(), startDate));
+      if (endDate) {
+        setNowIsAfter(isAfter(new Date(), endDate));
+
+        /**
+         * If right now is more than 5 minutes out from the end of the stream, set the next refetch of data to be 5 minutes before the stream ends
+         */
+
+        if (differenceInSeconds(endDate, new Date()) >= fiveMins) {
+          const fiveMinsBeforeEnd = subSeconds(endDate, fiveMins);
+          setNextRefetch(
+            differenceInMilliseconds(fiveMinsBeforeEnd, new Date())
+          );
+        }
+      }
+    },
+  });
 
   // Effects
   useEffect(
@@ -74,33 +102,7 @@ const useLiveStream = ({ liveStreamId }) => {
     [nextRefetch]
   );
 
-  useEffect(
-    () => {
-      const startDate = data?.node?.eventStartTime
-        ? parseISO(data?.node?.eventStartTime)
-        : null;
-      const endDate = data?.node?.eventEndTime
-        ? parseISO(data?.node?.eventEndTime)
-        : null;
-
-      if (startDate) setNowIsBefore(isBefore(new Date(), startDate));
-      if (endDate) {
-        setNowIsAfter(isAfter(new Date(), endDate));
-
-        /**
-         * If right now is more than 5 minutes out from the end of the stream, set the next refetch of data to be 5 minutes before the stream ends
-         */
-
-        if (differenceInSeconds(endDate, new Date()) >= fiveMins) {
-          const fiveMinsBeforeEnd = subSeconds(endDate, fiveMins);
-          setNextRefetch(
-            differenceInMilliseconds(fiveMinsBeforeEnd, new Date())
-          );
-        }
-      }
-    },
-    [data]
-  );
+  useEffect(() => {}, [data]);
 
   useEffect(
     () => {

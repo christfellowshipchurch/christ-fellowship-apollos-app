@@ -47,7 +47,7 @@ import Onboarding from './ui/Onboarding';
 
 // bugsnag configuration
 // eslint-disable-next-line
-import bugsnag from './bugsnag';
+// import bugsnag from './bugsnag';
 
 import 'core-js/features/promise';
 

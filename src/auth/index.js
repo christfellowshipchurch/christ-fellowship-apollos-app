@@ -18,6 +18,27 @@ import AuthPasswordWithPasswordReset from './AuthPasswordWithPasswordReset';
 
 // import Entry from './Entry';
 
+const AuthSMSPhoneEntryConnectedOverrides = (props) => (
+  <AuthSMSPhoneEntryConnected
+    {...props}
+    policyInfo="We'll text you a code to make logging in super easy!"
+  />
+);
+
+const AuthSMSVerificationConnectedOverrides = (props) => (
+  <AuthSMSPhoneEntryConnected
+    {...props}
+    policyInfo="We'll text you a code to make logging in super easy!"
+  />
+);
+
+const AuthProfileDetailsEntryConnectedOverrides = (props) => (
+  <AuthProfileDetailsEntryConnected
+    {...props}
+    Component={AuthProfileDetailsEntry}
+  />
+);
+
 /**
  * We use a custom Auth Navigator Stack cause we need to be able to check the age of new users to make sure that they are at least 13 years old.
  */
@@ -47,12 +68,7 @@ const AuthNavigator = (props) => (
         >
           <IdentityStack.Screen
             name="AuthSMSPhoneEntryConnected"
-            component={(props) => (
-              <AuthSMSPhoneEntryConnected
-                {...props}
-                policyInfo="We'll text you a code to make logging in super easy!"
-              />
-            )}
+            component={AuthSMSPhoneEntryConnectedOverrides}
           />
           <IdentityStack.Screen
             name="AuthEmailEntryConnected"
@@ -63,12 +79,7 @@ const AuthNavigator = (props) => (
     </AuthStack.Screen>
     <AuthStack.Screen
       name="AuthSMSVerificationConnected"
-      component={(props) => (
-        <AuthSMSVerificationConnected
-          {...props}
-          confirmationPromptText="We just sent you a code. Enter it below when it arrives."
-        />
-      )}
+      component={AuthSMSVerificationConnectedOverrides}
     />
     <AuthStack.Screen
       name="AuthPasswordEntryConnected"
@@ -80,12 +91,7 @@ const AuthNavigator = (props) => (
     />
     <AuthStack.Screen
       name="AuthProfileDetailsEntryConnected"
-      component={(props) => (
-        <AuthProfileDetailsEntryConnected
-          {...props}
-          Component={AuthProfileDetailsEntry}
-        />
-      )}
+      component={AuthProfileDetailsEntryConnectedOverrides}
     />
 
     {/* Redirects */}

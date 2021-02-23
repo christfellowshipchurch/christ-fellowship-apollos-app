@@ -11,6 +11,7 @@
   "scripts": {
     "android": "SIM=\"$($HOME/Library/Android/sdk/emulator/emulator -list-avds | sed -n 1p)\" && $HOME/Library/Android/sdk/emulator/emulator -avd \"${SIM}\" & react-native run-android --appId com.differential.apollos",
     "beta": "./scripts/add-packages.sh beta",
+    "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
     "bugsnag-release": "yarn bugsnag-release:android && yarn bugsnag-release:ios",
     "bugsnag-release:android": "yarn generate-source-map:android && yarn upload-source-map:android",
     "bugsnag-release:ios": "yarn generate-source-map:ios && yarn upload-source-map:ios",
@@ -33,7 +34,7 @@
     "pods": "(bundle install && cd ios && bundle exec pod install --repo-update)",
     "postinstall": "jetify && yarn pods",
     "postversion": "react-native-version --never-amend --android android/app/build.gradle --ios ios/",
-    "prod": "ZOOM_SDK_STAGE=prod yarn nuke",
+    "prod": "ZOOM_SDK_STAGE=prod yarn nuke:node && yarn zoom:prod",
     "prepublish": "lerna run build && lerna run generate-stories",
     "prestart": "yarn generate-stories & node ./scripts/get-introspection-data.js",
     "setup": "./scripts/init.sh",
@@ -48,9 +49,9 @@
     "upload-source-map:android": "bash ./scripts/upload-bugsnag-source-map.sh android",
     "upload-source-map:ios": "bash ./scripts/upload-bugsnag-source-map.sh ios",
     "version": "node ../../scripts/update-apollos-version.js && git add apollos.json",
+    "zoom": "patch-package && bash ./scripts/get-zoom-sdk.sh && yarn pods",
     "zoom:dev": "bash yarn zoom",
-    "zoom:prod": "ZOOM_SDK_STAGE=prod yarn zoom",
-    "zoom": "patch-package && bash ./scripts/get-zoom-sdk.sh && yarn pods"
+    "zoom:prod": "ZOOM_SDK_STAGE=prod yarn zoom"
   },
   "dependencies": {
     "@apollo/client": "3.3.0-rc.2",
@@ -116,7 +117,7 @@
     "querystring": "^0.2.0",
     "react": "16.13.1",
     "react-apollo": "2.5.5",
-    "react-native": "0.63.4",
+    "react-native": "0.63.2",
     "react-native-add-calendar-event": "^3.0.2",
     "react-native-awesome-alerts": "^1.3.3",
     "react-native-config": "^0.11.7",
@@ -151,6 +152,7 @@
     "react-native-video": "^5.0.0",
     "react-native-video-controls": "2.2.3",
     "react-native-webview": "^7.0.0",
+    "react-native-zoom-bridge": "1.0.18",
     "react-navigation": "^3.11.0",
     "react-navigation-stack": "^2.1.1",
     "react-navigation-tabs": "0.6.0",

@@ -42,6 +42,7 @@ const MAPPINGS = {
   HorizontalCardListFeature: () => null,
   VerticalCardListFeature: () => null,
   PrayerListFeature: PrayerFeatureConnected,
+  // LiveStreamListFeature: () => null,
   LiveStreamListFeature: LiveStreamListFeatureConnected,
 };
 
