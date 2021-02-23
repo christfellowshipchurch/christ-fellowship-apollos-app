@@ -1,20 +1,17 @@
 import React from 'react';
 import ApollosConfig from '@apollosproject/config';
-import {
-  Providers,
-  BackgroundView,
-  NavigationService,
-} from '@apollosproject/ui-kit';
+
 import { AnalyticsProvider } from '@apollosproject/ui-analytics';
 import { NotificationsProvider } from '@apollosproject/ui-notifications';
 import { LiveProvider } from '@apollosproject/ui-connected';
 import { checkOnboardingStatusAndNavigate } from '@apollosproject/ui-onboarding';
 import { AuthProvider } from '@apollosproject/ui-auth';
+import { useColorScheme } from 'react-native';
 import {
-  DynamicValue,
-  useDynamicValue,
-  DarkModeProvider,
-} from 'react-native-dark-mode';
+  Providers,
+  BackgroundView,
+  NavigationService,
+} from '@apollosproject/ui-kit';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 // import NotificationsProvider from './NotificationsProvider';
 import AppStateProvider from './AppStateProvider';
@@ -23,10 +20,14 @@ import { track, identify } from './amplitude';
 import ClientProvider, { client } from './client';
 import customTheme, { customIcons } from './theme';
 
-const dynamicTheme = new DynamicValue('light', 'dark');
-
 const AppProviders = (props) => {
-  const theme = useDynamicValue(dynamicTheme);
+  /**
+   * note : In order to make sure that we don't accidentally set our base theme to an invalid value, we'll just check to make sure that we have either `light` or `dark` as the current scheme
+   */
+  const scheme = useColorScheme();
+  const safeTheme = scheme === 'light' || scheme === 'dark' ? scheme : 'light';
+
+  console.log({ scheme });
 
   return (
     <ClientProvider {...props}>
@@ -48,19 +49,17 @@ const AppProviders = (props) => {
             trackFunctions={[track]}
             identifyFunctions={[identify]}
           >
-            <DarkModeProvider>
-              <Providers
-                themeInput={{ ...customTheme, type: theme }}
-                iconInput={customIcons}
-                {...props}
-              >
-                <BackgroundView>
-                  <ActionSheetProvider>
-                    <AppStateProvider {...props} />
-                  </ActionSheetProvider>
-                </BackgroundView>
-              </Providers>
-            </DarkModeProvider>
+            <Providers
+              themeInput={{ ...customTheme, type: safeTheme }}
+              iconInput={customIcons}
+              {...props}
+            >
+              <BackgroundView>
+                <ActionSheetProvider>
+                  <AppStateProvider {...props} />
+                </ActionSheetProvider>
+              </BackgroundView>
+            </Providers>
           </AnalyticsProvider>
         </AuthProvider>
       </NotificationsProvider>

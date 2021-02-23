@@ -1,19 +1,23 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
 import PropTypes from 'prop-types';
-import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
+import { get } from 'lodash';
 
+import { StatusBar, useColorScheme } from 'react-native';
 import { withTheme } from '@apollosproject/ui-kit';
 
-const dynamicBarStyleValue = new DynamicValue('dark-content', 'light-content');
+const dynamicBarStyleValue = {
+  light: 'dark-content',
+  dark: 'light-content',
+};
 
 const AppStatusBar = withTheme(({ theme, barStyle = 'dark-content' }) => ({
   barStyle,
-  backgroundColor: theme.colors.paper,
+  backgroundColor: theme.colors.background.paper,
 }))(StatusBar);
 
 const DynamicStatusBar = ({ barStyle }) => {
-  const dynamicBarStyle = useDynamicValue(dynamicBarStyleValue);
+  const scheme = useColorScheme();
+  const dynamicBarStyle = get(dynamicBarStyleValue, scheme, 'dark-content');
 
   return <AppStatusBar barStyle={barStyle || dynamicBarStyle} />;
 };

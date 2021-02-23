@@ -1,16 +1,17 @@
 import React from 'react';
-import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 
+import { View, useColorScheme } from 'react-native';
 import { PrayerExperienceConnected } from '@apollosproject/ui-prayer';
 import PrayerListFeatureConnected from '@apollosproject/ui-connected/src/PrayerListFeatureConnected';
 import PrayerFeature from './PrayerFeature';
 
-const dynamicTheme = new DynamicValue('light', 'dark');
-
 const DynamicPrayerExperienceConnected = (props) => {
-  const theme = useDynamicValue(dynamicTheme);
+  /**
+   * We don't want to accidentally set the Prayer Experience theme to something invalid, so we'll check for either `light` or `dark` and fall back to `light`
+   */
+  const scheme = useColorScheme();
+  const theme = scheme === 'light' || scheme === 'dark' ? scheme : 'light';
 
   return <PrayerExperienceConnected {...props} themeType={theme} />;
 };

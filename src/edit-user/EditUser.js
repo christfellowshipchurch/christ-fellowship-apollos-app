@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
+import { get } from 'lodash';
+import PropTypes from 'prop-types';
+import moment from 'moment';
+import Color from 'color';
+import { SafeAreaView } from 'react-navigation';
+
 import {
   View,
   StyleSheet,
   KeyboardAvoidingView,
   StatusBar,
-  ScrollView,
   Animated,
+  useColorScheme,
 } from 'react-native';
-import { useQuery } from '@apollo/client';
-import { get } from 'lodash';
-import PropTypes from 'prop-types';
-import moment from 'moment';
-import Color from 'color';
-import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
-import { SafeAreaView } from 'react-navigation';
-
 import {
   GradientOverlayImage,
   styled,
@@ -44,7 +42,6 @@ import {
 } from '../ui/inputs';
 import { useForm, useCurrentUser } from '../hooks';
 
-import { GET_FIELD_OPTIONS } from './queries';
 import UpdatePushNotification from './UpdatePushNotification';
 
 const FeaturedImage = withTheme(({ theme }) => ({
@@ -117,7 +114,10 @@ const Disclaimer = styled(({ theme }) => ({
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
-const pickerColorValue = new DynamicValue('black', 'white');
+const pickerColorValue = {
+  light: 'black',
+  dark: 'white',
+};
 
 // This component is made to be able to edit ANY user profile
 // Currently, we only have the need to edit Current User,
@@ -139,6 +139,7 @@ const EditUser = ({
   genderOptions,
   stateOptions,
 }) => {
+  const scheme = useColorScheme();
   const {
     updateProfileField,
     updateCommunicationPreference,
@@ -174,7 +175,7 @@ const EditUser = ({
       });
     }
   };
-  const pickerColor = useDynamicValue(pickerColorValue);
+  const pickerColor = get(pickerColorValue, scheme, 'white');
   const featuredImage = get(campus, 'featuredImage.uri', null);
 
   if (loading && !firstName)

@@ -2,18 +2,14 @@
 
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import React from 'react';
-import { Platform, YellowBox } from 'react-native';
-import { useDarkModeContext } from 'react-native-dark-mode';
 import 'react-native-gesture-handler'; // required for react-navigation
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 
 import {
   BackgroundView,
-  ThemeMixin,
   NavigationService,
   withTheme,
 } from '@apollosproject/ui-kit';
@@ -52,9 +48,6 @@ import Onboarding from './ui/Onboarding';
 import 'core-js/features/promise';
 
 enableScreens(); // improves performance for react-navigation
-
-// ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
-YellowBox.ignoreWarnings(['Warning:']);
 
 const ProtectedRouteWithSplashScreen = (props) => {
   const handleOnRouteChange = () => SplashScreen.hide();

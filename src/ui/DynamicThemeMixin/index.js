@@ -1,29 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { get } from 'lodash';
+/**
+ * ! Core Apollos' ThemeMixin now takes device theme into consideration, so we can just expore that in case of unknown dependencies.
+ */
 
 import { ThemeMixin } from '@apollosproject/ui-kit';
-import { DynamicValue, useDynamicValue } from 'react-native-dark-mode';
 
-const dynamicTheme = new DynamicValue('light', 'dark');
-
-const DynamicThemeMixin = ({ children, theme }) => {
-  const defaultTheme = useDynamicValue(dynamicTheme);
-
-  return (
-    <ThemeMixin
-      mixin={{
-        type: get(theme, 'type', defaultTheme).toLowerCase(),
-        colors: get(theme, 'colors'),
-      }}
-    >
-      {children}
-    </ThemeMixin>
-  );
-};
-
-DynamicThemeMixin.propTypes = {
-  theme: PropTypes.string,
-};
-
-export default DynamicThemeMixin;
+export default ThemeMixin;
