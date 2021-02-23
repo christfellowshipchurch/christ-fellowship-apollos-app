@@ -27,13 +27,7 @@ import GET_CARD_PARTS from './getCardParts';
 /**
  * note : so this isn't the most elegant way to do this, BUT! it's what we gotta do. Right now, there's an issue with the `skip` property of `useQuery` where it doesn't actually skip and sends all kinds of network requests with empty Id's. This causes a lot of noise and unwanted errors on the API. This wrapper component will requeire that an Id be passed with it. Only render this component if you're positive that you have an Id
  */
-const renderConnectedCard = ({
-  __typename,
-  id,
-  labelText,
-  Component,
-  ...props
-}) => {
+const ConnectedCard = ({ __typename, id, labelText, Component, ...props }) => {
   const skip = !id || isEmpty(id);
   const { data } = useQuery(GET_CARD_PARTS, {
     skip,
@@ -66,6 +60,7 @@ const renderConnectedCard = ({
         ),
         totalAvatars: get(node, 'members.totalCount', 0),
       };
+
       break;
     case 'PrayerRequest':
       cardProps = {
@@ -108,6 +103,7 @@ const CardMapper = ({
 
   let FinalComponent = null;
   const cardProps = {
+    __typename,
     isLoading,
     title,
     summary,
@@ -148,12 +144,14 @@ const CardMapper = ({
     );
   }
 
-  return renderConnectedCard({
-    id: relatedNode?.id,
-    Component: FinalComponent,
-    ...cardProps,
-    labelText: transformISODates(cardProps?.labelText),
-  });
+  return (
+    <ConnectedCard
+      id={relatedNode?.id}
+      Component={FinalComponent}
+      {...cardProps}
+      labelText={transformISODates(cardProps?.labelText)}
+    />
+  );
 };
 
 CardMapper.propTypes = {

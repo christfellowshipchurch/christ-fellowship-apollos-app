@@ -7,7 +7,7 @@ import NodeSingle from './NodeSingle';
 
 const { Screen, Navigator } = createNativeStackNavigator();
 
-const NodeSingleNavigator = ({ route, ...props }) => (
+const NodeSingleNavigator = ({ route, navigation, ...props }) => (
   <Navigator
     {...props}
     headerMode="float"

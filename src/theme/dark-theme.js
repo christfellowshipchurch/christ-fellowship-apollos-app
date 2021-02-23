@@ -4,9 +4,7 @@ const dark = ({ colors: themeColors, alpha }) => ({
   colors: {
     primary: themeColors.primary,
     screen: themeColors.black,
-    paper: Color(themeColors.darkPrimary)
-      .darken(0.5)
-      .hex(),
+    paper: themeColors.darkPrimary,
 
     text: {
       primary: themeColors.lightPrimary,
@@ -15,10 +13,6 @@ const dark = ({ colors: themeColors, alpha }) => ({
       link: themeColors.lightSecondary,
     },
     background: {
-      screen: themeColors.black,
-      paper: Color(themeColors.darkPrimary)
-        .darken(0.5)
-        .hex(),
       accent: Color(themeColors.darkTertiary)
         .fade(alpha.medium)
         .hex(),

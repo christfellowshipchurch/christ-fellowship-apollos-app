@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 
+import { Platform } from 'react-native';
 import {
   BackgroundView,
   NavigationService,
@@ -71,14 +72,14 @@ const { Navigator, Screen } = createNativeStackNavigator();
 const ThemedNavigator = withTheme(({ theme, ...props }) => ({
   ...props,
   screenOptions: {
-    headerTintColor: theme.colors.action.secondary,
+    headerTintColor: theme.colors.primary,
     headerTitleStyle: {
       color: theme.colors.text.primary,
     },
-    // headerStyle: {
-    //   backgroundColor: theme.colors.background.paper,
-    //   ...Platform.select(theme.shadows.default),
-    // },
+    headerStyle: {
+      backgroundColor: theme.colors.background.paper,
+      ...Platform.select(theme.shadows.default),
+    },
     headerShown: false,
     stackPresentation: 'fullScreenModal',
   },
@@ -106,11 +107,15 @@ const StackNavigator = (props) => (
       component={ChatChannelsList}
       options={{ title: 'ChatChannelsList' }}
     />
-    {/* <Screen
-    name="ContentFeed"
-    component={ContentFeed}
-    options={{ title: 'Content Feed' }}
-  /> */}
+    <Screen
+      name="ContentFeed"
+      component={ContentFeed}
+      options={({ route }) => ({
+        title: route.params?.itemTitle || 'Content Feed',
+        stackPresentation: 'push',
+        headerShown: true,
+      })}
+    />
     <Screen
       name="ContentSingle"
       component={ContentSingle}
@@ -147,21 +152,21 @@ const StackNavigator = (props) => (
         // stackPresentation: 'push',
       }}
     />
-    {/* <Screen
-    name="Location"
-    component={Location}
-    options={{ headerShown: true }}
-  /> */}
+    <Screen
+      name="Location"
+      component={Location}
+      options={{ headerShown: true }}
+    />
     <Screen
       name="MyPrayerRequestsFeed"
       component={MyPrayerRequestsFeed}
       options={{ title: 'My Prayer Requests' }}
     />
-    {/* <Screen
-    name="NodeSingle"
-    component={NodeSingle}
-    options={{ title: 'Node' }}
-  /> */}
+    <Screen
+      name="NodeSingle"
+      component={NodeSingle}
+      options={{ title: 'Node' }}
+    />
     <Screen
       name="NotificationCenter"
       component={NotificationCenter}
@@ -211,7 +216,6 @@ const App = (props) => (
       <NavigationContainer
         ref={NavigationService.setTopLevelNavigator}
         onReady={NavigationService.setIsReady}
-        // theme={mode}
       >
         <StackNavigator {...props} />
       </NavigationContainer>

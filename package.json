@@ -119,6 +119,7 @@
     "react-apollo": "2.5.5",
     "react-native": "0.63.2",
     "react-native-add-calendar-event": "^3.0.2",
+    "react-native-appearance": "^0.3.4",
     "react-native-awesome-alerts": "^1.3.3",
     "react-native-config": "^0.11.7",
     "react-native-device-info": "^4.0.1",

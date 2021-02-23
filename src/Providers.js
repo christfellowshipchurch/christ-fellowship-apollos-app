@@ -2,18 +2,19 @@ import React from 'react';
 import ApollosConfig from '@apollosproject/config';
 
 import { AnalyticsProvider } from '@apollosproject/ui-analytics';
-import { NotificationsProvider } from '@apollosproject/ui-notifications';
+// import { NotificationsProvider } from '@apollosproject/ui-notifications';
 import { LiveProvider } from '@apollosproject/ui-connected';
 import { checkOnboardingStatusAndNavigate } from '@apollosproject/ui-onboarding';
 import { AuthProvider } from '@apollosproject/ui-auth';
-import { useColorScheme } from 'react-native';
+
+import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import {
   Providers,
   BackgroundView,
   NavigationService,
 } from '@apollosproject/ui-kit';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-// import NotificationsProvider from './NotificationsProvider';
+import NotificationsProvider from './NotificationsProvider';
 import AppStateProvider from './AppStateProvider';
 
 import { track, identify } from './amplitude';
@@ -26,8 +27,6 @@ const AppProviders = (props) => {
    */
   const scheme = useColorScheme();
   const safeTheme = scheme === 'light' || scheme === 'dark' ? scheme : 'light';
-
-  console.log({ scheme });
 
   return (
     <ClientProvider {...props}>
@@ -67,4 +66,10 @@ const AppProviders = (props) => {
   );
 };
 
-export default AppProviders;
+const AppProvidersWithAppearance = (props) => (
+  <AppearanceProvider>
+    <AppProviders {...props} />
+  </AppearanceProvider>
+);
+
+export default AppProvidersWithAppearance;
