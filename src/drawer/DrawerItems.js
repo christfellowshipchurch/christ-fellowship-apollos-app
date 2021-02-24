@@ -20,7 +20,6 @@ const GET_MORE_LINKS = gql`
         name
         uri
         icon
-        openInApp
       }
     }
   }
@@ -33,7 +32,7 @@ const BackgroundView = styled(({ theme }) => ({
 
 const TableWithLinks = ({ name, links = [], onPress }) => (
   <TableView title={name} padded>
-    {links.map(({ name: linkName, icon, openInApp, uri }) => (
+    {links.map(({ name: linkName, icon, uri }) => (
       <Cell
         key={linkName}
         icon={icon}

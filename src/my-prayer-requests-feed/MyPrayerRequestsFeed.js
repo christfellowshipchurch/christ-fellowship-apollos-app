@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
-import { get } from 'lodash';
 import { useQuery } from '@apollo/client';
+import { get } from 'lodash';
 import moment from 'moment';
 
+import { View } from 'react-native';
 import { fetchMoreResolver } from '@apollosproject/ui-connected';
 import {
   styled,
@@ -121,24 +120,22 @@ const MyPrayerRequestsFeed = ({ navigation }) => {
     );
 
   return (
-    <SafeAreaView forceInset style={{ flex: 1 }}>
-      <CardFeed
-        content={prayers.sort((a, b) =>
-          moment(b.requestedDate).diff(a.requestedDate)
-        )}
-        renderItem={renderItem}
-        loadingStateObject={loadingStateObject}
-        isLoading={loading}
-        error={error}
-        fetchMore={fetchMoreResolver({
-          collectionName: 'currentUserPrayerRequests',
-          fetchMore,
-          variables,
-          data,
-        })}
-        refetch={refetch}
-      />
-    </SafeAreaView>
+    <CardFeed
+      content={prayers.sort((a, b) =>
+        moment(b.requestedDate).diff(a.requestedDate)
+      )}
+      renderItem={renderItem}
+      loadingStateObject={loadingStateObject}
+      isLoading={loading}
+      error={error}
+      fetchMore={fetchMoreResolver({
+        collectionName: 'currentUserPrayerRequests',
+        fetchMore,
+        variables,
+        data,
+      })}
+      refetch={refetch}
+    />
   );
 };
 
