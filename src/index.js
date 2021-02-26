@@ -8,7 +8,7 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 
-import { Platform } from 'react-native';
+import { Platform, Text } from 'react-native';
 import {
   BackgroundView,
   NavigationService,
@@ -47,6 +47,13 @@ import Onboarding from './ui/Onboarding';
 // import bugsnag from './bugsnag';
 
 import 'core-js/features/promise';
+
+/**
+ * Disabled Font Scaling in iOS
+ * https://stackoverflow.com/questions/41807843/how-to-disable-font-scaling-in-react-native-for-ios-app
+ */
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
 
 enableScreens(); // improves performance for react-navigation
 
