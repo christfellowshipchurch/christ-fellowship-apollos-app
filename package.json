@@ -32,7 +32,7 @@
     "nuke:cache": "watchman watch-del-all && react-native start --reset-cache",
     "nuke:node": "rm -rdf ./node_modules && yarn cache clean && yarn",
     "pods": "(bundle install && cd ios && bundle exec pod install --repo-update)",
-    "postinstall": "jetify && yarn pods",
+    "postinstall": "jetify && patch-package && bash ./scripts/get-zoom-sdk.sh && yarn pods",
     "postversion": "react-native-version --never-amend --android android/app/build.gradle --ios ios/",
     "prod": "ZOOM_SDK_STAGE=prod yarn nuke:node && yarn zoom:prod",
     "prepublish": "lerna run build && lerna run generate-stories",
