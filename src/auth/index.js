@@ -79,10 +79,12 @@ const AuthNavigator = (props) => (
     </AuthStack.Screen>
     <AuthStack.Screen
       name="AuthSMSVerificationConnected"
+      options={{ headerShown: true }}
       component={AuthSMSVerificationConnectedOverrides}
     />
     <AuthStack.Screen
       name="AuthPasswordEntryConnected"
+      options={{ headerShown: true }}
       component={AuthPasswordWithPasswordReset}
     />
     <AuthStack.Screen
@@ -112,22 +114,6 @@ const AuthNavigator = (props) => (
   </AuthStack.Navigator>
 );
 
-AuthNavigator.propTypes = {
-  screenProps: PropTypes.shape({
-    alternateLoginText: PropTypes.node,
-    authTitleText: PropTypes.string,
-    confirmationTitleText: PropTypes.string,
-    confirmationPromptText: PropTypes.string,
-    onFinishAuth: PropTypes.func,
-    passwordPromptText: PropTypes.string,
-    smsPolicyInfo: PropTypes.node,
-    smsPromptText: PropTypes.string,
-    emailRequired: PropTypes.bool,
-    handleForgotPassword: PropTypes.func,
-  }),
-  BackgroundComponent: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-};
-
 const ThemedAuthNavigator = withTheme(({ theme, ...props }) => ({
   ...props,
   screenOptions: {
@@ -141,6 +127,7 @@ const ThemedAuthNavigator = withTheme(({ theme, ...props }) => ({
     headerHideShadow: true,
     headerTitle: '',
     headerBackTitle: 'Back',
+    headerShown: false,
   },
 }))(AuthNavigator);
 

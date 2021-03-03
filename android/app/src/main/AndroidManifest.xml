@@ -35,6 +35,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- ? not exactly sure what this is for? I _think_ this is used for universal linking in android? -->
+            <!-- <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                
+                <data android:scheme="https"
+                        android:host="@string/APP_DATA_URL"
+                        android:pathPrefix="/app-link" />
+                <data android:scheme="http" />
+            </intent-filter> -->
         </activity>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>

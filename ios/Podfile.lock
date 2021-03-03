@@ -209,7 +209,7 @@ PODS:
   - React-jsinspector (0.63.2)
   - react-native-add-calendar-event (3.0.2):
     - React
-  - react-native-apollos-player (2.0.0):
+  - react-native-apollos-player (2.1.1):
     - React
   - react-native-appearance (0.3.4):
     - React
@@ -341,7 +341,7 @@ PODS:
     - React-Core
   - RNDeviceInfo (4.0.1):
     - React
-  - RNGestureHandler (1.10.1):
+  - RNGestureHandler (1.10.3):
     - React-Core
   - RNInAppBrowser (3.5.1):
     - React-Core
@@ -349,7 +349,7 @@ PODS:
     - React-Core
   - RNReanimated (1.13.2):
     - React-Core
-  - RNScreens (2.17.1):
+  - RNScreens (2.18.1):
     - React-Core
   - RNSVG (9.13.6):
     - React
@@ -603,7 +603,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 8ca588cc921e70590820ce72b8789b02c67cce38
   React-jsinspector: b14e62ebe7a66e9231e9581279909f2fc3db6606
   react-native-add-calendar-event: aa278da83434f092f04448fc4e1d81c551736368
-  react-native-apollos-player: 407ae8570ca05a666aea3036a346fb9a0c59a6d1
+  react-native-apollos-player: 445b845c71b60f4843048bb79806f7de67c3953b
   react-native-appearance: 0f0e5fc2fcef70e03d48c8fe6b00b9158c2ba8aa
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-config: 55548054279d92e0e4566ea15a8b9b81028ec342
@@ -643,11 +643,11 @@ SPEC CHECKSUMS:
   RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNDateTimePicker: 8a51a2216c307769e69ef827293d59549ab1ca23
   RNDeviceInfo: 687c1b2ab6d86ff1ca1208783320cd144138c7f2
-  RNGestureHandler: 5e58135436aacc1c5d29b75547d3d2b9430d052c
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNInAppBrowser: 48b95ba7a4eaff5cc223bca338d3e319561dbd1b
   RNPermissions: 5df468064df661a4c8c017e2791ce90d7695eea5
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
-  RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
+  RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSVG: 8ba35cbeb385a52fd960fd28db9d7d18b4c2974f
   RNZoomBridge: 1835796645f78d2902bf31895d0a3c25afad069f
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598

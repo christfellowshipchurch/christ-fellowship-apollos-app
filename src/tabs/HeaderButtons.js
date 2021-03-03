@@ -14,7 +14,6 @@ import { useFeatureFlag } from 'hooks';
 const IconsContainer = styled(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
-  paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const ItemRight = styled(({ theme }) => ({
@@ -63,7 +62,7 @@ export const DrawerButton = () => {
 
 const HeaderButtons = () => (
   <IconsContainer>
-    <NotificationCenterIconConnected />
+    {/* <NotificationCenterIconConnected /> */}
     <DrawerButton />
   </IconsContainer>
 );
