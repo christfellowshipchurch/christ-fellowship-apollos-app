@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Query } from '@apollo/client/react/components';
 import { get } from 'lodash';
 

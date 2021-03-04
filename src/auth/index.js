@@ -9,7 +9,6 @@ import {
   AuthEmailEntryConnected,
   AuthProfileEntryConnected,
   AuthProfileDetailsEntryConnected,
-  Entry,
 } from '@apollosproject/ui-auth';
 
 import { withTheme } from '@apollosproject/ui-kit';
@@ -26,7 +25,7 @@ const AuthSMSPhoneEntryConnectedOverrides = (props) => (
 );
 
 const AuthSMSVerificationConnectedOverrides = (props) => (
-  <AuthSMSPhoneEntryConnected
+  <AuthSMSVerificationConnected
     {...props}
     policyInfo="We'll text you a code to make logging in super easy!"
   />

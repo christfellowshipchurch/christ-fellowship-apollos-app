@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { get } from 'lodash';
 import moment from 'moment';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';

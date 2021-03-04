@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import { get } from 'lodash';
 
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchMoreResolver } from '@apollosproject/ui-connected';
 import {
   styled,

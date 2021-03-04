@@ -12,7 +12,7 @@ import { Query } from '@apollo/client/react/components';
 import { withApollo } from '@apollo/client/react/hoc';
 import LinearGradient from 'react-native-linear-gradient';
 import GoogleCast from 'react-native-google-cast';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { get } from 'lodash';
 import { compose } from 'recompose';
 

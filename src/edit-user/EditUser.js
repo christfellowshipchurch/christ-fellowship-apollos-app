@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Color from 'color';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {
   View,

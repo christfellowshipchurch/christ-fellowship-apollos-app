@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { storiesOf } from '@apollosproject/ui-storybook';
 import { BackgroundView } from '@apollosproject/ui-kit';
 import mockData from './SearchFeedDataMock';

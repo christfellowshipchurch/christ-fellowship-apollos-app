@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScrollView, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native';
 import {
   BackgroundView,
   Paragraph,

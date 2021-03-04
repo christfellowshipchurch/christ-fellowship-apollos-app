@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { View, Platform } from 'react-native';
 import { withProps } from 'recompose';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   BackgroundView,
   H3,

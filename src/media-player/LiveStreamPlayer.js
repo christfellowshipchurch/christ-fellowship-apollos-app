@@ -8,7 +8,6 @@ import {
   PanResponder,
   Platform,
   StatusBar,
-  SafeAreaView,
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
@@ -17,6 +16,7 @@ import { Query } from '@apollo/client/react/components';
 import { withApollo } from '@apollo/client/react/hoc';
 import { get } from 'lodash';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   styled,
   withTheme,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';

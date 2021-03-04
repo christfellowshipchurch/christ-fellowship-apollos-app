@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Animated, View, Text } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
@@ -12,10 +12,7 @@ import { styled, BackgroundView } from '@apollosproject/ui-kit';
 import {
   FeaturesFeedConnected,
   HorizontalFeaturesFeedConnected,
-  handleActionPress,
 } from 'features';
-
-import Wordmark from 'ui/Wordmark';
 
 const ListHeaderSpacer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,

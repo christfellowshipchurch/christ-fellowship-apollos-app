@@ -4,7 +4,8 @@ import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 import { get } from 'lodash';
 import { ThemeProvider as ChatThemeProvider } from '@stream-io/styled-components';
 
-import { SafeAreaView, KeyboardAvoidingView, Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import {
   styled,
   withTheme,

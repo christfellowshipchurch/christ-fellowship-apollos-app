@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { get, throttle } from 'lodash';
 
 import { BackgroundView } from '@apollosproject/ui-kit';

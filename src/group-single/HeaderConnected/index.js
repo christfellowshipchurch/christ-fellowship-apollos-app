@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import Color from 'color';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
 import {

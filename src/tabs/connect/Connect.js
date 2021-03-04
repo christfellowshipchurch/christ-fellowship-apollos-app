@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import { styled, BackgroundView } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
