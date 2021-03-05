@@ -188,7 +188,7 @@ LiveStreamsFeedFeatureConnected.propTypes = {
   ]),
 };
 
-LiveStreamsFeedFeatureConnected.propTypes = {
+LiveStreamsFeedFeatureConnected.defaultProps = {
   isLoading: false,
   ItemSeparatorComponent: null,
 };

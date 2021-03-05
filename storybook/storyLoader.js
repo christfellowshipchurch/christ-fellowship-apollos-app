@@ -1,4 +1,3 @@
-
 // Auto-generated file created by react-native-storybook-loader
 // Do not edit.
 //
@@ -11,7 +10,6 @@ function loadStories() {
   require('../src/features/FeaturesFeed/VerticalCardListFeatureConnected/VerticalCardListFeature.stories');
   require('../src/features/HorizontalFeaturesFeed/PrayerFeatureConnected/PrayerFeature.stories');
   require('../src/notification-center/NotificationList.stories');
-  require('../src/tabs/discover/Discover.stories');
   require('../src/tabs/discover/SearchFeed/SearchFeed.stories');
   require('../src/ui/ActionBar/ActionBar.stories');
   require('../src/ui/CardFeeds/CardFeed.stories');
@@ -25,7 +23,6 @@ function loadStories() {
   require('../src/ui/LandingScreen/LandingScreen.stories');
   require('../src/ui/Onboarding/Onboarding.stories');
   require('../src/ui/inputs/Inputs.stories');
-  
 }
 
 const stories = [
@@ -35,7 +32,6 @@ const stories = [
   '../src/features/FeaturesFeed/VerticalCardListFeatureConnected/VerticalCardListFeature.stories',
   '../src/features/HorizontalFeaturesFeed/PrayerFeatureConnected/PrayerFeature.stories',
   '../src/notification-center/NotificationList.stories',
-  '../src/tabs/discover/Discover.stories',
   '../src/tabs/discover/SearchFeed/SearchFeed.stories',
   '../src/ui/ActionBar/ActionBar.stories',
   '../src/ui/CardFeeds/CardFeed.stories',
@@ -49,7 +45,6 @@ const stories = [
   '../src/ui/LandingScreen/LandingScreen.stories',
   '../src/ui/Onboarding/Onboarding.stories',
   '../src/ui/inputs/Inputs.stories',
-  
 ];
 
 module.exports = {

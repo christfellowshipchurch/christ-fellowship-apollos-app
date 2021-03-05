@@ -3032,7 +3032,7 @@
   resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.9.11.tgz#490c752417c17d687e2941659b3c0bff9cb79b83"
   integrity sha512-E7whvvMIl9Ln1sxgug7OAEVWQ69n82iV0d2OWWp5VV52+RW3azKh1IFm4rxdW5/oByMfl7FFL0eHNelGgY4BMQ==
 
-"@react-navigation/bottom-tabs@^5.6.1":
+"@react-navigation/bottom-tabs@^5.11.8":
   version "5.11.8"
   resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-5.11.8.tgz#0af8d5859b1ad781bdd86e8236ceaed60dc355fe"
   integrity sha512-/0AiP+QPGKe35NdGxSjq0XpZjYvURy8H2E4rZMRHJ+fUoq+cX0ze/XQeQ8IHMpoc568ZwOGRgdUToUGZEDMpvA==
@@ -3040,7 +3040,7 @@
     color "^3.1.3"
     react-native-iphone-x-helper "^1.3.0"
 
-"@react-navigation/compat@^5.1.28":
+"@react-navigation/compat@^5.3.14":
   version "5.3.14"
   resolved "https://registry.yarnpkg.com/@react-navigation/compat/-/compat-5.3.14.tgz#bcf38ec0e1d55ae5d8970a7b28dcf90153f46b37"
   integrity sha512-MOWfoq5ViXqoB1gFldRqIVqfvxbYtVMOyGuNh/I7VJi6eXanz4fmEd5inovL4HGimX6e6icD0zn8a/oo6FNi+A==
@@ -3056,7 +3056,7 @@
     query-string "^6.13.6"
     react-is "^16.13.0"
 
-"@react-navigation/drawer@^5.8.4":
+"@react-navigation/drawer@^5.12.4":
   version "5.12.4"
   resolved "https://registry.yarnpkg.com/@react-navigation/drawer/-/drawer-5.12.4.tgz#0e0f8e0f0b6b67b45ca276212a1c80b05dc3b008"
   integrity sha512-0O6OCTgCVnThx0XFsHd/48i6FeV7vxNvJYxeucantcdCwQMWJb46cVMsYGFYt49VwE8VX4Yg/KMZXMPfPxn7Pg==
@@ -3064,7 +3064,7 @@
     color "^3.1.3"
     react-native-iphone-x-helper "^1.3.0"
 
-"@react-navigation/native@^5.6.1":
+"@react-navigation/native@^5.9.3":
   version "5.9.3"
   resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-5.9.3.tgz#3859f439adc9a744b79a98fbc7606bdd459574d5"
   integrity sha512-xaRlCDRVuFGxHsP/IetwLdNvLJwIJBYCUIx/ufWs6QkT9Q0EB0DtKzXCItuHydjMEVPd1Cy7lfjUlSM6hZ6Q3Q==
@@ -3080,7 +3080,7 @@
   dependencies:
     nanoid "^3.1.15"
 
-"@react-navigation/stack@^5.6.2":
+"@react-navigation/stack@^5.14.3":
   version "5.14.3"
   resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-5.14.3.tgz#3d15fcd2cf8d0d2a1248686565c6a85e2d8e1c55"
   integrity sha512-7rHc13DHsYP7l7GcgBcLEyX2/IAuCcRZ1Iu3MtOZSayjvFXxBBYKFKw0OyY9NxOfZUdLl3Q3mLiUHVFZkHMcuA==

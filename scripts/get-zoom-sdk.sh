@@ -22,6 +22,8 @@ then
     echo "Rebuilding Pod File"
     yarn pods
 
+    echo "Finished setup of Zoom's SDK: $ZOOM_SDK"
+
     # echo "Running Bugnsag Source Map upload"
     # yarn bugsnag-release
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
-import { get, isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import {
   differenceInSeconds,
   isAfter,

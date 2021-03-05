@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
-import { styled, BackgroundView } from '@apollosproject/ui-kit';
+import { BackgroundView } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
 import { FeaturesFeedConnected, handleActionPress } from 'features';
@@ -20,8 +19,6 @@ export const GET_GIVE_FEED = gql`
   }
 `;
 
-const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
-
 const Give = () => {
   const { data } = useQuery(GET_GIVE_FEED, {
     fetchPolicy: 'cache-and-network',
@@ -32,16 +29,14 @@ const Give = () => {
     <RockAuthedWebBrowser>
       {(openUrl) => (
         <BackgroundView>
-          <FlexedSafeAreaView>
-            <FeaturesFeedConnected
-              featureFeedId={data?.giveFeedFeatures?.id}
-              openUrl={openUrl}
-              onPressActionItem={handleActionPress}
-              removeClippedSubviews={false}
-              numColumns={1}
-              onRef={(ref) => setRefetchRef(ref)}
-            />
-          </FlexedSafeAreaView>
+          <FeaturesFeedConnected
+            featureFeedId={data?.giveFeedFeatures?.id}
+            openUrl={openUrl}
+            onPressActionItem={handleActionPress}
+            removeClippedSubviews={false}
+            numColumns={1}
+            onRef={(ref) => setRefetchRef(ref)}
+          />
         </BackgroundView>
       )}
     </RockAuthedWebBrowser>

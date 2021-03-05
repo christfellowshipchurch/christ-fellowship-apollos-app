@@ -68,6 +68,7 @@ const TabNavigator = (props) => (
 );
 
 const ThemedTabNavigator = withTheme(({ theme }) => ({
+  headerMode: 'none',
   tabBarOptions: {
     activeTintColor: theme.colors.primary,
     inactiveTintColor: theme.colors.text.tertiary,

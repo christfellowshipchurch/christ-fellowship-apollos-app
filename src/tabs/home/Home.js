@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
@@ -43,25 +42,23 @@ const Home = ({ navigation }) => {
     <RockAuthedWebBrowser>
       {(openUrl) => (
         <BackgroundView>
-          <SafeAreaView>
-            <FeaturesFeedConnected
-              featureFeedId={data?.homeFeedFeatures?.id}
-              openUrl={openUrl}
-              navigation={navigation}
-              ListHeaderComponent={
-                <ListHeaderSpacer>
-                  <HorizontalFeaturesFeedConnected
-                    featureFeedId={data?.homeHeaderFeedFeatures?.id}
-                    refetchRef={get(refetchRef, 'refetchRef', () => null)}
-                    refetchId="HomeFeedFeaturesHeaderConnected"
-                  />
-                </ListHeaderSpacer>
-              }
-              removeClippedSubviews={false}
-              numColumns={1}
-              onRef={(ref) => setRefetchRef(ref)}
-            />
-          </SafeAreaView>
+          <FeaturesFeedConnected
+            featureFeedId={data?.homeFeedFeatures?.id}
+            openUrl={openUrl}
+            navigation={navigation}
+            ListHeaderComponent={
+              <ListHeaderSpacer>
+                <HorizontalFeaturesFeedConnected
+                  featureFeedId={data?.homeHeaderFeedFeatures?.id}
+                  refetchRef={get(refetchRef, 'refetchRef', () => null)}
+                  refetchId="HomeFeedFeaturesHeaderConnected"
+                />
+              </ListHeaderSpacer>
+            }
+            removeClippedSubviews={false}
+            numColumns={1}
+            onRef={(ref) => setRefetchRef(ref)}
+          />
         </BackgroundView>
       )}
     </RockAuthedWebBrowser>

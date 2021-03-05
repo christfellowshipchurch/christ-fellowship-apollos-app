@@ -1,20 +1,14 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/client';
-import { get, isEmpty, isNumber } from 'lodash';
+import { isEmpty, isNumber } from 'lodash';
 import {
-  differenceInSeconds,
-  isAfter,
   isBefore,
   parseISO,
   differenceInMilliseconds,
-  subSeconds,
   isWithinInterval,
   compareAsc,
   closestTo,
 } from 'date-fns';
-import gql from 'graphql-tag';
-import ApollosConfig from '@apollosproject/config';
 
 /**
  * Filter For Valid Stream

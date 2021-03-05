@@ -16,6 +16,7 @@ import {
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import NotificationsProvider from './NotificationsProvider';
 import AppStateProvider from './AppStateProvider';
+import { UserFlagsProvider } from './user-flags';
 
 import { track, identify } from './amplitude';
 import ClientProvider, { client } from './client';
@@ -44,22 +45,24 @@ const AppProviders = (props) => {
             })
           }
         >
-          <AnalyticsProvider
-            trackFunctions={[track]}
-            identifyFunctions={[identify]}
-          >
-            <Providers
-              themeInput={{ ...customTheme, type: safeTheme }}
-              iconInput={customIcons}
-              {...props}
+          <UserFlagsProvider>
+            <AnalyticsProvider
+              trackFunctions={[track]}
+              identifyFunctions={[identify]}
             >
-              <BackgroundView>
-                <ActionSheetProvider>
-                  <AppStateProvider {...props} />
-                </ActionSheetProvider>
-              </BackgroundView>
-            </Providers>
-          </AnalyticsProvider>
+              <Providers
+                themeInput={{ ...customTheme, type: safeTheme }}
+                iconInput={customIcons}
+                {...props}
+              >
+                <BackgroundView>
+                  <ActionSheetProvider>
+                    <AppStateProvider {...props} />
+                  </ActionSheetProvider>
+                </BackgroundView>
+              </Providers>
+            </AnalyticsProvider>
+          </UserFlagsProvider>
         </AuthProvider>
       </NotificationsProvider>
     </ClientProvider>

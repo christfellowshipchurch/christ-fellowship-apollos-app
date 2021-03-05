@@ -1050,6 +1050,7 @@ type Query {
   homeHeaderFeedFeatures: FeatureFeed
   userHeaderFeatures: [Feature] @deprecated(reason: "Please use homeHeaderFeedFeatures instead")
   flagStatus(key: String!): FLAG_STATUS
+  currentUserFlags: [String]
   likedContent(first: Int, after: String): ContentItemsConnection
   groupCoverImages: [GroupCoverImage]
   groupResourceOptions(groupId: ID!, input: ContentItemsConnectionInput): ContentItemsConnection

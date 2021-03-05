@@ -1,15 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { get, throttle } from 'lodash';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useLazyQuery } from '@apollo/client';
+import { get, throttle, take } from 'lodash';
 
-import { BackgroundView } from '@apollosproject/ui-kit';
+import { ScrollView, View } from 'react-native';
+import { BackgroundView, FeedView, styled } from '@apollosproject/ui-kit';
 import DynamicThemeMixin from 'ui/DynamicThemeMixin';
-import StatusBar from 'ui/StatusBar';
+import { GET_CATEGORIES_FROM_FILTER } from './queries';
 import SearchInputHeader from './SearchInputHeader';
-import Browse from './Browse';
 import SearchFeed from './SearchFeed';
 
-const Discover = ({ navigation }) => {
+import Filters from './Filters';
+import TileContentFeed from './TileContentFeed';
+
+const feedItemLoadingState = {
+  id: '',
+  isLoading: true,
+};
+
+const mapData = (data, path) => get(data, path, []).map((edges) => edges.node);
+const renderItem = ({ item, cardsToShow }) => {
+  const content = mapData(item, 'childContentItemsConnection.edges');
+
+  return (
+    <TileContentFeed
+      id={item.id}
+      name={item.title}
+      content={take(content, cardsToShow)}
+      viewAll={content.length > cardsToShow}
+      isLoading={item.isLoading}
+    />
+  );
+};
+
+/**
+ * note : the sticky header on the scrollview doesn't use a solid background color, so we just need to manually add one behind our header elements
+ */
+const HeaderBackgroundView = styled(({ theme }) => ({
+  backgroundColor: theme.colors.background.paper,
+}))(View);
+
+const Discover = ({ navigation, cardsToShow }) => {
+  const [getCategories, { loading, error, data, called }] = useLazyQuery(
+    GET_CATEGORIES_FROM_FILTER
+  );
+
   const [isFocused, setIsFocused] = useState(
     get(navigation, 'params.showSearch', false)
   );
@@ -17,50 +52,56 @@ const Discover = ({ navigation }) => {
     get(navigation, 'params.searchText', '')
   );
 
-  const setNavigationParam = (params) => {
-    navigation.setParams(params);
-  };
-
-  const handleOnChangeText = throttle((value) => setSearchText(value), 300);
-
-  const handleOnFocus = (inputState) => {
-    setIsFocused(inputState);
-  };
-
-  // The 'nested' parameter is already set to show/hide the menu
-  // icon, so we're using that so we don't have to manually import
-  // the icon and handle that explicitly
-  useEffect(() => setNavigationParam({ isFocused }), [isFocused]);
-  useEffect(
-    () => setNavigationParam({ handleOnChangeText, handleOnFocus }),
-    []
-  );
+  const content = mapData(data, 'node.childContentItemsConnection.edges');
 
   return (
     <DynamicThemeMixin>
       <BackgroundView>
-        <SafeAreaView style={{ flex: 1 }}>
-          <StatusBar />
-          <SearchInputHeader
-            onChangeText={throttle(setSearchText, 300)}
-            onFocus={setIsFocused}
-          />
+        <ScrollView stickyHeaderIndices={[0]}>
+          <HeaderBackgroundView>
+            <SearchInputHeader
+              onChangeText={throttle(setSearchText, 300)}
+              onFocus={setIsFocused}
+            />
+          </HeaderBackgroundView>
+
           {isFocused ? (
             <SearchFeed searchText={searchText} navigation={navigation} />
           ) : (
-            <Browse
-              navigation={navigation}
-              selectedFilter={get('navigation', 'params.selectedFilter', '')}
-            />
+            <>
+              <Filters
+                onChange={(filterId) => {
+                  getCategories({
+                    variables: {
+                      id: filterId,
+                      cards: cardsToShow + 1,
+                    },
+                  });
+                }}
+              />
+              <FeedView
+                stickyHeaderIndices={[0]}
+                content={content}
+                error={error && !content.length}
+                isLoading={loading || !called}
+                loadingStateObject={feedItemLoadingState}
+                renderItem={(props) => renderItem({ ...props, cardsToShow })}
+                numColumns={1}
+              />
+            </>
           )}
-        </SafeAreaView>
+        </ScrollView>
       </BackgroundView>
     </DynamicThemeMixin>
   );
 };
 
-Discover.propTypes = {};
+Discover.propTypes = {
+  cardsToShow: PropTypes.number,
+};
 
-Discover.defaultProps = {};
+Discover.defaultProps = {
+  cardsToShow: 4,
+};
 
 export default Discover;

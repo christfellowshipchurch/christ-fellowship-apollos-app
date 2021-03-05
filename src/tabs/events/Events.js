@@ -1,10 +1,9 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
-import { styled, BackgroundView } from '@apollosproject/ui-kit';
+import { BackgroundView } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
 import { FeaturesFeedConnected } from 'features';
@@ -13,8 +12,6 @@ import VerticalCardListFeatureConnected from './VerticalCardListFeatureConnected
 const additionalFeatures = {
   VerticalCardListFeature: VerticalCardListFeatureConnected,
 };
-
-const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
 
 // getEventsFeed uses the EVENTS_FEATURES in the config.yml
 // You can also hardcode an ID if you are confident it will never change
@@ -36,16 +33,14 @@ const Events = ({ navigation }) => {
     <RockAuthedWebBrowser>
       {(openUrl) => (
         <BackgroundView>
-          <FlexedSafeAreaView>
-            <FeaturesFeedConnected
-              featureFeedId={data?.eventsFeedFeatures?.id}
-              openUrl={openUrl}
-              navigation={navigation}
-              additionalFeatures={additionalFeatures}
-              removeClippedSubviews={false}
-              numColumns={1}
-            />
-          </FlexedSafeAreaView>
+          <FeaturesFeedConnected
+            featureFeedId={data?.eventsFeedFeatures?.id}
+            openUrl={openUrl}
+            navigation={navigation}
+            additionalFeatures={additionalFeatures}
+            removeClippedSubviews={false}
+            numColumns={1}
+          />
         </BackgroundView>
       )}
     </RockAuthedWebBrowser>

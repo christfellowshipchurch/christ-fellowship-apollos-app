@@ -1,8 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
-import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
+import isEmpty from 'lodash/isEmpty';
+import { useNavigation } from '@react-navigation/native';
 
+import { View } from 'react-native';
 import {
   styled,
   withTheme,
@@ -16,19 +17,19 @@ import {
 } from '@apollosproject/ui-kit';
 
 import ContentCardConnected from 'ui/ContentCardConnected';
-import { HorizontalDefaultCard, CardMapper } from 'ui/Cards';
+import { HorizontalDefaultCard } from 'ui/Cards';
 
-const RowHeader = styled(({ theme, viewAll }) => ({
+const RowHeader = styled(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
   zIndex: 2, // UX hack to improve tapability. Positions RowHeader above StyledHorizontalTileFeed
   paddingLeft: theme.sizing.baseUnit,
-  ...(viewAll ? {} : { paddingBottom: theme.sizing.baseUnit }),
+  paddingBottom: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const Name = styled({
-  flexGrow: 2,
+  flex: 2,
 })(View);
 
 const AndroidTouchableFix = withTheme(({ theme }) => ({
@@ -50,7 +51,7 @@ const StyledHorizontalTileFeed = styled(({ theme }) => ({
 }))(HorizontalTileFeed);
 
 const Container = styled(({ theme }) => ({
-  marginBottom: theme.sizing.baseUnit,
+  marginBottom: theme.sizing.baseUnit * 0.5,
 }))(View);
 
 const loadingStateObject = {
@@ -59,16 +60,8 @@ const loadingStateObject = {
   coverImage: [],
 };
 
-// todo : refactor Discover Tab to no longer rely on unique logic/ContentCardConnected and move it over to a Feature Schema
-
-const TileContentFeed = ({
-  isLoading,
-  id,
-  name,
-  navigation,
-  content,
-  viewAll,
-}) => {
+const TileContentFeed = ({ isLoading, id, name, content, viewAll }) => {
+  const navigation = useNavigation();
   const renderItem = ({ item }) => (
     <TouchableScale
       onPress={() => {
@@ -88,7 +81,7 @@ const TileContentFeed = ({
   return (
     (isLoading || !isEmpty(content)) && (
       <Container>
-        <RowHeader viewAll={viewAll}>
+        <RowHeader>
           <Name>
             <H4>{name}</H4>
           </Name>

@@ -6,3 +6,4 @@ export useFeatureFlag from './useFeatureFlag';
 export WithFeatureFlag from './WithFeatureFlag';
 export useLiveStream from './useLiveStream';
 export useLiveStreams from './useLiveStreams';
+export { useUserFlag } from '../user-flags';

@@ -9,6 +9,8 @@ const GET_FEATURE_STATUS = gql`
 `;
 
 const useFeatureFlag = (props) => {
+  console.warn('DEPRECATED : please use `useUserFlag` instead');
+
   const key = get(props, 'key');
   const { data, ...queryProps } = useQuery(GET_FEATURE_STATUS, {
     variables: {

@@ -19,7 +19,8 @@ const HomeNavigator = (props) => (
 const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
   ...props,
   screenOptions: {
-    headerTintColor: theme.colors.action.secondary,
+    headerMode: 'screen',
+    headerTintColor: theme.colors.primary,
     headerTitleStyle: {
       color: theme.colors.text.primary,
     },

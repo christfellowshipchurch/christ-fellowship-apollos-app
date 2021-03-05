@@ -3,14 +3,11 @@ import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import { styled, BackgroundView } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
 import { FeaturesFeedConnected } from 'features';
-
-const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
 
 // getConnectFeed uses the CONNECT_FEATURES in the config.yml
 // You can also hardcode an ID if you are confident it will never change
@@ -37,16 +34,14 @@ const Connect = () => {
     <RockAuthedWebBrowser>
       {(openUrl) => (
         <BackgroundView>
-          <FlexedSafeAreaView>
-            <FeaturesFeedConnected
-              featureFeedId={data?.connectFeedFeatures?.id}
-              openUrl={openUrl}
-              ItemSeparatorComponent={ItemSeparator}
-              removeClippedSubviews={false}
-              numColumns={1}
-              onRef={(ref) => setRefetchRef(ref)}
-            />
-          </FlexedSafeAreaView>
+          <FeaturesFeedConnected
+            featureFeedId={data?.connectFeedFeatures?.id}
+            openUrl={openUrl}
+            ItemSeparatorComponent={ItemSeparator}
+            removeClippedSubviews={false}
+            numColumns={1}
+            onRef={(ref) => setRefetchRef(ref)}
+          />
         </BackgroundView>
       )}
     </RockAuthedWebBrowser>

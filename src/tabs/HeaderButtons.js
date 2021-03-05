@@ -9,7 +9,7 @@ import {
   styled,
 } from '@apollosproject/ui-kit';
 
-import { useFeatureFlag } from 'hooks';
+import { useUserFlag } from 'hooks';
 
 const IconsContainer = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -34,9 +34,7 @@ const StyledIcon = withTheme(({ theme }) => ({
 
 export const NotificationCenterIconConnected = () => {
   const navigation = useNavigation();
-  const { enabled } = useFeatureFlag({
-    key: 'NOTIFICATION_CENTER',
-  });
+  const enabled = useUserFlag('NOTIFICATION_CENTER');
 
   return enabled ? (
     <TouchableScale onPress={() => navigation.navigate('NotificationCenter')}>
@@ -62,7 +60,7 @@ export const DrawerButton = () => {
 
 const HeaderButtons = () => (
   <IconsContainer>
-    {/* <NotificationCenterIconConnected /> */}
+    <NotificationCenterIconConnected />
     <DrawerButton />
   </IconsContainer>
 );

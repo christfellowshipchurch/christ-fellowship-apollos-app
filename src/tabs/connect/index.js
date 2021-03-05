@@ -18,7 +18,8 @@ const ConnectNavigator = (props) => (
 const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
   ...props,
   screenOptions: {
-    headerTintColor: theme.colors.action.secondary,
+    headerMode: 'screen',
+    headerTintColor: theme.colors.primary,
     headerTitleStyle: {
       color: theme.colors.text.primary,
     },
@@ -26,6 +27,7 @@ const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
       backgroundColor: theme.colors.background.paper,
       ...Platform.select(theme.shadows.default),
     },
+    headerTitle: '',
     headerRight: HeaderButtons,
     headerHideShadow: true,
   },
