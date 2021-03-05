@@ -10,7 +10,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   styled,
   ActivityIndicator,
@@ -38,11 +37,11 @@ import ResourcesSection from './ResourcesSection';
 export const ContentContainer = withMediaQuery(
   ({ md }) => ({ maxWidth: md }),
   styled(({ theme }) => ({
-    marginVertical: theme.sizing.baseUnit * 1.5,
+    marginTop: theme.sizing.baseUnit * 1.5,
     backgroundColor: theme.colors.transparent,
   })),
   styled(({ theme }) => ({
-    marginVertical: theme.sizing.baseUnit * 1.5,
+    marginTop: theme.sizing.baseUnit * 1.5,
     backgroundColor: theme.colors.transparent,
     width: 500,
     alignSelf: 'center',
@@ -125,53 +124,49 @@ const EditGroup = ({ group, loading, error }) => {
     <BackgroundView>
       <StatusBar hidden />
       <ScrollView>
-        <SafeAreaView>
-          <KeyboardAvoidingView behavior={'padding'}>
-            <ContentContainer>
-              {loading && (
-                <Overlay>
-                  <ActivityIndicator />
-                </Overlay>
-              )}
+        <KeyboardAvoidingView behavior={'padding'}>
+          <ContentContainer>
+            {loading && (
+              <Overlay>
+                <ActivityIndicator />
+              </Overlay>
+            )}
 
-              <FieldContainer>
-                <RowHeader>
-                  <Name>
-                    <H3>Cover Photo</H3>
-                  </Name>
-                  <AndroidTouchableFix
-                    onPress={handleUpdateGroupCoverImagePress}
-                  >
-                    <ButtonLinkSpacing>
-                      <H6>
-                        <ButtonLink>Update</ButtonLink>
-                      </H6>
-                    </ButtonLinkSpacing>
-                  </AndroidTouchableFix>
-                </RowHeader>
-                {/**
-                 *  TODO : image isn't updating for some reason after save
-                 */}
-                <TouchableScale onPress={handleUpdateGroupCoverImagePress}>
-                  <Card>
-                    <Image source={coverImage} />
-                  </Card>
-                </TouchableScale>
-              </FieldContainer>
-              <FieldContainer>
-                <RowHeader>
-                  <Name>
-                    <H3>Resources</H3>
-                  </Name>
-                </RowHeader>
-                <ResourcesSection
-                  groupId={group.id}
-                  onAddContentItem={navigateToAddContentItem}
-                />
-              </FieldContainer>
-            </ContentContainer>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
+            <FieldContainer>
+              <RowHeader>
+                <Name>
+                  <H3>Cover Photo</H3>
+                </Name>
+                <AndroidTouchableFix onPress={handleUpdateGroupCoverImagePress}>
+                  <ButtonLinkSpacing>
+                    <H6>
+                      <ButtonLink>Update</ButtonLink>
+                    </H6>
+                  </ButtonLinkSpacing>
+                </AndroidTouchableFix>
+              </RowHeader>
+              {/**
+               *  TODO : image isn't updating for some reason after save
+               */}
+              <TouchableScale onPress={handleUpdateGroupCoverImagePress}>
+                <Card>
+                  <Image source={coverImage} />
+                </Card>
+              </TouchableScale>
+            </FieldContainer>
+            <FieldContainer>
+              <RowHeader>
+                <Name>
+                  <H3>Resources</H3>
+                </Name>
+              </RowHeader>
+              <ResourcesSection
+                groupId={group.id}
+                onAddContentItem={navigateToAddContentItem}
+              />
+            </FieldContainer>
+          </ContentContainer>
+        </KeyboardAvoidingView>
       </ScrollView>
     </BackgroundView>
   );

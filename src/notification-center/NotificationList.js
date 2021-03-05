@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { View, Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { withProps } from 'recompose';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { View } from 'react-native';
 import {
   BackgroundView,
   H3,
-  FeedView,
   styled,
   CenteredView,
   withMediaQuery,
@@ -22,6 +22,7 @@ import NotificationAlert from './NotificationAlert';
 import { DateLabel, Title, Subtitle, Content } from './styles';
 
 const Spacer = styled(({ theme, asCard }) => ({
+  paddingTop: theme.sizing.baseUnit,
   paddingHorizontal: asCard ? 0 : theme.sizing.baseUnit,
   flex: 1,
 }))(View);
@@ -29,16 +30,6 @@ const Spacer = styled(({ theme, asCard }) => ({
 const StyledHorizontalDivider = styled(({ theme }) => ({
   width: '100%',
 }))(HorizontalDivider);
-
-const StyledH3 = styled(({ theme }) => ({
-  paddingHorizontal: theme.sizing.baseUnit,
-  paddingBottom: theme.sizing.baseUnit,
-  ...Platform.select({
-    android: {
-      paddingTop: theme.sizing.baseUnit,
-    },
-  }),
-}))(H3);
 
 const NotificationPreview = ({
   title,
@@ -89,10 +80,6 @@ const ListEmptyComponent = () => (
   </CenteredView>
 );
 
-const StyledSafeAreaView = styled(({ theme }) => ({
-  flex: 1,
-}))(SafeAreaView);
-
 const NotificationList = ({
   notifications,
   isLoading,
@@ -100,6 +87,7 @@ const NotificationList = ({
   error,
   asCard,
 }) => {
+  const navigation = useNavigation();
   const [activeNotification, setActiveNotification] = useState(false);
   const ListItemComponent = (props) => (
     <NotificationPreview asCard={asCard} {...props} />
@@ -108,36 +96,35 @@ const NotificationList = ({
   return (
     <ThemeMixin>
       <BackgroundView>
-        <StyledSafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
-          <NotificationAlert
-            show={!!activeNotification}
-            showProgress={false}
-            onDismiss={() => setActiveNotification(false)}
-            onPressClose={() => setActiveNotification(false)}
-            notification={activeNotification}
-          />
-          <StyledH3>Updates</StyledH3>
-          <Spacer asCard={asCard}>
-            <CardFeed
-              content={notifications}
-              CardComponent={ListItemComponent}
-              ItemSeparatorComponent={
-                asCard ? () => null : StyledHorizontalDivider
+        <NotificationAlert
+          show={!!activeNotification}
+          showProgress={false}
+          onDismiss={() => setActiveNotification(false)}
+          onPressClose={() => setActiveNotification(false)}
+          notification={activeNotification}
+        />
+        <Spacer asCard={asCard}>
+          <CardFeed
+            content={notifications}
+            CardComponent={ListItemComponent}
+            ItemSeparatorComponent={
+              asCard ? () => null : StyledHorizontalDivider
+            }
+            onPressItem={(item) => {
+              if (!item.isLoading) {
+                navigation.navigate('NotificationSingle', {
+                  itemId: item.id,
+                });
               }
-              onPressItem={(item) => {
-                if (!item.isLoading) {
-                  setActiveNotification(item);
-                }
-              }}
-              showsVerticalScrollIndicator={false}
-              hasContent={notifications.length > 1}
-              ListEmptyComponent={ListEmptyComponent}
-              isLoading={isLoading}
-              refetch={refetch}
-              error={error}
-            />
-          </Spacer>
-        </StyledSafeAreaView>
+            }}
+            showsVerticalScrollIndicator={false}
+            hasContent={notifications.length > 1}
+            ListEmptyComponent={ListEmptyComponent}
+            isLoading={isLoading}
+            refetch={refetch}
+            error={error}
+          />
+        </Spacer>
       </BackgroundView>
     </ThemeMixin>
   );

@@ -16,7 +16,7 @@ import {
   Avatar,
 } from '@apollosproject/ui-kit';
 
-import { useCurrentUser, useFeatureFlag } from '../../hooks';
+import { useCurrentUser, useUserFlag } from '../../hooks';
 
 import EditGroupButton from '../EditGroupButton';
 
@@ -60,9 +60,7 @@ const StyledH5 = styled(({ theme }) => ({
 }))(H5);
 
 const HeaderConnected = ({ id, onEditGroupPress }) => {
-  const { enabled } = useFeatureFlag({
-    key: 'GROUP_CUSTOMIZATION',
-  });
+  const enabled = useUserFlag('GROUP_CUSTOMIZATION');
   const { id: currentUserId } = useCurrentUser();
 
   const { data, loading } = useQuery(GET_HEADER, {

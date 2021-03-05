@@ -80,7 +80,7 @@ const ConnectedCard = ({ __typename, id, labelText, Component, ...props }) => {
       break;
   }
 
-  return <Component {...props} isLive={isLive} {...cardProps} />;
+  return <Component {...cardProps} {...props} isLive={isLive} />;
 };
 
 const CardMapper = ({

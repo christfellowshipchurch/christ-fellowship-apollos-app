@@ -5,7 +5,6 @@ import { useQuery, useMutation } from '@apollo/client';
 import { get } from 'lodash';
 
 import { Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   styled,
   Card,
@@ -38,11 +37,6 @@ const CoverImageShape = PropTypes.shape({
 
 // :: Styled Components
 // ------------------------------------------------------------------
-
-const StyledSafeAreaView = styled(({ theme }) => ({
-  flex: 1,
-}))(SafeAreaView);
-
 const CoverImageCardTouchable = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit,
 }))(TouchableScale);
@@ -60,7 +54,7 @@ const Image = withTheme(({ theme, current }) => ({
 
 const CheckIcon = withTheme(({ theme }) => ({
   name: 'circle-outline-check-mark',
-  size: 22,
+  size: 32,
   fill: theme.colors.primary,
   style: {
     marginLeft: theme.sizing.baseUnit / 2,
@@ -120,28 +114,38 @@ const EditGroupCoverImage = ({
 }) => {
   if (error) return <ErrorCard />;
 
-  const renderItem = ({ item: coverImage }) => (
-    <CoverImageCard
-      key={coverImage.guid}
-      coverImage={coverImage}
-      onPress={() => onSelectCoverImage(coverImage.guid)}
-      current={
-        get(coverImage, 'image.sources[0].uri', null) === currentCoverImageUri
-      }
-    />
-  );
+  const renderItem = ({ item: coverImage }) =>
+    get(coverImage, 'emptyItem') ? (
+      <FlexedView />
+    ) : (
+      <CoverImageCard
+        key={coverImage.guid}
+        coverImage={coverImage}
+        onPress={() => onSelectCoverImage(coverImage.guid)}
+        current={
+          get(coverImage, 'image.sources[0].uri', null) === currentCoverImageUri
+        }
+      />
+    );
 
   return (
     <BackgroundView>
-      <StyledSafeAreaView>
-        <FeedView
-          numColumns={2}
-          content={coverImages}
-          renderItem={renderItem}
-          isLoading={loading}
-          keyExtractor={(item) => item.guid}
-        />
-      </StyledSafeAreaView>
+      <FeedView
+        numColumns={2}
+        content={
+          coverImages.length % 2 === 0
+            ? coverImages
+            : [
+                ...coverImages,
+                {
+                  emptyItem: true,
+                },
+              ]
+        }
+        renderItem={renderItem}
+        isLoading={loading}
+        keyExtractor={(item) => item.guid}
+      />
     </BackgroundView>
   );
 };

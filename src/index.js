@@ -32,7 +32,7 @@ import ContentFeed from './content-feed';
 import EditUser from './edit-user';
 import GroupSingle from './group-single';
 import EditGroup from './edit-group';
-import NotificationCenter from './notification-center';
+import NotificationCenter, { NotificationSingle } from './notification-center';
 import PrayerRequestSingle from './prayer-request-single';
 import MyPrayerRequestsFeed from './my-prayer-requests-feed';
 import ChatChannelsList from './chat/ChannelsList';
@@ -183,7 +183,21 @@ const StackNavigator = (props) => (
     <Screen
       name="NotificationCenter"
       component={NotificationCenter}
-      options={{ title: 'Notification Center', stackPresentation: 'modal' }}
+      options={{
+        title: 'Updates',
+        stackPresentation: 'push',
+        headerShown: true,
+      }}
+    />
+    <Screen
+      name="NotificationSingle"
+      component={NotificationSingle}
+      options={{
+        title: 'Update',
+        stackPresentation: 'modal',
+        headerShown: true,
+      }}
+      initialParams={props?.route?.params}
     />
     <Screen
       name="Onboarding"
@@ -192,6 +206,7 @@ const StackNavigator = (props) => (
         title: 'Onboarding',
         gestureEnabled: false,
         stackPresentation: 'push',
+        headerLargeTitle: true,
       }}
     />
     {/* <Screen
