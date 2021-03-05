@@ -12,8 +12,8 @@ import Events from './events';
 import Give from './give';
 import Home from './home';
 
-import AvatarIcon from './connect/AvatarIcon';
-import TabBarIcon from './tabBarIcon';
+import AvatarIcon from './AvatarIcon';
+import TabBarIcon from './TabBarIcon';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 

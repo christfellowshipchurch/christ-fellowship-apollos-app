@@ -1,3 +1,4 @@
+
 // Auto-generated file created by react-native-storybook-loader
 // Do not edit.
 //
@@ -23,6 +24,7 @@ function loadStories() {
   require('../src/ui/LandingScreen/LandingScreen.stories');
   require('../src/ui/Onboarding/Onboarding.stories');
   require('../src/ui/inputs/Inputs.stories');
+  
 }
 
 const stories = [
@@ -45,6 +47,7 @@ const stories = [
   '../src/ui/LandingScreen/LandingScreen.stories',
   '../src/ui/Onboarding/Onboarding.stories',
   '../src/ui/inputs/Inputs.stories',
+  
 ];
 
 module.exports = {

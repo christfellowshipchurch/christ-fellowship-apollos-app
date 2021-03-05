@@ -1,12 +1,25 @@
 import React from 'react';
-import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
+import gql from 'graphql-tag';
 import { get } from 'lodash';
 
+import { View } from 'react-native';
 import { styled, Avatar } from '@apollosproject/ui-kit';
 
-import { CURRENT_USER } from './queries';
+const GET_USER_PHOTO = gql`
+  query CurrentUserPhoto {
+    currentUser {
+      id
+      profile {
+        id
+        photo {
+          uri
+        }
+      }
+    }
+  }
+`;
 
 const Container = styled(() => ({
   paddingBottom: 5,
@@ -18,13 +31,15 @@ const StyledAvatar = styled(({ focused, theme }) => ({
 }))(Avatar);
 
 const AvatarConnected = ({ focused }) => {
-  const { data, loading, error } = useQuery(CURRENT_USER);
+  const { data, loading, error } = useQuery(GET_USER_PHOTO, {
+    fetchPolicy: 'cache-and-network',
+  });
   const photo = get(data, 'currentUser.profile.photo', { uri: '' });
 
   return (
     <Container>
       <StyledAvatar
-        size="small"
+        themeSize={22}
         source={photo}
         isLoading={loading || error}
         focused={focused}

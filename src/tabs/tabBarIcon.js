@@ -9,7 +9,7 @@ const StyledIcon = withTheme(({ theme, focused }) => ({
 }))(Icon);
 
 const TabBarIcon = ({ name, focused }) => (
-  <StyledIcon name={name} focused={focused} size={24} />
+  <StyledIcon name={name} focused={focused} size={22} />
 );
 
 TabBarIcon.propTypes = {

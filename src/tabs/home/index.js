@@ -19,15 +19,6 @@ const HomeNavigator = (props) => (
 const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
   ...props,
   screenOptions: {
-    headerMode: 'screen',
-    headerTintColor: theme.colors.primary,
-    headerTitleStyle: {
-      color: theme.colors.text.primary,
-    },
-    headerStyle: {
-      backgroundColor: theme.colors.background.paper,
-      ...Platform.select(theme.shadows.default),
-    },
     headerLeft: Wordmark,
     headerRight: HeaderButtons,
     headerTitle: '',

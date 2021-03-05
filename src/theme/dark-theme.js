@@ -4,7 +4,7 @@ const dark = ({ colors: themeColors, alpha }) => ({
   colors: {
     primary: themeColors.primary,
     screen: themeColors.black,
-    paper: themeColors.darkPrimary,
+    paper: '#0d0d0d',
 
     text: {
       primary: themeColors.lightPrimary,

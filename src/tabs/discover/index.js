@@ -1,7 +1,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import { Platform } from 'react-native';
 import { withTheme } from '@apollosproject/ui-kit';
 import HeaderButtons from '../HeaderButtons';
 
@@ -18,15 +17,6 @@ const DiscoverNavigator = (props) => (
 const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
   ...props,
   screenOptions: {
-    headerMode: 'screen',
-    headerTintColor: theme.colors.primary,
-    headerTitleStyle: {
-      color: theme.colors.text.primary,
-    },
-    headerStyle: {
-      backgroundColor: theme.colors.background.paper,
-      ...Platform.select(theme.shadows.default),
-    },
     headerRight: HeaderButtons,
     headerLargeTitle: true,
     headerHideShadow: true,

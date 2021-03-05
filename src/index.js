@@ -5,7 +5,7 @@ import React from 'react';
 import 'react-native-gesture-handler'; // required for react-navigation
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 
 import { Platform, Text } from 'react-native';
@@ -20,7 +20,6 @@ import { ProtectedRoute } from '@apollosproject/ui-auth';
 import ScreenOrientation from 'screen-orientation';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
-import DrawerNavigator from './drawer';
 
 import Providers from './Providers';
 import ContentSingle from './content-single';
@@ -76,17 +75,24 @@ hoistNonReactStatic(EnhancedAuth, Auth);
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
+const ThemedNavigationContainer = withTheme(({ theme, ...props }) => ({
+  ...props,
+  theme: {
+    ...DefaultTheme,
+    colors: {
+      primary: theme.colors.primary,
+      background: theme.colors.background.paper,
+      card: theme.colors.background.paper,
+      text: theme.colors.text.primary,
+      border: 'transparent',
+      notification: theme.colors.alert,
+    },
+  },
+}))(NavigationContainer);
+
 const ThemedNavigator = withTheme(({ theme, ...props }) => ({
   ...props,
   screenOptions: {
-    headerTintColor: theme.colors.primary,
-    headerTitleStyle: {
-      color: theme.colors.text.primary,
-    },
-    headerStyle: {
-      backgroundColor: theme.colors.background.paper,
-      ...Platform.select(theme.shadows.default),
-    },
     headerShown: false,
     stackPresentation: 'fullScreenModal',
   },
@@ -220,12 +226,12 @@ const App = (props) => (
     <BackgroundView>
       <StatusBar />
       <ScreenOrientation />
-      <NavigationContainer
+      <ThemedNavigationContainer
         ref={NavigationService.setTopLevelNavigator}
         onReady={NavigationService.setIsReady}
       >
         <StackNavigator {...props} />
-      </NavigationContainer>
+      </ThemedNavigationContainer>
     </BackgroundView>
   </Providers>
 );

@@ -1,6 +1,5 @@
 import Color from 'color';
 
-import authEntry from './authEntry';
 import dark from './dark-theme';
 
 import {
