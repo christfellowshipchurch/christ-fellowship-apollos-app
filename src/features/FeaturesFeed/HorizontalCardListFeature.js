@@ -25,7 +25,6 @@ const HorizontalCardListFeature = withTheme()(
     cardType,
     theme,
   }) => {
-    console.log({ initialCards });
     const cards = initialCards.map(({ actionIcon, ...card }) => ({
       ...card,
       ...(actionIcon != null ? { actionIcon: card.actionIcon } : {}), // temp hack because ContentCard doesn't handle null action icon well
