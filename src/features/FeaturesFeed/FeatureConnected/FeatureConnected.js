@@ -46,12 +46,11 @@ const FeatureConnected = (props) => {
 
   if (error) return null;
 
-  // todo : loading state
-  if (loading && !data?.node?.id) return null;
-  if (!data?.node?.id) return null;
-
   return featuresFeedComponentMapper({
-    feature: data?.node,
+    feature: {
+      ...data?.node,
+      isLoading: loading && !data?.node?.id,
+    },
     onPressActionItem: (args) =>
       handleActionPress({
         ...args,
@@ -68,9 +67,11 @@ const FeatureConnected = (props) => {
 
 FeatureConnected.propTypes = {
   Component: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
+  forceLoading: PropTypes.bool,
 };
 FeatureConnected.defaultProps = {
   Component: () => null,
+  forceLoading: false,
 };
 
 export default FeatureConnected;

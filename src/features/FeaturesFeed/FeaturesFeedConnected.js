@@ -1,13 +1,17 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
 import { isEmpty } from 'lodash';
 
 import { AppState } from 'react-native';
-import { GET_FEED_FEATURES } from '@apollosproject/ui-connected';
+import {
+  GET_FEED_FEATURES,
+  featuresFeedComponentMapper,
+} from '@apollosproject/ui-connected';
 import { FeedView } from '@apollosproject/ui-kit';
 
 import { HorizontalDivider } from 'ui/Dividers';
+import localFeatures from './additionalFeatures';
 import { FeatureConnected } from './FeatureConnected';
 
 const loadingStateObject = [
@@ -22,6 +26,7 @@ const loadingStateObject = [
     isLoading: true,
     __typename: 'HorizontalCardListFeature',
     id: 'feature3',
+    cards: [],
   },
   { isLoading: true, __typename: 'VerticalCardListFeature', id: 'feature4' },
 ];
@@ -36,7 +41,6 @@ const FeaturesFeedConnected = ({
   additionalFeatures,
   ...props
 }) => {
-  const appState = useRef(AppState.currentState);
   const [fetchDate, setFetchDate] = useState(new Date());
   const [features, setFeatures] = useState([]);
   const skip = !featureFeedId || isEmpty(featureFeedId);
@@ -79,6 +83,13 @@ const FeaturesFeedConnected = ({
   const renderItem = ({ item }) => (
     <FeatureConnected {...item} additionalFeatures={additionalFeatures} />
   );
+  const renderLoadingState = ({ item }) =>
+    featuresFeedComponentMapper({
+      feature: item,
+      onPressActionItem: () => () => null,
+      openUrl: () => null,
+      additionalFeatures: localFeatures,
+    });
 
   /**
    * we've gotten feedback that it's not obvious to all users that we can pull-to-refresh data. Along with pull-to-refresh, we will also listen to App State changes and run `refetch` when our app comes back into 'active' state
@@ -97,13 +108,15 @@ const FeaturesFeedConnected = ({
     };
   }, []);
 
-  if (!featureFeedId) {
+  if (!featureFeedId || !features.length) {
     return (
       <FeedView
+        content={loadingStateObject}
         loadingStateData={loadingStateObject}
-        renderItem={renderItem}
+        renderItem={renderLoadingState}
         loading
         refetch={refetch}
+        ItemSeparatorComponent={ItemSeparatorComponent}
         {...props}
       />
     );
@@ -112,6 +125,7 @@ const FeaturesFeedConnected = ({
   return (
     <FeaturesFeedContext.Provider value={{ features, fetchDate }}>
       <FeedView
+        loadingStateData={loadingStateObject}
         content={features}
         renderItem={renderItem}
         loading={loading && !features}
