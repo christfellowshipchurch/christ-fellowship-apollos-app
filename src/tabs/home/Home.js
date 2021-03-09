@@ -36,32 +36,23 @@ const Home = ({ navigation }) => {
   const { data } = useQuery(GET_HOME_FEED, {
     fetchPolicy: 'cache-and-network',
   });
-  const [refetchRef, setRefetchRef] = useState(null);
 
   return (
-    <RockAuthedWebBrowser>
-      {(openUrl) => (
-        <BackgroundView>
-          <FeaturesFeedConnected
-            featureFeedId={data?.homeFeedFeatures?.id}
-            openUrl={openUrl}
-            navigation={navigation}
-            ListHeaderComponent={
-              <ListHeaderSpacer>
-                <HorizontalFeaturesFeedConnected
-                  featureFeedId={data?.homeHeaderFeedFeatures?.id}
-                  refetchRef={get(refetchRef, 'refetchRef', () => null)}
-                  refetchId="HomeFeedFeaturesHeaderConnected"
-                />
-              </ListHeaderSpacer>
-            }
-            removeClippedSubviews={false}
-            numColumns={1}
-            onRef={(ref) => setRefetchRef(ref)}
-          />
-        </BackgroundView>
-      )}
-    </RockAuthedWebBrowser>
+    <BackgroundView>
+      <FeaturesFeedConnected
+        featureFeedId={data?.homeFeedFeatures?.id}
+        navigation={navigation}
+        ListHeaderComponent={
+          <ListHeaderSpacer>
+            <HorizontalFeaturesFeedConnected
+              featureFeedId={data?.homeHeaderFeedFeatures?.id}
+            />
+          </ListHeaderSpacer>
+        }
+        removeClippedSubviews={false}
+        numColumns={1}
+      />
+    </BackgroundView>
   );
 };
 

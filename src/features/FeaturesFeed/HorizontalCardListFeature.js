@@ -19,12 +19,19 @@ const HorizontalCardListFeature = withTheme()(
     featureId,
     isLoading,
     title,
-    cards,
+    cards: initialCards,
     onPressItem,
     primaryAction,
     cardType,
     theme,
   }) => {
+    const cards = initialCards.map(({ actionIcon, ...card }) => ({
+      ...card,
+      ...(actionIcon != null ? { actionIcon: card.actionIcon } : {}), // temp hack because ContentCard doesn't handle null action icon well
+      coverImage: get(card, 'coverImage.sources', undefined),
+      __typename: card.relatedNode.__typename,
+      id: card.relatedNode.id,
+    }));
     const seeMore =
       get(primaryAction, 'title', '') !== '' &&
       get(primaryAction, 'action', '') !== '' &&
@@ -88,11 +95,4 @@ HorizontalCardListFeature.propTypes = {
   cardType: 'DEFAULT',
 };
 
-const HorizontalCardListFeatureConnected = (props) => (
-  <CoreHorizontalCardListFeatureConnected
-    {...props}
-    Component={HorizontalCardListFeature}
-  />
-);
-
-export default HorizontalCardListFeatureConnected;
+export default HorizontalCardListFeature;

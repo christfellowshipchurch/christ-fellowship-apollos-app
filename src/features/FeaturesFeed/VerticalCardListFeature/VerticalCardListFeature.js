@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ApollosConfig from '@apollosproject/config';
-import { drop, dropRight, head, last, take } from 'lodash';
+import { drop, dropRight, head, last, take, get } from 'lodash';
 import { withProps } from 'recompose';
 
 import {
@@ -101,7 +101,7 @@ CapCard.propTypes = {
 };
 
 const VerticalCardListFeature = ({
-  cards,
+  cards: initialCards,
   error,
   isLoading,
   forceRatio,
@@ -109,6 +109,13 @@ const VerticalCardListFeature = ({
   onPressItem,
   ...additionalProps
 }) => {
+  const cards = initialCards.map(({ actionIcon, ...card }) => ({
+    ...card,
+    ...(actionIcon != null ? { actionIcon: card.actionIcon } : {}), // temp hack because ContentCard doesn't handle null action icon well
+    coverImage: get(card, 'coverImage.sources', undefined),
+    __typename: card.relatedNode.__typename,
+    id: card.relatedNode.id,
+  }));
   const { hero, body, footer, numColumns } = mapContent(
     take(cards, verticalCardListLength)
   );
@@ -146,7 +153,7 @@ const VerticalCardListFeature = ({
           />
         )
       }
-      seeMore={cards.length > verticalCardListLength}
+      seeMore={false}
       {...additionalProps}
     />
   );

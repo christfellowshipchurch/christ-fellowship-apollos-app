@@ -1,6 +1,6 @@
 // This file was largely copied from `FeaturesFeedConnected`
 // from the @apollosproject/ui-connected package
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { View, ScrollView } from 'react-native';
 import { useQuery } from '@apollo/client';
@@ -17,6 +17,8 @@ import HorizontalFeatureFeed from 'ui/HorizontalFeatureFeed';
 import { VerticalDivider, HorizontalDivider } from 'ui/Dividers';
 import PrayerFeatureConnected from '../PrayerFeatureConnected';
 import LiveStreamListFeatureConnected from '../LiveStreamListFeatureConnected';
+
+import { useFeaturesFeed } from '../../FeaturesFeed/FeaturesFeedConnected';
 
 // getHomeFeed uses the HOME_FEATURES in the config.yml
 // You can also hardcode an ID if you are confident it will never change
@@ -42,7 +44,6 @@ const MAPPINGS = {
   HorizontalCardListFeature: () => null,
   VerticalCardListFeature: () => null,
   PrayerListFeature: PrayerFeatureConnected,
-  // LiveStreamListFeature: () => null,
   LiveStreamListFeature: LiveStreamListFeatureConnected,
 };
 
@@ -66,7 +67,7 @@ const StyledHorizontalDivider = styled(({ theme }) => ({
 
 const mapFeatures = (
   features,
-  { additionalFeatures, refetchRef, onPressActionItem }
+  { additionalFeatures = [], onPressActionItem } = {}
 ) =>
   features.map((item, i) =>
     featuresFeedComponentMapper({
@@ -75,26 +76,30 @@ const mapFeatures = (
         ItemSeparatorComponent:
           i < features.length - 1 ? StyledVerticalDivider : null,
       },
-      refetchRef,
       onPressActionItem,
       additionalFeatures: { ...MAPPINGS, ...additionalFeatures },
     })
   );
 
-const HorizontalFeaturesFeedConnected = ({
-  featureFeedId,
-  refetchId,
-  refetchRef,
-  ...props
-}) => {
+const HorizontalFeaturesFeedConnected = ({ featureFeedId, ...props }) => {
   const { error, data, loading, refetch } = useQuery(GET_FEATURE_FEED, {
     fetchPolicy: 'cache-and-network',
     variables: { featureFeedId },
     skip: isEmpty(featureFeedId),
   });
+  const { fetchDate } = useFeaturesFeed();
 
-  if (refetchId && refetch && refetchRef)
-    refetchRef({ refetch, id: refetchId });
+  /**
+   * note : Requires that HorizontalFeaturesFeedConnected be rendered as a child of FeaturesFeedConnected. Does not individually reload each feature, but these features shouldn't do a ton of refetching, so we should be good to go, here
+   *
+   * todo : make this a bit more elegant and specific
+   */
+  useEffect(
+    () => {
+      refetch();
+    },
+    [fetchDate, refetch]
+  );
 
   if (error) return null;
   if (loading && !data) return <HorizontalFeatureFeed isLoading />;
@@ -104,7 +109,7 @@ const HorizontalFeaturesFeedConnected = ({
   return features.length > 0 ? (
     <View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} {...props}>
-        <Container>{mapFeatures(features, { refetchRef })}</Container>
+        <Container>{mapFeatures(features)}</Container>
       </ScrollView>
       <StyledHorizontalDivider />
     </View>

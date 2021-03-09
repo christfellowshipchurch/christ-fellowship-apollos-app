@@ -7,4 +7,4 @@ const HeroListFeatureConnected = (props) => (
   <CoreHeroListFeatureConnected {...props} Component={HeroListFeature} />
 );
 
-export default HeroListFeatureConnected;
+export default HeroListFeature;

@@ -27,7 +27,7 @@ export const transformISODates = (
   { isTodayText = 'Today', withTime = false } = {}
 ) => {
   if (!!str && typeof str === 'string') {
-    const isoRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/gm;
+    const isoRegex = /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d\.\d+([+-][0-2]\d:[0-5]\d|Z)/gim;
 
     return str.replace(isoRegex, (match) => {
       try {

@@ -1,13 +1,16 @@
-import ActionBarConnected from './ActionBarConnected';
-import AvatarListFeatureConnected from './AvatarListFeatureConnected';
-import HeroListFeatureConnected from './HeroListFeatureConnected';
-import HorizontalCardListFeatureConnected from './HorizontalCardListFeatureConnected';
-import VerticalCardListFeatureConnected from './VerticalCardListFeatureConnected';
+import { ActionListFeature } from '@apollosproject/ui-connected';
+
+import ActionBarFeature from './ActionBarFeature';
+import AvatarListFeature from './AvatarListFeature';
+import HeroListFeature from './HeroListFeature';
+import HorizontalCardListFeature from './HorizontalCardListFeature';
+import VerticalCardListFeature from './VerticalCardListFeature';
 
 export default {
-  ActionBarFeature: ActionBarConnected,
-  AvatarListFeature: AvatarListFeatureConnected,
-  HeroListFeature: HeroListFeatureConnected,
-  HorizontalCardListFeature: HorizontalCardListFeatureConnected,
-  VerticalCardListFeature: VerticalCardListFeatureConnected,
+  ActionListFeature,
+  ActionBarFeature,
+  AvatarListFeature,
+  HeroListFeature,
+  HorizontalCardListFeature,
+  VerticalCardListFeature,
 };

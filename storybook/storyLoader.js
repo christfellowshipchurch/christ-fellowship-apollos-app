@@ -7,8 +7,8 @@
 function loadStories() {
   require('../src/auth/AuthProfileDetailsEntry.stories');
   require('../src/content-single/CheckInButton/CheckInButton.stories');
-  require('../src/features/FeaturesFeed/HeroListFeatureConnected/HeroListFeature.stories');
-  require('../src/features/FeaturesFeed/VerticalCardListFeatureConnected/VerticalCardListFeature.stories');
+  require('../src/features/FeaturesFeed/HeroListFeature/HeroListFeature.stories');
+  require('../src/features/FeaturesFeed/VerticalCardListFeature/VerticalCardListFeature.stories');
   require('../src/features/HorizontalFeaturesFeed/PrayerFeatureConnected/PrayerFeature.stories');
   require('../src/notification-center/NotificationList.stories');
   require('../src/tabs/discover/SearchFeed/SearchFeed.stories');
@@ -30,8 +30,8 @@ function loadStories() {
 const stories = [
   '../src/auth/AuthProfileDetailsEntry.stories',
   '../src/content-single/CheckInButton/CheckInButton.stories',
-  '../src/features/FeaturesFeed/HeroListFeatureConnected/HeroListFeature.stories',
-  '../src/features/FeaturesFeed/VerticalCardListFeatureConnected/VerticalCardListFeature.stories',
+  '../src/features/FeaturesFeed/HeroListFeature/HeroListFeature.stories',
+  '../src/features/FeaturesFeed/VerticalCardListFeature/VerticalCardListFeature.stories',
   '../src/features/HorizontalFeaturesFeed/PrayerFeatureConnected/PrayerFeature.stories',
   '../src/notification-center/NotificationList.stories',
   '../src/tabs/discover/SearchFeed/SearchFeed.stories',

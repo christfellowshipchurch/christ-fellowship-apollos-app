@@ -75,7 +75,9 @@ const ConnectedCard = ({ __typename, id, labelText, Component, ...props }) => {
        */
       cardProps = {
         ...cardProps,
-        labelText: node?.labelText ? node?.labelText : labelText,
+        labelText: transformISODates(
+          node?.labelText ? node?.labelText : labelText
+        ),
       };
       break;
   }

@@ -43,19 +43,19 @@ export const client = new ApolloClient({
   /**
    * note : this is because we have some very taxing queries that we want to avoid running twice see if it's still an issue after we're operating mostly on Postgres and have less loading states
    */
-  defaultOptions: {
-    watchQuery: {
-      nextFetchPolicy(lastFetchPolicy) {
-        if (
-          lastFetchPolicy === 'cache-and-network' ||
-          lastFetchPolicy === 'network-only'
-        ) {
-          return 'cache-first';
-        }
-        return lastFetchPolicy;
-      },
-    },
-  },
+  // defaultOptions: {
+  //   watchQuery: {
+  //     nextFetchPolicy(lastFetchPolicy) {
+  //       if (
+  //         lastFetchPolicy === 'cache-and-network' ||
+  //         lastFetchPolicy === 'network-only'
+  //       ) {
+  //         return 'cache-first';
+  //       }
+  //       return lastFetchPolicy;
+  //     },
+  //   },
+  // },
 });
 
 // Hack to give auth link access to method on client;
