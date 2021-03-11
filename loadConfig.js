@@ -319,7 +319,7 @@ ApollosConfig.loadJs({
           }
         }
 
-        leaders: people(first: 4, isLeader: true) {
+        leaders: people(first: 3, isLeader: true) {
           edges {
             node {
               id
@@ -330,7 +330,7 @@ ApollosConfig.loadJs({
           }
           totalCount
         }
-        members: people(first: 8, isLeader: false) {
+        members: people(first: 5, isLeader: false) {
           edges {
             node {
               id
@@ -393,6 +393,7 @@ ApollosConfig.loadJs({
         title
         subtitle
         cards {
+          id
           action
           title
           hyphenatedTitle: title(hyphenated: true)
@@ -425,6 +426,31 @@ ApollosConfig.loadJs({
           id
           channelId
           channelType
+        }
+      }
+    `,
+    VERTICAL_CARD_LIST_FEATURE_FRAGMENT: gql`
+      fragment VerticalCardListFeatureFragment on VerticalCardListFeature {
+        id
+        isFeatured
+        title
+        subtitle
+        cards {
+          id
+          action
+          title
+          hasAction
+          actionIcon
+          labelText
+          summary
+          coverImage {
+            sources {
+              uri
+            }
+          }
+          relatedNode {
+            ...RelatedFeatureNodeFragment
+          }
         }
       }
     `,

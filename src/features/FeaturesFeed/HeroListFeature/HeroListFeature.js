@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ApollosConfig from '@apollosproject/config';
-import { drop, head, take } from 'lodash';
+import { dropRight, last, take } from 'lodash';
 import { withProps } from 'recompose';
 
 import {
@@ -9,36 +9,76 @@ import {
   withMediaQuery,
   styled,
   ImageSourceType,
+  withTheme,
 } from '@apollosproject/ui-kit';
 
-import ActionRow from '../../../ui/ActionRow';
-import { CardMapper, HighlightCard } from '../../../ui/Cards';
-import { CardFeed } from '../../../ui/CardFeeds';
+import { CardMapper, HighlightCard, RowCard, ColumnCard } from 'ui/Cards';
+import { CardFeed } from 'ui/CardFeeds';
 
 const { FEATURE_FEEDS } = ApollosConfig;
 
 const { heroListLength } = FEATURE_FEEDS;
 
+/**
+ * Maps the content into the correct buckets.
+ * Returns: hero, body, footer, numColumns
+ */
+const mapContentDefault = (content) => {
+  /**
+   * For small displays, we want to use an elongated row card for the last item when we have a single item at the end of our content.
+   */
+  const useFooterItem = content.length % 2 !== 0;
+  const footer = useFooterItem ? last(content) : null;
+
+  /**
+   * We always want to drop the first item, but if we are using a footer row, we also want to drop the last item from our collection.
+   */
+  const body = useFooterItem ? dropRight(content) : content;
+
+  return { footer, body, numColumns: 2 };
+};
+
+/**
+ * Maps the content into the correct buckets for large displays.
+ * Returns: hero, body, footer, numColumns
+ */
+const mapContentMd = (content) => {
+  /** If we are using a hero card, let's remove that card from our collection.
+   */
+  let body = content;
+  if (body.length === 2) {
+    body = body.map((item) => ({ ...item, Component: HighlightCard }));
+  }
+
+  /**
+   * For large displays, we don't want a footer item, we only want a fynamic number of columns. We return null for everything
+   */
+  const footer = null;
+
+  return { footer, body, numColumns: body.length === 2 ? 2 : 3 };
+};
+
 const FlexedTouchable = styled(() => ({
   flex: 1,
 }))(TouchableScale);
 
-const HeroCard = ({ id, onPress, isLoading, ...props }) => (
+const CapCard = ({ id, onPress, isLoading, ...props }) => (
   <FlexedTouchable onPress={isLoading ? () => null : onPress}>
-    <CardMapper
-      Component={HighlightCard}
-      {...props}
-      nodeId={id}
-      isLoading={isLoading}
-    />
+    <CardMapper {...props} nodeId={id} isLoading={isLoading} />
   </FlexedTouchable>
 );
 
-HeroCard.propTypes = {
-  id: PropTypes.string,
-  onPress: PropTypes.func,
-  isLoading: PropTypes.bool,
-};
+const StyledCardFeed = withTheme(({ theme }) => ({
+  ListHeaderComponentStyle: {
+    marginHorizontal: theme.sizing.baseUnit * -0.5,
+  },
+  ListFooterComponentStyle: {
+    marginHorizontal: theme.sizing.baseUnit * -0.5,
+  },
+  style: {
+    paddingHorizontal: theme.sizing.baseUnit * 0.5,
+  },
+}))(CardFeed);
 
 const HeroListFeature = ({
   actions,
@@ -48,6 +88,7 @@ const HeroListFeature = ({
   onPressItem,
   heroCard,
   primaryAction,
+  mapContent,
   ...additionalProps
 }) => {
   /**
@@ -58,22 +99,24 @@ const HeroListFeature = ({
     coverImage: action?.image?.sources,
     summary: action?.subtitle,
   }));
-  const adjustedContent = take(mappedActions, heroListLength - 1);
+  const { body, footer, numColumns } = mapContent(
+    take(mappedActions, heroListLength)
+  );
   const seeMore =
     !!primaryAction?.title &&
     !!primaryAction?.action &&
     !!primaryAction?.relatedNode?.id;
 
   return (
-    <CardFeed
-      content={adjustedContent}
-      isLoading={isLoading && !heroCard}
+    <StyledCardFeed
+      content={body}
+      isLoading={isLoading}
       error={error}
       onPressItem={onPressItem}
-      CardComponent={ActionRow}
+      CardComponent={ColumnCard}
       ListHeaderComponent={
         !error && (
-          <HeroCard
+          <CapCard
             onPress={() => onPressItem(heroCard)}
             {...heroCard}
             coverImage={heroCard?.coverImage?.sources}
@@ -82,9 +125,22 @@ const HeroListFeature = ({
           />
         )
       }
+      ListFooterComponent={
+        !error &&
+        footer && (
+          <CapCard
+            onPress={() => onPressItem(footer)}
+            {...footer}
+            forceRatio={forceRatio}
+            isLoading={isLoading && !body.length}
+            Component={RowCard}
+          />
+        )
+      }
       seeMore={seeMore}
       seeMoreText={primaryAction?.title}
       onPressHeader={() => onPressItem(primaryAction)}
+      numColumns={numColumns}
       {...additionalProps}
     />
   );
@@ -120,19 +176,21 @@ HeroListFeature.propTypes = {
       id: PropTypes.string,
     }),
   }),
+  mapContent: PropTypes.func,
 };
 
 HeroListFeature.defaultProps = {
   isLoading: false,
   actions: [],
+  mapContent: () => null,
 };
 
 HeroListFeature.displayName = 'HeroListFeature';
 
 const HeroListFeatureWithNumColumns = withMediaQuery(
   ({ md }) => ({ maxWidth: md }),
-  withProps({ forceRatio: null }),
-  withProps({ forceRatio: 2.333 })
+  withProps({ forceRatio: null, mapContent: mapContentDefault }),
+  withProps({ forceRatio: 2.333, mapContent: mapContentMd })
 )(HeroListFeature);
 
 export default HeroListFeatureWithNumColumns;

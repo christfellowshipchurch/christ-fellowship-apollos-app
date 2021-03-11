@@ -16,6 +16,9 @@ export const GET_CONNECT_FEED = gql`
   query getConnectFeatureFeed {
     connectFeedFeatures {
       id
+      features {
+        id
+      }
     }
   }
 `;
@@ -25,26 +28,23 @@ const ItemSeparator = styled(({ theme }) => ({
 }))(View);
 
 const Connect = () => {
-  const { data } = useQuery(GET_CONNECT_FEED, {
-    fetchPolicy: 'network-only',
+  const { data, error, loading, refetch } = useQuery(GET_CONNECT_FEED, {
+    fetchPolicy: 'cache-and-network',
   });
-  const [refetchRef, setRefetchRef] = useState(null);
+  const features = data?.connectFeedFeatures?.features;
 
   return (
-    <RockAuthedWebBrowser>
-      {(openUrl) => (
-        <BackgroundView>
-          <FeaturesFeedConnected
-            featureFeedId={data?.connectFeedFeatures?.id}
-            openUrl={openUrl}
-            ItemSeparatorComponent={ItemSeparator}
-            removeClippedSubviews={false}
-            numColumns={1}
-            onRef={(ref) => setRefetchRef(ref)}
-          />
-        </BackgroundView>
-      )}
-    </RockAuthedWebBrowser>
+    <BackgroundView>
+      <FeaturesFeedConnected
+        features={features}
+        refetch={refetch}
+        isLoading={loading}
+        error={error}
+        removeClippedSubviews={false}
+        numColumns={1}
+        ItemSeparatorComponent={ItemSeparator}
+      />
+    </BackgroundView>
   );
 };
 

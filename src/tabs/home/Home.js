@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
 import gql from 'graphql-tag';
 
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import { View } from 'react-native';
 import { styled, BackgroundView } from '@apollosproject/ui-kit';
 
 import {
@@ -17,36 +15,41 @@ const ListHeaderSpacer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-// getHomeFeed uses the HOME_FEATURES in the config.yml
-// You can also hardcode an ID if you are confident it will never change
-// Or use some other strategy to get a FeatureFeed.id
 export const GET_HOME_FEED = gql`
   query getHomeFeatureFeed {
     homeFeedFeatures {
       id
+      features {
+        id
+      }
     }
 
     homeHeaderFeedFeatures {
       id
+      features {
+        id
+      }
     }
   }
 `;
 
-const Home = ({ navigation }) => {
-  const { data } = useQuery(GET_HOME_FEED, {
+const Home = () => {
+  const { data, error, loading, refetch } = useQuery(GET_HOME_FEED, {
     fetchPolicy: 'cache-and-network',
   });
+  const features = data?.homeFeedFeatures?.features;
+  const headerFeatures = data?.homeHeaderFeedFeatures?.features;
 
   return (
     <BackgroundView>
       <FeaturesFeedConnected
-        featureFeedId={data?.homeFeedFeatures?.id}
-        navigation={navigation}
+        features={features}
+        refetch={refetch}
+        isLoading={loading}
+        error={error}
         ListHeaderComponent={
           <ListHeaderSpacer>
-            <HorizontalFeaturesFeedConnected
-              featureFeedId={data?.homeHeaderFeedFeatures?.id}
-            />
+            <HorizontalFeaturesFeedConnected features={headerFeatures} />
           </ListHeaderSpacer>
         }
         removeClippedSubviews={false}

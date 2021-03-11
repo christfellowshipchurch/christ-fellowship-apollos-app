@@ -12,14 +12,13 @@ import {
   BodySmall,
   withIsLoading,
   ConnectedImage,
+  ImageSourceType,
   styled,
 } from '@apollosproject/ui-kit';
 
 import ThemeMixin from '../../DynamicThemeMixin';
 import LiveLabel from '../../LiveLabel';
 import BlurView from '../../BlurView';
-
-const { ImageSourceType } = ConnectedImage;
 
 const SquareCard = styled({
   width: 240,

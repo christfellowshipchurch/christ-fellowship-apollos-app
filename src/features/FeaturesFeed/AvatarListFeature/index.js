@@ -38,7 +38,6 @@ const PeopleCard = (props) => (
 );
 
 const AvatarListFeature = ({
-  featureId,
   onPressItem,
   isCard,
   people,
@@ -50,7 +49,26 @@ const AvatarListFeature = ({
   /**
    * If an error exists or if we are loaded and there are no people, return null
    */
-  if (!isLoading && people.length < 1) return null;
+  if (!isLoading && !people.length) return null;
+
+  /**
+   * note : for the sake of simplicity, we'll just manually build out our loading state
+   */
+  if (isLoading && !people.length) {
+    return (
+      <Container>
+        <Flag>
+          <FlagMedia>
+            <Avatar size={'medium'} source={null} isLoading />
+          </FlagMedia>
+          <FlagContent>
+            <Title isLoading>{`First Last`}</Title>
+            <Subtitle isLoading>Campus</Subtitle>
+          </FlagContent>
+        </Flag>
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -62,6 +80,7 @@ const AvatarListFeature = ({
               onPressIcon={() => onPressItem(primaryAction)}
               size={'medium'}
               source={get(person, 'photo')}
+              isLoading={isLoading}
             />
           </FlagMedia>
           <FlagContent>
@@ -82,7 +101,6 @@ const AvatarListFeature = ({
 };
 
 AvatarListFeature.propTypes = {
-  featureId: PropTypes.string,
   onPressItem: PropTypes.func,
   primaryAction: PropTypes.shape({
     action: PropTypes.string,
@@ -92,7 +110,13 @@ AvatarListFeature.propTypes = {
       id: PropTypes.string,
     }),
   }),
-  people: PropTypes.array,
+  people: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      firstName: PropTypes.string,
+      lastName: PropTypes.string,
+    })
+  ),
   isLoading: PropTypes.bool,
   isCard: PropTypes.bool,
 };
@@ -100,7 +124,7 @@ AvatarListFeature.propTypes = {
 AvatarListFeature.defaultProps = {
   isLoading: false,
   people: [],
-  isCard: true,
+  isCard: false,
 };
 
 export default AvatarListFeature;

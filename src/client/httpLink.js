@@ -18,7 +18,8 @@ export default split(
   createUploadLink({ uri }),
   createHttpLink({
     uri,
-    useGETForQueries: true,
+    // note : used by the Apollos Template for CDN caching. Since we're not using a CDN for caching, we'll disable this option
+    // useGETForQueries: true,
     headers: {
       // We can safely send these headers.
       // Fastly does not currently respect no-store or no-cache directives. Including either or both of these in a Cache-Control header has no effect on Fastly's caching decision

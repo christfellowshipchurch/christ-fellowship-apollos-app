@@ -5,10 +5,14 @@ import React from 'react';
 import 'react-native-gesture-handler'; // required for react-navigation
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 
-import { Platform, Text } from 'react-native';
+import { useColorScheme, Text } from 'react-native';
 import {
   BackgroundView,
   NavigationService,
@@ -74,21 +78,6 @@ const EnhancedAuth = (props) => <Auth {...props} emailRequired={false} />;
 hoistNonReactStatic(EnhancedAuth, Auth);
 
 const { Navigator, Screen } = createNativeStackNavigator();
-
-const ThemedNavigationContainer = withTheme(({ theme, ...props }) => ({
-  ...props,
-  theme: {
-    ...DefaultTheme,
-    colors: {
-      primary: theme.colors.primary,
-      background: theme.colors.background.paper,
-      card: theme.colors.background.paper,
-      text: theme.colors.text.primary,
-      border: 'transparent',
-      notification: theme.colors.alert,
-    },
-  },
-}))(NavigationContainer);
 
 const ThemedNavigator = withTheme(({ theme, ...props }) => ({
   ...props,
@@ -236,17 +225,48 @@ const StackNavigator = (props) => (
   </ThemedNavigator>
 );
 
+const NavigationContainerWithTheme = (props) => {
+  const scheme = useColorScheme();
+  const light = {
+    ...DefaultTheme,
+    colors: {
+      primary: '#00aeef',
+      background: '#FFFFFF',
+      card: '#FFFFFF',
+      text: '#303030',
+      border: 'transparent',
+      notification: '#d52158',
+    },
+  };
+  const dark = {
+    ...DarkTheme,
+    colors: {
+      primary: '#00aeef',
+      background: '#0d0d0d',
+      card: '#0d0d0d',
+      text: '#F8F7F4',
+      border: 'transparent',
+      notification: '#d52158',
+    },
+  };
+
+  return (
+    <NavigationContainer
+      ref={NavigationService.setTopLevelNavigator}
+      onReady={NavigationService.setIsReady}
+      theme={scheme === 'dark' ? dark : light}
+    >
+      <StackNavigator {...props} />
+    </NavigationContainer>
+  );
+};
+
 const App = (props) => (
   <Providers>
     <BackgroundView>
       <StatusBar />
       <ScreenOrientation />
-      <ThemedNavigationContainer
-        ref={NavigationService.setTopLevelNavigator}
-        onReady={NavigationService.setIsReady}
-      >
-        <StackNavigator {...props} />
-      </ThemedNavigationContainer>
+      <NavigationContainerWithTheme {...props} />
     </BackgroundView>
   </Providers>
 );

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get, includes } from 'lodash';
 
-import { HorizontalCardListFeatureConnected as CoreHorizontalCardListFeatureConnected } from '@apollosproject/ui-connected';
 import { withTheme } from '@apollosproject/ui-kit';
 import { CardFeed } from 'ui/CardFeeds';
 import { HorizontalHighlightCard, HorizontalDefaultCard } from 'ui/Cards';
@@ -71,6 +70,7 @@ const HorizontalCardListFeature = withTheme()(
         }}
         horizontal
         snapToInterval={snapToInterval}
+        keyExtractor={(item, index) => get(item, 'id', index)}
       />
     );
   }

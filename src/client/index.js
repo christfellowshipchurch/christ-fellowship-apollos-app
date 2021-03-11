@@ -40,9 +40,8 @@ export const client = new ApolloClient({
   typeDefs: schema,
   name: getApplicationName(),
   version: getVersion(),
-  /**
-   * note : this is because we have some very taxing queries that we want to avoid running twice see if it's still an issue after we're operating mostly on Postgres and have less loading states
-   */
+  // NOTE: this is because we have some very taxing queries that we want to avoid running twice
+  // see if it's still an issue after we're operating mostly on Postgres and have less loading states
   // defaultOptions: {
   //   watchQuery: {
   //     nextFetchPolicy(lastFetchPolicy) {

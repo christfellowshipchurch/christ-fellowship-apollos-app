@@ -116,7 +116,6 @@
     "prettier": "1.14.2",
     "querystring": "^0.2.0",
     "react": "16.13.1",
-    "react-apollo": "2.5.5",
     "react-native": "0.63.2",
     "react-native-add-calendar-event": "^3.0.2",
     "react-native-appearance": "^0.3.4",

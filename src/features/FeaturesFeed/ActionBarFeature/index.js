@@ -14,7 +14,7 @@ const ActionBarFeature = ({
   onPressItem,
   actions,
 }) => {
-  if (isLoading && !actions.length)
+  if (isLoading)
     return (
       <ActionBar listKey={listKey}>
         <ActivityIndicator />

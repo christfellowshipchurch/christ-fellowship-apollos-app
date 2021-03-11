@@ -81,30 +81,14 @@ const mapFeatures = (
     })
   );
 
-const HorizontalFeaturesFeedConnected = ({ featureFeedId, ...props }) => {
-  const { error, data, loading, refetch } = useQuery(GET_FEATURE_FEED, {
-    fetchPolicy: 'cache-and-network',
-    variables: { featureFeedId },
-    skip: isEmpty(featureFeedId),
-  });
-  const { fetchDate } = useFeaturesFeed();
-
-  /**
-   * note : Requires that HorizontalFeaturesFeedConnected be rendered as a child of FeaturesFeedConnected. Does not individually reload each feature, but these features shouldn't do a ton of refetching, so we should be good to go, here
-   *
-   * todo : make this a bit more elegant and specific
-   */
-  useEffect(
-    () => {
-      refetch();
-    },
-    [fetchDate, refetch]
-  );
-
+const HorizontalFeaturesFeedConnected = ({
+  features,
+  error,
+  isLoading,
+  ...props
+}) => {
   if (error) return null;
-  if (loading && !data) return <HorizontalFeatureFeed isLoading />;
-
-  const features = get(data, 'node.features', []);
+  if (isLoading && !features.length) return <HorizontalFeatureFeed isLoading />;
 
   return features.length > 0 ? (
     <View>
@@ -117,20 +101,31 @@ const HorizontalFeaturesFeedConnected = ({ featureFeedId, ...props }) => {
 };
 
 HorizontalFeaturesFeedConnected.propTypes = {
+  additionalFeatures: PropTypes.shape({}),
+  error: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+    PropTypes.object,
+  ]),
+  features: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+    })
+  ),
+  isLoading: PropTypes.bool,
+  onPressActionItem: PropTypes.func,
   Component: PropTypes.oneOfType([
     PropTypes.node,
     PropTypes.func,
     PropTypes.object, // type check for React fragments
   ]),
-  onPressActionItem: PropTypes.func,
-  additionalFeatures: PropTypes.shape({}),
-  refetchRef: PropTypes.func,
-  refetchId: PropTypes.string,
-  featureFeedId: PropTypes.string,
 };
 
-HorizontalFeaturesFeedConnected.propTypes = {
-  refetchId: 'HorizontalFeaturesFeedConnected',
+HorizontalFeaturesFeedConnected.defaultProps = {
+  error: null,
+  features: [],
+  isLoading: false,
+  onPressActionItem: () => null,
 };
 
 export default HorizontalFeaturesFeedConnected;

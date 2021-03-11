@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
 import { BackgroundView } from '@apollosproject/ui-kit';
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
-import { FeaturesFeedConnected, handleActionPress } from 'features';
+import { FeaturesFeedConnected } from 'features';
 
 // getHomeFeed uses the HOME_FEATURES in the config.yml
 // You can also hardcode an ID if you are confident it will never change
@@ -15,31 +14,30 @@ export const GET_GIVE_FEED = gql`
   query getGiveFeedFeatures {
     giveFeedFeatures {
       id
+      features {
+        id
+      }
     }
   }
 `;
 
 const Give = () => {
-  const { data } = useQuery(GET_GIVE_FEED, {
+  const { data, error, loading, refetch } = useQuery(GET_GIVE_FEED, {
     fetchPolicy: 'cache-and-network',
   });
-  const [refetchRef, setRefetchRef] = useState(null);
+  const features = data?.giveFeedFeatures?.features;
 
   return (
-    <RockAuthedWebBrowser>
-      {(openUrl) => (
-        <BackgroundView>
-          <FeaturesFeedConnected
-            featureFeedId={data?.giveFeedFeatures?.id}
-            openUrl={openUrl}
-            onPressActionItem={handleActionPress}
-            removeClippedSubviews={false}
-            numColumns={1}
-            onRef={(ref) => setRefetchRef(ref)}
-          />
-        </BackgroundView>
-      )}
-    </RockAuthedWebBrowser>
+    <BackgroundView>
+      <FeaturesFeedConnected
+        features={features}
+        refetch={refetch}
+        isLoading={loading}
+        error={error}
+        removeClippedSubviews={false}
+        numColumns={1}
+      />
+    </BackgroundView>
   );
 };
 

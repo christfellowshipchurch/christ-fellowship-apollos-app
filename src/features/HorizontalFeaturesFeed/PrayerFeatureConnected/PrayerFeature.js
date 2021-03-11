@@ -99,7 +99,7 @@ const PrayerFeature = ({
       <AvatarList
         avatars={getAvatars(prayers)}
         isCard={false}
-        isLoading={isLoading}
+        isLoading={!!isLoading}
         onPressAdd={onPressAdd}
         onPressAvatar={onPressAvatar}
         ListHeaderComponent={renderListHeader(onPressAdd, isLoading, theme)}

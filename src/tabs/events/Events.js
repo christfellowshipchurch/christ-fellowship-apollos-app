@@ -4,14 +4,8 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
 import { BackgroundView } from '@apollosproject/ui-kit';
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
 import { FeaturesFeedConnected } from 'features';
-import VerticalCardListFeatureConnected from './VerticalCardListFeatureConnected';
-
-const additionalFeatures = {
-  VerticalCardListFeature: VerticalCardListFeatureConnected,
-};
 
 // getEventsFeed uses the EVENTS_FEATURES in the config.yml
 // You can also hardcode an ID if you are confident it will never change
@@ -20,30 +14,30 @@ export const GET_EVENTS_FEED = gql`
   query getEventsFeatureFeed {
     eventsFeedFeatures {
       id
+      features {
+        id
+      }
     }
   }
 `;
 
-const Events = ({ navigation }) => {
-  const { data } = useQuery(GET_EVENTS_FEED, {
+const Events = () => {
+  const { data, error, loading, refetch } = useQuery(GET_EVENTS_FEED, {
     fetchPolicy: 'cache-and-network',
   });
+  const features = data?.eventsFeedFeatures?.features;
 
   return (
-    <RockAuthedWebBrowser>
-      {(openUrl) => (
-        <BackgroundView>
-          <FeaturesFeedConnected
-            featureFeedId={data?.eventsFeedFeatures?.id}
-            openUrl={openUrl}
-            navigation={navigation}
-            additionalFeatures={additionalFeatures}
-            removeClippedSubviews={false}
-            numColumns={1}
-          />
-        </BackgroundView>
-      )}
-    </RockAuthedWebBrowser>
+    <BackgroundView>
+      <FeaturesFeedConnected
+        features={features}
+        refetch={refetch}
+        isLoading={loading}
+        error={error}
+        removeClippedSubviews={false}
+        numColumns={1}
+      />
+    </BackgroundView>
   );
 };
 

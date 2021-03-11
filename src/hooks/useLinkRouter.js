@@ -1,6 +1,7 @@
 import URL from 'url';
 import querystring from 'querystring';
 import { useApolloClient } from '@apollo/client';
+import { useNavigation } from '@react-navigation/native';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
 
