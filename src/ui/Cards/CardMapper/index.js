@@ -13,6 +13,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 import { useQuery } from '@apollo/client';
+import { Query } from '@apollo/client/react/components';
 
 import { transformISODates } from 'utils/string';
 import { useLiveStream } from 'hooks';
@@ -27,16 +28,15 @@ import GET_CARD_PARTS from './getCardParts';
 /**
  * note : so this isn't the most elegant way to do this, BUT! it's what we gotta do. Right now, there's an issue with the `skip` property of `useQuery` where it doesn't actually skip and sends all kinds of network requests with empty Id's. This causes a lot of noise and unwanted errors on the API. This wrapper component will requeire that an Id be passed with it. Only render this component if you're positive that you have an Id
  */
-const ConnectedCard = ({ __typename, id, labelText, Component, ...props }) => {
-  const skip = !id || isEmpty(id);
-  const { data } = useQuery(GET_CARD_PARTS, {
-    skip,
-    variables: { nodeId: id },
-    fetchPolicy: skip ? 'cache-only' : 'cache-and-network',
-  });
-
+const ConnectedCard = ({
+  __typename,
+  error,
+  id,
+  labelText,
+  Component,
+  ...node
+}) => {
   let cardProps = {};
-  const node = data?.node;
 
   /**
    * If we have a live stream id in the relatedNode, lets check for a Live Stream node
@@ -82,7 +82,24 @@ const ConnectedCard = ({ __typename, id, labelText, Component, ...props }) => {
       break;
   }
 
-  return <Component {...cardProps} {...props} isLive={isLive} />;
+  return <Component {...node} {...cardProps} isLive={isLive} error={error} />;
+};
+
+ConnectedCard.propTypes = {
+  __typename: PropTypes.string,
+  error: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.object,
+    PropTypes.string,
+  ]),
+  id: PropTypes.string,
+  isLoading: PropTypes.bool,
+  labelText: PropTypes.string,
+  Component: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.array,
+    PropTypes.element,
+  ]),
 };
 
 const CardMapper = ({
@@ -147,12 +164,23 @@ const CardMapper = ({
   }
 
   return (
-    <ConnectedCard
-      id={relatedNode?.id}
-      Component={FinalComponent}
-      {...cardProps}
-      labelText={transformISODates(cardProps?.labelText)}
-    />
+    <Query
+      query={GET_CARD_PARTS}
+      fetchPolicy="cache-and-network"
+      variables={{
+        nodeId: relatedNode?.id,
+      }}
+    >
+      {({ data: { node } = {}, error }) => (
+        <ConnectedCard
+          {...node}
+          {...cardProps}
+          Component={FinalComponent}
+          labelText={transformISODates(cardProps?.labelText)}
+          error={error}
+        />
+      )}
+    </Query>
   );
 };
 

@@ -29,6 +29,26 @@ const StyledHorizontalTileFeed = withTheme(({ theme }) => ({
   },
 }))(HorizontalTileFeed);
 
+const generateLoadingStateData = (length) => {
+  const loadingStateData = [];
+
+  while (loadingStateData.length < length) {
+    loadingStateData.push({
+      id: `fakeId${0}`,
+      isLoading: true,
+      title: '',
+      channelType: '',
+      coverImage: [],
+      parentChannel: {
+        id: '',
+        name: '',
+      },
+    });
+  }
+
+  return loadingStateData;
+};
+
 const CardFeed = ({
   CardComponent,
   content,
@@ -44,6 +64,7 @@ const CardFeed = ({
   onPressHeader,
   onPressItem,
   horizontal,
+  loadingStateDataLength,
   ...additionalProps
 }) => {
   const renderItem = ({ item }) =>
@@ -90,6 +111,7 @@ const CardFeed = ({
     content: adjustedContent,
     isLoading,
     error,
+    loadingStateData: generateLoadingStateData(loadingStateDataLength),
     ...(horizontal ? {} : { numColumns }),
     ...additionalProps,
   };
@@ -158,6 +180,7 @@ CardFeed.propTypes = {
   onPressHeader: PropTypes.func,
   onPressItem: PropTypes.func,
   horizontal: PropTypes.func,
+  loadingStateDataLength: PropTypes.number,
 };
 
 CardFeed.defaultProps = {
@@ -172,6 +195,7 @@ CardFeed.defaultProps = {
   onPressItem: () => null,
   horizontal: false,
   error: null,
+  loadingStateDataLength: 3,
 };
 
 const CardFeedWithNumColumns = withMediaQuery(

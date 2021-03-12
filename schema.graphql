@@ -536,8 +536,9 @@ type Group implements GroupItem & Node & CheckInableNode & StreamChatChannelNode
   schedule: Schedule
   videoCall: VideoCallParams
   campus: Campus
-  preference: String
+  preference: [String]
   subPreference: String
+  meetingType: String
   avatars: [String] @deprecated(reason: "Use people instead")
   leaders: [Person] @deprecated(reason: "Use people instead")
   members: [Person] @deprecated(reason: "Use people instead")
@@ -600,6 +601,7 @@ type GroupSearchFacetsOptions {
   day: [String]
   preference: [String]
   subPreference: [String]
+  meetingType: [String]
 }
 
 type HeroListFeature implements Feature & Node {

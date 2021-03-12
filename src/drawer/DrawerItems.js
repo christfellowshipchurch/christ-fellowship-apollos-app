@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
@@ -77,6 +78,14 @@ const DrawerItems = ({ onPress, navigation }) => {
       </BackgroundView>
     </ThemeMixin>
   );
+};
+
+DrawerItems.propTypes = {
+  onPress: PropTypes.func,
+};
+
+DrawerItems.defaultProps = {
+  onPress: () => null,
 };
 
 export default DrawerItems;

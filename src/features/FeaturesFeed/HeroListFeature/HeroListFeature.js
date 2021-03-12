@@ -91,6 +91,8 @@ const HeroListFeature = ({
   mapContent,
   ...additionalProps
 }) => {
+  const loading = isLoading && !heroCard && !actions.length;
+
   /**
    * note : We want to send the CardFeed all but the first data item so we can display that first item as a larger card.
    */
@@ -110,18 +112,19 @@ const HeroListFeature = ({
   return (
     <StyledCardFeed
       content={body}
-      isLoading={isLoading}
+      loadingStateDataLength={2}
+      isLoading={loading}
       error={error}
       onPressItem={onPressItem}
       CardComponent={ColumnCard}
       ListHeaderComponent={
-        !error && (
+        (heroCard || loading) && (
           <CapCard
             onPress={() => onPressItem(heroCard)}
             {...heroCard}
             coverImage={heroCard?.coverImage?.sources}
             forceRatio={forceRatio}
-            isLoading={isLoading && !actions.length}
+            isLoading={loading}
           />
         )
       }
@@ -132,7 +135,7 @@ const HeroListFeature = ({
             onPress={() => onPressItem(footer)}
             {...footer}
             forceRatio={forceRatio}
-            isLoading={isLoading && !body.length}
+            isLoading={loading}
             Component={RowCard}
           />
         )

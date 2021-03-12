@@ -47,20 +47,17 @@ export const useFeaturesFeed = () => useContext(FeaturesFeedContext);
 
 // :: Feature Feed Component
 // :: ====================== ::
-const renderItem = ({ item }) => <FeatureConnected {...item} />;
+const renderItem = ({ item }) => <FeatureConnected key={item?.id} {...item} />;
 
 const FeaturesFeedConnected = ({
   ItemSeparatorComponent,
-  features: fetchedFeatures,
+  features,
   refetch,
   isLoading,
   error,
   ListEmptyComponent,
   ...props
 }) => {
-  const [fetchDate, setFetchDate] = useState(new Date());
-  const [features, setFeatures] = useState([]);
-
   /**
    * note : along with pull-to-refresh, we will also listen to App State changes and run `refetch` when our app comes back into 'active' state
    */
@@ -78,72 +75,41 @@ const FeaturesFeedConnected = ({
     };
   }, []);
 
-  useEffect(
-    () => {
-      /**
-       * note : check to make sure we have the expected return data type and then map it to an array of String Ids
-       */
-
-      if (!!fetchedFeatures && Array.isArray(fetchedFeatures) && !isLoading) {
-        const fetchedFeatureIds = fetchedFeatures.map(({ id }) => id);
-        const currentFeatureIds = features.map(({ id }) => id);
-
-        if (
-          JSON.stringify(currentFeatureIds) ===
-          JSON.stringify(fetchedFeatureIds)
-        ) {
-          /**
-           * note : if the new data fetch is the same as the current collection of Feature Ids in the provider, we want to set the fetch date to be right now so that Features in the Feature Feed will refetch their queries
-           */
-          setFetchDate(new Date());
-        } else {
-          /**
-           * note : if the data fetch is not the same, let's just update the `featureIds` with our new Ids to rerender the Feature Feed with our new Feed shape
-           */
-          setFeatures(fetchedFeatures);
-        }
-      }
-    },
-    [fetchedFeatures, isLoading, features]
-  );
-
   if (!features.length && !error) {
     return <ActivityIndicator />;
   }
 
   return (
-    <FeaturesFeedContext.Provider value={{ features, fetchDate }}>
-      <FlatList
-        data={features}
-        renderItem={renderItem}
-        refetch={refetch}
-        ItemSeparatorComponent={ItemSeparatorComponent}
-        ListEmptyComponent={
-          error && !isLoading && (!features || !features.length)
-            ? console.warn(error) || (
-                <ErrorContainer>
-                  <ErrorText>
-                    {`Oops! Something went wrong and we weren't able to load up that data`}
-                  </ErrorText>
-                  <Touchable onPress={refetch}>
-                    <ErrorTouchableText>{'Try Again'}</ErrorTouchableText>
-                  </Touchable>
-                </ErrorContainer>
-              )
-            : ListEmptyComponent
+    <FlatList
+      extraData={{ isLoading }}
+      data={features.map((feature) => ({ ...feature, isLoading }))}
+      renderItem={renderItem}
+      ItemSeparatorComponent={ItemSeparatorComponent}
+      ListEmptyComponent={
+        error && !isLoading && (!features || !features.length)
+          ? console.warn(error) || (
+              <ErrorContainer>
+                <ErrorText>
+                  {`Oops! Something went wrong and we weren't able to load up that data`}
+                </ErrorText>
+                <Touchable onPress={refetch}>
+                  <ErrorTouchableText>{'Try Again'}</ErrorTouchableText>
+                </Touchable>
+              </ErrorContainer>
+            )
+          : ListEmptyComponent
+      }
+      removeClippedSubviews
+      keyExtractor={(item, index) => get(item, 'id', index)}
+      onRefresh={() => {
+        if (!isLoading) {
+          refetch();
         }
-        removeClippedSubviews
-        keyExtractor={(item, index) => get(item, 'id', index)}
-        onRefresh={() => {
-          if (!isLoading) {
-            refetch();
-          }
-        }}
-        refreshing={isLoading}
-        numColumns={1}
-        {...props}
-      />
-    </FeaturesFeedContext.Provider>
+      }}
+      refreshing={isLoading}
+      numColumns={1}
+      {...props}
+    />
   );
 };
 

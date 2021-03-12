@@ -8,9 +8,12 @@
  *
  */
 
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
+
+import { AppState } from 'react-native';
 
 const GET_USER_FLAGS = gql`
   query currentUserFlags {
@@ -32,16 +35,37 @@ export const useUserFlag = (key) => {
 
 // Provider
 export const UserFlagsProvider = ({ children }) => {
-  const { data } = useQuery(GET_USER_FLAGS, {
+  const { data, refetch, loading } = useQuery(GET_USER_FLAGS, {
     fetchPolicy: 'network-only',
   });
 
   const keys = data?.currentUserFlags;
   const value = Array.isArray(keys) ? keys : [];
 
+  /**
+   * note : along with pull-to-refresh, we will also listen to App State changes and run `refetch` when our app comes back into 'active' state
+   */
+  const _handleAppStateChange = (nextAppState) => {
+    if (nextAppState === 'active' && !loading) {
+      refetch();
+    }
+  };
+
+  useEffect(() => {
+    AppState.addEventListener('change', _handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', _handleAppStateChange);
+    };
+  }, []);
+
   return (
     <UserFlagsContext.Provider value={value}>
       {children}
     </UserFlagsContext.Provider>
   );
+};
+
+UserFlagsProvider.propTypes = {
+  children: PropTypes.node,
 };

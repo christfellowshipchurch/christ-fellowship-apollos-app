@@ -24,7 +24,7 @@ import ApollosConfig from '@apollosproject/config';
 // `;
 
 export default gql`
-  query getFeature($featureId: ID!) {
+  query getBaseFeature($featureId: ID!) {
     node(id: $featureId) {
       id
     }
@@ -32,7 +32,7 @@ export default gql`
 `;
 
 export const GET_ACTION_BAR_FEATURE = gql`
-  query getFeature($featureId: ID!) {
+  query getActionBarFeature($featureId: ID!) {
     node(id: $featureId) {
       id
       ...ActionBarFeatureFragment
@@ -45,7 +45,7 @@ export const GET_ACTION_BAR_FEATURE = gql`
 `;
 
 export const GET_AVATAR_LIST_FEATURE = gql`
-  query getFeature($featureId: ID!) {
+  query getAvatarListFeature($featureId: ID!) {
     node(id: $featureId) {
       id
       ...AvatarListFeatureFragment

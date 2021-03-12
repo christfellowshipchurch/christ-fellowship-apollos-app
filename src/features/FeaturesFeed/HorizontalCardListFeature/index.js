@@ -18,19 +18,13 @@ const HorizontalCardListFeature = withTheme()(
     featureId,
     isLoading,
     title,
-    cards: initialCards,
+    cards,
     onPressItem,
     primaryAction,
     cardType,
     theme,
   }) => {
-    const cards = initialCards.map(({ actionIcon, ...card }) => ({
-      ...card,
-      ...(actionIcon != null ? { actionIcon: card.actionIcon } : {}), // temp hack because ContentCard doesn't handle null action icon well
-      coverImage: get(card, 'coverImage.sources', undefined),
-      __typename: card.relatedNode.__typename,
-      id: card.relatedNode.id,
-    }));
+    const loading = isLoading && !cards.length;
     const seeMore =
       get(primaryAction, 'title', '') !== '' &&
       get(primaryAction, 'action', '') !== '' &&
@@ -55,7 +49,7 @@ const HorizontalCardListFeature = withTheme()(
         title={title}
         content={cards}
         removeClippedSubviews={false}
-        isLoading={isLoading}
+        isLoading={loading}
         key={featureId}
         seeMore={seeMore}
         seeMoreText={get(primaryAction, 'title', '')}
