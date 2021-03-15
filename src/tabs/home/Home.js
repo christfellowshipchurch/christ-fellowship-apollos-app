@@ -34,16 +34,22 @@ export const GET_HOME_FEED = gql`
 `;
 
 const Home = () => {
-  const { data, error, loading, refetch } = useQuery(GET_HOME_FEED, {
-    fetchPolicy: 'cache-and-network',
-  });
+  const { data, error, loading, refetch, previousData } = useQuery(
+    GET_HOME_FEED,
+    {
+      fetchPolicy: 'cache-and-network',
+    }
+  );
   const features = data?.homeFeedFeatures?.features;
   const headerFeatures = data?.homeHeaderFeedFeatures?.features;
+
+  const previousFeatures = previousData?.homeFeedFeatures?.features;
 
   return (
     <BackgroundView>
       <FeaturesFeedConnected
         features={features}
+        previousFeatures={previousFeatures}
         refetch={refetch}
         isLoading={loading}
         error={error}

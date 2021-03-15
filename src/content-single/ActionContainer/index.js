@@ -2,7 +2,12 @@ import React from 'react';
 import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PropTypes from 'prop-types';
-import { SideBySideView, styled } from '@apollosproject/ui-kit';
+import {
+  SideBySideView,
+  withTheme,
+  ThemeMixin,
+  styled,
+} from '@apollosproject/ui-kit';
 import {
   LikeButtonConnected,
   ShareButtonConnected,
@@ -23,21 +28,32 @@ const Container = styled(({ theme, safeAreaMargin }) => ({
   ...Platform.select(theme.shadows.default),
 }))(View);
 
-const ActionContainer = ({ itemId }) => {
+const ActionContainer = ({ itemId, theme }) => {
   const { bottom } = useSafeAreaInsets();
+  const colors = {
+    secondary: theme.colors.primary,
+  };
+
   return (
-    <Container safeAreaMargin={bottom}>
-      <PositioningView>
-        <LikeButtonConnected itemId={itemId} />
-        <ShareButtonConnected itemId={itemId} />
-      </PositioningView>
-    </Container>
+    <ThemeMixin mixin={{ colors }}>
+      <Container safeAreaMargin={bottom}>
+        <PositioningView>
+          <LikeButtonConnected itemId={itemId} />
+          <ShareButtonConnected itemId={itemId} />
+        </PositioningView>
+      </Container>
+    </ThemeMixin>
   );
 };
 
 ActionContainer.propTypes = {
   content: PropTypes.shape({}),
   itemId: PropTypes.string,
+  theme: PropTypes.shape({
+    colors: PropTypes.shape({
+      primary: PropTypes.string,
+    }),
+  }),
 };
 
-export default ActionContainer;
+export default withTheme()(ActionContainer);

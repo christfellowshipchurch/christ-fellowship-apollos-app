@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useQuery } from '@apollo/client';
 import {
   HeroListFeatureConnected,
   HorizontalCardListFeatureConnected,
   VerticalCardListFeatureConnected,
+  GET_VERTICAL_CARD_LIST_FEATURE,
 } from '@apollosproject/ui-connected';
 
 import { ActionBarFeatureConnected } from './ActionBarFeature';
@@ -23,10 +25,31 @@ export default {
       Component={HorizontalCardListFeature}
     />
   ),
-  VerticalCardListFeature: (props) => (
-    <VerticalCardListFeatureConnected
-      {...props}
-      Component={VerticalCardListFeature}
-    />
-  ),
+  VerticalCardListFeature: ({ featureId, refetchStatus, ...props }) => {
+    const { loading, error, data, refetch } = useQuery(
+      GET_VERTICAL_CARD_LIST_FEATURE,
+      {
+        fetchPolicy: 'cache-and-network',
+        variables: { featureId },
+      }
+    );
+    const node = data?.node;
+
+    useEffect(
+      () => {
+        if (!loading && refetchStatus === 2) {
+          refetch();
+        }
+      },
+      [refetchStatus]
+    );
+
+    return (
+      <VerticalCardListFeature
+        {...props}
+        {...node}
+        isLoading={loading && !node}
+      />
+    );
+  },
 };
