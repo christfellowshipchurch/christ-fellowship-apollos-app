@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
@@ -23,13 +23,22 @@ const GET_ACTION_BAR_FEATURE = gql`
   ${FRAGMENTS.RELATED_NODE_FRAGMENT}
 `;
 
-const ActionBarFeatureConnected = ({ featureId, ...props }) => {
-  const { data, loading, error } = useQuery(GET_ACTION_BAR_FEATURE, {
+const ActionBarFeatureConnected = ({ featureId, refetchStatus, ...props }) => {
+  const { data, loading, error, refetch } = useQuery(GET_ACTION_BAR_FEATURE, {
     fetchPolicy: 'cache-and-network',
     variables: { featureId },
     skip: isEmpty(featureId),
   });
   const node = data?.node;
+
+  useEffect(
+    () => {
+      if (!loading && refetchStatus === 2) {
+        refetch();
+      }
+    },
+    [refetchStatus]
+  );
 
   if (error && !node?.actions?.length) return null;
 

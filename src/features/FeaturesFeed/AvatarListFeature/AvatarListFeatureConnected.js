@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
@@ -20,14 +20,23 @@ const GET_AVATAR_LIST_FEATURE = gql`
   ${FRAGMENTS.RELATED_NODE_FRAGMENT}
 `;
 
-const AvatarListFeatureConnected = ({ featureId, ...props }) => {
-  const { data, loading } = useQuery(GET_AVATAR_LIST_FEATURE, {
+const AvatarListFeatureConnected = ({ featureId, refetchStatus, ...props }) => {
+  const { data, loading, refetch } = useQuery(GET_AVATAR_LIST_FEATURE, {
     fetchPolicy: 'cache-and-network',
     variables: { featureId },
     skip: isEmpty(featureId),
   });
   const node = data?.node;
   const hasPeople = node?.people.length > 0;
+
+  useEffect(
+    () => {
+      if (!loading && refetchStatus === 2) {
+        refetch();
+      }
+    },
+    [refetchStatus]
+  );
 
   if (!hasPeople && !loading) return null;
 

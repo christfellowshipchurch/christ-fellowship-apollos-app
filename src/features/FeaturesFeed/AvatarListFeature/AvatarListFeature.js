@@ -80,18 +80,15 @@ const AvatarListFeature = ({
               onPressIcon={() => onPressItem(primaryAction)}
               size={'medium'}
               source={get(person, 'photo')}
-              isLoading={isLoading}
             />
           </FlagMedia>
           <FlagContent>
-            <Title isLoading={isLoading}>{`${get(person, 'firstName')} ${get(
+            <Title>{`${get(person, 'firstName')} ${get(
               person,
               'lastName'
             )}`}</Title>
             {get(person, 'campus.name') && (
-              <Subtitle isLoading={isLoading}>
-                {get(person, 'campus.name')}
-              </Subtitle>
+              <Subtitle>{get(person, 'campus.name')}</Subtitle>
             )}
           </FlagContent>
         </Flag>
