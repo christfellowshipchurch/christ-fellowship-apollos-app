@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import { isEmpty } from 'lodash';
 import {
   differenceInSeconds,
@@ -45,7 +45,10 @@ const useLiveStream = ({ liveStreamId }) => {
   const [nextRefetch, setNextRefetch] = useState(null);
 
   // Fetch
-  const { data, loading, error, refetch } = useQuery(GET_LIVE_STREAM, {
+  const [getLiveStream, { data, loading, error, called }] = useLazyQuery(
+    GET_LIVE_STREAM
+  );
+  const queryOptions = {
     variables: { id: liveStreamId || '' },
     skip,
     fetchPolicy: skip ? 'cache-only' : 'network-only',
@@ -74,9 +77,13 @@ const useLiveStream = ({ liveStreamId }) => {
         }
       }
     },
-  });
+  };
+  const refetch = () => {
+    if (!skip) getLiveStream(queryOptions);
+  };
 
   // Effects
+  // Timers for Refetch
   useEffect(
     () => {
       const refetchTimer = setTimeout(() => {
@@ -101,8 +108,6 @@ const useLiveStream = ({ liveStreamId }) => {
     },
     [nextRefetch]
   );
-
-  useEffect(() => {}, [data]);
 
   useEffect(
     () => {
@@ -131,6 +136,24 @@ const useLiveStream = ({ liveStreamId }) => {
       };
     },
     [nowIsBefore]
+  );
+
+  /**
+   * tl;dr : determine when we should first call this query
+   *
+   * There is currently a bug with the `skip` parameter in the `useQuery` hook. When `skip` is `true`, the query will not return any data nor trigger any state change, although the network request will still run in the background.
+   *
+   * With this hook, specifically, this causes us to run a query to `node` to get live streams even when the `liveStreamId` is an empty string. This results in a spamming of the following error: `Error parsing ID`. It also results in excess network requests.
+   *
+   * This hook will listen to state changes in the liveStreamId that is passed in. The `skip` variable will calculate if the Id is a valid identifier and we will call the query. To avoid running this more than is needed, we'll also check to make sure we haven't called the query already so we don't accidentally spam network requests if the component is remounted more than expected.
+   */
+  useEffect(
+    () => {
+      if (!skip && !called) {
+        refetch();
+      }
+    },
+    [liveStreamId]
   );
 
   return {

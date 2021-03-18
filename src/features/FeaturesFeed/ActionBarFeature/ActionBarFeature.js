@@ -17,10 +17,10 @@ const ActionBarFeature = ({
   if (isLoading && !actions.length)
     return <ActionBar listKey={listKey} isLoading />;
 
-  /** This action bar looks really good with 3 items in it,
+  /** This action bar looks really good with 4 items in it,
    *  but it starts to get pretty wonky after that. For right now,
    *  we're gonna put in a safety net so that if anyone puts in more
-   *  than 3 items, we just create multiple bars
+   *  than 4 items, we just create multiple bars
    */
   const chunkedActions = chunk(actions, 4);
 

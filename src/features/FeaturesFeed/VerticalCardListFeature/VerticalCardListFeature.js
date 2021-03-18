@@ -6,7 +6,7 @@ import ActionRow from 'ui/ActionRow';
 import { CardFeed } from '../../../ui/CardFeeds';
 
 const VerticalCardListFeature = ({
-  cards,
+  cards: initialCards,
   error,
   isLoading,
   forceRatio,
@@ -17,8 +17,14 @@ const VerticalCardListFeature = ({
   <CardFeed
     onPressItem={onPressItem}
     CardComponent={ActionRow}
-    content={cards}
-    isLoading={isLoading && !cards.length}
+    content={initialCards.map(({ actionIcon, ...card }) => ({
+      ...card,
+      ...(actionIcon != null ? { actionIcon: card.actionIcon } : {}), // temp hack because ContentCard doesn't handle null action icon well
+      coverImage: get(card, 'coverImage.sources', undefined),
+      __typename: card.relatedNode.__typename,
+      id: card.relatedNode.id,
+    }))}
+    isLoading={isLoading && !initialCards.length}
     error={error}
     seeMore={false}
     removeClippedSubviews={false}

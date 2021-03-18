@@ -32,7 +32,7 @@ const StyledAvatar = styled(({ focused, theme }) => ({
 
 const AvatarConnected = ({ focused }) => {
   const { data, loading, error } = useQuery(GET_USER_PHOTO, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
   });
   const photo = get(data, 'currentUser.profile.photo', { uri: '' });
 

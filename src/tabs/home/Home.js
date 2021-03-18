@@ -5,6 +5,13 @@ import gql from 'graphql-tag';
 
 import { View } from 'react-native';
 import { styled, BackgroundView } from '@apollosproject/ui-kit';
+import ApollosConfig from '@apollosproject/config';
+
+import {
+  GET_HERO_LIST_FEATURE,
+  GET_HORIZONTAL_CARD_LIST_FEATURE,
+  GET_VERTICAL_CARD_LIST_FEATURE,
+} from '@apollosproject/ui-connected';
 
 import {
   FeaturesFeedConnected,
@@ -21,6 +28,11 @@ export const GET_HOME_FEED = gql`
       id
       features {
         id
+        ...ActionBarFeatureFragment
+        ...AvatarListFeatureFragment
+        ...HeroListFeatureFragment
+        ...HorizontalCardListFeatureFragment
+        ...VerticalCardListFeatureFragment
       }
     }
 
@@ -31,6 +43,14 @@ export const GET_HOME_FEED = gql`
       }
     }
   }
+
+  ${ApollosConfig.FRAGMENTS.HERO_LIST_FEATURE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.HORIZONTAL_CARD_LIST_FEATURE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.VERTICAL_CARD_LIST_FEATURE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.RELATED_NODE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.ACTION_BAR_FEATURE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.AVATAR_LIST_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.THEME_FRAGMENT}
 `;
 
 const Home = () => {

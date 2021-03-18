@@ -7,6 +7,8 @@ import { View } from 'react-native';
 import { styled, BackgroundView } from '@apollosproject/ui-kit';
 import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
 
+import ApollosConfig from '@apollosproject/config';
+
 import { FeaturesFeedConnected } from 'features';
 
 // getConnectFeed uses the CONNECT_FEATURES in the config.yml
@@ -18,9 +20,22 @@ export const GET_CONNECT_FEED = gql`
       id
       features {
         id
+        ...ActionBarFeatureFragment
+        ...AvatarListFeatureFragment
+        ...HeroListFeatureFragment
+        ...HorizontalCardListFeatureFragment
+        ...VerticalCardListFeatureFragment
       }
     }
   }
+
+  ${ApollosConfig.FRAGMENTS.HERO_LIST_FEATURE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.HORIZONTAL_CARD_LIST_FEATURE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.VERTICAL_CARD_LIST_FEATURE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.RELATED_NODE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.ACTION_BAR_FEATURE_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.AVATAR_LIST_FRAGMENT}
+  ${ApollosConfig.FRAGMENTS.THEME_FRAGMENT}
 `;
 
 const ItemSeparator = styled(({ theme }) => ({

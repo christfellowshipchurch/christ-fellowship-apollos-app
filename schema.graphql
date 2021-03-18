@@ -184,13 +184,6 @@ type Campus implements Node {
   events: [Event] @deprecated(reason: "Events are no longer organized by limiting them to a physical campus. Events are organized into categories. Please reference 'EventContentItem' instead")
 }
 
-type CampusContentFeature implements PageBuilderFeature & Node {
-  id: ID!
-  order: Int
-  campus: Campus
-  action: PageBuilderAction
-}
-
 type CampusFeature {
   title: String
   summary: String
@@ -266,27 +259,21 @@ type CommunicationPreferences {
   allowPushNotification: Boolean
 }
 
-enum CONTENT_BLOCK_DISPLAY {
+enum CONTENT_BLOCK_ORIENTATION {
+  DEFAULT
+  INVERTED
   LEFT
   RIGHT
-  TOP
-  BOTTOM
-  BACKGROUND_IMAGE
 }
 
-type ContentBlockFeature implements PageBuilderFeature & Node {
+type ContentBlockFeature implements Feature & Node {
   id: ID!
   order: Int
-  content: ContentBlockItem
-  display: CONTENT_BLOCK_DISPLAY
-}
-
-type ContentBlockItem {
-  title: String
-  subtitle: String
+  title(hyphenated: Boolean): String
+  summary: String
   htmlContent: String
-  image: ImageMedia
-  callsToAction: [CallToAction]
+  coverImage: ImageMedia
+  orientation: CONTENT_BLOCK_ORIENTATION
 }
 
 type ContentChannel implements Node {
@@ -301,15 +288,6 @@ type ContentChannel implements Node {
 interface ContentChildNode {
   parentChannel: ContentChannel
   siblingContentItemsConnection(first: Int, after: String): ContentItemsConnection
-}
-
-type ContentGridFeature implements PageBuilderFeature & Node {
-  id: ID!
-  order: Int
-  title: String
-  subtitle: String
-  blocks: [ContentBlockItem]
-  primaryAction: PageBuilderAction
 }
 
 interface ContentItem {
@@ -814,13 +792,6 @@ type Metadata {
   content: String
 }
 
-type MetadataFeature implements PageBuilderFeature & Node {
-  id: ID!
-  order: Int
-  title: String
-  meta: [Metadata]
-}
-
 type MetaTag {
   name: String
   content: String
@@ -880,20 +851,6 @@ type NodeConnection {
 type NodeConnectionEdge {
   node: Node
   cursor: String
-}
-
-enum PAGE_BUILDER_FEATURE_ACTION {
-  VIEW_MORE
-}
-
-type PageBuilderAction {
-  title: String
-  action: PAGE_BUILDER_FEATURE_ACTION
-}
-
-interface PageBuilderFeature {
-  id: ID!
-  order: Int
 }
 
 type PaginationInfo {
@@ -1050,6 +1007,7 @@ type Query {
   eventsFeedFeatures: FeatureFeed
   giveFeedFeatures: FeatureFeed
   homeHeaderFeedFeatures: FeatureFeed
+  featuresFeed(pathname: String!): FeatureFeed
   userHeaderFeatures: [Feature] @deprecated(reason: "Please use homeHeaderFeedFeatures instead")
   flagStatus(key: String!): FLAG_STATUS
   currentUserFlags: [String]
@@ -1069,7 +1027,6 @@ type Query {
   floatLeftEmptyLiveStream: LiveStream
   notificationCenter(first: Int, after: String): MessagesConnection
   metadata(relatedNode: ID!): [Metadata]
-  pageBuilderFeatures(url: String!): [PageBuilderFeature]
   userPass: Pass
   getEthnicityList: DefinedValueList
   getSpouse: Person

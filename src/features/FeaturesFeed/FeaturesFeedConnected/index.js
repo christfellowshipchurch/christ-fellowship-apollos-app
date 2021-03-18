@@ -64,35 +64,35 @@ const FeaturesFeedConnected = ({
   /**
    * note : along with pull-to-refresh, we will also listen to App State changes and run `refetch` when our app comes back into 'active' state
    */
-  const _handleAppStateChange = (nextAppState) => {
-    if (nextAppState === 'active' && !isLoading) {
-      refetch();
-    }
-  };
+  // const _handleAppStateChange = (nextAppState) => {
+  //   if (nextAppState === 'active' && !isLoading) {
+  //     refetch();
+  //   }
+  // };
 
-  useEffect(() => {
-    AppState.addEventListener('change', _handleAppStateChange);
+  // useEffect(() => {
+  //   AppState.addEventListener('change', _handleAppStateChange);
 
-    return () => {
-      AppState.removeEventListener('change', _handleAppStateChange);
-    };
-  }, []);
+  //   return () => {
+  //     AppState.removeEventListener('change', _handleAppStateChange);
+  //   };
+  // }, []);
 
-  useEffect(
-    () => {
-      if (!isLoading) {
-        if (
-          features &&
-          JSON.stringify(features) === JSON.stringify(previousFeatures)
-        ) {
-          setRefetchStatus(2); // refetch feature
-        }
-      } else {
-        setRefetchStatus(1); // parent loading
-      }
-    },
-    [features, previousFeatures, isLoading]
-  );
+  // useEffect(
+  //   () => {
+  //     if (!isLoading) {
+  //       if (
+  //         features &&
+  //         JSON.stringify(features) === JSON.stringify(previousFeatures)
+  //       ) {
+  //         setRefetchStatus(2); // refetch feature
+  //       }
+  //     } else {
+  //       setRefetchStatus(1); // parent loading
+  //     }
+  //   },
+  //   [features, previousFeatures, isLoading]
+  // );
 
   if (!features.length && !error) {
     return <ActivityIndicator />;
