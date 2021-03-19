@@ -13,7 +13,7 @@ import {
   H6,
   withTheme,
 } from '@apollosproject/ui-kit';
-import { ItemSeparatorComponent } from '../UniversalContentItem';
+import { ItemSeparatorComponent } from '../ContentBody';
 import { PUBLICATION_FRAGMENT } from '../getContentItem';
 
 const GET_PUBLICATION = gql`
@@ -54,7 +54,7 @@ const Publication = ({ nodeId }) => {
   const skip = !nodeId || nodeId === '';
   const { data, loading } = useQuery(GET_PUBLICATION, {
     variables: { nodeId },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
     skip,
   });
 

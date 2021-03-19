@@ -35,4 +35,4 @@ MyPrayerRequestsFeedNavigator.propTypes = {
   }),
 };
 
-export default MyPrayerRequestsFeedNavigator;
+export default MyPrayerRequestsFeed;

@@ -15,7 +15,7 @@ import {
 } from '@apollosproject/ui-kit';
 import { PickerItem } from 'ui/inputs';
 import DateLabel from 'ui/DateLabel';
-import { ItemSeparatorComponent } from '../UniversalContentItem';
+import { ItemSeparatorComponent } from '../ContentBody';
 import { EVENT_GROUPINGS_FRAGMENT } from '../getContentItem';
 
 const GET_EVENT_GROUPINGS = gql`
@@ -157,6 +157,7 @@ const EventGroupingsConnected = ({ nodeId }) => {
   const { data, error } = useQuery(GET_EVENT_GROUPINGS, {
     variables: { nodeId },
     skip,
+    fetchPolicy: 'cache-first',
   });
 
   if (error) return null;

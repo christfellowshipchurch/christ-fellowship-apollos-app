@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@amplitude/ua-parser-js/-/ua-parser-js-0.7.20.tgz#15652f8cc4fee72d962a5f2101cfde6f3c8e87b8"
   integrity sha512-bmW++BLt1Hg+4HCExLXP+0Jhgy2eTsEevqkVc5o4yYbgwdP/gV3gEQXzyVrMVlWWNLgph/tFIkf5PVlSpCELEg==
 
-"@apollo/client@3.3.3":
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.3.3.tgz#97433fd50c498197afea2b8da4195d350daebb4c"
-  integrity sha512-zs148iUbBgmeQFOc+Jc4/Cb3LK7urQuCQGHifviMp0ihxzbJ8rtj0hCVuQhWaZxZRcL5oZBCfIuL1O5xuvszmQ==
+"@apollo/client@3.3.0-rc.2":
+  version "3.3.0-rc.2"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.3.0-rc.2.tgz#0dd14851246fecab92e2a443c129ee5e512a170c"
+  integrity sha512-kalzJT8qbszCX+xO+rSc5dgz+LuTL6EX6/Z+JCd9ZT6CzpUMkZYpwu2yY/CSL9kQV1iL7zrT3s50V7cz+hd9gw==
   dependencies:
     "@graphql-typed-document-node/core" "^3.0.0"
     "@types/zen-observable" "^0.8.0"

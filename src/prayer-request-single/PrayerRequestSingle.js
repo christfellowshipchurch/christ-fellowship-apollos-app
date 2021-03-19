@@ -12,6 +12,7 @@ import {
   styled,
   StretchyView,
 } from '@apollosproject/ui-kit';
+import NavigationHeader from 'ui/NavigationHeader';
 
 import GET_PRAYER_REQUEST from './getPrayerRequest';
 
@@ -49,6 +50,7 @@ const PrayerRequestSingle = (props) => {
 
   return (
     <BackgroundView>
+      <NavigationHeader />
       <StretchyView>
         {({ Stretchy, ...scrollViewProps }) => (
           <FlexedScrollView {...scrollViewProps}>

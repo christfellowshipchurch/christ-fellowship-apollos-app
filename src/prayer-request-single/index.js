@@ -34,4 +34,4 @@ PrayerRequestSingleNavigator.propTypes = {
   }),
 };
 
-export default PrayerRequestSingleNavigator;
+export default PrayerRequestSingle;

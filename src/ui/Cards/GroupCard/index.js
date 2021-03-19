@@ -30,7 +30,7 @@ const Spacer = styled(({ theme }) => ({
   paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-const Image = withTheme(({ customTheme, theme }) => ({
+const Image = withTheme(({ customTheme, theme, source }) => ({
   minAspectRatio: 1.66,
   maxAspectRatio: 1.66,
   maintainAspectRatio: true,
@@ -40,7 +40,7 @@ const Image = withTheme(({ customTheme, theme }) => ({
     'colors.primary',
     theme.colors.background.paper
   ), // else check for a custom theme (prop) or default to black.
-  overlayType: 'featured',
+  overlayType: !source ? 'flat' : 'featured',
   style: { flex: 1 },
 }))(CardImage);
 

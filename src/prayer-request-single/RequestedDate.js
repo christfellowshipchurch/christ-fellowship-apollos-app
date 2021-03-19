@@ -12,7 +12,7 @@ import Label from './styles';
 
 const RequestedDate = ({ prayerRequestId, isLoading, title }) => {
   const { loading, error, data } = useQuery(GET_PRAYER_REQUEST, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
     skip: !prayerRequestId,
     variables: {
       prayerRequestId,

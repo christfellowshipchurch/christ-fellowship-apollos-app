@@ -15,7 +15,7 @@ import { isEmpty } from 'lodash';
 
 import { styled } from '@apollosproject/ui-kit';
 import ButtonWithLinkRouting from 'ui/ButtonWithLinkRouting';
-import { ItemSeparatorComponent } from '../UniversalContentItem';
+import { ItemSeparatorComponent } from '../ContentBody';
 import { ACTIONS_FRAGMENT } from '../getContentItem';
 
 const GET_CONTENT_ACTIONS = gql`
@@ -40,7 +40,7 @@ const ButtonGroup = ({ nodeId }) => {
       nodeId,
     },
     skip,
-    fetchPolicy: skip ? 'cache-only' : 'cache-and-network',
+    fetchPolicy: 'cache-first',
   });
 
   const actions = data?.node?.callsToAction;

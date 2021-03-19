@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { isEmpty } from 'lodash';
 
 import { H3, BodyText } from '@apollosproject/ui-kit';
-import { ItemSeparatorComponent } from './UniversalContentItem';
+import { ItemSeparatorComponent } from './ContentBody';
 import { CONTENT_FRAGMENT } from './getContentItem';
 
 const GET_TITLE = gql`

@@ -45,7 +45,7 @@ const RequestorAvatar = ({
 }) => {
   const { id } = useCurrentUser();
   const { loading, error, data } = useQuery(GET_PRAYER_REQUEST, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
     skip: !prayerRequestId,
     variables: {
       prayerRequestId,

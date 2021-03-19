@@ -1,37 +1,3 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
-
-import { ModalCloseButton, ModalBackButton } from '@apollosproject/ui-kit';
 import ContentSingle from './ContentSingle';
 
-const { Screen, Navigator } = createNativeStackNavigator();
-
-const ContentSingleNavigator = ({ route, ...props }) => (
-  <Navigator
-    {...props}
-    headerMode="screen"
-    screenOptions={{
-      headerTranslucent: true,
-      headerStyle: { backgroundColor: 'transparent' },
-      headerHideShadow: true,
-      headerRight: ModalCloseButton,
-      headerLeft: ModalBackButton,
-      headerTitle: '',
-    }}
-  >
-    <Screen
-      name="ContentSingle"
-      component={ContentSingle}
-      initialParams={route.params}
-    />
-  </Navigator>
-);
-
-ContentSingleNavigator.propTypes = {
-  route: PropTypes.shape({
-    params: PropTypes.shape({}),
-  }),
-};
-
-export default ContentSingleNavigator;
+export default ContentSingle;

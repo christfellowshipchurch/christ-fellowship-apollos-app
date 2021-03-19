@@ -7,20 +7,24 @@
  * description
  */
 
-import React from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useEffect } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import { isEmpty } from 'lodash';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 
 import { ScrollView } from 'react-native';
-import { BackgroundView, PaddedView } from '@apollosproject/ui-kit';
+import {
+  BackgroundView,
+  PaddedView,
+  ActivityIndicator,
+} from '@apollosproject/ui-kit';
 import ThemeMixin from 'ui/DynamicThemeMixin';
 import { Row, DateLabel, Title, Subtitle, Content, Render } from './styles';
 
 const GET_NOTIFICATION = gql`
-  query getNotification($id: ID!) {
-    node(id: $id) {
+  query getNotification($itemId: ID!) {
+    node(id: $itemId) {
       ... on Message {
         id
         title
@@ -34,13 +38,26 @@ const GET_NOTIFICATION = gql`
 
 const NotificationSingle = (props) => {
   const itemId = props.route?.params?.itemId;
-  const { loading, data, error } = useQuery(GET_NOTIFICATION, {
-    skip: isEmpty(itemId),
-    fetchPolicy: 'cache-and-network',
-    variable: {
-      id: itemId,
+  const [getFullNotification, { loading, data }] = useLazyQuery(
+    GET_NOTIFICATION
+  );
+  const options = {
+    fetchPolicy: 'cache-first',
+    variables: {
+      itemId,
     },
-  });
+  };
+
+  useEffect(
+    () => {
+      if (!isEmpty(itemId)) {
+        getFullNotification(options);
+      }
+    },
+    [itemId]
+  );
+
+  if (loading && !data) return <ActivityIndicator />;
 
   const notification = data?.node;
   const title = notification?.title;

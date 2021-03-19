@@ -11,7 +11,7 @@ import Label from './styles';
 
 const PrayerRequestText = ({ prayerRequestId, isLoading, title }) => {
   const { loading, error, data } = useQuery(GET_PRAYER_REQUEST, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
     skip: !prayerRequestId,
     variables: {
       prayerRequestId,

@@ -15,7 +15,6 @@ import VideoPresentationContainer from '@apollosproject/ui-media-player/src/Vide
 import { ScriptureButton } from 'scripture-single';
 import Publication from '../Publication';
 import ButtonGroup from '../ButtonGroup';
-import { CheckInButtonConnected } from '../../check-in';
 import EventGroupings from '../EventGroupings';
 import Features from '../Features';
 import HTMLContent from '../HTMLContent';
@@ -54,14 +53,8 @@ const EmbeddedVideo = ({ VideoComponent, ControlsComponent }) => {
   );
 };
 
-const UniversalContentItem = ({
-  id,
-  content,
-  loading,
-  ImageWrapperComponent,
-}) => {
+const ContentBody = ({ id, content, loading, ImageWrapperComponent }) => {
   const coverImageSources = get(content, 'coverImage.sources', []);
-  const checkInRef = useRef();
 
   return (
     <>
@@ -80,7 +73,10 @@ const UniversalContentItem = ({
 
       {/* <CheckInButtonConnected id={content.id} ref={checkInRef} /> */}
       <Title nodeId={content.id} />
-      <Publication nodeId={content.id} />
+
+      {/* todo : fix the Publication issue */}
+      {/* <Publication nodeId={content.id} /> */}
+
       <EventGroupings nodeId={content.id} />
       <ButtonGroup nodeId={content.id} />
       <ScriptureButton nodeId={content.id} />
@@ -109,7 +105,7 @@ const UniversalContentItem = ({
   );
 };
 
-UniversalContentItem.propTypes = {
+ContentBody.propTypes = {
   id: PropTypes.string,
   content: PropTypes.shape({
     __typename: PropTypes.string,
@@ -138,4 +134,4 @@ UniversalContentItem.propTypes = {
   ]),
 };
 
-export default UniversalContentItem;
+export default ContentBody;

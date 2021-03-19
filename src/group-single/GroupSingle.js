@@ -4,13 +4,30 @@ import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemeMixin, ErrorCard } from '@apollosproject/ui-kit';
+import NavigationHeader from 'ui/NavigationHeader';
 
 import Group from './Group';
 import VolunteerGroup from './VolunteerGroup';
 
 import GET_GROUP from './getGroup';
+
+const renderContent = ({ itemId, content, loading }) => {
+  let { __typename } = content;
+  if (!__typename && itemId) {
+    [__typename] = itemId.split(':');
+  }
+
+  switch (__typename) {
+    case 'VolunteerGroup':
+      return <VolunteerGroup id={itemId} content={content} loading={loading} />;
+    case 'Group':
+    default:
+      return <Group id={itemId} content={content} loading={loading} />;
+  }
+};
 
 const GroupSingle = (props) => {
   const itemId = props.route?.params?.itemId;
@@ -20,29 +37,20 @@ const GroupSingle = (props) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  if (error) return <ErrorCard error={error} />;
+  if (error && !data && !loading)
+    return (
+      <SafeAreaView>
+        <NavigationHeader />
+        <ErrorCard error={error} />
+      </SafeAreaView>
+    );
 
   const content = get(data, 'node', {});
   const { theme = {} } = content;
-  const renderContent = () => {
-    let { __typename } = content;
-    if (!__typename && itemId) {
-      [__typename] = itemId.split(':');
-    }
-
-    switch (__typename) {
-      case 'VolunteerGroup':
-        return (
-          <VolunteerGroup id={itemId} content={content} loading={loading} />
-        );
-      case 'Group':
-      default:
-        return <Group id={itemId} content={content} loading={loading} />;
-    }
-  };
 
   return (
     <ThemeMixin theme={theme}>
+      <NavigationHeader />
       <TrackEventWhenLoaded
         loaded={!!(!loading && content.title)}
         eventName={'View Group'}
@@ -51,7 +59,7 @@ const GroupSingle = (props) => {
           itemId,
         }}
       />
-      {renderContent({ content, loading, error })}
+      {renderContent({ itemId, content, loading })}
     </ThemeMixin>
   );
 };

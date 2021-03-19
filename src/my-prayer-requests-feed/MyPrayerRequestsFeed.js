@@ -4,10 +4,14 @@ import { useQuery } from '@apollo/client';
 import { get } from 'lodash';
 import moment from 'moment';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
+import NavigationHeader from 'ui/NavigationHeader';
+
 import { View } from 'react-native';
 import { fetchMoreResolver } from '@apollosproject/ui-connected';
 import {
   styled,
+  H3,
   H4,
   PaddedView,
   TouchableScale,
@@ -120,22 +124,31 @@ const MyPrayerRequestsFeed = ({ navigation }) => {
     );
 
   return (
-    <CardFeed
-      content={prayers.sort((a, b) =>
-        moment(b.requestedDate).diff(a.requestedDate)
-      )}
-      renderItem={renderItem}
-      loadingStateObject={loadingStateObject}
-      isLoading={loading}
-      error={error}
-      fetchMore={fetchMoreResolver({
-        collectionName: 'currentUserPrayerRequests',
-        fetchMore,
-        variables,
-        data,
-      })}
-      refetch={refetch}
-    />
+    <SafeAreaView edges={['top', 'right', 'left']}>
+      <NavigationHeader />
+      <CardFeed
+        ListHeaderComponent={
+          <PaddedView>
+            <H3>My Prayer Requests</H3>
+          </PaddedView>
+        }
+        H3
+        content={prayers.sort((a, b) =>
+          moment(b.requestedDate).diff(a.requestedDate)
+        )}
+        renderItem={renderItem}
+        loadingStateObject={loadingStateObject}
+        isLoading={loading}
+        error={error}
+        fetchMore={fetchMoreResolver({
+          collectionName: 'currentUserPrayerRequests',
+          fetchMore,
+          variables,
+          data,
+        })}
+        refetch={refetch}
+      />
+    </SafeAreaView>
   );
 };
 

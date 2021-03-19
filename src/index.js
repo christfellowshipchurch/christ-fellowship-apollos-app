@@ -34,7 +34,7 @@ import Tabs from './tabs';
 import NodeSingle from './node-single';
 import ContentFeed from './content-feed';
 import EditUser from './edit-user';
-import GroupSingle from './group-single';
+import GroupSingle, { MembersFeed } from './group-single';
 import EditGroup from './edit-group';
 import NotificationCenter, { NotificationSingle } from './notification-center';
 import PrayerRequestSingle from './prayer-request-single';
@@ -88,7 +88,14 @@ const ThemedNavigator = withTheme(({ theme, ...props }) => ({
 }))(Navigator);
 
 const StackNavigator = (props) => (
-  <ThemedNavigator {...props} initialRouteName="ProtectedRoute">
+  <Navigator
+    {...props}
+    initialRouteName="ProtectedRoute"
+    screenOptions={{
+      headerShown: false,
+      stackPresentation: 'fullScreenModal',
+    }}
+  >
     <Screen
       name="Auth"
       component={EnhancedAuth}
@@ -118,14 +125,7 @@ const StackNavigator = (props) => (
         headerShown: true,
       })}
     />
-    <Screen
-      name="ContentSingle"
-      component={ContentSingle}
-      options={{
-        title: 'Content',
-        // stackPresentation: 'push',
-      }}
-    />
+    <Screen name="ContentSingle" component={ContentSingle} />
     <Screen
       name="EditGroup"
       component={EditGroup}
@@ -151,13 +151,20 @@ const StackNavigator = (props) => (
       component={LiveStreamSingle}
       options={{
         title: 'Live Stream',
-        // stackPresentation: 'push',
       }}
     />
     <Screen
       name="Location"
       component={Location}
       options={{ headerShown: true }}
+    />
+    <Screen
+      name="GroupMembersFeed"
+      component={MembersFeed}
+      options={{
+        title: 'Group Members',
+        stackPresentation: 'modal',
+      }}
     />
     <Screen
       name="MyPrayerRequestsFeed"
@@ -184,9 +191,7 @@ const StackNavigator = (props) => (
       options={{
         title: 'Update',
         stackPresentation: 'modal',
-        headerShown: true,
       }}
-      initialParams={props?.route?.params}
     />
     <Screen
       name="Onboarding"
@@ -222,7 +227,7 @@ const StackNavigator = (props) => (
       options={{ title: 'Home' }}
       // screenOptions={{ headerShown: true }}
     />
-  </ThemedNavigator>
+  </Navigator>
 );
 
 const NavigationContainerWithTheme = (props) => {
