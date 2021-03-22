@@ -17,7 +17,9 @@ const HeaderWrapper = styled(({ theme, insets }) => ({
   paddingRight: insets?.right
     ? theme.sizing.baseUnit + insets.right
     : theme.sizing.baseUnit,
-  paddingTop: theme.sizing.baseUnit * 2,
+  paddingTop: insets?.top
+    ? theme.sizing.baseUnit + insets.top
+    : theme.sizing.baseUnit,
 }))(View);
 
 const NavigationHeader = () => {

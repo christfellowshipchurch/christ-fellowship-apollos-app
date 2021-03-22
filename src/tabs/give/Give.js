@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
 import { BackgroundView } from '@apollosproject/ui-kit';
-import ApollosConfig from '@apollosproject/config';
 
 import { FeaturesFeedConnected } from 'features';
 
@@ -15,36 +14,20 @@ export const GET_GIVE_FEED = gql`
   query getGiveFeedFeatures {
     giveFeedFeatures {
       id
-      features {
-        id
-        ...ActionBarFeatureFragment
-        ...AvatarListFeatureFragment
-        ...HeroListFeatureFragment
-        ...HorizontalCardListFeatureFragment
-        ...VerticalCardListFeatureFragment
-      }
     }
   }
-
-  ${ApollosConfig.FRAGMENTS.HERO_LIST_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.HORIZONTAL_CARD_LIST_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.VERTICAL_CARD_LIST_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.RELATED_NODE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.ACTION_BAR_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.AVATAR_LIST_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.THEME_FRAGMENT}
 `;
 
 const Give = () => {
   const { data, error, loading, refetch } = useQuery(GET_GIVE_FEED, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
   });
-  const features = data?.giveFeedFeatures?.features;
+  const featuresFeedId = data?.giveFeedFeatures?.id;
 
   return (
     <BackgroundView>
       <FeaturesFeedConnected
-        features={features}
+        featuresFeedId={featuresFeedId}
         refetch={refetch}
         isLoading={loading}
         error={error}

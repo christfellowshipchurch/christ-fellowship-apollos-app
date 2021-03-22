@@ -1,8 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import { useLazyQuery } from '@apollo/client';
+import { get, isEmpty } from 'lodash';
 
-import { AppState, FlatList, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import {
   ActivityIndicator,
   UIText,
@@ -13,6 +14,8 @@ import {
 
 import { HorizontalDivider } from 'ui/Dividers';
 import { FeatureConnected } from '../FeatureConnected';
+
+import GET_FEATURES_FEED from './getFeaturesFeed';
 
 // :: Styled Componenents
 // :: ====================== ::
@@ -39,60 +42,47 @@ const ErrorTouchableText = withTheme(({ theme }) => ({
   },
 }))(UIText);
 
-// :: Feature Provider
-// :: ====================== ::
-const FeaturesFeedContext = React.createContext([]);
-
-export const useFeaturesFeed = () => useContext(FeaturesFeedContext);
-
 // :: Feature Feed Component
 // :: ====================== ::
 const renderItem = ({ item }) => <FeatureConnected key={item?.id} {...item} />;
 
 const FeaturesFeedConnected = ({
+  featuresFeedId,
   ItemSeparatorComponent,
-  features,
-  previousFeatures,
-  refetch,
   isLoading,
-  error,
+  error: parentError,
   ListEmptyComponent,
   ...props
 }) => {
-  const [refetchStatus, setRefetchStatus] = useState(0);
-
   /**
-   * note : along with pull-to-refresh, we will also listen to App State changes and run `refetch` when our app comes back into 'active' state
+   * note : because of a bug with the `skip` parameter in the `useQuery` hook, we'll use the `useLazyQuery` api instead so we can mimic that behavior manually
    */
-  // const _handleAppStateChange = (nextAppState) => {
-  //   if (nextAppState === 'active' && !isLoading) {
-  //     refetch();
-  //   }
-  // };
+  const [
+    getFeaturesFeed,
+    { data, loading, error, called, refetch },
+  ] = useLazyQuery(GET_FEATURES_FEED);
+  const features = data?.node?.features || [];
+  const errorInStack = !!parentError || !!error;
+  const loadingInStack = loading || isLoading;
+  const dataInStack = !!features && features.length;
 
-  // useEffect(() => {
-  //   AppState.addEventListener('change', _handleAppStateChange);
+  useEffect(
+    () => {
+      /**
+       * note : it's really easy for this query to get away from us if we call it too many times, so we're just being suuuuuuper picky with this condition so that we only ever call this on the first load (all subsequent loads should comes from pull-to-refetch)
+       */
 
-  //   return () => {
-  //     AppState.removeEventListener('change', _handleAppStateChange);
-  //   };
-  // }, []);
-
-  // useEffect(
-  //   () => {
-  //     if (!isLoading) {
-  //       if (
-  //         features &&
-  //         JSON.stringify(features) === JSON.stringify(previousFeatures)
-  //       ) {
-  //         setRefetchStatus(2); // refetch feature
-  //       }
-  //     } else {
-  //       setRefetchStatus(1); // parent loading
-  //     }
-  //   },
-  //   [features, previousFeatures, isLoading]
-  // );
+      if (!loading && featuresFeedId && !isEmpty(featuresFeedId) && !called) {
+        getFeaturesFeed({
+          fetchPolicy: 'cache-and-network',
+          variables: {
+            id: featuresFeedId,
+          },
+        });
+      }
+    },
+    [featuresFeedId]
+  );
 
   if (!features.length && !error) {
     return <ActivityIndicator />;
@@ -100,22 +90,17 @@ const FeaturesFeedConnected = ({
 
   return (
     <FlatList
-      extraData={{ isLoading }}
-      data={features.map((feature) => ({
-        ...feature,
-        isLoading,
-        refetchStatus,
-      }))}
+      data={features}
       renderItem={renderItem}
       ItemSeparatorComponent={ItemSeparatorComponent}
       ListEmptyComponent={
-        error && !isLoading && (!features || !features.length)
+        errorInStack && !loadingInStack && !dataInStack
           ? console.warn(error) || (
               <ErrorContainer>
                 <ErrorText>
                   {`Oops! Something went wrong and we weren't able to load up that data`}
                 </ErrorText>
-                <Touchable onPress={refetch}>
+                <Touchable onPress={() => refetch()}>
                   <ErrorTouchableText>{'Try Again'}</ErrorTouchableText>
                 </Touchable>
               </ErrorContainer>
@@ -125,7 +110,7 @@ const FeaturesFeedConnected = ({
       removeClippedSubviews
       keyExtractor={(item, index) => get(item, 'id', index)}
       onRefresh={() => {
-        if (!isLoading) {
+        if (!loadingInStack) {
           refetch();
         }
       }}
@@ -137,6 +122,7 @@ const FeaturesFeedConnected = ({
 };
 
 FeaturesFeedConnected.propTypes = {
+  featuresFeedId: PropTypes.string,
   additionalFeatures: PropTypes.shape({}),
   error: PropTypes.oneOfType([
     PropTypes.bool,
@@ -149,7 +135,6 @@ FeaturesFeedConnected.propTypes = {
     })
   ),
   isLoading: PropTypes.bool,
-  refetch: PropTypes.func,
   ItemSeparatorComponent: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.object,

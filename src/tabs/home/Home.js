@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
 import { View } from 'react-native';
 import { styled, BackgroundView } from '@apollosproject/ui-kit';
-import ApollosConfig from '@apollosproject/config';
-
-import {
-  GET_HERO_LIST_FEATURE,
-  GET_HORIZONTAL_CARD_LIST_FEATURE,
-  GET_VERTICAL_CARD_LIST_FEATURE,
-} from '@apollosproject/ui-connected';
 
 import {
   FeaturesFeedConnected,
@@ -26,14 +19,6 @@ export const GET_HOME_FEED = gql`
   query getHomeFeatureFeed {
     homeFeedFeatures {
       id
-      features {
-        id
-        ...ActionBarFeatureFragment
-        ...AvatarListFeatureFragment
-        ...HeroListFeatureFragment
-        ...HorizontalCardListFeatureFragment
-        ...VerticalCardListFeatureFragment
-      }
     }
 
     homeHeaderFeedFeatures {
@@ -43,34 +28,19 @@ export const GET_HOME_FEED = gql`
       }
     }
   }
-
-  ${ApollosConfig.FRAGMENTS.HERO_LIST_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.HORIZONTAL_CARD_LIST_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.VERTICAL_CARD_LIST_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.RELATED_NODE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.ACTION_BAR_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.AVATAR_LIST_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.THEME_FRAGMENT}
 `;
 
 const Home = () => {
-  const { data, error, loading, refetch, previousData } = useQuery(
-    GET_HOME_FEED,
-    {
-      fetchPolicy: 'cache-and-network',
-    }
-  );
-  const features = data?.homeFeedFeatures?.features;
+  const { data, error, loading } = useQuery(GET_HOME_FEED, {
+    fetchPolicy: 'cache-and-network',
+  });
+  const featuresFeedId = data?.homeFeedFeatures?.id;
   const headerFeatures = data?.homeHeaderFeedFeatures?.features;
-
-  const previousFeatures = previousData?.homeFeedFeatures?.features;
 
   return (
     <BackgroundView>
       <FeaturesFeedConnected
-        features={features}
-        previousFeatures={previousFeatures}
-        refetch={refetch}
+        featuresFeedId={featuresFeedId}
         isLoading={loading}
         error={error}
         ListHeaderComponent={

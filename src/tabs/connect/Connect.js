@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
 import { View } from 'react-native';
 import { styled, BackgroundView } from '@apollosproject/ui-kit';
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
-
-import ApollosConfig from '@apollosproject/config';
 
 import { FeaturesFeedConnected } from 'features';
 
@@ -18,24 +15,8 @@ export const GET_CONNECT_FEED = gql`
   query getConnectFeatureFeed {
     connectFeedFeatures {
       id
-      features {
-        id
-        ...ActionBarFeatureFragment
-        ...AvatarListFeatureFragment
-        ...HeroListFeatureFragment
-        ...HorizontalCardListFeatureFragment
-        ...VerticalCardListFeatureFragment
-      }
     }
   }
-
-  ${ApollosConfig.FRAGMENTS.HERO_LIST_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.HORIZONTAL_CARD_LIST_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.VERTICAL_CARD_LIST_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.RELATED_NODE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.ACTION_BAR_FEATURE_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.AVATAR_LIST_FRAGMENT}
-  ${ApollosConfig.FRAGMENTS.THEME_FRAGMENT}
 `;
 
 const ItemSeparator = styled(({ theme }) => ({
@@ -43,16 +24,15 @@ const ItemSeparator = styled(({ theme }) => ({
 }))(View);
 
 const Connect = () => {
-  const { data, error, loading, refetch } = useQuery(GET_CONNECT_FEED, {
-    fetchPolicy: 'cache-and-network',
+  const { data, error, loading } = useQuery(GET_CONNECT_FEED, {
+    fetchPolicy: 'cache-first',
   });
-  const features = data?.connectFeedFeatures?.features;
+  const featuresFeedId = data?.connectFeedFeatures?.id;
 
   return (
     <BackgroundView>
       <FeaturesFeedConnected
-        features={features}
-        refetch={refetch}
+        featuresFeedId={featuresFeedId}
         isLoading={loading}
         error={error}
         removeClippedSubviews={false}
