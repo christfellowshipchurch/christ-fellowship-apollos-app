@@ -454,6 +454,17 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    RELATED_NODE_FRAGMENT: gql`
+      fragment RelatedFeatureNodeFragment on Node {
+        id
+        ... on Url {
+          url
+        }
+        ... on ContentChannel {
+          name
+        }
+      }
+    `,
   },
   FEATURE_FEEDS: {
     horizontalCardListLength: 3,

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { useLazyQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
 
+import { print } from 'graphql';
+
 import { FlatList, View } from 'react-native';
 import {
   ActivityIndicator,
@@ -87,6 +89,9 @@ const FeaturesFeedConnected = ({
   if (!features.length && !error) {
     return <ActivityIndicator />;
   }
+
+  console.log({ error, parentError });
+  console.log(print(GET_FEATURES_FEED));
 
   return (
     <FlatList
