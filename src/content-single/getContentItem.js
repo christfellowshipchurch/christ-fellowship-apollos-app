@@ -79,6 +79,12 @@ export default gql`
       }
 
       ...VideoNodeFragment
+
+      ... on FeaturesNode {
+        featureFeed {
+          id
+        }
+      }
     }
   }
 

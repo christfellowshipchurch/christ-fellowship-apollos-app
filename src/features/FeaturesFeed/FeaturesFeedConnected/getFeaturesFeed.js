@@ -5,6 +5,7 @@ const { FRAGMENTS } = ApollosConfig;
 const {
   ACTION_BAR_FEATURE_FRAGMENT,
   AVATAR_LIST_FRAGMENT,
+  CONTENT_BLOCK_FEATURE_FRAGMENT,
   HERO_LIST_FEATURE_FRAGMENT,
   HORIZONTAL_CARD_LIST_FEATURE_FRAGMENT,
   RELATED_NODE_FRAGMENT,
@@ -21,6 +22,7 @@ export default gql`
           id
           ...ActionBarFeatureFragment
           ...AvatarListFeatureFragment
+          ...ContentBlockFeatureFragment
           ...HeroListFeatureFragment
           ...HorizontalCardListFeatureFragment
           ...VerticalCardListFeatureFragment
@@ -31,6 +33,7 @@ export default gql`
 
   ${ACTION_BAR_FEATURE_FRAGMENT}
   ${AVATAR_LIST_FRAGMENT}
+  ${CONTENT_BLOCK_FEATURE_FRAGMENT}
   ${HERO_LIST_FEATURE_FRAGMENT}
   ${HORIZONTAL_CARD_LIST_FEATURE_FRAGMENT}
   ${RELATED_NODE_FRAGMENT}

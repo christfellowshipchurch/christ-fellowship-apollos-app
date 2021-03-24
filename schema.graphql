@@ -273,6 +273,7 @@ type ContentBlockFeature implements Feature & Node {
   summary: String
   htmlContent: String
   coverImage: ImageMedia
+  videos: [VideoMedia]
   orientation: CONTENT_BLOCK_ORIENTATION
 }
 
@@ -445,6 +446,7 @@ type EventContentItem implements ContentItem & Node & CheckInableNode & ContentN
   events: [Event] @deprecated(reason: "We have updated the organization of the events schema. Please use 'eventGroupings' instead.")
   labelText: String @deprecated(reason: "Use labelText instead.")
   eventGroupings: [EventGrouping]
+  featureFeed: FeatureFeed
   checkin: CheckInable
   isLiked: Boolean
   likedCount: Int
@@ -729,7 +731,7 @@ interface Media {
   sources: [MediaSource]
 }
 
-type MediaContentItem implements ContentItem & Node & PublicationNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ScriptureNode & ShareableNode {
+type MediaContentItem implements ContentItem & Node & FeaturesNode & PublicationNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ScriptureNode & ShareableNode {
   id: ID!
   title(hyphenated: Boolean): String
   publishDate: String
@@ -744,6 +746,8 @@ type MediaContentItem implements ContentItem & Node & PublicationNode & LikableN
   parentChannel: ContentChannel
   theme: Theme
   scriptures: [Scripture]
+  features: [Feature] @deprecated(reason: "Use featureFeed")
+  featureFeed: FeatureFeed
   tags: [String]
   icon: String
   estimatedTime: String
@@ -975,6 +979,7 @@ type Query {
   websiteBanner: CallToAction
   genderOptions: [String]
   inAppLink(url: String!): String
+  dannysContent: [ContentItem]
   getAddressByPerson: Address
   getStatesList: DefinedValueList @deprecated(reason: "Use 'statesList' instead.")
   stateOptions: [String]

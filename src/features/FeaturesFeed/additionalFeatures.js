@@ -18,6 +18,7 @@ import {
   AvatarListFeatureConnected,
   AvatarListFeature,
 } from './AvatarListFeature';
+import ContentBlockFeature from './ContentBlockFeature';
 import HeroListFeature from './HeroListFeature';
 import HorizontalCardListFeature from './HorizontalCardListFeature';
 import VerticalCardListFeature from './VerticalCardListFeature';
@@ -25,6 +26,7 @@ import VerticalCardListFeature from './VerticalCardListFeature';
 export default {
   ActionBarFeature,
   AvatarListFeature,
+  ContentBlockFeature,
   HeroListFeature,
   HorizontalCardListFeature,
   VerticalCardListFeature,

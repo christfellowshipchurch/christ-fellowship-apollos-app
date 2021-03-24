@@ -27,7 +27,8 @@ const renderContent = ({ content, loading, error }) => (
 );
 
 const ContentSingle = (props) => {
-  const itemId = props.route?.params?.itemId;
+  // const itemId = props.route?.params?.itemId;
+  const itemId = 'MediaContentItem:56f7ddb99ed8ebeb438197ebd015c8e1';
   const { data, loading, error } = useQuery(GET_CONTENT_ITEM, {
     variables: { itemId },
     skip: isEmpty(itemId),
@@ -62,7 +63,10 @@ const ContentSingle = (props) => {
           itemId,
         }}
       />
-      <PlayerContainerConnected nodeId={itemId}>
+      <PlayerContainerConnected
+        nodeId={itemId}
+        featuresFeedId={content?.featureFeed?.id}
+      >
         {renderContent({ content, loading, error })}
       </PlayerContainerConnected>
       <ActionContainer itemId={id} />

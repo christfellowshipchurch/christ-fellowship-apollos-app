@@ -465,6 +465,26 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    CONTENT_BLOCK_FEATURE_FRAGMENT: gql`
+      fragment ContentBlockFeatureFragment on ContentBlockFeature {
+        title
+        summary
+        htmlContent
+
+        coverImage {
+          sources {
+            uri
+          }
+        }
+        videos {
+          sources {
+            uri
+          }
+        }
+
+        orientation
+      }
+    `,
   },
   FEATURE_FEEDS: {
     horizontalCardListLength: 3,
