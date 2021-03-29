@@ -15,12 +15,10 @@ import { isEmpty } from 'lodash';
 import { useLazyQuery } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
 
-import { View } from 'react-native';
 import {
   InlineActivityIndicator,
   ThemeMixin,
   withTheme,
-  styled,
   PaddedView,
 } from '@apollosproject/ui-kit';
 import ActionBar, { ActionBarItem } from 'ui/ActionBar';
@@ -143,7 +141,7 @@ const renderCheckInButton = ({
 const Actions = ({ id, name, theme }) => {
   const navigation = useNavigation();
   const checkIn = useCheckIn({ nodeId: id });
-  const [getActionParts, { data, loading, error, called }] = useLazyQuery(
+  const [getActionParts, { data, loading, called }] = useLazyQuery(
     GET_ACTION_PARTS
   );
   const streamChat = data?.node?.streamChatChannel;

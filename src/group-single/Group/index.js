@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
@@ -12,19 +12,16 @@ import {
   withTheme,
   ImageSourceType,
 } from '@apollosproject/ui-kit';
-import ActionBar, { ActionBarItem } from 'ui/ActionBar';
 
 import DateLabel from '../../ui/DateLabel';
 
 import AddCalEventButton from '../../content-single/AddCalEventButton';
 
 import CoverImageBackground from '../CoverImageBackground';
-import VideoCall from '../VideoCall';
 import Resources from '../Resources';
 import { HorizontalMembersFeedPreview } from '../MembersFeed';
 import HeaderConnected from '../HeaderConnected';
 import SummaryConnected from '../SummaryConnected';
-import GroupChatButton from '../GroupChatButton';
 import Actions from './Actions';
 
 const ScheduleView = styled(() => ({
@@ -78,7 +75,6 @@ const Group = ({ id, content, loading }) => {
   };
 
   const start = get(dateTime, 'start');
-  const chatChannelId = get(content, 'streamChatChannel.channelId');
 
   const handleEditGroupPress = () => navigation.navigate('EditGroup', { id });
 
