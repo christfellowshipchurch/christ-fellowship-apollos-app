@@ -12,6 +12,7 @@ import {
   withTheme,
   ImageSourceType,
 } from '@apollosproject/ui-kit';
+import ActionBar, { ActionBarItem } from 'ui/ActionBar';
 
 import DateLabel from '../../ui/DateLabel';
 
@@ -23,8 +24,8 @@ import Resources from '../Resources';
 import { HorizontalMembersFeedPreview } from '../MembersFeed';
 import HeaderConnected from '../HeaderConnected';
 import SummaryConnected from '../SummaryConnected';
-import { CheckInButtonConnected } from '../../check-in';
 import GroupChatButton from '../GroupChatButton';
+import Actions from './Actions';
 
 const ScheduleView = styled(() => ({
   flexDirection: 'row',
@@ -53,7 +54,7 @@ const CellItem = styled(({ theme, first }) => ({
 
 const Group = ({ id, content, loading }) => {
   const navigation = useNavigation();
-  const checkInRef = useRef();
+
   const coverImageSources = get(content, 'coverImage.sources', []);
   const resources = get(content, 'resources', []);
   const dateTime = get(content, 'dateTime', {});
@@ -87,18 +88,6 @@ const Group = ({ id, content, loading }) => {
 
       <BackgroundView>
         <PaddedView vertical={false}>
-          {!videoCall && (
-            <Cell>
-              <CellItem />
-              <CellItem>
-                <PaddedView horizontal={false}>
-                  <CheckInButtonConnected id={id} ref={checkInRef} />
-                </PaddedView>
-              </CellItem>
-              <CellItem />
-            </Cell>
-          )}
-
           <Cell>
             {content.dateTime ? (
               <CellItem first>
@@ -125,26 +114,13 @@ const Group = ({ id, content, loading }) => {
               </CellItem>
             ) : null}
           </Cell>
+        </PaddedView>
 
-          <PaddedView horizontal={false}>
-            {videoCall && (
-              <VideoCall
-                groupId={content.id}
-                isLoading={loading}
-                parentVideoCall={parentVideoCall}
-                videoCall={videoCall}
-                date={start}
-              />
-            )}
+        <PaddedView horizontal={false}>
+          <Actions id={id} />
+        </PaddedView>
 
-            {chatChannelId && (
-              <GroupChatButton
-                channelId={chatChannelId}
-                groupName={content.title}
-              />
-            )}
-          </PaddedView>
-
+        <PaddedView vertical={false}>
           <SummaryConnected id={id} />
         </PaddedView>
 

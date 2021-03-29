@@ -25,7 +25,7 @@ const ItemSeparator = styled(({ theme }) => ({
 
 const Connect = () => {
   const { data, error, loading } = useQuery(GET_CONNECT_FEED, {
-    fetchPolicy: 'cache-first',
+    fetchPolicy: 'network-only',
   });
   const featuresFeedId = data?.connectFeedFeatures?.id;
 

@@ -30,8 +30,10 @@ const PaddedActivityIndicator = styled(({ theme }) => ({
   paddingVertical: theme.sizing.baseUnit * 1.5,
 }))(InlineActivityIndicator);
 
-const ActionBar = ({ children, isLoading, ...props }) =>
-  isLoading ? (
+const ActionBar = ({ children, isLoading, ...props }) => {
+  const filteredChildren = children.filter((c) => !!c);
+
+  return isLoading ? (
     <Card {...props}>
       <Row>
         <PaddedActivityIndicator />
@@ -40,15 +42,16 @@ const ActionBar = ({ children, isLoading, ...props }) =>
   ) : (
     <Card {...props}>
       <Row>
-        {React.Children.map(children, (child, i) => (
+        {React.Children.map(filteredChildren, (child, i) => (
           <React.Fragment key={uniqueId(`ActionBar:${i}`)}>
             {child}
-            {i < children.length - 1 && <Divider />}
+            {i < filteredChildren.length - 1 && <Divider />}
           </React.Fragment>
         ))}
       </Row>
     </Card>
   );
+};
 
 ActionBar.propTypes = {
   children: PropTypes.oneOfType([

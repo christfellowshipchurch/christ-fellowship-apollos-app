@@ -37,172 +37,193 @@ const CenterAlignedBodyText = styled(() => ({
   textAlign: 'center',
 }))(BodyText);
 
-const CheckInButton = withTheme()(({ id, sheetRef, theme }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [checkInSuccess, setCheckInSuccess] = useState(false);
-  const [drawerIsOpen, setDrawerIsOpen] = useState(false);
-  const {
-    title,
-    message,
-    options,
-    loading,
-    error,
-    enabled,
-    checkInCompleted,
-    checkInCurrentUser,
-  } = useCheckIn({
-    nodeId: id,
-    onCheckInSuccess: () => setCheckInSuccess(true),
-  });
+const DefaultButton = ({
+  isLoading,
+  disabled,
+  isCheckedIn,
+  checkInCompleted,
+}) => (
+  <StyledButton
+    isLoading={isLoading}
+    disabled={disabled}
+    pill={false}
+    isCheckedIn={isCheckedIn}
+  >
+    {isLoading ? (
+      <ActivityIndicator />
+    ) : (
+      <>
+        <ButtonIcon name={'check'} />
+        <ButtonTitle bold>
+          {checkInCompleted ? 'Checked In' : 'Check In'}
+        </ButtonTitle>
+      </>
+    )}
+  </StyledButton>
+);
 
-  /** After a check in is completed, we set a timer
-   *  and if the drawer is still open, automatically
-   *  close it for the user
-   */
-  useEffect(
-    () => {
-      let timer = null;
-      if (checkInSuccess) {
-        timer = setTimeout(() => {
-          if (drawerIsOpen) sheetRef.current.close();
-        }, 5000);
-      }
+const CheckInButton = withTheme()(
+  ({ id, sheetRef, theme, ButtonComponent }) => {
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [checkInSuccess, setCheckInSuccess] = useState(false);
+    const [drawerIsOpen, setDrawerIsOpen] = useState(false);
+    const {
+      title,
+      message,
+      options,
+      loading,
+      error,
+      enabled,
+      checkInCompleted,
+      checkInCurrentUser,
+    } = useCheckIn({
+      nodeId: id,
+      onCheckInSuccess: () => setCheckInSuccess(true),
+    });
 
-      return () => clearTimeout(timer);
-    },
-    [checkInSuccess]
-  );
+    /** After a check in is completed, we set a timer
+     *  and if the drawer is still open, automatically
+     *  close it for the user
+     */
+    useEffect(
+      () => {
+        let timer = null;
+        if (checkInSuccess) {
+          timer = setTimeout(() => {
+            if (drawerIsOpen) sheetRef.current.close();
+          }, 5000);
+        }
 
-  const onDrawerOpen = () => {
-    setDrawerIsOpen(true);
-  };
+        return () => clearTimeout(timer);
+      },
+      [checkInSuccess]
+    );
 
-  /** Called when the drawer closes */
-  const reset = () => {
-    /** Set the check in success state back to reset the animation */
-    setCheckInSuccess(false);
-    /** Update the state of the drawer */
-    setDrawerIsOpen(false);
-    /** Clear out my selected items */
-    setSelectedItems([]);
-  };
+    const onDrawerOpen = () => {
+      setDrawerIsOpen(true);
+    };
 
-  if ((!enabled && !loading) || error || (!options.length && !loading)) {
-    return null;
-  }
+    /** Called when the drawer closes */
+    const reset = () => {
+      /** Set the check in success state back to reset the animation */
+      setCheckInSuccess(false);
+      /** Update the state of the drawer */
+      setDrawerIsOpen(false);
+      /** Clear out my selected items */
+      setSelectedItems([]);
+    };
 
-  const CheckInButtonWrapper =
-    options.length === checkInCompleted ? View : TouchableScale;
-  const buttonProps =
-    checkInCompleted && options.length === 1
-      ? {}
-      : {
-          onPress: () => {
-            if (enabled) {
-              sheetRef.current.open();
-            }
-          },
-        };
+    if ((!enabled && !loading) || error || (!options.length && !loading)) {
+      return null;
+    }
 
-  const renderItem = ({ item }) => (
-    <FlexedView>
-      <TouchableCheckBox
-        id={item.id}
-        selected={item.isCheckedIn}
-        disabled={loading || item.isCheckedIn}
-        title={moment(item.startDateTime).format('h:mma')}
-        onChange={({ selected, id: optionId }) => {
-          if (selected) {
-            setSelectedItems([...selectedItems, optionId]);
-          } else {
-            setSelectedItems(selectedItems.filter((s) => s !== optionId));
-          }
-        }}
-      />
-    </FlexedView>
-  );
-
-  return (
-    <View>
-      <CheckInButtonWrapper {...buttonProps}>
-        <StyledButton
-          isLoading={loading}
-          disabled={loading || (checkInCompleted && options.length === 1)}
-          pill={false}
-          isCheckedIn={options.find((o) => o.isCheckedIn) || checkInCompleted}
-        >
-          {loading ? (
-            <ActivityIndicator />
-          ) : (
-            <>
-              <ButtonIcon name={'check'} />
-              <ButtonTitle bold>
-                {checkInCompleted ? 'Checked In' : 'Check In'}
-              </ButtonTitle>
-            </>
-          )}
-        </StyledButton>
-      </CheckInButtonWrapper>
-      <BottomSheet
-        ref={sheetRef}
-        closeOnDragDown
-        closeOnPressMask={!loading}
-        onOpen={onDrawerOpen}
-        onClose={reset}
-        height={Dimensions.get('window').height * 0.4}
-        customStyles={{
-          container: {
-            backgroundColor: theme.colors.background.paper,
-            borderTopLeftRadius: 24,
-            borderTopRightRadius: 24,
-          },
-        }}
-      >
-        {checkInSuccess ? (
-          <CheckInContainer>
-            <AnimatedCheckInIcon />
-            <CenterAlignedPaddedView>
-              <H3>{"You're all set!"}</H3>
-              <BodyText>Thank you for serving with us today!</BodyText>
-            </CenterAlignedPaddedView>
-          </CheckInContainer>
-        ) : (
-          <FlexedSafeAreaView forceInset={{ top: 'never', bottom: 'always' }}>
-            <BottomSheetTitle>
-              <H3>{title}</H3>
-              <CenterAlignedBodyText>{message}</CenterAlignedBodyText>
-            </BottomSheetTitle>
-
-            <StyledFlatList
-              data={options.map((o) => ({ ...o, loading }))}
-              renderItem={renderItem}
-              numColumns={2}
-              keyExtractor={(item) => item}
-              extraData={{ loading }}
-            />
-
-            <Button
-              title="Check In"
-              onPress={() => {
-                checkInCurrentUser({
-                  optionIds: selectedItems,
-                });
-              }}
-              disabled={
-                selectedItems.length === 0 || loading || checkInCompleted
+    const CheckInButtonWrapper =
+      options.length === checkInCompleted ? View : TouchableScale;
+    const buttonProps =
+      checkInCompleted && options.length === 1
+        ? {}
+        : {
+            onPress: () => {
+              if (enabled) {
+                sheetRef.current.open();
               }
-              loading={loading}
-            />
-          </FlexedSafeAreaView>
-        )}
-      </BottomSheet>
-    </View>
-  );
-});
+            },
+          };
+
+    const renderItem = ({ item }) => (
+      <FlexedView>
+        <TouchableCheckBox
+          id={item.id}
+          selected={item.isCheckedIn}
+          disabled={loading || item.isCheckedIn}
+          title={moment(item.startDateTime).format('h:mma')}
+          onChange={({ selected, id: optionId }) => {
+            if (selected) {
+              setSelectedItems([...selectedItems, optionId]);
+            } else {
+              setSelectedItems(selectedItems.filter((s) => s !== optionId));
+            }
+          }}
+        />
+      </FlexedView>
+    );
+
+    return (
+      <View>
+        <CheckInButtonWrapper {...buttonProps}>
+          <ButtonComponent
+            isLoading={loading}
+            disabled={loading || (checkInCompleted && options.length === 1)}
+            isCheckedIn={options.find((o) => o.isCheckedIn) || checkInCompleted}
+            checkInCompleted={checkInCompleted}
+          />
+        </CheckInButtonWrapper>
+        <BottomSheet
+          ref={sheetRef}
+          closeOnDragDown
+          closeOnPressMask={!loading}
+          onOpen={onDrawerOpen}
+          onClose={reset}
+          height={Dimensions.get('window').height * 0.4}
+          customStyles={{
+            container: {
+              backgroundColor: theme.colors.background.paper,
+              borderTopLeftRadius: 24,
+              borderTopRightRadius: 24,
+            },
+          }}
+        >
+          {checkInSuccess ? (
+            <CheckInContainer>
+              <AnimatedCheckInIcon />
+              <CenterAlignedPaddedView>
+                <H3>{"You're all set!"}</H3>
+                <BodyText>Thank you for serving with us today!</BodyText>
+              </CenterAlignedPaddedView>
+            </CheckInContainer>
+          ) : (
+            <FlexedSafeAreaView forceInset={{ top: 'never', bottom: 'always' }}>
+              <BottomSheetTitle>
+                <H3>{title}</H3>
+                <CenterAlignedBodyText>{message}</CenterAlignedBodyText>
+              </BottomSheetTitle>
+
+              <StyledFlatList
+                data={options.map((o) => ({ ...o, loading }))}
+                renderItem={renderItem}
+                numColumns={2}
+                keyExtractor={(item) => item}
+                extraData={{ loading }}
+              />
+
+              <Button
+                title="Check In"
+                onPress={() => {
+                  checkInCurrentUser({
+                    optionIds: selectedItems,
+                  });
+                }}
+                disabled={
+                  selectedItems.length === 0 || loading || checkInCompleted
+                }
+                loading={loading}
+              />
+            </FlexedSafeAreaView>
+          )}
+        </BottomSheet>
+      </View>
+    );
+  }
+);
 
 CheckInButton.propTypes = {
   id: PropTypes.string,
   isLoading: PropTypes.bool,
+  ButtonComponent: PropTypes.node,
+};
+
+CheckInButton.defaultProps = {
+  ButtonComponent: DefaultButton,
 };
 
 export default React.forwardRef((props, ref) => (

@@ -80,28 +80,26 @@ const HeaderConnected = ({ id, onEditGroupPress }) => {
   return (
     <HeaderSpacing>
       <SafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
-        <PaddedView>
-          {avatars.length > 0 && (
-            <HeroAvatars>
-              {avatars.map(({ id: personId, photo }) => (
-                <HeroAvatarSpacing key={personId}>
-                  <Avatar source={photo} themeSize={65} />
-                </HeroAvatarSpacing>
-              ))}
-            </HeroAvatars>
-          )}
+        {avatars.length > 0 && (
+          <HeroAvatars>
+            {avatars.map(({ id: personId, photo }) => (
+              <HeroAvatarSpacing key={personId}>
+                <Avatar source={photo} themeSize={65} />
+              </HeroAvatarSpacing>
+            ))}
+          </HeroAvatars>
+        )}
 
-          <StyledTitle>
-            <StyledH3 isLoading={loading && !content.title} numberOfLines={2}>
-              {content.title}
-            </StyledH3>
-            {!loading &&
-              !!content.groupType && (
-                <StyledH5 numberOfLines={2}>{content.groupType}</StyledH5>
-              )}
-            {canEditGroup && <EditGroupButton onPress={onEditGroupPress} />}
-          </StyledTitle>
-        </PaddedView>
+        <StyledTitle>
+          <StyledH3 isLoading={loading && !content.title} numberOfLines={2}>
+            {content.title}
+          </StyledH3>
+          {!loading &&
+            !!content.groupType && (
+              <StyledH5 numberOfLines={2}>{content.groupType}</StyledH5>
+            )}
+          {canEditGroup && <EditGroupButton onPress={onEditGroupPress} />}
+        </StyledTitle>
       </SafeAreaView>
     </HeaderSpacing>
   );

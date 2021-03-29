@@ -27,8 +27,8 @@ const renderContent = ({ content, loading, error }) => (
 );
 
 const ContentSingle = (props) => {
-  // const itemId = props.route?.params?.itemId;
-  const itemId = 'MediaContentItem:56f7ddb99ed8ebeb438197ebd015c8e1';
+  const itemId = props.route?.params?.itemId;
+  // const itemId = 'MediaContentItem:56f7ddb99ed8ebeb438197ebd015c8e1';
   const { data, loading, error } = useQuery(GET_CONTENT_ITEM, {
     variables: { itemId },
     skip: isEmpty(itemId),

@@ -59,17 +59,10 @@ const FeaturesFeedConnected = ({
   /**
    * note : because of a bug with the `skip` parameter in the `useQuery` hook, we'll use the `useLazyQuery` api instead so we can mimic that behavior manually
    */
-  const [getFeaturesFeed, { data, loading, error, called }] = useLazyQuery(
-    GET_FEATURES_FEED
-  );
-  const refetch = () => {
-    getFeaturesFeed({
-      fetchPolicy: 'cache-and-network',
-      variables: {
-        id: featuresFeedId,
-      },
-    });
-  };
+  const [
+    getFeaturesFeed,
+    { data, loading, error, called, refetch },
+  ] = useLazyQuery(GET_FEATURES_FEED);
   const features = data?.node?.features || [];
   const errorInStack = !!parentError || !!error;
   const loadingInStack = loading || isLoading;
@@ -82,7 +75,12 @@ const FeaturesFeedConnected = ({
        */
 
       if (!loading && featuresFeedId && !isEmpty(featuresFeedId) && !called) {
-        refetch();
+        getFeaturesFeed({
+          fetchPolicy: 'network-only',
+          variables: {
+            id: featuresFeedId,
+          },
+        });
       }
     },
     [featuresFeedId]
