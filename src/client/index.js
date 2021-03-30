@@ -55,6 +55,18 @@ export const client = new ApolloClient({
       },
     },
   },
+  // typePolicies: {
+  //   Query: {
+  //     fields: {
+  //       PeopleConnection: {
+  //         merge(existing = [], incoming) {
+  //           const mappedIncoming = incoming.map(({ edges }) => edges.cursor);
+  //           return { ...existing, ...mappedIncoming };
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
 });
 
 // Hack to give auth link access to method on client;

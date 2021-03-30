@@ -15,6 +15,8 @@ import ScreenOrientation, {
   LANDSCAPE,
 } from 'react-native-orientation-locker/ScreenOrientation';
 
+import { ChatChannel } from '../stream-chat';
+
 const AspectRatio = styled(({ isFullScreen }) => ({
   ...(isFullScreen
     ? {
@@ -94,7 +96,14 @@ const LiveStreamPlayer = ({
   // );
 
   return (
-    <FlexedView>
+    <ChatChannel
+      streamChatChannel={{
+        id: 'StreamChatChannel:d5772fda84f066b5b48706dff8153389',
+        channelId: '7486f61ab5af1fafcf7792a29a4ef6137d61f894',
+        channelType: 'livestream',
+      }}
+    >
+      {/* <FlexedView> */}
       <BlackBars isFullScreen={isFullScreen} insets={insets}>
         <StatusBar barStyle="light-content" />
         <ScreenOrientation
@@ -113,8 +122,8 @@ const LiveStreamPlayer = ({
           )}
         </AspectRatio>
       </BlackBars>
-      {children}
-    </FlexedView>
+      {/* </FlexedView> */}
+    </ChatChannel>
   );
 };
 

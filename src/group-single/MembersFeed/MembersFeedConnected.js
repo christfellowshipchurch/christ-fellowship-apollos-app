@@ -17,7 +17,6 @@ import {
   BodyText,
   withTheme,
   styled,
-  FeedView,
   Icon,
   Card,
   CardImage,
@@ -26,7 +25,7 @@ import {
 
 import GET_MEMBERS from './getMembers';
 
-const Image = withTheme(({ theme }) => ({
+const Image = withTheme(() => ({
   forceRatio: 1,
   imageStyle: { aspectRatio: 1 },
 }))(CardImage);

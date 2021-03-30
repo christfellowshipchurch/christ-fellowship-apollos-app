@@ -16,6 +16,7 @@ export default gql`
             endCursor
           }
           edges {
+            cursor
             node {
               id
               firstName

@@ -215,6 +215,7 @@ const useCurrentUser = (props) => {
     updateProfileField,
     updateCommunicationPreference,
     updateAddress,
+    streamChatToken: data?.currentUser?.streamChatToken,
   };
 };
 

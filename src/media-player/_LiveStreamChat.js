@@ -18,10 +18,10 @@ import {
   MessageInput,
   LoadingMessages,
   LoadingErrorIndicator,
-} from '../chat/components';
-import { withPlayerContext } from '../chat/context';
-import chatClient, { streami18n } from '../chat/client';
-import mapChatTheme from '../chat/styles/mapTheme';
+} from '../_chat/components';
+import { withPlayerContext } from '../_chat/context';
+import chatClient, { streami18n } from '../_chat/client';
+import mapChatTheme from '../_chat/styles/mapTheme';
 
 const GET_CURRENT_USER_ROLE_FOR_CHANNEL = gql`
   query getCurrentUserRoleForChannel($channelId: ID!) {

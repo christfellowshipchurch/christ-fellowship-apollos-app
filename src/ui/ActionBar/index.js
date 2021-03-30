@@ -31,7 +31,9 @@ const PaddedActivityIndicator = styled(({ theme }) => ({
 }))(InlineActivityIndicator);
 
 const ActionBar = ({ children, isLoading, ...props }) => {
-  const filteredChildren = children.filter((c) => !!c);
+  const filteredChildren = Array.isArray(children)
+    ? children.filter((c) => !!c)
+    : children;
 
   return isLoading ? (
     <Card {...props}>

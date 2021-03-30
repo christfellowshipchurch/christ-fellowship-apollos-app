@@ -1,11 +1,14 @@
 import React from 'react';
 import { useLiveStream } from 'hooks';
 
+import { View } from 'react-native';
 import { ApollosPlayerContainer } from '@apollosproject/ui-media-player';
 import {
   ErrorCard,
   ActivityIndicator,
   BackgroundView,
+  FlexedView,
+  styled,
 } from '@apollosproject/ui-kit';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
@@ -13,12 +16,17 @@ import StatusBar from 'ui/StatusBar';
 
 import ThemeMixin from '../ui/DynamicThemeMixin';
 
+import { ChatChannel } from '../stream-chat';
 import LiveStreamPlayer from './LiveStreamPlayer';
-import LiveStreamChat from './LiveStreamChat';
+// import LiveStreamChat from './LiveStreamChat';
 import PreLiveStream from './PreLiveStream';
 import PostLiveStream from './PostLiveStream';
 import CloseButton from './CloseButton';
 import { ChatSpacing } from './LiveStreamChatComponents';
+
+const RedBox = styled(() => ({
+  backgroundColor: 'salmon',
+}))(View);
 
 const LiveStreamSingle = (props) => {
   const liveStreamId = props.route?.params?.liveStreamId;
@@ -109,10 +117,17 @@ const LiveStreamSingle = (props) => {
           }}
         />
         <CloseButton />
+        <RedBox />
 
-        <ChatSpacing>
+        {!!streamChatChannel && (
+          <FlexedView>
+            <ChatChannel streamChatChannel={streamChatChannel} />
+          </FlexedView>
+        )}
+
+        {/* <ChatSpacing>
           <LiveStreamChat channelId={streamChatChannel?.channelId} />
-        </ChatSpacing>
+        </ChatSpacing> */}
       </ThemeMixin>
     </ApollosPlayerContainer>
   );

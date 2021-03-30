@@ -54,11 +54,21 @@ const GET_ACTION_PARTS = gql`
   }
 `;
 
-const renderChatButton = ({ id, channelId, name, navigation, theme }) => {
+const renderChatButton = ({
+  id,
+  channelId,
+  name,
+  navigation,
+  theme,
+  groupId,
+}) => {
   const handlePress = () =>
-    navigation.navigate('ChatChannel', {
-      channelId,
-      name,
+    navigation.navigate('ChatChannelSingle', {
+      itemId: id,
+      title: name,
+      relatedNode: {
+        id: groupId,
+      },
     });
 
   if (!id || !channelId) return null;
@@ -192,19 +202,27 @@ const Actions = ({ id, name, theme }) => {
       })}
       {renderZoomButton({
         id,
-        videoCall: {
-          ...videoCall,
-          labelText:
-            videoCall?.labelText ||
-            (!isEmpty(parentVideoCall) ? 'Join Breakout' : 'Join Meeting'),
-        },
+        videoCall: isEmpty(videoCall)
+          ? videoCall
+          : {
+              ...videoCall,
+              labelText:
+                videoCall?.labelText ||
+                (!isEmpty(parentVideoCall) ? 'Join Breakout' : 'Join Meeting'),
+            },
         theme: {
           colors: {
             primary: theme.colors.success,
           },
         },
       })}
-      {renderChatButton({ ...streamChat, name, theme, navigation })}
+      {renderChatButton({
+        ...streamChat,
+        groupId: id,
+        name,
+        theme,
+        navigation,
+      })}
     </ActionBar>
   );
 };

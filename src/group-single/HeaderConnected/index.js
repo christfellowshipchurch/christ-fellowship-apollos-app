@@ -24,10 +24,10 @@ import GET_HEADER from './getHeader';
 
 const HeaderSpacing = withTheme(({ theme }) => ({
   colors: [
-    Color(theme.colors.background.paper)
+    Color(theme.colors.background.screen)
       .alpha(0)
       .string(),
-    theme.colors.background.paper,
+    theme.colors.background.screen,
   ],
   style: { paddingTop: theme.sizing.baseUnit * 2 },
 }))(LinearGradient);
