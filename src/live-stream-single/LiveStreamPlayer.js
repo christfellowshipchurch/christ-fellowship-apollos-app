@@ -5,17 +5,21 @@ import {
   PictureMode,
 } from '@apollosproject/ui-media-player';
 
-import { View, Animated } from 'react-native';
+import { View, Animated, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { styled, FlexedView } from '@apollosproject/ui-kit';
-
+import { OverlayProvider as ChatOverlayProvider } from 'stream-chat-react-native';
 import StatusBar from 'ui/StatusBar';
+
 import ScreenOrientation, {
   PORTRAIT,
   LANDSCAPE,
 } from 'react-native-orientation-locker/ScreenOrientation';
 
 import { ChatChannel } from '../stream-chat';
+import CloseButton from './CloseButton';
+
+import { useStreamChatChannel } from './LiveStreamSingle';
 
 const AspectRatio = styled(({ isFullScreen }) => ({
   ...(isFullScreen
@@ -37,16 +41,17 @@ const BlackBars = styled(({ theme, insets, isFullScreen }) => ({
   paddingTop: isFullScreen ? 0 : insets.top + theme.sizing.baseUnit,
   paddingLeft: isFullScreen ? insets.left + theme.sizing.baseUnit : 0,
   paddingRight: isFullScreen ? insets.right + theme.sizing.baseUnit : 0,
+  zIndex: 1000,
 }))(View);
 
 const LiveStreamPlayer = ({
   VideoComponent,
   ControlsComponent,
   useNativeFullscreeniOS,
-  children,
 }) => {
+  const streamChatId = useStreamChatChannel();
   const insets = useSafeAreaInsets();
-  const { pictureMode, setPictureMode } = usePlayerControls();
+  const { pictureMode } = usePlayerControls();
   const [orientation, setOrientation] = useState(PORTRAIT);
 
   const animatedValue = new Animated.Value(0);
@@ -79,51 +84,35 @@ const LiveStreamPlayer = ({
     [pictureMode]
   );
 
-  // TODO : figure out how to get the picture mode to change when the device orientation changes
-  // useEffect(
-  //   () => {
-
-  //     if (orientation.startsWith(PORTRAIT)) {
-  //       setPictureMode(PictureMode.Normal);
-  //     }
-
-  //     if (orientation.startsWith(LANDSCAPE)) {
-  //       console.log('GO TO LANDSCAPE');
-  //       setPictureMode(PictureMode.Fullscreen);
-  //     }
-  //   },
-  //   [orientation]
-  // );
-
   return (
-    <ChatChannel
-      streamChatChannel={{
-        id: 'StreamChatChannel:d5772fda84f066b5b48706dff8153389',
-        channelId: '7486f61ab5af1fafcf7792a29a4ef6137d61f894',
-        channelType: 'livestream',
-      }}
-    >
-      {/* <FlexedView> */}
-      <BlackBars isFullScreen={isFullScreen} insets={insets}>
-        <StatusBar barStyle="light-content" />
-        <ScreenOrientation
-          orientation={orientation}
-          // onChange={(newOrientation) => {
-          //   setOrientation(newOrientation);
-          // }}
-          onDeviceChange={(newOrientation) => {
-            setOrientation(newOrientation);
-          }}
-        />
-        <AspectRatio isFullScreen={isFullScreen} insets={insets}>
-          <VideoComponent useNativeFullscreeniOS={useNativeFullscreeniOS} />
-          {!isFullScreen && (
-            <ControlsComponent collapsedAnimation={collapsedAnimation} />
-          )}
-        </AspectRatio>
-      </BlackBars>
-      {/* </FlexedView> */}
-    </ChatChannel>
+    <ChatOverlayProvider bottomInset={insets.bottom} topInset={211 + 66 + 66}>
+      <FlexedView>
+        <View style={[{ position: 'absolute' }, StyleSheet.absoluteFillObject]}>
+          <StatusBar />
+          <CloseButton />
+
+          <ChatChannel streamChatChannel={{ id: streamChatId }} withMedia>
+            <BlackBars isFullScreen={isFullScreen} insets={insets}>
+              <StatusBar barStyle="light-content" />
+              <ScreenOrientation
+                orientation={orientation}
+                onDeviceChange={(newOrientation) => {
+                  setOrientation(newOrientation);
+                }}
+              />
+              <AspectRatio isFullScreen={isFullScreen} insets={insets}>
+                <VideoComponent
+                  useNativeFullscreeniOS={useNativeFullscreeniOS}
+                />
+                {!isFullScreen && (
+                  <ControlsComponent collapsedAnimation={collapsedAnimation} />
+                )}
+              </AspectRatio>
+            </BlackBars>
+          </ChatChannel>
+        </View>
+      </FlexedView>
+    </ChatOverlayProvider>
   );
 };
 

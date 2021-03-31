@@ -40,6 +40,9 @@ allprojects {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
         }
+        // :: React Native Image Crop Picker for Stream.IO
+        // :: https://github.com/ivpusic/react-native-image-crop-picker#android
+        maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
         flatDir {
             dirs "$rootDir/../node_modules/react-native-zoom-bridge/android/libs"

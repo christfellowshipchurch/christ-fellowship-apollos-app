@@ -94,7 +94,9 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     entryFile: "index.js",
-    enableHermes: false,  // clean and rebuild if changing
+    // :: React Native Reanimated for Stream.IO
+    // :: https://docs.swmansion.com/react-native-reanimated/docs/installation/
+    enableHermes: true,  // clean and rebuild if changing
     // bundleInDebug: true, // TODO : remove this line after testing
     // devDisabledInDebug: true // TODO : remove this line after testing
 ]
@@ -145,6 +147,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    // :: React Native Image Crop Picker for Stream.IO
+    // :: https://github.com/ivpusic/react-native-image-crop-picker#android
+    // compileSdkVersion 27
+    // buildToolsVersion "27.0.3"
+
     defaultConfig {
         applicationId "com.subsplash.thechurchapp.s_BSVMPR"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -156,6 +163,12 @@ android {
         }
         resValue "string", "build_config_package", "com.christfellowship"
         multiDexEnabled true
+
+        // :: React Native Image Crop Picker for Stream.IO
+        // :: https://github.com/ivpusic/react-native-image-crop-picker#android
+        vectorDrawables.useSupportLibrary = true
+        // targetSdkVersion 27
+
         // per react-native-community/blur documentation
         // renderscriptTargetApi 23
         // renderscriptSupportModeEnabled true
