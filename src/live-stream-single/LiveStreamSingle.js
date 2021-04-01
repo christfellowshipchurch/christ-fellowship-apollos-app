@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useLiveStream } from 'hooks';
 
 import { ApollosPlayerContainer } from '@apollosproject/ui-media-player';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
   ErrorCard,
@@ -11,20 +10,15 @@ import {
 } from '@apollosproject/ui-kit';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
-import StatusBar from 'ui/StatusBar';
 import ThemeMixin from '../ui/DynamicThemeMixin';
-import { ChatChannel } from '../stream-chat';
+import { LiveStreamContextProvider } from './context';
 import LiveStreamPlayer from './LiveStreamPlayer';
 import PreLiveStream from './PreLiveStream';
 import PostLiveStream from './PostLiveStream';
 import CloseButton from './CloseButton';
 
-export const StreamChatChannelContext = React.createContext(null);
-export const useStreamChatChannel = () => useContext(StreamChatChannelContext);
-
 const LiveStreamSingle = (props) => {
   const liveStreamId = props.route?.params?.liveStreamId;
-  const { bottom } = useSafeAreaInsets();
   const {
     id,
     isBefore,
@@ -37,7 +31,6 @@ const LiveStreamSingle = (props) => {
     coverImage,
     title,
     theme,
-    streamChatChannel,
   } = useLiveStream({
     liveStreamId,
   });
@@ -84,7 +77,7 @@ const LiveStreamSingle = (props) => {
     );
 
   return (
-    <StreamChatChannelContext.Provider value={streamChatChannel?.id}>
+    <LiveStreamContextProvider liveStreamId={liveStreamId}>
       <ThemeMixin theme={theme}>
         <InteractWhenLoadedConnected
           isLoading={loading}
@@ -125,7 +118,7 @@ const LiveStreamSingle = (props) => {
         <CloseButton />
       </ApollosPlayerContainer> */}
       </ThemeMixin>
-    </StreamChatChannelContext.Provider>
+    </LiveStreamContextProvider>
   );
 };
 

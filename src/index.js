@@ -13,12 +13,8 @@ import {
 import SplashScreen from 'react-native-splash-screen';
 
 import { useColorScheme, Text } from 'react-native';
-import {
-  BackgroundView,
-  NavigationService,
-  withTheme,
-} from '@apollosproject/ui-kit';
-import Passes from '@apollosproject/ui-passes';
+import { BackgroundView, NavigationService } from '@apollosproject/ui-kit';
+// import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
 import ScreenOrientation from 'screen-orientation';
@@ -39,9 +35,7 @@ import EditGroup from './edit-group';
 import NotificationCenter, { NotificationSingle } from './notification-center';
 import PrayerRequestSingle from './prayer-request-single';
 import MyPrayerRequestsFeed from './my-prayer-requests-feed';
-import { ChatChannelSingle } from './stream-chat';
-// import ChatChannelsList from './_chat/ChannelsList';
-// import ChatChannel from './_chat/Channel';
+import { ChatChannelSingle, ChatChannelListNavigator } from './stream-chat';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -80,14 +74,6 @@ hoistNonReactStatic(EnhancedAuth, Auth);
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
-const ThemedNavigator = withTheme(({ theme, ...props }) => ({
-  ...props,
-  screenOptions: {
-    headerShown: false,
-    stackPresentation: 'fullScreenModal',
-  },
-}))(Navigator);
-
 const StackNavigator = (props) => (
   <Navigator
     {...props}
@@ -108,15 +94,15 @@ const StackNavigator = (props) => (
       }}
     />
     <Screen
+      name="ChatChannelList"
+      component={ChatChannelListNavigator}
+      options={{ title: 'Messages', stackPresentation: 'modal' }}
+    />
+    <Screen
       name="ChatChannelSingle"
       component={ChatChannelSingle}
       options={{ title: 'Chat Channel' }}
     />
-    {/* <Screen
-      name="ChatChannelsList"
-      component={ChatChannelsList}
-      options={{ title: 'ChatChannelsList' }}
-    /> */}
     <Screen
       name="ContentFeed"
       component={ContentFeed}

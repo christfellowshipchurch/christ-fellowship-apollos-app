@@ -10,6 +10,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
+import { useStreamChatChannel } from 'hooks';
 
 import {
   SafeAreaView,
@@ -19,7 +20,7 @@ import { OverlayProvider as ChatOverlayProvider } from 'stream-chat-react-native
 import LinearGradient from 'react-native-linear-gradient';
 import { ThemeMixin, styled, withTheme } from '@apollosproject/ui-kit';
 import NavigationHeader from 'ui/NavigationHeader';
-import ChatChannel from './ChatChannel';
+import { ChatChannel } from '../components';
 
 const BackgroundView = compose(
   withTheme(({ theme }) => ({
@@ -31,20 +32,27 @@ const BackgroundView = compose(
 )(LinearGradient);
 
 const ChatChannelSingle = ({ route }) => {
-  const { bottom } = useSafeAreaInsets();
-
+  const channel = route?.params?.channel;
+  const hideNavigationHeader = route?.params?.hideNavigationHeader;
   const itemId = route?.params?.itemId;
   const relatedNode = route?.params?.relatedNode;
+  const { bottom } = useSafeAreaInsets();
+  const { channelId, channelType, loading } = useStreamChatChannel({
+    id: itemId,
+    relatedNode,
+  });
 
   return (
     <ThemeMixin>
       <ChatOverlayProvider bottomInset={bottom} topInset={0}>
         <BackgroundView>
           <SafeAreaView>
-            <NavigationHeader />
+            {!hideNavigationHeader && <NavigationHeader />}
             <ChatChannel
-              relatedNode={relatedNode}
-              streamChatChannel={{ id: itemId }}
+              channel={channel}
+              channelId={channelId}
+              channelType={channelType}
+              isLoading={loading}
             />
           </SafeAreaView>
         </BackgroundView>
@@ -61,9 +69,17 @@ ChatChannelSingle.propTypes = {
         id: PropTypes.string,
         title: PropTypes.string,
       },
+      channel: PropTypes.shape({}),
+      hideNavigationHeader: PropTypes.bool,
     }),
   }),
 };
-ChatChannelSingle.defaultProps = {};
+ChatChannelSingle.defaultProps = {
+  route: {
+    params: {
+      hideNavigationHeader: false,
+    },
+  },
+};
 
 export default ChatChannelSingle;

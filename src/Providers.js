@@ -2,8 +2,6 @@ import React from 'react';
 import ApollosConfig from '@apollosproject/config';
 
 import { AnalyticsProvider } from '@apollosproject/ui-analytics';
-// import { NotificationsProvider } from '@apollosproject/ui-notifications';
-import { LiveProvider } from '@apollosproject/ui-connected';
 import { checkOnboardingStatusAndNavigate } from '@apollosproject/ui-onboarding';
 import { AuthProvider } from '@apollosproject/ui-auth';
 
@@ -14,6 +12,7 @@ import {
   NavigationService,
 } from '@apollosproject/ui-kit';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
+import { StreamChatClientContextProvider } from './stream-chat';
 import NotificationsProvider from './NotificationsProvider';
 import AppStateProvider from './AppStateProvider';
 import { UserFlagsProvider } from './user-flags';
@@ -45,24 +44,26 @@ const AppProviders = (props) => {
             })
           }
         >
-          <UserFlagsProvider>
-            <AnalyticsProvider
-              trackFunctions={[track]}
-              identifyFunctions={[identify]}
-            >
-              <Providers
-                themeInput={{ ...customTheme, type: safeTheme }}
-                iconInput={customIcons}
-                {...props}
+          <StreamChatClientContextProvider>
+            <UserFlagsProvider>
+              <AnalyticsProvider
+                trackFunctions={[track]}
+                identifyFunctions={[identify]}
               >
-                <BackgroundView>
-                  <ActionSheetProvider>
-                    <AppStateProvider {...props} />
-                  </ActionSheetProvider>
-                </BackgroundView>
-              </Providers>
-            </AnalyticsProvider>
-          </UserFlagsProvider>
+                <Providers
+                  themeInput={{ ...customTheme, type: safeTheme }}
+                  iconInput={customIcons}
+                  {...props}
+                >
+                  <BackgroundView>
+                    <ActionSheetProvider>
+                      <AppStateProvider {...props} />
+                    </ActionSheetProvider>
+                  </BackgroundView>
+                </Providers>
+              </AnalyticsProvider>
+            </UserFlagsProvider>
+          </StreamChatClientContextProvider>
         </AuthProvider>
       </NotificationsProvider>
     </ClientProvider>

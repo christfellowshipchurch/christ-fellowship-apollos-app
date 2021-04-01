@@ -12,8 +12,9 @@ import PropTypes from 'prop-types';
 import { useLazyQuery } from '@apollo/client';
 import gql from 'graphql-tag';
 import { useCurrentUser } from 'hooks';
-import { StreamChatClient } from './client';
-import supportedReactions from './supportedReactions';
+import { StreamChatClient } from '../client';
+import supportedReactions from '../supportedReactions';
+import { useStreamChat } from '../context';
 
 const GET_STREAM_CHAT_CHANNEL = gql`
   query getStreamChatChannel($id: ID!) {
@@ -36,43 +37,17 @@ const GET_STREAM_CHAT_CHANNEL = gql`
 `;
 
 const useStreamChatChannel = ({ id: streamChatChannelNodeId, relatedNode }) => {
-  const [channel, setChannel] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [
     getStreamChatChannel,
     { data, loading: queryLoading, refetch, called },
   ] = useLazyQuery(GET_STREAM_CHAT_CHANNEL);
-  const {
-    id: userId,
-    firstName,
-    lastName,
-    photo,
-    streamChatToken,
-  } = useCurrentUser();
-  const connect = async () => {
-    const channelId =
-      data?.node?.channelId || data?.node?.streamChatChannel?.channelId;
-    const channelType =
-      data?.node?.channelType || data?.node?.streamChatChannel?.channelType;
-    const chatUser = {
-      id: userId.split(':')[1],
-      name: `${firstName} ${lastName}`,
-      image: photo?.uri,
-    };
-    await StreamChatClient.connectUser(chatUser, streamChatToken);
-    setChannel(
-      StreamChatClient.channel(channelType, channelId, {
-        name: relatedNode?.title || 'Chat',
-        relatedNodeId: relatedNode?.id,
-      })
-    );
-  };
 
   // note : lazy query in order to manually handle skipping the query
   useEffect(
     () => {
       const nodeId = streamChatChannelNodeId || relatedNode?.id;
       const shouldQuery = !called && !queryLoading && !data;
+
       if (shouldQuery && nodeId) {
         getStreamChatChannel({
           variables: {
@@ -84,33 +59,12 @@ const useStreamChatChannel = ({ id: streamChatChannelNodeId, relatedNode }) => {
     [streamChatChannelNodeId, relatedNode]
   );
 
-  // note : if we have all necessary data points, connect to Stream Chat Channel
-  useEffect(
-    () => {
-      const channelId =
-        data?.node?.channelId || data?.node?.streamChatChannel?.channelId;
-      const hasAllDataPoints = userId && channelId && streamChatToken;
-      if (hasAllDataPoints) {
-        connect();
-      }
-    },
-    [userId, data, streamChatToken]
-  );
-
-  // note : if our Channel is set up and valid, set loading state to false
-  useEffect(
-    () => {
-      if (channel) setLoading(false);
-    },
-    [channel]
-  );
-
   return {
     id: streamChatChannelNodeId,
-    channelId: data?.node?.channelId,
-    channelType: data?.node?.channelType,
-    channel,
-    userToken: streamChatToken,
+    channelId:
+      data?.node?.channelId || data?.node?.streamChatChannel?.channelId,
+    channelType:
+      data?.node?.channelType || data?.node?.streamChatChannel?.channelType,
     refetch,
     channelProps: {
       supportedReactions,

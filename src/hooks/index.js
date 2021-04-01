@@ -4,7 +4,15 @@ export useGroup from './useGroup';
 export useLinkRouter from './useLinkRouter';
 export useFeatureFlag from './useFeatureFlag';
 export WithFeatureFlag from './WithFeatureFlag';
-export useLiveStream from './useLiveStream';
-export useLiveStreams from './useLiveStreams';
 export { useUserFlag } from '../user-flags';
-export { useStreamChatChannel } from '../stream-chat';
+
+export {
+  useLiveStream,
+  useLiveStreams,
+  useLiveStreamContext,
+} from '../live-stream-single/hooks';
+export {
+  useStreamChat,
+  useStreamChatChannel,
+  useStreamChatClient,
+} from '../stream-chat/hooks';

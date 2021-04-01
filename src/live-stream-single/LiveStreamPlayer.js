@@ -4,9 +4,9 @@ import {
   usePlayerControls,
   PictureMode,
 } from '@apollosproject/ui-media-player';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { View, Animated, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { styled, FlexedView } from '@apollosproject/ui-kit';
 import { OverlayProvider as ChatOverlayProvider } from 'stream-chat-react-native';
 import StatusBar from 'ui/StatusBar';
@@ -16,10 +16,9 @@ import ScreenOrientation, {
   LANDSCAPE,
 } from 'react-native-orientation-locker/ScreenOrientation';
 
+import { useLiveStreamContext } from 'hooks';
 import { ChatChannel } from '../stream-chat';
 import CloseButton from './CloseButton';
-
-import { useStreamChatChannel } from './LiveStreamSingle';
 
 const AspectRatio = styled(({ isFullScreen }) => ({
   ...(isFullScreen
@@ -49,7 +48,7 @@ const LiveStreamPlayer = ({
   ControlsComponent,
   useNativeFullscreeniOS,
 }) => {
-  const streamChatId = useStreamChatChannel();
+  const { channelId, channelType } = useLiveStreamContext();
   const insets = useSafeAreaInsets();
   const { pictureMode } = usePlayerControls();
   const [orientation, setOrientation] = useState(PORTRAIT);
@@ -84,6 +83,7 @@ const LiveStreamPlayer = ({
     [pictureMode]
   );
 
+  // todo : make the topInset NOT hardcoded
   return (
     <ChatOverlayProvider bottomInset={insets.bottom} topInset={211 + 66 + 66}>
       <FlexedView>
@@ -91,7 +91,11 @@ const LiveStreamPlayer = ({
           <StatusBar />
           <CloseButton />
 
-          <ChatChannel streamChatChannel={{ id: streamChatId }} withMedia>
+          <ChatChannel
+            channelId={channelId}
+            channelType={channelType}
+            withMedia
+          >
             <BlackBars isFullScreen={isFullScreen} insets={insets}>
               <StatusBar barStyle="light-content" />
               <ScreenOrientation

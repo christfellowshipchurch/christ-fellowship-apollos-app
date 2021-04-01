@@ -7,10 +7,8 @@
  * A single Channel used for chatting with Stream.IO
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useStreamChatChannel } from 'hooks';
-import Color from 'color';
 
 import { View, StyleSheet } from 'react-native';
 import {
@@ -31,8 +29,10 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 
-import { StreamChatClient, Streami18n } from './client';
-import supportedReactions from './supportedReactions';
+import { useStreamChat } from '../context';
+import { Streami18n } from '../client';
+import supportedReactions from '../supportedReactions';
+import { mapThemeValues } from '../utils';
 
 // :: Styles
 // :: ======================================
@@ -40,12 +40,6 @@ const ErrorContainer = styled(() => ({
   justifyContent: 'center',
   alignItems: 'center',
 }))(BackgroundView);
-
-const RedBox = styled(() => ({
-  width: '100',
-  height: '100',
-  backgroundColor: 'salmon',
-}))(View);
 
 // :: Components
 // :: ======================================
@@ -70,94 +64,54 @@ const MessageText = (props) => {
 };
 
 const ChatChannel = ({
-  streamChatChannel,
-  relatedNode,
   keyboardVerticalOffset,
   theme,
   withMedia,
+  channel: specifiedChannel,
+  channelId,
+  channelType,
+  isLoading,
   children,
+  relatedNode,
 }) => {
-  const { channel, loading } = useStreamChatChannel({
-    id: streamChatChannel?.id,
-    relatedNode,
-  });
+  const { isConnecting, chatClient } = useStreamChat();
+  const [channel, setChannel] = useState(specifiedChannel);
 
-  if (loading)
+  useEffect(
+    () => {
+      if (channelId && chatClient && !channel) {
+        setChannel(
+          chatClient.channel(channelType, channelId, {
+            name: relatedNode?.title || 'Chat',
+            relatedNodeId: relatedNode?.id,
+          })
+        );
+      }
+    },
+    [channelId, chatClient]
+  );
+
+  if (isLoading || isConnecting)
     return (
       <BackgroundView>
         <ActivityIndicator />
       </BackgroundView>
     );
 
-  if (!channel && !loading)
+  if ((!channel && !isLoading) || (!chatClient && !isConnecting))
     return (
       <ErrorContainer>
         <UIText>Oops!</UIText>
       </ErrorContainer>
     );
 
-  const chatTheme = {
-    dark: theme?.type === 'dark',
-    colors: {
-      accent_blue: theme.colors.primary,
-      accent_green: theme.colors.success,
-      accent_red: theme.colors.alert,
-      black: theme.colors.text.primary,
-      blue_alice: Color(theme.colors.background.screen)
-        .mix(Color(theme.colors.primary), 0.15)
-        .hex(),
-      border: Color(theme.colors.background.screen)
-        .mix(Color(theme.colors.text.primary), 0.1)
-        .hex(),
-      icon_background: theme.colors.background.paper,
-      grey: Color(theme.colors.background.screen)
-        .mix(Color(theme.colors.text.primary))
-        .hex(),
-      grey_gainsboro: Color(theme.colors.background.screen)
-        .mix(Color(theme.colors.text.secondary))
-        .hex(),
-      grey_whisper: Color(theme.colors.background.screen)
-        .mix(Color(theme.colors.text.tertiary))
-        .hex(),
-      targetedMessageBackground: theme.colors.background.paper,
-      white: theme.colors.background.paper,
-      white_smoke: theme.colors.background.screen,
-      white_snow: theme.colors.background.screen,
-    },
-    dateHeader: {
-      container: {
-        backgroundColor: theme.colors.text.tertiary,
-      },
-      text: {
-        color: theme.colors.background.screen,
-      },
-    },
-    messageSimple: {
-      content: {
-        containerInner: {
-          backgroundColor: theme.colors.background.paper,
-          borderColor: theme.colors.background.paper,
-        },
-      },
-    },
-    overlay: {
-      reactionsLists: {
-        reaction: {
-          color: theme.colors.primary,
-        },
-      },
-    },
-  };
+  const chatTheme = mapThemeValues(theme);
 
   // note : special consideration made for Stream with a Media Player attached to the top
   // :: Split screen between video and chat : https://github.com/GetStream/stream-chat-react-native/wiki/Cookbook-v3.0
   if (withMedia) {
     return (
-      <Chat
-        client={StreamChatClient}
-        i18nInstance={Streami18n}
-        style={chatTheme}
-      >
+      <Chat client={chatClient} i18nInstance={Streami18n} style={chatTheme}>
         <Channel
           channel={channel}
           keyboardVerticalOffset={keyboardVerticalOffset}
@@ -180,7 +134,7 @@ const ChatChannel = ({
   }
 
   return (
-    <Chat client={StreamChatClient} i18nInstance={Streami18n} style={chatTheme}>
+    <Chat client={chatClient} i18nInstance={Streami18n} style={chatTheme}>
       <Channel
         channel={channel}
         keyboardVerticalOffset={keyboardVerticalOffset}
@@ -204,15 +158,7 @@ const ChatChannel = ({
 };
 
 ChatChannel.propTypes = {
-  streamChatChannel: PropTypes.shape({
-    id: PropTypes.string,
-    channelId: PropTypes.string,
-    channelType: PropTypes.string,
-  }),
-  relatedNode: PropTypes.shape({
-    id: PropTypes.string,
-    title: PropTypes.string,
-  }),
+  channel: PropTypes.shape({}),
   keyboardVerticalOffset: PropTypes.number,
   theme: PropTypes.shape({
     type: PropTypes.string,
@@ -232,11 +178,19 @@ ChatChannel.propTypes = {
     }),
   }),
   withMedia: PropTypes.bool,
+  isLoading: PropTypes.bool,
+  channelId: PropTypes.string,
+  channelType: PropTypes.string,
+  relatedNode: PropTypes.shape({
+    id: PropTypes.string,
+    title: PropTypes.string,
+  }),
 };
 
 ChatChannel.defaultProps = {
   keyboardVerticalOffset: 0,
   withMedia: false,
+  isLoading: false,
 };
 
 export default withTheme()(ChatChannel);
