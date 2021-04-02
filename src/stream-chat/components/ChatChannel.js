@@ -9,7 +9,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { View, StyleSheet } from 'react-native';
 import {
@@ -19,7 +18,6 @@ import {
   MessageList,
   MessageInput,
   MessageTextContainer,
-  OverlayProvider,
   renderText,
   useTheme,
 } from 'stream-chat-react-native';
@@ -69,11 +67,9 @@ const ChatChannel = ({
   keyboardVerticalOffset,
   theme,
   withMedia,
-  insets,
   children,
 }) => {
   const { isConnecting, chatClient, channel } = useStreamChat();
-  const safeAreaInsets = useSafeAreaInsets();
 
   if (isConnecting)
     return (
@@ -95,38 +91,6 @@ const ChatChannel = ({
   // :: Split screen between video and chat : https://github.com/GetStream/stream-chat-react-native/wiki/Cookbook-v3.0
   if (withMedia) {
     return (
-      <OverlayProvider
-        bottomInset={insets.bottom || safeAreaInsets.bottom}
-        topInset={insets.top || safeAreaInsets.top}
-      >
-        <Chat client={chatClient} i18nInstance={Streami18n} style={chatTheme}>
-          <Channel
-            channel={channel}
-            keyboardVerticalOffset={keyboardVerticalOffset}
-            supportedReactions={supportedReactions}
-            UrlPreview={UrlPreview}
-            // MessageText={MessageText}
-            //   thread={thread}
-          >
-            {children}
-            <MessageList
-            // onThreadSelect={(thread) => {
-            //   setThread(thread);
-            //   navigation.navigate('Thread');
-            // }}
-            />
-            <MessageInput />
-          </Channel>
-        </Chat>
-      </OverlayProvider>
-    );
-  }
-
-  return (
-    <OverlayProvider
-      bottomInset={insets.bottom || safeAreaInsets.bottom}
-      topInset={insets.top || safeAreaInsets.top}
-    >
       <Chat client={chatClient} i18nInstance={Streami18n} style={chatTheme}>
         <Channel
           channel={channel}
@@ -136,18 +100,40 @@ const ChatChannel = ({
           // MessageText={MessageText}
           //   thread={thread}
         >
-          <View style={StyleSheet.absoluteFill}>
-            <MessageList
-            // onThreadSelect={(thread) => {
-            //   setThread(thread);
-            //   navigation.navigate('Thread');
-            // }}
-            />
-            <MessageInput />
-          </View>
+          {children}
+          <MessageList
+          // onThreadSelect={(thread) => {
+          //   setThread(thread);
+          //   navigation.navigate('Thread');
+          // }}
+          />
+          <MessageInput />
         </Channel>
       </Chat>
-    </OverlayProvider>
+    );
+  }
+
+  return (
+    <Chat client={chatClient} i18nInstance={Streami18n} style={chatTheme}>
+      <Channel
+        channel={channel}
+        keyboardVerticalOffset={keyboardVerticalOffset}
+        supportedReactions={supportedReactions}
+        UrlPreview={UrlPreview}
+        // MessageText={MessageText}
+        //   thread={thread}
+      >
+        <View style={StyleSheet.absoluteFill}>
+          <MessageList
+          // onThreadSelect={(thread) => {
+          //   setThread(thread);
+          //   navigation.navigate('Thread');
+          // }}
+          />
+          <MessageInput />
+        </View>
+      </Channel>
+    </Chat>
   );
 };
 

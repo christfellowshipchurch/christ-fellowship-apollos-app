@@ -5,6 +5,7 @@ import {
   PictureMode,
 } from '@apollosproject/ui-media-player';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useOverlayContext } from 'stream-chat-react-native';
 
 import { View, Animated, StyleSheet } from 'react-native';
 import { styled, FlexedView } from '@apollosproject/ui-kit';
@@ -48,6 +49,7 @@ const LiveStreamPlayer = ({
   useNativeFullscreeniOS,
 }) => {
   const { channel } = useStreamChat();
+  const { overlay } = useOverlayContext();
   const insets = useSafeAreaInsets();
   const { pictureMode } = usePlayerControls();
   const [orientation, setOrientation] = useState(PORTRAIT);
@@ -86,6 +88,9 @@ const LiveStreamPlayer = ({
     <FlexedView>
       <View style={[{ position: 'absolute' }, StyleSheet.absoluteFillObject]}>
         <StatusBar />
+        {/* todo : once the issue with OverlayProvider is fixed, add this back */}
+        {/* {overlay === 'none' && <CloseButton />} */}
+
         <CloseButton />
 
         <ChatChannel channel={channel} withMedia>
