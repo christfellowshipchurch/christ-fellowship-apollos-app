@@ -5,6 +5,7 @@ import {
   PictureMode,
 } from '@apollosproject/ui-media-player';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 import { View, Animated, StyleSheet } from 'react-native';
 import { styled, FlexedView } from '@apollosproject/ui-kit';
@@ -46,6 +47,7 @@ const LiveStreamPlayer = ({
   ControlsComponent,
   useNativeFullscreeniOS,
 }) => {
+  const navigation = useNavigation();
   const { channel } = useStreamChat();
   const insets = useSafeAreaInsets();
   const { pictureMode } = usePlayerControls();
@@ -69,6 +71,9 @@ const LiveStreamPlayer = ({
         pictureMode === PictureMode.Fullscreen
       ) {
         setOrientation(LANDSCAPE);
+        navigation.setOptions({
+          headerShown: false,
+        });
       }
 
       if (
@@ -76,6 +81,9 @@ const LiveStreamPlayer = ({
         pictureMode === PictureMode.Normal
       ) {
         setOrientation(PORTRAIT);
+        navigation.setOptions({
+          headerShown: true,
+        });
       }
     },
     [pictureMode]
@@ -97,9 +105,7 @@ const LiveStreamPlayer = ({
             />
             <AspectRatio isFullScreen={isFullScreen} insets={insets}>
               <VideoComponent useNativeFullscreeniOS={useNativeFullscreeniOS} />
-              {!isFullScreen && (
-                <ControlsComponent collapsedAnimation={collapsedAnimation} />
-              )}
+              <ControlsComponent collapsedAnimation={collapsedAnimation} />
             </AspectRatio>
           </BlackBars>
         </ChatChannel>
