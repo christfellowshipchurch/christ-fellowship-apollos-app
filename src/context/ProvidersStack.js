@@ -22,6 +22,7 @@ import { NavigationService } from '@apollosproject/ui-kit';
 import ClientProvider, { client } from '../client';
 import { StreamChatClientContextProvider } from '../stream-chat';
 import { track, identify } from '../amplitude';
+import { UserFlagsProvider } from '../user-flags';
 import CoreApollosProviders from './CoreApollosProviders';
 import NotificationsProvider from './NotificationsProvider';
 import UniversalLinkRouteProvider from './UniversalLinkRouteProvider';
@@ -51,11 +52,13 @@ const ProvidersStack = (props) => (
             identifyFunctions={[identify]}
           >
             <CoreApollosProviders {...props}>
-              <StreamChatClientContextProvider>
-                <ActionSheetProvider>
-                  <UniversalLinkRouteProvider {...props} />
-                </ActionSheetProvider>
-              </StreamChatClientContextProvider>
+              <UserFlagsProvider>
+                <StreamChatClientContextProvider>
+                  <ActionSheetProvider>
+                    <UniversalLinkRouteProvider {...props} />
+                  </ActionSheetProvider>
+                </StreamChatClientContextProvider>
+              </UserFlagsProvider>
             </CoreApollosProviders>
           </AnalyticsProvider>
         </AuthProvider>

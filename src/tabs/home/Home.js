@@ -31,6 +31,7 @@ export const GET_HOME_FEED = gql`
   }
 `;
 
+// todo : used for testing. remove this before go-live
 const ChannelListButton = () => {
   const navigation = useNavigation();
 
@@ -48,7 +49,6 @@ const Home = () => {
 
   return (
     <BackgroundView>
-      <ChannelListButton />
       <FeaturesFeedConnected
         featuresFeedId={featuresFeedId}
         isLoading={loading}

@@ -33,7 +33,7 @@ const ChatChannelSingle = ({ route }) => {
     <ThemeMixin>
       <BackgroundView>
         <SafeAreaView>
-          {!hideNavigationHeader && <NavigationHeader />}
+          {/* {!hideNavigationHeader && <NavigationHeader />} */}
           <ChatChannel />
         </SafeAreaView>
       </BackgroundView>

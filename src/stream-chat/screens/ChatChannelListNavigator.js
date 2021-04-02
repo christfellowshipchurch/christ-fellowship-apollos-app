@@ -2,27 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import { ModalCloseButton } from '@apollosproject/ui-kit';
-
-import { ChatChannelList } from '../components';
-import ChatChannelSingle from './ChatChannelSingle';
+import { ChatChannelList, ChatChannel } from '../components';
 
 const { Screen, Navigator } = createNativeStackNavigator();
 
 const ChatChannelListeNavigator = ({ route, navigation, ...props }) => (
-  <Navigator {...props} headerMode="float">
+  <Navigator
+    {...props}
+    headerMode="none"
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
     <Screen
       name="ChatChannelList"
       component={ChatChannelList}
       initialParams={route.params}
       options={{
         title: 'Messages',
-        headerRight: ModalCloseButton,
       }}
     />
     <Screen
       name="ChatChannelSingle"
-      component={ChatChannelSingle}
+      component={ChatChannel}
       initialParams={route.params}
       options={{
         title: 'Message',

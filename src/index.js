@@ -98,12 +98,18 @@ const StackNavigator = (props) => (
       component={ChatChannelListNavigator}
       options={{
         title: 'Messages',
+        stackPresentation: 'push',
+        headerShown: true,
       }}
     />
     <Screen
       name="ChatChannelSingle"
       component={ChatChannelSingle}
-      options={{ title: 'Chat Channel' }}
+      options={({ route }) => ({
+        title: route.params?.itemTitle || 'Chat',
+        stackPresentation: 'push',
+        headerShown: true,
+      })}
     />
     <Screen
       name="ContentFeed"
@@ -141,6 +147,8 @@ const StackNavigator = (props) => (
       options={{
         title: 'Live Stream',
         gestureEnabled: false,
+        stackPresentation: 'push',
+        headerShown: true,
       }}
     />
     <Screen

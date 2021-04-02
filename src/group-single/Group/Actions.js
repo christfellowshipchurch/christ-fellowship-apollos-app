@@ -56,10 +56,13 @@ const GET_ACTION_PARTS = gql`
 `;
 
 const renderChatButton = ({ id, channelId, name, navigation, theme }) => {
-  const handlePress = () =>
+  const handlePress = () => {
+    // todo : temporary hack until we can get the OverlayProvider working correctly
+    navigation.goBack(null);
     navigation.navigate('ChatChannelSingle', {
       title: name,
     });
+  };
 
   if (!id || !channelId) return null;
 

@@ -14,6 +14,7 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
 
 import { AppState } from 'react-native';
+import { useCurrentUser } from 'hooks';
 
 const GET_USER_FLAGS = gql`
   query currentUserFlags {
@@ -35,6 +36,7 @@ export const useUserFlag = (key) => {
 
 // Provider
 export const UserFlagsProvider = ({ children }) => {
+  const { id } = useCurrentUser();
   const { data, refetch, loading } = useQuery(GET_USER_FLAGS, {
     fetchPolicy: 'network-only',
   });
@@ -47,7 +49,7 @@ export const UserFlagsProvider = ({ children }) => {
    */
   const _handleAppStateChange = (nextAppState) => {
     if (nextAppState === 'active' && !loading) {
-      refetch();
+      if (id) refetch();
     }
   };
 
@@ -58,6 +60,13 @@ export const UserFlagsProvider = ({ children }) => {
       AppState.removeEventListener('change', _handleAppStateChange);
     };
   }, []);
+
+  useEffect(
+    () => {
+      if (id) refetch();
+    },
+    [id]
+  );
 
   return (
     <UserFlagsContext.Provider value={value}>

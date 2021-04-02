@@ -64,7 +64,7 @@ const LiveStreamSingle = (props) => {
   if (isBefore)
     return (
       <>
-        <CloseButton />
+        {/* <CloseButton /> */}
         <PreLiveStream
           startDate={startDate}
           coverImage={coverImage}
@@ -80,7 +80,7 @@ const LiveStreamSingle = (props) => {
   if (isAfter)
     return (
       <>
-        <CloseButton />
+        {/* <CloseButton /> */}
         <PostLiveStream coverImage={coverImage} />
       </>
     );

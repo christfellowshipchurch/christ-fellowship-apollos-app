@@ -37,7 +37,7 @@ export const NotificationCenterIconConnected = () => {
   const enabled = useUserFlag('NOTIFICATION_CENTER');
 
   return enabled ? (
-    <TouchableScale onPress={() => navigation.navigate('NotificationCenter')}>
+    <TouchableScale onPress={() => navigation.navigate('ChatChannelList')}>
       <ItemLeft>
         <StyledIcon name="bell" />
       </ItemLeft>

@@ -5,7 +5,6 @@ import {
   PictureMode,
 } from '@apollosproject/ui-media-player';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useOverlayContext } from 'stream-chat-react-native';
 
 import { View, Animated, StyleSheet } from 'react-native';
 import { styled, FlexedView } from '@apollosproject/ui-kit';
@@ -18,7 +17,6 @@ import ScreenOrientation, {
 
 import { ChatChannel } from '../../stream-chat';
 import { useStreamChat } from '../../stream-chat/context';
-import CloseButton from '../CloseButton';
 
 const AspectRatio = styled(({ isFullScreen }) => ({
   ...(isFullScreen
@@ -37,9 +35,9 @@ const AspectRatio = styled(({ isFullScreen }) => ({
 
 const BlackBars = styled(({ theme, insets, isFullScreen }) => ({
   backgroundColor: theme.colors.black,
-  paddingTop: isFullScreen ? 0 : insets.top + theme.sizing.baseUnit,
-  paddingLeft: isFullScreen ? insets.left + theme.sizing.baseUnit : 0,
-  paddingRight: isFullScreen ? insets.right + theme.sizing.baseUnit : 0,
+  // paddingTop: isFullScreen ? 0 : insets.top + theme.sizing.baseUnit,
+  // paddingLeft: isFullScreen ? insets.left + theme.sizing.baseUnit : 0,
+  // paddingRight: isFullScreen ? insets.right + theme.sizing.baseUnit : 0,
   zIndex: 1000,
 }))(View);
 
@@ -49,7 +47,6 @@ const LiveStreamPlayer = ({
   useNativeFullscreeniOS,
 }) => {
   const { channel } = useStreamChat();
-  const { overlay } = useOverlayContext();
   const insets = useSafeAreaInsets();
   const { pictureMode } = usePlayerControls();
   const [orientation, setOrientation] = useState(PORTRAIT);
@@ -88,10 +85,6 @@ const LiveStreamPlayer = ({
     <FlexedView>
       <View style={[{ position: 'absolute' }, StyleSheet.absoluteFillObject]}>
         <StatusBar />
-        {/* todo : once the issue with OverlayProvider is fixed, add this back */}
-        {/* {overlay === 'none' && <CloseButton />} */}
-
-        <CloseButton />
 
         <ChatChannel channel={channel} withMedia>
           <BlackBars isFullScreen={isFullScreen} insets={insets}>
