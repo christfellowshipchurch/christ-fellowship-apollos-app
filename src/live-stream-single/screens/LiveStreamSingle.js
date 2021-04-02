@@ -10,13 +10,11 @@ import {
 } from '@apollosproject/ui-kit';
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
-import ThemeMixin from '../ui/DynamicThemeMixin';
-import { useStreamChat } from '../stream-chat/context';
-import { LiveStreamContextProvider } from './context';
-import LiveStreamPlayer from './LiveStreamPlayer';
-import PreLiveStream from './PreLiveStream';
-import PostLiveStream from './PostLiveStream';
-import CloseButton from './CloseButton';
+import ThemeMixin from '../../ui/DynamicThemeMixin';
+import { useStreamChat } from '../../stream-chat/context';
+import CloseButton from '../CloseButton';
+
+import { LiveStreamPlayer, PreLiveStream, PostLiveStream } from '../components';
 
 const LiveStreamSingle = (props) => {
   const liveStreamId = props.route?.params?.liveStreamId;
@@ -112,21 +110,6 @@ const LiveStreamSingle = (props) => {
         isLive
         autoplay
       />
-      {/* <ApollosPlayerContainer
-        PlayerComponent={PlayerComponent}
-        source={uri}
-        coverImage={coverImage}
-        presentationProps={{
-          title,
-        }}
-        isLive
-        autoplay
-        randomProp
-      >
-        <StatusBar />
-
-        <CloseButton />
-      </ApollosPlayerContainer> */}
     </ThemeMixin>
   );
 };

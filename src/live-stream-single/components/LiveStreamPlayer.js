@@ -15,9 +15,9 @@ import ScreenOrientation, {
   LANDSCAPE,
 } from 'react-native-orientation-locker/ScreenOrientation';
 
-import { ChatChannel } from '../stream-chat';
-import { useStreamChat } from '../stream-chat/context';
-import CloseButton from './CloseButton';
+import { ChatChannel } from '../../stream-chat';
+import { useStreamChat } from '../../stream-chat/context';
+import CloseButton from '../CloseButton';
 
 const AspectRatio = styled(({ isFullScreen }) => ({
   ...(isFullScreen
@@ -59,8 +59,6 @@ const LiveStreamPlayer = ({
   });
 
   const isFullScreen = pictureMode === PictureMode.Fullscreen;
-
-  console.log({ channel });
 
   /**
    * When the picture mode changes, update the screen orientation accordingly

@@ -92,7 +92,6 @@ export const StreamChatClientContextProvider = ({ children }) => {
 
   useEffect(
     () => {
-      console.log({ fetchedChannelId, fetchedChannelType });
       setChannelId(fetchedChannelId);
       setChannelType(fetchedChannelType);
     },

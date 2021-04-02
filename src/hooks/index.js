@@ -6,13 +6,9 @@ export useFeatureFlag from './useFeatureFlag';
 export WithFeatureFlag from './WithFeatureFlag';
 export { useUserFlag } from '../user-flags';
 
-export {
-  useLiveStream,
-  useLiveStreams,
-  useLiveStreamContext,
-} from '../live-stream-single/hooks';
+export { useLiveStream, useLiveStreams } from '../live-stream-single/hooks';
 export {
   useStreamChatChannel,
   useStreamChatClient,
 } from '../stream-chat/hooks';
-export { useStreamChat } from '../stream-chat/context';
+export { useStreamChat } from '../stream-chat';

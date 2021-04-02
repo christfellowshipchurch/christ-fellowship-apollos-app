@@ -13,7 +13,7 @@ import {
   ConnectedImage,
   ImageSourceType,
 } from '@apollosproject/ui-kit';
-import ThemeMixin from '../ui/DynamicThemeMixin';
+import ThemeMixin from 'ui/DynamicThemeMixin';
 
 const StyledPadded = styled(() => ({
   flex: 1,

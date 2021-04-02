@@ -10,18 +10,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-import { useStreamChatChannel } from 'hooks';
 
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-import { OverlayProvider as ChatOverlayProvider } from 'stream-chat-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
 import { ThemeMixin, styled, withTheme } from '@apollosproject/ui-kit';
 import NavigationHeader from 'ui/NavigationHeader';
 import { ChatChannel } from '../components';
-import { useStreamChat } from '../context';
 
 const BackgroundView = compose(
   withTheme(({ theme }) => ({
@@ -33,31 +27,16 @@ const BackgroundView = compose(
 )(LinearGradient);
 
 const ChatChannelSingle = ({ route }) => {
-  const { channel } = useStreamChat();
   const hideNavigationHeader = route?.params?.hideNavigationHeader;
-  const itemId = route?.params?.itemId;
-  const relatedNode = route?.params?.relatedNode;
-  const { bottom } = useSafeAreaInsets();
-  const { channelId, channelType, loading } = useStreamChatChannel({
-    id: itemId,
-    relatedNode,
-  });
 
   return (
     <ThemeMixin>
-      <ChatOverlayProvider bottomInset={bottom} topInset={0}>
-        <BackgroundView>
-          <SafeAreaView>
-            {!hideNavigationHeader && <NavigationHeader />}
-            <ChatChannel
-              channel={channel}
-              channelId={channelId}
-              channelType={channelType}
-              isLoading={loading}
-            />
-          </SafeAreaView>
-        </BackgroundView>
-      </ChatOverlayProvider>
+      <BackgroundView>
+        <SafeAreaView>
+          {!hideNavigationHeader && <NavigationHeader />}
+          <ChatChannel />
+        </SafeAreaView>
+      </BackgroundView>
     </ThemeMixin>
   );
 };

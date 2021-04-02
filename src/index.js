@@ -96,7 +96,9 @@ const StackNavigator = (props) => (
     <Screen
       name="ChatChannelList"
       component={ChatChannelListNavigator}
-      options={{ title: 'Messages', stackPresentation: 'modal' }}
+      options={{
+        title: 'Messages',
+      }}
     />
     <Screen
       name="ChatChannelSingle"
@@ -138,7 +140,6 @@ const StackNavigator = (props) => (
       component={LiveStreamSingle}
       options={{
         title: 'Live Stream',
-
         gestureEnabled: false,
       }}
     />
