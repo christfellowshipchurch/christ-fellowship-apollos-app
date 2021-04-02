@@ -12,7 +12,7 @@ export {
   useLiveStreamContext,
 } from '../live-stream-single/hooks';
 export {
-  useStreamChat,
   useStreamChatChannel,
   useStreamChatClient,
 } from '../stream-chat/hooks';
+export { useStreamChat } from '../stream-chat/context';

@@ -31,6 +31,14 @@ export const GET_HOME_FEED = gql`
   }
 `;
 
+const ChannelListButton = () => {
+  const navigation = useNavigation();
+
+  const onPress = () => navigation.navigate('ChatChannelList');
+
+  return <Button title="Chat Button" onPress={onPress} />;
+};
+
 const Home = () => {
   const { data, error, loading } = useQuery(GET_HOME_FEED, {
     fetchPolicy: 'cache-and-network',
@@ -40,6 +48,7 @@ const Home = () => {
 
   return (
     <BackgroundView>
+      <ChannelListButton />
       <FeaturesFeedConnected
         featuresFeedId={featuresFeedId}
         isLoading={loading}

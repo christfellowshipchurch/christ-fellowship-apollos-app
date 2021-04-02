@@ -22,6 +22,7 @@ import {
   PaddedView,
 } from '@apollosproject/ui-kit';
 import ActionBar, { ActionBarItem } from 'ui/ActionBar';
+import { useStreamChat } from '../../stream-chat/context';
 import { useCheckIn } from '../../check-in';
 import ZoomButton from './ZoomButton';
 
@@ -54,21 +55,10 @@ const GET_ACTION_PARTS = gql`
   }
 `;
 
-const renderChatButton = ({
-  id,
-  channelId,
-  name,
-  navigation,
-  theme,
-  groupId,
-}) => {
+const renderChatButton = ({ id, channelId, name, navigation, theme }) => {
   const handlePress = () =>
     navigation.navigate('ChatChannelSingle', {
-      itemId: id,
       title: name,
-      relatedNode: {
-        id: groupId,
-      },
     });
 
   if (!id || !channelId) return null;
@@ -150,6 +140,7 @@ const renderCheckInButton = ({
 
 const Actions = ({ id, name, theme }) => {
   const navigation = useNavigation();
+  const { setChannel } = useStreamChat();
   const checkIn = useCheckIn({ nodeId: id });
   const [getActionParts, { data, loading, called }] = useLazyQuery(
     GET_ACTION_PARTS
@@ -167,6 +158,10 @@ const Actions = ({ id, name, theme }) => {
             id,
           },
         });
+
+        if (setChannel) {
+          setChannel({ relatedNodeId: id });
+        }
       }
     },
     [id]

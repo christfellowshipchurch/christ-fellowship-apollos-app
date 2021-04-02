@@ -21,7 +21,7 @@ import ScreenOrientation from 'screen-orientation';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 
-import Providers from './Providers';
+import { ProvidersStack } from './context';
 import ContentSingle from './content-single';
 import LiveStreamSingle from './live-stream-single';
 import ScriptureSingle from './scripture-single';
@@ -138,6 +138,8 @@ const StackNavigator = (props) => (
       component={LiveStreamSingle}
       options={{
         title: 'Live Stream',
+
+        gestureEnabled: false,
       }}
     />
     <Screen
@@ -254,13 +256,13 @@ const NavigationContainerWithTheme = (props) => {
 };
 
 const App = (props) => (
-  <Providers>
+  <ProvidersStack>
     <BackgroundView>
       <StatusBar />
       <ScreenOrientation />
       <NavigationContainerWithTheme {...props} />
     </BackgroundView>
-  </Providers>
+  </ProvidersStack>
 );
 
 export default App;

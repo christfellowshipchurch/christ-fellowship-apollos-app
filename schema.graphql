@@ -153,6 +153,12 @@ type AvatarListFeature implements Feature & Node {
   primaryAction: ActionBarAction
 }
 
+type ButtonFeature implements Feature & Node {
+  id: ID!
+  order: Int
+  action: FeatureAction
+}
+
 enum CacheControlScope {
   PUBLIC
   PRIVATE
@@ -972,6 +978,7 @@ input PushSettingsInput {
 type Query {
   _placeholder: Boolean
   node(id: ID!): Node
+  notificationCenter(first: Int, after: String): MessagesConnection
   privacyPolicyUrl: String
   passwordResetUrl: String
   moreLinks: [AppLinks]
@@ -1030,9 +1037,10 @@ type Query {
   liveStreams: [LiveStream]
   floatLeftLiveStream: LiveStream
   floatLeftEmptyLiveStream: LiveStream
-  notificationCenter(first: Int, after: String): MessagesConnection
   metadata(relatedNode: ID!): [Metadata]
   userPass: Pass
+  suggestedFollows: [Person]
+  searchPeople(name: String, first: Int, after: String): SearchPeopleResultsConnection
   getEthnicityList: DefinedValueList
   getSpouse: Person
   getChildren: [Person]
@@ -1088,6 +1096,16 @@ type ScriptureFeature implements Feature & Node {
 
 interface ScriptureNode {
   scriptures: [Scripture]
+}
+
+type SearchPeopleResult {
+  node: Person
+  cursor: String
+}
+
+type SearchPeopleResultsConnection {
+  edges: [SearchPeopleResult]
+  pageInfo: PaginationInfo
 }
 
 input SearchQueryAttributeInput {
@@ -1197,7 +1215,7 @@ input TwilioNotifyPushInput {
   address: String
 }
 
-type UniversalContentItem implements ContentItem & Node & PublicationNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ShareableNode {
+type UniversalContentItem implements ContentItem & Node & PublicationNode & FeaturesNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ShareableNode {
   id: ID!
   title(hyphenated: Boolean): String
   publishDate: String
@@ -1215,6 +1233,8 @@ type UniversalContentItem implements ContentItem & Node & PublicationNode & Lika
   icon: String
   estimatedTime: String
   author: Person
+  features: [Feature] @deprecated(reason: "Use featureFeed")
+  featureFeed: FeatureFeed
   isLiked: Boolean
   likedCount: Int
   sharing: SharableContentItem

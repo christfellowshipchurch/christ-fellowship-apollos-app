@@ -179,7 +179,7 @@ CardFeed.propTypes = {
   FeedHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   onPressHeader: PropTypes.func,
   onPressItem: PropTypes.func,
-  horizontal: PropTypes.func,
+  horizontal: PropTypes.bool,
   loadingStateDataLength: PropTypes.number,
 };
 

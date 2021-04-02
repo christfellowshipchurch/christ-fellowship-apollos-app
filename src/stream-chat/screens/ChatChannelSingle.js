@@ -21,6 +21,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ThemeMixin, styled, withTheme } from '@apollosproject/ui-kit';
 import NavigationHeader from 'ui/NavigationHeader';
 import { ChatChannel } from '../components';
+import { useStreamChat } from '../context';
 
 const BackgroundView = compose(
   withTheme(({ theme }) => ({
@@ -32,7 +33,7 @@ const BackgroundView = compose(
 )(LinearGradient);
 
 const ChatChannelSingle = ({ route }) => {
-  const channel = route?.params?.channel;
+  const { channel } = useStreamChat();
   const hideNavigationHeader = route?.params?.hideNavigationHeader;
   const itemId = route?.params?.itemId;
   const relatedNode = route?.params?.relatedNode;

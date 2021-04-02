@@ -44,26 +44,26 @@ const AppProviders = (props) => {
             })
           }
         >
-          <StreamChatClientContextProvider>
-            <UserFlagsProvider>
-              <AnalyticsProvider
-                trackFunctions={[track]}
-                identifyFunctions={[identify]}
+          <UserFlagsProvider>
+            <AnalyticsProvider
+              trackFunctions={[track]}
+              identifyFunctions={[identify]}
+            >
+              <Providers
+                themeInput={{ ...customTheme, type: safeTheme }}
+                iconInput={customIcons}
+                {...props}
               >
-                <Providers
-                  themeInput={{ ...customTheme, type: safeTheme }}
-                  iconInput={customIcons}
-                  {...props}
-                >
+                <StreamChatClientContextProvider>
                   <BackgroundView>
                     <ActionSheetProvider>
                       <AppStateProvider {...props} />
                     </ActionSheetProvider>
                   </BackgroundView>
-                </Providers>
-              </AnalyticsProvider>
-            </UserFlagsProvider>
-          </StreamChatClientContextProvider>
+                </StreamChatClientContextProvider>
+              </Providers>
+            </AnalyticsProvider>
+          </UserFlagsProvider>
         </AuthProvider>
       </NotificationsProvider>
     </ClientProvider>

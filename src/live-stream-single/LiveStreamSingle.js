@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLiveStream } from 'hooks';
 
 import { ApollosPlayerContainer } from '@apollosproject/ui-media-player';
@@ -11,6 +11,7 @@ import {
 import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
 import ThemeMixin from '../ui/DynamicThemeMixin';
+import { useStreamChat } from '../stream-chat/context';
 import { LiveStreamContextProvider } from './context';
 import LiveStreamPlayer from './LiveStreamPlayer';
 import PreLiveStream from './PreLiveStream';
@@ -19,6 +20,7 @@ import CloseButton from './CloseButton';
 
 const LiveStreamSingle = (props) => {
   const liveStreamId = props.route?.params?.liveStreamId;
+  const { setChannel } = useStreamChat();
   const {
     id,
     isBefore,
@@ -34,6 +36,15 @@ const LiveStreamSingle = (props) => {
   } = useLiveStream({
     liveStreamId,
   });
+
+  useEffect(
+    () => {
+      if (liveStreamId && setChannel) {
+        setChannel({ relatedNodeId: liveStreamId });
+      }
+    },
+    [liveStreamId]
+  );
 
   // Loading and Error State
   if (loadingWithData)
@@ -77,32 +88,31 @@ const LiveStreamSingle = (props) => {
     );
 
   return (
-    <LiveStreamContextProvider liveStreamId={liveStreamId}>
-      <ThemeMixin theme={theme}>
-        <InteractWhenLoadedConnected
-          isLoading={loading}
-          nodeId={liveStreamId}
-          action={'COMPLETE'}
-        />
-        <TrackEventWhenLoaded
-          loaded={!!(!loading && title)}
-          eventName={'View Live Stream'}
-          properties={{
-            title,
-            liveStreamId,
-          }}
-        />
-        <ApollosPlayerContainer
-          PlayerComponent={LiveStreamPlayer}
-          source={uri}
-          coverImage={coverImage}
-          presentationProps={{
-            title,
-          }}
-          isLive
-          autoplay
-        />
-        {/* <ApollosPlayerContainer
+    <ThemeMixin theme={theme}>
+      <InteractWhenLoadedConnected
+        isLoading={loading}
+        nodeId={liveStreamId}
+        action={'COMPLETE'}
+      />
+      <TrackEventWhenLoaded
+        loaded={!!(!loading && title)}
+        eventName={'View Live Stream'}
+        properties={{
+          title,
+          liveStreamId,
+        }}
+      />
+      <ApollosPlayerContainer
+        PlayerComponent={LiveStreamPlayer}
+        source={uri}
+        coverImage={coverImage}
+        presentationProps={{
+          title,
+        }}
+        isLive
+        autoplay
+      />
+      {/* <ApollosPlayerContainer
         PlayerComponent={PlayerComponent}
         source={uri}
         coverImage={coverImage}
@@ -117,8 +127,7 @@ const LiveStreamSingle = (props) => {
 
         <CloseButton />
       </ApollosPlayerContainer> */}
-      </ThemeMixin>
-    </LiveStreamContextProvider>
+    </ThemeMixin>
   );
 };
 

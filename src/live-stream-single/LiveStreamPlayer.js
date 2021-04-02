@@ -8,7 +8,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { View, Animated, StyleSheet } from 'react-native';
 import { styled, FlexedView } from '@apollosproject/ui-kit';
-import { OverlayProvider as ChatOverlayProvider } from 'stream-chat-react-native';
 import StatusBar from 'ui/StatusBar';
 
 import ScreenOrientation, {
@@ -16,8 +15,8 @@ import ScreenOrientation, {
   LANDSCAPE,
 } from 'react-native-orientation-locker/ScreenOrientation';
 
-import { useLiveStreamContext } from 'hooks';
 import { ChatChannel } from '../stream-chat';
+import { useStreamChat } from '../stream-chat/context';
 import CloseButton from './CloseButton';
 
 const AspectRatio = styled(({ isFullScreen }) => ({
@@ -48,7 +47,7 @@ const LiveStreamPlayer = ({
   ControlsComponent,
   useNativeFullscreeniOS,
 }) => {
-  const { channelId, channelType } = useLiveStreamContext();
+  const { channel } = useStreamChat();
   const insets = useSafeAreaInsets();
   const { pictureMode } = usePlayerControls();
   const [orientation, setOrientation] = useState(PORTRAIT);
@@ -60,6 +59,8 @@ const LiveStreamPlayer = ({
   });
 
   const isFullScreen = pictureMode === PictureMode.Fullscreen;
+
+  console.log({ channel });
 
   /**
    * When the picture mode changes, update the screen orientation accordingly
@@ -83,40 +84,31 @@ const LiveStreamPlayer = ({
     [pictureMode]
   );
 
-  // todo : make the topInset NOT hardcoded
   return (
-    <ChatOverlayProvider bottomInset={insets.bottom} topInset={211 + 66 + 66}>
-      <FlexedView>
-        <View style={[{ position: 'absolute' }, StyleSheet.absoluteFillObject]}>
-          <StatusBar />
-          <CloseButton />
+    <FlexedView>
+      <View style={[{ position: 'absolute' }, StyleSheet.absoluteFillObject]}>
+        <StatusBar />
+        <CloseButton />
 
-          <ChatChannel
-            channelId={channelId}
-            channelType={channelType}
-            withMedia
-          >
-            <BlackBars isFullScreen={isFullScreen} insets={insets}>
-              <StatusBar barStyle="light-content" />
-              <ScreenOrientation
-                orientation={orientation}
-                onDeviceChange={(newOrientation) => {
-                  setOrientation(newOrientation);
-                }}
-              />
-              <AspectRatio isFullScreen={isFullScreen} insets={insets}>
-                <VideoComponent
-                  useNativeFullscreeniOS={useNativeFullscreeniOS}
-                />
-                {!isFullScreen && (
-                  <ControlsComponent collapsedAnimation={collapsedAnimation} />
-                )}
-              </AspectRatio>
-            </BlackBars>
-          </ChatChannel>
-        </View>
-      </FlexedView>
-    </ChatOverlayProvider>
+        <ChatChannel channel={channel} withMedia>
+          <BlackBars isFullScreen={isFullScreen} insets={insets}>
+            <StatusBar barStyle="light-content" />
+            <ScreenOrientation
+              orientation={orientation}
+              onDeviceChange={(newOrientation) => {
+                setOrientation(newOrientation);
+              }}
+            />
+            <AspectRatio isFullScreen={isFullScreen} insets={insets}>
+              <VideoComponent useNativeFullscreeniOS={useNativeFullscreeniOS} />
+              {!isFullScreen && (
+                <ControlsComponent collapsedAnimation={collapsedAnimation} />
+              )}
+            </AspectRatio>
+          </BlackBars>
+        </ChatChannel>
+      </View>
+    </FlexedView>
   );
 };
 

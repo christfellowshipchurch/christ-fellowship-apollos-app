@@ -67,38 +67,18 @@ const ChatChannel = ({
   keyboardVerticalOffset,
   theme,
   withMedia,
-  channel: specifiedChannel,
-  channelId,
-  channelType,
-  isLoading,
   children,
-  relatedNode,
 }) => {
-  const { isConnecting, chatClient } = useStreamChat();
-  const [channel, setChannel] = useState(specifiedChannel);
+  const { isConnecting, chatClient, channel } = useStreamChat();
 
-  useEffect(
-    () => {
-      if (channelId && chatClient && !channel) {
-        setChannel(
-          chatClient.channel(channelType, channelId, {
-            name: relatedNode?.title || 'Chat',
-            relatedNodeId: relatedNode?.id,
-          })
-        );
-      }
-    },
-    [channelId, chatClient]
-  );
-
-  if (isLoading || isConnecting)
+  if (isConnecting)
     return (
       <BackgroundView>
         <ActivityIndicator />
       </BackgroundView>
     );
 
-  if ((!channel && !isLoading) || (!chatClient && !isConnecting))
+  if (!channel && !chatClient && !isConnecting)
     return (
       <ErrorContainer>
         <UIText>Oops!</UIText>
@@ -178,9 +158,6 @@ ChatChannel.propTypes = {
     }),
   }),
   withMedia: PropTypes.bool,
-  isLoading: PropTypes.bool,
-  channelId: PropTypes.string,
-  channelType: PropTypes.string,
   relatedNode: PropTypes.shape({
     id: PropTypes.string,
     title: PropTypes.string,
@@ -190,7 +167,6 @@ ChatChannel.propTypes = {
 ChatChannel.defaultProps = {
   keyboardVerticalOffset: 0,
   withMedia: false,
-  isLoading: false,
 };
 
 export default withTheme()(ChatChannel);

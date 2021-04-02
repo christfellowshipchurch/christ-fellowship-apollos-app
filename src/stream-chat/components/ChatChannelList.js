@@ -42,7 +42,7 @@ const options = {
 
 const ChatChannelList = ({ theme }) => {
   const navigation = useNavigation();
-  const { chatClient } = useStreamChat();
+  const { chatClient, setChannel } = useStreamChat();
   const chatClientUserId = chatClient?.user?.id;
 
   const filters = useMemo(
@@ -73,8 +73,8 @@ const ChatChannelList = ({ theme }) => {
             HeaderNetworkDownIndicator={() => null}
             maxUnreadCount={99}
             onSelect={(channel) => {
+              setChannel({ channel });
               navigation.navigate('ChatChannelSingle', {
-                channel,
                 hideNavigationHeader: true,
               });
             }}
