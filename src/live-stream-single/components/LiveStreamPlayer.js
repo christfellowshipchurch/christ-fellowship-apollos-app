@@ -70,20 +70,20 @@ const LiveStreamPlayer = ({
         !orientation.startsWith(LANDSCAPE) &&
         pictureMode === PictureMode.Fullscreen
       ) {
-        setOrientation(LANDSCAPE);
         navigation.setOptions({
           headerShown: false,
         });
+        setOrientation(LANDSCAPE);
       }
 
       if (
         !orientation.startsWith(PORTRAIT) &&
         pictureMode === PictureMode.Normal
       ) {
-        setOrientation(PORTRAIT);
         navigation.setOptions({
           headerShown: true,
         });
+        setOrientation(PORTRAIT);
       }
     },
     [pictureMode]
