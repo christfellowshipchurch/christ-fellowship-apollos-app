@@ -10,9 +10,6 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { OverlayProvider } from 'stream-chat-react-native';
 import { useStreamChatClient, useStreamChatChannel } from '../hooks';
 
 const StreamChatClientContextContext = React.createContext([]);
@@ -31,10 +28,6 @@ export const StreamChatClientContextProvider = ({ children }) => {
   const [channel, setChannel] = useState(null);
   const [channelId, setChannelId] = useState(null);
   const [channelType, setChannelType] = useState(null);
-
-  const [insets, setInsets] = useState({});
-
-  const safeAreaInsets = useSafeAreaInsets();
 
   const cleanChannel = () => {
     setChannelId(null);
@@ -108,12 +101,7 @@ export const StreamChatClientContextProvider = ({ children }) => {
         setChannel: fetchOrSetChannel,
       }}
     >
-      <OverlayProvider
-        bottomInset={insets.bottom || safeAreaInsets.bottom}
-        topInset={insets.top || safeAreaInsets.top}
-      >
-        {children}
-      </OverlayProvider>
+      {children}
     </StreamChatClientContextContext.Provider>
   );
 };
