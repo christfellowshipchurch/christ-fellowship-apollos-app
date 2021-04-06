@@ -13,12 +13,55 @@ import PropTypes from 'prop-types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { OverlayProvider } from 'stream-chat-react-native';
+import { isOwnUser } from 'stream-chat';
 import { useStreamChatClient, useStreamChatChannel } from '../hooks';
 
 const StreamChatClientContextContext = React.createContext([]);
 
 // Context Hook
-export const useStreamChat = () => useContext(StreamChatClientContextContext);
+export const useStreamChat = () => {
+  const {
+    chatClient,
+    isConnecting,
+    channel,
+    getStreamChatChannel,
+    setChannel,
+    setInsets,
+    userId,
+  } = useContext(StreamChatClientContextContext);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(
+    () => {
+      const user = chatClient?.user;
+      const count = isOwnUser(user) ? user.total_unread_count : 0;
+      setUnreadCount(count);
+      const listener = chatClient?.on((e) => {
+        if (Number.isInteger(e?.total_unread_count)) {
+          setUnreadCount(e.total_unread_count);
+        }
+      });
+
+      return () => {
+        if (listener) {
+          listener.unsubscribe();
+        }
+      };
+    },
+    [chatClient]
+  );
+
+  return {
+    chatClient,
+    isConnecting,
+    channel,
+    getStreamChatChannel,
+    setChannel,
+    setInsets,
+    userId,
+    unreadCount,
+  };
+};
 
 // Provider
 export const StreamChatClientContextProvider = ({ children }) => {

@@ -10,6 +10,7 @@ import {
 } from '@apollosproject/ui-kit';
 
 import { useUserFlag } from 'hooks';
+import { useStreamChat } from '../stream-chat';
 
 const IconsContainer = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -26,20 +27,30 @@ const ItemLeft = styled(({ theme }) => ({
 
 const StyledIcon = withTheme(({ theme }) => ({
   size: 24,
-  color: theme.colors.text.primary,
-  style: {
-    opacity: 0.5,
-  },
+  fill: theme.colors.text.tertiary,
+}))(Icon);
+
+const NotificationIcon = withTheme(({ theme, unreadCount }) => ({
+  size: 24,
+  name:
+    Number.isInteger(unreadCount) && unreadCount > 0
+      ? 'notification-alert'
+      : 'bell',
+  fill:
+    Number.isInteger(unreadCount) && unreadCount > 0
+      ? theme.colors.alert
+      : theme.colors.text.tertiary,
 }))(Icon);
 
 export const NotificationCenterIconConnected = () => {
   const navigation = useNavigation();
   const enabled = useUserFlag('NOTIFICATION_CENTER');
+  const { unreadCount } = useStreamChat();
 
   return enabled ? (
     <TouchableScale onPress={() => navigation.navigate('ChatChannelList')}>
       <ItemLeft>
-        <StyledIcon name="bell" />
+        <NotificationIcon unreadCount={unreadCount} />
       </ItemLeft>
     </TouchableScale>
   ) : null;

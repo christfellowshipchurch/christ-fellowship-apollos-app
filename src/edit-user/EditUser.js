@@ -199,7 +199,7 @@ const EditUser = ({
       <FieldContainer>
         <H4>Campus</H4>
         <InputWrapper
-          displayValue={campus.name}
+          displayValue={campus?.name}
           icon="campus"
           actionIcon="arrow-next"
           handleOnPress={() => navigation.navigate('Location')}
