@@ -43,11 +43,13 @@ const NotificationsToggle = () => {
   const iconName = muted ? 'notification-slash' : 'notification';
 
   const updateChannel = async () => {
+    const newMuted = muted
+      ? uniq(muteNotifications.filter((id) => id !== userId))
+      : uniq([...muteNotifications, userId]);
+
     await channel.updatePartial({
       set: {
-        muteNotifications: muted
-          ? uniq([...muteNotifications, userId])
-          : uniq(muteNotifications.filter((id) => id !== userId)),
+        muteNotifications: newMuted,
       },
     });
 

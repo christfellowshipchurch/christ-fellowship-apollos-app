@@ -29,10 +29,8 @@ const BackgroundView = compose(
 const ChatChannelSingle = ({ route }) => (
   <ThemeMixin>
     <BackgroundView>
-      <SafeAreaView>
-        {/* {!hideNavigationHeader && <NavigationHeader />} */}
-        <ChatChannel />
-      </SafeAreaView>
+      {/* {!hideNavigationHeader && <NavigationHeader />} */}
+      <ChatChannel />
     </BackgroundView>
   </ThemeMixin>
 );

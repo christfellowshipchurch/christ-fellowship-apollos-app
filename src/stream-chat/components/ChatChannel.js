@@ -111,35 +111,6 @@ const ChatChannel = ({
   // :: Split screen between video and chat : https://github.com/GetStream/stream-chat-react-native/wiki/Cookbook-v3.0
   if (withMedia) {
     return (
-      <ThemeMixin>
-        <Chat client={chatClient} i18nInstance={Streami18n} style={chatTheme}>
-          <Channel
-            channel={channel}
-            keyboardVerticalOffset={headerHeight}
-            supportedReactions={supportedReactions}
-            UrlPreview={UrlPreview}
-            // MessageText={MessageText}
-            //   thread={thread}
-          >
-            {children}
-            <MessageList
-            // onThreadSelect={(thread) => {
-            //   setThread(thread);
-            //   navigation.navigate('Thread');
-            // }}
-            />
-            <MessageInput />
-            <NotificationsToggleSpacing>
-              <NotificationsToggle />
-            </NotificationsToggleSpacing>
-          </Channel>
-        </Chat>
-      </ThemeMixin>
-    );
-  }
-
-  return (
-    <ThemeMixin>
       <Chat client={chatClient} i18nInstance={Streami18n} style={chatTheme}>
         <Channel
           channel={channel}
@@ -149,21 +120,46 @@ const ChatChannel = ({
           // MessageText={MessageText}
           //   thread={thread}
         >
-          <View style={StyleSheet.absoluteFill}>
-            <MessageList
-            // onThreadSelect={(thread) => {
-            //   setThread(thread);
-            //   navigation.navigate('Thread');
-            // }}
-            />
-            <MessageInput />
-            <NotificationsToggleSpacing>
-              <NotificationsToggle />
-            </NotificationsToggleSpacing>
-          </View>
+          {children}
+          <MessageList
+          // onThreadSelect={(thread) => {
+          //   setThread(thread);
+          //   navigation.navigate('Thread');
+          // }}
+          />
+          <MessageInput />
+          <NotificationsToggleSpacing>
+            <NotificationsToggle />
+          </NotificationsToggleSpacing>
         </Channel>
       </Chat>
-    </ThemeMixin>
+    );
+  }
+
+  return (
+    <Chat client={chatClient} i18nInstance={Streami18n} style={chatTheme}>
+      <Channel
+        channel={channel}
+        keyboardVerticalOffset={headerHeight}
+        supportedReactions={supportedReactions}
+        UrlPreview={UrlPreview}
+        // MessageText={MessageText}
+        //   thread={thread}
+      >
+        <View style={StyleSheet.absoluteFill}>
+          <MessageList
+          // onThreadSelect={(thread) => {
+          //   setThread(thread);
+          //   navigation.navigate('Thread');
+          // }}
+          />
+          <MessageInput />
+          <NotificationsToggleSpacing>
+            <NotificationsToggle />
+          </NotificationsToggleSpacing>
+        </View>
+      </Channel>
+    </Chat>
   );
 };
 
