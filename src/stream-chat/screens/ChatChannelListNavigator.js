@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import { ChatChannelList, ChatChannel } from '../components';
+import {
+  ChatChannelList,
+  ChatChannel,
+  NotificationsToggle,
+} from '../components';
 
 const { Screen, Navigator } = createNativeStackNavigator();
 
@@ -39,4 +43,4 @@ ChatChannelListeNavigator.propTypes = {
   }),
 };
 
-export default ChatChannelListeNavigator;
+export default ChatChannelList;

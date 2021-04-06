@@ -26,7 +26,7 @@ export const StreamChatClientContextProvider = ({ children }) => {
     getStreamChatChannel,
     { channelId: fetchedChannelId, channelType: fetchedChannelType },
   ] = useStreamChatChannel();
-  const { chatClient, isConnecting } = useStreamChatClient();
+  const { chatClient, isConnecting, userId } = useStreamChatClient();
 
   const [channel, setChannel] = useState(null);
   const [channelId, setChannelId] = useState(null);
@@ -107,11 +107,12 @@ export const StreamChatClientContextProvider = ({ children }) => {
         getStreamChatChannel,
         setChannel: fetchOrSetChannel,
         setInsets,
+        userId,
       }}
     >
       <OverlayProvider
-        bottomInset={insets.bottom || safeAreaInsets.bottom}
-        topInset={insets.top || safeAreaInsets.top}
+        bottomInset={safeAreaInsets.bottom}
+        topInset={safeAreaInsets.top}
       >
         {children}
       </OverlayProvider>

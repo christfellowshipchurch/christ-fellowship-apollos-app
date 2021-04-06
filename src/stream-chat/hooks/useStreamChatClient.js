@@ -80,6 +80,7 @@ export default () => {
 
   return {
     chatClient,
+    userId: id?.split(':')[1],
     isConnecting,
     logout,
   };

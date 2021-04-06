@@ -26,6 +26,8 @@ export Link from './Link';
 export List from './List';
 export Lock from './Lock';
 export MessageBubble from './MessageBubble';
+export Notification from './Notification';
+export NotificationSlash from './NotificationSlash';
 export PaperAirplaneCircle from './PaperAirplaneCircle';
 export PayPal from './PayPal';
 export Plus from './Plus';

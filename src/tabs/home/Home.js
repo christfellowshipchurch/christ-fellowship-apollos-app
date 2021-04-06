@@ -5,7 +5,12 @@ import gql from 'graphql-tag';
 import { useNavigation } from '@react-navigation/native';
 
 import { View } from 'react-native';
-import { styled, BackgroundView, Button } from '@apollosproject/ui-kit';
+import {
+  styled,
+  BackgroundView,
+  Button,
+  ThemeMixin,
+} from '@apollosproject/ui-kit';
 
 import {
   FeaturesFeedConnected,
@@ -48,20 +53,22 @@ const Home = () => {
   const headerFeatures = data?.homeHeaderFeedFeatures?.features;
 
   return (
-    <BackgroundView>
-      <FeaturesFeedConnected
-        featuresFeedId={featuresFeedId}
-        isLoading={loading}
-        error={error}
-        ListHeaderComponent={
-          <ListHeaderSpacer>
-            <HorizontalFeaturesFeedConnected features={headerFeatures} />
-          </ListHeaderSpacer>
-        }
-        removeClippedSubviews={false}
-        numColumns={1}
-      />
-    </BackgroundView>
+    <ThemeMixin>
+      <BackgroundView>
+        <FeaturesFeedConnected
+          featuresFeedId={featuresFeedId}
+          isLoading={loading}
+          error={error}
+          ListHeaderComponent={
+            <ListHeaderSpacer>
+              <HorizontalFeaturesFeedConnected features={headerFeatures} />
+            </ListHeaderSpacer>
+          }
+          removeClippedSubviews={false}
+          numColumns={1}
+        />
+      </BackgroundView>
+    </ThemeMixin>
   );
 };
 

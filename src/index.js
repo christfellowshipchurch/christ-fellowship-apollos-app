@@ -10,6 +10,7 @@ import {
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native';
+import { useHeaderHeight } from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 
 import { useColorScheme, Text } from 'react-native';

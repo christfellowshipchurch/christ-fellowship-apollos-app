@@ -10,8 +10,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
-
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import LinearGradient from 'react-native-linear-gradient';
 import { ThemeMixin, styled, withTheme } from '@apollosproject/ui-kit';
 import NavigationHeader from 'ui/NavigationHeader';
@@ -26,20 +26,16 @@ const BackgroundView = compose(
   styled({ flex: 1, height: '100%' })
 )(LinearGradient);
 
-const ChatChannelSingle = ({ route }) => {
-  const hideNavigationHeader = route?.params?.hideNavigationHeader;
-
-  return (
-    <ThemeMixin>
-      <BackgroundView>
-        <SafeAreaView>
-          {/* {!hideNavigationHeader && <NavigationHeader />} */}
-          <ChatChannel />
-        </SafeAreaView>
-      </BackgroundView>
-    </ThemeMixin>
-  );
-};
+const ChatChannelSingle = ({ route }) => (
+  <ThemeMixin>
+    <BackgroundView>
+      <SafeAreaView>
+        {/* {!hideNavigationHeader && <NavigationHeader />} */}
+        <ChatChannel />
+      </SafeAreaView>
+    </BackgroundView>
+  </ThemeMixin>
+);
 
 ChatChannelSingle.propTypes = {
   route: PropTypes.shape({

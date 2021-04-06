@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { useLazyQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
 
-import { print } from 'graphql';
-
 import { FlatList, View } from 'react-native';
 import {
   ActivityIndicator,
@@ -12,6 +10,7 @@ import {
   Touchable,
   styled,
   withTheme,
+  ThemeMixin,
 } from '@apollosproject/ui-kit';
 
 import { HorizontalDivider } from 'ui/Dividers';
@@ -91,35 +90,37 @@ const FeaturesFeedConnected = ({
   }
 
   return (
-    <FlatList
-      data={features}
-      renderItem={renderItem}
-      ItemSeparatorComponent={ItemSeparatorComponent}
-      ListEmptyComponent={
-        errorInStack && !loadingInStack && !dataInStack
-          ? console.warn(error) || (
-              <ErrorContainer>
-                <ErrorText>
-                  {`Oops! Something went wrong and we weren't able to load up that data`}
-                </ErrorText>
-                <Touchable onPress={() => refetch()}>
-                  <ErrorTouchableText>{'Try Again'}</ErrorTouchableText>
-                </Touchable>
-              </ErrorContainer>
-            )
-          : ListEmptyComponent
-      }
-      removeClippedSubviews
-      keyExtractor={(item, index) => get(item, 'id', index)}
-      onRefresh={() => {
-        if (!loadingInStack) {
-          refetch();
+    <ThemeMixin>
+      <FlatList
+        data={features}
+        renderItem={renderItem}
+        ItemSeparatorComponent={ItemSeparatorComponent}
+        ListEmptyComponent={
+          errorInStack && !loadingInStack && !dataInStack
+            ? console.warn(error) || (
+                <ErrorContainer>
+                  <ErrorText>
+                    {`Oops! Something went wrong and we weren't able to load up that data`}
+                  </ErrorText>
+                  <Touchable onPress={() => refetch()}>
+                    <ErrorTouchableText>{'Try Again'}</ErrorTouchableText>
+                  </Touchable>
+                </ErrorContainer>
+              )
+            : ListEmptyComponent
         }
-      }}
-      refreshing={isLoading}
-      numColumns={1}
-      {...props}
-    />
+        removeClippedSubviews
+        keyExtractor={(item, index) => get(item, 'id', index)}
+        onRefresh={() => {
+          if (!loadingInStack) {
+            refetch();
+          }
+        }}
+        refreshing={isLoading}
+        numColumns={1}
+        {...props}
+      />
+    </ThemeMixin>
   );
 };
 
