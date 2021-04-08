@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-handler-names */
 
 import hoistNonReactStatic from 'hoist-non-react-statics';
-import React from 'react';
+import React, { useState } from 'react';
 import 'react-native-gesture-handler'; // required for react-navigation
 import { enableScreens } from 'react-native-screens';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
@@ -10,10 +10,9 @@ import {
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native';
-import { useHeaderHeight } from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 
-import { useColorScheme, Text } from 'react-native';
+import { useColorScheme, Text, Appearance } from 'react-native';
 import { BackgroundView, NavigationService } from '@apollosproject/ui-kit';
 // import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
@@ -230,7 +229,9 @@ const StackNavigator = (props) => (
 );
 
 const NavigationContainerWithTheme = (props) => {
-  const scheme = useColorScheme();
+  // todo : dynamically switch between current themes. Currently disabled due to rendering limitations with React Pure Component and the Apollos Theme
+  // const scheme = useColorScheme();
+  const [scheme] = useState(Appearance.getColorScheme());
   const light = {
     ...DefaultTheme,
     colors: {

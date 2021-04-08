@@ -31,40 +31,40 @@ import UniversalLinkRouteProvider from './UniversalLinkRouteProvider';
 // import { UserFlagsProvider } from './user-flags';
 
 const ProvidersStack = (props) => (
-  <AppearanceProvider>
-    <ClientProvider {...props}>
-      <NotificationsProvider
-        oneSignalKey={ApollosConfig.ONE_SIGNAL_KEY}
+  // <AppearanceProvider>
+  <ClientProvider {...props}>
+    <NotificationsProvider
+      oneSignalKey={ApollosConfig.ONE_SIGNAL_KEY}
+      navigate={NavigationService.navigate}
+    >
+      <AuthProvider
+        navigateToAuth={() => NavigationService.navigate('Auth')}
         navigate={NavigationService.navigate}
+        closeAuth={() =>
+          checkOnboardingStatusAndNavigate({
+            client,
+            navigation: NavigationService,
+          })
+        }
       >
-        <AuthProvider
-          navigateToAuth={() => NavigationService.navigate('Auth')}
-          navigate={NavigationService.navigate}
-          closeAuth={() =>
-            checkOnboardingStatusAndNavigate({
-              client,
-              navigation: NavigationService,
-            })
-          }
+        <AnalyticsProvider
+          trackFunctions={[track]}
+          identifyFunctions={[identify]}
         >
-          <AnalyticsProvider
-            trackFunctions={[track]}
-            identifyFunctions={[identify]}
-          >
-            <CoreApollosProviders {...props}>
-              <UserFlagsProvider>
-                <StreamChatClientContextProvider>
-                  <ActionSheetProvider>
-                    <UniversalLinkRouteProvider {...props} />
-                  </ActionSheetProvider>
-                </StreamChatClientContextProvider>
-              </UserFlagsProvider>
-            </CoreApollosProviders>
-          </AnalyticsProvider>
-        </AuthProvider>
-      </NotificationsProvider>
-    </ClientProvider>
-  </AppearanceProvider>
+          <CoreApollosProviders {...props}>
+            <UserFlagsProvider>
+              <StreamChatClientContextProvider>
+                <ActionSheetProvider>
+                  <UniversalLinkRouteProvider {...props} />
+                </ActionSheetProvider>
+              </StreamChatClientContextProvider>
+            </UserFlagsProvider>
+          </CoreApollosProviders>
+        </AnalyticsProvider>
+      </AuthProvider>
+    </NotificationsProvider>
+  </ClientProvider>
+  // </AppearanceProvider>
 );
 
 ProvidersStack.propTypes = {};

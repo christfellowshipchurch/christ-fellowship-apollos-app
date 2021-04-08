@@ -12,6 +12,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { AppState } from 'react-native';
 import { OverlayProvider } from 'stream-chat-react-native';
 import { isOwnUser } from 'stream-chat';
 import { useStreamChatClient, useStreamChatChannel } from '../hooks';
@@ -30,6 +31,14 @@ export const useStreamChat = () => {
     userId,
   } = useContext(StreamChatClientContextContext);
   const [unreadCount, setUnreadCount] = useState(0);
+
+  const _handleAppStateChange = (nextAppState) => {
+    if (nextAppState === 'active') {
+      const user = chatClient?.user;
+      const count = isOwnUser(user) ? user.total_unread_count : 0;
+      setUnreadCount(count);
+    }
+  };
 
   useEffect(
     () => {
@@ -50,6 +59,14 @@ export const useStreamChat = () => {
     },
     [chatClient]
   );
+
+  useEffect(() => {
+    AppState.addEventListener('change', _handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', _handleAppStateChange);
+    };
+  }, []);
 
   return {
     chatClient,

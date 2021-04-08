@@ -9,6 +9,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { defaultProps } from 'recompose';
 import { useQuery } from '@apollo/client';
 import { get, set, uniqBy } from 'lodash';
 
@@ -21,6 +22,7 @@ import {
   Card,
   CardImage,
   FlexedView,
+  withMediaQuery,
 } from '@apollosproject/ui-kit';
 
 import GET_MEMBERS from './getMembers';
@@ -60,7 +62,7 @@ const mapEdges = (data) =>
     ...node,
   }));
 
-const MembersFeedConnected = ({ id }) => {
+const MembersFeedConnected = ({ id, numColumns }) => {
   const { loading, error, data, fetchMore, variables } = useQuery(GET_MEMBERS, {
     variables: {
       groupId: id,
@@ -120,7 +122,7 @@ const MembersFeedConnected = ({ id }) => {
               },
             ]
       }
-      numColumns={2}
+      numColumns={numColumns}
       isLoading={members.length === 0 && loading}
       loadingStateObject={loadingStateObject}
       renderItem={renderMember}
@@ -155,6 +157,17 @@ const MembersFeedConnected = ({ id }) => {
 
 MembersFeedConnected.propTypes = {
   id: PropTypes.string.isRequired,
+  numColumns: PropTypes.number,
 };
 
-export default MembersFeedConnected;
+MembersFeedConnected.defaultProps = {
+  numColumns: 2,
+};
+
+const MembersFeedConnectedWithNumColumns = withMediaQuery(
+  ({ md }) => ({ maxWidth: md }),
+  defaultProps({ numColumns: 2 }),
+  defaultProps({ numColumns: 3 })
+)(MembersFeedConnected);
+
+export default MembersFeedConnectedWithNumColumns;

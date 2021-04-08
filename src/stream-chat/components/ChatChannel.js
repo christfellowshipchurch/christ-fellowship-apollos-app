@@ -11,7 +11,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform, Appearance } from 'react-native';
 import {
   Card,
   Chat,
@@ -49,7 +49,7 @@ const ErrorContainer = styled(() => ({
 }))(BackgroundView);
 
 const NotificationsToggleSpacing = withTheme(({ theme }) => ({
-  blurType: 'thinMaterial',
+  blurType: Appearance.getColorScheme() === 'dark' ? 'dark' : 'light',
   style: {
     padding: theme.sizing.baseUnit * 0.5,
     position: 'absolute',

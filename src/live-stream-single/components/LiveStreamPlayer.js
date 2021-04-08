@@ -5,10 +5,11 @@ import {
   PictureMode,
 } from '@apollosproject/ui-media-player';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import { useNavigation } from '@react-navigation/native';
 
 import { View, Animated, StyleSheet } from 'react-native';
-import { styled, FlexedView } from '@apollosproject/ui-kit';
+import { styled, withTheme, FlexedView } from '@apollosproject/ui-kit';
 import StatusBar from 'ui/StatusBar';
 
 import ScreenOrientation, {
@@ -34,11 +35,8 @@ const AspectRatio = styled(({ isFullScreen }) => ({
   backgroundColor: 'salmon',
 }))(View);
 
-const BlackBars = styled(({ theme, insets, isFullScreen }) => ({
+const BlackBars = styled(({ theme }) => ({
   backgroundColor: theme.colors.black,
-  // paddingTop: isFullScreen ? 0 : insets.top + theme.sizing.baseUnit,
-  // paddingLeft: isFullScreen ? insets.left + theme.sizing.baseUnit : 0,
-  // paddingRight: isFullScreen ? insets.right + theme.sizing.baseUnit : 0,
   zIndex: 1000,
 }))(View);
 
@@ -46,6 +44,7 @@ const LiveStreamPlayer = ({
   VideoComponent,
   ControlsComponent,
   useNativeFullscreeniOS,
+  theme,
 }) => {
   const navigation = useNavigation();
   const { channel } = useStreamChat();
@@ -91,7 +90,16 @@ const LiveStreamPlayer = ({
 
   return (
     <FlexedView>
-      <View style={[{ position: 'absolute' }, StyleSheet.absoluteFillObject]}>
+      <View
+        style={[
+          {
+            position: 'absolute',
+            paddingBottom: insets.bottom,
+            backgroundColor: theme.colors.background.paper,
+          },
+          StyleSheet.absoluteFillObject,
+        ]}
+      >
         <StatusBar />
 
         <ChatChannel channel={channel} withMedia>
@@ -118,11 +126,13 @@ LiveStreamPlayer.propTypes = {
   VideoComponent: PropTypes.oneOf([PropTypes.func, PropTypes.element]),
   ControlsComponent: PropTypes.oneOf([PropTypes.func, PropTypes.element]),
   useNativeFullscreeniOS: PropTypes.bool,
-  children: PropTypes.oneOf([
-    PropTypes.func,
-    PropTypes.element,
-    PropTypes.array,
-  ]),
+  theme: PropTypes.shape({
+    colors: PropTypes.shape({
+      background: PropTypes.shape({
+        paper: PropTypes.string,
+      }),
+    }),
+  }),
 };
 
-export default LiveStreamPlayer;
+export default withTheme()(LiveStreamPlayer);

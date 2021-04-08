@@ -12,7 +12,6 @@ import { TrackEventWhenLoaded } from '@apollosproject/ui-analytics';
 import { InteractWhenLoadedConnected } from '@apollosproject/ui-connected';
 import ThemeMixin from '../../ui/DynamicThemeMixin';
 import { useStreamChat } from '../../stream-chat/context';
-import CloseButton from '../CloseButton';
 
 import { LiveStreamPlayer, PreLiveStream, PostLiveStream } from '../components';
 
@@ -63,27 +62,18 @@ const LiveStreamSingle = (props) => {
    */
   if (isBefore)
     return (
-      <>
-        {/* <CloseButton /> */}
-        <PreLiveStream
-          startDate={startDate}
-          coverImage={coverImage}
-          title={title}
-          isLoading={loadingWithData}
-        />
-      </>
+      <PreLiveStream
+        startDate={startDate}
+        coverImage={coverImage}
+        title={title}
+        isLoading={loadingWithData}
+      />
     );
 
   /**
    * If the current time is _after_ the end date, show the Post Live component
    */
-  if (isAfter)
-    return (
-      <>
-        {/* <CloseButton /> */}
-        <PostLiveStream coverImage={coverImage} />
-      </>
-    );
+  if (isAfter) return <PostLiveStream coverImage={coverImage} />;
 
   return (
     <ThemeMixin theme={theme}>

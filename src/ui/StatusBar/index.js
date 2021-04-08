@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 
-import { StatusBar, useColorScheme } from 'react-native';
+import { StatusBar, useColorScheme, Appearance } from 'react-native';
 import { withTheme } from '@apollosproject/ui-kit';
 
 const dynamicBarStyleValue = {
@@ -16,7 +16,8 @@ const AppStatusBar = withTheme(({ theme, barStyle = 'dark-content' }) => ({
 }))(StatusBar);
 
 const DynamicStatusBar = ({ barStyle }) => {
-  const scheme = useColorScheme();
+  const [scheme] = useState(Appearance.getColorScheme());
+  // const scheme = useColorScheme();
   const dynamicBarStyle = get(dynamicBarStyleValue, scheme, 'dark-content');
 
   return <AppStatusBar barStyle={barStyle || dynamicBarStyle} />;
@@ -30,4 +31,4 @@ DynamicStatusBar.defaultProps = {
   barStyle: null,
 };
 
-export default DynamicStatusBar;
+export default StatusBar;

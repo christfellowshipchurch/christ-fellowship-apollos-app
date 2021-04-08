@@ -14,7 +14,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
 import { ThemeMixin, styled, withTheme } from '@apollosproject/ui-kit';
-import NavigationHeader from 'ui/NavigationHeader';
 import { ChatChannel } from '../components';
 
 const BackgroundView = compose(
@@ -26,11 +25,12 @@ const BackgroundView = compose(
   styled({ flex: 1, height: '100%' })
 )(LinearGradient);
 
-const ChatChannelSingle = ({ route }) => (
+const ChatChannelSingle = () => (
   <ThemeMixin>
     <BackgroundView>
-      {/* {!hideNavigationHeader && <NavigationHeader />} */}
-      <ChatChannel />
+      <SafeAreaView insets={{ bottom: 'always', top: 'never' }}>
+        <ChatChannel />
+      </SafeAreaView>
     </BackgroundView>
   </ThemeMixin>
 );
