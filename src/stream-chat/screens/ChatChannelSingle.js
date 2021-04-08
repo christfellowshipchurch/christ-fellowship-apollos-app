@@ -7,14 +7,20 @@
  * A view that renders a full screen, single Chat Channel. It is assumed that this component will sit inside of a Navigation Stack and expects to properties formatted as Navigation Params.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
-import { ThemeMixin, styled, withTheme } from '@apollosproject/ui-kit';
+import {
+  ThemeMixin,
+  styled,
+  withTheme,
+  ActivityIndicator,
+} from '@apollosproject/ui-kit';
 import { ChatChannel } from '../components';
+import { useStreamChat } from '../context';
 
 const BackgroundView = compose(
   withTheme(({ theme }) => ({
@@ -25,15 +31,37 @@ const BackgroundView = compose(
   styled({ flex: 1, height: '100%' })
 )(LinearGradient);
 
-const ChatChannelSingle = () => (
-  <ThemeMixin>
-    <BackgroundView>
-      <SafeAreaView insets={{ bottom: 'always', top: 'never' }}>
-        <ChatChannel />
-      </SafeAreaView>
-    </BackgroundView>
-  </ThemeMixin>
-);
+const ChatChannelSingle = (props) => {
+  const params = props?.route?.params;
+  const { setChannel, channel } = useStreamChat();
+
+  // note : not the most elegant solution, but it's the easiest way to handle deep linking with push notifications
+  useEffect(
+    () => {
+      if (params?.streamChannelId && params?.streamChannelType) {
+        setChannel({
+          channelId: params?.streamChannelId,
+          channelType: params?.streamChannelType,
+        });
+      }
+    },
+    [params]
+  );
+
+  return (
+    <ThemeMixin>
+      <BackgroundView>
+        {!channel ? (
+          <ActivityIndicator />
+        ) : (
+          <SafeAreaView edges={['bottom']}>
+            <ChatChannel />
+          </SafeAreaView>
+        )}
+      </BackgroundView>
+    </ThemeMixin>
+  );
+};
 
 ChatChannelSingle.propTypes = {
   route: PropTypes.shape({

@@ -121,8 +121,8 @@ export const StreamChatClientContextProvider = ({ children }) => {
       cleanChannel();
       setChannel(specifiedChannel);
     } else if (specifiedChannelId && specifiedChannelType) {
-      setChannelId(fetchedChannelId);
-      setChannelType(fetchedChannelType);
+      setChannelId(specifiedChannelId);
+      setChannelType(specifiedChannelType);
     } else if (nodeId || relatedNodeId) {
       getStreamChatChannel({ nodeId, relatedNodeId });
     }
