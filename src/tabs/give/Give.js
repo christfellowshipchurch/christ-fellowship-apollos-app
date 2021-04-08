@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import { BackgroundView } from '@apollosproject/ui-kit';
 
 import { FeaturesFeedConnected } from 'features';
+import TabHeader from '../TabHeader';
 
 // getHomeFeed uses the HOME_FEATURES in the config.yml
 // You can also hardcode an ID if you are confident it will never change
@@ -26,6 +27,7 @@ const Give = () => {
 
   return (
     <BackgroundView>
+      <TabHeader title="Give" />
       <FeaturesFeedConnected
         featuresFeedId={featuresFeedId}
         refetch={refetch}

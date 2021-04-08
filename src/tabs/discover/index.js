@@ -23,4 +23,4 @@ const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
   },
 }))(DiscoverNavigator);
 
-export default EnhancedNavigator;
+export default Discover;

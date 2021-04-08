@@ -14,7 +14,7 @@ const Icon = makeIcon(({ size = 32, fill, ...otherProps } = {}) => (
     <Path
       fill="none"
       d="M12.58 5.22C12.85 4.88 13 4.46 13 4C13 2.9 12.1 2 11 2C9.9 2 9 2.9 9 4C9 4.46 9.15 4.88 9.42 5.22"
-      undefined="2.5"
+      strokeWidth="2.5"
     />
     <Path
       strokeLinejoin="round"
@@ -27,7 +27,7 @@ const Icon = makeIcon(({ size = 32, fill, ...otherProps } = {}) => (
     <Path
       fill="none"
       d="M11.41 19H8.55C8.52 19.16 8.5 19.33 8.5 19.5C8.5 20.88 9.62 22 11 22C11.82 22 12.54 21.61 13 21C12.31 20.48 11.76 19.79 11.41 19H8.55H11.41Z"
-      undefined="2.5"
+      strokeWidth="2.5"
     />
     <Path
       strokeLinejoin="round"
@@ -52,7 +52,6 @@ const Icon = makeIcon(({ size = 32, fill, ...otherProps } = {}) => (
       strokeMiterlimit="10"
       strokeWidth="2.5"
       stroke={fill}
-      fill={fill}
       d="M16 22C18.7614 22 21 19.7614 21 17C21 14.2386 18.7614 12 16 12C13.2386 12 11 14.2386 11 17C11 19.7614 13.2386 22 16 22Z"
     />
   </Svg>

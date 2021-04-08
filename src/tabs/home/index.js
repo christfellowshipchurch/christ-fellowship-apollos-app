@@ -26,4 +26,4 @@ const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
   },
 }))(HomeNavigator);
 
-export default EnhancedNavigator;
+export default Home;

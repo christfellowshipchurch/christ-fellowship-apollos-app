@@ -24,4 +24,4 @@ const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
   },
 }))(EventsNavigator);
 
-export default EnhancedNavigator;
+export default Events;

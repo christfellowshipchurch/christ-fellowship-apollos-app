@@ -4,10 +4,30 @@ import Svg, { Path } from 'react-native-svg';
 import { makeIcon } from '@apollosproject/ui-kit';
 
 const Icon = makeIcon(({ size = 32, fill, ...otherProps } = {}) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" {...otherProps}>
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path
-      d="M24.8418 10.2578L14.4697 1.7334C14.1338 1.43945 13.4619 1.1875 12.958 1.1875C12.4961 1.1875 11.8242 1.43945 11.4883 1.7334L1.11621 10.2578C0.990234 10.3838 0.90625 10.5938 0.90625 10.7617C0.90625 10.8877 0.948242 11.0977 1.03223 11.1816L1.49414 11.7275C1.57812 11.8535 1.83008 11.9375 1.99805 11.9375C2.12402 11.9375 2.33398 11.8955 2.41797 11.8115L3.59375 10.8457V13.2812H3.55176V22.0156C3.55176 22.3936 3.8457 22.6875 4.22363 22.6875H21.7344C22.0703 22.6875 22.4062 22.3936 22.4062 22.0156V10.8457L23.54 11.8115C23.624 11.8955 23.834 11.9795 23.96 11.9795C24.1279 11.9795 24.3799 11.8535 24.5059 11.7275L24.9258 11.1816C25.0098 11.0977 25.0938 10.8877 25.0938 10.7617C25.0938 10.5938 24.9678 10.3838 24.8418 10.2578ZM20.3906 10.5938H20.3486V20.6719H15.6875V14.625C15.6875 13.9111 15.0576 13.2812 14.3438 13.2812H11.6562C10.9004 13.2812 10.3125 13.9111 10.3125 14.625V20.6719H5.56738V9.37598H5.60938V9.20801L13 3.11914L20.3906 9.20801V10.5938Z"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeMiterlimit="10"
+      strokeWidth="2.5"
+      stroke={fill}
+      fill="none"
+      d="M20 8.4L12 2L4 8.4V22H20V8.4Z"
+    />
+    <Path
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeMiterlimit="10"
+      strokeWidth="2.5"
+      stroke={fill}
+      d="M22 10L12 2L2 10"
+    />
+    <Path
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      strokeMiterlimit="10"
       fill={fill}
+      d="M14 14H10V22H14V14Z"
     />
   </Svg>
 ));

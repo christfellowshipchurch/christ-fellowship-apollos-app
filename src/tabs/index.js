@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { Platform } from 'react-native';
@@ -14,11 +14,12 @@ import Home from './home';
 
 import AvatarIcon from './AvatarIcon';
 import TabBarIcon from './TabBarIcon';
+import HeaderButtons from './HeaderButtons';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
 const TabNavigator = (props) => (
-  <Navigator {...props} lazy>
+  <Navigator {...props}>
     <Screen
       name="Home"
       component={Home}
@@ -68,7 +69,6 @@ const TabNavigator = (props) => (
 );
 
 const ThemedTabNavigator = withTheme(({ theme }) => ({
-  headerMode: 'none',
   tabBarOptions: {
     activeTintColor: theme.colors.primary,
     inactiveTintColor: theme.colors.text.tertiary,

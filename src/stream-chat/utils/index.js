@@ -30,7 +30,7 @@ export const mapThemeValues = (apollosTheme) => {
           .mix(Color(apollosTheme.colors.text.primary))
           .hex(),
         grey_gainsboro: Color(apollosTheme.colors.background.screen)
-          .mix(Color(apollosTheme.colors.text.secondary))
+          .mix(Color(apollosTheme.colors.text.secondary), 0.15)
           .hex(),
         grey_whisper: Color(apollosTheme.colors.background.screen)
           .mix(Color(apollosTheme.colors.text.tertiary))

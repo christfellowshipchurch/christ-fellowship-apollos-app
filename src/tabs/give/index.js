@@ -24,4 +24,4 @@ const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
   },
 }))(GiveNavigator);
 
-export default EnhancedNavigator;
+export default Give;

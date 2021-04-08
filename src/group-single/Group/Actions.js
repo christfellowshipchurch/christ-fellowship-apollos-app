@@ -12,8 +12,9 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import Color from 'color';
 import { isEmpty } from 'lodash';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import { useNavigation } from '@react-navigation/native';
+import { AnalyticsConsumer } from '@apollosproject/ui-analytics';
 
 import {
   InlineActivityIndicator,
@@ -55,6 +56,14 @@ const GET_ACTION_PARTS = gql`
   }
 `;
 
+const INTERACT_WITH_NODE = gql`
+  mutation interactWithNode($nodeId: ID!, $action: InteractionAction!) {
+    interactWithNode(nodeId: $nodeId, action: $action) {
+      success
+    }
+  }
+`;
+
 const renderChatButton = ({ id, channelId, name, navigation, theme }) => {
   const handlePress = () => {
     // todo : temporary hack until we can get the OverlayProvider working correctly
@@ -83,14 +92,14 @@ const renderChatButton = ({ id, channelId, name, navigation, theme }) => {
   );
 };
 
-const renderZoomButton = ({ id, videoCall, theme }) => {
+const renderZoomButton = ({ id, videoCall, theme, isLoading }) => {
   if (isEmpty(videoCall)) {
     return null;
   }
 
   return (
     <ThemeMixin mixin={theme}>
-      <ZoomButton groupId={id} videoCall={videoCall} />
+      <ZoomButton groupId={id} videoCall={videoCall} isLoading={isLoading} />
     </ThemeMixin>
   );
 };
@@ -142,15 +151,33 @@ const renderCheckInButton = ({
 };
 
 const Actions = ({ id, name, theme }) => {
+  // Hooks
   const navigation = useNavigation();
   const { setChannel } = useStreamChat();
-  const checkIn = useCheckIn({ nodeId: id });
+  const {
+    loading: checkInLoading,
+    options,
+    checkInCompleted,
+    checkInCurrentUser,
+  } = useCheckIn({ nodeId: id });
+
+  // Queries & Mutations
   const [getActionParts, { data, loading, called }] = useLazyQuery(
     GET_ACTION_PARTS
   );
+  const [interactWithNode] = useMutation(INTERACT_WITH_NODE);
+
+  // Variables
   const streamChat = data?.node?.streamChatChannel;
   const videoCall = data?.node?.videoCall;
   const parentVideoCall = data?.node?.parentVideoCall;
+  const interactWithParentVideo = () =>
+    interactWithNode({
+      variables: {
+        nodeId: id,
+        action: 'GROUP_JOINED_PARENT_VIDEO',
+      },
+    });
 
   useEffect(
     () => {
@@ -182,13 +209,24 @@ const Actions = ({ id, name, theme }) => {
 
   return (
     <ActionBar>
+      {/* Check In Button */}
       {renderCheckInButton({
         id,
         videoCall,
         parentVideoCall,
         theme,
-        ...checkIn,
+        loading: checkInLoading,
+        options,
+        checkInCompleted,
+        checkInCurrentUser,
       })}
+
+      {/* Parent Video Button
+        * // note : should trigger interaction on press
+          // ActionBarItem.js for example
+          // Interaction Node: GroupId
+          // Interaction: JOINED_PARENT_VIDEO
+        */}
       {renderZoomButton({
         id,
         videoCall: parentVideoCall,
@@ -197,7 +235,12 @@ const Actions = ({ id, name, theme }) => {
             primary: theme.colors.alert,
           },
         },
+        onJoin: interactWithParentVideo,
       })}
+
+      {/* Main Video Button
+        * // note : should trigger check in on press
+        */}
       {renderZoomButton({
         id,
         videoCall: isEmpty(videoCall)
@@ -213,7 +256,16 @@ const Actions = ({ id, name, theme }) => {
             primary: theme.colors.success,
           },
         },
+        onJoin: () => {
+          if (options.length > 0) {
+            checkInCurrentUser({
+              optionIds: options.map((option) => option.id),
+            });
+          }
+        },
       })}
+
+      {/* Chat Button */}
       {renderChatButton({
         ...streamChat,
         groupId: id,

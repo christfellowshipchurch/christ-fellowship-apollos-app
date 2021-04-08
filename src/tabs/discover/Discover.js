@@ -6,6 +6,7 @@ import { get, throttle, take } from 'lodash';
 import { ScrollView, View } from 'react-native';
 import { BackgroundView, FeedView, styled } from '@apollosproject/ui-kit';
 import DynamicThemeMixin from 'ui/DynamicThemeMixin';
+import TabHeader from '../TabHeader';
 import { GET_CATEGORIES_FROM_FILTER } from './queries';
 import SearchInputHeader from './SearchInputHeader';
 import SearchFeed from './SearchFeed';
@@ -57,6 +58,7 @@ const Discover = ({ navigation, cardsToShow }) => {
   return (
     <DynamicThemeMixin>
       <BackgroundView>
+        <TabHeader title="Discover" />
         <ScrollView stickyHeaderIndices={[0]}>
           <HeaderBackgroundView>
             <SearchInputHeader

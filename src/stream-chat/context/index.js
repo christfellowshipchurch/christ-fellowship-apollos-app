@@ -30,7 +30,9 @@ export const useStreamChat = () => {
     setInsets,
     userId,
   } = useContext(StreamChatClientContextContext);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(
+    chatClient?.user?.total_unread_count || 0
+  );
 
   const _handleAppStateChange = (nextAppState) => {
     if (nextAppState === 'active') {

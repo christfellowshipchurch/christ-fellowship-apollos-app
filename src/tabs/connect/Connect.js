@@ -7,6 +7,7 @@ import { View } from 'react-native';
 import { styled, BackgroundView } from '@apollosproject/ui-kit';
 
 import { FeaturesFeedConnected } from 'features';
+import TabHeader from '../TabHeader';
 
 // getConnectFeed uses the CONNECT_FEATURES in the config.yml
 // You can also hardcode an ID if you are confident it will never change
@@ -31,6 +32,7 @@ const Connect = () => {
 
   return (
     <BackgroundView>
+      <TabHeader title="Connect" />
       <FeaturesFeedConnected
         featuresFeedId={featuresFeedId}
         isLoading={loading}

@@ -75,6 +75,7 @@ class NotificationsInit extends Component {
     OneSignal.addEventListener('opened', this.onOpened);
     OneSignal.addEventListener('ids', this.onIds);
     OneSignal.setSubscription(true);
+    OneSignal.inFocusDisplaying(2);
     Linking.getInitialURL().then((url) => {
       this.navigate(url);
     });

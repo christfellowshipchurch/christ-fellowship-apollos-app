@@ -47,7 +47,6 @@ const LiveStreamPlayer = ({
   theme,
 }) => {
   const navigation = useNavigation();
-  const { channel } = useStreamChat();
   const insets = useSafeAreaInsets();
   const { pictureMode } = usePlayerControls();
   const [orientation, setOrientation] = useState(PORTRAIT);
@@ -102,7 +101,7 @@ const LiveStreamPlayer = ({
       >
         <StatusBar />
 
-        <ChatChannel channel={channel} withMedia>
+        <ChatChannel withMedia>
           <BlackBars isFullScreen={isFullScreen} insets={insets}>
             <StatusBar barStyle="light-content" />
             <ScreenOrientation

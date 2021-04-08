@@ -23,4 +23,4 @@ const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
   },
 }))(ConnectNavigator);
 
-export default EnhancedNavigator;
+export default Connect;

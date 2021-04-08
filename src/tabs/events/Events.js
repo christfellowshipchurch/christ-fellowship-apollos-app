@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import { BackgroundView } from '@apollosproject/ui-kit';
 
 import { FeaturesFeedConnected } from 'features';
+import TabHeader from '../TabHeader';
 
 // getEventsFeed uses the EVENTS_FEATURES in the config.yml
 // You can also hardcode an ID if you are confident it will never change
@@ -26,6 +27,7 @@ const Events = () => {
 
   return (
     <BackgroundView>
+      <TabHeader title="Events" />
       <FeaturesFeedConnected
         featuresFeedId={featuresFeedId}
         isLoading={loading}

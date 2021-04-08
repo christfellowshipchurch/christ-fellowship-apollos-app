@@ -40,6 +40,8 @@ import { ChatChannelSingle, ChatChannelListNavigator } from './stream-chat';
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
 
+import HeaderButtons from './tabs/HeaderButtons';
+
 // bugsnag configuration
 // eslint-disable-next-line
 // import bugsnag from './bugsnag';
@@ -219,12 +221,7 @@ const StackNavigator = (props) => (
         stackPresentation: 'modal',
       }}
     />
-    <Screen
-      name="Tabs"
-      component={Tabs}
-      options={{ title: 'Home' }}
-      // screenOptions={{ headerShown: true }}
-    />
+    <Screen name="Tabs" component={Tabs} />
   </Navigator>
 );
 

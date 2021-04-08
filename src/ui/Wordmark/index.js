@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { View, Platform } from 'react-native';
 import { styled, withTheme, Icon, UIText } from '@apollosproject/ui-kit';
 
@@ -30,11 +32,19 @@ const BrandIcon = withTheme(({ theme }) => ({
   size: 20,
 }))(Icon);
 
-const Wordmark = () => (
+const Wordmark = ({ title }) => (
   <Container>
     <BrandIcon />
-    <Title>CHRIST FELLOWSHIP</Title>
+    <Title>{title}</Title>
   </Container>
 );
+
+Wordmark.propTypes = {
+  title: PropTypes.string,
+};
+
+Wordmark.defaultProps = {
+  title: 'CHRIST FELLOWSHIP',
+};
 
 export default Wordmark;

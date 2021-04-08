@@ -17,6 +17,8 @@ import {
   HorizontalFeaturesFeedConnected,
 } from 'features';
 
+import TabHeader from '../TabHeader';
+
 const ListHeaderSpacer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
 }))(View);
@@ -55,6 +57,7 @@ const Home = () => {
   return (
     <ThemeMixin>
       <BackgroundView>
+        <TabHeader />
         <FeaturesFeedConnected
           featuresFeedId={featuresFeedId}
           isLoading={loading}
