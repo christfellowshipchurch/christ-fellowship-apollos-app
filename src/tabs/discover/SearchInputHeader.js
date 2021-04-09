@@ -43,7 +43,7 @@ const TextInputWrapper = styled(({ theme }) => {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: theme.sizing.baseBorderRadius,
-    backgroundColor: theme.colors.background.screen,
+    backgroundColor: theme.colors.background.paper,
     borderWidth: 1,
     borderColor: borderColor.hex(),
     overflow: 'hidden',

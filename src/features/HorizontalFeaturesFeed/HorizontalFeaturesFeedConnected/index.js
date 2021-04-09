@@ -2,23 +2,19 @@
 // from the @apollosproject/ui-connected package
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView } from 'react-native';
-import { useQuery } from '@apollo/client';
-import { get, isEmpty } from 'lodash';
+import { useLazyQuery } from '@apollo/client';
 import gql from 'graphql-tag';
+import { isEmpty } from 'lodash';
 
+import { featuresFeedComponentMapper } from '@apollosproject/ui-connected';
+
+import { View, ScrollView } from 'react-native';
 import { styled } from '@apollosproject/ui-kit';
-import {
-  featuresFeedComponentMapper,
-  GET_FEATURE_FEED,
-} from '@apollosproject/ui-connected';
-
 import HorizontalFeatureFeed from 'ui/HorizontalFeatureFeed';
 import { VerticalDivider, HorizontalDivider } from 'ui/Dividers';
 import PrayerFeatureConnected from '../PrayerFeatureConnected';
 import LiveStreamListFeatureConnected from '../LiveStreamListFeatureConnected';
-
-import { useFeaturesFeed } from '../../FeaturesFeed/FeaturesFeedConnected';
+import GET_FEATURES_FEED from './getFeaturesFeed';
 
 // getHomeFeed uses the HOME_FEATURES in the config.yml
 // You can also hardcode an ID if you are confident it will never change
@@ -82,11 +78,37 @@ const mapFeatures = (
   );
 
 const HorizontalFeaturesFeedConnected = ({
-  features,
-  error,
+  featuresFeedId,
   isLoading,
   ...props
 }) => {
+  const [
+    getFeaturesFeed,
+    { data, loading, error, called, refetch },
+  ] = useLazyQuery(GET_FEATURES_FEED);
+  const features = data?.node?.features || [];
+  const errorInStack = !!error;
+  const loadingInStack = loading || isLoading;
+  const dataInStack = !!features && features.length;
+
+  useEffect(
+    () => {
+      /**
+       * note : it's really easy for this query to get away from us if we call it too many times, so we're just being suuuuuuper picky with this condition so that we only ever call this on the first load (all subsequent loads should comes from pull-to-refetch)
+       */
+
+      if (!loading && featuresFeedId && !isEmpty(featuresFeedId) && !called) {
+        getFeaturesFeed({
+          fetchPolicy: 'network-only',
+          variables: {
+            id: featuresFeedId,
+          },
+        });
+      }
+    },
+    [featuresFeedId]
+  );
+
   if (error) return null;
   if (isLoading && !features.length) return <HorizontalFeatureFeed isLoading />;
 
@@ -101,17 +123,13 @@ const HorizontalFeaturesFeedConnected = ({
 };
 
 HorizontalFeaturesFeedConnected.propTypes = {
+  featuresFeedId: PropTypes.string,
   additionalFeatures: PropTypes.shape({}),
   error: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.string,
     PropTypes.object,
   ]),
-  features: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-    })
-  ),
   isLoading: PropTypes.bool,
   onPressActionItem: PropTypes.func,
   Component: PropTypes.oneOfType([
@@ -123,7 +141,6 @@ HorizontalFeaturesFeedConnected.propTypes = {
 
 HorizontalFeaturesFeedConnected.defaultProps = {
   error: null,
-  features: [],
   isLoading: false,
   onPressActionItem: () => null,
 };

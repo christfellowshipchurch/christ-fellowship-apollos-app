@@ -4,7 +4,13 @@ import Svg, { Path } from 'react-native-svg';
 import { makeIcon } from '@apollosproject/ui-kit';
 
 const Icon = makeIcon(({ size = 32, fill, ...otherProps } = {}) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+  <Svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...otherProps}
+  >
     <Path
       strokeLinejoin="round"
       strokeLinecap="round"

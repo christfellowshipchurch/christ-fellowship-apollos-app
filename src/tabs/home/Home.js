@@ -2,15 +2,9 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { useNavigation } from '@react-navigation/native';
 
 import { View } from 'react-native';
-import {
-  styled,
-  BackgroundView,
-  Button,
-  ThemeMixin,
-} from '@apollosproject/ui-kit';
+import { styled, BackgroundView, ThemeMixin } from '@apollosproject/ui-kit';
 
 import {
   FeaturesFeedConnected,
@@ -38,21 +32,12 @@ export const GET_HOME_FEED = gql`
   }
 `;
 
-// todo : used for testing. remove this before go-live
-const ChannelListButton = () => {
-  const navigation = useNavigation();
-
-  const onPress = () => navigation.navigate('ChatChannelList');
-
-  return <Button title="Chat Button" onPress={onPress} />;
-};
-
 const Home = () => {
   const { data, error, loading } = useQuery(GET_HOME_FEED, {
     fetchPolicy: 'cache-and-network',
   });
   const featuresFeedId = data?.homeFeedFeatures?.id;
-  const headerFeatures = data?.homeHeaderFeedFeatures?.features;
+  const headerFeaturesFeedId = data?.homeHeaderFeedFeatures?.id;
 
   return (
     <ThemeMixin>
@@ -64,7 +49,9 @@ const Home = () => {
           error={error}
           ListHeaderComponent={
             <ListHeaderSpacer>
-              <HorizontalFeaturesFeedConnected features={headerFeatures} />
+              <HorizontalFeaturesFeedConnected
+                featuresFeedId={headerFeaturesFeedId}
+              />
             </ListHeaderSpacer>
           }
           removeClippedSubviews={false}

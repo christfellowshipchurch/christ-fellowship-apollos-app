@@ -70,6 +70,9 @@ const TabNavigator = (props) => (
 
 const ThemedTabNavigator = withTheme(({ theme }) => ({
   tabBarOptions: {
+    labelStyle: {
+      fontWeight: 'bold',
+    },
     activeTintColor: theme.colors.primary,
     inactiveTintColor: theme.colors.text.tertiary,
     style: {

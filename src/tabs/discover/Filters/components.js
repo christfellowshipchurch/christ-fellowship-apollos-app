@@ -43,7 +43,7 @@ export const RoundedBorder = styled(({ theme, active }) => {
     marginHorizontal: theme.sizing.baseUnit * 0.25,
     backgroundColor: active
       ? theme.colors.primary
-      : theme.colors.background.screen,
+      : theme.colors.background.paper,
     paddingVertical: theme.sizing.baseUnit * 0.5,
     paddingHorizontal: theme.sizing.baseUnit,
     borderWidth: 1,

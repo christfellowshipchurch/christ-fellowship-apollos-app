@@ -6,7 +6,6 @@ import { get, isEmpty } from 'lodash';
 
 import {
   styled,
-  BackgroundView,
   PaddedView,
   Icon,
   withTheme,
@@ -23,6 +22,11 @@ import { HorizontalMembersFeedPreview } from '../MembersFeed';
 import HeaderConnected from '../HeaderConnected';
 import SummaryConnected from '../SummaryConnected';
 import Actions from './Actions';
+
+const BackgroundView = styled(({ theme }) => ({
+  flex: 1,
+  backgroundColor: theme.colors.background.screen,
+}))(View);
 
 const ScheduleView = styled(() => ({
   flexDirection: 'row',

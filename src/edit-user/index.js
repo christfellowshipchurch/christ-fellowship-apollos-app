@@ -47,4 +47,4 @@ EditUserNavigator.propTypes = {
   }),
 };
 
-export default EditUserNavigator;
+export default EditCurrentUser;

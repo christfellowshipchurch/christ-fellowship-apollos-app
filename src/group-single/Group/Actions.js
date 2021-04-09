@@ -92,14 +92,19 @@ const renderChatButton = ({ id, channelId, name, navigation, theme }) => {
   );
 };
 
-const renderZoomButton = ({ id, videoCall, theme, isLoading }) => {
+const renderZoomButton = ({ id, videoCall, theme, isLoading, onJoin }) => {
   if (isEmpty(videoCall)) {
     return null;
   }
 
   return (
     <ThemeMixin mixin={theme}>
-      <ZoomButton groupId={id} videoCall={videoCall} isLoading={isLoading} />
+      <ZoomButton
+        groupId={id}
+        videoCall={videoCall}
+        isLoading={isLoading}
+        onJoin={onJoin}
+      />
     </ThemeMixin>
   );
 };

@@ -4,12 +4,7 @@ import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 
-import {
-  styled,
-  BackgroundView,
-  PaddedView,
-  ImageSourceType,
-} from '@apollosproject/ui-kit';
+import { styled, PaddedView, ImageSourceType } from '@apollosproject/ui-kit';
 
 import CoverImageBackground from '../CoverImageBackground';
 import Resources from '../Resources';
@@ -22,6 +17,11 @@ const Cell = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
   flexDirection: 'row',
   justifyContent: 'space-between',
+  flex: 1,
+}))(View);
+
+const BackgroundView = styled(({ theme }) => ({
+  backgroundColor: theme.colors.background.screen,
   flex: 1,
 }))(View);
 

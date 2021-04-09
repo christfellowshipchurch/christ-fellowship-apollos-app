@@ -4,7 +4,7 @@ import { useLazyQuery } from '@apollo/client';
 import { get, throttle, take } from 'lodash';
 
 import { ScrollView, View } from 'react-native';
-import { BackgroundView, FeedView, styled } from '@apollosproject/ui-kit';
+import { FeedView, styled } from '@apollosproject/ui-kit';
 import DynamicThemeMixin from 'ui/DynamicThemeMixin';
 import TabHeader from '../TabHeader';
 import { GET_CATEGORIES_FROM_FILTER } from './queries';
@@ -38,7 +38,12 @@ const renderItem = ({ item, cardsToShow }) => {
  * note : the sticky header on the scrollview doesn't use a solid background color, so we just need to manually add one behind our header elements
  */
 const HeaderBackgroundView = styled(({ theme }) => ({
-  backgroundColor: theme.colors.background.paper,
+  backgroundColor: theme.colors.background.screen,
+}))(View);
+
+const BackgroundView = styled(({ theme }) => ({
+  backgroundColor: theme.colors.background.screen,
+  flex: 1,
 }))(View);
 
 const Discover = ({ navigation, cardsToShow }) => {

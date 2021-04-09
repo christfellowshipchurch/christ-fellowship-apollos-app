@@ -42,6 +42,7 @@ const useStreamChatChannel = () => {
   const fetchStreamChatChannel = ({ nodeId, relatedNodeId }) => {
     if (nodeId || relatedNodeId) {
       getStreamChatChannel({
+        fetchPolicy: 'network-only',
         variables: {
           id: nodeId || relatedNodeId,
         },
@@ -62,7 +63,6 @@ const useStreamChatChannel = () => {
     },
     [data]
   );
-
   return [fetchStreamChatChannel, { channelId, channelType }];
 };
 

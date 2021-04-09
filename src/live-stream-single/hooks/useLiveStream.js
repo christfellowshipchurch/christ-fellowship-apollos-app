@@ -51,7 +51,7 @@ const useLiveStream = ({ liveStreamId }) => {
   const queryOptions = {
     variables: { id: liveStreamId || '' },
     skip,
-    fetchPolicy: skip ? 'cache-only' : 'network-only',
+    fetchPolicy: 'network-only',
     // eslint-disable-next-line no-shadow
     onCompleted: ({ data }) => {
       const startDate = data?.node?.eventStartTime
