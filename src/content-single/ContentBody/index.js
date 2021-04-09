@@ -101,6 +101,10 @@ const ContentBody = ({ id, content, loading, ImageWrapperComponent }) => {
       <StyledContentHTMLViewConnected contentId={content.id} />
 
       <Features contentId={content.id} />
+
+      <ItemSeparatorComponent />
+      <ItemSeparatorComponent />
+      <ItemSeparatorComponent />
     </>
   );
 };

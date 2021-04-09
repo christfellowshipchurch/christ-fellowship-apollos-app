@@ -118,6 +118,7 @@ const renderCheckInButton = ({
   options,
   checkInCompleted,
   checkInCurrentUser,
+  onCheckIn,
 }) => {
   if (!id || videoCall || parentVideoCall) {
     return null;
@@ -136,6 +137,7 @@ const renderCheckInButton = ({
 
   const label = checkInCompleted ? 'Checked In' : 'Check In';
   const onPress = () => {
+    onCheckIn();
     if (!loading && !checkInCompleted && options.length) {
       checkInCurrentUser({
         optionIds: options.map(({ id: optionId }) => optionId),
@@ -176,6 +178,20 @@ const Actions = ({ id, name, theme }) => {
   const streamChat = data?.node?.streamChatChannel;
   const videoCall = data?.node?.videoCall;
   const parentVideoCall = data?.node?.parentVideoCall;
+  const interactWithCheckIn = () =>
+    interactWithNode({
+      variables: {
+        nodeId: id,
+        action: 'GROUP_CHECK_IN',
+      },
+    });
+  const interactWithVideo = () =>
+    interactWithNode({
+      variables: {
+        nodeId: id,
+        action: 'GROUP_JOINED_VIDEO',
+      },
+    });
   const interactWithParentVideo = () =>
     interactWithNode({
       variables: {
@@ -224,6 +240,7 @@ const Actions = ({ id, name, theme }) => {
         options,
         checkInCompleted,
         checkInCurrentUser,
+        onCheckIn: interactWithCheckIn,
       })}
 
       {/* Parent Video Button
@@ -262,6 +279,8 @@ const Actions = ({ id, name, theme }) => {
           },
         },
         onJoin: () => {
+          interactWithCheckIn();
+          interactWithVideo();
           if (options.length > 0) {
             checkInCurrentUser({
               optionIds: options.map((option) => option.id),
