@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import { ModalCloseButton, ModalBackButton } from '@apollosproject/ui-kit';
 import { useCurrentUser } from '../hooks';
 import EditUser from './EditUser';
+
+import { CurrentUser, EditAddress, EditProfileDetails } from './screens';
 
 const { Screen, Navigator } = createNativeStackNavigator();
 
@@ -23,20 +24,31 @@ EditCurrentUser.navigationOptions = {
 const EditUserNavigator = ({ route, ...props }) => (
   <Navigator
     {...props}
-    headerMode="screen"
+    headerMode="none"
     screenOptions={{
-      headerTranslucent: true,
-      headerStyle: { backgroundColor: 'transparent' },
-      headerHideShadow: true,
-      headerRight: ModalCloseButton,
-      headerLeft: ModalBackButton,
-      headerTitle: '',
+      headerShown: false,
     }}
   >
     <Screen
-      name="EditCurrentUser"
-      component={EditCurrentUser}
+      name="CurrentUser"
+      component={CurrentUser}
       initialParams={route.params}
+    />
+    <Screen
+      name="EditAddress"
+      component={EditAddress}
+      initialParams={route.params}
+      options={{
+        stackPresentation: 'modal',
+      }}
+    />
+    <Screen
+      name="EditProfileDetails"
+      component={EditProfileDetails}
+      initialParams={route.params}
+      options={{
+        stackPresentation: 'modal',
+      }}
     />
   </Navigator>
 );
@@ -47,4 +59,4 @@ EditUserNavigator.propTypes = {
   }),
 };
 
-export default EditCurrentUser;
+export default EditUserNavigator;

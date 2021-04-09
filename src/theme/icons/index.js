@@ -31,6 +31,7 @@ export NotificationAlert from './NotificationAlert';
 export NotificationSlash from './NotificationSlash';
 export PaperAirplaneCircle from './PaperAirplaneCircle';
 export PayPal from './PayPal';
+export Pen from './Pen';
 export Plus from './Plus';
 export PushPay from './PushPay';
 export Search from './Search';

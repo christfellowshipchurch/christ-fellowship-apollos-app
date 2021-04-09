@@ -30,12 +30,9 @@ const LiveStreamSingle = (props) => {
     coverImage,
     title,
     theme,
-    streamChatChannel,
   } = useLiveStream({
     liveStreamId,
   });
-
-  console.log({ streamChatChannel });
 
   useEffect(
     () => {

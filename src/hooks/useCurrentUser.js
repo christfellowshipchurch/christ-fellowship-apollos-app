@@ -171,6 +171,8 @@ const useCurrentUser = (props) => {
     { loading: updateAddressLoading, error: updateAddressError },
   ] = useMutation(UPDATE_CURRENT_USER_ADDRESS, {
     update: async (cache, { data: { updateAddress: address } }) => {
+      console.log('HELLO');
+
       await writeProfileUpdatesToQuery(cache, { address });
       onMutationSuccess();
     },

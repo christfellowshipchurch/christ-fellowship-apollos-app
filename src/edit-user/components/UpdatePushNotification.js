@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import {
   checkNotifications,
   openSettings,
@@ -7,7 +8,7 @@ import {
   RESULTS,
 } from 'react-native-permissions';
 import { NotificationsConsumer } from '@apollosproject/ui-notifications';
-import { InputWrapper } from '../ui/inputs';
+import { Switch } from 'ui/inputs';
 
 const updateNotficationSettings = (update) => {
   checkNotifications().then((checkRes) => {
@@ -40,11 +41,12 @@ const UpdatePushNotification = ({ onRequestPushPermissions }) => {
   return (
     <NotificationsConsumer>
       {(value) => (
-        <InputWrapper
-          displayValue={defaultGetButtonText(value)}
-          icon="bell"
-          actionIcon="arrow-next"
-          handleOnPress={() => onRequestPushPermissions(value.checkPermissions)}
+        <Switch
+          label={defaultGetButtonText(value)}
+          value={value.hasPushPermission}
+          onValueChange={() => {
+            onRequestPushPermissions(value.checkPermissions);
+          }}
         />
       )}
     </NotificationsConsumer>

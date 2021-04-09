@@ -42,7 +42,7 @@ import {
 } from '../ui/inputs';
 import { useForm, useCurrentUser } from '../hooks';
 
-import UpdatePushNotification from './UpdatePushNotification';
+import { UpdatePushNotification } from './components';
 
 const FeaturedImage = withTheme(({ theme }) => ({
   overlayColor: theme.colors.black,
