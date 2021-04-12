@@ -96,8 +96,6 @@ const EditProfileDetails = () => {
     [userBirthDate]
   );
 
-  console.log({ gender, birthDate });
-
   return (
     <ProfileEntryFieldContainer>
       <H3>Update Personal Details</H3>

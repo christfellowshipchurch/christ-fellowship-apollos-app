@@ -17,6 +17,7 @@ import { AppearanceProvider } from 'react-native-appearance';
 import { AuthProvider } from '@apollosproject/ui-auth';
 import { checkOnboardingStatusAndNavigate } from '@apollosproject/ui-onboarding';
 import { NavigationService } from '@apollosproject/ui-kit';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // :: Local Providers
 import ClientProvider, { client } from '../client';
@@ -47,23 +48,24 @@ const ProvidersStack = (props) => (
           })
         }
       >
+        {/* <StreamChatClientContextProvider> */}
         <AnalyticsProvider
           trackFunctions={[track]}
           identifyFunctions={[identify]}
         >
           <CoreApollosProviders {...props}>
             <UserFlagsProvider>
-              <StreamChatClientContextProvider>
-                <ActionSheetProvider>
-                  <UniversalLinkRouteProvider {...props} />
-                </ActionSheetProvider>
-              </StreamChatClientContextProvider>
+              <ActionSheetProvider>
+                <UniversalLinkRouteProvider {...props} />
+              </ActionSheetProvider>
             </UserFlagsProvider>
           </CoreApollosProviders>
         </AnalyticsProvider>
+        {/* </StreamChatClientContextProvider> */}
       </AuthProvider>
     </NotificationsProvider>
   </ClientProvider>
+
   // </AppearanceProvider>
 );
 

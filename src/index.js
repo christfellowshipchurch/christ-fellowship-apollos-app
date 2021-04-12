@@ -18,6 +18,7 @@ import { BackgroundView, NavigationService } from '@apollosproject/ui-kit';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
 import ScreenOrientation from 'screen-orientation';
+import { OverlayProvider } from 'stream-chat-react-native';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 
@@ -35,7 +36,11 @@ import EditGroup from './edit-group';
 import NotificationCenter, { NotificationSingle } from './notification-center';
 import PrayerRequestSingle from './prayer-request-single';
 import MyPrayerRequestsFeed from './my-prayer-requests-feed';
-import { ChatChannelSingle, ChatChannelListNavigator } from './stream-chat';
+import {
+  ChatChannelSingle,
+  ChatChannelListNavigator,
+  StreamChatClientContextProvider,
+} from './stream-chat';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -258,7 +263,9 @@ const NavigationContainerWithTheme = (props) => {
       onReady={NavigationService.setIsReady}
       theme={scheme === 'dark' ? dark : light}
     >
-      <StackNavigator {...props} />
+      <OverlayProvider>
+        <StackNavigator {...props} />
+      </OverlayProvider>
     </NavigationContainer>
   );
 };

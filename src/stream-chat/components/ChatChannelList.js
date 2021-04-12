@@ -41,6 +41,8 @@ const options = {
 };
 
 const ChatChannelList = ({ theme }) => {
+  // return null;
+
   const navigation = useNavigation();
   const { chatClient, setChannel } = useStreamChat();
   const chatClientUserId = chatClient?.user?.id;
@@ -57,33 +59,31 @@ const ChatChannelList = ({ theme }) => {
   const chatTheme = mapThemeValues(theme);
 
   return (
-    <ChatOverlayProvider>
-      <BackgroundView>
-        <Chat client={chatClient} style={chatTheme}>
-          <ChannelList
-            additionalFlatListProps={{
-              keyboardDismissMode: 'on-drag',
-              getItemLayout: (_, index) => ({
-                index,
-                length: 65,
-                offset: 65 * index,
-              }),
-            }}
-            filters={filters}
-            HeaderNetworkDownIndicator={() => null}
-            maxUnreadCount={99}
-            onSelect={(channel) => {
-              setChannel({ channel });
-              navigation.navigate('ChatChannelSingle', {
-                hideNavigationHeader: true,
-              });
-            }}
-            options={options}
-            sort={sort}
-          />
-        </Chat>
-      </BackgroundView>
-    </ChatOverlayProvider>
+    <BackgroundView>
+      <Chat client={chatClient} style={chatTheme}>
+        <ChannelList
+          additionalFlatListProps={{
+            keyboardDismissMode: 'on-drag',
+            getItemLayout: (_, index) => ({
+              index,
+              length: 65,
+              offset: 65 * index,
+            }),
+          }}
+          filters={filters}
+          HeaderNetworkDownIndicator={() => null}
+          maxUnreadCount={99}
+          onSelect={(channel) => {
+            setChannel({ channel });
+            navigation.navigate('ChatChannelSingle', {
+              hideNavigationHeader: true,
+            });
+          }}
+          options={options}
+          sort={sort}
+        />
+      </Chat>
+    </BackgroundView>
   );
 };
 

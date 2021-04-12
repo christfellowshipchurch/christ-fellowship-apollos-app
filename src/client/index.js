@@ -21,7 +21,11 @@ let storeIsResetting = false;
 const onAuthError = async () => {
   if (!storeIsResetting) {
     storeIsResetting = true;
-    await clearStore();
+    try {
+      await clearStore();
+    } catch (e) {
+      console.log('clearStore()', { e });
+    }
   }
   storeIsResetting = false;
   goToAuth();
