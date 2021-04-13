@@ -180,7 +180,7 @@ const alpha = {
   low: 0.4,
 };
 
-const overrides = {
+const overrides = () => ({
   'DateInput.Chip': {
     backgroundColor: 'transparent',
     borderColor: 'white',
@@ -189,7 +189,7 @@ const overrides = {
   ...UIConnectedOverrides({ colors }),
   ...UIKitOverrides({ sizing, colors }),
   ...UIPrayerOverrides,
-};
+});
 
 const buttons = ({ colors: themeColors }) => ({
   white: {
