@@ -12,11 +12,7 @@ import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 
 import { BackgroundView, withTheme } from '@apollosproject/ui-kit';
-import {
-  Chat,
-  ChannelList,
-  OverlayProvider as ChatOverlayProvider,
-} from 'stream-chat-react-native';
+import { Chat, ChannelList } from 'stream-chat-react-native';
 import { useStreamChat } from '../context';
 import { mapThemeValues } from '../utils';
 

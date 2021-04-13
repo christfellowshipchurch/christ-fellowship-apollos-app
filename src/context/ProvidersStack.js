@@ -48,22 +48,20 @@ const ProvidersStack = (props) => (
           })
         }
       >
-        <SafeAreaProvider>
-          <StreamChatClientContextProvider>
-            <AnalyticsProvider
-              trackFunctions={[track]}
-              identifyFunctions={[identify]}
-            >
-              <CoreApollosProviders {...props}>
-                <UserFlagsProvider>
-                  <ActionSheetProvider>
-                    <UniversalLinkRouteProvider {...props} />
-                  </ActionSheetProvider>
-                </UserFlagsProvider>
-              </CoreApollosProviders>
-            </AnalyticsProvider>
-          </StreamChatClientContextProvider>
-        </SafeAreaProvider>
+        <AnalyticsProvider
+          trackFunctions={[track]}
+          identifyFunctions={[identify]}
+        >
+          <CoreApollosProviders {...props}>
+            <UserFlagsProvider>
+              <StreamChatClientContextProvider>
+                <ActionSheetProvider>
+                  <UniversalLinkRouteProvider {...props} />
+                </ActionSheetProvider>
+              </StreamChatClientContextProvider>
+            </UserFlagsProvider>
+          </CoreApollosProviders>
+        </AnalyticsProvider>
       </AuthProvider>
     </NotificationsProvider>
   </ClientProvider>

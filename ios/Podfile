@@ -13,6 +13,8 @@ target 'ChristFellowship' do
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
   # pod 'react-native-google-cast/NoBluetooth', path: '../node_modules/react-native-google-cast/ios/'
 
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
   target 'ChristFellowshipTests' do
     inherit! :complete
     # Pods for testing

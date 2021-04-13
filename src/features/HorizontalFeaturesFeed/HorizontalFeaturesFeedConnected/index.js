@@ -40,7 +40,8 @@ const MAPPINGS = {
   HorizontalCardListFeature: () => null,
   VerticalCardListFeature: () => null,
   PrayerListFeature: PrayerFeatureConnected,
-  LiveStreamListFeature: LiveStreamListFeatureConnected,
+  // LiveStreamListFeature: LiveStreamListFeatureConnected,
+  LiveStreamListFeature: () => null,
 };
 
 const Container = styled(({ theme }) => ({

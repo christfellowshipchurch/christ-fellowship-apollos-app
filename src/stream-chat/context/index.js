@@ -13,7 +13,6 @@ import PropTypes from 'prop-types';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppState } from 'react-native';
-import { OverlayProvider } from 'stream-chat-react-native';
 import { isOwnUser } from 'stream-chat';
 import { useStreamChatClient, useStreamChatChannel } from '../hooks';
 
@@ -44,20 +43,24 @@ export const useStreamChat = () => {
 
   useEffect(
     () => {
-      const user = chatClient?.user;
-      const count = isOwnUser(user) ? user.total_unread_count : 0;
-      setUnreadCount(count);
-      const listener = chatClient?.on((e) => {
-        if (Number.isInteger(e?.total_unread_count)) {
-          setUnreadCount(e.total_unread_count);
-        }
-      });
+      try {
+        const user = chatClient?.user;
+        const count = isOwnUser(user) ? user.total_unread_count : 0;
+        setUnreadCount(count);
+        const listener = chatClient?.on((e) => {
+          if (Number.isInteger(e?.total_unread_count)) {
+            setUnreadCount(e.total_unread_count);
+          }
+        });
 
-      return () => {
-        if (listener) {
-          listener.unsubscribe();
-        }
-      };
+        return () => {
+          if (listener) {
+            listener.unsubscribe();
+          }
+        };
+      } catch (e) {
+        console.warn('useStreamChat', { e });
+      }
     },
     [chatClient]
   );
@@ -90,15 +93,9 @@ export const StreamChatClientContextProvider = ({ children }) => {
   ] = useStreamChatChannel();
   const { chatClient, isConnecting, userId } = useStreamChatClient();
 
-  console.log({ chatClient });
-
   const [channel, setChannel] = useState(null);
   const [channelId, setChannelId] = useState(null);
   const [channelType, setChannelType] = useState(null);
-
-  const [insets, setInsets] = useState({});
-
-  const safeAreaInsets = useSafeAreaInsets();
 
   const cleanChannel = () => {
     setChannelId(null);
@@ -170,16 +167,10 @@ export const StreamChatClientContextProvider = ({ children }) => {
         channel,
         getStreamChatChannel,
         setChannel: fetchOrSetChannel,
-        setInsets,
         userId,
       }}
     >
-      <OverlayProvider
-        bottomInset={safeAreaInsets.bottom}
-        topInset={safeAreaInsets.top}
-      >
-        {children}
-      </OverlayProvider>
+      {children}
     </StreamChatClientContextContext.Provider>
   );
 };

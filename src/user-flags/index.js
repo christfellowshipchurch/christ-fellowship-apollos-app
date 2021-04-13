@@ -36,6 +36,8 @@ export const useUserFlag = (key) => {
 
 // Provider
 export const UserFlagsProvider = ({ children }) => {
+  return children;
+
   const { id } = useCurrentUser();
   const { data, refetch, loading } = useQuery(GET_USER_FLAGS, {
     fetchPolicy: 'network-only',

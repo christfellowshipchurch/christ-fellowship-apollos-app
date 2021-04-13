@@ -7,6 +7,7 @@ import com.facebook.react.PackageList;
 import com.facebook.react.ReactInstanceManager;
 import java.lang.reflect.InvocationTargetException;
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;

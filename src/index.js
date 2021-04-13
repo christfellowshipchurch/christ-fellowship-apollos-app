@@ -12,7 +12,13 @@ import {
 } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 
-import { useColorScheme, Text, Appearance } from 'react-native';
+import {
+  useColorScheme,
+  Text,
+  Appearance,
+  Platform,
+  UIManager,
+} from 'react-native';
 import { BackgroundView, NavigationService } from '@apollosproject/ui-kit';
 // import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
@@ -60,6 +66,17 @@ Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;
 
 enableScreens(); // improves performance for react-navigation
+
+/**
+ * Sets an experimental animation flag in accordance with this suggestion in the RN docs:
+ *
+ * https://reactnative.dev/docs/layoutanimation
+ */
+if (Platform.OS === 'android') {
+  if (UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+}
 
 const ProtectedRouteWithSplashScreen = (props) => {
   const handleOnRouteChange = () => SplashScreen.hide();

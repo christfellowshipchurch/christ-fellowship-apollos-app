@@ -37,30 +37,21 @@ export default () => {
   const [chatClient, setChatClient] = useState();
   const [isConnecting, setIsConnecting] = useState(true);
 
-  const loginUser = async ({
-    apiKey,
-    userId,
-    userImage,
-    userName,
-    userToken,
-  }) => {
-    const user = {
-      id: userId,
-      image: userImage,
-      name: userName,
-    };
-
-    await StreamChatClient.connectUser(user, userToken);
-
-    setChatClient(StreamChatClient);
-  };
-
   const connectUser = async (config) => {
     setIsConnecting(true);
 
     try {
       if (config.userId) {
-        await loginUser(config);
+        const { userId, userImage, userName, userToken } = config;
+        const user = {
+          id: userId,
+          image: userImage,
+          name: userName,
+        };
+
+        await StreamChatClient.connectUser(user, userToken);
+
+        setChatClient(StreamChatClient);
       }
     } catch (e) {
       console.warn(e);
