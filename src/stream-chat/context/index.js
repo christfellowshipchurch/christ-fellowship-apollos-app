@@ -90,6 +90,8 @@ export const StreamChatClientContextProvider = ({ children }) => {
   ] = useStreamChatChannel();
   const { chatClient, isConnecting, userId } = useStreamChatClient();
 
+  console.log({ chatClient });
+
   const [channel, setChannel] = useState(null);
   const [channelId, setChannelId] = useState(null);
   const [channelType, setChannelType] = useState(null);

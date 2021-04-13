@@ -15,11 +15,25 @@ import { useEffect, useState } from 'react';
 import ApollosConfig from '@apollosproject/config';
 import { StreamChat } from 'stream-chat';
 import { useCurrentUser } from 'hooks';
+import { StreamChatClient } from '../client';
 
 const API_KEY = ApollosConfig.STREAM_CHAT_API_KEY;
 
+const staticUser = {
+  id: 'AuthenticatedUser:64302734012a9ca790d3ef795bdcea48',
+  firstName: 'Caleb',
+  lastName: 'Panza',
+  photo: {
+    uri:
+      'https://cloudfront.christfellowship.church/GetImage.ashx?guid=3376aa0d-5610-4a8a-ae24-046250ebf297&mode=crop&h=150&w=150&format=jpg&quality=70',
+  },
+  streamChatToken:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQzMDI3MzQwMTJhOWNhNzkwZDNlZjc5NWJkY2VhNDgifQ.NCfg-cpPixn2NNN9NOT4fj8gNLKF6METGQiBXHcM7rs',
+};
+
 export default () => {
-  const { id, firstName, lastName, photo, streamChatToken } = useCurrentUser();
+  // const { id, firstName, lastName, photo, streamChatToken } = useCurrentUser();
+  const { id, firstName, lastName, photo, streamChatToken } = staticUser;
   const [chatClient, setChatClient] = useState();
   const [isConnecting, setIsConnecting] = useState(true);
 
@@ -30,18 +44,15 @@ export default () => {
     userName,
     userToken,
   }) => {
-    const client = StreamChat.getInstance(apiKey, {
-      timeout: 6000,
-    });
     const user = {
       id: userId,
       image: userImage,
       name: userName,
     };
 
-    await client.connectUser(user, userToken);
+    await StreamChatClient.connectUser(user, userToken);
 
-    setChatClient(client);
+    setChatClient(StreamChatClient);
   };
 
   const connectUser = async (config) => {
@@ -63,20 +74,17 @@ export default () => {
     chatClient?.disconnect();
   };
 
-  useEffect(
-    () => {
-      if (streamChatToken) {
-        connectUser({
-          apiKey: API_KEY,
-          userId: id.split(':')[1],
-          userImage: photo?.uri,
-          userName: `${firstName} ${lastName}`,
-          userToken: streamChatToken,
-        });
-      }
-    },
-    [streamChatToken]
-  );
+  useEffect(() => {
+    if (streamChatToken) {
+      connectUser({
+        apiKey: API_KEY,
+        userId: id.split(':')[1],
+        userImage: photo?.uri,
+        userName: `${firstName} ${lastName}`,
+        userToken: streamChatToken,
+      });
+    }
+  }, []);
 
   return {
     chatClient,

@@ -18,7 +18,6 @@ import { BackgroundView, NavigationService } from '@apollosproject/ui-kit';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
 import ScreenOrientation from 'screen-orientation';
-import { OverlayProvider } from 'stream-chat-react-native';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 
@@ -39,7 +38,7 @@ import MyPrayerRequestsFeed from './my-prayer-requests-feed';
 import {
   ChatChannelSingle,
   ChatChannelListNavigator,
-  StreamChatClientContextProvider,
+  StreamChatOverlayProvider,
 } from './stream-chat';
 
 import LandingScreen from './LandingScreen';
@@ -263,9 +262,9 @@ const NavigationContainerWithTheme = (props) => {
       onReady={NavigationService.setIsReady}
       theme={scheme === 'dark' ? dark : light}
     >
-      <OverlayProvider>
+      <StreamChatOverlayProvider>
         <StackNavigator {...props} />
-      </OverlayProvider>
+      </StreamChatOverlayProvider>
     </NavigationContainer>
   );
 };

@@ -47,7 +47,7 @@ export const NotificationCenterIconConnected = () => {
   const enabled = useUserFlag('NOTIFICATION_CENTER');
   const { unreadCount } = useStreamChat();
 
-  return enabled ? (
+  return enabled || true ? (
     <TouchableScale onPress={() => navigation.navigate('ChatChannelList')}>
       <ItemLeft>
         <NotificationIcon unreadCount={unreadCount} />
