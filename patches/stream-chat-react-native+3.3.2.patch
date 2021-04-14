@@ -1,0 +1,33 @@
+diff --git a/node_modules/stream-chat-react-native/src/index.js b/node_modules/stream-chat-react-native/src/index.js
+index ec13c75..569b530 100644
+--- a/node_modules/stream-chat-react-native/src/index.js
++++ b/node_modules/stream-chat-react-native/src/index.js
+@@ -1,5 +1,5 @@
+ import React from 'react';
+-import { PermissionsAndroid, Platform } from 'react-native';
++import { PermissionsAndroid, Platform, View } from 'react-native';
+ import { BlurView as RNBlurView } from '@react-native-community/blur';
+ import CameraRoll from '@react-native-community/cameraroll';
+ import NetInfo from '@react-native-community/netinfo';
+@@ -15,7 +15,20 @@ import { registerNativeHandlers } from 'stream-chat-react-native-core';
+ registerNativeHandlers({
+   // eslint-disable-next-line react/display-name
+   BlurView: ({ blurAmount = 10, blurType = 'dark', style }) => (
+-    <RNBlurView blurAmount={blurAmount} blurType={blurType} style={style} />
++    Platform.select({
++      ios: <RNBlurView blurAmount={blurAmount} blurType={blurType} style={style} />,
++      android: <View 
++      style={{
++        ...style,
++        backgroundColor: "rgba(0, 0, 0, 0.55)",
++        position: 'absolute',
++        top: 0,
++        left: 0,
++        right: 0,
++        bottom: 0,
++      }} 
++      />
++    })
+   ),
+   compressImage: async ({ compressImageQuality = 1, height, uri, width }) => {
+     try {
