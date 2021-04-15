@@ -56,7 +56,7 @@ export default () => {
       if (streamChatToken) {
         connectUser({
           apiKey: API_KEY,
-          userId: id.split(':')[1],
+          userId: id?.split(':')[1],
           userImage: photo?.uri,
           userName: `${firstName} ${lastName}`,
           userToken: streamChatToken,
