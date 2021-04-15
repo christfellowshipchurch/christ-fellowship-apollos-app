@@ -90,7 +90,7 @@ const EditAddress = () => {
         postalCode: address?.postalCode,
       });
     },
-    [address]
+    [address, setValues]
   );
 
   return (
@@ -103,7 +103,12 @@ const EditAddress = () => {
           onChangeText={(text) => setValue('street1', text)}
           disabled={loading}
         />
-        <TextInput label="City" value={city} disabled={loading} />
+        <TextInput
+          label="City"
+          value={city}
+          disabled={loading}
+          onChangeText={(text) => setValue('city', text)}
+        />
 
         <StyledPicker
           label="State"
@@ -118,7 +123,12 @@ const EditAddress = () => {
           {Array.isArray(states) &&
             states.map((s) => <PickerItem label={s} value={s} key={s} />)}
         </StyledPicker>
-        <TextInput label="Postal Code" value={postalCode} disabled={loading} />
+        <TextInput
+          label="Postal Code"
+          value={postalCode}
+          disabled={loading}
+          onChangeText={(text) => setValue('postalCode', text)}
+        />
       </View>
 
       <View>
