@@ -157,7 +157,7 @@
     "react-native-swiper": "^1.5.14",
     "react-native-video": "^5.0.0",
     "react-native-video-controls": "2.2.3",
-    "react-native-webview": "^7.0.0",
+    "react-native-webview": "^11.0.0",
     "react-native-zoom-bridge": "1.0.18",
     "react-palette": "^1.0.1",
     "recompose": "^0.30.0",
