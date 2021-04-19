@@ -161,6 +161,7 @@ class LiveStreamPlayer extends PureComponent {
   static propTypes = {
     client: PropTypes.shape({ mutate: PropTypes.func }),
     channelId: PropTypes.string,
+    channelType: PropTypes.string,
     event: PropTypes.shape({
       parentId: PropTypes.string,
       name: PropTypes.string,
@@ -353,6 +354,7 @@ class LiveStreamPlayer extends PureComponent {
     setTimeout(() => {
       NavigationService.navigate('ChatChannel', {
         userId: id,
+        channelType: 'messaging',
         name,
         nested: true,
       });
@@ -470,7 +472,7 @@ class LiveStreamPlayer extends PureComponent {
   };
 
   renderChat = ({ isFullscreen }) => {
-    if (!this.props.channelId) {
+    if (!this.props.channelId || !this.props.channelType) {
       return null;
     }
 
@@ -486,6 +488,7 @@ class LiveStreamPlayer extends PureComponent {
             <LiveStreamChat
               isPortrait={this.state.portrait}
               channelId={this.props.channelId}
+              channelType={this.props.channelType}
               event={this.props.event}
             />
           )}
@@ -507,6 +510,7 @@ class LiveStreamPlayer extends PureComponent {
               <LiveStreamChat
                 isPortrait={this.state.portrait}
                 channelId={this.props.channelId}
+                channelType={this.props.channelType}
                 event={this.props.event}
               />
             </Animated.View>
