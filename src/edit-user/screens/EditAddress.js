@@ -90,7 +90,7 @@ const EditAddress = () => {
         postalCode: address?.postalCode,
       });
     },
-    [address, setValues]
+    [address]
   );
 
   return (
@@ -116,9 +116,6 @@ const EditAddress = () => {
           value={state}
           disabled={loading}
           onValueChange={(value) => setValue('state', value)}
-          itemStyle={{
-            color: 'red',
-          }}
         >
           {Array.isArray(states) &&
             states.map((s) => <PickerItem label={s} value={s} key={s} />)}
