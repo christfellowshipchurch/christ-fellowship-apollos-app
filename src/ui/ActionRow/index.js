@@ -35,8 +35,6 @@ const Content = styled(({ theme }) => ({
   flex: 5,
   justifyContent: 'center',
   marginLeft: theme.sizing.baseUnit,
-  borderBottomColor: theme.colors.text.tertiary,
-  borderBottomWidth: StyleSheet.hairlineWidth,
   paddingVertical: theme.sizing.baseUnit,
 }))(FlexedView);
 
@@ -46,19 +44,26 @@ const Container = styled(({ theme }) => ({
   paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-const RowCard = ({ coverImage, label, title, summary, isLoading, isLive }) => (
+const RowCard = ({
+  coverImage,
+  labelText,
+  title,
+  summary,
+  isLoading,
+  isLive,
+}) => (
   <ThemeMixin>
     <Container>
       <Image source={coverImage} isLoading={isLoading} />
 
       <Content>
         {isLive && !isLoading && <LiveLabel />}
-        {!!label &&
-          label !== '' &&
+        {!!labelText &&
+          labelText !== '' &&
           !isLive &&
           !isLoading && (
             <H6 numberOfLines={1} isLoading={isLoading}>
-              {label}
+              {labelText}
             </H6>
           )}
 
@@ -83,7 +88,7 @@ RowCard.propTypes = {
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
   ]),
-  label: PropTypes.string,
+  labelText: PropTypes.string,
   summary: PropTypes.string,
   title: PropTypes.string,
   isLoading: PropTypes.bool,

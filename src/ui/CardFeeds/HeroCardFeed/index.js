@@ -5,8 +5,7 @@ import { withProps } from 'recompose';
 
 import { TouchableScale, withMediaQuery } from '@apollosproject/ui-kit';
 
-import { HighlightCard } from '../../Cards';
-import ContentCardConnected from '../../ContentCardConnected';
+import { CardMapper, HighlightCard } from '../../Cards';
 import CardFeed from '../CardFeed';
 
 const HeroCard = ({ id, onPress, isLoading, ...props }) => (
@@ -14,8 +13,8 @@ const HeroCard = ({ id, onPress, isLoading, ...props }) => (
     onPress={isLoading ? () => null : onPress}
     style={{ flex: 1 }}
   >
-    <ContentCardConnected
-      card={HighlightCard}
+    <CardMapper
+      Component={HighlightCard}
       {...props}
       contentId={id}
       isLoading={isLoading}

@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/client';
 import ApollosConfig from '@apollosproject/config';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
@@ -171,6 +171,8 @@ const useCurrentUser = (props) => {
     { loading: updateAddressLoading, error: updateAddressError },
   ] = useMutation(UPDATE_CURRENT_USER_ADDRESS, {
     update: async (cache, { data: { updateAddress: address } }) => {
+      console.log('HELLO');
+
       await writeProfileUpdatesToQuery(cache, { address });
       onMutationSuccess();
     },
@@ -215,6 +217,7 @@ const useCurrentUser = (props) => {
     updateProfileField,
     updateCommunicationPreference,
     updateAddress,
+    streamChatToken: data?.currentUser?.streamChatToken,
   };
 };
 

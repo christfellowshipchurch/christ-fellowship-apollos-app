@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Color from 'color';
 import { uniqueId } from 'lodash';
 
-import { Card, styled } from '@apollosproject/ui-kit';
+import { Card, InlineActivityIndicator, styled } from '@apollosproject/ui-kit';
 
 export ActionBarItem from './ActionBarItem';
 
@@ -22,21 +22,38 @@ const Divider = styled(({ theme }) => ({
     Color(theme.colors.screen).isLight()
       ? theme.colors.black
       : theme.colors.white
-  ),
+  ).hex(),
 }))(View);
 
-const ActionBar = ({ children, ...props }) => (
-  <Card {...props}>
-    <Row>
-      {React.Children.map(children, (child, i) => (
-        <React.Fragment key={uniqueId(`ActionBar:${i}`)}>
-          {child}
-          {i < children.length - 1 && <Divider />}
-        </React.Fragment>
-      ))}
-    </Row>
-  </Card>
-);
+const PaddedActivityIndicator = styled(({ theme }) => ({
+  paddingHorizontal: theme.sizing.baseUnit,
+  paddingVertical: theme.sizing.baseUnit * 1.5,
+}))(InlineActivityIndicator);
+
+const ActionBar = ({ children, isLoading, ...props }) => {
+  const filteredChildren = Array.isArray(children)
+    ? children.filter((c) => !!c)
+    : children;
+
+  return isLoading ? (
+    <Card {...props}>
+      <Row>
+        <PaddedActivityIndicator />
+      </Row>
+    </Card>
+  ) : (
+    <Card {...props}>
+      <Row>
+        {React.Children.map(filteredChildren, (child, i) => (
+          <React.Fragment key={uniqueId(`ActionBar:${i}`)}>
+            {child}
+            {i < filteredChildren.length - 1 && <Divider />}
+          </React.Fragment>
+        ))}
+      </Row>
+    </Card>
+  );
+};
 
 ActionBar.propTypes = {
   children: PropTypes.oneOfType([
@@ -45,6 +62,11 @@ ActionBar.propTypes = {
     ),
     PropTypes.object,
   ]),
+  isLoading: PropTypes.bool,
+};
+
+ActionBar.defaultProps = {
+  isLoading: false,
 };
 
 export default ActionBar;

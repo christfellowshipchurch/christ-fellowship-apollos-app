@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native';
 import { storiesOf } from '@apollosproject/ui-storybook';
 import { take } from 'lodash';
 import Slider from '@react-native-community/slider';

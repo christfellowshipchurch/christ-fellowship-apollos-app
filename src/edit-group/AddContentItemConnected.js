@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
 import PropTypes from 'prop-types';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { get } from 'lodash';
-import { SafeAreaView } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
+import { useQuery, useMutation } from '@apollo/client';
+import { get, take } from 'lodash';
 
+import { View } from 'react-native';
 import { fetchMoreResolver } from '@apollosproject/ui-connected';
 import {
   styled,
@@ -12,7 +12,6 @@ import {
   Button,
   Card,
   CardImage,
-  H3,
   H4,
   Icon,
   PaddedView,
@@ -51,15 +50,12 @@ const mapEdges = (data) =>
 // :: Styled Components
 // ------------------------------------------------------------------
 
-const StyledSafeAreaView = styled(({ theme }) => ({
-  flex: 1,
-}))(SafeAreaView);
-
 const ActionLayout = styled(({ theme, hasSummary }) => ({
   flexDirection: 'row',
-  /* - `center` works in all situations including 1 line summaries
-     * - `flex-end` is needed only for when we have no summary
-     */
+  /**
+   * - `center` works in all situations including 1 line summaries
+   * - `flex-end` is needed only for when we have no summary
+   */
   alignItems: hasSummary ? 'center' : 'flex-end',
   paddingTop: theme.sizing.baseUnit,
 }))(View);
@@ -93,7 +89,7 @@ const Image = withTheme(({ theme }) => ({
 
 const CheckIcon = withTheme(({ theme }) => ({
   name: 'circle-outline-check-mark',
-  size: 22,
+  size: 32,
   fill: theme.colors.primary,
 }))(Icon);
 
@@ -156,8 +152,8 @@ CoverImageCard.defaultProps = {
 // ------------------------------------------------------------------
 const AddContentItemConnected = (props) => {
   // Navigation props
-  const { navigation } = props;
-  const groupId = navigation.getParam('groupId');
+  const navigation = useNavigation();
+  const groupId = props.route?.params?.groupId;
 
   // Selection State
   const [selected, setSelected] = useState(null);
@@ -184,8 +180,6 @@ const AddContentItemConnected = (props) => {
     update: () => navigation.goBack(null),
   });
 
-  // if (error) return <ErrorCard />;
-
   const items = mapEdges(data);
 
   const renderItem = ({ item }) =>
@@ -204,59 +198,61 @@ const AddContentItemConnected = (props) => {
 
   return (
     <BackgroundView>
-      <StyledSafeAreaView forceInset={{ top: 'always', bottom: 'always' }}>
-        <PaddedView>
-          <H3 padded>Select Study</H3>
-        </PaddedView>
+      {items.length ? (
+        <FeedView
+          numColumns={2}
+          content={
+            items.length % 2 === 0
+              ? items
+              : [
+                  ...items,
+                  {
+                    emptyItem: true,
+                  },
+                ]
+          }
+          renderItem={renderItem}
+          isLoading={loading || mutationLoading}
+          error={error || mutationError}
+          fetchMore={fetchMoreResolver({
+            collectionName: 'groupResourceOptions.edges',
+            fetchMore,
+            variables,
+            data,
+          })}
+          refetch={refetch}
+        />
+      ) : (
+        <EmptyTextContainer>
+          <EmptyText>
+            {`All available studies are already added to your Group's resources`}
+          </EmptyText>
+        </EmptyTextContainer>
+      )}
 
-        {items.length ? (
-          <FeedView
-            numColumns={2}
-            content={
-              items.length % 2 === 0
-                ? items
-                : [
-                    ...items,
-                    {
-                      emptyItem: true,
-                    },
-                  ]
-            }
-            renderItem={renderItem}
-            isLoading={loading || mutationLoading}
-            error={error || mutationError}
-            fetchMore={fetchMoreResolver({
-              collectionName: 'groupResourceOptions.edges',
-              fetchMore,
-              variables,
-              data,
-            })}
-            refetch={refetch}
-          />
-        ) : (
-          <EmptyTextContainer>
-            <EmptyText>
-              {`All available studies are already added to your Group's resources`}
-            </EmptyText>
-          </EmptyTextContainer>
-        )}
-
-        <PaddedView>
-          <Button
-            title="Save"
-            onPress={() =>
-              updateContentItem({
-                variables: { groupId, contentItemId: selected },
-              })
-            }
-            loading={loading || mutationLoading}
-            disabled={!selected || loading || mutationLoading}
-            pill={false}
-          />
-        </PaddedView>
-      </StyledSafeAreaView>
+      <PaddedView>
+        <Button
+          title="Save"
+          onPress={() =>
+            updateContentItem({
+              variables: { groupId, contentItemId: selected },
+            })
+          }
+          loading={loading || mutationLoading}
+          disabled={!selected || loading || mutationLoading}
+          pill={false}
+        />
+      </PaddedView>
     </BackgroundView>
   );
+};
+
+AddContentItemConnected.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      groupId: PropTypes.string,
+    }),
+  }),
 };
 
 export default AddContentItemConnected;

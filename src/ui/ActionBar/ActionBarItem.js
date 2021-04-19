@@ -8,6 +8,7 @@ import {
   UIText,
   Icon,
   withTheme,
+  InlineActivityIndicator,
 } from '@apollosproject/ui-kit';
 
 const ActionBarItemWrapper = styled(({ theme }) => ({
@@ -38,14 +39,21 @@ const ActionBarItem = ({
   icon = 'empty',
   size,
   label = '',
+  isLoading,
   ...touchableProps
 }) => (
   <StyledTouchable {...touchableProps}>
     <ActionBarItemWrapper>
-      <StyledIcon size={size} name={icon} />
+      {isLoading ? (
+        <InlineActivityIndicator />
+      ) : (
+        <>
+          <StyledIcon size={size} name={icon} />
 
-      {/* using stlye object here is just as efficient as creating a new styled component with prop, since UIText is already a styled component */}
-      <StyledLabel>{label}</StyledLabel>
+          {/* using stlye object here is just as efficient as creating a new styled component with prop, since UIText is already a styled component */}
+          <StyledLabel>{label}</StyledLabel>
+        </>
+      )}
     </ActionBarItemWrapper>
   </StyledTouchable>
 );
@@ -55,10 +63,12 @@ ActionBarItem.propTypes = {
   size: PropTypes.number,
   label: PropTypes.string,
   tint: PropTypes.string,
+  isLoading: PropTypes.bool,
 };
 
 export default withTheme(({ theme, ...props }) => ({
   tint: theme.colors.action.primary,
   size: theme.sizing.baseUnit * 1.5,
+  isLoading: false,
   ...props,
 }))(ActionBarItem);

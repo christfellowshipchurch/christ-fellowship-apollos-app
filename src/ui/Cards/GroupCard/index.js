@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
-import { get } from 'lodash';
+import { View, FlatList } from 'react-native';
+import { get, uniqBy, random } from 'lodash';
 
 import {
   Card,
@@ -30,7 +30,7 @@ const Spacer = styled(({ theme }) => ({
   paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-const Image = withTheme(({ customTheme, theme }) => ({
+const Image = withTheme(({ customTheme, theme, source }) => ({
   minAspectRatio: 1.66,
   maxAspectRatio: 1.66,
   maintainAspectRatio: true,
@@ -40,7 +40,7 @@ const Image = withTheme(({ customTheme, theme }) => ({
     'colors.primary',
     theme.colors.background.paper
   ), // else check for a custom theme (prop) or default to black.
-  overlayType: 'featured',
+  overlayType: !source ? 'flat' : 'featured',
   style: { flex: 1 },
 }))(CardImage);
 
@@ -145,9 +145,9 @@ const GroupCard = ({
           <Image source={coverImage} />
           {heroAvatars.length > 0 && (
             <HeroAvatarSpacing>
-              {heroAvatars.map((hero, i) => (
+              {uniqBy(heroAvatars, 'uri').map((hero, i) => (
                 <HeroAvatarPosition
-                  key={`${hero}`}
+                  key={`${hero?.uri}${random(i, i + 1000)}`}
                   index={i}
                   zIndex={avatars.length + 1 - i}
                 >
@@ -172,11 +172,11 @@ const GroupCard = ({
           {avatars.length > 0 && (
             <Spacer>
               <AvatarSpacing>
-                {avatars.map((avatar, i) => (
+                {uniqBy(avatars, 'uri').map((avatar, i) => (
                   <AvatarPosition
-                    key={`${avatar}`}
                     index={i}
                     zIndex={avatars.length + 1 - i}
+                    key={`${avatar?.uri}${random(i, i + 1000)}`}
                   >
                     <Avatar source={avatar} themeSize={avatarSize} />
                   </AvatarPosition>
@@ -216,7 +216,7 @@ GroupCard.propTypes = {
   coverImage: PropTypes.oneOfType([
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
-  ]).isRequired,
+  ]),
   isLoading: PropTypes.bool,
   title: PropTypes.string,
   avatars: PropTypes.arrayOf(ImageSourceType),

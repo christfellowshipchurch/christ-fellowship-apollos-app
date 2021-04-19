@@ -9,8 +9,7 @@ import {
   withTheme,
 } from '@apollosproject/ui-kit';
 
-import { HighlightCard, RowCard, ColumnCard } from '../../Cards';
-import ContentCardConnected from '../../ContentCardConnected';
+import { CardMapper, HighlightCard, RowCard, ColumnCard } from '../../Cards';
 import CardFeed from '../CardFeed';
 
 const CapCard = ({ id, onPress, isLoading, ...props }) => (
@@ -18,7 +17,7 @@ const CapCard = ({ id, onPress, isLoading, ...props }) => (
     onPress={isLoading ? () => null : onPress}
     style={{ flex: 1 }}
   >
-    <ContentCardConnected {...props} contentId={id} isLoading={isLoading} />
+    <CardMapper {...props} nodeId={id} isLoading={isLoading} />
   </TouchableScale>
 );
 

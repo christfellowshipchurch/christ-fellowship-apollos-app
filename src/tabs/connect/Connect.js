@@ -1,96 +1,49 @@
-import React, { useState } from 'react';
-import { Animated } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import React from 'react';
+import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 
-import { styled } from '@apollosproject/ui-kit';
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import { View } from 'react-native';
+import { styled, BackgroundView } from '@apollosproject/ui-kit';
 
-import { ConnectFeaturesFeedConnected } from 'features';
-import { useLinkRouter } from 'hooks';
+import { FeaturesFeedConnected } from 'features';
+import TabHeader from '../TabHeader';
 
-import {
-  navigationOptions,
-  BackgroundView,
-  NavigationSpacer,
-  useHeaderScrollEffect,
-} from '../../navigation';
+// getConnectFeed uses the CONNECT_FEATURES in the config.yml
+// You can also hardcode an ID if you are confident it will never change
+// Or use some other strategy to get a FeatureFeed.id
+export const GET_CONNECT_FEED = gql`
+  query getConnectFeatureFeed {
+    connectFeedFeatures {
+      id
+    }
+  }
+`;
 
-const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
+const ItemSeparator = styled(({ theme }) => ({
+  paddingTop: theme.sizing.baseUnit * 2,
+}))(View);
 
-const Connect = ({ navigation }) => {
-  const { routeLink } = useLinkRouter();
-  const [refetchRef, setRefetchRef] = useState(null);
-  const { scrollY } = useHeaderScrollEffect({ navigation });
-  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
-    if (action === 'READ_CONTENT') {
-      navigation.navigate('ContentSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_EVENT') {
-      navigation.navigate('Event', {
-        eventId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_PRAYER') {
-      navigation.navigate('PrayerRequestSingle', {
-        prayerRequestId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_GROUP') {
-      navigation.navigate('GroupSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_NODE') {
-      console.warn(relatedNode);
-      navigation.navigate('NodeSingle', {
-        nodeId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_URL') {
-      routeLink(relatedNode.url, { nested: true });
-    }
-  };
+const Connect = () => {
+  const { data, error, loading } = useQuery(GET_CONNECT_FEED, {
+    fetchPolicy: 'network-only',
+  });
+  const featuresFeedId = data?.connectFeedFeatures?.id;
 
   return (
-    <RockAuthedWebBrowser>
-      {(openUrl) => (
-        <BackgroundView>
-          <FlexedSafeAreaView>
-            <ConnectFeaturesFeedConnected
-              onPressActionItem={handleOnPress({ openUrl })}
-              ListHeaderComponent={<NavigationSpacer />}
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {
-                    contentOffset: { y: scrollY },
-                  },
-                },
-              ])}
-              removeClippedSubviews={false}
-              numColumns={1}
-              onRef={(ref) => setRefetchRef(ref)}
-            />
-          </FlexedSafeAreaView>
-        </BackgroundView>
-      )}
-    </RockAuthedWebBrowser>
+    <BackgroundView>
+      <TabHeader title="Connect" />
+      <FeaturesFeedConnected
+        featuresFeedId={featuresFeedId}
+        isLoading={loading}
+        error={error}
+        removeClippedSubviews={false}
+        numColumns={1}
+        ItemSeparatorComponent={ItemSeparator}
+      />
+    </BackgroundView>
   );
 };
-
-Connect.navigationOptions = (props) =>
-  navigationOptions({
-    ...props,
-    title: 'Profile',
-  });
 
 Connect.propTypes = {
   navigation: PropTypes.shape({

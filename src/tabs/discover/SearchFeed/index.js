@@ -1,10 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
-import { withProps } from 'recompose';
-import { useQuery } from '@apollo/react-hooks';
-import { get } from 'lodash';
 import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
+import { withProps } from 'recompose';
+import { useQuery } from '@apollo/client';
+import { get } from 'lodash';
 
+import { View } from 'react-native';
 import {
   FeedView,
   styled,
@@ -40,18 +41,6 @@ const StyledFeedView = withMediaQuery(
   }))
 )(FeedView);
 
-// Hack to get around a weird issue where the tabbar
-// is cutting off the last row of cards
-const EndCapSpacer = styled(({ theme }) => ({
-  height: 150,
-}))(View);
-
-const handleOnPress = ({ navigation, id, transitionKey }) =>
-  navigation.navigate('ContentSingle', {
-    itemId: id,
-    transitionKey,
-  });
-
 const keyExtractor = (item) => item && get(item, 'id', null);
 const mapSearchData = (data, navigation) =>
   get(data, 'search.edges', []).map(({ node }) => ({
@@ -60,15 +49,7 @@ const mapSearchData = (data, navigation) =>
   }));
 const renderItem = ({ item }) => (
   <FlexedView>
-    <TouchableScale
-      onPress={() =>
-        handleOnPress({
-          id: item.id,
-          navigation: item.navigation,
-          transitionKey: item.transitionKey,
-        })
-      }
-    >
+    <TouchableScale onPress={item.onPress}>
       <DynamicThemeMixin>
         <SearchCardConnected contentId={item.id} {...item} />
       </DynamicThemeMixin>
@@ -77,25 +58,36 @@ const renderItem = ({ item }) => (
 );
 
 export const SearchFeed = ({
-  navigation,
   searchText,
   content,
   isLoading,
   error,
   refetch,
-}) => (
-  <StyledFeedView
-    renderItem={renderItem}
-    content={content}
-    ListEmptyComponent={() => <NoResults searchText={searchText} />}
-    ListFooterComponent={<EndCapSpacer />}
-    hasContent={content.length}
-    isLoading={isLoading}
-    error={error}
-    refetch={refetch}
-    keyExtractor={keyExtractor}
-  />
-);
+}) => {
+  const navigation = useNavigation();
+  const adjustedContent = content.map((item) => ({
+    ...item,
+    onPress: () => {
+      navigation.navigate('ContentSingle', {
+        itemId: item.id,
+        transitionKey: item.transitionKey,
+      });
+    },
+  }));
+
+  return (
+    <StyledFeedView
+      renderItem={renderItem}
+      content={adjustedContent}
+      ListEmptyComponent={() => <NoResults searchText={searchText} />}
+      hasContent={adjustedContent.length}
+      isLoading={isLoading}
+      error={error}
+      refetch={refetch}
+      keyExtractor={keyExtractor}
+    />
+  );
+};
 
 SearchFeed.propTypes = {
   searchText: PropTypes.string,
@@ -115,14 +107,14 @@ SearchFeed.defaultProps = {
   content: [], // todo
 };
 
-const SearchFeedConnected = ({ navigation, searchText }) => {
+const SearchFeedConnected = ({ searchText }) => {
   const { data, loading, error, refetch } = useQuery(GET_SEARCH_RESULTS, {
     variables: { searchText },
     fetchPolicy: 'cache-and-network',
     skip: !searchText || searchText === '',
   });
 
-  const content = mapSearchData(data, navigation);
+  const content = mapSearchData(data);
 
   return (
     <SearchFeed

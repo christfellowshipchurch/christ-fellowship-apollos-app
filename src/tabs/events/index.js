@@ -1,20 +1,27 @@
-import { createStackNavigator } from 'react-navigation';
+import React from 'react';
+import { Platform } from 'react-native';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import tabBarIcon from '../tabBarIcon';
+import { withTheme } from '@apollosproject/ui-kit';
+
+import HeaderButtons from '../HeaderButtons';
 import Events from './Events';
 
-const EventsNavigator = createStackNavigator(
-  {
-    Events,
-  },
-  {
-    initialRouteName: 'Events',
-    headerLayoutPreset: 'left',
-  }
+const { Navigator, Screen } = createNativeStackNavigator();
+
+const EventsNavigator = (props) => (
+  <Navigator initialRouteName="Events" {...props}>
+    <Screen component={Events} name="Events" />
+  </Navigator>
 );
 
-EventsNavigator.navigationOptions = {
-  tabBarIcon: tabBarIcon('calendar'),
-};
+const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
+  ...props,
+  screenOptions: {
+    headerRight: HeaderButtons,
+    headerLargeTitle: true,
+    headerHideShadow: true,
+  },
+}))(EventsNavigator);
 
-export default EventsNavigator;
+export default Events;

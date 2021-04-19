@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/client';
 
 import { PaddedView, H4, styled, ThemeMixin } from '@apollosproject/ui-kit';
 import ActionListItem from '../ui/ActionListItem';

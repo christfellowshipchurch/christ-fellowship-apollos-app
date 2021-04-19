@@ -1,25 +1,45 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/client';
 import moment from 'moment';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
+import { View, Platform } from 'react-native';
 import {
   BodyText,
   Icon,
   styled,
   withTheme,
-  H4,
   Picker,
 } from '@apollosproject/ui-kit';
 import { PickerItem } from 'ui/inputs';
 import DateLabel from 'ui/DateLabel';
+import { ItemSeparatorComponent } from '../ContentBody';
+import { EVENT_GROUPINGS_FRAGMENT } from '../getContentItem';
 
-import GET_EVENT_GROUPINGS from './getEventGroupings';
+const GET_EVENT_GROUPINGS = gql`
+  query getEventGroupings($nodeId: ID!) {
+    node(id: $nodeId) {
+      ...EventGroupingsFragment
+    }
+
+    currentUser {
+      id
+      profile {
+        id
+        campus {
+          id
+          name
+        }
+      }
+    }
+  }
+
+  ${EVENT_GROUPINGS_FRAGMENT}
+`;
 
 const StyledPicker = styled(({ theme }) => ({
-  paddingTop: theme.sizing.baseUnit * 0.5,
   color: theme.colors.text.primary,
   ...Platform.select({
     android: {
@@ -92,7 +112,7 @@ const EventGroupings = ({ groupings, defaultSelection }) => {
   const selectedGroup = groupings.find((i) => i.name === selected);
 
   return (
-    <View>
+    <ItemSeparatorComponent>
       <StyledPicker
         label=""
         value={selected}
@@ -107,7 +127,7 @@ const EventGroupings = ({ groupings, defaultSelection }) => {
       {get(selectedGroup, 'instances', []).map((item) => (
         <DateTime key={item.start} start={item.start} />
       ))}
-    </View>
+    </ItemSeparatorComponent>
   );
 };
 
@@ -132,14 +152,15 @@ EventGroupings.defaultProps = {
   defaultSelection: null,
 };
 
-const EventGroupingsConnected = ({ contentId }) => {
-  const { data, loading, error } = useQuery(GET_EVENT_GROUPINGS, {
-    variables: { id: contentId },
-    skip: !contentId || contentId === '',
+const EventGroupingsConnected = ({ nodeId }) => {
+  const skip = !nodeId || isEmpty(nodeId);
+  const { data, error } = useQuery(GET_EVENT_GROUPINGS, {
+    variables: { nodeId },
+    skip,
+    fetchPolicy: 'cache-first',
   });
 
   if (error) return null;
-  if (loading) return <H4 isLoading>...loading</H4>;
 
   const groupings = get(data, 'node.eventGroupings', []);
   const myCampus = get(data, 'currentUser.profile.campus.name', '');
@@ -158,11 +179,11 @@ const EventGroupingsConnected = ({ contentId }) => {
 };
 
 EventGroupingsConnected.propTypes = {
-  contentId: PropTypes.string,
+  nodeId: PropTypes.string,
 };
 
 EventGroupingsConnected.defaultProps = {
-  contentId: null,
+  nodeId: null,
 };
 
 export default EventGroupingsConnected;

@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 
 import {
   styled,
-  BackgroundView,
   PaddedView,
   Icon,
   withTheme,
@@ -17,13 +17,16 @@ import DateLabel from '../../ui/DateLabel';
 import AddCalEventButton from '../../content-single/AddCalEventButton';
 
 import CoverImageBackground from '../CoverImageBackground';
-import VideoCall from '../VideoCall';
 import Resources from '../Resources';
-import MembersFeedConnected from '../MembersFeedConnected';
+import { HorizontalMembersFeedPreview } from '../MembersFeed';
 import HeaderConnected from '../HeaderConnected';
 import SummaryConnected from '../SummaryConnected';
-import { CheckInButtonConnected } from '../../check-in';
-import GroupChatButton from '../GroupChatButton';
+import Actions from './Actions';
+
+const BackgroundView = styled(({ theme }) => ({
+  flex: 1,
+  backgroundColor: theme.colors.background.screen,
+}))(View);
 
 const ScheduleView = styled(() => ({
   flexDirection: 'row',
@@ -50,8 +53,9 @@ const CellItem = styled(({ theme, first }) => ({
   flex: 1,
 }))(View);
 
-const Group = ({ id, content, loading, navigation }) => {
-  const checkInRef = useRef();
+const Group = ({ id, content, loading }) => {
+  const navigation = useNavigation();
+
   const coverImageSources = get(content, 'coverImage.sources', []);
   const resources = get(content, 'resources', []);
   const dateTime = get(content, 'dateTime', {});
@@ -75,8 +79,6 @@ const Group = ({ id, content, loading, navigation }) => {
   };
 
   const start = get(dateTime, 'start');
-  const chatChannelId = get(content, 'streamChatChannel.channelId');
-  const chatChannelType = get(content, 'streamChatChannel.channelType');
 
   const handleEditGroupPress = () => navigation.navigate('EditGroup', { id });
 
@@ -86,18 +88,6 @@ const Group = ({ id, content, loading, navigation }) => {
 
       <BackgroundView>
         <PaddedView vertical={false}>
-          {!videoCall && (
-            <Cell>
-              <CellItem />
-              <CellItem>
-                <PaddedView horizontal={false}>
-                  <CheckInButtonConnected id={id} ref={checkInRef} />
-                </PaddedView>
-              </CellItem>
-              <CellItem />
-            </Cell>
-          )}
-
           <Cell>
             {content.dateTime ? (
               <CellItem first>
@@ -124,31 +114,17 @@ const Group = ({ id, content, loading, navigation }) => {
               </CellItem>
             ) : null}
           </Cell>
+        </PaddedView>
 
-          <PaddedView horizontal={false}>
-            {videoCall && (
-              <VideoCall
-                groupId={content.id}
-                isLoading={loading}
-                parentVideoCall={parentVideoCall}
-                videoCall={videoCall}
-                date={start}
-              />
-            )}
+        <PaddedView horizontal={false}>
+          <Actions id={id} />
+        </PaddedView>
 
-            {chatChannelId && (
-              <GroupChatButton
-                channelId={chatChannelId}
-                channelType={chatChannelType}
-                groupName={content.title}
-              />
-            )}
-          </PaddedView>
-
+        <PaddedView vertical={false}>
           <SummaryConnected id={id} />
         </PaddedView>
 
-        <MembersFeedConnected id={id} />
+        <HorizontalMembersFeedPreview id={id} />
 
         {!isEmpty(resources) ? (
           <Resources

@@ -1,109 +1,66 @@
-import React, { useState } from 'react';
-import { Animated, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import React from 'react';
+import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import gql from 'graphql-tag';
 
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
-import { styled } from '@apollosproject/ui-kit';
+import { View } from 'react-native';
+import { styled, BackgroundView, ThemeMixin } from '@apollosproject/ui-kit';
 
-import { FeaturesFeedConnected, FeaturesHeaderConnected } from 'features';
-import { useLinkRouter } from 'hooks';
-
-import Wordmark from 'ui/Wordmark';
 import {
-  navigationOptions,
-  BackgroundView,
-  NavigationSpacer,
-  useHeaderScrollEffect,
-} from '../../navigation';
+  FeaturesFeedConnected,
+  HorizontalFeaturesFeedConnected,
+} from 'features';
+
+import TabHeader from '../TabHeader';
 
 const ListHeaderSpacer = styled(({ theme }) => ({
   paddingBottom: theme.sizing.baseUnit * 0.5,
 }))(View);
 
-const Home = ({ navigation }) => {
-  const { routeLink } = useLinkRouter();
-  const [refetchRef, setRefetchRef] = useState(null);
-  const { scrollY } = useHeaderScrollEffect({ navigation });
-  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
-    if (action === 'READ_CONTENT') {
-      navigation.navigate('ContentSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
+export const GET_HOME_FEED = gql`
+  query getHomeFeatureFeed {
+    homeFeedFeatures {
+      id
     }
-    if (action === 'READ_EVENT') {
-      navigation.navigate('Event', {
-        eventId: relatedNode.id,
-        transitionKey: 2,
-      });
+
+    homeHeaderFeedFeatures {
+      id
+      features {
+        id
+      }
     }
-    if (action === 'READ_PRAYER') {
-      navigation.navigate('PrayerRequestSingle', {
-        prayerRequestId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_GROUP') {
-      navigation.navigate('GroupSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_NODE') {
-      console.warn(relatedNode);
-      navigation.navigate('NodeSingle', {
-        nodeId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_URL') {
-      routeLink(relatedNode.url, { nested: true });
-    }
-  };
+  }
+`;
+
+const Home = () => {
+  const { data, error, loading } = useQuery(GET_HOME_FEED, {
+    fetchPolicy: 'cache-and-network',
+  });
+  const featuresFeedId = data?.homeFeedFeatures?.id;
+  const headerFeaturesFeedId = data?.homeHeaderFeedFeatures?.id;
 
   return (
-    <RockAuthedWebBrowser>
-      {(openUrl) => (
-        <BackgroundView>
-          <SafeAreaView>
-            <FeaturesFeedConnected
-              onPressActionItem={handleOnPress({ openUrl })}
-              ListHeaderComponent={
-                <ListHeaderSpacer>
-                  <NavigationSpacer />
-                  <FeaturesHeaderConnected
-                    refetchRef={get(refetchRef, 'refetchRef', () => null)}
-                    refetchId="HomeFeedFeaturesHeaderConnected"
-                  />
-                </ListHeaderSpacer>
-              }
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {
-                    contentOffset: { y: scrollY },
-                  },
-                },
-              ])}
-              removeClippedSubviews={false}
-              numColumns={1}
-              onRef={(ref) => setRefetchRef(ref)}
-            />
-          </SafeAreaView>
-        </BackgroundView>
-      )}
-    </RockAuthedWebBrowser>
+    <ThemeMixin>
+      <BackgroundView>
+        <TabHeader />
+        <FeaturesFeedConnected
+          featuresFeedId={featuresFeedId}
+          isLoading={loading}
+          error={error}
+          ListHeaderComponent={
+            <ListHeaderSpacer>
+              <HorizontalFeaturesFeedConnected
+                featuresFeedId={headerFeaturesFeedId}
+              />
+            </ListHeaderSpacer>
+          }
+          removeClippedSubviews={false}
+          numColumns={1}
+        />
+      </BackgroundView>
+    </ThemeMixin>
   );
 };
-
-Home.navigationOptions = (props) =>
-  navigationOptions({
-    ...props,
-    headerTitle: <Wordmark />,
-    title: 'Home',
-  });
 
 Home.propTypes = {
   navigation: PropTypes.shape({

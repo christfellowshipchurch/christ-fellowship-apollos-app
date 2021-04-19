@@ -1,14 +1,29 @@
 import ApollosConfig from '@apollosproject/config';
 import FRAGMENTS from '@apollosproject/ui-fragments';
 import gql from 'graphql-tag';
+import fragmentTypes from './src/client/fragmentTypes.json';
+
+// Create a map all the interfaces each type implements.
+// If UniversalContentItem implements Node, Card, and ContentNode,
+// our typemap would be { UniversalContentItem: ['Node', 'Card', 'ContentNode'] }
+const TYPEMAP = fragmentTypes.__schema.types.reduce((acc, curr) => {
+  const { name } = curr;
+  const types = Object.fromEntries(
+    curr.possibleTypes.map((type) => [type.name, name])
+  );
+  Object.keys(types).forEach((key) => {
+    acc[key] = acc[key] ? [...acc[key], types[key]] : [types[key]];
+  });
+  return acc;
+}, {});
 
 ApollosConfig.loadJs({
-  /** Logs the user out when updated.
+  /**
+   * Logs the user out when updated.
    *
-   *  Uses a date format so that we can go back and audit when a decision to force a log
-   *  out what made
+   * Uses a date format so that we can go back and audit when a decision to force a log out what made
    *
-   *  Date Format: yyyy.mm.dd.HH.mm
+   * Date Format: yyyy.mm.dd.HH.mm
    */
   SCHEMA_VERSION: '2020.09.10.14.20',
   FRAGMENTS: {
@@ -58,7 +73,7 @@ ApollosConfig.loadJs({
           tags
         }
         ... on EventContentItem {
-          label
+          labelText
           eventGroupings {
             name
             instances {
@@ -180,6 +195,9 @@ ApollosConfig.loadJs({
     `,
     LIVE_STREAM_FRAGMENT: gql`
       fragment LiveStreamFragment on LiveStream {
+        id
+        eventStartTime
+        eventEndTime
         isLive
         media {
           sources {
@@ -187,8 +205,31 @@ ApollosConfig.loadJs({
           }
         }
 
-        contentItem {
+        relatedNode {
           id
+          ... on ContentNode {
+            title
+            coverImage {
+              sources {
+                uri
+              }
+            }
+          }
+        }
+      }
+    `,
+    LIVE_NODE_FRAGMENT: gql`
+      fragment LiveNodeFragment on LiveNode {
+        liveStream {
+          id
+          eventStartTime
+          eventEndTime
+          isLive
+          media {
+            sources {
+              uri
+            }
+          }
         }
       }
     `,
@@ -198,6 +239,9 @@ ApollosConfig.loadJs({
         title
         subtitle
         liveStreams {
+          id
+          eventStartTime
+          eventEndTime
           isLive
           media {
             sources {
@@ -205,12 +249,14 @@ ApollosConfig.loadJs({
             }
           }
 
-          contentItem {
+          relatedNode {
             id
-            title
-            coverImage {
-              sources {
-                uri
+            ... on ContentNode {
+              title
+              coverImage {
+                sources {
+                  uri
+                }
               }
             }
           }
@@ -273,7 +319,7 @@ ApollosConfig.loadJs({
           }
         }
 
-        leaders: people(first: 4, isLeader: true) {
+        leaders: people(first: 3, isLeader: true) {
           edges {
             node {
               id
@@ -284,7 +330,7 @@ ApollosConfig.loadJs({
           }
           totalCount
         }
-        members: people(first: 8, isLeader: false) {
+        members: people(first: 5, isLeader: false) {
           edges {
             node {
               id
@@ -347,6 +393,7 @@ ApollosConfig.loadJs({
         title
         subtitle
         cards {
+          id
           action
           title
           hyphenatedTitle: title(hyphenated: true)
@@ -373,5 +420,76 @@ ApollosConfig.loadJs({
         }
       }
     `,
+    STREAM_CHAT_FRAGMENT: gql`
+      fragment StreamChatChannelNodeFragment on StreamChatChannelNode {
+        streamChatChannel {
+          id
+          channelId
+          channelType
+        }
+      }
+    `,
+    VERTICAL_CARD_LIST_FEATURE_FRAGMENT: gql`
+      fragment VerticalCardListFeatureFragment on VerticalCardListFeature {
+        id
+        isFeatured
+        title
+        subtitle
+        cards {
+          id
+          action
+          title
+          hasAction
+          actionIcon
+          labelText
+          summary
+          coverImage {
+            sources {
+              uri
+            }
+          }
+          relatedNode {
+            ...RelatedFeatureNodeFragment
+          }
+        }
+      }
+    `,
+    RELATED_NODE_FRAGMENT: gql`
+      fragment RelatedFeatureNodeFragment on Node {
+        id
+        ... on Url {
+          url
+        }
+        ... on ContentChannel {
+          name
+        }
+      }
+    `,
+    CONTENT_BLOCK_FEATURE_FRAGMENT: gql`
+      fragment ContentBlockFeatureFragment on ContentBlockFeature {
+        title
+        summary
+        htmlContent
+
+        coverImage {
+          sources {
+            uri
+          }
+        }
+        videos {
+          sources {
+            uri
+          }
+        }
+
+        orientation
+      }
+    `,
   },
+  FEATURE_FEEDS: {
+    horizontalCardListLength: 3,
+    verticalCardListLength: 3,
+    heroListLength: 3,
+  },
+  TYPEMAP,
 });

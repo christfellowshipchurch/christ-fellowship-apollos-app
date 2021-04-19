@@ -1,5 +1,6 @@
 import React from 'react';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/client';
+import { get } from 'lodash';
 import {
   checkNotifications,
   openSettings,
@@ -7,7 +8,13 @@ import {
   RESULTS,
 } from 'react-native-permissions';
 
-import { withThemeMixin, NavigationService } from '@apollosproject/ui-kit';
+import { Image } from 'react-native';
+import {
+  NavigationService,
+  BackgroundView,
+  styled,
+  FlexedView,
+} from '@apollosproject/ui-kit';
 import {
   AskNotificationsConnected,
   FeaturesConnected,
@@ -17,80 +24,78 @@ import {
   WITH_USER_ID,
 } from '@apollosproject/ui-onboarding';
 
-import AuthBackground from '../AuthBackground';
+const FullscreenBackgroundView = styled({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+})(BackgroundView);
 
-const { resetAction } = NavigationService;
+const StyledGradient = styled({
+  maxHeight: '40%',
+  width: '100%',
+})(Image);
 
-function Onboarding({ navigation }) {
+const hero = require('./hero.jpg');
+
+const Onboarding = ({ navigation }) => {
+  const { data } = useQuery(WITH_USER_ID, {
+    fetchPolicy: 'network-only',
+  });
+
+  const id = get(data, 'currentUser.id');
+
   return (
-    <AuthBackground>
-      <OnboardingSwiper>
-        {({ swipeForward }) => (
-          <>
-            <FeaturesConnected
-              onPressPrimary={swipeForward}
-              description="We'd like to help you personalize your profile to make the most of your Christ Fellowship mobile app experience."
-            />
-            <LocationFinderConnected
-              onPressPrimary={swipeForward}
-              onNavigate={() => {
-                navigation.navigate('Location');
-              }}
-              primaryNavText={'Next'}
-              description="We'll use your location to connect you with your nearby campus and community."
-            />
-            <Query query={WITH_USER_ID} fetchPolicy="network-only">
-              {({
-                data: { currentUser: { id } = { currentUser: { id: null } } },
-              }) => (
-                <AskNotificationsConnected
-                  onPressPrimary={() => {
-                    onboardingComplete({ userId: id });
-                    navigation.dispatch(
-                      NavigationService.resetAction({
-                        navigatorName: 'Tabs',
-                        routeName: 'Home',
-                      })
-                    );
-                  }}
-                  onRequestPushPermissions={(update) => {
-                    checkNotifications().then((checkRes) => {
-                      if (checkRes.status === RESULTS.DENIED) {
-                        requestNotifications(['alert', 'badge', 'sound']).then(
-                          () => {
-                            update();
-                          }
-                        );
-                      } else {
-                        openSettings();
-                      }
-                    });
-                  }}
-                  primaryNavText={'Finish'}
-                  description="We'll let you know when important things are happening and keep you in the loop."
-                />
-              )}
-            </Query>
-          </>
-        )}
-      </OnboardingSwiper>
-    </AuthBackground>
+    <>
+      <FullscreenBackgroundView />
+      <FlexedView>
+        <StyledGradient source={hero} resizeMode="cover" />
+        <OnboardingSwiper>
+          {({ swipeForward }) => (
+            <>
+              <FeaturesConnected
+                onPressPrimary={swipeForward}
+                description="We'd like to help you personalize your profile to make the most of your Christ Fellowship mobile app experience."
+              />
+              <LocationFinderConnected
+                onPressPrimary={swipeForward}
+                onNavigate={() => {
+                  navigation.navigate('Location');
+                }}
+                primaryNavText={'Next'}
+                description="We'll use your location to connect you with your nearby campus and community."
+              />
+              <AskNotificationsConnected
+                onPressPrimary={() => {
+                  onboardingComplete({ userId: id });
+                  navigation.dispatch(
+                    NavigationService.resetAction({
+                      navigatorName: 'Tabs',
+                      routeName: 'Home',
+                    })
+                  );
+                }}
+                onRequestPushPermissions={(update) => {
+                  checkNotifications().then((checkRes) => {
+                    if (checkRes.status === RESULTS.DENIED) {
+                      requestNotifications(['alert', 'badge', 'sound']).then(
+                        () => {
+                          update();
+                        }
+                      );
+                    } else {
+                      openSettings();
+                    }
+                  });
+                }}
+                primaryNavText={'Finish'}
+                description="We'll let you know when important things are happening and keep you in the loop."
+              />
+            </>
+          )}
+        </OnboardingSwiper>
+      </FlexedView>
+    </>
   );
-}
-
-const OnboardingWithTheme = withThemeMixin({
-  type: 'onboarding',
-  colors: {
-    background: {
-      paper: 'white',
-    },
-  },
-})(Onboarding);
-
-OnboardingWithTheme.navigationOptions = {
-  title: 'Onboarding',
-  header: null,
-  gesturesEnabled: false,
 };
 
-export default OnboardingWithTheme;
+export default Onboarding;

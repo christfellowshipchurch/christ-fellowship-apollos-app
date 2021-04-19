@@ -1,21 +1,29 @@
-import { createStackNavigator } from 'react-navigation';
+import React from 'react';
+import { Platform } from 'react-native';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import tabBarIcon from '../tabBarIcon';
+import { withTheme } from '@apollosproject/ui-kit';
 
+import Wordmark from 'ui/Wordmark';
+import HeaderButtons from '../HeaderButtons';
 import Home from './Home';
 
-export const HomeNavigator = createStackNavigator(
-  {
-    Home,
-  },
-  {
-    initialRouteName: 'Home',
-    headerLayoutPreset: 'left',
-  }
+const { Navigator, Screen } = createNativeStackNavigator();
+
+const HomeNavigator = (props) => (
+  <Navigator initialRouteName="Home" {...props}>
+    <Screen component={Home} name="Home" />
+  </Navigator>
 );
 
-HomeNavigator.navigationOptions = {
-  tabBarIcon: tabBarIcon('home'),
-};
+const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
+  ...props,
+  screenOptions: {
+    headerLeft: Wordmark,
+    headerRight: HeaderButtons,
+    headerTitle: '',
+    headerHideShadow: true,
+  },
+}))(HomeNavigator);
 
-export default HomeNavigator;
+export default Home;

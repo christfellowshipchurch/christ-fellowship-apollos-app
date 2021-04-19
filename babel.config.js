@@ -8,5 +8,6 @@ module.exports = {
       },
     ],
     ['@babel/plugin-proposal-export-default-from'],
+    'react-native-reanimated/plugin',
   ],
 };

@@ -10,17 +10,15 @@ import {
   H5,
   H6,
   BodySmall,
-  Icon,
   withIsLoading,
   ConnectedImage,
+  ImageSourceType,
   styled,
 } from '@apollosproject/ui-kit';
 
 import ThemeMixin from '../../DynamicThemeMixin';
 import LiveLabel from '../../LiveLabel';
 import BlurView from '../../BlurView';
-
-const { ImageSourceType } = ConnectedImage;
 
 const SquareCard = styled({
   width: 240,
@@ -75,7 +73,8 @@ const HorizontalDefaultCard = withIsLoading(
           />
           {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
 
-          {label !== '' &&
+          {!!label &&
+            label !== '' &&
             !isLive &&
             !isLoading && (
               <BlurLabel blurType="ultraThinMaterial">

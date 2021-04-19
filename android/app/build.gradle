@@ -94,7 +94,9 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     entryFile: "index.js",
-    enableHermes: false,  // clean and rebuild if changing
+    // :: React Native Reanimated for Stream.IO
+    // :: https://docs.swmansion.com/react-native-reanimated/docs/installation/
+    enableHermes: true,  // clean and rebuild if changing
     // bundleInDebug: true, // TODO : remove this line after testing
     // devDisabledInDebug: true // TODO : remove this line after testing
 ]
@@ -145,17 +147,28 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    // :: React Native Image Crop Picker for Stream.IO
+    // :: https://github.com/ivpusic/react-native-image-crop-picker#android
+    // compileSdkVersion 27
+    // buildToolsVersion "27.0.3"
+
     defaultConfig {
         applicationId "com.subsplash.thechurchapp.s_BSVMPR"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1809
-        versionName "5.4.1"
+        versionName "6.0.1"
         ndk {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
         resValue "string", "build_config_package", "com.christfellowship"
         multiDexEnabled true
+
+        // :: React Native Image Crop Picker for Stream.IO
+        // :: https://github.com/ivpusic/react-native-image-crop-picker#android
+        vectorDrawables.useSupportLibrary = true
+        // targetSdkVersion 27
+
         // per react-native-community/blur documentation
         // renderscriptTargetApi 23
         // renderscriptSupportModeEnabled true
@@ -187,14 +200,6 @@ android {
             }
         }
     }
-    packagingOptions {
-        pickFirst '**/armeabi-v7a/libc++_shared.so'
-        pickFirst '**/x86/libc++_shared.so'
-        pickFirst '**/arm64-v8a/libc++_shared.so'
-        pickFirst '**/x86_64/libc++_shared.so'
-        pickFirst '**/x86/libjsc.so'
-        pickFirst '**/armeabi-v7a/libjsc.so'
-    }
     dexOptions {
         javaMaxHeapSize "4g"
     }
@@ -202,10 +207,30 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
+    //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    //  For animated GIF support
     implementation 'com.facebook.fresco:animated-gif:2.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.google.firebase:firebase-analytics:17.2.2'
+
+    // For WebP support, including animated WebP
+    implementation 'com.facebook.fresco:animated-webp:2.1.0'
+    implementation 'com.facebook.fresco:webpsupport:2.0.0'
+    
+    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
+      exclude group:'com.facebook.fbjni'
+    }
+
+    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
+        exclude group:'com.facebook.flipper'
+        exclude group:'com.squareup.okhttp3', module:'okhttp'
+    }
+
+    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
+        exclude group:'com.facebook.flipper'
+    }
 
     // Failed to resolve play-services-location fix per the following issue:
     //
@@ -219,7 +244,7 @@ dependencies {
     // implementation 'com.google.android.gms:play-services-wallet:16.0.1' // or some preferred version
 
     if (enableHermes) {
-      def hermesPath = "../../node_modules/hermesvm/android/";
+      def hermesPath = "../../node_modules/hermes-engine/android/";
       debugImplementation files(hermesPath + "hermes-debug.aar")
       releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
@@ -232,13 +257,13 @@ dependencies {
 // issue addresses the problem and provides an explanation for the fix below:
 //
 // https://github.com/react-native-community/react-native-blur/issues/346
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:deprecation"
-        }
-    }
-}
+// allprojects {
+//     gradle.projectsEvaluated {
+//         tasks.withType(JavaCompile) {
+//             options.compilerArgs << "-Xlint:deprecation"
+//         }
+//     }
+// }
 
 // Run this once to be able to run the application with BUCK
 // puts all compile dependencies into folder libs for BUCK to use

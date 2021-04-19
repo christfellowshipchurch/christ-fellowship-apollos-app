@@ -16,6 +16,8 @@ import {
   Touchable,
 } from '@apollosproject/ui-kit';
 
+import BackgroundComponent from './Background';
+
 const Content = styled({
   flex: 1,
   justifyContent: 'center',
@@ -59,39 +61,36 @@ const LandingScreen = ({
   textColor,
   onPressPrimary,
   onPressSecondary,
-  BackgroundComponent,
 }) => (
-  <ThemeMixin mixin={{ type: 'auth-entry' }}>
-    <BackgroundView>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={'transparent'}
-        translucent
+  <BackgroundView>
+    <StatusBar
+      barStyle="light-content"
+      backgroundColor={'transparent'}
+      translucent
+    />
+    <BackgroundComponent />
+    <Content>
+      <BrandImage source={require('./main_logo.png')} />
+      <TextContainer blurType="xlight">
+        <Title color={textColor}>{title}</Title>
+        <StyledH4 color={textColor}>{description}</StyledH4>
+      </TextContainer>
+      <StyledButton
+        title={buttonTitle}
+        pill={false}
+        onPress={onPressPrimary}
+        type="primary"
       />
-      {BackgroundComponent}
-      <Content>
-        <BrandImage source={require('./main_logo.png')} />
-        <TextContainer blurType="xlight">
-          <Title color={textColor}>{title}</Title>
-          <StyledH4 color={textColor}>{description}</StyledH4>
-        </TextContainer>
-        <StyledButton
-          title={buttonTitle}
-          pill={false}
-          onPress={onPressPrimary}
-          type="primary"
-        />
-        <Touchable onPress={onPressSecondary}>
-          <PrivacyPolicyLink>
-            <PrivacyPolicyText color={textColor} padded>
-              By using this app, I understand and agree to the following
-              policies as laid out by Christ Fellowship Church seen here.
-            </PrivacyPolicyText>
-          </PrivacyPolicyLink>
-        </Touchable>
-      </Content>
-    </BackgroundView>
-  </ThemeMixin>
+      <Touchable onPress={onPressSecondary}>
+        <PrivacyPolicyLink>
+          <PrivacyPolicyText color={textColor} padded>
+            By using this app, I understand and agree to the following policies
+            as laid out by Christ Fellowship Church seen here.
+          </PrivacyPolicyText>
+        </PrivacyPolicyLink>
+      </Touchable>
+    </Content>
+  </BackgroundView>
 );
 
 LandingScreen.propTypes = {

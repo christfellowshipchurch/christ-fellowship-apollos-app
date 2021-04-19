@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView } from 'react-native';
+import PropTypes from 'prop-types';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { storiesOf } from '@apollosproject/ui-storybook';
-import { drop, take } from 'lodash';
+import { take } from 'lodash';
 import { BackgroundView, UIText, PaddedView } from '@apollosproject/ui-kit';
 import mockContent from '../CardFeedDataMock';
 import GridCardFeed from '.';
@@ -33,6 +35,10 @@ const GridCardFeedWithSlider = ({ FeedProps }) => {
       />
     </ScrollView>
   );
+};
+
+GridCardFeedWithSlider.propTypes = {
+  FeedProps: PropTypes.shape({}),
 };
 
 storiesOf('cf-ui/GridCardFeed', module).add('default', () => (

@@ -1,23 +1,11 @@
-import React from 'react';
-import { Platform, Text } from 'react-native';
 import Color from 'color';
 
-import { ScriptureText, VerseNumber } from '@apollosproject/ui-scripture';
-import { BodyText } from '@apollosproject/ui-kit';
-import {
-  AddPrayerScreenConnected,
-  PrayerDialogScreen,
-  ConfirmationDialogScreen,
-} from '@apollosproject/ui-prayer/src/screens';
-import { PrayerCard } from '@apollosproject/ui-prayer';
-import authEntry from './authEntry';
-import onboarding from './onboarding';
 import dark from './dark-theme';
 
 import {
   UIAuthOverrides,
+  UIConnectedOverrides,
   UIKitOverrides,
-  UIOnboardingOverrides,
   UIPrayerOverrides,
 } from './overrides';
 
@@ -166,6 +154,15 @@ const overlays = ({ alpha: themeAlpha, colors: themeColors }) => ({
     end: { x: 0, y: 1 },
     locations: [0, 1],
   }),
+  flat: ({ overlayColor }) => ({
+    colors: [
+      `${Color(overlayColor).string()}`,
+      `${Color(overlayColor).string()}`,
+    ],
+    start: { x: 0, y: 0 },
+    end: { x: 0, y: 1 },
+    locations: [0, 1],
+  }),
 });
 
 const sizing = {
@@ -188,9 +185,9 @@ const overrides = () => ({
     backgroundColor: 'transparent',
     borderColor: 'white',
   },
-  ...UIAuthOverrides,
-  ...UIKitOverrides({ sizing }),
-  ...UIOnboardingOverrides,
+  // ...UIAuthOverrides,
+  ...UIConnectedOverrides({ colors }),
+  ...UIKitOverrides({ sizing, colors }),
   ...UIPrayerOverrides,
 });
 
@@ -203,8 +200,8 @@ const buttons = ({ colors: themeColors }) => ({
 
 const types = {
   dark,
-  onboarding,
-  'auth-entry': authEntry,
+  // onboarding,
+  'auth-entry': {},
 };
 
 export default {

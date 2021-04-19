@@ -8,14 +8,15 @@ import {
   PanResponder,
   Platform,
   StatusBar,
-  SafeAreaView,
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { Query, withApollo } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
+import { withApollo } from '@apollo/client/react/hoc';
 import { get } from 'lodash';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   styled,
   withTheme,
@@ -337,7 +338,6 @@ class LiveStreamPlayer extends PureComponent {
   };
 
   handleChannelsUpdated = ({ channels }) => {
-    // console.log({ channels });
     this.setState({ channels });
   };
 
@@ -352,7 +352,7 @@ class LiveStreamPlayer extends PureComponent {
     const { id, name } = user;
 
     setTimeout(() => {
-      NavigationService.navigate('Channel', {
+      NavigationService.navigate('ChatChannel', {
         userId: id,
         channelType: 'messaging',
         name,
@@ -395,7 +395,7 @@ class LiveStreamPlayer extends PureComponent {
                 onPress={() => {
                   this.props.client.mutate({ mutation: EXIT_FULLSCREEN });
                   setTimeout(() => {
-                    NavigationService.navigate('ChannelsList', {
+                    NavigationService.navigate('ChatChannelsList', {
                       nested: true,
                     });
                   }, 250);

@@ -1,28 +1,31 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider as ApolloHookProvider } from '@apollo/react-hooks';
-import { ApolloClient } from 'apollo-client';
-import { ApolloLink } from 'apollo-link';
+import { ApolloProvider, ApolloClient, ApolloLink } from '@apollo/client';
 import { getVersion, getApplicationName } from 'react-native-device-info';
 
-import { NavigationService } from '@apollosproject/ui-kit';
 import { authLink, buildErrorLink } from '@apollosproject/ui-auth';
 
-import { resolvers, schema, defaults } from '../store';
-import { bugsnagLink, setUser } from '../bugsnag';
+import { NavigationService } from '@apollosproject/ui-kit';
+import { resolvers, schema, defaults, GET_ALL_DATA } from '../store';
+
 import httpLink from './httpLink';
-import cache, { ensureCacheHydration, MARK_CACHE_LOADED } from './cache';
+import cache, { ensureCacheHydration } from './cache';
+import MARK_CACHE_LOADED from './markCacheLoaded';
 
 const goToAuth = () => NavigationService.resetToAuth();
-const wipeData = () => cache.writeData({ data: defaults });
+const wipeData = () =>
+  cache.writeQuery({ query: GET_ALL_DATA, data: defaults });
 
 let clearStore;
 let storeIsResetting = false;
 const onAuthError = async () => {
   if (!storeIsResetting) {
     storeIsResetting = true;
-    await clearStore();
+    try {
+      await clearStore();
+    } catch (e) {
+      console.log('clearStore()', { e });
+    }
   }
   storeIsResetting = false;
   goToAuth();
@@ -30,7 +33,7 @@ const onAuthError = async () => {
 
 const errorLink = buildErrorLink(onAuthError);
 
-const link = ApolloLink.from([bugsnagLink, authLink, errorLink, httpLink]);
+const link = ApolloLink.from([authLink, errorLink, httpLink]);
 
 export const client = new ApolloClient({
   link,
@@ -41,6 +44,33 @@ export const client = new ApolloClient({
   typeDefs: schema,
   name: getApplicationName(),
   version: getVersion(),
+  // NOTE: this is because we have some very taxing queries that we want to avoid running twice
+  // see if it's still an issue after we're operating mostly on Postgres and have less loading states
+  // defaultOptions: {
+  //   watchQuery: {
+  //     nextFetchPolicy(lastFetchPolicy) {
+  //       if (
+  //         lastFetchPolicy === 'cache-and-network' ||
+  //         lastFetchPolicy === 'network-only'
+  //       ) {
+  //         return 'cache-first';
+  //       }
+  //       return lastFetchPolicy;
+  //     },
+  //   },
+  // },
+  // typePolicies: {
+  //   Query: {
+  //     fields: {
+  //       PeopleConnection: {
+  //         merge(existing = [], incoming) {
+  //           const mappedIncoming = incoming.map(({ edges }) => edges.cursor);
+  //           return { ...existing, ...mappedIncoming };
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
 });
 
 // Hack to give auth link access to method on client;
@@ -56,6 +86,11 @@ class ClientProvider extends PureComponent {
     client: PropTypes.shape({
       cache: PropTypes.shape({}),
     }),
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node,
+      PropTypes.object, // covers Fragments
+    ]).isRequired,
   };
 
   static defaultProps = {
@@ -69,15 +104,14 @@ class ClientProvider extends PureComponent {
       throw e;
     } finally {
       client.mutate({ mutation: MARK_CACHE_LOADED });
-      setUser(client);
     }
   }
 
   render() {
-    // return <ApolloProvider {...this.props} client={client} />;
+    const { children, ...otherProps } = this.props;
     return (
-      <ApolloProvider client={client}>
-        <ApolloHookProvider {...this.props} client={client} />
+      <ApolloProvider {...otherProps} client={client}>
+        {children}
       </ApolloProvider>
     );
   }

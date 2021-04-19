@@ -1,14 +1,17 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PropTypes from 'prop-types';
 import {
   SideBySideView,
-  styled,
   withTheme,
   ThemeMixin,
+  styled,
 } from '@apollosproject/ui-kit';
-import { MediaPlayerSpacer } from '@apollosproject/ui-media-player';
-import { ShareButtonConnected } from '@apollosproject/ui-connected';
+import {
+  LikeButtonConnected,
+  ShareButtonConnected,
+} from '@apollosproject/ui-connected';
 
 const PositioningView = styled(({ theme }) => ({
   justifyContent: 'space-around',
@@ -16,30 +19,41 @@ const PositioningView = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit,
 }))(SideBySideView);
 
-const Container = styled(({ theme }) => ({
-  backgroundColor: theme.colors.paper,
+const Container = styled(({ theme, safeAreaMargin }) => ({
+  backgroundColor: theme.colors.background.paper,
+  position: 'absolute',
+  width: '100%',
+  bottom: 0,
+  paddingBottom: safeAreaMargin,
   ...Platform.select(theme.shadows.default),
 }))(View);
 
-const StyledShareButtonConnected = styled(({ theme }) => ({
-  color: theme.colors.primary,
-}))(ShareButtonConnected);
+const ActionContainer = ({ itemId, theme }) => {
+  const { bottom } = useSafeAreaInsets();
+  const colors = {
+    secondary: theme.colors.primary,
+  };
 
-const ActionContainer = withTheme()(({ itemId, theme }) => (
-  <ThemeMixin mixin={{ colors: { secondary: theme.colors.primary } }}>
-    <Container>
-      <MediaPlayerSpacer>
+  return (
+    <ThemeMixin mixin={{ colors }}>
+      <Container safeAreaMargin={bottom}>
         <PositioningView>
-          <StyledShareButtonConnected itemId={itemId} />
+          <LikeButtonConnected itemId={itemId} />
+          <ShareButtonConnected itemId={itemId} />
         </PositioningView>
-      </MediaPlayerSpacer>
-    </Container>
-  </ThemeMixin>
-));
+      </Container>
+    </ThemeMixin>
+  );
+};
 
 ActionContainer.propTypes = {
   content: PropTypes.shape({}),
   itemId: PropTypes.string,
+  theme: PropTypes.shape({
+    colors: PropTypes.shape({
+      primary: PropTypes.string,
+    }),
+  }),
 };
 
-export default ActionContainer;
+export default withTheme()(ActionContainer);

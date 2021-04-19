@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Alert } from 'react-native';
 import PropTypes from 'prop-types';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useNavigation } from '@react-navigation/native';
+import { useQuery, useMutation } from '@apollo/client';
 import { get } from 'lodash';
-import { SafeAreaView } from 'react-navigation';
 
+import { Alert } from 'react-native';
 import {
   styled,
   Card,
@@ -37,11 +37,6 @@ const CoverImageShape = PropTypes.shape({
 
 // :: Styled Components
 // ------------------------------------------------------------------
-
-const StyledSafeAreaView = styled(({ theme }) => ({
-  flex: 1,
-}))(SafeAreaView);
-
 const CoverImageCardTouchable = styled(({ theme }) => ({
   marginBottom: theme.sizing.baseUnit,
 }))(TouchableScale);
@@ -59,7 +54,7 @@ const Image = withTheme(({ theme, current }) => ({
 
 const CheckIcon = withTheme(({ theme }) => ({
   name: 'circle-outline-check-mark',
-  size: 22,
+  size: 32,
   fill: theme.colors.primary,
   style: {
     marginLeft: theme.sizing.baseUnit / 2,
@@ -119,32 +114,38 @@ const EditGroupCoverImage = ({
 }) => {
   if (error) return <ErrorCard />;
 
-  const renderItem = ({ item: coverImage }) => (
-    <CoverImageCard
-      key={coverImage.guid}
-      coverImage={coverImage}
-      onPress={() => onSelectCoverImage(coverImage.guid)}
-      current={
-        get(coverImage, 'image.sources[0].uri', null) === currentCoverImageUri
-      }
-    />
-  );
+  const renderItem = ({ item: coverImage }) =>
+    get(coverImage, 'emptyItem') ? (
+      <FlexedView />
+    ) : (
+      <CoverImageCard
+        key={coverImage.guid}
+        coverImage={coverImage}
+        onPress={() => onSelectCoverImage(coverImage.guid)}
+        current={
+          get(coverImage, 'image.sources[0].uri', null) === currentCoverImageUri
+        }
+      />
+    );
 
   return (
     <BackgroundView>
-      <StyledSafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
-        <PaddedView>
-          <H3 padded>Select Photo</H3>
-        </PaddedView>
-
-        <FeedView
-          numColumns={2}
-          content={coverImages}
-          renderItem={renderItem}
-          isLoading={loading}
-          keyExtractor={(item) => item.guid}
-        />
-      </StyledSafeAreaView>
+      <FeedView
+        numColumns={2}
+        content={
+          coverImages.length % 2 === 0
+            ? coverImages
+            : [
+                ...coverImages,
+                {
+                  emptyItem: true,
+                },
+              ]
+        }
+        renderItem={renderItem}
+        isLoading={loading}
+        keyExtractor={(item) => item.guid}
+      />
     </BackgroundView>
   );
 };
@@ -166,9 +167,9 @@ EditGroupCoverImage.defaultProps = {
 // ------------------------------------------------------------------
 const EditGroupCoverImageConnected = (props) => {
   // Navigation props
-  const { navigation } = props;
-  const groupId = navigation.getParam('groupId');
-  const currentCoverImageUri = navigation.getParam('currentCoverImageUri');
+  const navigation = useNavigation();
+  const groupId = props.route?.params?.groupId;
+  const currentCoverImageUri = props.route?.params?.currentCoverImageUri;
 
   // Cover Image Options
   const { data, loading, error } = useQuery(GET_GROUP_COVER_IMAGES, {
@@ -211,6 +212,15 @@ const EditGroupCoverImageConnected = (props) => {
       onSelectCoverImage={handleSelectCoverImage}
     />
   );
+};
+
+EditGroupCoverImageConnected.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      groupId: PropTypes.string,
+      currentCoverImageUri: PropTypes.string,
+    }),
+  }),
 };
 
 export default EditGroupCoverImageConnected;

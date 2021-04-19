@@ -29,7 +29,9 @@ const RowHeader = styled(({ theme, viewAll }) => ({
 }))(View);
 
 const TitlePosition = styled({
-  flexGrow: 2,
+  flexDirection: 'row',
+  flexWrap: 'wrap',
+  flex: 2,
 })(View);
 
 const Title = compose(
@@ -39,6 +41,9 @@ const Title = compose(
 
 const AndroidTouchableFix = withTheme(({ theme }) => ({
   borderRadius: theme.sizing.baseBorderRadius / 2,
+  flex: 1,
+  flexDirection: 'row',
+  flexWrap: 'wrap',
 }))(Touchable);
 
 const ButtonLinkSpacing = styled(({ theme }) => ({
@@ -55,7 +60,7 @@ const FeedHeader = ({ title, onPress, seeMoreText, seeMore, isLoading }) =>
         <Title isLoading={isLoading && (!title || title === '')}>{title}</Title>
       </TitlePosition>
       {seeMore &&
-        !isLoading && (
+        onPress && (
           <AndroidTouchableFix onPress={onPress}>
             <ButtonLinkSpacing>
               <H6>
@@ -77,7 +82,7 @@ FeedHeader.propTypes = {
 
 FeedHeader.defaultProps = {
   onPress: () => null,
-  seeMoreText: 'See more',
+  seeMoreText: 'See More',
   seeMore: true,
   isLoading: false,
 };

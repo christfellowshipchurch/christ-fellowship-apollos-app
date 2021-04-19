@@ -1,15 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { useNavigation } from '@react-navigation/native';
+import { get } from 'lodash';
+import Color from 'color';
+
 import {
   View,
   StatusBar,
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import PropTypes from 'prop-types';
-import Color from 'color';
-import { get } from 'lodash';
-import { SafeAreaView } from 'react-navigation';
-
 import {
   styled,
   ActivityIndicator,
@@ -37,11 +37,11 @@ import ResourcesSection from './ResourcesSection';
 export const ContentContainer = withMediaQuery(
   ({ md }) => ({ maxWidth: md }),
   styled(({ theme }) => ({
-    marginVertical: theme.sizing.baseUnit * 1.5,
+    marginTop: theme.sizing.baseUnit * 1.5,
     backgroundColor: theme.colors.transparent,
   })),
   styled(({ theme }) => ({
-    marginVertical: theme.sizing.baseUnit * 1.5,
+    marginTop: theme.sizing.baseUnit * 1.5,
     backgroundColor: theme.colors.transparent,
     width: 500,
     alignSelf: 'center',
@@ -96,7 +96,8 @@ const Image = withTheme(({ theme }) => ({
 // :: Core Component
 // ------------------------------------------------------------------
 
-const EditGroup = ({ navigation, group, loading, error }) => {
+const EditGroup = ({ group, loading, error }) => {
+  const navigation = useNavigation();
   const coverImage = get(group, 'coverImage.sources[0].uri', null);
 
   if (loading)
@@ -123,50 +124,49 @@ const EditGroup = ({ navigation, group, loading, error }) => {
     <BackgroundView>
       <StatusBar hidden />
       <ScrollView>
-        <SafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
-          <KeyboardAvoidingView behavior={'padding'}>
-            <ContentContainer>
-              {loading && (
-                <Overlay>
-                  <ActivityIndicator />
-                </Overlay>
-              )}
+        <KeyboardAvoidingView behavior={'padding'}>
+          <ContentContainer>
+            {loading && (
+              <Overlay>
+                <ActivityIndicator />
+              </Overlay>
+            )}
 
-              <FieldContainer>
-                <RowHeader>
-                  <Name>
-                    <H3>Cover Photo</H3>
-                  </Name>
-                  <AndroidTouchableFix
-                    onPress={handleUpdateGroupCoverImagePress}
-                  >
-                    <ButtonLinkSpacing>
-                      <H6>
-                        <ButtonLink>Update</ButtonLink>
-                      </H6>
-                    </ButtonLinkSpacing>
-                  </AndroidTouchableFix>
-                </RowHeader>
-                <TouchableScale onPress={handleUpdateGroupCoverImagePress}>
-                  <Card>
-                    <Image source={coverImage} />
-                  </Card>
-                </TouchableScale>
-              </FieldContainer>
-              <FieldContainer>
-                <RowHeader>
-                  <Name>
-                    <H3>Resources</H3>
-                  </Name>
-                </RowHeader>
-                <ResourcesSection
-                  groupId={group.id}
-                  onAddContentItem={navigateToAddContentItem}
-                />
-              </FieldContainer>
-            </ContentContainer>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
+            <FieldContainer>
+              <RowHeader>
+                <Name>
+                  <H3>Cover Photo</H3>
+                </Name>
+                <AndroidTouchableFix onPress={handleUpdateGroupCoverImagePress}>
+                  <ButtonLinkSpacing>
+                    <H6>
+                      <ButtonLink>Update</ButtonLink>
+                    </H6>
+                  </ButtonLinkSpacing>
+                </AndroidTouchableFix>
+              </RowHeader>
+              {/**
+               *  TODO : image isn't updating for some reason after save
+               */}
+              <TouchableScale onPress={handleUpdateGroupCoverImagePress}>
+                <Card>
+                  <Image source={coverImage} />
+                </Card>
+              </TouchableScale>
+            </FieldContainer>
+            <FieldContainer>
+              <RowHeader>
+                <Name>
+                  <H3>Resources</H3>
+                </Name>
+              </RowHeader>
+              <ResourcesSection
+                groupId={group.id}
+                onAddContentItem={navigateToAddContentItem}
+              />
+            </FieldContainer>
+          </ContentContainer>
+        </KeyboardAvoidingView>
       </ScrollView>
     </BackgroundView>
   );
@@ -200,10 +200,18 @@ EditGroup.defaultProps = {
 // ------------------------------------------------------------------
 const EditGroupConnected = (props) => {
   // Group data
-  const id = props.navigation.getParam('id');
+  const id = props.route?.params?.id;
   const { group, loading } = useGroup(id);
 
   return <EditGroup {...props} group={group} loading={loading} />;
+};
+
+EditGroupConnected.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }),
 };
 
 export default EditGroupConnected;

@@ -6,7 +6,7 @@ import Config from 'react-native-config';
 import { first, isEmpty } from 'lodash';
 import moment from 'moment';
 
-import { styled, Button } from '@apollosproject/ui-kit';
+import { styled, Button, Icon, withTheme, H4 } from '@apollosproject/ui-kit';
 
 import { useCheckIn } from 'check-in';
 import { useCurrentUser, useLinkRouter } from '../hooks';
@@ -22,6 +22,38 @@ const CellItem = styled(({ theme }) => ({
   justifyContent: 'center',
   flex: 1,
 }))(View);
+
+const ButtonContentLayout = styled(({ theme }) => ({
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+}))(View);
+
+const IconSpacing = styled(({ theme }) => ({
+  paddingRight: theme.sizing.baseUnit * 0.3,
+}))(View);
+
+const StyledIcon = withTheme(({ theme }) => ({
+  name: 'video',
+  size: 18,
+}))(Icon);
+
+const VideoButton = ({ title, loading, ...props }) => (
+  <Button {...props} loading={loading}>
+    <ButtonContentLayout>
+      <IconSpacing>
+        <StyledIcon loading={loading} />
+      </IconSpacing>
+
+      <H4 loading={loading}>{title}</H4>
+    </ButtonContentLayout>
+  </Button>
+);
+
+VideoButton.propTypes = {
+  title: PropTypes.string,
+  loading: PropTypes.bool,
+};
 
 // const ZoomBridgeerType = 2; // 2 - pro user
 const config = {
@@ -82,7 +114,7 @@ const VideoCall = ({ parentVideoCall, videoCall, isLoading, groupId }) => {
     <Cell>
       {!isEmpty(parentVideoCall) ? (
         <CellItem>
-          <Button
+          <VideoButton
             onPress={() =>
               parentVideoCall.meetingId
                 ? join(parentVideoCall.meetingId, parentVideoCall.passcode)
@@ -97,7 +129,7 @@ const VideoCall = ({ parentVideoCall, videoCall, isLoading, groupId }) => {
       ) : null}
       {!isEmpty(videoCall) ? (
         <CellItem>
-          <Button
+          <VideoButton
             onPress={() =>
               videoCall.meetingId
                 ? join(videoCall.meetingId, videoCall.passcode)

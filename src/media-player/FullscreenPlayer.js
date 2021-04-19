@@ -9,7 +9,8 @@ import {
   StatusBar,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { Query, withApollo } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
+import { withApollo } from '@apollo/client/react/hoc';
 import { get } from 'lodash';
 
 import { styled } from '@apollosproject/ui-kit';

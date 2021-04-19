@@ -7,6 +7,19 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!-- 
+        :: React Native Cameraroll for Stream.IO
+        :: https://github.com/react-native-cameraroll/react-native-cameraroll#permissions
+     -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <!-- 
+        :: React Native Image Crop Picker for Stream.IO
+        :: https://github.com/ivpusic/react-native-image-crop-picker#android
+     -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.front" android:required="false" />
+
     <application
         android:name=".MainApplication"
         android:label="@string/app_name"
@@ -26,14 +39,27 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="adjustResize"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true"
             android:launchMode="singleTask"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- ? not exactly sure what this is for? I _think_ this is used for universal linking in android? -->
+            <!-- <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                
+                <data android:scheme="https"
+                        android:host="@string/APP_DATA_URL"
+                        android:pathPrefix="/app-link" />
+                <data android:scheme="http" />
+            </intent-filter> -->
         </activity>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>

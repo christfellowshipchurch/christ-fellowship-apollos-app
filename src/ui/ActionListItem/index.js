@@ -71,7 +71,7 @@ const RenderAsTouchable = ({ children, onPress }) =>
     children
   );
 
-const ActionListItem = ({ imageSource, title, label, onPress, icon }) => (
+const ActionListItem = ({ imageSource, title, labelText, onPress, icon }) => (
   <RenderAsTouchable onPress={onPress}>
     <Cell>
       <ImagePosition>
@@ -84,10 +84,10 @@ const ActionListItem = ({ imageSource, title, label, onPress, icon }) => (
       </ImagePosition>
 
       <TextContainer>
-        {title ? <H5 numberOfLines={!label ? 2 : 1}>{title}</H5> : null}
-        {label ? (
+        {title ? <H5 numberOfLines={!labelText ? 2 : 1}>{title}</H5> : null}
+        {labelText ? (
           <Label numberOfLines={!title ? 3 : 2} ellipsizeMode="tail">
-            {label}
+            {labelText}
           </Label>
         ) : null}
       </TextContainer>
@@ -98,7 +98,7 @@ const ActionListItem = ({ imageSource, title, label, onPress, icon }) => (
 ActionListItem.propTypes = {
   imageSource: ImageSourceType,
   title: PropTypes.string,
-  label: PropTypes.string,
+  labelText: PropTypes.string,
   onPress: PropTypes.func,
   icon: PropTypes.string,
 };

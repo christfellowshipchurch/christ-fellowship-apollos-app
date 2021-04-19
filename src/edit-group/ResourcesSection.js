@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
 import PropTypes from 'prop-types';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation } from '@apollo/client';
 import { get } from 'lodash';
 
 import {
@@ -9,6 +9,8 @@ import {
   ActivityIndicator,
   ErrorCard,
   PaddedView,
+  ThemeMixin,
+  withTheme,
 } from '@apollosproject/ui-kit';
 
 import ActionBar, { ActionBarItem } from '../ui/ActionBar';
@@ -32,6 +34,22 @@ const LoadingContainer = styled(({ theme }) => ({
   flex: 1,
   minHeight: 150,
 }))(View);
+
+const AddLinkTheme = withTheme(({ theme }) => ({
+  mixin: {
+    colors: {
+      primary: theme.colors.success,
+    },
+  },
+}))(ThemeMixin);
+
+const AddStudyTheme = withTheme(({ theme }) => ({
+  mixin: {
+    colors: {
+      primary: theme.colors.alert,
+    },
+  },
+}))(ThemeMixin);
 
 // :: Core Component
 // ------------------------------------------------------------------
@@ -61,12 +79,21 @@ const ResourcesSection = ({
     <View>
       {!addFormVisible && (
         <ActionBar>
-          <ActionBarItem icon="link" label="Add Link" onPress={onShowAddForm} />
-          <ActionBarItem
-            icon="book-closed"
-            label="Add Study"
-            onPress={onAddContentItem}
-          />
+          <AddLinkTheme>
+            <ActionBarItem
+              icon="link"
+              label="Add Link"
+              onPress={onShowAddForm}
+            />
+          </AddLinkTheme>
+
+          <AddStudyTheme>
+            <ActionBarItem
+              icon="book-closed"
+              label="Add Study"
+              onPress={onAddContentItem}
+            />
+          </AddStudyTheme>
         </ActionBar>
       )}
 

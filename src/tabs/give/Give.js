@@ -1,96 +1,44 @@
-import React, { useState } from 'react';
-import { Animated } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import React from 'react';
+import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 
-import { styled } from '@apollosproject/ui-kit';
-import { RockAuthedWebBrowser } from '@apollosproject/ui-connected';
+import { BackgroundView } from '@apollosproject/ui-kit';
 
-import { GiveFeaturesFeedConnected } from 'features';
-import { useLinkRouter } from 'hooks';
+import { FeaturesFeedConnected } from 'features';
+import TabHeader from '../TabHeader';
 
-import {
-  navigationOptions,
-  BackgroundView,
-  NavigationSpacer,
-  useHeaderScrollEffect,
-} from '../../navigation';
+// getHomeFeed uses the HOME_FEATURES in the config.yml
+// You can also hardcode an ID if you are confident it will never change
+// Or use some other strategy to get a FeatureFeed.id
+export const GET_GIVE_FEED = gql`
+  query getGiveFeedFeatures {
+    giveFeedFeatures {
+      id
+    }
+  }
+`;
 
-const FlexedSafeAreaView = styled(() => ({ flex: 1 }))(SafeAreaView);
-
-const Give = ({ navigation }) => {
-  const { routeLink } = useLinkRouter();
-  const [refetchRef, setRefetchRef] = useState(null);
-  const { scrollY } = useHeaderScrollEffect({ navigation });
-  const handleOnPress = ({ openUrl }) => ({ action, relatedNode }) => {
-    if (action === 'READ_CONTENT') {
-      navigation.navigate('ContentSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_EVENT') {
-      navigation.navigate('Event', {
-        eventId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_PRAYER') {
-      navigation.navigate('PrayerRequestSingle', {
-        prayerRequestId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'READ_GROUP') {
-      navigation.navigate('GroupSingle', {
-        itemId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_NODE') {
-      console.warn(relatedNode);
-      navigation.navigate('NodeSingle', {
-        nodeId: relatedNode.id,
-        transitionKey: 2,
-      });
-    }
-    if (action === 'OPEN_URL') {
-      routeLink(relatedNode.url, { nested: true });
-    }
-  };
+const Give = () => {
+  const { data, error, loading, refetch } = useQuery(GET_GIVE_FEED, {
+    fetchPolicy: 'cache-first',
+  });
+  const featuresFeedId = data?.giveFeedFeatures?.id;
 
   return (
-    <RockAuthedWebBrowser>
-      {(openUrl) => (
-        <BackgroundView>
-          <FlexedSafeAreaView>
-            <GiveFeaturesFeedConnected
-              onPressActionItem={handleOnPress({ openUrl })}
-              ListHeaderComponent={<NavigationSpacer />}
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {
-                    contentOffset: { y: scrollY },
-                  },
-                },
-              ])}
-              removeClippedSubviews={false}
-              numColumns={1}
-              onRef={(ref) => setRefetchRef(ref)}
-            />
-          </FlexedSafeAreaView>
-        </BackgroundView>
-      )}
-    </RockAuthedWebBrowser>
+    <BackgroundView>
+      <TabHeader title="Give" />
+      <FeaturesFeedConnected
+        featuresFeedId={featuresFeedId}
+        refetch={refetch}
+        isLoading={loading}
+        error={error}
+        removeClippedSubviews={false}
+        numColumns={1}
+      />
+    </BackgroundView>
   );
 };
-
-Give.navigationOptions = (props) =>
-  navigationOptions({
-    ...props,
-    title: 'Give',
-  });
 
 Give.propTypes = {
   navigation: PropTypes.shape({

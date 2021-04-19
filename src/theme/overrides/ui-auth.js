@@ -1,6 +1,14 @@
 import { StyleSheet } from 'react-native';
+import AuthProfileDetailsEntry from '../../auth/AuthProfileDetailsEntry';
 
 export default {
+  // 'ui-auth.ProfileDetailsEntryConnected': {
+  //   Component: AuthProfileDetailsEntry,
+  // },
+  'ui-auth.NextButton': {
+    backgroundColor: '#FCFCFC',
+    borderColor: '#FCFCFC',
+  },
   'ui-auth.styles.TitleText': {
     color: '#FFFFFF',
   },
@@ -15,10 +23,6 @@ export default {
     borderBottomWidth: 1,
     borderLeftWidth: StyleSheet.hairlineWidth,
     borderRightWidth: StyleSheet.hairlineWidth,
-  },
-  'ui-auth.NextButton': {
-    backgroundColor: '#FCFCFC',
-    borderColor: '#FCFCFC',
   },
   'ui-auth.styles.PromptText': {
     color: '#FCFCFC',

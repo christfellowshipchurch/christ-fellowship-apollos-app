@@ -1,29 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Animated, View } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { useQuery } from '@apollo/client';
 import { get } from 'lodash';
-import { useQuery } from '@apollo/react-hooks';
 import moment from 'moment';
 
+import { SafeAreaView } from 'react-native-safe-area-context';
+import NavigationHeader from 'ui/NavigationHeader';
+
+import { View } from 'react-native';
 import { fetchMoreResolver } from '@apollosproject/ui-connected';
 import {
   styled,
+  H3,
   H4,
   PaddedView,
   TouchableScale,
   Card,
   CardContent,
+  withTheme,
+  UIText,
 } from '@apollosproject/ui-kit';
 
 import { CardFeed } from 'ui/CardFeeds';
 import DateLabel from 'ui/DateLabel';
 import { HorizontalDivider } from 'ui/Dividers';
-import {
-  navigationOptions,
-  NavigationSpacer,
-  useHeaderScrollEffect,
-} from 'navigation';
 import GET_MY_PRAYER_REQUESTS from './getMyPrayerRequests';
 
 const loadingStateObject = {
@@ -38,8 +38,21 @@ const StyledHorizontalDivider = styled(({ theme }) => ({
 }))(HorizontalDivider);
 
 const StyledDateLabel = styled(({ theme }) => ({
-  paddingBottom: theme.sizing.baseUnit * 0.5,
+  paddingBottom: theme.sizing.baseUnit * 0.25,
 }))(DateLabel);
+
+/**
+ * note : This component doesn't actually do anything. It's literally only here to give a visual indication to the user that they can tap on an individual prayer to expand it to a full view
+ */
+const ViewText = withTheme(({ theme }) => ({
+  bold: true,
+  style: {
+    color: theme.colors.primary,
+    alignSelf: 'flex-end',
+    fontSize: 10,
+    paddingTop: theme.sizing.baseUnit,
+  },
+}))(UIText);
 
 const PrayerPreview = ({ text, date, isLoading, asCard }) => {
   const BodyContent = () => (
@@ -48,6 +61,7 @@ const PrayerPreview = ({ text, date, isLoading, asCard }) => {
       <H4 isLoading={isLoading} numberOfLines={3}>
         {text}
       </H4>
+      <ViewText>View</ViewText>
     </View>
   );
 
@@ -67,6 +81,13 @@ const PrayerPreview = ({ text, date, isLoading, asCard }) => {
   );
 };
 
+PrayerPreview.propTypes = {
+  text: PropTypes.string,
+  date: PropTypes.string,
+  isLoading: PropTypes.bool,
+  asCard: PropTypes.bool,
+};
+
 const mapEdges = (data) =>
   get(data, 'currentUserPrayerRequests.edges', []).map(({ node }) => ({
     ...node,
@@ -74,7 +95,6 @@ const mapEdges = (data) =>
   }));
 
 const MyPrayerRequestsFeed = ({ navigation }) => {
-  const { scrollY } = useHeaderScrollEffect({ navigation });
   const { loading, error, data, refetch, fetchMore, variables } = useQuery(
     GET_MY_PRAYER_REQUESTS,
     {
@@ -94,7 +114,7 @@ const MyPrayerRequestsFeed = ({ navigation }) => {
       <TouchableScale
         onPress={() =>
           navigation.navigate('PrayerRequestSingle', {
-            prayerRequestId: item.id,
+            itemId: item.id,
           })
         }
         style={{ flex: 1 }}
@@ -104,9 +124,15 @@ const MyPrayerRequestsFeed = ({ navigation }) => {
     );
 
   return (
-    <SafeAreaView forceInset style={{ flex: 1 }}>
+    <SafeAreaView edges={['top', 'right', 'left']}>
+      <NavigationHeader />
       <CardFeed
-        ListHeaderComponent={<NavigationSpacer />}
+        ListHeaderComponent={
+          <PaddedView>
+            <H3>My Prayer Requests</H3>
+          </PaddedView>
+        }
+        H3
         content={prayers.sort((a, b) =>
           moment(b.requestedDate).diff(a.requestedDate)
         )}
@@ -121,24 +147,10 @@ const MyPrayerRequestsFeed = ({ navigation }) => {
           data,
         })}
         refetch={refetch}
-        scrollEventThrottle={16}
-        onScroll={Animated.event([
-          {
-            nativeEvent: {
-              contentOffset: { y: scrollY },
-            },
-          },
-        ])}
       />
     </SafeAreaView>
   );
 };
-
-MyPrayerRequestsFeed.navigationOptions = (props) =>
-  navigationOptions({
-    ...props,
-    title: 'My Prayers',
-  });
 
 MyPrayerRequestsFeed.propTypes = {
   navigation: PropTypes.shape({

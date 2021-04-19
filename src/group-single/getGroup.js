@@ -74,6 +74,10 @@ export default gql`
       ... on Group {
         ...GroupItemFragment
         ...groupFragment
+      }
+
+      ... on VolunteerGroup {
+        ...GroupItemFragment
         streamChatChannel {
           id
           channelId
@@ -81,8 +85,7 @@ export default gql`
         }
       }
 
-      ... on VolunteerGroup {
-        ...GroupItemFragment
+      ... on StreamChatChannelNode {
         streamChatChannel {
           id
           channelId

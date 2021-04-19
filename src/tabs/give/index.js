@@ -1,19 +1,27 @@
-import { createStackNavigator } from 'react-navigation';
-import tabBarIcon from '../tabBarIcon';
+import React from 'react';
+import { Platform } from 'react-native';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+
+import { withTheme } from '@apollosproject/ui-kit';
+
+import HeaderButtons from '../HeaderButtons';
 import Give from './Give';
 
-const GiveNavigator = createStackNavigator(
-  {
-    Give,
-  },
-  {
-    initialRouteName: 'Give',
-    headerLayoutPreset: 'left',
-  }
+const { Navigator, Screen } = createNativeStackNavigator();
+
+const GiveNavigator = (props) => (
+  <Navigator initialRouteName="Give" {...props}>
+    <Screen component={Give} name="Give" />
+  </Navigator>
 );
 
-GiveNavigator.navigationOptions = {
-  tabBarIcon: tabBarIcon('envelope-open-dollar'),
-};
+const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
+  ...props,
+  screenOptions: {
+    headerRight: HeaderButtons,
+    headerLargeTitle: true,
+    headerHideShadow: true,
+  },
+}))(GiveNavigator);
 
-export default GiveNavigator;
+export default Give;

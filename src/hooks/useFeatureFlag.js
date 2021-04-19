@@ -1,6 +1,6 @@
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import gql from 'graphql-tag';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
 const GET_FEATURE_STATUS = gql`
   query getFlagStatus($key: String!) {
@@ -9,13 +9,15 @@ const GET_FEATURE_STATUS = gql`
 `;
 
 const useFeatureFlag = (props) => {
+  console.warn('DEPRECATED : please use `useUserFlag` instead');
+
   const key = get(props, 'key');
   const { data, ...queryProps } = useQuery(GET_FEATURE_STATUS, {
     variables: {
       key,
     },
-    skip: !key || key === '',
-    fetchPolicy: 'cache-and-network',
+    skip: !key || isEmpty(key),
+    fetchPolicy: 'network-only',
   });
 
   return {

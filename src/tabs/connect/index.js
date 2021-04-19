@@ -1,22 +1,26 @@
 import React from 'react';
-import { createStackNavigator } from 'react-navigation';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import AvatarIcon from './AvatarIcon';
+import { withTheme } from '@apollosproject/ui-kit';
+
+import HeaderButtons from '../HeaderButtons';
 import Connect from './Connect';
 
-const ConnectNavigator = createStackNavigator(
-  {
-    Connect,
-  },
-  {
-    initialRouteName: 'Connect',
-    headerLayoutPreset: 'left',
-  }
+const { Navigator, Screen } = createNativeStackNavigator();
+
+const ConnectNavigator = (props) => (
+  <Navigator initialRouteName="Connect" {...props}>
+    <Screen component={Connect} name="Connect" />
+  </Navigator>
 );
 
-ConnectNavigator.navigationOptions = {
-  tabBarIcon: ({ focused }) => <AvatarIcon focused={focused} />,
-  title: 'Profile',
-};
+const EnhancedNavigator = withTheme(({ theme, ...props }) => ({
+  ...props,
+  screenOptions: {
+    headerRight: HeaderButtons,
+    headerLargeTitle: true,
+    headerHideShadow: true,
+  },
+}))(ConnectNavigator);
 
-export default ConnectNavigator;
+export default Connect;

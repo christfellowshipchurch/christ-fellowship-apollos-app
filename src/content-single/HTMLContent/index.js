@@ -2,13 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { ContentHTMLViewConnected } from '@apollosproject/ui-connected';
+import { ItemSeparatorComponent } from '../ContentBody';
 import { useLinkRouter } from '../../hooks';
 
 const HTMLContent = ({ contentId }) => {
   const { routeLink } = useLinkRouter();
 
   return (
-    <ContentHTMLViewConnected contentId={contentId} onPressAnchor={routeLink} />
+    <ItemSeparatorComponent>
+      <ContentHTMLViewConnected
+        contentId={contentId}
+        onPressAnchor={routeLink}
+      />
+    </ItemSeparatorComponent>
   );
 };
 

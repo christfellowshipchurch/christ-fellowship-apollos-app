@@ -14,7 +14,7 @@ import {
 } from '@apollosproject/ui-kit';
 
 import ActionRow from '../ActionRow';
-import ContentCardConnected from '../ContentCardConnected';
+import { CardMapper } from '../Cards';
 import FeedHeader from './FeedHeader';
 
 const HorizontalFeedHeaderSpacing = styled(({ theme }) => ({
@@ -29,8 +29,28 @@ const StyledHorizontalTileFeed = withTheme(({ theme }) => ({
   },
 }))(HorizontalTileFeed);
 
+const generateLoadingStateData = (length) => {
+  const loadingStateData = [];
+
+  while (loadingStateData.length < length) {
+    loadingStateData.push({
+      id: `fakeId${0}`,
+      isLoading: true,
+      title: '',
+      channelType: '',
+      coverImage: [],
+      parentChannel: {
+        id: '',
+        name: '',
+      },
+    });
+  }
+
+  return loadingStateData;
+};
+
 const CardFeed = ({
-  card,
+  CardComponent,
   content,
   navigation,
   error,
@@ -38,11 +58,13 @@ const CardFeed = ({
   numColumns,
   title,
   seeMore,
+  seeMoreText,
   ListHeaderComponent,
   FeedHeaderComponent,
   onPressHeader,
   onPressItem,
   horizontal,
+  loadingStateDataLength,
   ...additionalProps
 }) => {
   const renderItem = ({ item }) =>
@@ -53,10 +75,10 @@ const CardFeed = ({
         onPress={() => onPressItem(item, navigation)}
         style={{ flex: get(item, 'flex', 1) }}
       >
-        <ContentCardConnected
-          card={card}
+        <CardMapper
+          Component={CardComponent}
           {...item}
-          contentId={get(item, 'id')}
+          nodeId={get(item, 'id')}
           inHorizontalList={horizontal}
         />
       </TouchableScale>
@@ -89,6 +111,7 @@ const CardFeed = ({
     content: adjustedContent,
     isLoading,
     error,
+    loadingStateData: generateLoadingStateData(loadingStateDataLength),
     ...(horizontal ? {} : { numColumns }),
     ...additionalProps,
   };
@@ -101,6 +124,7 @@ const CardFeed = ({
             <FeedHeaderComponent
               title={title}
               seeMore={seeMore}
+              seeMoreText={seeMoreText}
               isLoading={isLoading}
               onPress={onPressHeader}
             />
@@ -136,13 +160,6 @@ const CardFeed = ({
 };
 
 CardFeed.propTypes = {
-  /** Functions passed down from React Navigation to use in navigating to/from
-   * items in the feed.
-   */
-  navigation: PropTypes.shape({
-    getParam: PropTypes.func,
-    navigate: PropTypes.func,
-  }),
   card: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
   content: PropTypes.arrayOf(
     PropTypes.shape({
@@ -152,15 +169,18 @@ CardFeed.propTypes = {
     })
   ),
   isLoading: PropTypes.bool,
-  error: PropTypes.any,
+  error: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   numColumns: PropTypes.number,
   title: PropTypes.string,
   seeMore: PropTypes.bool,
+  seeMoreText: PropTypes.string,
+  CardComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   ListHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   FeedHeaderComponent: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
   onPressHeader: PropTypes.func,
   onPressItem: PropTypes.func,
-  horizontal: PropTypes.func,
+  horizontal: PropTypes.bool,
+  loadingStateDataLength: PropTypes.number,
 };
 
 CardFeed.defaultProps = {
@@ -172,16 +192,10 @@ CardFeed.defaultProps = {
   ListHeaderComponent: null,
   FeedHeaderComponent: FeedHeader,
   onPressHeader: () => null,
-  onPressItem: (item, navigation) => {
-    if (item.id) {
-      navigation.navigate('ContentSingle', {
-        itemId: item.id,
-        sharing: item.sharing,
-      });
-    }
-  },
+  onPressItem: () => null,
   horizontal: false,
   error: null,
+  loadingStateDataLength: 3,
 };
 
 const CardFeedWithNumColumns = withMediaQuery(

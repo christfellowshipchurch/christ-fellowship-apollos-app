@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import {
   Avatar,
   ConnectedImage,
@@ -45,7 +45,7 @@ const RequestorAvatar = ({
 }) => {
   const { id } = useCurrentUser();
   const { loading, error, data } = useQuery(GET_PRAYER_REQUEST, {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first',
     skip: !prayerRequestId,
     variables: {
       prayerRequestId,

@@ -22,9 +22,11 @@ then
     echo "Rebuilding Pod File"
     yarn pods
 
-    echo "Running Bugnsag Source Map upload"
-    yarn bugsnag-release
+    echo "Finished setup of Zoom's SDK: $ZOOM_SDK"
 
-    echo "Starting Metro Bundler"
-    yarn start
+    # echo "Running Bugnsag Source Map upload"
+    # yarn bugsnag-release
+
+    # echo "Starting Metro Bundler"
+    # yarn start
 fi

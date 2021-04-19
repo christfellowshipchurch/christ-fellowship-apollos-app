@@ -1,11 +1,14 @@
-export ColumnCard from './ColumnCard';
-export FormCard from './FormCard';
-export GroupCard from './GroupCard';
-export HighlightCard from './HighlightCard';
-export HorizontalDefaultCard from './HorizontalDefaultCard';
-export HorizontalHighlightCard from './HorizontalHighlightCard';
-export HorizontalPrayerRequestCard from './HorizontalPrayerRequestCard';
-export RowCard from './RowCard';
-export StackedImageCard from './StackedImageCard';
-export TileRowCard from './TileRowCard';
-export TinyCard from './TinyCard';
+export { default as CardMapper } from './CardMapper';
+export { default as ColumnCard } from './ColumnCard';
+export { default as FormCard } from './FormCard';
+export { default as GroupCard } from './GroupCard';
+export { default as HighlightCard } from './HighlightCard';
+export { default as HorizontalDefaultCard } from './HorizontalDefaultCard';
+export { default as HorizontalHighlightCard } from './HorizontalHighlightCard';
+export {
+  default as HorizontalPrayerRequestCard,
+} from './HorizontalPrayerRequestCard';
+export { default as RowCard } from './RowCard';
+export { default as StackedImageCard } from './StackedImageCard';
+export { default as TileRowCard } from './TileRowCard';
+export { default as TinyCard } from './TinyCard';

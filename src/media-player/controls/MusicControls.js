@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Animated, Platform } from 'react-native';
 import MusicControl from 'react-native-music-control';
-import { withApollo, Query } from 'react-apollo';
+import { Query } from '@apollo/client/react/components';
+import { withApollo } from '@apollo/client/react/hoc';
 import { throttle, get } from 'lodash';
 
 import { GET_MUSIC_CONTROL_STATE } from '../queries';

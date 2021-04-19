@@ -1,9 +1,13 @@
 import React from 'react';
-import { createStackNavigator } from 'react-navigation';
+import PropTypes from 'prop-types';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
 
-import NavigationHeader from 'ui/NavigationHeader';
 import { useCurrentUser } from '../hooks';
 import EditUser from './EditUser';
+
+import { CurrentUser, EditAddress, EditProfileDetails } from './screens';
+
+const { Screen, Navigator } = createNativeStackNavigator();
 
 const EditCurrentUser = ({ navigation }) => {
   const currentUser = useCurrentUser();
@@ -13,21 +17,46 @@ const EditCurrentUser = ({ navigation }) => {
 EditCurrentUser.navigationOptions = {
   headerMode: 'float',
   headerTransparent: true,
-  header: NavigationHeader,
 };
 
-const EditUserNavigator = createStackNavigator(
-  {
-    EditCurrentUser,
-  },
-  {
-    initialRouteName: 'EditCurrentUser',
-    headerMode: 'float',
-    headerTransitionPreset: 'fade-in-place',
-    navigationOptions: {
-      header: null,
-    },
-  }
+// TODO : links not working on the profile tab
+
+const EditUserNavigator = ({ route, ...props }) => (
+  <Navigator
+    {...props}
+    headerMode="none"
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
+    <Screen
+      name="CurrentUser"
+      component={CurrentUser}
+      initialParams={route.params}
+    />
+    <Screen
+      name="EditAddress"
+      component={EditAddress}
+      initialParams={route.params}
+      options={{
+        stackPresentation: 'modal',
+      }}
+    />
+    <Screen
+      name="EditProfileDetails"
+      component={EditProfileDetails}
+      initialParams={route.params}
+      options={{
+        stackPresentation: 'modal',
+      }}
+    />
+  </Navigator>
 );
+
+EditUserNavigator.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({}),
+  }),
+};
 
 export default EditUserNavigator;

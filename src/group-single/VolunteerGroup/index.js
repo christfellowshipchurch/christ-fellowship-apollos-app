@@ -1,18 +1,14 @@
 import React, { useRef } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get, isEmpty } from 'lodash';
 
-import {
-  styled,
-  BackgroundView,
-  PaddedView,
-  ImageSourceType,
-} from '@apollosproject/ui-kit';
+import { styled, PaddedView, ImageSourceType } from '@apollosproject/ui-kit';
 
 import CoverImageBackground from '../CoverImageBackground';
 import Resources from '../Resources';
-import MembersFeedConnected from '../MembersFeedConnected';
+import { HorizontalMembersFeedPreview } from '../MembersFeed';
 import HeaderConnected from '../HeaderConnected';
 import SummaryConnected from '../SummaryConnected';
 import { CheckInButtonConnected } from '../../check-in';
@@ -24,7 +20,13 @@ const Cell = styled(({ theme }) => ({
   flex: 1,
 }))(View);
 
-const VolunteerGroup = ({ id, content, loading, navigation }) => {
+const BackgroundView = styled(({ theme }) => ({
+  backgroundColor: theme.colors.background.screen,
+  flex: 1,
+}))(View);
+
+const VolunteerGroup = ({ id, content, loading }) => {
+  const navigation = useNavigation();
   const checkInRef = useRef();
   const coverImageSources = get(content, 'coverImage.sources', []);
   const resources = get(content, 'resources', []);
@@ -43,7 +45,7 @@ const VolunteerGroup = ({ id, content, loading, navigation }) => {
           <SummaryConnected id={id} />
         </PaddedView>
 
-        <MembersFeedConnected id={id} />
+        <HorizontalMembersFeedPreview id={id} />
 
         {!isEmpty(resources) ? (
           <Resources

@@ -1,5 +1,5 @@
 import { View, FlatList } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Color from 'color';
 
 import {

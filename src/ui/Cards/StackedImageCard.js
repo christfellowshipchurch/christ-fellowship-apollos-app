@@ -57,12 +57,18 @@ const Cell = styled(({ theme, placement }) => ({
   marginVertical: theme.sizing.baseUnit * 0.75,
 }))(View);
 
-const StackedImageCard = ({ placement, coverImage, label, title, summary }) => (
+const StackedImageCard = ({
+  placement,
+  coverImage,
+  labelText,
+  title,
+  summary,
+}) => (
   <ThemeMixin>
     <Cell placement={placement}>
       <CellImage>
-        <Image source={coverImage} isLoading label={label} />
-        <StyledCardLabel title={label} />
+        <Image source={coverImage} isLoading label={labelText} />
+        <StyledCardLabel title={labelText} />
       </CellImage>
       <TextContainer>
         {title !== '' && (
@@ -87,7 +93,7 @@ StackedImageCard.propTypes = {
     PropTypes.arrayOf(ImageSourceType),
     ImageSourceType,
   ]),
-  label: PropTypes.string,
+  labelText: PropTypes.string,
   summary: PropTypes.string,
   title: PropTypes.string,
   id: PropTypes.string,

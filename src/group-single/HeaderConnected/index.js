@@ -1,10 +1,10 @@
 import React from 'react';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/client';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
 import { get } from 'lodash';
 import Color from 'color';
-import { SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -16,7 +16,7 @@ import {
   Avatar,
 } from '@apollosproject/ui-kit';
 
-import { useCurrentUser, useFeatureFlag } from '../../hooks';
+import { useCurrentUser, useUserFlag } from '../../hooks';
 
 import EditGroupButton from '../EditGroupButton';
 
@@ -24,10 +24,10 @@ import GET_HEADER from './getHeader';
 
 const HeaderSpacing = withTheme(({ theme }) => ({
   colors: [
-    Color(theme.colors.background.paper)
+    Color(theme.colors.background.screen)
       .alpha(0)
       .string(),
-    theme.colors.background.paper,
+    theme.colors.background.screen,
   ],
   style: { paddingTop: theme.sizing.baseUnit * 2 },
 }))(LinearGradient);
@@ -60,9 +60,7 @@ const StyledH5 = styled(({ theme }) => ({
 }))(H5);
 
 const HeaderConnected = ({ id, onEditGroupPress }) => {
-  const { enabled } = useFeatureFlag({
-    key: 'GROUP_CUSTOMIZATION',
-  });
+  const enabled = useUserFlag('GROUP_CUSTOMIZATION');
   const { id: currentUserId } = useCurrentUser();
 
   const { data, loading } = useQuery(GET_HEADER, {
@@ -82,28 +80,26 @@ const HeaderConnected = ({ id, onEditGroupPress }) => {
   return (
     <HeaderSpacing>
       <SafeAreaView forceInset={{ top: 'always', bottom: 'never' }}>
-        <PaddedView>
-          {avatars.length > 0 && (
-            <HeroAvatars>
-              {avatars.map(({ id: personId, photo }) => (
-                <HeroAvatarSpacing key={personId}>
-                  <Avatar source={photo} themeSize={65} />
-                </HeroAvatarSpacing>
-              ))}
-            </HeroAvatars>
-          )}
+        {avatars.length > 0 && (
+          <HeroAvatars>
+            {avatars.map(({ id: personId, photo }) => (
+              <HeroAvatarSpacing key={personId}>
+                <Avatar source={photo} themeSize={65} />
+              </HeroAvatarSpacing>
+            ))}
+          </HeroAvatars>
+        )}
 
-          <StyledTitle>
-            <StyledH3 isLoading={loading && !content.title} numberOfLines={2}>
-              {content.title}
-            </StyledH3>
-            {!loading &&
-              !!content.groupType && (
-                <StyledH5 numberOfLines={2}>{content.groupType}</StyledH5>
-              )}
-            {canEditGroup && <EditGroupButton onPress={onEditGroupPress} />}
-          </StyledTitle>
-        </PaddedView>
+        <StyledTitle>
+          <StyledH3 isLoading={loading && !content.title} numberOfLines={2}>
+            {content.title}
+          </StyledH3>
+          {!loading &&
+            !!content.groupType && (
+              <StyledH5 numberOfLines={2}>{content.groupType}</StyledH5>
+            )}
+          {canEditGroup && <EditGroupButton onPress={onEditGroupPress} />}
+        </StyledTitle>
       </SafeAreaView>
     </HeaderSpacing>
   );

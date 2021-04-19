@@ -8,12 +8,12 @@ import { CheckInButton } from '.';
 
 // Since the UI for CheckInButton relies heavily on a background
 // image due to the blur view that we use, we want to write stories
-// with a background image, and AuthBackground does just that so
+// with a background image, and LandingScreen does just that so
 // we're hijacking it!
 const BackgroundPhoto = (props) => (
   <View style={{ width: '100%', height: '100%' }}>
     <ImageBackground
-      source={require('../../ui/AuthBackground/auth_background.jpg')}
+      source={require('../../ui/LandingScreen/Background/background.jpg')}
       style={{ width: '100%', height: '100%', justifyContent: 'center' }}
       {...props}
     />

@@ -14,7 +14,6 @@ import {
 } from '@apollosproject/ui-kit';
 
 import { lightenBy, darkenBy } from 'utils/theme';
-import { HeaderRight } from '../../navigation';
 
 const LoopIcon = withTheme(({ theme, isFocused }) => ({
   fill: isFocused ? theme.colors.text.primary : theme.colors.text.tertiary,
@@ -34,7 +33,7 @@ const ClearSearchButton = withTheme(({ theme, isVisible }) => ({
 }))(ButtonIcon);
 
 const TextInputWrapper = styled(({ theme }) => {
-  const screen = theme.colors.background.screen;
+  const { screen } = theme.colors.background;
   const borderColor = Color(screen).isDark()
     ? lightenBy(screen, 0.25)
     : darkenBy(screen, 0.05);
@@ -44,7 +43,7 @@ const TextInputWrapper = styled(({ theme }) => {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: theme.sizing.baseBorderRadius,
-    backgroundColor: theme.colors.background.screen,
+    backgroundColor: theme.colors.background.paper,
     borderWidth: 1,
     borderColor: borderColor.hex(),
     overflow: 'hidden',
@@ -72,7 +71,7 @@ const Input = withTheme(({ theme }) => ({
 }))(TextInput);
 
 const CancelButtonText = styled(({ theme }) => ({
-  paddingHorizontal: theme.sizing.baseUnit, // padding away from end of search field
+  paddingLeft: theme.sizing.baseUnit, // padding away from end of search field
   color: theme.colors.text.link, // we use UIText here instead of `ButtonLink` becuase onLayout has issues with nested text on Android
 }))(UIText);
 
@@ -89,7 +88,7 @@ CancelButton.propTypes = {
 const Layout = styled(({ theme }) => ({
   flexDirection: 'row',
   alignItems: 'center',
-  paddingLeft: theme.sizing.baseUnit, // we only need to worry about the left because the `HeaderRight` component has padding for the right
+  paddingHorizontal: theme.sizing.baseUnit * 0.75,
   paddingVertical: theme.sizing.baseUnit * 0.5,
   ...Platform.select({
     android: {
@@ -162,9 +161,7 @@ const SearchInputHeader = ({
               handleOnFocus(false);
             }}
           />
-        ) : (
-          <HeaderRight />
-        )}
+        ) : null}
       </SmokeAndMirrorsWrapper>
     </Layout>
   );
