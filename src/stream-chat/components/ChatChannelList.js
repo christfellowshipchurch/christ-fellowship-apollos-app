@@ -34,6 +34,7 @@ const options = {
   presence: true,
   state: true,
   watch: true,
+  message_limit: 1,
 };
 
 const ChatChannelList = ({ theme }) => {
