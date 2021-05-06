@@ -17,6 +17,7 @@
     "bugsnag-release:ios": "yarn generate-source-map:ios && yarn upload-source-map:ios",
     "canary": "./scripts/add-packages.sh canary",
     "codecov": "cat ./coverage/lcov.info | codecov",
+    "dev": "yarn start",
     "fixlint": "eslint ./src --fix",
     "generate-stories": "rnstl --searchDir ./src --pattern **/*.stories.js",
     "generate-source-map:android": "bash ./scripts/generate-bugsnag-source-map.sh android",
