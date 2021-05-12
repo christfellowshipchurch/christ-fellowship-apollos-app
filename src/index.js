@@ -143,7 +143,11 @@ const StackNavigator = (props) => (
         headerShown: true,
       })}
     />
-    <Screen name="ContentSingle" component={ContentSingle} />
+    <Screen
+      name="ContentSingle"
+      component={ContentSingle}
+      // options={{ title: 'Edit My Group', stackPresentation: 'push' }}
+    />
     <Screen
       name="EditGroup"
       component={EditGroup}

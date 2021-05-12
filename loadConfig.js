@@ -25,7 +25,7 @@ ApollosConfig.loadJs({
    *
    * Date Format: yyyy.mm.dd.HH.mm
    */
-  SCHEMA_VERSION: '2020.09.10.14.20',
+  SCHEMA_VERSION: '2021.05.06.10.28',
   FRAGMENTS: {
     ...FRAGMENTS,
     USER_PROFILE_PARTS_FRAGMENT: gql`
@@ -468,7 +468,7 @@ ApollosConfig.loadJs({
     CONTENT_BLOCK_FEATURE_FRAGMENT: gql`
       fragment ContentBlockFeatureFragment on ContentBlockFeature {
         title
-        summary
+        subtitle
         htmlContent
 
         coverImage {
@@ -479,6 +479,14 @@ ApollosConfig.loadJs({
         videos {
           sources {
             uri
+          }
+        }
+
+        actions {
+          title
+          action
+          relatedNode {
+            ...RelatedFeatureNodeFragment
           }
         }
 
