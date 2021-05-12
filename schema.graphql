@@ -276,16 +276,17 @@ type ContentBlockFeature implements Feature & Node {
   id: ID!
   order: Int
   title(hyphenated: Boolean): String
-  summary: String
+  subtitle: String
   htmlContent: String
   coverImage: ImageMedia
   videos: [VideoMedia]
-  imageRatio: String
-  imageAlt: String
-  subtitle: String
-  callToAction: CallToAction
-  secondaryCallToAction: CallToAction
   orientation: CONTENT_BLOCK_ORIENTATION
+  actions: [FeatureAction]
+  summary: String @deprecated(reason: "Please use 'subtitle' instead")
+  callToAction: CallToAction @deprecated(reason: "Please use 'actions' instead")
+  secondaryCallToAction: CallToAction @deprecated(reason: "Please use 'actions instead")
+  imageRatio: String @deprecated(reason: "UI doesn't respect this field")
+  imageAlt: String @deprecated(reason: "UI doesn't respect this field")
 }
 
 type ContentChannel implements Node {
@@ -347,7 +348,7 @@ interface ContentParentNode {
   childContentItemsConnection(first: Int, after: String): ContentItemsConnection
 }
 
-type ContentSeriesContentItem implements ContentItem & Node & PublicationNode & FeaturesNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ProgressNode & ShareableNode {
+type ContentSeriesContentItem implements ContentItem & Node & PublicationNode & FeaturesNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ProgressNode & ShareableNode & NodeRoute {
   id: ID!
   title(hyphenated: Boolean): String
   publishDate: String
@@ -373,6 +374,7 @@ type ContentSeriesContentItem implements ContentItem & Node & PublicationNode & 
   isLiked: Boolean
   likedCount: Int
   sharing: SharableContentItem
+  routing: Route
 }
 
 type DateTime {
@@ -396,7 +398,7 @@ type Device implements Node {
   notificationsEnabled: Boolean!
 }
 
-type DevotionalContentItem implements ContentItem & Node & PublicationNode & FeaturesNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ScriptureNode & ShareableNode {
+type DevotionalContentItem implements ContentItem & Node & PublicationNode & FeaturesNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ScriptureNode & ShareableNode & NodeRoute {
   id: ID!
   title(hyphenated: Boolean): String
   publishDate: String
@@ -420,6 +422,7 @@ type DevotionalContentItem implements ContentItem & Node & PublicationNode & Fea
   isLiked: Boolean
   likedCount: Int
   sharing: SharableContentItem
+  routing: Route
 }
 
 type Event implements Node {
@@ -433,7 +436,7 @@ type Event implements Node {
   campuses: [Campus]
 }
 
-type EventContentItem implements ContentItem & Node & CheckInableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & LiveNode {
+type EventContentItem implements ContentItem & Node & CheckInableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & LiveNode & NodeRoute {
   id: ID!
   title(hyphenated: Boolean): String
   coverImage: ImageMedia
@@ -463,6 +466,7 @@ type EventContentItem implements ContentItem & Node & CheckInableNode & ContentN
   likedCount: Int
   liveStream: LiveStream
   sharing: SharableContentItem
+  routing: Route
 }
 
 type EventGrouping {
@@ -622,6 +626,13 @@ enum HorizontalCardType {
   HIGHLIGHT_SMALL
 }
 
+type HtmlBlockFeature implements Feature & Node {
+  id: ID!
+  order: Int
+  title(hyphenated: Boolean): String
+  htmlContent: String
+}
+
 type ImageMedia implements Media {
   name: String
   key: String
@@ -637,7 +648,7 @@ enum INDEX_ACTION {
   delete
 }
 
-type InformationalContentItem implements ContentItem & Node & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode {
+type InformationalContentItem implements ContentItem & Node & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & NodeRoute {
   id: ID!
   title(hyphenated: Boolean): String
   coverImage: ImageMedia
@@ -657,6 +668,7 @@ type InformationalContentItem implements ContentItem & Node & ContentNode & Card
   isLiked: Boolean
   likedCount: Int
   sharing: SharableContentItem
+  routing: Route
 }
 
 enum InteractionAction {
@@ -745,7 +757,7 @@ interface Media {
   sources: [MediaSource]
 }
 
-type MediaContentItem implements ContentItem & Node & FeaturesNode & PublicationNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ScriptureNode & ShareableNode {
+type MediaContentItem implements ContentItem & Node & FeaturesNode & PublicationNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ScriptureNode & ShareableNode & NodeRoute {
   id: ID!
   title(hyphenated: Boolean): String
   publishDate: String
@@ -769,6 +781,7 @@ type MediaContentItem implements ContentItem & Node & FeaturesNode & Publication
   isLiked: Boolean
   likedCount: Int
   sharing: SharableContentItem
+  routing: Route
 }
 
 enum MediaInputType {
@@ -869,6 +882,10 @@ type NodeConnection {
 type NodeConnectionEdge {
   node: Node
   cursor: String
+}
+
+interface NodeRoute {
+  routing: Route
 }
 
 type PaginationInfo {
@@ -995,6 +1012,7 @@ type Query {
   genderOptions: [String]
   inAppLink(url: String!): String
   dannysContent: [ContentItem]
+  getNodeByPathname(pathname: String): Node
   getAddressByPerson: Address
   getStatesList: DefinedValueList @deprecated(reason: "Use 'statesList' instead.")
   stateOptions: [String]
@@ -1073,6 +1091,11 @@ type Resource {
 type RockPersonDetails {
   authToken: String
   authCookie: String
+}
+
+type Route {
+  pathname: String
+  deepLink: Url
 }
 
 type Schedule {
@@ -1223,7 +1246,7 @@ input TwilioNotifyPushInput {
   address: String
 }
 
-type UniversalContentItem implements ContentItem & Node & PublicationNode & FeaturesNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ShareableNode {
+type UniversalContentItem implements ContentItem & Node & PublicationNode & FeaturesNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ShareableNode & NodeRoute {
   id: ID!
   title(hyphenated: Boolean): String
   publishDate: String
@@ -1246,6 +1269,7 @@ type UniversalContentItem implements ContentItem & Node & PublicationNode & Feat
   isLiked: Boolean
   likedCount: Int
   sharing: SharableContentItem
+  routing: Route
 }
 
 enum UPDATEABLE_COMMUNICATION_PREFERENCES {
@@ -1482,7 +1506,7 @@ type WebviewFeature implements Feature & Node {
   url: String
 }
 
-type WeekendContentItem implements ContentItem & Node & PublicationNode & FeaturesNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ShareableNode {
+type WeekendContentItem implements ContentItem & Node & PublicationNode & FeaturesNode & LikableNode & ContentNode & Card & VideoNode & AudioNode & ContentChildNode & ContentParentNode & ThemedNode & ShareableNode & NodeRoute {
   id: ID!
   title(hyphenated: Boolean): String
   publishDate: String
@@ -1506,5 +1530,6 @@ type WeekendContentItem implements ContentItem & Node & PublicationNode & Featur
   likedCount: Int
   liveStream: LiveStream
   sharing: SharableContentItem
+  routing: Route
 }
 

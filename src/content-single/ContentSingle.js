@@ -44,7 +44,7 @@ const ContentSingle = (props) => {
     );
 
   const content = get(data, 'node', {});
-  const { theme = {}, id } = content;
+  const { id, theme = {} } = content;
 
   return (
     <ThemeMixin theme={theme}>
@@ -63,10 +63,7 @@ const ContentSingle = (props) => {
           itemId,
         }}
       />
-      <PlayerContainerConnected
-        nodeId={itemId}
-        featuresFeedId={content?.featureFeed?.id}
-      >
+      <PlayerContainerConnected nodeId={itemId}>
         {renderContent({ content, loading, error })}
       </PlayerContainerConnected>
       <ActionContainer itemId={id} />

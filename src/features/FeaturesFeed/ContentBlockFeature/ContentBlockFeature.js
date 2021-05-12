@@ -19,6 +19,7 @@ import {
   styled,
   H3,
   H5,
+  Button,
 } from '@apollosproject/ui-kit';
 import HTMLView from '@apollosproject/ui-htmlview';
 import InlineMediaPlayer from './InlineMediaPlayer';
@@ -56,10 +57,6 @@ const Spacing = styled(({ theme }) => ({
 
 // :: Styles
 // :: ================================== ::
-const HTMLViewSpacing = styled(({ theme }) => ({
-  paddingTop: theme.sizing.baseUnit * 0.5,
-}))(View);
-
 const StyledH5 = styled(({ theme }) => ({
   color: theme.colors.text.tertiary,
 }))(H5);
@@ -100,10 +97,13 @@ const ContentBlockFeature = ({
   orientation,
   mediaQuery,
   videos,
+  actions,
+  onPressItem,
 }) => {
   const showTitle = title && !isEmpty(title);
   const showSummary = summary && !isEmpty(summary);
   const showContent = htmlContent && !isEmpty(htmlContent);
+  const showActions = !isEmpty(actions);
 
   return (
     <Container
@@ -130,6 +130,18 @@ const ContentBlockFeature = ({
         <ConditionalRender condition={showContent}>
           <HTMLView>{htmlContent}</HTMLView>
         </ConditionalRender>
+
+        <ConditionalRender condition={showActions}>
+          {actions.map(({ title: actionTitle, action, relatedNode }, i) => (
+            <Button
+              key={`${title}${relatedNode?.id}`}
+              title={actionTitle}
+              onPress={() => onPressItem({ action, relatedNode })}
+              bordered={i > 0}
+              pill={false}
+            />
+          ))}
+        </ConditionalRender>
       </Spacing>
     </Container>
   );
@@ -143,11 +155,23 @@ ContentBlockFeature.propTypes = {
   videos: ImageSourceType,
   orientation: PropTypes.oneOf(['DEFAULT', 'INVERTED', 'LEFT', 'RIGHT']),
   mediaQuery: PropTypes.oneOf(['sm', 'md']),
+  actions: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      action: PropTypes.string,
+      relatedNode: PropTypes.shape({
+        id: PropTypes.string,
+      }),
+    })
+  ),
+  onPressItem: PropTypes.func,
 };
 
 ContentBlockFeature.defaultProps = {
   orientation: 'DEFAULT',
   mediaQuery: 'sm',
+  actions: [],
+  onPressItem: () => null,
 };
 
 export default withMediaQuery(

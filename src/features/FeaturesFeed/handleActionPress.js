@@ -2,6 +2,12 @@ import { FEATURE_FEED_ACTION_MAP } from '@apollosproject/ui-connected';
 
 const ACTION_MAP = {
   ...FEATURE_FEED_ACTION_MAP,
+  READ_CONTENT: ({ navigation, relatedNode }) => {
+    navigation.push('ContentSingle', {
+      itemId: relatedNode.id,
+      transitionKey: 2,
+    });
+  },
   READ_GROUP: ({ navigation, relatedNode }) => {
     navigation.navigate('GroupSingle', {
       itemId: relatedNode.id,

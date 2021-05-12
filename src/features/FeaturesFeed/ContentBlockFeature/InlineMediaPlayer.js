@@ -9,10 +9,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
 import { View, Animated } from 'react-native';
 import {
   styled,
+  withTheme,
   ImageSourceType,
   GradientOverlayImage,
 } from '@apollosproject/ui-kit';
@@ -28,8 +30,11 @@ const EmbeddedVideoContainer = styled(({ theme }) => ({
   overflow: 'hidden',
 }))(View);
 
-const CoverImage = styled(({ theme }) => ({
-  borderRadius: theme.sizing.baseBorderRadius,
+const CoverImage = withTheme(({ theme }) => ({
+  forceRatio: 16 / 9,
+  style: {
+    borderRadius: theme.sizing.baseBorderRadius,
+  },
 }))(GradientOverlayImage);
 
 // :: Components
@@ -61,7 +66,9 @@ EmbeddedVideo.propTypes = {
 };
 
 const InlineMediaPlayer = ({ coverImage, source, title }) => {
-  if (!source) return <CoverImage source={coverImage} />;
+  if (isEmpty(coverImage) && isEmpty(source)) return null;
+
+  if (isEmpty(source)) return <CoverImage source={coverImage} />;
 
   return (
     <ApollosPlayerContainer
