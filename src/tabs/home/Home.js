@@ -3,15 +3,8 @@ import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
-import { useNavigation } from '@react-navigation/native';
-
 import { View } from 'react-native';
-import {
-  styled,
-  BackgroundView,
-  ThemeMixin,
-  Button,
-} from '@apollosproject/ui-kit';
+import { styled, BackgroundView, ThemeMixin } from '@apollosproject/ui-kit';
 
 import {
   FeaturesFeedConnected,
@@ -40,8 +33,6 @@ export const GET_HOME_FEED = gql`
 `;
 
 const Home = () => {
-  const navigation = useNavigation();
-
   const { data, error, loading } = useQuery(GET_HOME_FEED, {
     fetchPolicy: 'cache-and-network',
   });
@@ -52,14 +43,6 @@ const Home = () => {
     <ThemeMixin>
       <BackgroundView>
         <TabHeader />
-        <Button
-          title="Go"
-          onPress={() =>
-            navigation.navigate('ContentSingle', {
-              itemId: 'MediaContentItem:19fdfd99cefa3c767d658b865729e178',
-            })
-          }
-        />
         <FeaturesFeedConnected
           featuresFeedId={featuresFeedId}
           isLoading={loading}
