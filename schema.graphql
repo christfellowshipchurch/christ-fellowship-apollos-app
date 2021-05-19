@@ -583,12 +583,13 @@ interface GroupItem {
   members: [Person] @deprecated(reason: "Use people instead")
 }
 
-type GroupPreference implements Node {
+type GroupPreference implements Node & NodeRoute {
   id: ID!
   title: String
   summary: String
-  coverImage: ImageMedia
+  coverImage(nodeId: ID): ImageMedia
   url: String
+  routing: Route
 }
 
 type GroupSearchFacetsOptions {
@@ -1056,8 +1057,10 @@ type Query {
   currentUserVolunteerGroups(first: Int, after: String): NodeConnection
   groupSearchOptions: GroupSearchFacetsOptions
   groupSearchFacetsAttributes: [String]
+  groupFacetFilters(facet: String, facetFilters: [String]): [String]
   allPreferences: [GroupPreference]
   allSubPreferences: [GroupPreference]
+  groupSubPreferences(preferenceId: ID): [GroupPreference]
   linkTree: [FeatureAction]
   liveStream: LiveStream @deprecated(reason: "Use liveStreams, there may be multiple.")
   liveStreams: [LiveStream]

@@ -46,12 +46,17 @@ const routeLink = (url, { restrictedQueryParams, navigationOptions }) => {
     url.includes(param)
   );
 
-  if (restrictedQueryParam) {
-    openLinkExternal(url);
-  } else if (url.startsWith('http')) {
-    openLinkInternal(url);
-  } else {
+  /**
+   * 1. If the url starts with `christfellowship`, it's a deep link so we can just route it to a deep link.
+   * 2. If the url is a restricted url or starts withi something like `mailto:` or `sms:`, we need to use the `Linking` API to route that to an outside link
+   * 3. At this point, we know the link is safe to open inside of our in-app browser
+   */
+  if (url.startsWith('christfellowship')) {
     deepLink(url, navigationOptions);
+  } else if (restrictedQueryParam || !url.startsWith('http')) {
+    openLinkExternal(url);
+  } else {
+    openLinkInternal(url);
   }
 };
 
@@ -67,14 +72,32 @@ const useLinkRouter = (props) => {
     openLinkInternal,
     openDeepLink: deepLink,
     routeLink: async (url, navigationOptions) => {
-      const { data } = await client.query({
-        query: GENERATE_APP_LINK,
-        variables: { url },
-        fetchPolicy: 'cache-first',
-      });
-      const { inAppLink } = data;
+      try {
+        const parsedUrl = URL.parse(url);
+        const { protocol } = parsedUrl;
 
-      routeLink(inAppLink, { restrictedQueryParams, navigationOptions });
+        /**
+         * note : in order to support best support non-http protocols (mailto:, sms:, etc), we should check to see if the link is an http protocol before we sending a network request for an inAppLink
+         */
+        if (protocol.startsWith === 'http') {
+          const { data } = await client.query({
+            query: GENERATE_APP_LINK,
+            variables: { url },
+            fetchPolicy: 'cache-first',
+          });
+          const { inAppLink } = data;
+
+          routeLink(inAppLink, { restrictedQueryParams, navigationOptions });
+        } else {
+          routeLink(url, {
+            restrictedQueryParams,
+            navigationOptions,
+          });
+        }
+      } catch (e) {
+        console.log(`Unable to follow link: ${url}`);
+        console.log({ e });
+      }
     },
     loading: false,
     error: null,
