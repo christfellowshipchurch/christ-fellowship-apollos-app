@@ -20,6 +20,12 @@ const ACTION_MAP = {
       transitionKey: 2,
     });
   },
+  OPEN_CHANNEL: ({ relatedNode, navigation }) => {
+    navigation.navigate('ContentFeed', {
+      itemId: relatedNode.id,
+      itemTitle: relatedNode.name ?? relatedNode.title ?? 'All Content',
+    });
+  },
 };
 
 export default ({ action, ...props }) => {

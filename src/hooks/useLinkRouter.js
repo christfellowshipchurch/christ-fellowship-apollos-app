@@ -79,7 +79,8 @@ const useLinkRouter = (props) => {
         /**
          * note : in order to support best support non-http protocols (mailto:, sms:, etc), we should check to see if the link is an http protocol before we sending a network request for an inAppLink
          */
-        if (protocol.startsWith === 'http') {
+
+        if (protocol.startsWith('http')) {
           const { data } = await client.query({
             query: GENERATE_APP_LINK,
             variables: { url },

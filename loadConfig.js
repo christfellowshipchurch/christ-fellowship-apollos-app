@@ -463,6 +463,9 @@ ApollosConfig.loadJs({
         ... on ContentChannel {
           name
         }
+        ... on ContentNode {
+          title
+        }
       }
     `,
     CONTENT_BLOCK_FEATURE_FRAGMENT: gql`
