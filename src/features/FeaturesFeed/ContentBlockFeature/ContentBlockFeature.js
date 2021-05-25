@@ -61,6 +61,10 @@ const StyledH5 = styled(({ theme }) => ({
   color: theme.colors.text.tertiary,
 }))(H5);
 
+const StyledButton = styled(({ theme }) => ({
+  marginVertical: theme.sizing.baseUnit * 0.5,
+}))(Button);
+
 // :: Render Methods
 // :: ================================== ::
 const renderMedia = ({ mediaQuery, orientation, coverImage, videos }) => {
@@ -133,7 +137,7 @@ const ContentBlockFeature = ({
 
         <ConditionalRender condition={showActions}>
           {actions.map(({ title: actionTitle, action, relatedNode }, i) => (
-            <Button
+            <StyledButton
               key={`${title}${relatedNode?.id}`}
               title={actionTitle}
               onPress={() => onPressItem({ action, relatedNode })}

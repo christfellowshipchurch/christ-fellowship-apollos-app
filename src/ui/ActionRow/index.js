@@ -3,6 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import {
+  Button,
+  BodySmall,
   H5,
   H6,
   styled,
@@ -31,10 +33,10 @@ const Title = styled(({ theme }) => ({
   color: theme.colors.text.primary,
 }))(H5);
 
-const Content = styled(({ theme }) => ({
+const Content = styled(({ theme, hasMedia }) => ({
   flex: 5,
   justifyContent: 'center',
-  marginLeft: theme.sizing.baseUnit,
+  marginLeft: hasMedia ? theme.sizing.baseUnit : 0,
   paddingVertical: theme.sizing.baseUnit,
 }))(FlexedView);
 
@@ -43,6 +45,14 @@ const Container = styled(({ theme }) => ({
   paddingHorizontal: theme.sizing.baseUnit,
   paddingVertical: theme.sizing.baseUnit * 0.5,
 }))(View);
+
+const PillButton = styled(({ theme }) => ({
+  height: theme.sizing.baseUnit * 1.5,
+  alignSelf: 'center',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderWidth: 0,
+}))(Button);
 
 const RowCard = ({
   coverImage,
@@ -54,9 +64,9 @@ const RowCard = ({
 }) => (
   <ThemeMixin>
     <Container>
-      <Image source={coverImage} isLoading={isLoading} />
+      {!!coverImage && <Image source={coverImage} isLoading={isLoading} />}
 
-      <Content>
+      <Content hasMedia={!!coverImage}>
         {isLive && !isLoading && <LiveLabel />}
         {!!labelText &&
           labelText !== '' &&
@@ -79,6 +89,12 @@ const RowCard = ({
           </H6>
         )}
       </Content>
+
+      {!coverImage && (
+        <PillButton>
+          <BodySmall bold>See More</BodySmall>
+        </PillButton>
+      )}
     </Container>
   </ThemeMixin>
 );

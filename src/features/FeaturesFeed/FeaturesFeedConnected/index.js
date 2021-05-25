@@ -85,7 +85,7 @@ const FeaturesFeedConnected = ({
     [featuresFeedId]
   );
 
-  if (!features.length && !error) {
+  if (!features.length && (loading || isLoading) && !error) {
     return <ActivityIndicator />;
   }
 

@@ -4,7 +4,8 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
 import { isEmpty } from 'lodash';
 
-import { H3, BodyText } from '@apollosproject/ui-kit';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { H3, BodyText, styled } from '@apollosproject/ui-kit';
 import { ItemSeparatorComponent } from './ContentBody';
 import { CONTENT_FRAGMENT } from './getContentItem';
 
@@ -19,15 +20,21 @@ const GET_TITLE = gql`
   ${CONTENT_FRAGMENT}
 `;
 
+const StyledH3 = styled(({ topInset = 0 }) => ({
+  paddingTop: topInset,
+}))(H3);
+
 const Title = ({ nodeId }) => {
   const skip = !nodeId || isEmpty(nodeId);
   const { data, loading } = useQuery(GET_TITLE, {
     variables: { nodeId },
     skip,
   });
+  const { top } = useSafeAreaInsets();
 
   const title = data?.node?.title;
   const summary = data?.node?.summary;
+  const coverImage = data?.node?.coverImage;
   const theTitleExists = title && title !== '';
   const somethingIsLoading = loading && !theTitleExists;
   const showLoadingIndicator = somethingIsLoading && !theTitleExists;
@@ -36,8 +43,15 @@ const Title = ({ nodeId }) => {
 
   return (
     <ItemSeparatorComponent>
-      <H3 isLoading={showLoadingIndicator}>{title}</H3>
-      <BodyText isLoading={showLoadingIndicator}>{summary}</BodyText>
+      <StyledH3
+        topInset={!coverImage ? top : 0}
+        isLoading={showLoadingIndicator}
+      >
+        {title}
+      </StyledH3>
+      {!isEmpty(summary) && (
+        <BodyText isLoading={showLoadingIndicator}>{summary}</BodyText>
+      )}
     </ItemSeparatorComponent>
   );
 };

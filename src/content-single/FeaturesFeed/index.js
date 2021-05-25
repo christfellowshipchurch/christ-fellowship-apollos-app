@@ -39,7 +39,6 @@ const FeaturesFeed = ({ nodeId }) => {
       removeClippedSubviews={false}
       numColumns={1}
       scrollEnabled={false}
-      ItemSeparatorComponent={ItemSeparatorComponent}
     />
   );
 };
