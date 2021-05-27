@@ -132,7 +132,10 @@ const EditGroup = ({ group, loading, error }) => {
               </Overlay>
             )}
 
-            <FieldContainer>
+            {/**
+             *  TODO : image isn't updating for some reason after save
+             */}
+            {/* <FieldContainer>
               <RowHeader>
                 <Name>
                   <H3>Cover Photo</H3>
@@ -145,15 +148,12 @@ const EditGroup = ({ group, loading, error }) => {
                   </ButtonLinkSpacing>
                 </AndroidTouchableFix>
               </RowHeader>
-              {/**
-               *  TODO : image isn't updating for some reason after save
-               */}
               <TouchableScale onPress={handleUpdateGroupCoverImagePress}>
                 <Card>
                   <Image source={coverImage} />
                 </Card>
               </TouchableScale>
-            </FieldContainer>
+            </FieldContainer> */}
             <FieldContainer>
               <RowHeader>
                 <Name>
