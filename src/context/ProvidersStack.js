@@ -48,10 +48,13 @@ const ProvidersStack = (props) => (
           })
         }
       >
-        <AnalyticsProvider
+        {/* Removed to avoid compliance issues with iOS 14 App Tracking */}
+        {/* ! : no analytics are being collected at this moment */}
+        {/* <AnalyticsProvider
           trackFunctions={[track]}
           identifyFunctions={[identify]}
-        >
+        > */}
+        <AnalyticsProvider trackFunctions={[]} identifyFunctions={[]}>
           <CoreApollosProviders {...props}>
             <UserFlagsProvider>
               <StreamChatClientContextProvider>

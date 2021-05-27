@@ -23,6 +23,10 @@ export const ItemSeparatorComponent = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit,
 }))(View);
 
+export const ContentContainer = styled(({ theme, isLoading }) => ({
+  padding: isLoading ? theme.sizing.baseUnit : 0,
+}))(View);
+
 const ContentBody = ({
   id,
   content,
@@ -57,7 +61,9 @@ const ContentBody = ({
       <ButtonGroup nodeId={content.id} />
       <ScriptureButton nodeId={content.id} />
 
-      <StyledContentHTMLViewConnected contentId={content.id} />
+      <ContentContainer isLoading={loading}>
+        <StyledContentHTMLViewConnected contentId={content.id} />
+      </ContentContainer>
 
       <FeaturesFeed nodeId={content.id} />
 
