@@ -10,32 +10,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@apollo/client';
 import { isEmpty } from 'lodash';
+import ApollosConfig from '@apollosproject/config';
+import { useLinkRouter } from 'hooks';
 
-import { styled } from '@apollosproject/ui-kit';
+import { styled, Button } from '@apollosproject/ui-kit';
 import ButtonWithLinkRouting from 'ui/ButtonWithLinkRouting';
+import { handleActionPress } from 'features';
 import { ItemSeparatorComponent } from '../ContentBody';
 import { ACTIONS_FRAGMENT } from '../getContentItem';
 
+const { FRAGMENTS } = ApollosConfig;
+const { RELATED_NODE_FRAGMENT } = FRAGMENTS;
+
 const GET_CONTENT_ACTIONS = gql`
   query getContentActions($nodeId: ID!) {
-    node(id: $nodeId) {
-      ...ActionsFragment
+    nodeActions(nodeId: $nodeId) {
+      action
+      title
+      relatedNode {
+        ...RelatedFeatureNodeFragment
+      }
     }
   }
 
-  ${ACTIONS_FRAGMENT}
+  ${RELATED_NODE_FRAGMENT}
 `;
 
 const StyledButton = styled(({ theme }) => ({
   marginVertical: theme.sizing.baseUnit * 0.5,
-}))(ButtonWithLinkRouting);
+}))(Button);
 
 const ButtonGroup = ({ nodeId }) => {
   // note : hack to get around a current bug with the skip prop
   const skip = !nodeId || isEmpty(nodeId);
-  const { data } = useQuery(GET_CONTENT_ACTIONS, {
+  const navigation = useNavigation();
+  const { routeLink } = useLinkRouter();
+  const { data, error, loading } = useQuery(GET_CONTENT_ACTIONS, {
     variables: {
       nodeId,
     },
@@ -43,7 +56,7 @@ const ButtonGroup = ({ nodeId }) => {
     fetchPolicy: 'cache-first',
   });
 
-  const actions = data?.node?.callsToAction;
+  const actions = data?.nodeActions;
 
   if (!actions || (Array.isArray(actions) && !actions.length)) return null;
 
@@ -51,10 +64,16 @@ const ButtonGroup = ({ nodeId }) => {
     <ItemSeparatorComponent>
       {actions.map((n) => (
         <StyledButton
-          key={`${n.call}:${n.action}`}
-          title={n.call}
+          key={`${n?.title}:${n?.relatedNode?.id}`}
+          title={n?.title}
           pill={false}
-          url={n.action}
+          onPress={() =>
+            handleActionPress({
+              ...n,
+              navigation,
+              openUrl: (url) => routeLink(url, { nested: true }),
+            })
+          }
         />
       ))}
     </ItemSeparatorComponent>

@@ -1014,6 +1014,7 @@ type Query {
   inAppLink(url: String!): String
   dannysContent: [ContentItem]
   getNodeByPathname(pathname: String): Node
+  nodeActions(nodeId: ID): [FeatureAction]
   getAddressByPerson: Address
   getStatesList: DefinedValueList @deprecated(reason: "Use 'statesList' instead.")
   stateOptions: [String]

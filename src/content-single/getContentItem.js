@@ -2,7 +2,11 @@ import gql from 'graphql-tag';
 import ApollosConfig from '@apollosproject/config';
 
 const { FRAGMENTS } = ApollosConfig;
-const { VIDEO_NODE_FRAGMENT, SCRIPTURE_FRAGMENT } = FRAGMENTS;
+const {
+  VIDEO_NODE_FRAGMENT,
+  SCRIPTURE_FRAGMENT,
+  RELATED_NODE_FRAGMENT,
+} = FRAGMENTS;
 
 export const PUBLICATION_FRAGMENT = gql`
   fragment PublicationNodeFragment on PublicationNode {
@@ -20,21 +24,15 @@ export const PUBLICATION_FRAGMENT = gql`
 `;
 
 export const ACTIONS_FRAGMENT = gql`
-  fragment ActionsFragment on ContentItem {
-    ... on EventContentItem {
-      callsToAction {
-        call
-        action
-      }
-    }
-
-    ... on InformationalContentItem {
-      callsToAction {
-        call
-        action
-      }
+  fragment ActionsFragment on FeatureAction {
+    action
+    title
+    relatedNode {
+      ...RelatedFeatureNodeFragment
     }
   }
+
+  ${RELATED_NODE_FRAGMENT}
 `;
 
 export const EVENT_GROUPINGS_FRAGMENT = gql`
@@ -69,7 +67,6 @@ export default gql`
       id
       ...ContentFragment
       ...PublicationNodeFragment
-      ...ActionsFragment
       ...EventGroupingsFragment
 
       ... on ScriptureNode {
@@ -88,7 +85,6 @@ export default gql`
     }
   }
 
-  ${ACTIONS_FRAGMENT}
   ${CONTENT_FRAGMENT}
   ${EVENT_GROUPINGS_FRAGMENT}
   ${PUBLICATION_FRAGMENT}

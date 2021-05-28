@@ -1,0 +1,36 @@
+diff --git a/node_modules/@apollosproject/ui-mapview/src/utils/getUserLocation.js b/node_modules/@apollosproject/ui-mapview/src/utils/getUserLocation.js
+index 92f0d9e..926c9df 100644
+--- a/node_modules/@apollosproject/ui-mapview/src/utils/getUserLocation.js
++++ b/node_modules/@apollosproject/ui-mapview/src/utils/getUserLocation.js
+@@ -11,31 +11,12 @@ import Geolocation from 'react-native-geolocation-service';
+ 
+ // Taken almost verbatum from `react-native-geolocation-service`s example app.
+ const hasLocationPermissionIOS = async () => {
+-  const openSetting = () => {
+-    Linking.openSettings().catch(() => {
+-      Alert.alert('Unable to open settings');
+-    });
+-  };
+   const status = await Geolocation.requestAuthorization('whenInUse');
+ 
+   if (status === 'granted') {
+     return true;
+   }
+ 
+-  if (status === 'denied') {
+-    Alert.alert(`Turn on Location Services to determine your location.`, '', [
+-      { text: 'Go to Settings', onPress: openSetting },
+-      { text: "Don't Use Location", onPress: () => {} },
+-    ]);
+-  }
+-
+-  if (status === 'disabled') {
+-    Alert.alert(`Turn on Location Services to determine your location.`, '', [
+-      { text: 'Go to Settings', onPress: openSetting },
+-      { text: "Don't Use Location", onPress: () => {} },
+-    ]);
+-  }
+-
+   return false;
+ };
+ 
