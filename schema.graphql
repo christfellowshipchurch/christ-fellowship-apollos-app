@@ -1061,6 +1061,7 @@ type Query {
   allPreferences: [GroupPreference]
   allSubPreferences: [GroupPreference]
   groupSubPreferences(preferenceId: ID): [GroupPreference]
+  notifyMeBanner(preferenceId: ID!): ContentItem
   linkTree: [FeatureAction]
   liveStream: LiveStream @deprecated(reason: "Use liveStreams, there may be multiple.")
   liveStreams: [LiveStream]

@@ -3,14 +3,30 @@ import { Animated, View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import PropTypes from 'prop-types';
 import { isEmpty } from 'lodash';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { styled, BackgroundView, StretchyView } from '@apollosproject/ui-kit';
+import {
+  styled,
+  BackgroundView,
+  FlexedView,
+  StretchyView,
+} from '@apollosproject/ui-kit';
 import { ApollosPlayerContainer } from '@apollosproject/ui-media-player';
 
 import ScreenOrientation from 'screen-orientation';
 import GET_MEDIA from './getMedia';
 
 const Noop = () => null;
+
+const ContentSpacing = styled(({ topInset = null }) => ({
+  transform: [{ translateY: topInset || 0 }],
+  flex: 1,
+}))(View);
+
+const BlackBars = styled(({ theme, topInset = null }) => ({
+  backgroundColor: theme.colors.black,
+  height: topInset || 0,
+}))(View);
 
 const FlexedScrollView = styled({ flex: 1 })(Animated.ScrollView);
 
@@ -65,6 +81,7 @@ const PlayerContainerConnectedWithMedia = ({
   children,
   InnerComponent,
 }) => {
+  const insets = useSafeAreaInsets();
   const { data } = useQuery(GET_MEDIA, {
     fetchPolicy: 'cache-and-network',
     variables: { nodeId },
@@ -83,18 +100,25 @@ const PlayerContainerConnectedWithMedia = ({
     );
 
   return (
-    <ApollosPlayerContainer
-      source={data.node?.videos[0]?.sources[0]}
-      coverImage={data.node?.coverImage?.sources}
-      presentationProps={{
-        title: data.node.title,
-      }}
-    >
-      <ScreenOrientation />
-      <InnerComponent nodeId={nodeId} ImageWrapperComponent={Noop}>
-        {children}
-      </InnerComponent>
-    </ApollosPlayerContainer>
+    <FlexedView>
+      <BlackBars topInset={insets.top} />
+      <ContentSpacing>
+        <ApollosPlayerContainer
+          source={data.node?.videos[0]?.sources[0]}
+          coverImage={data.node?.coverImage?.sources}
+          presentationProps={{
+            title: data.node.title,
+          }}
+        >
+          <ScreenOrientation />
+          <BackgroundView>
+            <InnerComponent nodeId={nodeId} ImageWrapperComponent={Noop}>
+              {children}
+            </InnerComponent>
+          </BackgroundView>
+        </ApollosPlayerContainer>
+      </ContentSpacing>
+    </FlexedView>
   );
 };
 
