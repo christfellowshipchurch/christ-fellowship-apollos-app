@@ -1,5 +1,9 @@
 import React from 'react';
-import { useNavigation, DrawerActions } from '@react-navigation/native';
+import {
+  useNavigation,
+  DrawerActions,
+  useIsFocused,
+} from '@react-navigation/native';
 
 import { View } from 'react-native';
 import {
@@ -67,11 +71,15 @@ export const DrawerButton = () => {
   );
 };
 
-const HeaderButtons = () => (
-  <IconsContainer>
-    <NotificationCenterIconConnected />
-    <DrawerButton />
-  </IconsContainer>
-);
+const HeaderButtons = () => {
+  const isFocused = useIsFocused();
+
+  return (
+    <IconsContainer>
+      {isFocused && <NotificationCenterIconConnected />}
+      <DrawerButton />
+    </IconsContainer>
+  );
+};
 
 export default HeaderButtons;
