@@ -50,8 +50,6 @@ import {
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
 
-import HeaderButtons from './tabs/HeaderButtons';
-
 // bugsnag configuration
 // eslint-disable-next-line
 // import bugsnag from './bugsnag';

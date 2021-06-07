@@ -541,6 +541,13 @@ type Group implements GroupItem & Node & CheckInableNode & StreamChatChannelNode
   streamChatChannel: StreamChatChannel
 }
 
+enum GROUP_MEMBER_STATUS {
+  OPEN
+  FULL
+  MEMBER
+  PENDING
+}
+
 enum GROUP_TYPE {
   Adult
   CFE
@@ -1059,6 +1066,7 @@ type Query {
   groupSearchOptions: GroupSearchFacetsOptions
   groupSearchFacetsAttributes: [String]
   groupFacetFilters(facet: String, facetFilters: [String]): [String]
+  groupMemberStatus(groupId: ID!): GROUP_MEMBER_STATUS
   allPreferences: [GroupPreference]
   allSubPreferences: [GroupPreference]
   groupSubPreferences(preferenceId: ID): [GroupPreference]

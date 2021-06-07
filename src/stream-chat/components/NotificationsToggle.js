@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { uniq } from 'lodash';
 
-import { View, Alert } from 'react-native';
+import { View, Alert, Platform } from 'react-native';
 import {
   Touchable,
   styled,
@@ -25,6 +25,7 @@ import { useStreamChat } from '../context';
 // ===========================
 const IconSpacing = styled(({ theme }) => ({
   padding: theme.sizing.baseUnit * 0.5, // hack for larger touchable space
+  ...Platform.select(theme.shadows.default),
 }))(View);
 
 const StyledIcon = withTheme(({ theme }) => ({
