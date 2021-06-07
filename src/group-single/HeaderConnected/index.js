@@ -16,7 +16,7 @@ import {
   Avatar,
 } from '@apollosproject/ui-kit';
 
-import { useCurrentUser, useUserFlag } from '../../hooks';
+import { useCurrentUser } from '../../hooks';
 
 import EditGroupButton from '../EditGroupButton';
 
@@ -60,7 +60,6 @@ const StyledH5 = styled(({ theme }) => ({
 }))(H5);
 
 const HeaderConnected = ({ id, onEditGroupPress }) => {
-  const enabled = useUserFlag('GROUP_CUSTOMIZATION');
   const { id: currentUserId } = useCurrentUser();
 
   const { data, loading } = useQuery(GET_HEADER, {
@@ -75,7 +74,7 @@ const HeaderConnected = ({ id, onEditGroupPress }) => {
   const isGroupLeader = Boolean(
     leaders.find((leader) => get(leader, 'node.id') === currentUserId)
   );
-  const canEditGroup = enabled && isGroupLeader;
+  const canEditGroup = isGroupLeader;
 
   return (
     <HeaderSpacing>
