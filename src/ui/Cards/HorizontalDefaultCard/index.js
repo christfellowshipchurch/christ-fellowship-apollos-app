@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
 import {
   withTheme,
@@ -63,7 +64,7 @@ const Label = withTheme(({ theme }) => ({
 }))(H6);
 
 const HorizontalDefaultCard = withIsLoading(
-  ({ coverImage, isLoading, isLive, summary, title, label }) => (
+  ({ coverImage, isLoading, isLive, summary, title, labelText }) => (
     <ThemeMixin>
       <SquareCard isLoading={isLoading} inHorizontalList>
         <View>
@@ -73,26 +74,30 @@ const HorizontalDefaultCard = withIsLoading(
           />
           {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
 
-          {!!label &&
-            label !== '' &&
-            !isLive &&
-            !isLoading && (
+          {!isEmpty(labelText) &&
+            !isLive && (
               <BlurLabel blurType="ultraThinMaterial">
-                <Label isLoading={isLoading}>{label}</Label>
+                <Label isLoading={isLoading}>{labelText}</Label>
               </BlurLabel>
             )}
         </View>
 
         <Content>
           {title ? (
-            <H5 numberOfLines={(!label || label === '') && !isLive ? 2 : 1}>
+            <H5
+              numberOfLines={
+                (!labelText || labelText === '') && !isLive ? 2 : 1
+              }
+            >
               {title}
             </H5>
           ) : null}
           {summary ? (
             <Summary
               hasTitle={title}
-              numberOfLines={(!label || label === '') && !isLive ? 2 : 1}
+              numberOfLines={
+                (!labelText || labelText === '') && !isLive ? 2 : 1
+              }
             >
               {summary}
             </Summary>
@@ -111,6 +116,7 @@ HorizontalDefaultCard.propTypes = {
   isLiked: PropTypes.bool,
   summary: PropTypes.string,
   title: PropTypes.string,
+  labelText: PropTypes.string,
 };
 
 HorizontalDefaultCard.displayName = 'HorizontalDefaultCard';

@@ -11,6 +11,9 @@ const GET_CARD_PARTS = gql`
       ...PrayerRequestFragment
       ...GroupCardFragment
       ...LiveNodeFragment
+      ... on EventContentItem {
+        labelText
+      }
     }
   }
   ${ApollosConfig.FRAGMENTS.ACCESSORY_FRAGMENT}

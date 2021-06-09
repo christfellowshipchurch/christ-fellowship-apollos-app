@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
 import {
   H5,
@@ -57,8 +58,7 @@ const RowCard = ({
 
         <Content>
           {isLive && <LiveLabel />}
-          {!!labelText &&
-            labelText !== '' &&
+          {!isEmpty(labelText) &&
             !isLive && (
               <Summary numberOfLines={1} isLoading={isLoading}>
                 {labelText}

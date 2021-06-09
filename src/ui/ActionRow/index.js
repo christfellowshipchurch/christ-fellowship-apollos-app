@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
 import {
   Button,
@@ -68,10 +69,8 @@ const RowCard = ({
 
       <Content hasMedia={!!coverImage}>
         {isLive && !isLoading && <LiveLabel />}
-        {!!labelText &&
-          labelText !== '' &&
-          !isLive &&
-          !isLoading && (
+        {!isEmpty(labelText) &&
+          !isLive && (
             <H6 numberOfLines={1} isLoading={isLoading}>
               {labelText}
             </H6>

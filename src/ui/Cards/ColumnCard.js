@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Platform } from 'react-native';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
 import {
   H5,
@@ -80,10 +81,8 @@ const StackedImageCard = ({
         <Image source={coverImage} label={labelText} />
         {isLive && <LiveLabelPositioning BackgroundComponent={BlurView} />}
 
-        {!!labelText &&
-          labelText !== '' &&
-          !isLive &&
-          !isLoading && (
+        {!isEmpty(labelText) &&
+          !isLive && (
             <BlurLabel blurType="ultraThinMaterial">
               <Label isLoading={isLoading}>{labelText}</Label>
             </BlurLabel>

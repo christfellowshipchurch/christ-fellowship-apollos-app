@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
 import PropTypes from 'prop-types';
-import { get } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import {
   withTheme,
   Card,
@@ -186,7 +186,7 @@ const ActionIcon = withTheme(
 )(Icon);
 
 const renderLabel = ({ labelText, isLive, isLoading, size }) => {
-  if (isLive || (labelText && labelText !== '' && !isLoading)) {
+  if (isLive || !isEmpty(labelText)) {
     const component = isLive ? (
       <LiveLabel BackgroundComponent={null} />
     ) : (

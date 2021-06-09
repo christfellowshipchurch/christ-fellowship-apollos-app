@@ -28,14 +28,7 @@ import GET_CARD_PARTS from './getCardParts';
 /**
  * note : so this isn't the most elegant way to do this, BUT! it's what we gotta do. Right now, there's an issue with the `skip` property of `useQuery` where it doesn't actually skip and sends all kinds of network requests with empty Id's. This causes a lot of noise and unwanted errors on the API. This wrapper component will requeire that an Id be passed with it. Only render this component if you're positive that you have an Id
  */
-const ConnectedCard = ({
-  __typename,
-  error,
-  id,
-  labelText,
-  Component,
-  ...node
-}) => {
+const ConnectedCard = ({ __typename, error, id, Component, ...node }) => {
   let cardProps = {};
 
   /**
@@ -73,11 +66,10 @@ const ConnectedCard = ({
       /**
        * Default case should be any Content Item
        */
+
       cardProps = {
         ...cardProps,
-        labelText: transformISODates(
-          node?.labelText ? node?.labelText : labelText
-        ),
+        labelText: transformISODates(node?.labelText),
       };
       break;
   }
@@ -111,7 +103,6 @@ const CardMapper = ({
   title,
   summary,
   tile,
-  labelText,
   inHorizontalList,
 }) => {
   const skip = !relatedNode || !relatedNode?.id || isEmpty(relatedNode?.id);
@@ -128,7 +119,6 @@ const CardMapper = ({
     summary,
     coverImage,
     tile,
-    labelText,
     inHorizontalList,
   };
 
@@ -176,7 +166,7 @@ const CardMapper = ({
           {...node}
           {...cardProps}
           Component={FinalComponent}
-          labelText={transformISODates(cardProps?.labelText)}
+          // labelText={transformISODates(cardProps?.labelText)}
           error={error}
         />
       )}

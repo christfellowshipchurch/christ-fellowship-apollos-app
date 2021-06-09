@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
 import {
   withTheme,
@@ -64,7 +65,7 @@ const HighlightCard = withIsLoading(
         <CardContentWrapper coverImage={coverImage}>
           <Content>
             {isLive && !isLoading && <LiveLabel BackgroundComponent={View} />}
-            {!!labelText &&
+            {!isEmpty(labelText) &&
               !isLive && <Label numberOfLines={2}>{labelText}</Label>}
 
             {(title !== '' || isLoading) && (

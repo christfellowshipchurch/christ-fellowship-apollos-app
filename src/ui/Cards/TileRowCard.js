@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'lodash';
 
 import {
   H5,
@@ -51,7 +52,7 @@ class TileRowCard extends PureComponent {
       PropTypes.arrayOf(ImageSourceType),
       ImageSourceType,
     ]),
-    label: PropTypes.string,
+    labelText: PropTypes.string,
     summary: PropTypes.string,
     title: PropTypes.string,
     id: PropTypes.string,
@@ -67,7 +68,9 @@ class TileRowCard extends PureComponent {
             <ConnectedImage source={this.props.coverImage} isLoading />
           </CellImage>
           <TextContainer>
-            {this.props.label !== '' && <StyledH6>{this.props.label}</StyledH6>}
+            {!isEmpty(this.props.labelText) && (
+              <StyledH6>{this.props.labelText}</StyledH6>
+            )}
 
             {this.props.title !== '' && (
               <Title numberOfLines={2} ellipsizeMode="tail">
