@@ -205,10 +205,10 @@ android {
     }
 
     // Testing for App Center build
-    // lintOptions {
-    //     checkReleaseBuilds false
-    //     abortOnError false
-    // }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
