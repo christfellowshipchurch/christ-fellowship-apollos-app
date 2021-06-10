@@ -203,6 +203,12 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
+
+    // Testing for App Center build
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 dependencies {
