@@ -74,7 +74,8 @@ const HeaderConnected = ({ id, onEditGroupPress }) => {
   const isGroupLeader = Boolean(
     leaders.find((leader) => get(leader, 'node.id') === currentUserId)
   );
-  const canEditGroup = isGroupLeader;
+  // const canEditGroup = isGroupLeader;
+  const canEditGroup = false;
 
   return (
     <HeaderSpacing>

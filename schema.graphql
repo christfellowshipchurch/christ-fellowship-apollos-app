@@ -870,6 +870,7 @@ type Mutation {
   submitRsvp(input: [Attribute]!): String
   submitEmailCapture(input: [Attribute]!): String
   addPrayer(text: String!, isAnonymous: Boolean): PrayerRequest
+  indexAllContent(action: INDEX_ACTION, key: String): String
   indexContentItem(id: String, action: INDEX_ACTION, key: String): String
   indexGroup(id: String, action: INDEX_ACTION, key: String): String
   indexAllGroups(action: INDEX_ACTION, key: String): String
