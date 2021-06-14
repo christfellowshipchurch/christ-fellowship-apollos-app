@@ -60,10 +60,12 @@ allprojects {
                 includeModule("com.facebook.fresco", "stetho")
                 includeModule("com.facebook.fresco", "fbcore")
                 includeModule("com.facebook.fresco", "drawee")
+                includeModule("com.facebook.fresco", "ui-common")
                 includeModule("com.facebook.fresco", "imagepipeline")
                 includeModule("com.facebook.fresco", "imagepipeline-native")
                 includeModule("com.facebook.fresco", "memory-type-native")
                 includeModule("com.facebook.fresco", "memory-type-java")
+                includeModule("com.facebook.fresco", "memory-type-ashmem")
                 includeModule("com.facebook.fresco", "nativeimagefilters")
                 includeModule("com.facebook.fresco", "animated-drawable")
                 
