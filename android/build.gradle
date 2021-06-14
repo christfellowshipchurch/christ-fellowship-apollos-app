@@ -16,10 +16,10 @@ buildscript {
     }
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:4.0.1')
+        classpath('com.android.tools.build:gradle:4.2.1')
         classpath 'com.google.gms:google-services:4.3.3'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -29,9 +29,9 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenCentral()
         mavenLocal()
         google()
-        jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
@@ -40,12 +40,47 @@ allprojects {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
         }
+
         // :: React Native Image Crop Picker for Stream.IO
         // :: https://github.com/ivpusic/react-native-image-crop-picker#android
         maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
         flatDir {
             dirs "$rootDir/../node_modules/react-native-zoom-bridge/android/libs"
+        }
+
+        jcenter() {
+            content {
+                includeModule("com.facebook.flipper", "flipper")
+                includeModule("com.facebook.flipper", "flipper-network-plugin")
+                includeModule("com.facebook.flipper", "flipper-fresco-plugin")
+                
+                includeModule("com.facebook.fresco", "webpsupport")
+                includeModule("com.facebook.fresco", "fresco")
+                includeModule("com.facebook.fresco", "stetho")
+                includeModule("com.facebook.fresco", "fbcore")
+                includeModule("com.facebook.fresco", "drawee")
+                includeModule("com.facebook.fresco", "imagepipeline")
+                includeModule("com.facebook.fresco", "imagepipeline-native")
+                includeModule("com.facebook.fresco", "memory-type-native")
+                includeModule("com.facebook.fresco", "memory-type-java")
+                includeModule("com.facebook.fresco", "nativeimagefilters")
+                includeModule("com.facebook.fresco", "animated-drawable")
+                
+                includeModule("com.facebook.yoga", "proguard-annotations")
+                
+                includeModule("com.facebook.fbjni", "fbjni-java-only")
+
+                includeModule("com.google.android.exoplayer", "exoplayer")
+                includeModule("com.google.android.exoplayer", "exoplayer-core")
+                includeModule("com.google.android.exoplayer", "exoplayer-dash")
+                includeModule("com.google.android.exoplayer", "exoplayer-hls")
+                includeModule("com.google.android.exoplayer", "exoplayer-smoothstreaming")
+                includeModule("com.google.android.exoplayer", "exoplayer-ui")
+                includeModule("com.google.android.exoplayer", "extension-okhttp")
+                
+                includeModule("com.eightbitlab", "blurview")
+            }
         }
     }
 }

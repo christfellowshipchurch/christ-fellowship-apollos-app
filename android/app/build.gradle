@@ -164,6 +164,11 @@ android {
         resValue "string", "build_config_package", "com.christfellowship"
         multiDexEnabled true
 
+        manifestPlaceholders = [
+          onesignal_app_id: '7ab9baa8-8f28-41b9-b258-37662276aea4',
+          onesignal_google_project_number: 'REMOTE'
+      ]
+
         // :: React Native Image Crop Picker for Stream.IO
         // :: https://github.com/ivpusic/react-native-image-crop-picker#android
         vectorDrawables.useSupportLibrary = true
