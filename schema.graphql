@@ -859,6 +859,7 @@ type Mutation {
   updateGroupResourceContentItem(contentItemId: ID!, relatedNodeId: ID, groupId: ID!): Group
   removeGroupResource(relatedNodeId: ID!, groupId: ID!): Group
   contactGroupLeader(groupId: ID!): String
+  subscribeToGroupPreference(groupPreferenceId: ID!, campusId: ID!): String
   interactWithNode(action: InteractionAction!, nodeId: ID!, data: [InteractionDataField]): InteractionResult
   updateUserPushSettings(input: PushSettingsInput!): Person
   updateProfileField(input: UpdateProfileInput!): Person
