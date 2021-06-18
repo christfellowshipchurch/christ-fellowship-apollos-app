@@ -44,33 +44,18 @@ export const client = new ApolloClient({
   typeDefs: schema,
   name: getApplicationName(),
   version: getVersion(),
-  // NOTE: this is because we have some very taxing queries that we want to avoid running twice
-  // see if it's still an issue after we're operating mostly on Postgres and have less loading states
-  // defaultOptions: {
-  //   watchQuery: {
-  //     nextFetchPolicy(lastFetchPolicy) {
-  //       if (
-  //         lastFetchPolicy === 'cache-and-network' ||
-  //         lastFetchPolicy === 'network-only'
-  //       ) {
-  //         return 'cache-first';
-  //       }
-  //       return lastFetchPolicy;
-  //     },
-  //   },
-  // },
-  // typePolicies: {
-  //   Query: {
-  //     fields: {
-  //       PeopleConnection: {
-  //         merge(existing = [], incoming) {
-  //           const mappedIncoming = incoming.map(({ edges }) => edges.cursor);
-  //           return { ...existing, ...mappedIncoming };
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
+  typePolicies: {
+    Query: {
+      fields: {
+        PeopleConnection: {
+          merge(existing = [], incoming) {
+            const mappedIncoming = incoming.map(({ edges }) => edges.cursor);
+            return { ...existing, ...mappedIncoming };
+          },
+        },
+      },
+    },
+  },
 });
 
 // Hack to give auth link access to method on client;
