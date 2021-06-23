@@ -73,6 +73,7 @@ const ChatChannelList = ({ theme }) => {
             setChannel({ channel });
             navigation.navigate('ChatChannelSingle', {
               hideNavigationHeader: true,
+              itemTitle: channel?.data?.name,
             });
           }}
           options={options}

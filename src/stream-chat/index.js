@@ -1,4 +1,8 @@
-export { ChatChannel, ChatChannelList } from './components';
+export {
+  ChatChannel,
+  ChatChannelList,
+  NotificationsToggle,
+} from './components';
 export { StreamChatClientContextProvider, useStreamChat } from './context';
 export {
   default as StreamChatOverlayProvider,
