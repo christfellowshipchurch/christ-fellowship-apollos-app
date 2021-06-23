@@ -19,7 +19,7 @@ import HeaderButtons from './HeaderButtons';
 const { Navigator, Screen } = createBottomTabNavigator();
 
 const TabNavigator = (props) => (
-  <Navigator {...props}>
+  <Navigator {...props} lazy>
     <Screen
       name="Home"
       component={Home}
