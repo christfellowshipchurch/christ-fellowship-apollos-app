@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useLazyQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
 
-import { FlatList, View } from 'react-native';
+import { AppState, FlatList, View } from 'react-native';
 import {
   ActivityIndicator,
   UIText,
@@ -58,14 +58,39 @@ const FeaturesFeedConnected = ({
   /**
    * note : because of a bug with the `skip` parameter in the `useQuery` hook, we'll use the `useLazyQuery` api instead so we can mimic that behavior manually
    */
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [
     getFeaturesFeed,
     { data, loading, error, called, refetch },
   ] = useLazyQuery(GET_FEATURES_FEED);
+
   const features = data?.node?.features || [];
   const errorInStack = !!parentError || !!error;
   const loadingInStack = loading || isLoading;
   const dataInStack = !!features && features.length;
+
+  const _handleAppStateChange = (nextAppState) => {
+    if (
+      appState.current.match(/inactive|background/) &&
+      nextAppState === 'active' &&
+      !loadingInStack &&
+      typeof refetch === 'function'
+    ) {
+      refetch();
+    }
+
+    appState.current = nextAppState;
+    setAppStateVisible(appState.current);
+  };
+
+  useEffect(() => {
+    AppState.addEventListener('change', _handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', _handleAppStateChange);
+    };
+  }, []);
 
   useEffect(
     () => {

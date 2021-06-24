@@ -12,6 +12,7 @@ import {
 } from '@apollosproject/ui-kit';
 
 import { LOGOUT } from '@apollosproject/ui-auth';
+import { useStreamChat } from '../stream-chat';
 
 import { TableView, Cell } from '../ui/TableView';
 
@@ -23,6 +24,7 @@ const VersionText = styled(({ theme }) => ({
 
 const Logout = ({ onLogout }) => {
   const [handleLogout] = useMutation(LOGOUT);
+  const { disconnectUser } = useStreamChat();
 
   return (
     <View>
@@ -35,6 +37,7 @@ const Logout = ({ onLogout }) => {
           title="Log Out"
           onPress={async () => {
             await handleLogout();
+            await disconnectUser();
             // This resets the navigation stack, and the navigates to the first auth screen.
             // This ensures that user isn't navigated to a subscreen of Auth, like the pin entry screen.
             await NavigationService.resetToAuth();

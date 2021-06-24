@@ -210,6 +210,7 @@ const useCurrentUser = (props) => {
     data,
     ...queryProps,
     id,
+    authId: id,
     ...profile,
     updateProfile,
     updateProfileField,

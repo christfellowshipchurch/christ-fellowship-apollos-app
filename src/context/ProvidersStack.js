@@ -25,6 +25,7 @@ import { StreamChatClientContextProvider } from '../stream-chat';
 import { track, identify } from '../amplitude';
 import { UserFlagsProvider } from '../user-flags';
 import CoreApollosProviders from './CoreApollosProviders';
+import CurrentUserProvider from './CurrentUserProvider';
 import NotificationsProvider from './NotificationsProvider';
 import UniversalLinkRouteProvider from './UniversalLinkRouteProvider';
 
@@ -33,38 +34,40 @@ import UniversalLinkRouteProvider from './UniversalLinkRouteProvider';
 
 const ProvidersStack = (props) => (
   // <AppearanceProvider>
-  <ClientProvider {...props}>
-    <NotificationsProvider
-      oneSignalKey={ApollosConfig.ONE_SIGNAL_KEY}
-      navigate={NavigationService.navigate}
-    >
-      <AuthProvider
-        navigateToAuth={() => NavigationService.navigate('Auth')}
+  <StreamChatClientContextProvider>
+    <ClientProvider {...props}>
+      <NotificationsProvider
+        oneSignalKey={ApollosConfig.ONE_SIGNAL_KEY}
         navigate={NavigationService.navigate}
-        closeAuth={() =>
-          checkOnboardingStatusAndNavigate({
-            client,
-            navigation: NavigationService,
-          })
-        }
       >
-        <AnalyticsProvider
-          trackFunctions={[track]}
-          identifyFunctions={[identify]}
+        <AuthProvider
+          navigateToAuth={() => NavigationService.navigate('Auth')}
+          navigate={NavigationService.navigate}
+          closeAuth={() =>
+            checkOnboardingStatusAndNavigate({
+              client,
+              navigation: NavigationService,
+            })
+          }
         >
-          <CoreApollosProviders {...props}>
-            <UserFlagsProvider>
-              <StreamChatClientContextProvider>
-                <ActionSheetProvider>
-                  <UniversalLinkRouteProvider {...props} />
-                </ActionSheetProvider>
-              </StreamChatClientContextProvider>
-            </UserFlagsProvider>
-          </CoreApollosProviders>
-        </AnalyticsProvider>
-      </AuthProvider>
-    </NotificationsProvider>
-  </ClientProvider>
+          <CurrentUserProvider>
+            <AnalyticsProvider
+              trackFunctions={[track]}
+              identifyFunctions={[identify]}
+            >
+              <CoreApollosProviders {...props}>
+                <UserFlagsProvider>
+                  <ActionSheetProvider>
+                    <UniversalLinkRouteProvider {...props} />
+                  </ActionSheetProvider>
+                </UserFlagsProvider>
+              </CoreApollosProviders>
+            </AnalyticsProvider>
+          </CurrentUserProvider>
+        </AuthProvider>
+      </NotificationsProvider>
+    </ClientProvider>
+  </StreamChatClientContextProvider>
 
   // </AppearanceProvider>
 );

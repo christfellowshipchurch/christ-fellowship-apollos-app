@@ -36,7 +36,8 @@ const StyledIcon = withTheme(({ theme }) => ({
 // ===========================
 
 const NotificationsToggle = () => {
-  const { channel, userId } = useStreamChat();
+  const { channel, chatClient } = useStreamChat();
+  const userId = chatClient?.user?.id;
   const muteNotifications = Array.isArray(channel?.data?.muteNotifications)
     ? channel?.data?.muteNotifications
     : [];
@@ -50,7 +51,7 @@ const NotificationsToggle = () => {
 
     await channel.updatePartial({
       set: {
-        muteNotifications: newMuted,
+        muteNotifications: newMuted.filter((id) => !!id),
       },
     });
 
