@@ -11,65 +11,114 @@
  */
 
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import ApollosConfig from '@apollosproject/config';
-import { useCurrentUser } from 'hooks';
-import { StreamChatClient } from '../client';
+import { StreamChat } from 'stream-chat';
 
 const API_KEY = ApollosConfig.STREAM_CHAT_API_KEY;
 
+const STREAM_USER_KEY = '@stream-user-key';
+
+const ConnectionStatus = Object.freeze({
+  CONNECTED: 'CONNECTED',
+  CONNECTING: 'CONNECTING',
+  DISCONNECTED: 'DISCONNECTED',
+  ERROR: 'ERROR',
+});
+
+const UserConfigPropTypes = {
+  userId: PropTypes.string.isRequired,
+  userToken: PropTypes.string.isRequired,
+  userName: PropTypes.string.isRequired,
+  userImage: PropTypes.string,
+};
+
 export default () => {
-  const { id, firstName, lastName, photo, streamChatToken } = useCurrentUser();
-  const [chatClient, setChatClient] = useState();
-  const [isConnecting, setIsConnecting] = useState(true);
+  const [chatClient, setChatClient] = useState(null);
+  const [connectionStatus, setConnectionStatus] = useState(
+    ConnectionStatus.DISCONNECTED
+  );
 
+  /**
+   * connectUser
+   * Connects a user to Stream Chat
+   * @param {object} config | Rock Group Id
+   */
   const connectUser = async (config) => {
-    setIsConnecting(true);
+    PropTypes.checkPropTypes(UserConfigPropTypes, config);
 
-    try {
-      if (config.userId) {
-        const { userId, userImage, userName, userToken } = config;
-        const user = {
-          id: userId,
-          image: userImage,
-          name: userName,
-        };
+    // Bail early if we're already connecting
+    if (connectionStatus === ConnectionStatus.CONNECTING) return;
 
-        await StreamChatClient.connectUser(user, userToken);
+    setConnectionStatus(ConnectionStatus.CONNECTING);
 
-        setChatClient(StreamChatClient);
-      }
-    } catch (e) {
-      console.warn(e);
+    // note : if we already have a chat client, we want to avoid consecutive connections
+    if (chatClient) {
+      await chatClient?.disconnect();
     }
 
-    setIsConnecting(false);
+    // create an instance of Stream and construct the Stream User object
+    const client = StreamChat.getInstance(API_KEY, {
+      timeout: 6000,
+    });
+    const user = {
+      id: config.userId,
+      image: config.userImage,
+      name: config.userName,
+    };
+
+    // connect the user to stream
+    await client.connectUser(user, config.userToken);
+
+    // store the User Config in async storage for faster connectivity
+    // note : we could probably extract this into a separate call, but saving to AsyncStorage is relatively low-cost, so we'll throw it here to insure we always save something locally
+    await AsyncStorage.setItem(STREAM_USER_KEY, JSON.stringify(config));
+
+    setChatClient(client);
+
+    setConnectionStatus(ConnectionStatus.CONNECTED);
   };
 
-  const logout = () => {
+  /**
+   * disconnectUser
+   * Disconnects from the Stream chatClient and nullifies the `chatClient`
+   */
+  const disconnectUser = () => {
     setChatClient(null);
     chatClient?.disconnect();
+
+    setConnectionStatus(ConnectionStatus.DISCONNECTED);
+
+    AsyncStorage.removeItem(STREAM_USER_KEY);
   };
 
-  useEffect(
-    () => {
-      if (streamChatToken) {
-        connectUser({
-          apiKey: API_KEY,
-          userId: id?.split(':')[1],
-          userImage: photo?.uri,
-          userName: `${firstName} ${lastName}`,
-          userToken: streamChatToken,
-        });
-      }
-    },
-    [streamChatToken]
-  );
+  /**
+   * _loadLocalUser
+   * Checks for a local user saved inside of AsyncStorage
+   */
+  const _loadLocalUser = async () => {
+    const localUser = await AsyncStorage.getItem(STREAM_USER_KEY);
+
+    if (localUser) {
+      connectUser(JSON.parse(localUser));
+    }
+  };
+
+  // When we first mount, there's a good chance that we already have user data locally accessible, so we'll just immediately make the connection
+  useEffect(() => {
+    _loadLocalUser();
+
+    return function cleanup() {
+      disconnectUser();
+    };
+  }, []);
 
   return {
     chatClient,
-    userId: id?.split(':')[1],
-    isConnecting,
-    logout,
+    connectionStatus,
+    disconnectUser,
+    connectUser,
   };
 };

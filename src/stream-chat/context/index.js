@@ -10,88 +10,48 @@
 
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppState } from 'react-native';
 import { isOwnUser } from 'stream-chat';
 import { useStreamChatClient, useStreamChatChannel } from '../hooks';
 
-const StreamChatClientContextContext = React.createContext([]);
+const StreamChatClientContextContext = React.createContext({});
 
 // Context Hook
 export const useStreamChat = () => {
   const {
     chatClient,
-    isConnecting,
+    connectionStatus,
+    disconnectUser,
+    connectUser,
     channel,
     getStreamChatChannel,
     setChannel,
-    setInsets,
-    userId,
   } = useContext(StreamChatClientContextContext);
-  const [unreadCount, setUnreadCount] = useState(
-    chatClient?.user?.total_unread_count || 0
-  );
-
-  const _handleAppStateChange = (nextAppState) => {
-    if (nextAppState === 'active') {
-      const user = chatClient?.user;
-      const count = isOwnUser(user) ? user.total_unread_count : 0;
-      setUnreadCount(count);
-    }
-  };
-
-  useEffect(
-    () => {
-      try {
-        const user = chatClient?.user;
-        const count = isOwnUser(user) ? user.total_unread_count : 0;
-        setUnreadCount(count);
-        const listener = chatClient?.on((e) => {
-          if (Number.isInteger(e?.total_unread_count)) {
-            setUnreadCount(e.total_unread_count);
-          }
-        });
-
-        return () => {
-          if (listener) {
-            listener.unsubscribe();
-          }
-        };
-      } catch (e) {
-        console.warn('useStreamChat', { e });
-      }
-    },
-    [chatClient]
-  );
-
-  useEffect(() => {
-    AppState.addEventListener('change', _handleAppStateChange);
-
-    return () => {
-      AppState.removeEventListener('change', _handleAppStateChange);
-    };
-  }, []);
 
   return {
     chatClient,
-    isConnecting,
+    connectionStatus,
+    disconnectUser,
+    connectUser,
     channel,
     getStreamChatChannel,
     setChannel,
-    setInsets,
-    userId,
-    unreadCount,
   };
 };
 
 // Provider
 export const StreamChatClientContextProvider = ({ children }) => {
+  const {
+    chatClient,
+    connectionStatus,
+    disconnectUser,
+    connectUser,
+  } = useStreamChatClient();
   const [
     getStreamChatChannel,
     { channelId: fetchedChannelId, channelType: fetchedChannelType },
   ] = useStreamChatChannel();
-  const { chatClient, isConnecting, userId } = useStreamChatClient();
 
   const [channel, setChannel] = useState(null);
   const [channelId, setChannelId] = useState(null);
@@ -103,6 +63,7 @@ export const StreamChatClientContextProvider = ({ children }) => {
   };
 
   /**
+   * fetchOrSetChannel
    * This function serves to best help us set the Channel according to one of 3 possible contexts:
    * 1. We know the exact Stream Channel
    * 2. We have the channelId and channelType, but need to set the Stream Channel
@@ -163,11 +124,12 @@ export const StreamChatClientContextProvider = ({ children }) => {
     <StreamChatClientContextContext.Provider
       value={{
         chatClient,
-        isConnecting,
+        connectionStatus,
+        disconnectUser,
+        connectUser,
         channel,
         getStreamChatChannel,
         setChannel: fetchOrSetChannel,
-        userId,
       }}
     >
       {children}
