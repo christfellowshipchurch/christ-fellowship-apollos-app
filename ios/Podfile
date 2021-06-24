@@ -51,3 +51,8 @@ target 'ChristFellowship-tvOS' do
   end
 
 end
+
+# Notification Service Extension
+target 'OneSignalNotificationServiceExtension' do
+  pod 'OneSignal', '>= 3.0', '< 4.0'
+end

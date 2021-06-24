@@ -27,20 +27,17 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - google-cast-sdk (4.5.3):
-    - google-cast-sdk/Core (= 4.5.3)
-    - GTMSessionFetcher/Core (~> 1.1)
+  - google-cast-sdk (4.6.1):
+    - google-cast-sdk/Core (= 4.6.1)
     - Protobuf (~> 3.13)
-  - google-cast-sdk/Core (4.5.3):
-    - GTMSessionFetcher/Core (~> 1.1)
+  - google-cast-sdk/Core (4.6.1):
     - Protobuf (~> 3.13)
-  - GTMSessionFetcher/Core (1.5.0)
-  - OneSignal (2.15.2)
+  - OneSignal (3.4.3)
   - Permission-Notifications (2.2.2):
     - RNPermissions
   - Permission-PhotoLibrary (2.2.2):
     - RNPermissions
-  - Protobuf (3.14.0)
+  - Protobuf (3.17.0)
   - RCTRequired (0.63.2)
   - RCTTypeSafety (0.63.2):
     - FBLazyVector (= 0.63.2)
@@ -244,8 +241,8 @@ PODS:
     - React
   - react-native-netinfo (6.0.0):
     - React-Core
-  - react-native-onesignal (3.9.1):
-    - OneSignal (= 2.15.2)
+  - react-native-onesignal (4.0.8):
+    - OneSignal (= 3.4.3)
     - React (< 1.0.0, >= 0.13.0)
   - react-native-orientation-locker (1.2.0):
     - React
@@ -412,6 +409,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - OneSignal (< 4.0, >= 3.0)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications.podspec`)
   - Permission-PhotoLibrary (from `../node_modules/react-native-permissions/ios/PhotoLibrary.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -487,7 +485,6 @@ SPEC REPOS:
     - AstronomerAnalytics
     - boost-for-react-native
     - google-cast-sdk
-    - GTMSessionFetcher
     - OneSignal
     - Protobuf
     - TOCropViewController
@@ -652,12 +649,11 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: dc7fa9088f0f2a998503a352b0554d69a4391c5a
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  google-cast-sdk: f94c5df87564f71d4342400b8487665e9bed27c6
-  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
-  OneSignal: 9531e385388565f4d31797ddadbe0fcc786430ec
+  google-cast-sdk: 9fc76175641bc24ef2515e0263344bd2c5c4e75c
+  OneSignal: e4dfb1912410f302dc9661ce98fc829f6c18ff6a
   Permission-Notifications: 9c6b5cc4f0e6599e9fc3395b77cebddc48f1be41
   Permission-PhotoLibrary: 8227a6ed9f6a971537afe63742d54f5f23a38fe2
-  Protobuf: 0cde852566359049847168e51bd1c690e0f70056
+  Protobuf: 7327d4444215b5f18e560a97f879ff5503c4581c
   RCTRequired: f13f25e7b12f925f1f6a6a8c69d929a03c0129fe
   RCTTypeSafety: 44982c5c8e43ff4141eb519a8ddc88059acd1f3a
   React: e1c65dd41cb9db13b99f24608e47dd595f28ca9a
@@ -683,7 +679,7 @@ SPEC CHECKSUMS:
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-music-control: dcfe5b61e56a15898c4618579cb8ce612c9d21a8
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
-  react-native-onesignal: ad2eaab1517951e50d19fa3eccd16d3048167181
+  react-native-onesignal: 50b047c674b79ba700218338fdefb45220da4db5
   react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
   react-native-passkit-wallet: 51e3babdaeec4c10b5736786ebd1bfb470fcaa36
   react-native-safari-view: 955d7160d159241b8e9395d12d10ea0ef863dcdd
@@ -725,6 +721,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
 
-PODFILE CHECKSUM: 7a2fb94899a039eaa87a226e5a37d179c7aa8d63
+PODFILE CHECKSUM: d517231f8080cd9fbe07be02379e284143f79f7b
 
 COCOAPODS: 1.9.3
