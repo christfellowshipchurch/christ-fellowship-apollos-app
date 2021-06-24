@@ -67,15 +67,18 @@ class NotificationsInit extends Component {
     );
   }
 
-  componentDidMount() {
-    OneSignal.init(this.props.oneSignalKey, {
-      kOSSettingsKeyAutoPrompt: false,
-    });
-    OneSignal.addEventListener('received', this.onReceived);
-    OneSignal.addEventListener('opened', this.onOpened);
-    OneSignal.addEventListener('ids', this.onIds);
-    OneSignal.setSubscription(true);
-    OneSignal.inFocusDisplaying(2);
+  async componentDidMount() {
+    // Initialize OneSignal
+    OneSignal.setAppId(this.props.oneSignalKey);
+
+    // Event Handlers
+    OneSignal.setNotificationOpenedHandler(this.onOpened);
+    OneSignal.setNotificationWillShowInForegroundHandler(this.onReceived);
+
+    // Get current Device State
+    const deviceState = await OneSignal.getDeviceState();
+    this.onIds(deviceState);
+
     Linking.getInitialURL().then((url) => {
       this.navigate(url);
     });
@@ -84,9 +87,7 @@ class NotificationsInit extends Component {
 
   componentWillUnmount() {
     Linking.removeEventListener('url');
-    OneSignal.removeEventListener('received');
-    OneSignal.removeEventListener('opened');
-    OneSignal.removeEventListener('ids');
+    OneSignal.clearHandlers();
   }
 
   navigate = (rawUrl) => {
