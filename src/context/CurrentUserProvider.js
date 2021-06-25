@@ -37,9 +37,9 @@ const CurrentUserProvider = ({ children }) => {
 
       connect();
 
-      return function cleanup() {
-        disconnectUser();
-      };
+      // return function cleanup() {
+      //   disconnectUser();
+      // };
     },
     [authId, firstName, lastName, photo, streamChatToken]
   );

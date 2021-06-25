@@ -21,7 +21,7 @@ const API_KEY = ApollosConfig.STREAM_CHAT_API_KEY;
 
 const STREAM_USER_KEY = '@stream-user-key';
 
-const ConnectionStatus = Object.freeze({
+export const ConnectionStatus = Object.freeze({
   CONNECTED: 'CONNECTED',
   CONNECTING: 'CONNECTING',
   DISCONNECTED: 'DISCONNECTED',
@@ -55,28 +55,26 @@ export default () => {
     setConnectionStatus(ConnectionStatus.CONNECTING);
 
     // note : if we already have a chat client, we want to avoid consecutive connections
-    if (chatClient) {
-      await chatClient?.disconnect();
+    if (!chatClient) {
+      // create an instance of Stream and construct the Stream User object
+      const client = StreamChat.getInstance(API_KEY, {
+        timeout: 6000,
+      });
+      const user = {
+        id: config.userId,
+        image: config.userImage,
+        name: config.userName,
+      };
+
+      // connect the user to stream
+      await client.connectUser(user, config.userToken);
+
+      // store the User Config in async storage for faster connectivity
+      // note : we could probably extract this into a separate call, but saving to AsyncStorage is relatively low-cost, so we'll throw it here to insure we always save something locally
+      await AsyncStorage.setItem(STREAM_USER_KEY, JSON.stringify(config));
+
+      setChatClient(client);
     }
-
-    // create an instance of Stream and construct the Stream User object
-    const client = StreamChat.getInstance(API_KEY, {
-      timeout: 6000,
-    });
-    const user = {
-      id: config.userId,
-      image: config.userImage,
-      name: config.userName,
-    };
-
-    // connect the user to stream
-    await client.connectUser(user, config.userToken);
-
-    // store the User Config in async storage for faster connectivity
-    // note : we could probably extract this into a separate call, but saving to AsyncStorage is relatively low-cost, so we'll throw it here to insure we always save something locally
-    await AsyncStorage.setItem(STREAM_USER_KEY, JSON.stringify(config));
-
-    setChatClient(client);
 
     setConnectionStatus(ConnectionStatus.CONNECTED);
   };
@@ -109,10 +107,6 @@ export default () => {
   // When we first mount, there's a good chance that we already have user data locally accessible, so we'll just immediately make the connection
   useEffect(() => {
     _loadLocalUser();
-
-    return function cleanup() {
-      disconnectUser();
-    };
   }, []);
 
   return {
