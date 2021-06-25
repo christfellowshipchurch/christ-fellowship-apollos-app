@@ -35,6 +35,7 @@ const GET_ACTION_PARTS = gql`
         streamChatChannel {
           id
           channelId
+          channelType
         }
       }
 
@@ -69,7 +70,7 @@ const renderChatButton = ({ id, channelId, name, navigation, theme }) => {
     // todo : temporary hack until we can get the OverlayProvider working correctly
     navigation.goBack(null);
     navigation.navigate('ChatChannelSingle', {
-      title: name,
+      itemTitle: name,
     });
   };
 
@@ -210,8 +211,11 @@ const Actions = ({ id, name, theme }) => {
           },
         });
 
-        if (setChannel) {
-          setChannel({ relatedNodeId: id });
+        if (setChannel && streamChat?.channelId && streamChat?.channelType) {
+          setChannel({
+            channelId: streamChat.channelId,
+            channelType: streamChat.channelType,
+          });
         }
       }
     },
