@@ -12,18 +12,19 @@ import {
 } from '@react-navigation/native';
 import SplashScreen from 'react-native-splash-screen';
 
-import {
-  useColorScheme,
-  Text,
-  Appearance,
-  Platform,
-  UIManager,
-} from 'react-native';
+import { Text, Appearance, Platform, UIManager } from 'react-native';
 import { BackgroundView, NavigationService } from '@apollosproject/ui-kit';
 // import Passes from '@apollosproject/ui-passes';
 import { MapViewConnected as Location } from '@apollosproject/ui-mapview';
 import { ProtectedRoute } from '@apollosproject/ui-auth';
 import ScreenOrientation from 'screen-orientation';
+import { ApollosThemeProvider } from './theme/context';
+import {
+  ChatChannelSingle,
+  ChatChannelListNavigator,
+  StreamChatOverlayProvider,
+  StreamChatClientContextProvider,
+} from './stream-chat';
 import Auth from './auth';
 import StatusBar from './ui/StatusBar';
 
@@ -41,11 +42,6 @@ import EditGroup from './edit-group';
 import NotificationCenter, { NotificationSingle } from './notification-center';
 import PrayerRequestSingle from './prayer-request-single';
 import MyPrayerRequestsFeed from './my-prayer-requests-feed';
-import {
-  ChatChannelSingle,
-  ChatChannelListNavigator,
-  StreamChatOverlayProvider,
-} from './stream-chat';
 
 import LandingScreen from './LandingScreen';
 import Onboarding from './ui/Onboarding';
@@ -281,21 +277,25 @@ const NavigationContainerWithTheme = (props) => {
       onReady={NavigationService.setIsReady}
       theme={scheme === 'dark' ? dark : light}
     >
-      <StreamChatOverlayProvider>
-        <StackNavigator {...props} />
-      </StreamChatOverlayProvider>
+      <ProvidersStack>
+        <StreamChatOverlayProvider>
+          <StackNavigator {...props} />
+        </StreamChatOverlayProvider>
+      </ProvidersStack>
     </NavigationContainer>
   );
 };
 
 const App = (props) => (
-  <ProvidersStack>
-    <BackgroundView>
-      <StatusBar />
-      <ScreenOrientation />
-      <NavigationContainerWithTheme {...props} />
-    </BackgroundView>
-  </ProvidersStack>
+  <StreamChatClientContextProvider>
+    <ApollosThemeProvider>
+      <BackgroundView>
+        <StatusBar />
+        <ScreenOrientation />
+        <NavigationContainerWithTheme {...props} />
+      </BackgroundView>
+    </ApollosThemeProvider>
+  </StreamChatClientContextProvider>
 );
 
 export default App;
