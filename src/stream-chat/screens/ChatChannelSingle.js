@@ -22,6 +22,7 @@ import {
 } from '@apollosproject/ui-kit';
 import { ChatChannel } from '../components';
 import { useStreamChat } from '../context';
+import { ConnectionStatus } from '../hooks';
 
 const BackgroundView = compose(
   withTheme(({ theme }) => ({
@@ -34,19 +35,23 @@ const BackgroundView = compose(
 
 const ChatChannelSingle = (props) => {
   const params = props?.route?.params;
-  const { setChannel, channel } = useStreamChat();
+  const { connectionStatus, setChannel, channel } = useStreamChat();
 
   // note : not the most elegant solution, but it's the easiest way to handle deep linking with push notifications
   useEffect(
     () => {
-      if (params?.streamChannelId && params?.streamChannelType) {
+      if (
+        ConnectionStatus.CONNECTED &&
+        params?.streamChannelId &&
+        params?.streamChannelType
+      ) {
         setChannel({
           channelId: params?.streamChannelId,
           channelType: params?.streamChannelType,
         });
       }
     },
-    [params]
+    [params, connectionStatus]
   );
 
   return (
