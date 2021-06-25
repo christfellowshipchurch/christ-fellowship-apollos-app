@@ -11,8 +11,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { AppState } from 'react-native';
-import { isOwnUser } from 'stream-chat';
 import { useStreamChatClient, useStreamChatChannel } from '../hooks';
 
 const StreamChatClientContextContext = React.createContext({});
@@ -108,6 +106,12 @@ export const StreamChatClientContextProvider = ({ children }) => {
       };
 
       initChannel();
+
+      return function cleanup() {
+        if (channel) {
+          channel?.stopWatching();
+        }
+      };
     },
     [channelId, channelType]
   );

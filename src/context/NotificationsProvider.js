@@ -90,6 +90,7 @@ class NotificationsInit extends Component {
   }
 
   navigate = (rawUrl) => {
+    console.log({ rawUrl });
     if (!rawUrl) return;
     this.props.routeLink(rawUrl);
   };

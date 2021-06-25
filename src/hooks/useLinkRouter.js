@@ -22,6 +22,8 @@ const deepLink = (rawUrl, navigationOptions) => {
   const route = url.pathname.substring(1);
   const args = querystring.parse(url.query);
 
+  console.log({ NavigationService });
+
   NavigationService.navigate(route, { ...args, ...navigationOptions });
 };
 
