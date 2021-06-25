@@ -70,7 +70,6 @@ const ChatChannelList = ({ theme }) => {
           HeaderNetworkDownIndicator={() => null}
           maxUnreadCount={99}
           onSelect={(channel) => {
-            console.log({ channel });
             setChannel({ channel });
             navigation.navigate('ChatChannelSingle', {
               hideNavigationHeader: true,
