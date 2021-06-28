@@ -78,6 +78,9 @@ terraform.tfvars
 # xcode
 build/
 
+# react-native-config codegen
+ios/tmp.xcconfig
+
 # storybook
 storyLoader.js
 *.xcworkspacedata
