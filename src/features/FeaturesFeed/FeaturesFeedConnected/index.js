@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useLazyQuery } from '@apollo/client';
+import { useApolloClient, useQuery } from '@apollo/client';
 import { get, isEmpty } from 'lodash';
 
 import { AppState, FlatList, View } from 'react-native';
@@ -50,31 +50,53 @@ const renderItem = ({ item }) => <FeatureConnected key={item?.id} {...item} />;
 const FeaturesFeedConnected = ({
   featuresFeedId,
   ItemSeparatorComponent,
-  isLoading,
+  isLoading: parentLoading,
   error: parentError,
   ListEmptyComponent,
   ...props
 }) => {
-  /**
-   * note : because of a bug with the `skip` parameter in the `useQuery` hook, we'll use the `useLazyQuery` api instead so we can mimic that behavior manually
-   */
+  // :: State
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [
-    getFeaturesFeed,
-    { data, loading, error, called, refetch },
-  ] = useLazyQuery(GET_FEATURES_FEED);
+  const [features, setFeatures] = useState([]);
+  const [isLoading, setIsLoading] = useState(parentLoading);
 
-  const features = data?.node?.features || [];
+  // :: Network Requests
+  const QUERY_PARAMS = {
+    fetchPolicy: 'network-only',
+    variables: {
+      id: featuresFeedId,
+    },
+  };
+  const client = useApolloClient();
+  const refetch = async () => {
+    setIsLoading(true);
+
+    const { data } = await client.query({
+      query: GET_FEATURES_FEED,
+      ...QUERY_PARAMS,
+      partialRefetch: true,
+    });
+
+    setFeatures(data?.node?.features || []);
+    setIsLoading(false);
+  };
+  const { loading, error } = useQuery(GET_FEATURES_FEED, {
+    ...QUERY_PARAMS,
+    skip: isEmpty(featuresFeedId),
+    onCompleted: (data) => {
+      setFeatures(data?.node?.features || []);
+    },
+  });
+
   const errorInStack = !!parentError || !!error;
-  const loadingInStack = loading || isLoading;
   const dataInStack = !!features && features.length;
 
   const _handleAppStateChange = (nextAppState) => {
     if (
       appState.current.match(/inactive|background/) &&
       nextAppState === 'active' &&
-      !loadingInStack &&
+      !isLoading &&
       typeof refetch === 'function'
     ) {
       refetch();
@@ -84,6 +106,13 @@ const FeaturesFeedConnected = ({
     setAppStateVisible(appState.current);
   };
 
+  useEffect(
+    () => {
+      setIsLoading(parentLoading || loading);
+    },
+    [parentLoading, loading]
+  );
+
   useEffect(() => {
     AppState.addEventListener('change', _handleAppStateChange);
 
@@ -91,24 +120,6 @@ const FeaturesFeedConnected = ({
       AppState.removeEventListener('change', _handleAppStateChange);
     };
   }, []);
-
-  useEffect(
-    () => {
-      /**
-       * note : it's really easy for this query to get away from us if we call it too many times, so we're just being suuuuuuper picky with this condition so that we only ever call this on the first load (all subsequent loads should comes from pull-to-refetch)
-       */
-
-      if (!loading && featuresFeedId && !isEmpty(featuresFeedId) && !called) {
-        getFeaturesFeed({
-          fetchPolicy: 'network-only',
-          variables: {
-            id: featuresFeedId,
-          },
-        });
-      }
-    },
-    [featuresFeedId]
-  );
 
   if (!features.length && (loading || isLoading) && !error) {
     return <ActivityIndicator />;
@@ -121,7 +132,7 @@ const FeaturesFeedConnected = ({
         renderItem={renderItem}
         ItemSeparatorComponent={ItemSeparatorComponent}
         ListEmptyComponent={
-          errorInStack && !loadingInStack && !dataInStack
+          errorInStack && !isLoading && !dataInStack
             ? console.warn(error) || (
                 <ErrorContainer>
                   <ErrorText>
@@ -137,7 +148,7 @@ const FeaturesFeedConnected = ({
         removeClippedSubviews
         keyExtractor={(item, index) => get(item, 'id', index)}
         onRefresh={() => {
-          if (!loadingInStack) {
+          if (!isLoading) {
             refetch();
           }
         }}
@@ -175,9 +186,13 @@ FeaturesFeedConnected.defaultProps = {
   error: null,
   features: [],
   isLoading: false,
-  refetch: () => null,
   ItemSeparatorComponent: HorizontalDivider,
   ListEmptyComponent: () => null,
 };
 
-export default FeaturesFeedConnected;
+export default ({ featuresFeedId, ...props }) =>
+  isEmpty(featuresFeedId) ? (
+    <ActivityIndicator />
+  ) : (
+    <FeaturesFeedConnected {...props} featuresFeedId={featuresFeedId} />
+  );
