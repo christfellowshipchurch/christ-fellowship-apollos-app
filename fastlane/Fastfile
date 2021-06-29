@@ -19,8 +19,8 @@ platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
     app_store_connect_api_key(
-      key_id: "2B9KF8VRM5",
-      issuer_id: "543b60f7-5ba8-4f89-871e-821e8c4a40de",
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
       key_filepath: "ios/AuthKey_2B9KF8VRM5.p8",
     )
     match(type: 'appstore')
