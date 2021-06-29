@@ -117,7 +117,7 @@ const Group = ({ id, content, loading }) => {
         </PaddedView>
 
         <PaddedView horizontal={false}>
-          <Actions id={id} />
+          <Actions id={id} name={content.title} />
         </PaddedView>
 
         <PaddedView vertical={false}>

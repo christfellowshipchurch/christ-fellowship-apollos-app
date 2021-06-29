@@ -18,9 +18,6 @@ const UniversalLinkRouteProvider = ({ children }) => {
 
   const handleAppStateChange = async () => {
     const initial = await Linking.getInitialURL();
-    console.log({ initial });
-
-    return;
     if (initial !== null && !initialised) {
       setInitialised(true);
       // app was opened by a Universal Link
