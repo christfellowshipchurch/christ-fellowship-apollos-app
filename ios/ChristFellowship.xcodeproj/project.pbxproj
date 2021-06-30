@@ -86,6 +86,7 @@
 		52CDE4653B0D48CD83312C72 /* Gotham-LightItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-LightItalic.otf"; path = "../assets/fonts/Gotham-LightItalic.otf"; sourceTree = "<group>"; };
 		57E5783D478DF679ADCCA2A9 /* Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests.release.xcconfig"; sourceTree = "<group>"; };
 		5A5A2BC2998547F4816B82E4 /* Inter-UI-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-BlackItalic.otf"; path = "../assets/fonts/Inter-UI-BlackItalic.otf"; sourceTree = "<group>"; };
+		5C9F48B7268A27B200694B7A /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		63F6EE53A9B44B4388B5F1C2 /* Inter-UI-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-Italic.otf"; path = "../assets/fonts/Inter-UI-Italic.otf"; sourceTree = "<group>"; };
 		68605A5C2E1F3EF9EC3C275B /* Pods-ChristFellowship-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS/Pods-ChristFellowship-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		7460DD8FAE5C4D9DB10462C5 /* Gotham-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Light.otf"; path = "../assets/fonts/Gotham-Light.otf"; sourceTree = "<group>"; };
@@ -276,6 +277,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				5C9F48B7268A27B200694B7A /* Config.xcconfig */,
 				13B07FAE1A68108700A75B9A /* ChristFellowship */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ChristFellowshipTests */,
@@ -313,7 +315,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				12D50EA18152C91C0BD93F0C /* [CP] Copy Pods Resources */,
-				64F01DDF0E0326E273A51AEB /* [CP] Embed Pods Frameworks */,
+				B032B85B6E2405758CDA296B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -335,7 +337,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				11B455F1F0D099470B7A78F0 /* [CP] Copy Pods Resources */,
-				E713B6AD813B9C60B60C7066 /* [CP] Embed Pods Frameworks */,
+				68244B14B6E23A6306C7A11E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -399,7 +401,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 244Z6V4SJ9;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -535,7 +537,6 @@
 				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
-				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCScreenShare.framework",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
@@ -546,7 +547,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTC.framework",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCScreenShare.framework",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
@@ -567,7 +567,6 @@
 				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
-				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCScreenShare.framework",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
@@ -578,7 +577,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTC.framework",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCScreenShare.framework",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
@@ -626,25 +624,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		64F01DDF0E0326E273A51AEB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-frameworks.sh",
-				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MobileRTC.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E713B6AD813B9C60B60C7066 /* [CP] Embed Pods Frameworks */ = {
+		68244B14B6E23A6306C7A11E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -660,6 +640,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B032B85B6E2405758CDA296B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-frameworks.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MobileRTC.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EC346A0A1AE06EF68C9C5018 /* [CP] Check Pods Manifest.lock */ = {
@@ -832,14 +830,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
-				CURRENT_PROJECT_VERSION = 15;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 50;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ChristFellowship/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 6.0.2;
+				MARKETING_VERSION = 6.0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -847,7 +847,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.subsplashconsulting.BSVMPR;
 				PRODUCT_NAME = ChristFellowship;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.subsplashconsulting.BSVMPR";
 				SWIFT_OBJC_BRIDGING_HEADER = "ChristFellowship-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -862,7 +862,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
-				CURRENT_PROJECT_VERSION = 15;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 50;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -871,7 +873,7 @@
 				);
 				INFOPLIST_FILE = ChristFellowship/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 6.0.2;
+				MARKETING_VERSION = 6.0.3;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -879,7 +881,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.subsplashconsulting.BSVMPR;
 				PRODUCT_NAME = ChristFellowship;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.subsplashconsulting.BSVMPR";
 				SWIFT_OBJC_BRIDGING_HEADER = "ChristFellowship-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -1025,6 +1027,7 @@
 		};
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5C9F48B7268A27B200694B7A /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1087,6 +1090,7 @@
 		};
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5C9F48B7268A27B200694B7A /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1134,6 +1138,7 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = "";
 				VALIDATE_PRODUCT = YES;
