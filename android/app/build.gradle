@@ -178,6 +178,14 @@ android {
         // renderscriptTargetApi 23
         // renderscriptSupportModeEnabled true
     }
+    signingConfigs {
+        release {
+            storeFile file(String.valueOf(System.getenv("KEYSTORE_FILE")))
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+        }
+    }
     splits {
         abi {
             reset()
@@ -190,6 +198,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
