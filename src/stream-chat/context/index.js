@@ -11,9 +11,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { AppState } from 'react-native';
-import { isOwnUser } from 'stream-chat';
-import { useStreamChatClient, useStreamChatChannel } from '../hooks';
+import {
+  useStreamChatClient,
+  useStreamChatChannel,
+  ConnectionStatus,
+} from '../hooks';
 
 const StreamChatClientContextContext = React.createContext({});
 
@@ -48,10 +50,6 @@ export const StreamChatClientContextProvider = ({ children }) => {
     disconnectUser,
     connectUser,
   } = useStreamChatClient();
-  const [
-    getStreamChatChannel,
-    { channelId: fetchedChannelId, channelType: fetchedChannelType },
-  ] = useStreamChatChannel();
 
   const [channel, setChannel] = useState(null);
   const [channelId, setChannelId] = useState(null);
@@ -74,8 +72,6 @@ export const StreamChatClientContextProvider = ({ children }) => {
    */
   const fetchOrSetChannel = ({
     channel: specifiedChannel,
-    nodeId,
-    relatedNodeId,
     channelId: specifiedChannelId,
     channelType: specifiedChannelType,
   }) => {
@@ -85,8 +81,6 @@ export const StreamChatClientContextProvider = ({ children }) => {
     } else if (specifiedChannelId && specifiedChannelType) {
       setChannelId(specifiedChannelId);
       setChannelType(specifiedChannelType);
-    } else if (nodeId || relatedNodeId) {
-      getStreamChatChannel({ nodeId, relatedNodeId });
     }
   };
 
@@ -107,17 +101,17 @@ export const StreamChatClientContextProvider = ({ children }) => {
         setChannel(newChannel);
       };
 
-      initChannel();
-    },
-    [channelId, channelType]
-  );
+      if (connectionStatus === ConnectionStatus.CONNECTED) {
+        initChannel();
+      }
 
-  useEffect(
-    () => {
-      setChannelId(fetchedChannelId);
-      setChannelType(fetchedChannelType);
+      return function cleanup() {
+        if (channel) {
+          channel?.stopWatching();
+        }
+      };
     },
-    [fetchedChannelId, fetchedChannelType]
+    [channelId, channelType, connectionStatus]
   );
 
   return (
@@ -128,7 +122,6 @@ export const StreamChatClientContextProvider = ({ children }) => {
         disconnectUser,
         connectUser,
         channel,
-        getStreamChatChannel,
         setChannel: fetchOrSetChannel,
       }}
     >

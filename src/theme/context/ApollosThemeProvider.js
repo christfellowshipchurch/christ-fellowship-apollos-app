@@ -1,5 +1,5 @@
 /**
- * CoreApollosProviders.js
+ * ApollosThemeProvider.js
  *
  * Author: Caleb Panza
  * Created: Apr 02, 2021
@@ -14,9 +14,10 @@ import { useColorScheme } from 'react-native-appearance';
 import { Appearance } from 'react-native';
 
 import { Providers } from '@apollosproject/ui-kit';
-import customTheme, { customIcons } from '../theme';
+import customTheme from '../theme';
+import * as customIcons from '../icons';
 
-const CoreApollosProviders = (props) => {
+const ApollosThemeProvider = (props) => {
   /**
    * note : In order to make sure that we don't accidentally set our base theme to an invalid value, we'll just check to make sure that we have either `light` or `dark` as the current scheme
    *
@@ -35,7 +36,7 @@ const CoreApollosProviders = (props) => {
   );
 };
 
-CoreApollosProviders.propTypes = {};
-CoreApollosProviders.defaultProps = {};
+ApollosThemeProvider.propTypes = {};
+ApollosThemeProvider.defaultProps = {};
 
-export default CoreApollosProviders;
+export default ApollosThemeProvider;

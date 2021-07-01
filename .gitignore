@@ -78,6 +78,9 @@ terraform.tfvars
 # xcode
 build/
 
+# react-native-config codegen
+ios/tmp.xcconfig
+
 # storybook
 storyLoader.js
 *.xcworkspacedata
@@ -148,6 +151,7 @@ fastlane/report.xml
 
 # symbols
 apolloschurchapp.app.dSYM.zip
+ChristFellowship.app.dSYM.zip
 
 # iOS keys
 *.p8
