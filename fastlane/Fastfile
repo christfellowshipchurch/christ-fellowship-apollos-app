@@ -15,7 +15,7 @@
 
 def bump_version_code()
   s = File.read("../android/app/build.gradle")
-  versionCode = number_of_commits
+  versionCode = 1948
   s[/versionCode\s+(\d+)/, 1] = (versionCode).to_s
   f = File.new('../android/app/build.gradle', 'w')
   f.write(s)
