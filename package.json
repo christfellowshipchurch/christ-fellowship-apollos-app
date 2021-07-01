@@ -17,6 +17,7 @@
     "bugsnag-release:android": "yarn generate-source-map:android && yarn upload-source-map:android",
     "bugsnag-release:ios": "yarn generate-source-map:ios && yarn upload-source-map:ios",
     "canary": "./scripts/add-packages.sh canary",
+    "certificates": "bundle exec fastlane certificates",
     "codecov": "cat ./coverage/lcov.info | codecov",
     "dev": "yarn start",
     "fixlint": "eslint ./src --fix",

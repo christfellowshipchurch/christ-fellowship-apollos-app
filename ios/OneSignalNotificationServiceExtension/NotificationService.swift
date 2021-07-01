@@ -2,12 +2,11 @@
 //  NotificationService.swift
 //  OneSignalNotificationServiceExtension
 //
-//  Created by Caleb Panza on 6/24/21.
+//  Created by Caleb Panza on 7/1/21.
 //  Copyright © 2021 Christ Fellowship Church. All rights reserved.
 //
 
 import UserNotifications
-
 import OneSignal
 
 class NotificationService: UNNotificationServiceExtension {

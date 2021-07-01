@@ -58,3 +58,13 @@ platform :android do
     )
   end
 end
+
+lane :certificates do
+  produce(
+    app_identifier: "com.subsplashconsulting.BSVMPR.OneSignalNotificationServiceExtension",
+    app_name: "OneSignalNotificationServiceExtension",
+    skip_itc: true
+  )
+
+  match(app_identifier: ["com.subsplashconsulting.BSVMPR", "com.subsplashconsulting.BSVMPR.OneSignalNotificationServiceExtension"])
+end
