@@ -21,6 +21,7 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* ChristFellowshipTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ChristFellowshipTests.m */; };
 		5660E1852DD44C17A240F411 /* Gotham-BlackItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = F28959042DC64AE8B25BF7A8 /* Gotham-BlackItalic.otf */; };
+		6EA9B9B7816D9C45D5CBC27D /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 30F5A8F15958D7A97024EEFF /* libPods-OneSignalNotificationServiceExtension.a */; };
 		7E8883996005484689C0B6BF /* Gotham-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = A8653779CFF0426389AB4E79 /* Gotham-BoldItalic.otf */; };
 		90743C40BF544F10A810C43C /* DroidSerif-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADC3D2DB245545ADB1CAB3FE /* DroidSerif-Italic.ttf */; };
 		93A2B0A9328A46A4B7DD5EFA /* DroidSerif-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4E007B33EDD74B82AEF02C24 /* DroidSerif-Regular.ttf */; };
@@ -36,6 +37,8 @@
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		EF17D5EF258A92B90040D5A6 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF17D5EE258A92B90040D5A6 /* File.swift */; };
 		EF17D5F0258A92B90040D5A6 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF17D5EE258A92B90040D5A6 /* File.swift */; };
+		EF4A20CD268F8B7D008CC354 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4A20CC268F8B7D008CC354 /* NotificationService.swift */; };
+		EF4A20D1268F8B7D008CC354 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = EF4A20CA268F8B7D008CC354 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FA17583DE60FBD0350583F4E /* libPods-ChristFellowship.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EF44E12B0C208488C4556B16 /* libPods-ChristFellowship.a */; };
 /* End PBXBuildFile section */
 
@@ -54,7 +57,28 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "ChristFellowship-tvOS";
 		};
+		EF4A20CF268F8B7D008CC354 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EF4A20C9268F8B7D008CC354;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EF4A20D2268F8B7D008CC354 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				EF4A20D1268F8B7D008CC354 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -78,6 +102,7 @@
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D6295D361D678BC3A2726A1 /* Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2F5410F239E9477B9C2E86BD /* Inter-UI-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-BoldItalic.otf"; path = "../assets/fonts/Inter-UI-BoldItalic.otf"; sourceTree = "<group>"; };
+		30F5A8F15958D7A97024EEFF /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		457DF18BC87543DD8D501C06 /* Gotham-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Medium.otf"; path = "../assets/fonts/Gotham-Medium.otf"; sourceTree = "<group>"; };
 		4645A0B437814AFFACF9292F /* Gotham-BookItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-BookItalic.otf"; path = "../assets/fonts/Gotham-BookItalic.otf"; sourceTree = "<group>"; };
 		4E007B33EDD74B82AEF02C24 /* DroidSerif-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DroidSerif-Regular.ttf"; path = "../assets/fonts/DroidSerif-Regular.ttf"; sourceTree = "<group>"; };
@@ -92,6 +117,7 @@
 		7460DD8FAE5C4D9DB10462C5 /* Gotham-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-Light.otf"; path = "../assets/fonts/Gotham-Light.otf"; sourceTree = "<group>"; };
 		7B4D5FC707286118DBB6772E /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests/Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		7BA0E6A4BB5B794AD9124426 /* Pods-ChristFellowship.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChristFellowship.debug.xcconfig"; path = "Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship.debug.xcconfig"; sourceTree = "<group>"; };
+		9048CE82EF7DF2E0E8F31C67 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		A460FD7884FD4574A818005A /* Inter-UI-MediumItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-MediumItalic.otf"; path = "../assets/fonts/Inter-UI-MediumItalic.otf"; sourceTree = "<group>"; };
 		A613256118404CB691DE2C8E /* Inter-UI-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-UI-Regular.otf"; path = "../assets/fonts/Inter-UI-Regular.otf"; sourceTree = "<group>"; };
 		A8653779CFF0426389AB4E79 /* Gotham-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-BoldItalic.otf"; path = "../assets/fonts/Gotham-BoldItalic.otf"; sourceTree = "<group>"; };
@@ -117,8 +143,13 @@
 		EF17D5EE258A92B90040D5A6 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		EF17D656258A94FA0040D5A6 /* ChristFellowship-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ChristFellowship-Bridging-Header.h"; sourceTree = "<group>"; };
 		EF44E12B0C208488C4556B16 /* libPods-ChristFellowship.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ChristFellowship.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF4A20CA268F8B7D008CC354 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF4A20CC268F8B7D008CC354 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		EF4A20CE268F8B7D008CC354 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EF4E04F7268F8D4900935434 /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
 		EFCC914B25DEE08800000E7A /* Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift.swift; sourceTree = "<group>"; };
 		F28959042DC64AE8B25BF7A8 /* Gotham-BlackItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Gotham-BlackItalic.otf"; path = "../assets/fonts/Gotham-BlackItalic.otf"; sourceTree = "<group>"; };
+		F40BC552794C2AF1C3C49336 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; path = "Target Support Files/Pods-OneSignalNotificationServiceExtension/Pods-OneSignalNotificationServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +185,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE719854A0BBFF999FC28FF7 /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF4A20C7268F8B7D008CC354 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6EA9B9B7816D9C45D5CBC27D /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +244,7 @@
 				4E48ED507F0039205B697131 /* libPods-ChristFellowship-ChristFellowshipTests.a */,
 				CA8D2CF210E619A4A33BA89E /* libPods-ChristFellowship-tvOS.a */,
 				B9F3446E0F68E1C229573386 /* libPods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.a */,
+				30F5A8F15958D7A97024EEFF /* libPods-OneSignalNotificationServiceExtension.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -255,6 +295,8 @@
 				68605A5C2E1F3EF9EC3C275B /* Pods-ChristFellowship-tvOS.release.xcconfig */,
 				B136C501594D2A9BD54E81FE /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.debug.xcconfig */,
 				7B4D5FC707286118DBB6772E /* Pods-ChristFellowship-tvOS-ChristFellowship-tvOSTests.release.xcconfig */,
+				F40BC552794C2AF1C3C49336 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */,
+				9048CE82EF7DF2E0E8F31C67 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -281,6 +323,7 @@
 				13B07FAE1A68108700A75B9A /* ChristFellowship */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ChristFellowshipTests */,
+				EF4A20CB268F8B7D008CC354 /* OneSignalNotificationServiceExtension */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				58D6A3E05A234CD89DC0BCE1 /* Resources */,
@@ -299,8 +342,19 @@
 				00E356EE1AD99517003FC87E /* ChristFellowshipTests.xctest */,
 				2D02E47B1E0B4A5D006451C7 /* ChristFellowship-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* ChristFellowship-tvOSTests.xctest */,
+				EF4A20CA268F8B7D008CC354 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		EF4A20CB268F8B7D008CC354 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				EF4E04F7268F8D4900935434 /* OneSignalNotificationServiceExtension.entitlements */,
+				EF4A20CC268F8B7D008CC354 /* NotificationService.swift */,
+				EF4A20CE268F8B7D008CC354 /* Info.plist */,
+			);
+			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,10 +392,12 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				11B455F1F0D099470B7A78F0 /* [CP] Copy Pods Resources */,
 				68244B14B6E23A6306C7A11E /* [CP] Embed Pods Frameworks */,
+				EF4A20D2268F8B7D008CC354 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EF4A20D0268F8B7D008CC354 /* PBXTargetDependency */,
 			);
 			name = ChristFellowship;
 			productName = "Hello World";
@@ -386,12 +442,31 @@
 			productReference = 2D02E4901E0B4A5D006451C7 /* ChristFellowship-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		EF4A20C9268F8B7D008CC354 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF4A20D5268F8B7D008CC354 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				C0C05BD3E09453A986AC8A82 /* [CP] Check Pods Manifest.lock */,
+				EF4A20C6268F8B7D008CC354 /* Sources */,
+				EF4A20C7268F8B7D008CC354 /* Frameworks */,
+				EF4A20C8268F8B7D008CC354 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OneSignalNotificationServiceExtension;
+			productName = OneSignalNotificationServiceExtension;
+			productReference = EF4A20CA268F8B7D008CC354 /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = "Christ Fellowship Church";
 				TargetAttributes = {
@@ -421,6 +496,11 @@
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
+					EF4A20C9268F8B7D008CC354 = {
+						CreatedOnToolsVersion = 12.5.1;
+						DevelopmentTeam = 244Z6V4SJ9;
+						ProvisioningStyle = Manual;
+					};
 				};
 			};
 			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "ChristFellowship" */;
@@ -441,6 +521,7 @@
 				00E356ED1AD99517003FC87E /* ChristFellowshipTests */,
 				2D02E47A1E0B4A5D006451C7 /* ChristFellowship-tvOS */,
 				2D02E48F1E0B4A5D006451C7 /* ChristFellowship-tvOSTests */,
+				EF4A20C9268F8B7D008CC354 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -483,6 +564,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2D02E48E1E0B4A5D006451C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EF4A20C8268F8B7D008CC354 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -537,16 +625,18 @@
 				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
+				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCScreenShare.framework",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
-				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.5.3_static/GoogleCast.framework/GoogleCastCoreResources.bundle",
-				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.5.3_static/GoogleCast.framework/GoogleCastUIResources.bundle",
+				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.6.1_static/GoogleCast.framework/GoogleCastCoreResources.bundle",
+				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.6.1_static/GoogleCast.framework/GoogleCastUIResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTC.framework",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCScreenShare.framework",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
@@ -567,16 +657,18 @@
 				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
+				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCScreenShare.framework",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
-				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.5.3_static/GoogleCast.framework/GoogleCastCoreResources.bundle",
-				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.5.3_static/GoogleCast.framework/GoogleCastUIResources.bundle",
+				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.6.1_static/GoogleCast.framework/GoogleCastCoreResources.bundle",
+				"${PODS_ROOT}/google-cast-sdk/GoogleCastSDK-ios-4.6.1_static/GoogleCast.framework/GoogleCastUIResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTC.framework",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCScreenShare.framework",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
@@ -632,10 +724,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-frameworks.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MobileRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -650,14 +744,38 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-frameworks.sh",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OneSignal/OneSignal.framework/OneSignal",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MobileRTC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OneSignal.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C0C05BD3E09453A986AC8A82 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-OneSignalNotificationServiceExtension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EC346A0A1AE06EF68C9C5018 /* [CP] Check Pods Manifest.lock */ = {
@@ -743,6 +861,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EF4A20C6268F8B7D008CC354 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EF4A20CD268F8B7D008CC354 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -755,6 +881,11 @@
 			isa = PBXTargetDependency;
 			target = 2D02E47A1E0B4A5D006451C7 /* ChristFellowship-tvOS */;
 			targetProxy = 2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */;
+		};
+		EF4A20D0268F8B7D008CC354 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EF4A20C9268F8B7D008CC354 /* OneSignalNotificationServiceExtension */;
+			targetProxy = EF4A20CF268F8B7D008CC354 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -828,6 +959,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7BA0E6A4BB5B794AD9124426 /* Pods-ChristFellowship.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -838,6 +970,7 @@
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ChristFellowship/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 6.0.3;
 				OTHER_LDFLAGS = (
@@ -860,6 +993,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6763055463933ADC22EE326 /* Pods-ChristFellowship.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
@@ -872,6 +1006,7 @@
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 				);
 				INFOPLIST_FILE = ChristFellowship/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 6.0.3;
 				OTHER_LDFLAGS = (
@@ -1145,6 +1280,69 @@
 			};
 			name = Release;
 		};
+		EF4A20D3268F8B7D008CC354 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F40BC552794C2AF1C3C49336 /* Pods-OneSignalNotificationServiceExtension.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 244Z6V4SJ9;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.subsplashconsulting.BSVMPR.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EF4A20D4268F8B7D008CC354 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9048CE82EF7DF2E0E8F31C67 /* Pods-OneSignalNotificationServiceExtension.release.xcconfig */;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.subsplashconsulting.BSVMPR.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1189,6 +1387,15 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EF4A20D5268F8B7D008CC354 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EF4A20D3268F8B7D008CC354 /* Debug */,
+				EF4A20D4268F8B7D008CC354 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
