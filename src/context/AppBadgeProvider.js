@@ -10,6 +10,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { AppState } from 'react-native';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import { isOwnUser } from 'stream-chat';
+import { useStreamChat } from '../stream-chat/context';
 
 // apn badge context to access badge number
 export const AppBadgeContext = React.createContext({
@@ -19,6 +21,7 @@ export const AppBadgeContext = React.createContext({
 export const useAppBadge = () => React.useContext(AppBadgeContext);
 
 export const AppBadgeProvider = (props) => {
+  const { chatClient } = useStreamChat();
   const [badge, _setBadge] = useState(0);
   const badgeRef = useRef(badge);
 
@@ -45,6 +48,26 @@ export const AppBadgeProvider = (props) => {
       AppState.removeEventListener('change', handleBadge);
     };
   }, []);
+
+  useEffect(
+    () => {
+      const user = chatClient?.user;
+      setBadge(isOwnUser(user) ? user.total_unread_count : 0);
+
+      const listener = chatClient?.on((e) => {
+        if (Number.isInteger(e.total_unread_count)) {
+          setBadge(e.total_unread_count);
+        }
+      });
+
+      return () => {
+        if (listener) {
+          listener.unsubscribe();
+        }
+      };
+    },
+    [chatClient]
+  );
 
   return (
     <AppBadgeContext.Provider
