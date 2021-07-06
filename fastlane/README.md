@@ -15,6 +15,14 @@ Install _fastlane_ using
 or alternatively using `brew install fastlane`
 
 # Available Actions
+### prepare
+```
+fastlane prepare
+```
+Prepare the iOS app for dev or build
+
+----
+
 ## iOS
 ### ios beta
 ```

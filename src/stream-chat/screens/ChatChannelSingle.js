@@ -11,7 +11,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { compose } from 'recompose';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRoute } from '@react-navigation/native';
 
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -82,6 +81,7 @@ ChatChannelSingle.propTypes = {
     }),
   }),
 };
+
 ChatChannelSingle.defaultProps = {
   route: {
     params: {

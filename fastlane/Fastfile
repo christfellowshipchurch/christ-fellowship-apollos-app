@@ -58,3 +58,15 @@ platform :android do
     )
   end
 end
+
+desc "Prepare the iOS app for dev or build"
+lane :prepare do
+  match(
+      app_identifier: ["com.subsplashconsulting.BSVMPR", "com.subsplashconsulting.BSVMPR.OneSignalNotificationServiceExtension"],
+      type: "development",
+  )
+  match(
+      app_identifier: ["com.subsplashconsulting.BSVMPR", "com.subsplashconsulting.BSVMPR.OneSignalNotificationServiceExtension"],
+      type: "appstore",
+  )
+end

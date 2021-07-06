@@ -21,6 +21,7 @@ import { NavigationService } from '@apollosproject/ui-kit';
 import ClientProvider, { client } from '../client';
 import { track, identify } from '../amplitude';
 import { UserFlagsProvider } from '../user-flags';
+import { AppBadgeProvider } from './AppBadgeProvider';
 import CurrentUserProvider from './CurrentUserProvider';
 import NotificationsProvider from './NotificationsProvider';
 import UniversalLinkRouteProvider from './UniversalLinkRouteProvider';
@@ -29,36 +30,38 @@ import UniversalLinkRouteProvider from './UniversalLinkRouteProvider';
 // import { UserFlagsProvider } from './user-flags';
 
 const ProvidersStack = (props) => (
-  <ClientProvider {...props}>
-    <NotificationsProvider
-      oneSignalKey={ApollosConfig.ONE_SIGNAL_KEY}
-      navigate={NavigationService.navigate}
-    >
-      <AuthProvider
-        navigateToAuth={() => NavigationService.navigate('Auth')}
+  <AppBadgeProvider>
+    <ClientProvider {...props}>
+      <NotificationsProvider
+        oneSignalKey={ApollosConfig.ONE_SIGNAL_KEY}
         navigate={NavigationService.navigate}
-        closeAuth={() =>
-          checkOnboardingStatusAndNavigate({
-            client,
-            navigation: NavigationService,
-          })
-        }
       >
-        <CurrentUserProvider>
-          <AnalyticsProvider
-            trackFunctions={[track]}
-            identifyFunctions={[identify]}
-          >
-            <UserFlagsProvider>
-              <ActionSheetProvider>
-                <UniversalLinkRouteProvider {...props} />
-              </ActionSheetProvider>
-            </UserFlagsProvider>
-          </AnalyticsProvider>
-        </CurrentUserProvider>
-      </AuthProvider>
-    </NotificationsProvider>
-  </ClientProvider>
+        <AuthProvider
+          navigateToAuth={() => NavigationService.navigate('Auth')}
+          navigate={NavigationService.navigate}
+          closeAuth={() =>
+            checkOnboardingStatusAndNavigate({
+              client,
+              navigation: NavigationService,
+            })
+          }
+        >
+          <CurrentUserProvider>
+            <AnalyticsProvider
+              trackFunctions={[track]}
+              identifyFunctions={[identify]}
+            >
+              <UserFlagsProvider>
+                <ActionSheetProvider>
+                  <UniversalLinkRouteProvider {...props} />
+                </ActionSheetProvider>
+              </UserFlagsProvider>
+            </AnalyticsProvider>
+          </CurrentUserProvider>
+        </AuthProvider>
+      </NotificationsProvider>
+    </ClientProvider>
+  </AppBadgeProvider>
 );
 
 ProvidersStack.propTypes = {};
