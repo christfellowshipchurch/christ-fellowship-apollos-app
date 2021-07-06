@@ -16,6 +16,7 @@ import {
 
 import { isOwnUser } from 'stream-chat';
 import { useStreamChat } from '../stream-chat';
+import { useAppBadge } from '../context/AppBadgeProvider';
 
 const IconsContainer = styled(({ theme }) => ({
   flexDirection: 'row',
@@ -70,41 +71,18 @@ const NotificationIcon = withTheme(({ theme, unreadCount }) => ({
 
 export const NotificationCenterIconConnected = () => {
   const navigation = useNavigation();
-  const { chatClient } = useStreamChat();
-  const [unreadCount, setUnreadCount] = useState(0);
+  const { badge } = useAppBadge();
   const maxUnreadCount = 9;
-
-  useEffect(
-    () => {
-      const user = chatClient?.user;
-      setUnreadCount(isOwnUser(user) ? user.total_unread_count : 0);
-
-      const listener = chatClient?.on((e) => {
-        if (Number.isInteger(e.total_unread_count)) {
-          setUnreadCount(e.total_unread_count);
-        }
-      });
-
-      return () => {
-        if (listener) {
-          listener.unsubscribe();
-        }
-      };
-    },
-    [chatClient]
-  );
 
   return (
     <TouchableScale onPress={() => navigation.navigate('ChatChannelList')}>
       <ItemLeft>
         <RelativePosition>
-          <NotificationIcon unreadCount={unreadCount} />
-          {unreadCount > 0 && (
+          <NotificationIcon unreadCount={badge} />
+          {badge > 0 && (
             <UnreadCountSpacing>
               <UnreadCountText bold>
-                {unreadCount > maxUnreadCount
-                  ? `${maxUnreadCount}+`
-                  : unreadCount}
+                {badge > maxUnreadCount ? `${maxUnreadCount}+` : badge}
               </UnreadCountText>
             </UnreadCountSpacing>
           )}
