@@ -83,9 +83,7 @@ class NotificationsInit extends Component {
 
   componentWillUnmount() {
     Linking.removeEventListener('url');
-    OneSignal.removeEventListener('received');
-    OneSignal.removeEventListener('opened');
-    OneSignal.removeEventListener('ids');
+    OneSignal.clearHandlers();
   }
 
   navigate = (rawUrl) => {
