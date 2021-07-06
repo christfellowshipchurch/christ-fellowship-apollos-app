@@ -111,5 +111,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>OneSignal_disable_badge_clearing</key>
+	<true/>
 </dict>
 </plist>
