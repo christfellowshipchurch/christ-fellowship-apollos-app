@@ -51,22 +51,24 @@ export const AppBadgeProvider = (props) => {
 
   useEffect(
     () => {
-      const user = chatClient?.user;
-      setBadge(isOwnUser(user) ? user.total_unread_count : 0);
+      if (badgeRef) {
+        const user = chatClient?.user;
+        setBadge(isOwnUser(user) ? user.total_unread_count : 0);
 
-      const listener = chatClient?.on((e) => {
-        if (Number.isInteger(e.total_unread_count)) {
-          setBadge(e.total_unread_count);
-        }
-      });
+        const listener = chatClient?.on((e) => {
+          if (Number.isInteger(e.total_unread_count)) {
+            setBadge(e.total_unread_count);
+          }
+        });
 
-      return () => {
-        if (listener) {
-          listener.unsubscribe();
-        }
-      };
+        return () => {
+          if (listener) {
+            listener.unsubscribe();
+          }
+        };
+      }
     },
-    [chatClient]
+    [chatClient, badgeRef]
   );
 
   return (
