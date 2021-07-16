@@ -625,7 +625,6 @@
 				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship/Pods-ChristFellowship-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
-				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCScreenShare.framework",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
@@ -636,7 +635,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTC.framework",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCScreenShare.framework",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
@@ -657,7 +655,6 @@
 				"${PODS_ROOT}/Target Support Files/Pods-ChristFellowship-ChristFellowshipTests/Pods-ChristFellowship-ChristFellowshipTests-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTC.framework",
-				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCScreenShare.framework",
 				"${PODS_ROOT}/../../node_modules/react-native-zoom-bridge/ios/libs/MobileRTCResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
@@ -668,7 +665,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTC.framework",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCScreenShare.framework",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MobileRTCResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
@@ -964,7 +960,7 @@
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				ENABLE_BITCODE = NO;
@@ -998,7 +994,7 @@
 				CODE_SIGN_ENTITLEMENTS = ChristFellowship/ChristFellowship.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 53;
+				CURRENT_PROJECT_VERSION = 55;
 				DEVELOPMENT_TEAM = 244Z6V4SJ9;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
