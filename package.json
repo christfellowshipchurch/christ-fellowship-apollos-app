@@ -13,6 +13,8 @@
     "beta": "./scripts/add-packages.sh beta",
     "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios'",
     "bundle:android": "bundle exec fastlane android deploy",
+    "bundle:ios": "bundle exec fastlane ios beta",
+    "bundle:all": "yarn bundle:android && yarn bundle:ios",
     "bugsnag-release": "yarn bugsnag-release:android && yarn bugsnag-release:ios",
     "bugsnag-release:android": "yarn generate-source-map:android && yarn upload-source-map:android",
     "bugsnag-release:ios": "yarn generate-source-map:ios && yarn upload-source-map:ios",
